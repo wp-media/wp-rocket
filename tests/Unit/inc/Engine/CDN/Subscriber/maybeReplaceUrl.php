@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -20,6 +21,10 @@ class Test_MaybeReplaceUrl extends TestCase {
 	private $cdn;
 	private $options;
 	private $subscriber;
+
+	private $subscription_controller;
+
+	private $query;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -44,11 +49,15 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 		$this->cdn        = Mockery::mock( CDN::class );
 		$this->options    = Mockery::mock( Options_Data::class );
+		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+		$this->query = $this->createMock( RocketCDN::class );
+
 		$this->subscriber = new Subscriber(
 			$this->options,
 			$this->cdn,
 			Mockery::mock( Options::class ),
-			Mockery::mock( SubscriptionController::class ),
+			$this->subscription_controller,
+			$this->query
 		);
 	}
 
@@ -70,6 +79,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
 		$this->assertSame(
 			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
 			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
@@ -78,6 +90,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 	public function testShouldReturnOriginalWhenCDNDisabledOnPost() {
 		$this->options->shouldReceive( 'get' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( true );
@@ -91,17 +106,22 @@ class Test_MaybeReplaceUrl extends TestCase {
 	public function testShouldReturnOriginalWhenDriverReturnsFalse() {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
+		$subscription_controller = Mockery::mock( SubscriptionController::class );
 
 		$this->subscriber = new Subscriber(
 			$this->options,
 			$this->cdn,
 			Mockery::mock( Options::class ),
-			Mockery::mock( SubscriptionController::class ),
+			$subscription_controller,
+			$this->query,
 			$driver
 		);
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
+			->andReturn( true );
+
+		$subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
 		$this->setupDriverGatingMocks();
@@ -127,6 +147,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 	 */
 	public function testShouldMaybeReplaceURL( $config, $expected ) {
 		$this->options->shouldReceive( 'get' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );

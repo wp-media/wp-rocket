@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -41,12 +42,14 @@ class Test_RewriteSrcset extends TestCase {
 	public function testShouldRewriteSrcsetBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
+		$subscription_controller = Mockery::mock( SubscriptionController::class );
 
 		$subscriber = new Subscriber(
 			$this->options,
 			$this->cdn,
 			Mockery::mock( Options::class ),
-			Mockery::mock( SubscriptionController::class ),
+			$subscription_controller,
+			$this->createMock( RocketCDN::class ),
 			$driver
 		);
 
@@ -54,7 +57,10 @@ class Test_RewriteSrcset extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( $config['cdn_enabled'] );
 
-		if ( $config['driver_returns'] ) {
+		$subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( $config['subscription_eligible'] );
+
+		if ( $config['subscription_eligible'] && $config['driver_returns'] ) {
 			$this->cdn->shouldReceive( 'rewrite_srcset' )
 				->once()
 				->andReturn( $config['rewritten_html'] );

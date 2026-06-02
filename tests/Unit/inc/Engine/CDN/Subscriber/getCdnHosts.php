@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -19,15 +20,21 @@ class Test_GetCdnHosts extends TestCase {
 	private $cdn;
 	private $subscriber;
 
+	private $subscription_controller;
+
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->cdn        = Mockery::mock( CDN::class );
+		$query = $this->createMock( RocketCDN::class );
+		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+
 		$this->subscriber = new Subscriber(
 			Mockery::mock( Options_Data::class ),
 			$this->cdn,
 			Mockery::mock( Options::class ),
-			Mockery::mock( SubscriptionController::class )
+			$this->subscription_controller,
+			$query
 		);
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
@@ -71,6 +78,9 @@ class Test_GetCdnHosts extends TestCase {
 		$this->cdn->shouldReceive( 'get_cdn_urls' )
 			->once()
 			->andReturn( $config['cdn_urls'] );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
 
 		$this->assertSame(
 			$expected,

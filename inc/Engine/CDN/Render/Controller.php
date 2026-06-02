@@ -10,6 +10,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\License\API\User;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -26,7 +27,7 @@ class Controller extends Abstract_Render {
 	private $beacon;
 
 	/**
-	 * Context instance.
+	 * CDN context instance.
 	 *
 	 * @var Context
 	 */
@@ -61,6 +62,13 @@ class Controller extends Abstract_Render {
 	private $page_count = 0;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Beacon                 $beacon        Beacon instance.
@@ -69,6 +77,7 @@ class Controller extends Abstract_Render {
 	 * @param Options_Data           $options  Options_Data instance.
 	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
 	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
+	 * @param User                   $user          User instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
@@ -76,7 +85,8 @@ class Controller extends Abstract_Render {
 		Context $context,
 		Options_Data $options,
 		RocketCDNQuery $cdn_query,
-		SubscriptionController $subscription_controller
+		SubscriptionController $subscription_controller,
+		User $user
 	) {
 		parent::__construct( $template_path );
 
@@ -85,6 +95,7 @@ class Controller extends Abstract_Render {
 		$this->options                 = $options;
 		$this->cdn_query               = $cdn_query;
 		$this->subscription_controller = $subscription_controller;
+		$this->user                    = $user;
 	}
 
 	/**
@@ -139,14 +150,14 @@ class Controller extends Abstract_Render {
 		$is_subscription_loading = $this->is_subscription_loading();
 		$this->page_count        = count( $this->get_items() );
 		$cta_heading             = sprintf(
-					// translators: %1$s = opening strong tag, %2$s = closing strong tag.
-					__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
-					'<strong>',
-					'</strong>'
-				);
+		// translators: %1$s = opening strong tag, %2$s = closing strong tag.
+			__( '%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all your pages with unlimited bandwidth.', 'rocket' ),
+			'<strong>',
+			'</strong>'
+		);
 
 		$cta_heading_max_limit = sprintf(
-			// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
+		// translators: %1$s = opening strong tag, %2$s = number of pages allowed, %3$s = closing strong tag.
 			__( '%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s ', 'rocket' ),
 			'<strong>',
 			$this->context->get_free_page_limit(),
@@ -162,28 +173,30 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( ! (bool) $this->options->get( 'cdn' ) ) {
+		if ( $this->is_cdn_paused_or_invalid() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_free_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_free',
-			'class'            => $classes,
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'               => __( 'RocketCDN', 'rocket' ),
+			'type'                => 'rocketcdn_free',
+			'class'               => $classes,
+			'page'                => 'page_cdn',
+			'help'                => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'         => [
+			'status_indicator'    => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'            => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
 				'limit_reached'         => $limit_reached,
 			],
+			'active_subscription' => $this->has_active_valid_subscription(),
+			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
 		return $sections;
@@ -204,13 +217,18 @@ class Controller extends Abstract_Render {
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 		}
+		$classes = [ 'rocketcdn' ];
+
+		if ( $this->subscription_controller->has_inactive_subscription() ) {
+			$classes[] = 'wpr-cdn-disabled';
+		}
 
 		$sections['purge_cdn_cache_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
 			'title'       => sprintf( __( 'Purge %s Cache', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
 			'type'        => 'purge_cdn_cache_section',
 			'description' => sprintf(
-				// translators: %s = CDN driver, wrapped in a span for JS targeting.
+			// translators: %s = CDN driver, wrapped in a span for JS targeting.
 				__( 'Purges %s cached resources for your website.', 'rocket' ),
 				'<span class="rocketcdn-driver-js">RocketCDN</span>'
 			),
@@ -220,10 +238,10 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'class'       => [ 'rocketcdn' ],
+			'class'       => $classes,
 		];
 
-		if ( $this->is_subscription_loading() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
 			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -254,7 +272,7 @@ class Controller extends Abstract_Render {
 		];
 
 		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
 			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
 		}
 
@@ -303,6 +321,10 @@ class Controller extends Abstract_Render {
 			'class'             => [ 'wpr-cdn-exclusions' ],
 			'sanitize_callback' => 'sanitize_textarea',
 		];
+
+		if ( ! $this->has_active_valid_subscription() ) {
+			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
+		}
 
 		// Disable exclusions fields when subscription is processing.
 		foreach ( array_keys( $exclusion_fields ) as $field ) {
@@ -468,6 +490,36 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Checks if the current subscription is active and the license is valid.
+	 *
+	 * @return bool True when the subscription can be used.
+	 */
+	private function has_active_valid_subscription(): bool {
+		return $this->subscription_controller->has_active_subscription()
+			&& ! $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
+	 * Checks if the current subscription is inactive or the license is invalid.
+	 *
+	 * @return bool True when the subscription is expired or unusable.
+	 */
+	private function has_inactive_or_invalid_subscription(): bool {
+		return $this->subscription_controller->has_inactive_subscription()
+			|| $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
+	 * Checks if the CDN should be treated as paused.
+	 *
+	 * @return bool True when the CDN is paused or the license is invalid.
+	 */
+	private function is_cdn_paused_or_invalid(): bool {
+		return $this->is_cdn_paused()
+			|| $this->subscription_controller->is_license_invalid();
+	}
+
+	/**
 	 * Checks if the CDN type is currently filtered.
 	 *
 	 * @since 3.22
@@ -483,7 +535,7 @@ class Controller extends Abstract_Render {
 		 * @since 3.22
 		 *
 		 * @param mixed $cdn_type Filtered CDN type.
-		*/
+		 */
 		$cdn_type = wpm_apply_filters_typed( 'string|null', 'pre_get_rocket_option_cdn_type', null, '' );
 
 		if ( null !== $cdn_type && in_array( $cdn_type, $allowed_cdn_types, true ) ) {
@@ -527,11 +579,11 @@ class Controller extends Abstract_Render {
 
 		$status_text = '';
 		$details     = sprintf(
-				// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
+		// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+			__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+			'<strong>',
+			'</strong>'
+		);
 
 		if ( $pages_count > 0 ) {
 			$status_text = $active_status_text;
@@ -550,15 +602,23 @@ class Controller extends Abstract_Render {
 			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 		}
 
-		$is_paused = ! (bool) $this->options->get( 'cdn' );
+		$is_paused = $this->is_cdn_paused();
 
-		if ( $is_paused ) {
+		$class = '';
+
+		if ( $this->has_inactive_or_invalid_subscription() ) {
+			$class         .= ' wpr-cdn-status--expired';
+			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+		}
+
+		if ( $this->is_cdn_paused_or_invalid() ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
+			$class      .= ' wpr-cdn-status--paused';
 		}
 
 		return [
-			'class'                   => $is_paused ? ' wpr-cdn-status--paused' : '',
+			'class'                   => $class,
 			'is_active'               => true,
 			'status_text'             => $status_text,
 			'details'                 => $details,
@@ -570,5 +630,18 @@ class Controller extends Abstract_Render {
 			'is_subscription_loading' => $is_subscription_loading,
 			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
 		];
+	}
+
+	/**
+	 * Check if cdn should pause or not.
+	 *
+	 * @return bool
+	 */
+	private function is_cdn_paused(): bool {
+		$transient = $this->subscription_controller->get_rocketcdn_status();
+
+		return false !== $transient
+			? ! $this->subscription_controller->has_active_subscription()
+			: ! (bool) $this->options->get( 'cdn' );
 	}
 }

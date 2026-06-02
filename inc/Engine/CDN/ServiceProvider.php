@@ -107,6 +107,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn',
 					'options_api',
 					'rocketcdn_subscription_controller',
+					'rocketcdn_query',
 					'cdn_driver',
 				]
 			);
@@ -122,6 +123,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'rocketcdn_query',
 					'rocketcdn_subscription_controller',
+					'user',
 				]
 			);
 
