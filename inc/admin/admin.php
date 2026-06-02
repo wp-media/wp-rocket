@@ -374,6 +374,36 @@ function rocket_analytics_optin() {
 add_action( 'admin_post_rocket_analytics_optin', 'rocket_analytics_optin' );
 
 /**
+ * Imports legacy analytics option into Mixpanel opt-in option.
+ *
+ * @param array $settings Imported settings.
+ * @return array
+ */
+function rocket_import_analytics_preference( array $settings ): array {
+	if ( ! array_key_exists( 'analytics_enabled', $settings ) ) {
+		return $settings;
+	}
+
+	$new_optin     = 1 === (int) $settings['analytics_enabled'] ? 1 : 0;
+	$current_optin = (int) get_option( 'rocket_mixpanel_optin', 0 );
+
+	if ( $new_optin !== $current_optin ) {
+		update_option( 'rocket_mixpanel_optin', $new_optin );
+
+		/**
+		 * Fires when the Mixpanel opt-in status changes.
+		 *
+		 * @param bool $status The opt-in status.
+		 */
+		do_action( 'rocket_mixpanel_optin_changed', 1 === $new_optin );
+	}
+
+	unset( $settings['analytics_enabled'] );
+
+	return $settings;
+}
+
+/**
  * Handle WP Rocket settings import.
  *
  * @since 3.10 disable async_css if both async_css and remove_unused_css are enabled
@@ -437,6 +467,7 @@ function rocket_handle_settings_import() {
 		$options_api        = new WP_Rocket\Admin\Options( 'wp_rocket_' );
 		$current_options    = $options_api->get( 'settings', [] );
 		$regenerate_configs = false;
+		$settings           = rocket_import_analytics_preference( $settings );
 
 		$settings['consumer_key']     = $current_options['consumer_key'];
 		$settings['consumer_email']   = $current_options['consumer_email'];
