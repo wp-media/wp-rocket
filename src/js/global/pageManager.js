@@ -135,6 +135,17 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
+    // If this is a fresh install/reinstall and sidebar state is mismatched,
+    // reset localStorage once to reflect the DB default. This transient is
+    // set on activation and consumed on first page load, preventing the
+    // guard from firing on every navigation within the same session.
+    if ( typeof rocket_ajax_data !== 'undefined' &&
+         rocket_ajax_data.is_fresh_sidebar_install &&
+         rocket_ajax_data.show_sidebar === '1' &&
+         'off' === localStorage.getItem( 'wpr-show-sidebar' ) ) {
+        localStorage.setItem( 'wpr-show-sidebar', 'on' );
+    }
+
     if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
         localStorage.setItem( 'wpr-show-sidebar', 'on' );
     }

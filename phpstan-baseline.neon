@@ -1,5 +1,13 @@
 parameters:
 	ignoreErrors:
+		# Mockery dynamic methods for test mocks
+		-
+			message: "#^Call to an undefined method.*::shouldReceive\\(\\)\\.$#"
+			path: tests/Unit/inc/Engine/Admin/Settings/Page/getSidebarShowOption.php
+
+		-
+			message: "#^Call to an undefined method.*::shouldReceive\\(\\)\\.$#"
+			path: tests/Unit/inc/Engine/Admin/Settings/Subscriber/addSidebarData.php
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3

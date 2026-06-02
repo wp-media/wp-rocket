@@ -67,6 +67,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
+			'rocket_localize_admin_script'         => 'add_sidebar_data',
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -315,6 +316,19 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Adds the sidebar visibility setting to the WP Rocket admin script data.
+	 *
+	 * @param array $data Localized script data.
+	 * @return array
+	 */
+	public function add_sidebar_data( $data ) {
+		$data['show_sidebar'] = $this->page->get_sidebar_show_option();
+		// Pass a one-time flag to indicate if sidebar should be reset (fresh install).
+		$data['is_fresh_sidebar_install'] = (bool) get_transient( 'wpr_sidebar_reset_needed' );
+		return $data;
 	}
 
 	/**
