@@ -102,7 +102,21 @@ Optional (but preferred) for other PHP-only changes that have a visible admin UI
 CI pipeline. If `bin/dev-up.sh` exits 0 and `localhost:8888` is reachable, you must run
 Strategy B. The only valid reason to skip it is a documented boot failure from Step 0.
 
-Delegate to the `e2e-qa-tester` agent. Provide:
+Browser validation runs through the `e2e-qa-tester` agent. **You do not spawn it yourself** —
+you have no `Agent` tool. The orchestrator (the team lead) owns that spawn. How you coordinate
+depends on the execution mode you were told you are running in:
+
+- **Team mode** (`orchestrator-team`): `e2e-qa-tester` is a peer **teammate**. Message it
+  directly via `SendMessage` with the inputs below, then read its results from its reply and/or
+  the shared task list. You and it collaborate as peers — if it hits an ambiguous flow, it will
+  message you back.
+- **Sub-agent mode** (`orchestrator`): tell the orchestrator in your return JSON that Strategy B
+  is required (set `strategies_used` to include `BROWSER` and list the frontend files). The
+  orchestrator spawns `e2e-qa-tester` and feeds its results back. Do not block waiting for a
+  spawn you cannot perform.
+
+Inputs `e2e-qa-tester` needs (provide via message in team mode, or via the orchestrator in
+sub-agent mode):
 - The acceptance criteria and "How to test" steps from the PR
 - The list of changed frontend files
 - The PR number (needed for screenshot publishing)
