@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -49,6 +50,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 			$this->cdn,
 			Mockery::mock( Options::class ),
 			Mockery::mock( SubscriptionController::class ),
+			Mockery::mock( Cache::class )
 		);
 	}
 
@@ -97,6 +99,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 			$this->cdn,
 			Mockery::mock( Options::class ),
 			Mockery::mock( SubscriptionController::class ),
+			Mockery::mock( Cache::class ),
 			$driver
 		);
 
