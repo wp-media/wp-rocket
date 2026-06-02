@@ -3,6 +3,8 @@ name: release-agent
 description: Handles trailer verification, pushing the branch to remote, and creating the GitHub pull request as draft. Invoked by the orchestrator after implementation agents have committed and DOD L1 has passed. Does not write code or modify implementation files. Prepends the AI-generated notice to the PR description.
 tools: [Bash, Read, Write]
 model: haiku
+maxTurns: 10
+color: orange
 ---
 
 # Release Agent
@@ -49,7 +51,7 @@ For multiple commits, use a non-interactive rebase with `--exec`:
 ```bash
 TRAILER="Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>"
 git rebase <base_branch> --exec \
-  "git show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer '$TRAILER'"
+  "git show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer \"$TRAILER\""
 ```
 
 `--exec` runs after each commit without opening an editor — safe in automated contexts.
