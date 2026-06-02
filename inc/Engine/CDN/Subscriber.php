@@ -525,7 +525,7 @@ class Subscriber implements Subscriber_Interface {
 				return;
 			}
 
-			// Clear whole cache in case of paid rocketcdn OR your own cdn.
+			// Clear whole cache in case of paid rocketcdn.
 			$this->cache->clear_all_cache();
 			return;
 		}
