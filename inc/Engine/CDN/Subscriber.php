@@ -5,6 +5,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -45,6 +46,13 @@ class Subscriber implements Subscriber_Interface {
 	private $subscription_controller;
 
 	/**
+	 * Cache instance.
+	 *
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * CDN Driver (Strategy)
 	 *
 	 * @var DriverInterface|null
@@ -58,14 +66,23 @@ class Subscriber implements Subscriber_Interface {
 	 * @param CDN                    $cdn     CDN instance.
 	 * @param Options                $options_api     Options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param Cache                  $cache   Cache instance.
 	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn, Options $options_api, SubscriptionController $subscription_controller, ?DriverInterface $driver = null ) {
+	public function __construct(
+		Options_Data $options,
+		CDN $cdn,
+		Options $options_api,
+		SubscriptionController $subscription_controller,
+		Cache $cache,
+		?DriverInterface $driver = null
+	) {
 		$this->options                 = $options;
 		$this->cdn                     = $cdn;
 		$this->options_api             = $options_api;
 		$this->driver                  = $driver;
 		$this->subscription_controller = $subscription_controller;
+		$this->cache                   = $cache;
 	}
 
 	/**
@@ -77,24 +94,25 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'                => [
+			'rocket_buffer'                    => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'           => 'rewrite_css_properties',
-			'rocket_usedcss_content'       => 'rewrite_css_properties',
-			'rocket_cdn_hosts'             => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'          => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url'      => 'add_cdn_url',
-			'rocket_css_url'               => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'                => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'             => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'            => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'              => [ 'add_cdn_url', 10, 2 ],
-			'rocket_first_install_options' => 'add_cdn_type_option',
-			'wp_rocket_upgrade'            => [
+			'rocket_css_content'               => 'rewrite_css_properties',
+			'rocket_usedcss_content'           => 'rewrite_css_properties',
+			'rocket_cdn_hosts'                 => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'              => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'          => 'add_cdn_url',
+			'rocket_css_url'                   => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                    => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'                 => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'                => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'                  => [ 'add_cdn_url', 10, 2 ],
+			'rocket_first_install_options'     => 'add_cdn_type_option',
+			'wp_rocket_upgrade'                => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
+			'update_option_wp_rocket_settings' => [ 'maybe_clear_cache', 10, 2 ],
 		];
 	}
 
@@ -478,5 +496,30 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Clear cache when cdn_type (driver) is changed.
+	 *
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_cache( $old_value, $value ) {
+		// Detect cdn status for pause/resume and cdn_type change.
+		if ( ! Utils::did_setting_change( 'cdn', $old_value, $value ) && ! Utils::did_setting_change( 'cdn_type', $old_value, $value ) ) {
+			return;
+		}
+
+		// Clear cache if cdn is paused/resumed or cdn_type is changed.
+		// Clear specific pages' cache only when it's free rocketcdn.
+		if ( $this->subscription_controller->is_free() ) {
+			$this->cache->clear_rocketcdn_free_pages_cache();
+			return;
+		}
+
+		// Clear whole cache in case of paid rocketcdn OR your own cdn.
+		$this->cache->clear_all_cache();
 	}
 }
