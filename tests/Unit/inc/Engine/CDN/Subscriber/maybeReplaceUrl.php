@@ -115,8 +115,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 			$this->cdn,
 			Mockery::mock( Options::class ),
 			$subscription_controller,
-			$this->query,
 			Mockery::mock( Cache::class ),
+			$this->query,
 			$driver
 		);
 
