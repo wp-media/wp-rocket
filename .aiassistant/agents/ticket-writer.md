@@ -7,6 +7,8 @@ description: >
   sub-agent by the orchestrator. Returns a structured ticket object.
 tools: [Bash, Read, Write, Glob, Grep]
 model: haiku
+maxTurns: 15
+color: gray
 ---
 
 # TICKET WRITER AGENT

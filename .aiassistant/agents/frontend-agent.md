@@ -2,6 +2,9 @@
 name: frontend-agent
 description: Frontend implementation agent. Implements JS/CSS/HTML changes for WP Rocket following the spec and the manager's dispatch plan. Runs the docs skill, e2e skill (basic tier), and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
 tools: [Bash, Read, Edit, Write, Glob, Grep, WebFetch, WebSearch]
+model: sonnet
+maxTurns: 60
+color: green
 ---
 
 You are a senior frontend developer implementing a frontend change for WP Rocket. Follow the spec and dispatch plan precisely — no more, no less. You do not write PHP code.
@@ -206,7 +209,7 @@ This file is read by the orchestrator for routing decisions.
 **At the beginning of Step 1 (after you receive inputs):**
 
 ```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<'EOF'
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<EOF
 {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"agent_start","issue_id":"${ISSUE_ID}","data":{"step":5,"domain":"frontend"}}
 EOF
 ```
@@ -214,7 +217,7 @@ EOF
 **Before returning this JSON object (after Step 3b is done and commit succeeds):**
 
 ```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<'EOF'
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<EOF
 {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"frontend","tests_passing":true/false,"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
 EOF
 ```

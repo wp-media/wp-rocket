@@ -404,11 +404,11 @@ suggests low actual risk), confirm with the user before deciding.
 
 **Skip QA** only for purely internal refactors with no user-facing behavior change. Team discretion.
 
-**Model routing** — record the model to use for each agent spawn based on grooming output:
+**Model routing** — record the model to use for each agent spawn based on early issue assessment and grooming output:
 
 | Agent | Default model | Condition for override |
 |---|---|---|
-| `grooming-agent` | `sonnet` | — |
+| `grooming-agent` | `sonnet` | **Adaptive:** Assess issue title + body length before spawning. Use `haiku` if title <50 chars, body <200 chars, no keywords ("architecture", "refactor", "redesign", "migration", "module", "breaking"). Use `opus` if body >500 chars OR keywords present. Otherwise `sonnet`. Pass `complexity_signal: "simple"|"medium"|"complex"` as input. |
 | `challenger` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
 | `backend-agent` | `sonnet` | `opus` if user confirmed (see Opus escalation below) |
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
@@ -419,6 +419,23 @@ suggests low actual risk), confirm with the user before deciding.
 | `e2e-qa-tester` | `sonnet` | — |
 
 Pass the resolved model as the `model` parameter on every Agent tool spawn. For agents with frontmatter `model: haiku`, this is redundant but harmless — always pass it explicitly so the intent is clear in the orchestrator context.
+
+**Complexity signal assessment:**
+Before invoking grooming-agent, classify the issue based on visible signals:
+```python
+def assess_complexity(title, body):
+    title_len, body_len = len(title), len(body)
+    complex_keywords = ["architecture", "refactor", "redesign", "module", "migration", "breaking"]
+    has_keywords = any(k in body.lower() for k in complex_keywords)
+    
+    if title_len < 50 and body_len < 200 and not has_keywords:
+        return "simple"  # → haiku model
+    elif body_len > 500 or has_keywords:
+        return "complex"  # → opus model
+    else:
+        return "medium"  # → sonnet model
+```
+Pass this as `complexity_signal` input to grooming-agent.
 
 **Opus escalation** — when `complexity == HIGH`: before proceeding to branch creation, ask the user:
 
