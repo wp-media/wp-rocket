@@ -38,7 +38,6 @@
 	 */
 	function updateSubmitButtonStateOnSubscriptionLoading() {
 		document.addEventListener( 'rocketJsAfterPageNavigation', ( e ) => {
-					console.log('hello world');
 			// Bail out if submit button is not visible for the current page.
 			if (getComputedStyle( e.detail.submitButton ).display === 'none') {
 				return;
