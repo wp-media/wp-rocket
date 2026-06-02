@@ -660,17 +660,16 @@ function rocket_clear_cache_notice() {
 }
 add_action( 'admin_notices', 'rocket_clear_cache_notice' );
 
-if ( ! function_exists( 'rocket_notice_html' ) ) :
-	/**
-	 * Outputs notice HTML
-	 *
-	 * @since 2.11
-	 * @author Remy Perona
-	 *
-	 * @param array $args An array of arguments used to determine the notice output.
-	 * @return void
-	 */
-	function rocket_notice_html( $args ) {
+/**
+ * Outputs notice HTML
+ *
+ * @since 2.11
+ * @author Remy Perona
+ *
+ * @param array $args An array of arguments used to determine the notice output.
+ * @return void
+ */
+function rocket_notice_html( $args ) {
 		$defaults = [
 			'status'                 => 'success',
 			'dismissible'            => 'is-dismissible',
@@ -779,43 +778,40 @@ if ( ! function_exists( 'rocket_notice_html' ) ) :
 		</p>
 		<?php endif; ?>
 	</div>
-			<?php
-	}
-endif;
+	<?php
+}
 
-if ( ! function_exists( 'rocket_notice_writing_permissions' ) ) :
-	/**
-	 * Outputs formatted notice about issues with writing permissions
-	 *
-	 * @since  2.11
-	 * @author Caspar Hübinger
-	 *
-	 * @param  string $file File or folder name.
-	 * @return string       Message HTML
-	 */
-	function rocket_notice_writing_permissions( $file ) {
+/**
+ * Outputs formatted notice about issues with writing permissions
+ *
+ * @since  2.11
+ * @author Caspar Hübinger
+ *
+ * @param  string $file File or folder name.
+ * @return string       Message HTML
+ */
+function rocket_notice_writing_permissions( $file ) {
 
-		$message = sprintf(
+	$message = sprintf(
 		// translators: %s = plugin name.
 		__( '%s cannot configure itself due to missing writing permissions.', 'rocket' ),
 		'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>'
-		);
+	);
 
-		$message .= '<br>' . sprintf(
-			/* translators: %s = file/folder name */
-			__( 'Affected file/folder: %s', 'rocket' ),
-			'<code>' . $file . '</code>'
-		);
+	$message .= '<br>' . sprintf(
+		/* translators: %s = file/folder name */
+		__( 'Affected file/folder: %s', 'rocket' ),
+		'<code>' . $file . '</code>'
+	);
 
-		$message .= '<br>' . sprintf(
-			/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
-			__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
-			/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
-			'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
-			'</a>'
-		);
+	$message .= '<br>' . sprintf(
+		/* translators: This is a doc title! %1$s = opening link; %2$s = closing link */
+		__( 'Troubleshoot: %1$sHow to make system files writeable%2$s', 'rocket' ),
+		/* translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL if applicable */
+		'<a href="' . __( 'https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket', 'rocket' ) . '" target="_blank">',
+		'</a>'
+	);
 
-		return $message;
-	}
-endif;
+	return $message;
+}
 

@@ -12,6 +12,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers ::rocket_analytics_optin_notice
  * @group  admin
  * @group  Notices
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
  */
 class Test_RocketAnalyticsOptinNotice extends TestCase {
 
