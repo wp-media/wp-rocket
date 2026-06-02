@@ -97,135 +97,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public static function get_subscribed_events() {
 		return [
 			'admin_notices'                           => [
-				[ 'promote_rocketcdn_notice' ],
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
 				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
-			'wp_ajax_rocketcdn_dismiss_notice'        => 'dismiss_notice',
-			'admin_footer'                            => 'add_dismiss_script',
 		];
-	}
-
-	/**
-	 * Adds notice to promote RocketCDN on settings page
-	 *
-	 * @since 3.5
-	 *
-	 * @return void
-	 */
-	public function promote_rocketcdn_notice() {
-		/**
-		 * Filters RocketCDN promotion notice.
-		 *
-		 * @param bool $promotion_notice; true to display, false otherwise.
-		 */
-		if ( ! apply_filters( 'rocket_promote_rocketcdn_notice', true ) ) {
-			return;
-		}
-
-		if ( $this->is_white_label_account() ) {
-			return;
-		}
-
-		if ( ! rocket_is_live_site() ) {
-			return;
-		}
-
-		if ( ! $this->should_display_notice() ) {
-			return;
-		}
-
-		echo $this->generate( 'promote-notice' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
-	 * Adds inline script to permanently dismissing the RocketCDN promotion notice
-	 *
-	 * @since 3.5
-	 *
-	 * @return void
-	 */
-	public function add_dismiss_script() {
-		if ( $this->is_white_label_account() ) {
-			return;
-		}
-
-		if ( ! rocket_is_live_site() ) {
-			return;
-		}
-
-		if ( ! $this->should_display_notice() ) {
-			return;
-		}
-
-		$nonce = wp_create_nonce( 'rocketcdn_dismiss_notice' );
-		?>
-		<script>
-		window.addEventListener( 'load', function() {
-			var dismissBtn  = document.querySelectorAll( '#rocketcdn-promote-notice .notice-dismiss, #rocketcdn-promote-notice #rocketcdn-learn-more-dismiss' );
-
-			dismissBtn.forEach(function(element) {
-				element.addEventListener( 'click', function( event ) {
-					var httpRequest = new XMLHttpRequest(),
-						postData    = '';
-
-					postData += 'action=rocketcdn_dismiss_notice';
-					postData += '&nonce=<?php echo esc_attr( $nonce ); ?>';
-					httpRequest.open( 'POST', '<?php echo esc_url( admin_url( 'admin-ajax.php' ) ); ?>' );
-					httpRequest.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' )
-					httpRequest.send( postData );
-				});
-			});
-		});
-		</script>
-		<?php
-	}
-
-	/**
-	 * Checks if the promotion notice should be displayed
-	 *
-	 * @since 3.5
-	 *
-	 * @return boolean
-	 */
-	private function should_display_notice() {
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			return false;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return false;
-		}
-
-		if ( get_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true ) ) {
-			return false;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		return 'running' !== $subscription_data['subscription_status'];
-	}
-
-	/**
-	 * Ajax callback to save the dismiss as a user meta
-	 *
-	 * @since 3.5
-	 *
-	 * @return void
-	 */
-	public function dismiss_notice() {
-		check_ajax_referer( 'rocketcdn_dismiss_notice', 'nonce', true );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_send_json_error( 'no permissions' );
-		}
-
-		update_user_meta( get_current_user_id(), 'rocketcdn_dismiss_notice', true );
-
-		wp_send_json_success();
 	}
 
 	/**
