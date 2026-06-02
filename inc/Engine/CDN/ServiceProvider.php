@@ -38,6 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_paid',
 		'cdn_driver_byocdn',
 		'cdn_driver',
+		'cache_controller',
 	];
 
 	/**
@@ -57,6 +58,8 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->add( 'cache_controller', Cache::class )
+			->addArgument( 'rocketcdn_query' );
 		$this->getContainer()->addShared( 'cdn', CDN::class )
 			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'cdn_context', Context::class )
@@ -107,6 +110,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn',
 					'options_api',
 					'rocketcdn_subscription_controller',
+					'cache_controller',
 					'rocketcdn_query',
 					'cdn_driver',
 				]
