@@ -2,12 +2,11 @@
 name: orchestrator
 description: >
   User-facing entry point for the wp-rocket issue workflow. Invoke directly to start a
-  delivery run from a GitHub issue number, URL, or raw description. Runs inline in your
-  conversation context; spawns specialist agents (ticket-writer, grooming-agent,
-  challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
-  qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
-  docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
-  agent, manages loop counters, handles escalations, and maintains a live HTML run log.
+  delivery run from a GitHub issue number, URL, or raw description. Auto-detects Agent Team
+  availability (Claude Code ≥2.1.32 + CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1) and routes to
+  orchestrator-team (real-time peer review, shared task list) or falls back to sub-agent mode
+  (isolated agents, sequential reporting). Manages loop counters, handles escalations, and
+  maintains a live HTML run log. All routing logic is shared; only execution environment differs.
 ---
 
 # Orchestrator — wp-media/wp-rocket
@@ -62,6 +61,41 @@ git worktrees are not created. Quality gates run sequentially: DOD L2 → Lead R
 
 Sequential mode is slower but produces the same quality outputs. All routing tables and escalation
 logic remain identical — only timing and resource usage change.
+
+---
+
+## Execution environment detection (auto-routing to teams)
+
+**This orchestrator now auto-detects whether Agent Teams are available and routes accordingly.**
+
+At startup, before any other work:
+
+1. Check Claude Code version: `claude --version`. Need ≥ 2.1.32.
+2. Check the experimental flag: `echo $CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS`. Need `1`.
+3. **Decision:**
+   - Both satisfied → **route to `orchestrator-team` skill** (real-time review, peer messaging, shared task list).
+   - Either missing → **continue in sub-agent mode** (this skill, isolated agents, sequential reporting).
+
+**What the user sees:**
+- Teams available: "Team mode enabled — invoking orchestrator-team. <details of what changed>."
+- Teams unavailable: "Team mode unavailable (reason: version <X | flag not set>). Falling back to sub-agent orchestrator." Continue normally.
+
+**How to enable teams:**
+If you want to use team mode, add to your `~/.claude/settings.json`:
+```json
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}
+```
+
+Then upgrade Claude Code to 2.1.32+ (if needed) and re-invoke.
+
+**Why not force it in project settings?**
+Agent Teams are experimental and not available on GitHub Copilot (which many contributors may use).
+Enabling the flag globally would hide platform incompatibilities. This auto-detection lets everyone
+invoke `/orchestrator #N` and get the best available mode for their setup.
 
 ---
 
@@ -348,6 +382,35 @@ fields — prose is for human readability only.
 ---
 
 ## Pipeline
+
+### Step 0 — Detect execution environment *(always)*
+
+Before any other work, check whether Agent Teams are available. This determines which
+orchestrator skill runs the pipeline.
+
+```bash
+# Check 1: Claude Code version >= 2.1.32
+claude --version 2>/dev/null | grep -qE "2\.[2-9]|[3-9]\." && version_ok=true || version_ok=false
+
+# Check 2: CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+[ "$CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS" = "1" ] && flag_ok=true || flag_ok=false
+```
+
+**Routing decision:**
+
+- **Both checks pass** → **Invoke `orchestrator-team` skill** immediately with the same issue input.
+  Log a ROUTING DECISION: "Team mode enabled — routing to orchestrator-team skill. This run
+  uses real-time peer review, shared task list, and direct teammate messaging." Stop this skill;
+  the team variant takes over.
+
+- **Either check fails** → **Continue in sub-agent mode** (this skill). Log a ROUTING DECISION:
+  "Team mode unavailable (reason: <Claude Code version X is < 2.1.32 | CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS not set>).
+  Falling back to sub-agent orchestrator. To enable teams: upgrade to v2.1.32+ and set
+  CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1 in ~/.claude/settings.json."
+
+Proceed to Step 1 only if you stay in sub-agent mode.
+
+---
 
 ### Step 1 — Issue read *(always)*
 
