@@ -88,6 +88,11 @@ no JS/CSS/Twig files were modified. This includes: calls to `rocket_notice_html(
 the browser. An admin notice is a browser-visible UI change regardless of which file type
 implements it.
 
+**EXPANDED triggers — use as a backstop if code analysis is unclear:**
+If the issue title, PR body, or acceptance criteria mention any of these keywords, Strategy B is **mandatory** even if the code diff doesn't show obvious render calls: `display`, `visual`, `UI`, `admin`, `settings`, `notice`, `button`, `toggle`, `checkbox`, `field`, `page loads`, `renders`, `appears`, `shows`, `user sees`.
+
+**Decision rule:** Ask yourself: "Would a user see something visually different after this change?" If yes, Strategy B is mandatory.
+
 Optional (but preferred) for other PHP-only changes that have a visible admin UI surface.
 
 **Never skip Strategy B citing "CI-only environment."** This is a local environment, not a
@@ -140,7 +145,11 @@ This is the weakest strategy for UI changes — prefer A or B when possible. For
 
 ---
 
-### Step 3 — Execute
+### Step 3 — Execute (with safety check)
+
+Before running strategies, **sanity check your selection:**
+- Did you select Strategy B? If the issue mentions visual/UI keywords or the PR touches frontend files, this should be true.
+- If you did NOT select Strategy B but the PR clearly involves UI changes (issue title says "display", "add button", "visual", etc.), **pause and re-select Strategy B**.
 
 Run each selected strategy. For every acceptance criterion:
 - State which strategy you used
