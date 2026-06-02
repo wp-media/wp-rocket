@@ -29,6 +29,9 @@ Accept any of the following as a starting point:
 - Raw input (prose, Slack thread, paste) — in this case invoke the `ticket-writer` agent
   first to formalize the issue
 - `base_branch` — defaults to `origin/develop`
+- `--sequential` — optional flag to force sequential execution of all parallel agent groups
+  (implementation agents and quality gates). Use when running on platforms that don't support
+  parallel Agent spawning (e.g., GitHub Copilot). See "Execution mode" below.
 
 At startup, read `AGENTS.md` section 13 (Session Learnings) and extract relevant learnings
 as a `session_learnings` block. Pass this block in the dispatch input to every agent you
@@ -38,6 +41,27 @@ spawn. This is the single point of injection — agents do not need to read the 
 Identify and record `CURRENT_MODEL` — the model name running in this conversation (e.g.
 `Claude Haiku 4.5`). Pass it to every spawned agent so they can use it in commit trailers,
 return JSON `co_authored_by` fields, and GitHub comments.
+
+---
+
+## Execution mode
+
+The orchestrator supports two execution modes:
+
+**Parallel (default):** Implementation agents run simultaneously when scopes are disjoint.
+Quality gates (DOD L2, Lead Review, QA) run in parallel. Reduces total cycle time by ~40–50%.
+Supported on Claude Code.
+
+**Sequential (fallback):** All agents run one-at-a-time. Scopes no longer dictate parallelism —
+git worktrees are not created. Quality gates run sequentially: DOD L2 → Lead Review → QA.
+**Use `--sequential` flag when:**
+- Running on GitHub Copilot (does not support parallel Agent spawning)
+- Running on other platforms without parallel support
+- Debugging or troubleshooting multi-agent flows
+- User explicitly requests it
+
+Sequential mode is slower but produces the same quality outputs. All routing tables and escalation
+logic remain identical — only timing and resource usage change.
 
 ---
 
@@ -492,10 +516,11 @@ localizations), assign it to the domain owning the majority of changes; note the
 file in `blocked_reason` for the other task so it doesn't touch it.
 
 **Parallel eligibility:** scopes are disjoint when no single file path appears in both
-`impl-backend.file_scope` and `impl-frontend.file_scope`.
+`impl-backend.file_scope` and `impl-frontend.file_scope`. If `--sequential` flag was provided,
+treat parallel eligibility as `NO` (skip git worktree creation, force sequential execution).
 
 Log a ROUTING DECISION event: "Task graph initialized — N backend files, M frontend files,
-parallel: YES | NO" (with explicit reason if NO: overlapping files).
+execution: parallel | sequential (reason: --sequential flag | overlapping files | single domain)".
 
 ---
 
@@ -505,8 +530,17 @@ Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (lay
 inline before committing, then commits atomically.
 
 Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
-`started_at`. If scopes are disjoint, create git worktrees:
+`started_at`.
 
+**Execution mode decision:**
+- If `execution_mode == "parallel"` AND scopes are disjoint → use **parallel path (05a/b-PAR)**
+- Otherwise → use **sequential path (05a/b-SEQ)**
+
+---
+
+**05a/b-PAR — Parallel execution** (scopes disjoint AND execution_mode == "parallel"):
+
+Create git worktrees for isolation:
 ```bash
 git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/backend <branch>
 git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <branch>
@@ -514,7 +548,6 @@ git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <
 
 Update each task's `worktree` field in `tasks.json`.
 
-**05a/b — Parallel** (scopes disjoint):
 > Spawn `backend-agent` and `frontend-agent` simultaneously.
 > Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
 > (including `file_scope` and `worktree` path).
@@ -529,9 +562,16 @@ Update each task's `worktree` field in `tasks.json`.
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
 
-**05a/b — Sequential fallback** (scopes overlap):
+**05a/b-SEQ — Sequential fallback** (scopes overlap OR execution_mode == "sequential"):
+
+Do NOT create git worktrees. All agents work on the same branch.
+
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
+> When backend completes, orchestrator reads `contracts/backend-api.json` if it exists.
+> Frontend reads it opportunistically.
+>
+> Both agents commit atomically to the same branch. Commits are ordered: backend first, then frontend.
 
 **Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
 `files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
@@ -558,26 +598,39 @@ Update the decisions strip Pull request field with the PR URL.
 
 ---
 
-### Steps 7–9 — Parallel quality gates
+### Steps 7–9 — Quality gates (parallel or sequential)
 
-After the PR is created (Step 6), GitHub Actions CI starts automatically. Spawn three
-quality gates simultaneously — do not wait for one before starting another:
+After the PR is created (Step 6), GitHub Actions CI starts automatically. Quality gates execute
+in the configured mode:
 
+**Parallel mode** (default):
 ```
 DOD L2       ──────────────────┐
 Lead Review  ─────────────────┤  all in parallel
 QA           ──────────────────┘
 ```
 
-CI is monitored by DOD L2 Check 5
+**Sequential mode** (--sequential flag):
+```
+DOD L2       ────┐
+               └──> Lead Review ────┐
+                                  └──> QA
+```
 
-**Spawning:**
-- **DOD L2** — invoke the `dod` skill with `layer: "2"` in your context. DOD L2 polls
-  `gh pr checks` and extracts failure excerpts; it fully replaces the former ci-agent.
-- **Lead Review** — spawn `lead-reviewer` (skip if `effort IN [XS, S]` AND `risk_level == LOW`).
-- **QA** — spawn `qa-engineer` (skip only for purely internal refactors). If `domains` is
-  `frontend` or `both`, **or** if `ui_visible: true` (PHP renders visible admin output) —
-  explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
+CI is monitored by DOD L2 Check 5 in both modes.
+
+**Spawning logic:**
+
+Determine gate order:
+- **Parallel** (if execution_mode == "parallel"): spawn all three simultaneously
+- **Sequential** (if execution_mode == "sequential"): spawn DOD L2 → wait for completion → spawn Lead Review → wait for completion → spawn QA
+
+Regardless of mode, **skip conditions apply identically:**
+- **DOD L2** — always invoke the `dod` skill with `layer: "2"` in your context.
+- **Lead Review** — skip if `effort IN [XS, S]` AND `risk_level == LOW`.
+- **QA** — skip only for purely internal refactors. If `domains` is `frontend` or `both`, **or**
+  if `ui_visible: true` (PHP renders visible admin output) — explicitly instruct the qa-engineer
+  that Strategy B is the **primary** strategy.
 
 **Inputs for each:**
 - DOD L2: branch name, base branch, PR URL
@@ -596,11 +649,11 @@ Route on `dod_l2.overall`:
 
 | Result | Loop count | Action |
 |---|---|---|
-| `PASS` | any | No action — parallel gates continue. |
-| `WARN` | any | No action — parallel gates continue. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
-| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `PASS` | any | No action — proceed to next gate (Lead Review, or QA if Lead Review skipped). Log GATE event. |
+| `WARN` | any | No action — proceed to next gate. Log GATE event `data-status="warn"`. In high-oversight mode, surface for confirmation. |
+| `FAIL` (CI) | `dod_loop < 2` | Diagnose the CI failure from `blockers[*].error_excerpt`. Re-invoke the relevant implementation agent with the suggested fix. Re-push. Increment `dod_loop`. Re-run quality gates (parallel or sequential per execution_mode). Log ROUTING DECISION. |
 | `FAIL` (CI) | `dod_loop >= 2` | Escalate with the exact error excerpt and suggested fix. |
-| `FAIL` (code) | `dod_loop < 1` | **Abort any in-flight Lead Review and QA.** Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. Re-run DOD L2 + Lead Review + QA in parallel. Log ROUTING DECISION. |
+| `FAIL` (code) | `dod_loop < 1` | Increment `dod_loop`. Re-invoke the relevant implementation agent with specific blockers, re-push. **If execution_mode == "parallel": abort any in-flight Lead Review and QA.** Re-run quality gates. Log ROUTING DECISION. **If execution_mode == "sequential": skip to Step 10 (escalation) — Lead Review and QA will not run since the code is blocked.** |
 | `FAIL` (code) | `dod_loop >= 1` | Escalate to user with exact errors. |
 
 Log GATE event.
@@ -613,11 +666,11 @@ Route on highest `criticality` in `blockers`:
 
 | Criticality | Loop count | Action |
 |---|---|---|
-| No blockers | any | No action — parallel gates continue. Log AGENT event. |
-| `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
-| `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review in parallel. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward. Log ROUTING DECISION. |
+| No blockers | any | No action — proceed to next gate (QA, or finalize if QA skipped). Log AGENT event. |
+| `CRITICAL` | any | Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). **If execution_mode == "parallel": abort any in-flight QA.** Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. **If execution_mode == "sequential": skip QA (will not run since code is blocked).** |
+| `HIGH` / `MEDIUM` | `review_loop < 1` | Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward (if available) or skip QA. **If execution_mode == "parallel": abort any in-flight QA before re-invoking.** Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
-| `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
+| `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Proceed to next gate or finalize. Log PARALLEL event. |
 
 **NTH dispatch:** `nice_to_haves` items → `ticket-writer` in parallel (non-blocking). Max 3
 total lead-reviewer invocations.
