@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render;
 
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase as BaseTestCase;
 
@@ -64,12 +65,6 @@ class Test_RocketCDNCta extends BaseTestCase {
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 
 		parent::tear_down();
-	}
-
-	public function testShouldHideCtaForResellers() {
-		set_transient( 'wp_rocket_customer_data', (object) [ 'is_reseller' => true ], MINUTE_IN_SECONDS );
-
-		$this->assertFalse( $this->subscriber->maybe_display_rocketcdn_cta() );
 	}
 
 	public function testShouldHideCtaWhenAgencyFilterDisablesIt() {

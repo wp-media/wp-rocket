@@ -120,20 +120,22 @@
 		}
 
 		// Display the correct prices on page based on billing cycle toggle state.
-		inputToggle.addEventListener('change', function() {
-			const isYearly = this.checked;
+		if ( inputToggle ) {
+			inputToggle.addEventListener('change', function () {
+				const isYearly = this.checked;
 
-			if (isYearly) {
-				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
-				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-			} else {
-				Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
-				Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
-			}
+				if (isYearly) {
+					Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+					Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+				} else {
+					Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+					Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+				}
 
-			// Update the button URL with the correct is_monthly parameter.
-			updateButtonUrlBillingCycle(isYearly);
-		});
+				// Update the button URL with the correct is_monthly parameter.
+				updateButtonUrlBillingCycle(isYearly);
+			});
+		}
 
 		// Track RocketCDN activation failed CTA click
 		const activationCTA = document.querySelector('#wpr-rocketcdn-activation-cta');
