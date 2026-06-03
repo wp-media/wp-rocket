@@ -26,8 +26,9 @@ $rocket_manual_preload   = (bool) get_rocket_option( 'manual_preload', false );
 $rocket_boxes            = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 $rocket_cdn_token        = get_option( 'rocketcdn_user_token', '' );
 $rocket_box_is_dismissed = in_array( 'rocket_activation_notice', (array) $rocket_boxes, true );
+$rocketcdn_paid_plan     = ! empty( $rocket_cdn_token ) && $data['is_rocketcdn_paid_user'];
 
-if ( ! empty( $rocket_cdn_token ) ) {
+if ( $rocketcdn_paid_plan ) {
 	$rocket_hero_title       = __( 'Congratulations!', 'rocket' );
 	$rocket_title            = __( 'WP Rocket is now activated and already working for you.', 'rocket' )
 		. '<br>'

@@ -98,7 +98,7 @@ class SubscriptionController implements LoggerAwareInterface {
 			return [];
 		}
 
-		if ( ! empty( $this->subscription ) ) {
+		if ( ! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) && ! empty( $this->subscription ) ) {
 			return $this->subscription;
 		}
 
