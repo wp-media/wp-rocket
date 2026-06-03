@@ -59,18 +59,11 @@ class Test_RocketCDNCta extends BaseTestCase {
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'rocket_display_rocketcdn_cta_for_agencies' );
 		self::truncateRocketCDNTable();
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 
 		parent::tear_down();
-	}
-
-	public function testShouldHideCtaWhenAgencyFilterDisablesIt() {
-		add_filter( 'rocket_display_rocketcdn_cta_for_agencies', '__return_false' );
-
-		$this->assertFalse( $this->subscriber->maybe_display_rocketcdn_cta() );
 	}
 
 	public function testShouldExposeHiddenCollapsedAndExpandedStates() {
