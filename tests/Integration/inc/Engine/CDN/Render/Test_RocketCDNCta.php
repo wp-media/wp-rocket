@@ -43,7 +43,6 @@ class Test_RocketCDNCta extends BaseTestCase {
 
 		$container         = apply_filters( 'rocket_container', null );
 		$this->controller  = $container->get( 'cdn_render_controller' );
-		$this->subscriber  = $container->get( 'cdn_render_subscriber' );
 		$this->query       = $container->get( 'rocketcdn_query' );
 
 		self::truncateRocketCDNTable();
