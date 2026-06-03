@@ -68,7 +68,7 @@ class RocketCDNPaid implements DriverInterface {
 	private function matches_pattern( string $url, string $pattern ): bool {
 		return ! empty(
 			$this->find(
-				$pattern,
+				preg_quote( $pattern, '/' ),
 				$url
 			)
 		);
