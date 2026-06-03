@@ -429,19 +429,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the current number of RocketCDN free-tier pages.
-	 *
-	 * @return int
-	 */
-	private function get_page_count(): int {
-		if ( 0 !== $this->page_count ) {
-			return $this->page_count;
-		}
-
-		return (int) $this->cdn_query->get_total_count( false );
-	}
-
-	/**
 	 * Renders the CDN driver tabs.
 	 *
 	 * @since 3.22

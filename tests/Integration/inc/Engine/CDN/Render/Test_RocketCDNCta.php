@@ -22,13 +22,6 @@ class Test_RocketCDNCta extends BaseTestCase {
 	private $controller;
 
 	/**
-	 * Render subscriber instance.
-	 *
-	 * @var \WP_Rocket\Engine\CDN\Render\Subscriber
-	 */
-	private $subscriber;
-
-	/**
 	 * RocketCDN query instance.
 	 *
 	 * @var \WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN
