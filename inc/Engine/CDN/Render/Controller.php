@@ -661,7 +661,7 @@ class Controller extends Abstract_Render {
 		$transient = $this->subscription_controller->get_rocketcdn_status();
 
 		return false !== $transient
-			? ! $this->subscription_controller->has_active_subscription()
-			: ! (bool) $this->options->get( 'cdn' );
+			? ! $this->options->get( 'cdn' )
+			: ! $this->subscription_controller->has_active_subscription();
 	}
 }
