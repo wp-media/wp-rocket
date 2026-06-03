@@ -425,16 +425,7 @@ class Controller extends Abstract_Render {
 			return false;
 		}
 
-		/**
-		 * Filter to control whether to display the Rocket-CDN CTA for agencies.
-		 *
-		 * @param bool $display Whether to display the CTA.
-		 * @param int $page_count Current number of free-tier pages.
-		 *
-		 * @return bool
-		 * @since 3.22.0
-		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_display_rocketcdn_cta_for_agencies', true, $this->get_page_count() );
+		return true;
 	}
 
 	/**
