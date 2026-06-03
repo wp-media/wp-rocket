@@ -495,6 +495,10 @@ class Controller extends Abstract_Render {
 	 * @return bool True when the subscription can be used.
 	 */
 	private function has_active_valid_subscription(): bool {
+		if ( $this->subscription_controller->is_free() ) {
+			return ! $this->subscription_controller->is_license_invalid();
+		}
+
 		return $this->subscription_controller->has_active_subscription()
 			&& ! $this->subscription_controller->is_license_invalid();
 	}
