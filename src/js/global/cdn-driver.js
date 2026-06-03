@@ -63,7 +63,7 @@
 			if ( ! allPresent ) {
 				return;
 			}
-			
+
 			// Disable submit button when on cdn page and subscription loader is present.
 			e.detail.submitButton.classList.add( 'wpr-cdn-disabled' );
 		} );
