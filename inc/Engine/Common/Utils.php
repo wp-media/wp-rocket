@@ -206,4 +206,40 @@ class Utils {
 		</script>
 		<?php
 	}
+
+	/**
+	 * Clean url's cache.
+	 *
+	 * @param string $url Url to clear cache for.
+	 * @return void
+	 */
+	public static function clean_url( string $url ): void {
+		if ( self::is_home( $url ) ) {
+			rocket_clean_home();
+
+			return;
+		}
+
+		rocket_clean_files( [ $url ] );
+	}
+
+	/**
+	 * Checks if the given setting's value changed.
+	 *
+	 * @param string $setting The settings's value to check in the old and new values.
+	 * @param mixed  $old_value Old option value.
+	 * @param mixed  $value     New option value.
+	 *
+	 * @return bool
+	 */
+	public static function did_setting_change( $setting, $old_value, $value ) {
+		return (
+			isset( $old_value[ $setting ] )
+			&&
+			isset( $value[ $setting ] )
+			&&
+			// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+			$old_value[ $setting ] != $value[ $setting ]
+		);
+	}
 }
