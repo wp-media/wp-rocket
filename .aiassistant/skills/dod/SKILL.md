@@ -26,6 +26,21 @@ implementation handoff and the PR is open. Provides an unbiased second opinion. 
 
 ---
 
+## Anti-rationalization table
+
+Before running the checks, acknowledge these. Agents are good at producing plausible reasons to skip steps — this table preempts them.
+
+| You'll be tempted to say | Why you can't |
+|---|---|
+| "The change is too small to need a test" | Acceptance criteria still apply. A one-line fix to a Subscriber still needs a test on that Subscriber. |
+| "Tests pass, DOD L1 is fine" | Passing tests are evidence, not proof. L1 self-reports; L2 is the independent read. |
+| "No public API change, skipping docs" | Check for hook additions, `option_keys`, REST routes. Those count as public API. |
+| "I'll skip e2e because the environment might not boot" | Boot it. If it fails, `SKIP` is a valid status — but you must attempt it first. |
+| "The PR description section is present" | Present is not the same as filled. Thin is a WARN — name it explicitly. |
+| "I'll add tests in a follow-up ticket" | "Later" is the load-bearing word. There is no later. See Check 2. |
+
+---
+
 ## The 5 checks
 
 Run each check in order. Report **PASS**, **WARN**, or **FAIL** with specific evidence for each.
@@ -69,8 +84,8 @@ vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <F
 ```
 
 - **PASS**: All changed PHP source files have tests AND tests pass
-- **WARN**: A changed file has no corresponding test (flag it explicitly by filename)
-- **FAIL**: Tests fail or error out
+- **WARN**: A changed file has no corresponding test. When reporting this, you MUST include an explicit written statement in `evidence`: the filename, the reason a test does not exist (not "too small" or "follow-up ticket" — those are rationalizations), and whether the missing test represents a real gap. "Later" is the load-bearing word — there is no later. If the only honest reason is "I didn't write it", that is a FAIL, not a WARN.
+- **FAIL**: Tests fail or error out, OR the agent's stated reason for a missing test is "I'll do it in a follow-up"
 
 ---
 
@@ -132,6 +147,12 @@ composer run-stan        # PHPStan including the 4 wp-rocket custom rules
 composer test-unit       # full unit suite
 ```
 
+If `phpcs-changed` reports violations, auto-fix then re-check in two calls — never run phpcs/phpcbf file-by-file:
+```bash
+composer phpcs:fix       # phpcbf auto-fix on all files
+composer phpcs-changed   # confirm 0 remaining violations
+```
+
 **Layer 2 (PR exists — remote CI status):**
 
 First, read the GitHub Actions workflow files to enumerate which checks are expected:
@@ -177,16 +198,47 @@ done
 
 ---
 
+---
+
+### Check 6 — File scope compliance
+
+**Layer 1 only** (in Layer 2, file scope is not tracked — this check is skipped with status `N/A`).
+
+The orchestrator writes `file_scope` for each implementation task in `.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`. Read your task entry and extract the declared scope.
+
+List every file changed on the branch:
+```bash
+git diff <base_branch>..HEAD --name-only
+```
+
+Compare against `file_scope`. Flag any file that appears in the diff but not in `file_scope`.
+
+Exceptions that do not count as violations:
+- Auto-generated files (`*.min.js`, `*.min.css`, lock files)
+- Files in `tests/` that directly correspond to a changed source file (mirrored test files)
+- Files the orchestrator explicitly added to scope via a `blocked_reason` note
+
+If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check with status `N/A`.
+
+- **PASS**: All modified files are within declared scope (or no scope was declared)
+- **WARN**: One file outside scope was modified — name it and explain why
+- **FAIL**: Two or more files outside scope were modified without explanation
+
+A FAIL here does not block hand-off automatically, but the orchestrator must acknowledge it before proceeding. Log the out-of-scope files in the implementation result under `notes`.
+
+---
+
 ## Output format
 
 ```
 | Check | Status | Evidence |
 |-------|--------|----------|
-| 1. Manual validation | PASS | "What was tested" covers 3 concrete scenarios |
-| 2. Automated tests   | WARN | inc/Engine/Foo/Bar.php has no test file |
-| 3. Documentation     | PASS | docs/api.md updated |
-| 4. PR description    | PASS | All sections filled |
-| 5. CI                | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
+| 1. Manual validation  | PASS | "What was tested" covers 3 concrete scenarios |
+| 2. Automated tests    | WARN | inc/Engine/Foo/Bar.php has no test file |
+| 3. Documentation      | PASS | docs/api.md updated |
+| 4. PR description     | PASS | All sections filled |
+| 5. CI                 | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
+| 6. File scope         | PASS | All 4 changed files within declared scope |
 
 Overall: BLOCKED
 
@@ -214,7 +266,8 @@ Always return this JSON object in addition to the human-readable output above:
     { "name": "automated-tests", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "documentation", "status": "PASS|WARN|FAIL", "evidence": "string" },
     { "name": "pr-description", "status": "PASS|WARN|FAIL", "evidence": "string" },
-    { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" }
+    { "name": "ci", "status": "PASS|WARN|FAIL", "evidence": "string" },
+    { "name": "file-scope", "status": "PASS|WARN|FAIL|N/A", "evidence": "string" }
   ],
   "blockers": [
     {
@@ -233,6 +286,12 @@ Always return this JSON object in addition to the human-readable output above:
 **Layer 2:** `overall` can be `PASS`, `WARN`, or `FAIL`. Populate `layer1_delta` with
 any issues that were not flagged in layer 1.
 
+**Result file (L2 only):** When running Layer 2 (orchestrator gate), write the JSON result to:
+```
+.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json
+```
+This file is monitored by the orchestrator. The file MUST be written before the skill returns.
+
 ---
 
 ## wp-rocket-specific notes
@@ -240,4 +299,21 @@ any issues that were not flagged in layer 1.
 - Base branch defaults to `origin/develop`. If the issue branched off something else (e.g. `origin/feature/mcp`), the orchestrator passes the right base.
 - PHPStan must pass the four custom rules: `DiscourageApplyFilters`, `DiscourageWPOptionUsage`, `EnsureCallbackMethodsExistsInSubscribedEvents`, `NoHooksInORM`. These are part of `composer run-stan`.
 - The "public API surface" for Check 3 includes WordPress hooks and capabilities defined in the `wordpress-compliance` skill.
-- The `Co-Authored-By` trailer uses the model-versioned form: `Claude Sonnet 4.6 <noreply@anthropic.com>`. Match exactly.
+- The `Co-Authored-By` trailer uses the model-versioned form: `<MODEL> <noreply@anthropic.com>`. Match exactly.
+
+## Result file write (Layer 2 only)
+
+Before returning, if you are running Layer 2 (the orchestrator gate), you MUST write the JSON result to disk:
+
+```bash
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/dod-l2-result.json" <<'EOF'
+{
+  "overall": "PASS|WARN|FAIL",
+  "checks": [...],
+  ...
+}
+EOF
+```
+
+This file is monitored by the orchestrator. The file MUST be written before the skill returns.
