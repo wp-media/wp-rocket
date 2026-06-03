@@ -485,10 +485,8 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 		$cdn_type = 'rocketcdn';
-		// Check if cdn was enabled in previous version and default to byocdn.
+		// Check if a CNAME is saved and no RocketCDN subscription, then default to byocdn.
 		if (
-			$this->options->get( 'cdn', 0 )
-			&&
 			! $this->subscription_controller->has_active_subscription()
 			&&
 			! empty( $this->options->get( 'cdn_cnames', [] ) )
