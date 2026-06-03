@@ -146,7 +146,24 @@ bin/wp plugin uninstall <slug>
 ```
 Leave the environment in the same state it was in before the run.
 
-**6b — Remove temporary files:**
+**6b — Capture spec content before deletion:**
+
+Before removing any file, capture the full content of every spec you wrote. This content
+goes into the report so reviewers can verify what was tested — the file will be gone but
+the content lives in the PR comment.
+
+```bash
+# Collect spec content into a variable (or a temp string in your context)
+for f in .e2e-temp/*.spec.js; do
+  echo "=== $f ===" && cat "$f"
+done
+```
+
+Store this output in your context as `specs_source`. It will be embedded verbatim in the
+`specs_content` field of the return JSON and in the `### Playwright Specs` section of your
+report.
+
+**6c — Remove temporary files:**
 ```bash
 # Screenshots were temporarily committed — remove them from the branch
 git rm --cached .e2e-screenshots/*.png 2>/dev/null || true
@@ -175,6 +192,23 @@ Include a `### Screenshots` section with inline images using the SHA-based URLs:
 | Settings page loaded | ![settings](https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png) |
 ```
 
+Include a `### Playwright Specs` section with the full source of every spec you wrote,
+under a collapsible block so it doesn't dominate the comment:
+```
+### Playwright Specs
+
+<details>
+<summary>View spec source (feature-criterion.spec.js)</summary>
+
+```js
+[full spec source here]
+```
+
+</details>
+```
+
+If no spec was written (Playwright MCP path only), omit this section.
+
 End with **READY TO MERGE** or a blocker list.
 
 ## Return JSON
@@ -199,11 +233,14 @@ After the prose report, return the following JSON object to `qa-engineer`:
   "blockers": ["criterion: what failed — what to fix"],
   "environment_boot": "exit 0|exit N — last error line",
   "specs_run": true,
-  "specs_cleaned_up": true
+  "specs_cleaned_up": true,
+  "specs_content": [
+    { "filename": ".e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
+  ]
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field.
+`blockers` is an empty array when `overall == "PASS"`. `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field.
 
 ## Constraints
 

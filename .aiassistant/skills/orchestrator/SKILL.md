@@ -65,6 +65,20 @@ logic remain identical — only timing and resource usage change.
 
 ---
 
+## Mandatory pipeline gates
+
+These steps **never skip**, regardless of which model runs the orchestrator, how simple the issue appears, or how confident you feel about the implementation:
+
+| Gate | Step | Enforcement |
+|---|---|---|
+| **Grooming** | Step 2 | ALWAYS runs. No implementation without a grooming JSON. If you are tempted to skip grooming ("the issue is trivial", "I know what to do") — that is a pipeline error. STOP and invoke `grooming-agent`. |
+| **Label "Made by AI" + Assignee** | Step 7 (release-agent) | ALWAYS applied and ALWAYS verified. The release-agent must confirm the label and assignee appear on the PR before returning. |
+| **`gh pr ready <PR#>`** | Step 11 | ALWAYS executed after QA passes. Verify with `gh pr view <PR#> --json isDraft -q .isDraft` — must return `false`. If it returns `true`, run `gh pr ready` again. |
+
+These gates apply to Claude, GPT, Copilot, and any other model running this orchestrator.
+
+---
+
 ## Core principle
 
 **TICKET and GROOMING always run.** All routing decisions happen *after* GROOMING returns.
@@ -730,7 +744,14 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
    to append or replace the "Follow-up tickets" section with links to all created tickets.
    If no NTH tickets were created, write "None".
 2. Update PR body: replace "What was tested" with the full QA report
-3. `gh pr ready <PR#>` (move out of draft)
+3. Move PR out of draft — this step is **mandatory and must be verified**:
+   ```bash
+   gh pr ready <PR#>
+   # Verify — must return "false"
+   gh pr view <PR#> --json isDraft -q .isDraft
+   ```
+   If `isDraft` is still `true`, run `gh pr ready <PR#>` again and re-verify. Do not proceed
+   to Step 4 until the PR is confirmed out of draft.
 4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
 5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 

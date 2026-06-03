@@ -40,6 +40,33 @@ Flag anything in **Out of Scope** that was implemented anyway.
 
 ---
 
+### Step 2.5 — Cross-file impact analysis
+
+This is the step most likely to catch what a diff-only review misses. For every function,
+option key, hook, filter, or constant that was **added, modified, or removed** in the diff:
+
+1. **Search for all usages across the codebase** (not just the diff):
+   ```bash
+   grep -r "<symbol>" inc/ src/ tests/ --include="*.php" -l
+   ```
+   Repeat for every significant symbol in the diff.
+
+2. **For each consumer file that is NOT in the diff**, read the relevant section and ask:
+   - Does this file read state that the diff changes? Could the change break this consumer?
+   - Does the diff change a hook's name, signature, timing, or return value shape? Could that silently break third-party plugins or other WP Rocket subscribers?
+   - Does the diff remove or rename something this file depends on?
+
+3. **Check for missing sibling updates**:
+   - Option key added/changed → is there a matching migration, default value, or sanitization callback?
+   - Hook added → is it registered with the right priority and documented?
+   - Behavior changed → is there related UI state (notice flags, transients, cache keys, option flags like `_notice_displayed`) that also needs to update?
+   - Import/export functions changed → do all read-paths and all write-paths stay consistent?
+
+Flag every cross-file impact as a finding. Classify it with the same criticality tiers as Step 3.
+These findings are the class of issue most likely missed in a diff-only review.
+
+---
+
 ### Step 3 — Review against project standards
 
 Check every changed file against:

@@ -101,7 +101,15 @@ left behind.
 - Title line: `Closes #<N>: <short descriptive title>`. **Never** use conventional-commit
   prefix format (`fix(xxx):`, `feat(xxx):`, etc.) in the PR title — that format is for
   git commits only.
-- "Description": one or two sentences of user-or-developer impact, ending with `Fixes #<N>`.
+- **Closing keyword line** (mandatory — this is what GitHub uses to link the PR to the issue):
+  the PR body must contain a standalone line `Closes #<N>` **not** buried in prose. Place it
+  immediately after the AI-generated notice:
+  ```
+  > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+
+  Closes #<N>
+  ```
+- "Description": one or two sentences of user-or-developer impact.
 - "What was done": summarize the implementation from the spec.
 - "How to test": derive from the acceptance criteria.
 - "Type of change": select exactly one checkbox matching the change type.
@@ -128,10 +136,20 @@ gh pr create \
 ```
 
 Then assign and label:
+
 ```bash
+# Ensure the label exists — create it if missing (never skip silently)
+gh label list --repo wp-media/wp-rocket --json name -q '.[].name' | grep -q "^Made by AI$" \
+  || gh label create "Made by AI" --repo wp-media/wp-rocket --color "0075ca" --description "Created or assisted by an AI agent"
+
 gh pr edit <PR_number> --add-assignee @me --add-label "Made by AI"
 ```
-(Skip the label silently if it does not exist in the repo.)
+
+Verify both were applied:
+```bash
+gh pr view <PR_number> --json assignees,labels -q '{assignees: [.assignees[].login], labels: [.labels[].name]}'
+```
+If `labels` does not include `"Made by AI"` or `assignees` is empty, retry the `gh pr edit` command once. If it still fails, log the error in `notes` — do not proceed silently.
 
 Verify the AI-generated notice is the first line of the live PR body:
 ```bash
