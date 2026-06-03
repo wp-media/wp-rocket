@@ -9,7 +9,7 @@ return [
 	],
 	'testShouldReturnPaidDriverForRocketCDNType'     => [
 		'config'   => [
-			'active_driver' => 'rocketcdn',
+			'active_driver' => 'rocketcdn_paid',
 		],
 		'expected' => 'cdn_driver_paid',
 	],

@@ -48,7 +48,7 @@ class DriverFactory {
 			case Context::ROCKETCDN_FREE_TYPE:
 				return $this->container->get( 'cdn_driver_free' );
 
-			case Context::ROCKETCDN_TYPE:
+			case Context::ROCKETCDN_PAID_TYPE:
 				return $this->container->get( 'cdn_driver_paid' );
 
 			case Context::BYOCDN_TYPE:
