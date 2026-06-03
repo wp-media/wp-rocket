@@ -6,3 +6,9 @@ vfs:/
 /tests/Integration/.phpunit.result.cache
 /tests/Unit/.phpunit.result.cache
 package-lock.json
+
+# Local issue sync cache
+/.TemporaryItems
+
+# Claude Code user-local settings
+.claude/settings.local.json
