@@ -63,6 +63,18 @@ function rocket_css_lazyload_launch() {
 
 	lazyload();
 
+	// Throttling function that prevents the MutationObserver from triggering
+	// our lazyload function too many times. Adds a 50ms delay between two calls.
+	function throttle(fn) {
+		let waiting;
+		return (...args) => {
+			if (waiting) return;
+			waiting = 1;
+			fn(...args);
+			setTimeout(() => waiting = 0, 50);
+		};
+	}
+
 	function observe_DOM( obj, callback ) {
 		if( !obj || obj.nodeType !== 1 ) return;
 
@@ -76,7 +88,7 @@ function rocket_css_lazyload_launch() {
 		rocket_lzl_mo.observe( obj, { attributes: true, childList:true, subtree:true });
 	}
 
-	observe_DOM(document.body, lazyload);
+	observe_DOM(document.body, throttle(lazyload));
 }
 
 rocket_css_lazyload_launch();
