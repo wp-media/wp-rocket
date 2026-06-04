@@ -91,6 +91,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			return;
 		}
 
+		add_filter( 'pre_get_rocket_option_cdn', function( $value ) {
+			return $value;
+		}, 99 );
+
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 
