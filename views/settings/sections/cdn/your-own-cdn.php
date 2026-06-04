@@ -35,7 +35,9 @@ defined( 'ABSPATH' ) || exit;
 	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 	?>
 
+	<?php if ( $data['status_indicator']['is_active'] ) : ?>
 	<div class="wpr-cdn-built-in__separator"></div>
+	<?php endif; ?>
 
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 	<div class="wpr-fieldsContainer-description">
