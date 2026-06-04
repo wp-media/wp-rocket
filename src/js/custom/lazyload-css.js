@@ -3,9 +3,8 @@ function rocket_css_lazyload_launch() {
 	const usable_pairs = typeof rocket_pairs === 'undefined' ? [] : rocket_pairs;
 	const excluded_pairs = typeof rocket_excluded_pairs === 'undefined' ? [] : rocket_excluded_pairs;
 
-	excluded_pairs.map(pair => {
-		const selector = pair.selector;
-		const nodes = document.querySelectorAll(selector);
+	excluded_pairs.forEach(pair => {
+		const nodes = document.querySelectorAll(pair.selector);
 		nodes.forEach(el => {
 			el.setAttribute(`data-rocket-lazy-bg-${pair.hash}`, 'excluded');
 		});
@@ -21,7 +20,7 @@ function rocket_css_lazyload_launch() {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
 				const pairs = usable_pairs.filter(s => entry.target.matches(s.selector));
-				pairs.map(pair => {
+				pairs.forEach(pair => {
 					if (pair) {
 						var new_style_element = document.createElement('style');
 						new_style_element.textContent = pair.style;
@@ -46,9 +45,10 @@ function rocket_css_lazyload_launch() {
 
 				const elements = document.querySelectorAll(pair.selector);
 				elements.forEach(el => {
-					if(	el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'loaded' ||
-						el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'excluded')
-					{
+
+					const status = el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`);
+
+					if(	status === 'loaded' || status === 'excluded' ) {
 						return;
 					}
 					observer.observe(el);
