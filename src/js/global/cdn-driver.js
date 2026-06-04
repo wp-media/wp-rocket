@@ -75,7 +75,7 @@
 	 * Disables the built-in CDN section, purge and exclude sections,
 	 * and swaps the status indicator dot for a loader icon.
 	 */
-	function setSubscriptionLoadingState( statusIndicatorHtml ) {
+	function setSubscriptionLoadingState() {
 		const builtIn = document.querySelector( '.wpr-cdn-built-in' );
 
 		if ( builtIn ) {
@@ -99,9 +99,6 @@
 				textarea.disabled = true;
 			}
 		} );
-
-		// Update status indicator to show loading state.
-		updateStatusIndicatorComponent( statusIndicatorHtml );
 
 		const submitButton = document.querySelector( '#wpr-options-submit' );
 		if ( submitButton ) {
@@ -309,8 +306,11 @@
 
 				// Set subscription loading state when first page is added.
 				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState( response.status_indicator_html );
+					setSubscriptionLoadingState();
 				}
+
+				// Update status indicator component.
+				updateStatusIndicatorComponent( response.status_indicator_html );
 			} ).catch( () => {
 				addHomeButton.disabled = false;
 			} );
@@ -388,8 +388,11 @@
 
 				// Set subscription loading state when first page is added.
 				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState( response.status_indicator_html );
+					setSubscriptionLoadingState();
 				}
+
+				// Update status indicator component.
+				updateStatusIndicatorComponent( response.status_indicator_html );
 			} ).catch( () => {
 				input.disabled = false;
 				button.disabled = false;
