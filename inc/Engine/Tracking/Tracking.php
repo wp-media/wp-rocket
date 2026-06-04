@@ -378,4 +378,20 @@ class Tracking extends Abstract_Render {
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}
+
+	/**
+	 * Track when the "Add Homepage" button is clicked for RocketCDN.
+	 *
+	 * @param string $source Either 'add_homepage_button' (CDN settings) or 'admin_notices'.
+	 * @return void
+	 */
+	public function track_add_homepage( string $source ): void {
+		$this->track_event(
+			'RocketCDN Homepage Button',
+			[
+				'context' => 'wp_plugin',
+				'source' => $source,
+			]
+		);
+	}
 }

@@ -41,6 +41,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
+			'rocket_rocketcdn_add_homepage'        => [ 'track_add_homepage', 10, 1 ],
 		];
 	}
 
@@ -153,5 +154,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_event( string $event_name, array $event_data = [] ): void {
 		$this->tracking->track_event( $event_name, $event_data );
+	}
+
+	/**
+	 * Track RocketCDN add homepage button click.
+	 *
+	 * @param string $source Either 'add_homepage_button' or 'admin_notices'.
+	 * @return void
+	 */
+	public function track_add_homepage( string $source ): void {
+		$this->tracking->track_add_homepage( $source );
 	}
 }

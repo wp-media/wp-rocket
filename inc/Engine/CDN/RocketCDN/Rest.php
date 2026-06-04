@@ -385,6 +385,13 @@ class Rest extends WP_REST_Controller {
 		$request = new WP_REST_Request( 'POST' );
 		$request->set_param( 'url', untrailingslashit( home_url() ) );
 
+		/**
+		 * Fires when the RocketCDN "Add Homepage" button is clicked from the CDN settings page.
+		 *
+		 * @param string $source The source of the click.
+		 */
+		do_action( 'rocket_rocketcdn_add_homepage', 'add_homepage_button' );
+
 		return $this->add_page( $request );
 	}
 

@@ -103,6 +103,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
+			'admin_post_rocket_ignore'                => [ 'track_notice_homepage_cta_click', 5 ],
 		];
 	}
 
@@ -532,5 +533,23 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		];
 
 		Utils::display_update_notice( $notice_info, true );
+	}
+
+	/**
+	 * Tracks the "Start with my homepage" CTA click from the RocketCDN promo admin notice.
+	 *
+	 * Fires before rocket_dismiss_boxes() redirects, so we can track before the exit.
+	 *
+	 * @return void
+	 */
+	public function track_notice_homepage_cta_click(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce is verified later by rocket_dismiss_boxes().
+		$box = isset( $_GET['box'] ) ? sanitize_key( wp_unslash( $_GET['box'] ) ) : '';
+
+		if ( 'rocketcdn_install_notice' !== $box ) {
+			return;
+		}
+
+		do_action( 'rocket_rocketcdn_add_homepage', 'admin_notices' );
 	}
 }
