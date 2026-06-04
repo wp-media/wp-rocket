@@ -91,9 +91,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			return;
 		}
 
-		add_filter( 'pre_get_rocket_option_cdn', function( $value ) {
+		$bypass_filter = function( $value ) {
 			return $value;
-		}, 99 );
+		};
+
+		add_filter( 'pre_get_rocket_option_cdn', $bypass_filter, 99 );
 
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
@@ -112,6 +114,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
 		$this->set_transient();
+
+		remove_filter( 'pre_get_rocket_option_cdn', $bypass_filter, 99 );
 	}
 
 	private function rocket_clean_domain( $before_updating = false ) {
