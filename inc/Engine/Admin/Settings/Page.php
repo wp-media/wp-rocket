@@ -1548,8 +1548,9 @@ class Page extends Abstract_Render {
 				'class'            => [ 'your-own-cdn' ],
 				'status_indicator' => [
 					// Use of the WP get_option function is intentional here to avoid filtered values
-					// being applied using pre_get_rocket_option, which could lead to incorrect status
-					// display in the settings when the CDN is enabled but the CNAMEs are not set.
+					// being applied using pre_get_rocket_option when RocketCDN Subscription is running,
+					// which could lead to incorrect status display in the settings
+					// when the CDN is enabled but the CNAMEs are not set.
 					'is_active'          => ! empty( get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) )['cdn_cnames'] ),
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
