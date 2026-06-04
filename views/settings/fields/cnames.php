@@ -65,7 +65,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 				</div>
 			<?php
 		endforeach;
-	endif; 
+	endif;
 	?>
 	</div>
 	<div id="wpr-cname-model" class="wpr-isHidden">
