@@ -66,11 +66,14 @@ function rocket_css_lazyload_launch() {
 	function observe_DOM( obj, callback ) {
 		if( !obj || obj.nodeType !== 1 ) return;
 
-		// define a new observer
-		const mutationObserver = new MutationObserver(callback);
+		// Create a new observer or recycle existing one
+		if (window.rocket_lzl_mo) {
+			window.rocket_lzl_mo.disconnect();
+		} else {
+			window.rocket_lzl_mo = new MutationObserver(callback);
+		}
 
-		// have the observer observe for changes in children
-		mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true });
+		rocket_lzl_mo.observe( obj, { attributes: true, childList:true, subtree:true });
 	}
 
 	observe_DOM(document.body, lazyload);
