@@ -1547,7 +1547,9 @@ class Page extends Abstract_Render {
 				'page'             => 'page_cdn',
 				'class'            => [ 'your-own-cdn' ],
 				'status_indicator' => [
-					'is_active'          => true,
+					// Read raw options to avoid values filtered through pre_get_rocket_option_* when RocketCDN is active.
+					// This prevents incorrect BYOCDN status display when CDN is enabled but no CNAMEs are configured.
+					'is_active'          => ! empty( ( (array) $this->options->get_options() )['cdn_cnames'] ?? [] ),
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 					'hide_pause_btn'     => true,
