@@ -20,20 +20,22 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetByocdnStatusIndicatorData extends TestCase {
 
 	private $context;
+	private $options;
 	private $controller;
 
 	public function set_up(): void {
 		parent::set_up();
 
-			$this->stubTranslationFunctions();
+		$this->stubTranslationFunctions();
 
 		$this->context = Mockery::mock( Context::class );
+		$this->options = Mockery::mock( Options_Data::class );
 
 		$this->controller = new Controller(
 			Mockery::mock( Beacon::class ),
 			'',
 			$this->context,
-			Mockery::mock( Options_Data::class ),
+			$this->options,
 			$this->createMock( RocketCDNQuery::class ),
 			Mockery::mock( SubscriptionController::class ),
 			Mockery::mock( User::class )
@@ -46,6 +48,9 @@ class Test_GetByocdnStatusIndicatorData extends TestCase {
 	public function testShouldReturnExpectedData( array $config, array $expected ): void {
 		$this->context->shouldReceive( 'is_byocdn_paused' )
 			->andReturn( $config['is_byocdn_paused'] );
+
+		$this->options->shouldReceive( 'get_options' )
+			->andReturn( $config['options'] );
 
 		$result = $this->controller->get_byocdn_status_indicator_data();
 
