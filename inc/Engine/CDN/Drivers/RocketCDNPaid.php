@@ -64,6 +64,10 @@ class RocketCDNPaid implements DriverInterface {
 	 * @return bool
 	 */
 	private function matches_pattern( string $url, string $pattern ): bool {
+		if ( empty( $pattern ) ) {
+			return false; // Empty pattern should not match anything.
+		}
+
 		return ! empty(
 			$this->find(
 				preg_quote( $pattern, '/' ),
@@ -102,6 +106,9 @@ class RocketCDNPaid implements DriverInterface {
 	 * @return string Pattern with non-Latin chars URL-encoded.
 	 */
 	private function encode_non_latin_chars( string $pattern ): string {
+		if ( empty( $pattern ) ) {
+			return '';
+		}
 		// Use rawurlencode to match browser URL encoding.
 		// But preserve the path structure (don't encode /).
 		$parts         = explode( '/', $pattern );
