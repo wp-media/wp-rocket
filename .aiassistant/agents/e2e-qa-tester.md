@@ -15,20 +15,18 @@ WP Rocket's permanent E2E suite lives in an **external repository**. Any Playwri
 - **Boot the env:** `bash bin/dev-up.sh` (idempotent — safe to run if already up)
 - **Screenshots root:** `.e2e-screenshots/` (gitignored locally; create if missing)
 - **Temp spec root:** `.e2e-temp/` (gitignored locally; never committed)
-- **Screenshot publishing:** After all screenshots for a PR are taken, commit them temporarily to the PR branch to get permanent GitHub-hosted URLs:
+- **Screenshot publishing:** After all screenshots for a PR are taken, upload them to a **public GitHub Gist** to get permanent, publicly accessible URLs. No commits to the PR branch.
   ```bash
-  git add -f .e2e-screenshots/
-  git commit -m "chore(qa): add QA screenshots [skip ci]"
-  git push
-  SHA=$(git rev-parse HEAD)
-  # Permanent URL pattern (works forever, even after the file is removed):
-  # https://raw.githubusercontent.com/wp-media/wp-rocket/$SHA/.e2e-screenshots/<filename>
+  # Upload all screenshots in one shot — returns the gist HTML URL
+  GIST_URL=$(gh gist create --public .e2e-screenshots/*.png --json url -q .url)
+  GIST_ID="${GIST_URL##*/}"
+  GIST_USER=$(gh api user --jq .login)
 
-  # Remove screenshots from the branch in a follow-up commit
-  git rm --cached .e2e-screenshots/*.png
-  git commit -m "chore(qa): remove QA screenshots [skip ci]"
-  git push
+  # Raw (direct-download) URL per file — always publicly accessible:
+  # https://gist.githubusercontent.com/$GIST_USER/$GIST_ID/raw/<filename>
   ```
+  Gists are always public regardless of repository visibility, so raw URLs never return 404 in PR comments.
+  Capture `GIST_USER` and `GIST_ID` into your context after uploading — you will need them to construct per-file URLs for the `### Screenshots` table and the return JSON.
 
 ## Known wp-rocket admin flows
 
@@ -89,7 +87,7 @@ Walk through the PR's "How to test" steps one by one in the browser. At each mea
 - Capture console errors and failed network requests.
 - Record actual vs. expected.
 
-After completing all manual steps, publish the screenshots using the **Screenshot publishing** steps in the Environment section above. Use the resulting SHA-based URLs in the report.
+After completing all manual steps, publish the screenshots using the **Screenshot publishing** steps in the Environment section above. Use the resulting gist raw URLs in the report.
 
 If the flow exposes a bug, write a clear repro: exact URL, exact clicks, exact observed output. Do not attempt a fix — that belongs to a different agent.
 
@@ -146,14 +144,11 @@ Leave the environment in the same state it was in before the run.
 
 **6b — Remove temporary files:**
 ```bash
-# Screenshots were temporarily committed — remove them from the branch
-git rm --cached .e2e-screenshots/*.png 2>/dev/null || true
-git commit -m "chore(qa): remove QA screenshots [skip ci]" 2>/dev/null || true
-git push 2>/dev/null || true
+# Screenshots were uploaded to a gist — safe to delete locally (gist is permanent)
+rm -rf .e2e-screenshots/
 
 # Spec files were never committed — just delete them locally
 rm -rf .e2e-temp/
-rm -rf .e2e-screenshots/
 ```
 
 ### Step 7 — Report back to qa-engineer
@@ -165,12 +160,12 @@ Follow the `qa-engineer` output format. For every acceptance criterion:
 - Evidence (SHA-based screenshot URL, console error excerpt)
 - PASS / FAIL / PARTIAL
 
-Include a `### Screenshots` section with inline images using the SHA-based URLs:
+Include a `### Screenshots` section with inline images using the gist raw URLs:
 ```
 ### Screenshots
 | Step | Screenshot |
 |------|-----------|
-| Settings page loaded | ![settings](https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png) |
+| Settings page loaded | ![settings](https://gist.githubusercontent.com/USER/GIST_ID/raw/filename.png) |
 ```
 
 End with **READY TO MERGE** or a blocker list.
@@ -188,11 +183,11 @@ After the prose report, return the following JSON object to `qa-engineer`:
       "strategy": "Browser/Playwright MCP|Spec run|Analysis fallback",
       "result": "PASS|FAIL|PARTIAL",
       "evidence": "URL navigated, element interacted with, observed outcome",
-      "screenshot_url": "https://raw.githubusercontent.com/wp-media/wp-rocket/SHA/.e2e-screenshots/filename.png or empty string"
+      "screenshot_url": "https://gist.githubusercontent.com/USER/GIST_ID/raw/filename.png or empty string"
     }
   ],
   "screenshots": [
-    { "step": "description", "url": "SHA-based URL" }
+    { "step": "description", "url": "https://gist.githubusercontent.com/USER/GIST_ID/raw/filename.png" }
   ],
   "blockers": ["criterion: what failed — what to fix"],
   "environment_boot": "exit 0|exit N — last error line",
@@ -205,6 +200,6 @@ After the prose report, return the following JSON object to `qa-engineer`:
 
 ## Constraints
 
-- ✅ **Always do:** read the PR's "How to test" before touching the browser; take screenshots at each checkpoint; publish screenshots via commit-SHA before deleting them; clean up all temp files; uninstall any plugins you installed in Step 2b
+- ✅ **Always do:** read the PR's "How to test" before touching the browser; take screenshots at each checkpoint; publish screenshots via `gh gist create --public`; clean up all temp files; uninstall any plugins you installed in Step 2b
 - ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
-- 🚫 **Never do:** commit `.e2e-temp/` spec files to the repository (not even temporarily); modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave `.e2e-screenshots/` or `.e2e-temp/` on the branch after the run; install plugins not explicitly required by the issue
+- 🚫 **Never do:** commit `.e2e-temp/` spec files to the repository (not even temporarily); commit screenshot files to the PR branch — use `gh gist create --public` instead; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave `.e2e-screenshots/` or `.e2e-temp/` on the branch after the run; install plugins not explicitly required by the issue
