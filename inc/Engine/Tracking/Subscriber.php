@@ -41,7 +41,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
-			'rocket_rocketcdn_add_homepage'        => [ 'track_add_homepage', 10, 1 ],
+			'rocket_rocketcdn_add_homepage'        => [ 'track_add_rocket_cdn_homepage', 10, 1 ],
+			'rocket_rocketcdn_cdn_state_changed'   => [ 'track_rocket_cdn_pause_status', 10, 2 ],
+			'rocket_rocketcdn_page_added'          => [ 'track_rocketcdn_page_added', 10, 3 ],
+			'rocket_rocketcdn_page_removed'        => [ 'track_rocketcdn_page_removed', 10, 2 ],
+			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
 		];
 	}
 
@@ -162,7 +166,53 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $source Either 'add_homepage_button' or 'admin_notices'.
 	 * @return void
 	 */
-	public function track_add_homepage( string $source ): void {
-		$this->tracking->track_add_homepage( $source );
+	public function track_add_rocket_cdn_homepage( string $source ): void {
+		$this->tracking->track_add_rocket_cdn_homepage( $source );
+	}
+
+	/**
+	 * Track RocketCDN CDN pause/resume state change.
+	 *
+	 * @param string $status  Either 'paused' or 'active'.
+	 * @param string $trigger The trigger source (e.g. 'button').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
+		$this->tracking->track_rocket_cdn_pause_status( $status, $trigger );
+	}
+
+	/**
+	 * Track when a page is added to RocketCDN free-tier.
+	 *
+	 * @param string $url         The URL that was added.
+	 * @param int    $pages_count The count of pages after addition.
+	 * @param string $source      The source of the addition.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
+		$this->tracking->track_rocketcdn_page_added( $url, $pages_count, $source );
+	}
+
+	/**
+	 * Track when a page is removed from RocketCDN free-tier.
+	 *
+	 * @param string $url         The URL that was removed.
+	 * @param int    $pages_count The count of pages after removal.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
+		$this->tracking->track_rocketcdn_page_removed( $url, $pages_count );
+	}
+
+	/**
+	 * Track when RocketCDN free-tier is activated.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_free_activated(): void {
+		$this->tracking->track_rocketcdn_free_activated();
 	}
 }

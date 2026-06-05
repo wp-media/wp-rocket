@@ -484,8 +484,12 @@
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
 	function trackRocketCDNUpsellCTAClicked( iframeVisit = false ) {
+		const tableList = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
+		const pagesCount = tableList ? tableList.querySelectorAll( '[data-id]' ).length : 0;
+
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked', {
-			destination: iframeVisit ? 'iframe' : 'express-checkout'
+			destination: iframeVisit ? 'iframe' : 'express-checkout',
+			pages_count: pagesCount
 		} );
 	}
 } )( document, window );

@@ -320,6 +320,10 @@ class Rest extends WP_REST_Controller {
 
 		$this->clean_url_cache( $url );
 
+		$pages_count = $this->query->get_total_count( false );
+		$source      = $request->get_param( 'source' ) ?: 'manual';
+		do_action( 'rocket_rocketcdn_page_added', $url, $pages_count, $source );
+
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
 	}
 
@@ -360,9 +364,14 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		$removed_url = $item->url;
+
 		$this->query->delete_item( $id );
 
-		$this->clean_url_cache( $item->url );
+		$this->clean_url_cache( $removed_url );
+
+		$pages_count = $this->query->get_total_count( false );
+		do_action( 'rocket_rocketcdn_page_removed', $removed_url, $pages_count );
 
 		return new WP_REST_Response( $this->get_pages_data(), 200 );
 	}
@@ -384,6 +393,7 @@ class Rest extends WP_REST_Controller {
 	public function add_homepage() {
 		$request = new WP_REST_Request( 'POST' );
 		$request->set_param( 'url', untrailingslashit( home_url() ) );
+		$request->set_param( 'source', 'add_homepage_button' );
 
 		/**
 		 * Fires when the RocketCDN "Add Homepage" button is clicked from the CDN settings page.
@@ -408,6 +418,9 @@ class Rest extends WP_REST_Controller {
 
 		$this->options->set( 'cdn', (int) $paused );
 		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		$status = 0 === $paused ? 'paused' : 'active';
+		do_action( 'rocket_rocketcdn_cdn_state_changed', $status, 'button' );
 
 		return new WP_REST_Response(
 			[

@@ -385,7 +385,11 @@ class Tracking extends Abstract_Render {
 	 * @param string $source Either 'add_homepage_button' (CDN settings) or 'admin_notices'.
 	 * @return void
 	 */
-	public function track_add_homepage( string $source ): void {
+	public function track_add_rocket_cdn_homepage( string $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
 		$this->track_event(
 			'RocketCDN Homepage Button',
 			[
@@ -393,5 +397,68 @@ class Tracking extends Abstract_Render {
 				'source' => $source,
 			]
 		);
+	}
+
+	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'CDN State Changed',
+			[
+				'status'  => $status,
+				'trigger' => $trigger,
+			]
+		);
+	}
+
+	/**
+	 * Track when a page is added to RocketCDN free-tier.
+	 *
+	 * @param string $url        The URL that was added.
+	 * @param int    $pages_count The count of pages after addition.
+	 * @param string $source     The source of the addition (manual, add_homepage_button, admin_notice).
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
+		$this->track_event(
+			'RocketCDN Page Added',
+			[
+				'button'      => 'rocket cdn add page',
+				'is_homepage' => Utils::is_home( $url ),
+				'pages_count' => $pages_count,
+				'source'      => $source,
+			]
+		);
+	}
+
+	/**
+	 * Track when a page is removed from RocketCDN free-tier.
+	 *
+	 * @param string $url        The URL that was removed.
+	 * @param int    $pages_count The count of pages after removal.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
+		$this->track_event(
+			'RocketCDN Page Removed',
+			[
+				'button'      => 'rocket cdn add page',
+				'is_homepage' => Utils::is_home( $url ),
+				'pages_count' => $pages_count,
+			]
+		);
+	}
+
+	/**
+	 * Track when RocketCDN free-tier is activated.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_free_activated(): void {
+		$this->track_event( 'CDN Activated' );
 	}
 }
