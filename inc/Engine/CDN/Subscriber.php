@@ -558,18 +558,19 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_clear_cache( $old_value, $value ) {
-		$cdn_changed      = Utils::did_setting_change( 'cdn', $old_value, $value );
-		$cdn_type_changed = Utils::did_setting_change( 'cdn_type', $old_value, $value );
+		$byocdn_changed    = Utils::did_setting_change( 'byocdn', $old_value, $value );
+		$rocketcdn_changed = Utils::did_setting_change( 'rocketcdn', $old_value, $value );
+		$cdn_type_changed  = Utils::did_setting_change( 'cdn_type', $old_value, $value );
 
 		// Detect cdn status for pause/resume and cdn_type change.
-		if ( ! $cdn_changed && ! $cdn_type_changed ) {
+		if ( ! $rocketcdn_changed && ! $byocdn_changed && ! $cdn_type_changed ) {
 			return;
 		}
 
 		// Clear cache if cdn is paused/resumed or cdn_type is changed.
 
 		// CDN is paused/resumed.
-		if ( $cdn_changed ) {
+		if ( $rocketcdn_changed ) {
 			// Clear specific pages' cache only when it's free rocketcdn.
 			if ( $this->subscription_controller->is_free() ) {
 				$this->cache->clear_rocketcdn_free_pages_cache();
@@ -581,7 +582,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// CDN type is changed, Clear whole cache.
+		// CDN type or BYOCDN is changed, Clear whole cache.
 		$this->cache->clear_all_cache();
 	}
 
