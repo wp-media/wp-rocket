@@ -3,7 +3,10 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\CDN\{
+	Context as CDNContext,
+	RocketCDN\SubscriptionController
+};
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
@@ -1546,12 +1549,12 @@ class Page extends Abstract_Render {
 				],
 				'page'             => 'page_cdn',
 				'class'            => [ 'your-own-cdn' ],
-				'status_indicator' => [
-					'is_active'          => true,
-					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
-					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
-					'hide_pause_btn'     => true,
-				],
+				/**
+				 * Filters the status indicator data for the Other CDN section.
+				 *
+				 * @param array $status_indicator Status indicator data array.
+				 */
+				'status_indicator' => wpm_apply_filters_typed( 'array', 'rocket_byocdn_status_indicator', [] ),
 			],
 		];
 
