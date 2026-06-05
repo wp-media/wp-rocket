@@ -65,35 +65,8 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 				</div>
 			<?php
 		endforeach;
-	else :
-		?>
-		<div class="wpr-multiple wpr-multiple-default">
-			<div class="wpr-text">
-				<input type="text" name="wp_rocket_settings[cdn_cnames][]" placeholder="<?php esc_attr_e( 'Enter a page URL: cdn.example.com', 'rocket' ); ?>" />
-			</div>
-			<div class="wpr-select">
-				<select name="wp_rocket_settings[cdn_zone][]">
-					<option value="all"><?php esc_html_e( 'For All Files', 'rocket' ); ?></option>
-					<?php
-					/**
-					 * Controls the inclusion of images option for the CDN dropdown
-					 *
-					 * @since 2.10.7
-					 * @author Remy Perona
-					 *
-					 * @param bool $allow true to add the option, false otherwise.
-					 */
-					if ( wpm_apply_filters_typed( 'boolean', 'rocket_allow_cdn_images', true ) ) :
-						?>
-					<option value="images"><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
-					<?php endif; ?>
-					<option value="css_and_js"><?php esc_html_e( 'For CSS & JavaScript', 'rocket' ); ?></option>
-					<option value="js"><?php esc_html_e( 'For JavaScript', 'rocket' ); ?></option>
-					<option value="css"><?php esc_html_e( 'For CSS', 'rocket' ); ?></option>
-				</select>
-			</div>
-		</div>
-	<?php endif; ?>
+	endif;
+	?>
 	</div>
 	<div id="wpr-cname-model" class="wpr-isHidden">
 		<div class="wpr-multiple">
