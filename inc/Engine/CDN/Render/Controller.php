@@ -193,6 +193,8 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
+				'is_visible'            => $this->page_count > 0,
+				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
 			'active_subscription' => $this->has_active_valid_subscription(),
@@ -405,10 +407,21 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the RocketCDN CTA banner.
 	 *
+	 * @param bool $display Whether to display the CTA. Default true.
+	 *
+	 * @return bool
 	 * @since 3.22
 	 */
-	public function maybe_display_rocketcdn_cta(): bool {
+	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
+		if ( ! $display ) {
+			return false;
+		}
+
 		if ( $this->is_subscription_loading() ) {
+			return false;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return false;
 		}
 
