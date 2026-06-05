@@ -72,8 +72,7 @@
 	/**
 	 * Sets the subscription loading state on the CDN UI.
 	 *
-	 * Disables the built-in CDN section, purge and exclude sections,
-	 * and swaps the status indicator dot for a loader icon.
+	 * Disables the built-in CDN section, purge and exclude sections.
 	 */
 	function setSubscriptionLoadingState() {
 		const builtIn = document.querySelector( '.wpr-cdn-built-in' );
