@@ -53,6 +53,19 @@ These steps **never skip**, regardless of which model runs the orchestrator, how
 
 These gates apply to Claude, GPT, Copilot, and any other model running this orchestrator.
 
+### Anti-scope-creep gate (mandatory)
+
+Before spawning any implementation agent, verify the proposed spec matches the ticket scope:
+
+| Check | Question | If no |
+|---|---|---|
+| Scope match | Does every change in the spec map to a stated requirement in the ticket? | Remove it |
+| Complexity ceiling | Is the solution the simplest one that satisfies all AC? | Simplify first |
+| Agent count | Is each spawned agent doing something the calling agent genuinely cannot? | Collapse into one |
+| Feature flags | Are you adding config/flags not asked for in the ticket? | Remove them |
+
+> **Rule:** If a step, file, or feature is not required by the ticket's acceptance criteria, it does not belong in the implementation. Push back to grooming-agent if the spec is out of scope — do not implement and hope for the best.
+
 ---
 
 ## Core principle
@@ -709,6 +722,13 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
    ```
    If `isDraft` is still `true`, run `gh pr ready <PR#>` again and re-verify. Do not proceed
    to Step 4 until the PR is confirmed out of draft.
+
+   **After `gh pr ready`:**
+   1. Verify the PR is no longer in DRAFT state: `gh pr view <N> --json isDraft --jq .isDraft` must return `false`
+   2. Verify the `Made by AI` label is applied: `gh pr view <N> --json labels --jq '[.labels[].name] | contains(["Made by AI"])'` must return `true`
+   3. If either check fails, retry once. If it fails again, log a warning in the run log — do not silently continue.
+
+   > **Linked GitHub issue:** If the linked GitHub issue has a 'In Progress' or 'In Review' label, transition it to 'Ready for review' after the PR is created: `gh issue edit <N> --remove-label 'In Progress' --add-label 'Ready for review'`
 4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
 5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
