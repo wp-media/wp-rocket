@@ -3,9 +3,8 @@ function rocket_css_lazyload_launch() {
 	const usable_pairs = typeof rocket_pairs === 'undefined' ? [] : rocket_pairs;
 	const excluded_pairs = typeof rocket_excluded_pairs === 'undefined' ? [] : rocket_excluded_pairs;
 
-	excluded_pairs.map(pair => {
-		const selector = pair.selector;
-		const nodes = document.querySelectorAll(selector);
+	excluded_pairs.forEach(pair => {
+		const nodes = document.querySelectorAll(pair.selector);
 		nodes.forEach(el => {
 			el.setAttribute(`data-rocket-lazy-bg-${pair.hash}`, 'excluded');
 		});
@@ -21,7 +20,7 @@ function rocket_css_lazyload_launch() {
 		entries.forEach(entry => {
 			if (entry.isIntersecting) {
 				const pairs = usable_pairs.filter(s => entry.target.matches(s.selector));
-				pairs.map(pair => {
+				pairs.forEach(pair => {
 					if (pair) {
 						var new_style_element = document.createElement('style');
 						new_style_element.textContent = pair.style;
@@ -40,22 +39,16 @@ function rocket_css_lazyload_launch() {
 		rootMargin: threshold + 'px'
 	});
 
-	function lazyload(e = []) {
-
-		const pass = e.length > 0;
-
-		if(! pass ) {
-			return;
-		}
-
+	function lazyload() {
 		usable_pairs.forEach(pair => {
 			try {
 
 				const elements = document.querySelectorAll(pair.selector);
 				elements.forEach(el => {
-					if(	el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'loaded' ||
-						el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`) === 'excluded')
-					{
+
+					const status = el.getAttribute(`data-rocket-lazy-bg-${pair.hash}`);
+
+					if(	status === 'loaded' || status === 'excluded' ) {
 						return;
 					}
 					observer.observe(el);
@@ -70,26 +63,32 @@ function rocket_css_lazyload_launch() {
 
 	lazyload();
 
-	const observe_DOM = (function(){
-		const MutationObserver = window.MutationObserver;
+	// Throttling function that prevents the MutationObserver from triggering
+	// our lazyload function too many times. Adds a 50ms delay between two calls.
+	function throttle(fn) {
+		let waiting;
+		return (...args) => {
+			if (waiting) return;
+			waiting = 1;
+			fn(...args);
+			setTimeout(() => waiting = 0, 50);
+		};
+	}
 
-		return function( obj, callback ){
-			if( !obj || obj.nodeType !== 1 ) return;
+	function observe_DOM( obj, callback ) {
+		if( !obj || obj.nodeType !== 1 ) return;
 
-			// define a new observer
-			const mutationObserver = new MutationObserver(callback);
-
-			// have the observer observe for changes in children
-			mutationObserver.observe( obj, { attributes: true, childList:true, subtree:true })
-			return mutationObserver
-
+		// Create a new observer or recycle existing one
+		if (window.rocket_lzl_mo) {
+			window.rocket_lzl_mo.disconnect();
+		} else {
+			window.rocket_lzl_mo = new MutationObserver(callback);
 		}
 
-	})()
+		rocket_lzl_mo.observe( obj, { attributes: true, childList:true, subtree:true });
+	}
 
-	const body = document.querySelector('body');
-
-	observe_DOM(body, lazyload)
+	observe_DOM(document.body, throttle(lazyload));
 }
 
 rocket_css_lazyload_launch();
