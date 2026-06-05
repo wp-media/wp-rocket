@@ -10,7 +10,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Subscriber for RocketCDN frontend integration.
  *
- * Dynamically provides cdn_cnames and cdn_zone values from the RocketCDN subscription data.
+ * Subscribes to events that can be fired on the frontend.
  *
  * @since 3.22
  */
@@ -57,6 +57,10 @@ class FrontendSubscriber implements Subscriber_Interface {
 		return [
 			'pre_get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
 			'pre_get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
+			'pre_get_rocket_option_cdn'        => [
+				[ 'maybe_pause_resume_byocdn' ],
+				[ 'maybe_pause_resume_rocketcdn' ],
+			],
 		];
 	}
 
@@ -96,6 +100,48 @@ class FrontendSubscriber implements Subscriber_Interface {
 		}
 
 		return [ 'all' ];
+	}
+
+	/**
+	 * Overrides the CDN option based on the Other CDN pause/resume state.
+	 *
+	 * No-ops when RocketCDN is the active driver. Otherwise returns true when Other CDN
+	 * is active (not paused) and false when it is paused.
+	 *
+	 * @param mixed $value The current CDN option value.
+	 * @return mixed True if Other CDN is active, false if paused, original value if RocketCDN is the active driver.
+	 */
+	public function maybe_pause_resume_byocdn( $value ) {
+		if ( $this->context->is_rocketcdn() ) {
+			return $value;
+		}
+
+		if ( ! $this->context->is_byocdn_paused() ) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Overrides the CDN option based on the RocketCDN pause/resume state.
+	 *
+	 * No-ops when Other CDN is the active driver. Otherwise returns true when RocketCDN
+	 * is active (not paused) and false when it is paused.
+	 *
+	 * @param mixed $value The current CDN option value.
+	 * @return mixed True if RocketCDN is active, false if paused, original value if Other CDN is the active driver.
+	 */
+	public function maybe_pause_resume_rocketcdn( $value ) {
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $value;
+		}
+
+		if ( ! $this->context->is_rocketcdn_paused() ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
