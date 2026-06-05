@@ -18,6 +18,7 @@
  *     @type bool   $hide_pause_btn  Whether the pause button should be hidden.
  *     @type bool   $is_paused  Whether the CDN is paused.
  *     @type string $active_status_text Status text when CDN is active.
+ *     @type string $cdn_type           CDN type.
  * }
  */
 
@@ -58,7 +59,12 @@ if ( ! $data['is_active'] ) {
 				</div>
 			<?php endif; ?>
 			<?php if ( ! $rocket_hide_pause_btn ) : ?>
-				<button type="button" class="wpr-cdn-pause <?php echo $data['is_paused'] ? 'wpr-cdn-pause--paused' : ''; ?>" aria-pressed="false" <?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>>
+				<button 
+					type="button" class="wpr-cdn-pause <?php echo $data['is_paused'] ? 'wpr-cdn-pause--paused' : ''; ?>" 
+					aria-pressed="false" 
+					<?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>
+					data-cdn-driver="<?php echo esc_attr( $data['cdn_type'] ); ?>"
+				>
 					<span class="wpr-cdn-pause__icon"></span>
 					<span class="wpr-cdn-pause__text wpr-cdn-pause__text--pause"><?php esc_html_e( 'PAUSE CDN', 'rocket' ); ?></span>
 					<span class="wpr-cdn-pause__text wpr-cdn-pause__text--resume"><?php esc_html_e( 'RESUME CDN', 'rocket' ); ?></span>
