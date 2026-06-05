@@ -98,6 +98,24 @@ class Context {
 	}
 
 	/**
+	 * Checks whether the Other CDN option is paused.
+	 *
+	 * @return bool True if byocdn is paused, false otherwise.
+	 */
+	public function is_byocdn_paused(): bool {
+		return ! (bool) $this->options->get( self::BYOCDN_TYPE, false );
+	}
+
+	/**
+	 * Checks whether the RocketCDN option is paused.
+	 *
+	 * @return bool True if rocketcdn is paused, false otherwise.
+	 */
+	public function is_rocketcdn_paused(): bool {
+		return ! (bool) $this->options->get( self::ROCKETCDN_TYPE, false );
+	}
+
+	/**
 	 * Resolves RocketCDN to either free or paid type.
 	 *
 	 * @return string
