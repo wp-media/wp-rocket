@@ -230,6 +230,35 @@ A FAIL here does not block hand-off automatically, but the orchestrator must ack
 
 ## Output format
 
+## L2 output format constraints
+
+To keep the L2 report readable, apply these constraints strictly:
+
+**Length targets:**
+- Total report: aim for ≤ 400 words (excluding JSON). If you exceed this, cut PASS summaries first.
+- `evidence` field: one sentence maximum per check. State the finding, not the process ("3 unit tests cover the changed method" not "I ran phpunit and reviewed the output and found that there are three test cases…").
+- Do NOT repeat the check criteria in the evidence — the reader knows the criteria.
+
+**What to omit:**
+- PASS checks with no nuance: "tests pass" → replace with a one-line table row.
+- Commands you ran: never narrate "I ran `composer phpcs-changed` and saw…" — state only what you found.
+- Justifications for doing the check: skip the preamble, go straight to the verdict.
+
+**Condensed PASS format:** For checks that simply pass with no nuance, use a one-liner in a summary table instead of a prose paragraph:
+
+| Check | Result | Note |
+|---|---|---|
+| 1. Acceptance criteria | ✅ PASS | All 3 AC covered by spec |
+| 3. Docs | ✅ PASS | No public API change |
+| 4. PHPCS | ✅ PASS | 0 violations |
+
+Reserve prose evidence for: WARN, FAIL, and PASS-with-caveats checks only.
+
+**What must always appear:**
+- The overall verdict (PASS / WARN / FAIL) as the first line
+- Any WARN or FAIL check with its evidence and a concrete remediation step
+- The JSON result block (required for orchestrator integration)
+
 ```
 | Check | Status | Evidence |
 |-------|--------|----------|
@@ -286,11 +315,7 @@ Always return this JSON object in addition to the human-readable output above:
 **Layer 2:** `overall` can be `PASS`, `WARN`, or `FAIL`. Populate `layer1_delta` with
 any issues that were not flagged in layer 1.
 
-**Result file (L2 only):** When running Layer 2 (orchestrator gate), write the JSON result to:
-```
-.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/dod-l2-result.json
-```
-This file is monitored by the orchestrator. The file MUST be written before the skill returns.
+The Layer 2 JSON result must also be written to disk — see the `## Result file write (Layer 2 only)` section below.
 
 ---
 
