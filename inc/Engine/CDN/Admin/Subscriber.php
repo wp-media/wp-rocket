@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\Admin;
 
-use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -15,8 +16,14 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events() {
 		return [
 			'rocket_meta_boxes_fields'      => [ 'add_meta_box', 9 ],
-			'rocket_hidden_settings_fields' => [ 'add_cdn_type', 10 ],
-			'rocket_input_sanitize'         => 'sanitize_cdn_type_option',
+			'rocket_hidden_settings_fields' => [
+				[ 'add_cdn_type' ],
+				[ 'add_cdn_drivers_options_hidden_fields' ],
+			],
+			'rocket_input_sanitize'         => [
+				[ 'sanitize_cdn_type_option', 10, 2 ],
+				[ 'sanitize_cdn_driver_options', 10, 2 ],
+			],
 		];
 	}
 
@@ -39,7 +46,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add CDN to the list of hidden settings fields.
+	 * Add CDN type to the list of hidden settings fields.
 	 *
 	 * @param string[] $fields Hidden settings fields.
 	 *
@@ -73,6 +80,36 @@ class Subscriber implements Subscriber_Interface {
 
 		// Sanitize the value.
 		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
+
+		return $input;
+	}
+
+	/**
+	 * Add byocdn to the list of hidden settings fields.
+	 *
+	 * @param string[] $fields Hidden settings fields.
+	 *
+	 * @return string[]
+	 */
+	public function add_cdn_drivers_options_hidden_fields( array $fields ) {
+		$fields[] = Context::BYOCDN_TYPE;
+		$fields[] = Context::ROCKETCDN_TYPE;
+
+		return $fields;
+	}
+
+	/**
+	 * Sanitize the CDN driver options.
+	 *
+	 * @param array         $input Input array.
+	 * @param AdminSettings $settings Admin settings instance.
+	 *
+	 * @return array
+	 */
+	public function sanitize_cdn_driver_options( array $input, AdminSettings $settings ) {
+		// Sanitize the value.
+		$input[ Context::BYOCDN_TYPE ]    = $settings->sanitize_checkbox( $input, Context::BYOCDN_TYPE );
+		$input[ Context::ROCKETCDN_TYPE ] = $settings->sanitize_checkbox( $input, Context::ROCKETCDN_TYPE );
 
 		return $input;
 	}
