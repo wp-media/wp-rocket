@@ -172,6 +172,13 @@ class Rest extends WP_REST_Controller {
 							return (int) (bool) $param;
 						},
 					],
+					'driver' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return in_array( $param, [ 'byocdn', 'rocketcdn' ], true );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
 				],
 			]
 		);
@@ -397,14 +404,15 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
-		$paused = $request->get_param( 'paused' );
+		$paused     = $request->get_param( 'paused' );
+		$pause_type = $request->get_param( 'driver' );
 
-		$this->options->set( 'cdn', (int) $paused );
+		$this->options->set( $pause_type, (int) $paused );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		return new WP_REST_Response(
 			[
-				'paused' => (int) $this->options->get( 'cdn', 0 ),
+				'paused' => (int) $this->options->get( $pause_type, 0 ),
 			],
 			200
 		);
@@ -443,7 +451,7 @@ class Rest extends WP_REST_Controller {
 			'count'                            => $pages_count,
 			'limit'                            => $this->get_free_page_limit(),
 			'items_html'                       => $this->render_controller->get_built_in_page_list(),
-			'status_indicator_html'            => $this->render_controller->get_status_indicator_html( $pages_count ),
+			'status_indicator_html'            => $this->render_controller->get_rocketcdn_status_indicator_html( $pages_count ),
 			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
