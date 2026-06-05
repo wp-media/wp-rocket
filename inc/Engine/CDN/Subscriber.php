@@ -3,9 +3,12 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
-use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\CDN\{
+	Context,
+	Drivers\DriverInterface,
+	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
+	RocketCDN\SubscriptionController,
+};
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -119,9 +122,13 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_asset_url'                         => [ 'maybe_replace_url', 10, 2 ],
 			'wp_resource_hints'                        => [ 'add_preconnect_cdn', 10, 2 ],
 			'rocket_font_url'                          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_first_install_options'             => 'add_cdn_type_option',
+			'rocket_first_install_options'             => [
+				[ 'add_cdn_type_option' ],
+				[ 'add_cdn_driver_options_on_first_install' ],
+			],
 			'wp_rocket_upgrade'                        => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
+				[ 'add_cdn_driver_options_on_update', 10, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 			'update_option_wp_rocket_settings'         => [ 'maybe_clear_cache', 10, 2 ],
@@ -576,5 +583,43 @@ class Subscriber implements Subscriber_Interface {
 
 		// CDN type is changed, Clear whole cache.
 		$this->cache->clear_all_cache();
+	}
+
+	/**
+	 * Adds CDN driver options to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_driver_options_on_first_install( array $options ): array {
+		$options = (array) $options;
+
+		$options[ Context::BYOCDN_TYPE ]    = true;
+		$options[ Context::ROCKETCDN_TYPE ] = true;
+
+		return $options;
+	}
+
+	/**
+	 * Sets the CDN driver options to true when updating from a version prior to 3.22.0.
+	 *
+	 * @param string $new_version The new plugin version.
+	 * @param string $old_version The previous plugin version.
+	 * @return void
+	 */
+	public function add_cdn_driver_options_on_update( string $new_version, string $old_version ): void {
+		// Bail early.
+		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+			return;
+		}
+
+		$current_options                            = $this->options_api->get( 'settings', [] );
+		$current_options[ Context::BYOCDN_TYPE ]    = true;
+		$current_options[ Context::ROCKETCDN_TYPE ] = true;
+
+		$this->options_api->set( 'settings', $current_options );
 	}
 }
