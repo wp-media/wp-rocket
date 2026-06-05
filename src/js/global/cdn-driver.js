@@ -221,16 +221,37 @@
 	function initCdnPauseToggle() {
 		document.querySelectorAll( '.wpr-cdn-pause' ).forEach( ( button ) => {
 			button.addEventListener( 'click', () => {
+				const cdnDriver = button.dataset.cdnDriver;
 				const isPaused = button.classList.toggle( 'wpr-cdn-pause--paused' );
 				button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
 				button.disabled = true;
 
+				const byocdnInput = document.getElementById('byocdn');
+				const rocketcdnInput = document.getElementById('rocketcdn');
+
+				let currentByocdnValue = byocdnInput.value;
+				let currentRocketcdnValue = rocketcdnInput.value;
+
+				const paused = isPaused ? 0 : 1;
+
 				window.wp.apiFetch( {
 					path: '/wp-rocket/v1/rocketcdn/pause',
 					method: 'POST',
-					data: { paused: isPaused ? 0 : 1 },
+					data: { 
+						paused: paused,
+						driver: cdnDriver
+					},
 				} ).then( () => {
 					button.disabled = false;
+
+					// Update hidden input value on success; Preserve state when submiting settings.
+					if ('byocdn' === cdnDriver) {
+						byocdnInput.value = paused;
+					}
+
+					if ('rocketcdn' === cdnDriver) {
+						rocketcdnInput.value = paused;
+					}
 
 					const statusContainer = button.closest( '.wpr-cdn-status' );
 					if ( ! statusContainer ) {
@@ -269,6 +290,10 @@
 					button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
 					button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
 					button.disabled = false;
+
+					// Revert hidden input value on failure to persist correct state.
+					byocdnInput.value = currentByocdnValue;
+					rocketcdnInput.value = currentRocketcdnValue;
 				} );
 			} );
 		} );
