@@ -475,7 +475,9 @@ class Controller extends Abstract_Render {
 		$status_text        = $is_paused ? $paused_status_text : $active_status_text;
 
 		return [
-			'is_active'          => true,
+			// Read raw options to avoid values filtered through pre_get_rocket_option_* when RocketCDN is active.
+			// This prevents incorrect BYOCDN status display when CDN is enabled but no CNAMEs are configured.
+			'is_active'          => ! empty( ( (array) $this->options->get_options() )['cdn_cnames'] ?? [] ),
 			'status_text'        => $status_text,
 			'active_status_text' => $active_status_text,
 			'paused_status_text' => $paused_status_text,
