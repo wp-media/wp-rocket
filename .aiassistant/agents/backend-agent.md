@@ -51,6 +51,27 @@ Follow the spec's **Implementation Plan** for backend files only. Do not touch J
 - Plugin options via injected `Options_Data` — never `get_option()`.
 - WordPress hooks through a Subscriber — never direct `add_action`/`add_filter`.
 
+**Test execution strategy — do not run the full suite unless necessary:**
+
+Before running tests, assess the change's risk:
+
+- **LOW risk + LOW/XS/S complexity:** Run only the PHPUnit group(s) covering the changed files.
+  ```bash
+  # Find the relevant group annotation
+  grep -r "@group" tests/ --include="*.php" | grep -i <feature-keyword>
+  # Then run only that group
+  composer run-tests -- --group=<GroupName>
+  ```
+
+- **MEDIUM risk or M complexity:** Run the specific group(s) + one broad regression group.
+
+- **HIGH risk or L/XL complexity:** Run the full suite.
+  ```bash
+  composer run-tests
+  ```
+
+The spec written by grooming-agent should explicitly state which command to run. If it does not, default to LOW risk behavior and run only the specific group.
+
 ---
 
 ### Step 2.5 — Documentation update

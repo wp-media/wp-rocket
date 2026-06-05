@@ -69,6 +69,28 @@ Core rules (enforced by the skill files):
 - No unsafe `innerHTML` — use `textContent` or `createElement`.
 - Nonces localized via `wp_localize_script` — never hardcoded.
 
+**Test execution strategy — do not run the full suite unless necessary:**
+
+When your change touches behavior covered by PHPUnit (e.g. localized data, admin
+controllers wired to the UI you changed), assess the change's risk before running tests:
+
+- **LOW risk + LOW/XS/S complexity:** Run only the PHPUnit group(s) covering the changed files.
+  ```bash
+  # Find the relevant group annotation
+  grep -r "@group" tests/ --include="*.php" | grep -i <feature-keyword>
+  # Then run only that group
+  composer run-tests -- --group=<GroupName>
+  ```
+
+- **MEDIUM risk or M complexity:** Run the specific group(s) + one broad regression group.
+
+- **HIGH risk or L/XL complexity:** Run the full suite.
+  ```bash
+  composer run-tests
+  ```
+
+The spec written by grooming-agent should explicitly state which command to run. If it does not, default to LOW risk behavior and run only the specific group.
+
 ---
 
 ### Step 2.5 — Documentation update

@@ -18,6 +18,10 @@ unconditional and non-negotiable:
 2. **The AI-generated notice must appear at the top of the PR description** — before any
    other content, so it is visible without scrolling.
 
+> **Git command safety:** All git commands must use `--no-pager` or `GIT_PAGER=cat` to
+> prevent interactive pager hangs in non-terminal environments. Set `GIT_TERMINAL_PROMPT=0`
+> so git never blocks on an interactive credential/auth prompt either.
+
 ## Inputs
 - Issue number `N`
 - Branch name
@@ -35,8 +39,8 @@ unconditional and non-negotiable:
 Before pushing anything, audit the branch:
 
 ```bash
-git log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
-  if ! git show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude"; then
+git --no-pager log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
+  if ! git --no-pager show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude"; then
     echo "MISSING trailer on $sha: $msg"
   fi
 done
@@ -50,11 +54,12 @@ git commit --amend --no-edit --trailer "Co-Authored-By: CURRENT_MODEL <noreply@a
 For multiple commits, use a non-interactive rebase with `--exec`:
 ```bash
 TRAILER="Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>"
-git rebase <base_branch> --exec \
-  "git show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer \"$TRAILER\""
+GIT_TERMINAL_PROMPT=0 git --no-pager rebase <base_branch> --exec \
+  "git --no-pager show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer \"$TRAILER\""
 ```
 
 `--exec` runs after each commit without opening an editor — safe in automated contexts.
+`GIT_TERMINAL_PROMPT=0` ensures the rebase never stalls on an interactive auth prompt.
 
 After amending, re-run the audit until every commit has the trailer. Set
 `trailer_verified: true` in the return JSON only after the audit shows zero missing.
@@ -94,7 +99,7 @@ left behind.
 
 - **The first line of the PR body must be the AI-generated notice:**
   ```
-  > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+  > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
   ```
   Prepend it to the draft content. This notice is unconditional — it cannot be omitted,
   abbreviated, or moved further down.
@@ -105,7 +110,7 @@ left behind.
   the PR body must contain a standalone line `Closes #<N>` **not** buried in prose. Place it
   immediately after the AI-generated notice:
   ```
-  > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+  > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
   Closes #<N>
   ```

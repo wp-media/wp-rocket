@@ -71,7 +71,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
      "operation": "create_issue",
      "data": {
        "title": "Short imperative title under 70 chars",
-       "body": "> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Context**\n[Why this work is needed.]\n\n**Acceptance Criteria**\n- [ ] [Specific, verifiable criterion]\n- [ ] [Specific, verifiable criterion]\n\n**Development steps**\n- [ ] [Concrete implementation step]\n\n**Effort estimation**\nXS / S / M / L / XL",
+       "body": "> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Context**\n[Why this work is needed.]\n\n**Acceptance Criteria**\n- [ ] [Specific, verifiable criterion]\n- [ ] [Specific, verifiable criterion]\n\n**Development steps**\n- [ ] [Concrete implementation step]\n\n**Effort estimation**\nXS / S / M / L / XL",
        "labels": ["Made by AI", "<additional labels>"]
      }
    }
@@ -84,7 +84,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    gh issue create --repo wp-media/wp-rocket \
      --title "Short imperative title under 70 chars" \
      --body "$(cat <<'EOF'
-   > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+   > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
    **Context**
    [Why this work is needed.]
@@ -137,7 +137,7 @@ Example:
   "operation": "create_issue",
   "data": {
     "title": "Add index on post_id to cache_flush table",
-    "body": "> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)\n\n**Context**\nThe cache-flush path has no index on post_id — at scale this will cause full-table scans.\n\n**Suggestion**\nAdd an index on post_id in a follow-up migration.\n\n**Acceptance Criteria**\n- [ ] Index exists on cache_flush.post_id\n- [ ] Migration version bumped per BerlinDB convention",
+    "body": "> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)\n\n**Context**\nThe cache-flush path has no index on post_id — at scale this will cause full-table scans.\n\n**Suggestion**\nAdd an index on post_id in a follow-up migration.\n\n**Acceptance Criteria**\n- [ ] Index exists on cache_flush.post_id\n- [ ] Migration version bumped per BerlinDB convention",
     "labels": ["Made by AI", "enhancement"]
   }
 }
@@ -147,7 +147,7 @@ Example:
 gh issue create --repo wp-media/wp-rocket \
   --title "Add index on post_id to cache_flush table" \
   --body "$(cat <<'EOF'
-> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
 **Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)
 
@@ -193,7 +193,7 @@ Emit to the event queue and create the issue. Do NOT wait for a response — emi
 - Each issue must be **standalone**: one concern, one definition of done
 - Never create an issue without first searching for duplicates (skip this check in `nth_followup` mode)
 - **All created issues must include the AI-generated notice** at the top of the body:
-  `> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.`
+  `> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.`
 - Apply the `Made by AI` label on every issue created by this agent
 
 ---
@@ -203,7 +203,7 @@ Emit to the event queue and create the issue. Do NOT wait for a response — emi
 Use when no issue template is found in the repo:
 
 ```
-> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
 **Context**
 [Why this work is needed. Reference the parent EPIC (#N) if applicable.]
