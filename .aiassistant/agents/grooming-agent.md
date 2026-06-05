@@ -145,6 +145,11 @@ Step-by-step instructions the implementing agent must follow. Be specific: class
 
 Post the grooming plan as a comment on issue #N (update the comment if one already exists for this plan version):
 
+**Markdown formatting rules for GitHub comments:**
+- Use a single-quoted heredoc (`<<'EOF'`) — the shell will not interpret any special characters inside it.
+- Never escape backticks with a backslash (`` \` `` is wrong). Write them as plain `` ` `` characters.
+- Use fenced code blocks (triple backtick) or inline code (single backtick) exactly as you would in normal Markdown. No escaping needed.
+
 ```bash
 gh issue comment <N> --body "$(cat <<'EOF'
 > [!NOTE]
