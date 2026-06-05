@@ -391,8 +391,9 @@ class Tracking extends Abstract_Render {
 		}
 
 		$this->track_event(
-			'RocketCDN Homepage Button',
+			'Button Clicked',
 			[
+				'button' => 'rocket cdn add homepage',
 				'context' => 'wp_plugin',
 				'source' => $source,
 			]
@@ -424,7 +425,7 @@ class Tracking extends Abstract_Render {
 	 */
 	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
 		$this->track_event(
-			'RocketCDN Page Added',
+			'Button Clicked',
 			[
 				'button'      => 'rocket cdn add page',
 				'is_homepage' => Utils::is_home( $url ),
@@ -444,9 +445,9 @@ class Tracking extends Abstract_Render {
 	 */
 	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
 		$this->track_event(
-			'RocketCDN Page Removed',
+			'Button Clicked',
 			[
-				'button'      => 'rocket cdn add page',
+				'button'      => 'rocket cdn remove page',
 				'is_homepage' => Utils::is_home( $url ),
 				'pages_count' => $pages_count,
 			]
