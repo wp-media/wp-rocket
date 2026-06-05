@@ -42,6 +42,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
+			'current_screen'               => [ 'maybe_sync_forced_pause_tracking_state' ],
 			'rocket_cdn_free_page_list'    => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'    => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'       => 'render_cdn_driver_tabs',
@@ -171,5 +172,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_hide_cdn_tab_badge( string $badge ): string {
 		return $this->controller->maybe_hide_cdn_tab_badge( $badge );
+	}
+
+	/**
+	 * Syncs the forced pause tracking option state on WP Rocket settings screen.
+	 *
+	 * @param \WP_Screen $screen Current screen object.
+	 *
+	 * @return void
+	 */
+	public function maybe_sync_forced_pause_tracking_state( \WP_Screen $screen ): void {
+		$this->controller->maybe_sync_forced_pause_tracking_state( $screen );
 	}
 }

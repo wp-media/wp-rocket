@@ -420,7 +420,9 @@ class Rest extends WP_REST_Controller {
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		$status = 0 === $paused ? 'paused' : 'active';
-		do_action( 'rocket_rocketcdn_cdn_state_changed', $status, 'button' );
+		$action = 0 === $paused ? 'user_paused' : 'user_resume';
+
+		do_action( 'rocket_rocketcdn_cdn_state_changed', $status, $action );
 
 		return new WP_REST_Response(
 			[

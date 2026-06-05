@@ -393,23 +393,32 @@ class Tracking extends Abstract_Render {
 		$this->track_event(
 			'Button Clicked',
 			[
-				'button' => 'rocket cdn add homepage',
+				'button'  => 'rocket cdn add homepage',
 				'context' => 'wp_plugin',
-				'source' => $source,
+				'source'  => $source,
 			]
 		);
 	}
 
+	/**
+	 * Track when the RocketCDN pause status is changed.
+	 *
+	 * @param string $status  The new status of the CDN (e.g., 'paused', 'active').
+	 * @param string $trigger The trigger for the status change (e.g., 'user_paused', 'user_resume').
+	 *
+	 * @return void
+	 */
 	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}
 
 		$this->track_event(
-			'CDN State Changed',
+			'Button Clicked',
 			[
 				'status'  => $status,
 				'trigger' => $trigger,
+				'button'  => 'rocket cdn pause',
 			]
 		);
 	}
@@ -424,6 +433,10 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
 		$this->track_event(
 			'Button Clicked',
 			[
@@ -444,6 +457,10 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
 		$this->track_event(
 			'Button Clicked',
 			[
@@ -460,6 +477,10 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocketcdn_free_activated(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
 		$this->track_event( 'CDN Activated' );
 	}
 }

@@ -37,6 +37,7 @@ class WPRocketUninstall {
 		'rocket_analytics_notice_displayed',
 		'rocketcdn_user_token',
 		'rocketcdn_process',
+		'rocket_rocketcdn_forced_pause_state',
 		'wp_rocket_hide_deactivation_form',
 		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',

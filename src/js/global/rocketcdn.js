@@ -8,6 +8,9 @@
 		COLLAPSED: true   // Small CTA - collapsed state
 	};
 
+	// Register early so we catch the wpr-cdn-state-change event.
+	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -398,6 +401,51 @@
 	}
 
 	/**
+	 * Tracks CDN mode selection with Mixpanel.
+	 */
+	function trackCDNModeSelection() {
+		if ( ! isOnCDNTab() ) {
+			return;
+		}
+
+		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
+
+		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
+		
+		if( ! activeTab ) {
+			return;
+		}
+
+		const cdnMode = activeTab.getAttribute('data-cdn-mode')
+
+		if( ! cdnMode ) {
+			return;
+		} 
+
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN CDN Mode', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			cdn_mode: cdnMode
+		});
+	}
+
+	/**
 	 * Tracks RocketCDN activation failed CTA click with Mixpanel.
 	 */
 	function trackRocketCDNActivationCTA() {
@@ -475,8 +523,12 @@
 		if ( ! isOnCDNTab() ) {
 			return;
 		}
+		const hash = window.location.hash;
+		const basePath = ( typeof rocket_mixpanel_data !== 'undefined' && rocket_mixpanel_data.path ) ? rocket_mixpanel_data.path : '';
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed', {
-			state: is_collapsed ? 'collapsed' : 'opened'
+			state:     is_collapsed ? 'collapsed' : 'opened',
+			page_name: hash,
+			path:      basePath + hash
 		} );
 	}
 
