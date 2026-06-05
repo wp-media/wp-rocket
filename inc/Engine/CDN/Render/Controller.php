@@ -114,7 +114,7 @@ class Controller extends Abstract_Render {
 
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
-		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
+		$status_indicator_data           = $this->get_rocketcdn_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$sections['rocketcdn_paid_section'] = [
@@ -173,7 +173,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->context->is_rocketcdn_paused() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -188,7 +188,7 @@ class Controller extends Abstract_Render {
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'    => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'status_indicator'    => $this->get_rocketcdn_status_indicator_data( $this->page_count, $is_subscription_loading ),
 			'cta_data'            => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
@@ -241,7 +241,7 @@ class Controller extends Abstract_Render {
 			'class'       => $classes,
 		];
 
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->is_subscription_loading() || $this->context->is_rocketcdn_paused() ) {
 			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -272,7 +272,7 @@ class Controller extends Abstract_Render {
 		];
 
 		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->is_subscription_loading() || $this->context->is_rocketcdn_paused() ) {
 			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
 		}
 
@@ -363,8 +363,8 @@ class Controller extends Abstract_Render {
 	 *
 	 * @return string The rendered status indicator HTML.
 	 */
-	public function get_status_indicator_html( int $pages_count ): string {
-		$data = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading() );
+	public function get_rocketcdn_status_indicator_html( int $pages_count ): string {
+		$data = $this->get_rocketcdn_status_indicator_data( $pages_count, $this->is_subscription_loading() );
 
 		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
 	}
@@ -454,6 +454,70 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Returns the status indicator data for the Other CDN section.
+	 *
+	 * @since 3.22
+	 *
+	 * @return array {
+	 *     @type bool   $is_active          Always true; the CDN entry exists.
+	 *     @type string $status_text        Current status label (active or paused).
+	 *     @type string $active_status_text Label shown when the CDN is active.
+	 *     @type string $paused_status_text Label shown when the CDN is paused.
+	 *     @type bool   $is_paused          True when the CDN option is disabled.
+	 *     @type bool   $hide_pause_btn     Whether to hide the pause button.
+	 *     @type string $cdn_type           CDN driver type identifier.
+	 * }
+	 */
+	public function get_byocdn_status_indicator_data(): array {
+		$is_paused          = $this->context->is_byocdn_paused();
+		$active_status_text = __( 'Your CDN is active on your website', 'rocket' );
+		$paused_status_text = __( 'Your CDN is paused', 'rocket' );
+		$status_text        = $is_paused ? $paused_status_text : $active_status_text;
+
+		return [
+			'is_active'          => true,
+			'status_text'        => $status_text,
+			'active_status_text' => $active_status_text,
+			'paused_status_text' => $paused_status_text,
+			'is_paused'          => $is_paused,
+			'hide_pause_btn'     => false,
+			'cdn_type'           => Context::BYOCDN_TYPE,
+			'class'              => $is_paused ? ' wpr-cdn-status--paused' : '',
+		];
+	}
+
+	/**
+	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
+	 *
+	 * If the user has an inactive subscription, this will force the CDN option to be false,
+	 * effectively pausing CDN functionality until they renew or reactivate their subscription.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn Current value of the CDN option.
+	 *
+	 * @return mixed False if the user has an inactive subscription, original value otherwise.
+	 */
+	public function maybe_pause_rocketcdn_for_inactive_subscription( $cdn ) {
+		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $cdn;
+		}
+
+		// If subscription is free and licence is not valid, forced pause cdn.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return false;
+		}
+
+		$transient = $this->subscription_controller->get_rocketcdn_status();
+		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
+			return false;
+		}
+
+		return $cdn;
+	}
+
+	/**
 	 * Builds a table-list-row data array from a page object.
 	 *
 	 * @since 3.22
@@ -534,16 +598,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Checks if the CDN should be treated as paused.
-	 *
-	 * @return bool True when the CDN is paused or the license is invalid.
-	 */
-	private function is_cdn_paused_or_invalid(): bool {
-		return $this->is_cdn_paused()
-			|| $this->subscription_controller->is_license_invalid();
-	}
-
-	/**
 	 * Checks if the CDN type is currently filtered.
 	 *
 	 * @since 3.22
@@ -596,7 +650,7 @@ class Controller extends Abstract_Render {
 	 *     @type bool   $hide_pause_btn         Whether to hide the pause button.
 	 * }
 	 */
-	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ) {
+	private function get_rocketcdn_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ) {
 		$paused_status_text = __( 'RocketCDN is paused', 'rocket' );
 		$active_status_text = __( 'RocketCDN is active', 'rocket' );
 		$paused_details     = __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' );
@@ -620,13 +674,13 @@ class Controller extends Abstract_Render {
 			$status_text        = $active_status_text;
 		}
 
-		// Update status inidicator details when subscription is processing.
+		// Update status indicator details when subscription is processing.
 		if ( $is_subscription_loading ) {
 			$status_text = __( 'Creating your subscription...', 'rocket' );
 			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 		}
 
-		$is_paused = $this->is_cdn_paused();
+		$is_paused = $this->context->is_rocketcdn_paused();
 
 		$class = '';
 
@@ -635,7 +689,7 @@ class Controller extends Abstract_Render {
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
 
-		if ( $this->is_cdn_paused_or_invalid() ) {
+		if ( $is_paused ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
 			$class      .= ' wpr-cdn-status--paused';
@@ -653,19 +707,7 @@ class Controller extends Abstract_Render {
 			'pages_count'             => $pages_count,
 			'is_subscription_loading' => $is_subscription_loading,
 			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
+			'cdn_type'                => Context::ROCKETCDN_TYPE,
 		];
-	}
-
-	/**
-	 * Check if cdn should pause or not.
-	 *
-	 * @return bool
-	 */
-	private function is_cdn_paused(): bool {
-		$transient = $this->subscription_controller->get_rocketcdn_status();
-
-		return false !== $transient
-			? ! $this->options->get( 'cdn' )
-			: ! $this->subscription_controller->has_active_subscription();
 	}
 }
