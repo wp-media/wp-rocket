@@ -13,6 +13,18 @@
 			this.retryCount = 0;
 
 			document.addEventListener( 'rocketCDNSubscriptionLoading', () => this.start() );
+
+			// Re-trigger polling after page refresh.
+			const classes = [
+				'.wpr-icon-orange-loader',
+				'.wpr-cdn-built-in--disabled',
+			];
+
+			const allPresent = classes.every( cls => document.querySelector( cls ) !== null );
+
+			if ( allPresent ) {
+				this.start()
+			}
 		}
 
 		/**
