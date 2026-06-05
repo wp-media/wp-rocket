@@ -31,13 +31,27 @@ If you discover the signal is wrong, adjust your effort. For example:
 
 Log your reasoning depth choice in the return JSON: `effort_used: "LOW|MEDIUM|HIGH"`.
 
+## Non-skippable steps — model-agnostic enforcement
+
+The following steps MUST be completed before returning. This applies regardless of model (Claude, GPT-4, Copilot, or any other):
+
+- [ ] Step 1: Read AGENTS.md (if exists), issue body, and referenced files
+- [ ] Step 2: Map affected code (files, functions, hooks, option keys)
+- [ ] Step 3: Determine architectural solution
+- [ ] Step 4: Write the spec (including PR splitting plan for L/XL)
+- [ ] Step 5: Post spec as GitHub comment
+- [ ] Step 6: Return JSON
+
+**CHECKPOINT:** Before returning, verify each box above is checked. If any step was skipped, go back and complete it. "It seemed clear from context" is not a valid skip reason — every step must be executed.
+
 ## Your process
 
 ### Step 1 — Read the issue
 
-1. Read `AGENTS.md` at the repo root. **Section 13 (Session Learnings) takes precedence**
-   over any default assumption — if it documents a pattern to avoid or enforce, your spec
-   must reflect that.
+1. If `AGENTS.md` exists at the repo root, read it — **Section 13 (Session Learnings) takes precedence**
+   over any default assumption in this prompt. If it documents a pattern to avoid or enforce, your spec
+   must reflect that. If `AGENTS.md` does not exist (e.g., this is a repo that has not adopted the
+   convention), skip this step and continue with defaults.
 2. Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
    If a parent epic file exists (noted in the issue), read it too for context.
 
@@ -173,6 +187,24 @@ Step-by-step instructions the implementing agent must follow. Be specific: class
 | PR 2 | `<files>` | `<what behavior this slice completes>` |
 ```
 
+**Test execution guidance** (required in every spec):
+
+Based on the effort and risk assessment above, specify EXACTLY which tests the implementation agent should run:
+
+- If risk is LOW and complexity is LOW/XS/S:
+  → Run only the PHPUnit group(s) that cover the changed files. Example: `composer run-tests -- --group=<GroupName>`
+  → Find the correct group annotation by grepping: `grep -r "@group" tests/ --include="*.php" | grep -i <feature-keyword>`
+  → Do NOT run the full suite.
+
+- If risk is MEDIUM or complexity is M:
+  → Run the specific group(s) + one broad regression group if it exists.
+
+- If risk is HIGH or complexity is L/XL:
+  → Run the full test suite: `composer run-tests`
+  → This is the only case where full-suite execution is justified.
+
+Explicitly state the test command(s) to run in the spec. "Run tests" is not sufficient — name the command.
+
 ---
 
 ### Step 4b — PR splitting plan (required for L and XL efforts)
@@ -191,6 +223,11 @@ If you cannot split the work into independent slices (strong coupling, single at
 ### Step 5 — Post to GitHub
 
 Post the grooming plan as a comment on issue #N (update the comment if one already exists for this plan version):
+
+**Markdown formatting rules for GitHub comments:**
+- Use a single-quoted heredoc (`<<'EOF'`) — the shell will not interpret any special characters inside it.
+- Never escape backticks with a backslash (`` \` `` is wrong). Write them as plain `` ` `` characters.
+- Use fenced code blocks (triple backtick) or inline code (single backtick) exactly as you would in normal Markdown. No escaping needed.
 
 ```bash
 gh issue comment <N> --body "$(cat <<'EOF'
@@ -231,7 +268,8 @@ Return the spec file path AND the following JSON object to the orchestrator. The
   "pr_splitting_plan": [
     { "slice": 1, "scope": ["file1.php", "file2.php"], "deliverable": "what complete behavior this slice ships" }
   ],
-  "comment_posted": true
+  "comment_posted": true,
+  "_note": "The orchestrator handles issue labeling and PR readiness — grooming agent does not set labels directly."
 }
 ```
 
@@ -245,5 +283,7 @@ Return the spec file path AND the following JSON object to the orchestrator. The
 - `XL`: 10+ files or new module
 
 **risk_notes guidance:** This is the orchestrator's most important input for routing decisions. State: your confidence level (HIGH/MEDIUM/LOW), the one or two key risks you see, and any unverified assumptions (auth behavior, multisite, concurrency) that a challenger should probe. If everything is straightforward, say so explicitly.
+
+After returning JSON, the orchestrator is responsible for applying the "Ready for review" label and transitioning the issue state. The grooming agent's responsibility ends at returning the JSON.
 
 Do not implement anything. Do not modify any source file.
