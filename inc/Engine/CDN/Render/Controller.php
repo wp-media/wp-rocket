@@ -663,11 +663,16 @@ class Controller extends Abstract_Render {
 	 *
 	 * @since 3.22
 	 *
-	 * @param string|null $cdn Current value of the CDN option.
+	 * @param mixed $cdn Current value of the CDN option.
 	 *
 	 * @return mixed False if the user has an inactive subscription, original value otherwise.
 	 */
-	public function maybe_pause_cdn_for_inactive_subscription( ?string $cdn ) {
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
+		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $cdn;
+		}
+
 		// If subscription is free and licence is not valid, forced pause cdn.
 		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
 			return false;
