@@ -251,12 +251,6 @@
 				} ).then( () => {
 					button.disabled = false;
 
-					// Update the CDN toggle checkbox state to match the new paused state.
-					const cdnCheckbox = document.getElementById( 'cdn' );
-					if ( cdnCheckbox ) {
-						cdnCheckbox.checked = ! isPaused;
-						cdnCheckbox.dispatchEvent( new Event('change', { bubbles: true } ) );
-					}
 					const statusContainer = button.closest( '.wpr-cdn-status' );
 					if ( ! statusContainer ) {
 						return;
