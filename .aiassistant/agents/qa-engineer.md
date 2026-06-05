@@ -119,6 +119,10 @@ Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or 
 tracked in GitHub Actions and reviewed by the Lead Reviewer. Re-running them is redundant
 and wastes tokens. Your job is behavioral validation, not CI re-execution.
 
+**Analysis fallback result rule:**
+- Analysis fallback may return `PASS` only for *structural* claims: hook is registered, file exists, method exists, a filter is wired. These are verifiable from source alone.
+- For *rendering or behavioral* claims (a notice appears, a tab shows content X, a button is visible), Analysis fallback must return `PARTIAL` or `CANNOT_VERIFY`. Never return `PASS` for "the user will see Y" from code reading alone.
+
 Run the test suite for the affected module **only to validate acceptance criteria** — not as a
 CI check:
 
@@ -140,17 +144,40 @@ This is the weakest strategy for UI changes — prefer A or B when possible. For
 
 ---
 
-### Step 3 — Execute
+### Step 3 — Environment guard pre-flight
+
+Before executing any strategy, scan every PHP file touched by the PR for environment guards that will block rendering on localhost:
+
+**Guards to detect:**
+- License / subscription checks: `rocket_valid_key()`, `get_rocket_option('consumer_key')`, `RocketLicence`, `$license->is_valid()`, subscription API calls
+- Live-site guards: `rocket_is_live_site()`, `is_ssl()` used as a gate
+- API guards: any external HTTP call whose failure changes what is rendered
+
+For each acceptance criterion that involves rendered output (visible HTML, a notice, a UI element, a tab's content):
+1. Trace the render path in the PHP source.
+2. If a guard is found that will evaluate to false on localhost (e.g. no license key, not a live site), mark that criterion as `CANNOT_VERIFY` immediately.
+3. Do not attempt browser validation for a `CANNOT_VERIFY` criterion — it will produce a false result.
+4. In the report, name the specific guard and its file:line.
+
+**What is still verifiable with a guard in place:**
+- Structural claims: hook is registered (`get_subscribed_events()` shows it), file exists, method exists, CSS class is present in the template source — these do not require the guard to pass.
+- Negative claims: element is *absent* — absence is verifiable even when the guarded path is blocked.
+
+If no guards are found, proceed normally.
+
+---
+
+### Step 4 — Execute
 
 Run each selected strategy. For every acceptance criterion:
 - State which strategy you used
 - State what you did (command run, URL navigated, test read)
 - State what you observed
-- Conclude PASS, FAIL, or PARTIAL with a one-line reason
+- Conclude PASS, FAIL, PARTIAL, or CANNOT_VERIFY with a one-line reason
 
 ---
 
-### Step 3b — Smoke test (non-regression)
+### Step 4b — Smoke test (non-regression)
 
 After validating the acceptance criteria, do a brief smoke test of the main happy paths adjacent to the changed area:
 
@@ -168,13 +195,13 @@ belong in the Acceptance Criteria table, not in Smoke Tests.
 
 ---
 
-### Step 4 — Report
+### Step 5 — Report
 
 Produce the test report in the format below. Be specific — "tested locally" is not evidence.
 
 ---
 
-### Step 5b — Post the report as a PR comment
+### Step 6b — Post the report as a PR comment
 
 After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
 
@@ -238,15 +265,16 @@ After producing the report, return the following JSON object to the orchestrator
 
 ```json
 {
-  "overall": "PASS|FAIL|PARTIAL",
+  "overall": "PASS|FAIL|PARTIAL|CANNOT_VERIFY",
   "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
   "pr_commented": true,
   "criteria_results": [
     {
       "criterion": "acceptance criterion text",
       "method": "strategy used",
-      "result": "PASS|FAIL|PARTIAL",
-      "evidence": "what was observed"
+      "result": "PASS|FAIL|PARTIAL|CANNOT_VERIFY",
+      "evidence": "what was observed",
+      "blocking_guard": "function name and file:line that prevents verification — empty string if not applicable"
     }
   ],
   "smoke_tests": [
@@ -266,10 +294,12 @@ After producing the report, return the following JSON object to the orchestrator
 
 The orchestrator will ask the user to classify any unexpected finding before routing. COULD_HAVE and NICE_TO_HAVE recommendations are dispatched as non-blocking follow-up tickets.
 
+`overall` is `CANNOT_VERIFY` only when ALL criteria are CANNOT_VERIFY. If some pass and some are CANNOT_VERIFY, use `PARTIAL`.
+
 ---
 
 ## Boundaries
 
 - ✅ **Always do:** read ticket spec before testing, read full changed files, map every acceptance criterion to a test result, provide concrete evidence for every result
 - ⚠️ **Ask first:** if no ticket spec or acceptance criteria are available; if the local server is unreachable
-- 🚫 **Never do:** modify any plugin code or files, skip acceptance criteria without noting them, report PASS without evidence, conflate "no test failures" with "acceptance criteria met"
+- 🚫 **Never do:** modify any plugin code or files, skip acceptance criteria without noting them, report PASS without evidence, conflate "no test failures" with "acceptance criteria met", use Analysis fallback to return PASS for a rendered-output criterion without first completing the guard pre-flight (Step 3) and confirming no blocking guard exists
