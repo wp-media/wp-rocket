@@ -112,7 +112,7 @@ comparison, and Playwright spec authoring with screenshot evidence.
 
 **Execution:** the qa-engineer agent delegates browser flows to the `e2e-qa-tester`
 sub-agent, which handles Playwright MCP driving, temporary spec authoring under
-`.e2e-temp/`, screenshot publishing via the commit-SHA method, and clean-up.
+`.e2e-temp/`, screenshot publishing via a public GitHub Gist, and clean-up.
 
 The qa-engineer agent itself handles:
 - Strategy A (API / functional validation via curl and WP-CLI)
@@ -123,10 +123,24 @@ For details, read:
 - `.aiassistant/agents/e2e-qa-tester.md` — browser flow execution, spec authoring, screenshot publishing
 
 The extended tier writes Playwright specs to `.e2e-temp/` (gitignored, never committed)
-and screenshots to `.e2e-screenshots/`. Screenshots are temporarily committed to obtain
-a SHA-based raw URL, then removed in a follow-up commit. WP Rocket's permanent E2E suite
-lives in an external repository — nothing in `.e2e-temp/` or `.e2e-screenshots/` is ever
-committed long-term.
+and screenshots to `.e2e-screenshots/`. Screenshots are published to a public GitHub Gist
+to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR comments),
+then the local files are deleted. WP Rocket's permanent E2E suite lives in an external
+repository — nothing in `.e2e-temp/` or `.e2e-screenshots/` is ever committed to this repo.
+
+### Video recording
+
+Playwright MCP does not currently expose a video recording API. Playwright's native `page.video()` / `use: { video: 'on' }` config is available when running Playwright directly (not via MCP). Video recording is therefore **not available in the current Playwright MCP integration**.
+
+If video evidence is needed for a specific investigation, note it as a blocker in the QA report and fall back to sequential screenshots at key steps.
+
+Status: **not implemented** — pending Playwright MCP video support or a migration to direct Playwright CLI execution.
+
+### On-demand promotion to permanent e2e suite
+
+Temporary Playwright specs written during QA (in `.e2e-temp/`) are not currently promoted to the permanent e2e suite. The permanent suite lives in an external repository and requires separate process/tooling alignment.
+
+**Status:** not yet implemented. Needs team discussion before a promotion path is designed.
 
 ---
 

@@ -110,7 +110,7 @@ The `e2e-qa-tester` agent will:
 1. Walk through the UI flows using Playwright MCP
 2. Write temporary Playwright specs (`.e2e-temp/`) for each acceptance criterion
 3. Run those specs against the local environment
-4. Capture screenshots, publish them via the commit-SHA method, then remove all temp files
+4. Capture screenshots, publish them to a public GitHub Gist, then remove all temp files
 5. Return per-criterion results and permanent screenshot URLs
 
 Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
@@ -189,6 +189,12 @@ Produce the test report in the format below. Be specific — "tested locally" is
 
 After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
 **Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
+
+**Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
+```bash
+EXISTING=$(gh pr view <PR_number> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
+```
+If a QA comment already exists on this PR from a previous run, do not post a duplicate — instead note the existing URL in the `existing_comment_url` JSON field and post only a short follow-up comment with the delta (what changed since the last run).
 
 Emit an event to handle:
 ```json
@@ -281,6 +287,7 @@ After producing the report, return the following JSON object to the orchestrator
   ],
   "tests_authored": ["list of new test files written and committed, or empty array"],
   "pr_comment_url": "URL of the posted QA report comment",
+  "existing_comment_url": "URL of a pre-existing QA Report comment found before posting (update mode), or empty string",
   "blockers": ["criterion: what failed — what to fix"],
   "recommendations": [
     {
