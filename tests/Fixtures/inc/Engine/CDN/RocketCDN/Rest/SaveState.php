@@ -1,9 +1,9 @@
 <?php
 
 return [
-	'shouldPersistPausedStateAsOne'              => [
+	'shouldPersistPausedStateAsOneForRocketcdn'  => [
 		'config'   => [
-			'params'          => [ 'paused' => 1 ],
+			'params'          => [ 'paused' => 1, 'driver' => 'rocketcdn' ],
 			'preset_options'  => [],
 			'unauthenticated' => false,
 		],
@@ -11,9 +11,29 @@ return [
 			'paused_response' => 1,
 		],
 	],
-	'shouldPersistPausedStateAsZero'             => [
+	'shouldPersistPausedStateAsZeroForRocketcdn' => [
 		'config'   => [
-			'params'          => [ 'paused' => 0 ],
+			'params'          => [ 'paused' => 0, 'driver' => 'rocketcdn' ],
+			'preset_options'  => [],
+			'unauthenticated' => false,
+		],
+		'expected' => [
+			'paused_response' => 0,
+		],
+	],
+	'shouldPersistPausedStateAsOneForByocdn'     => [
+		'config'   => [
+			'params'          => [ 'paused' => 1, 'driver' => 'byocdn' ],
+			'preset_options'  => [],
+			'unauthenticated' => false,
+		],
+		'expected' => [
+			'paused_response' => 1,
+		],
+	],
+	'shouldPersistPausedStateAsZeroForByocdn'    => [
+		'config'   => [
+			'params'          => [ 'paused' => 0, 'driver' => 'byocdn' ],
 			'preset_options'  => [],
 			'unauthenticated' => false,
 		],
@@ -23,7 +43,7 @@ return [
 	],
 	'shouldReturnForbiddenWhenUnauthenticated'   => [
 		'config'   => [
-			'params'          => [ 'paused' => 1 ],
+			'params'          => [ 'paused' => 1, 'driver' => 'rocketcdn' ],
 			'preset_options'  => [],
 			'unauthenticated' => true,
 		],

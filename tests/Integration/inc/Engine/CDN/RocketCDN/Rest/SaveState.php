@@ -48,7 +48,7 @@ class Test_SaveState extends RESTfulTestCase {
 		wp_set_current_user( 0 );
 
 		$settings = $this->options_api->get( 'settings', [] );
-		unset( $settings['cdn'] );
+		unset( $settings['cdn'], $settings['byocdn'], $settings['rocketcdn'] );
 		$this->options_api->set( 'settings', $settings );
 		parent::tear_down();
 	}
@@ -93,9 +93,10 @@ class Test_SaveState extends RESTfulTestCase {
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
 				case 'paused_response':
+					$driver   = $config['params']['driver'];
 					$settings = $this->options_api->get( 'settings', [] );
 					$this->assertSame( $value, $response['paused'] );
-					$this->assertSame( $value, (int) ( $settings['cdn'] ?? 0 ) );
+					$this->assertSame( $value, (int) ( $settings[ $driver ] ?? 0 ) );
 					break;
 				case 'code':
 					$this->assertSame( $value, $response['code'] );

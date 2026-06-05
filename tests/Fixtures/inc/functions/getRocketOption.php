@@ -3,7 +3,7 @@
 return [
 	'settings' => [
 		'automatic_cleanup_frequency' => 'weekly',
-		'cdn'                         => 1,
+		'cdn'                         => 0,
 		'cdn_cnames'                  => [ 'https://rocketcdn.me' ],
 		'cdn_zone'                    => [ 'all' ],
 		'do_cloudflare'               => 1,
@@ -20,7 +20,7 @@ return [
 		[
 			'option'   => 'cdn',
 			'default'  => 0,
-			'expected' => 1,
+			'expected' => (bool) 0,
 		],
 		[
 			'option'   => 'cdn_cnames',

@@ -67,6 +67,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		
 		parent::tear_down();
 		self::uninstallPreconnectDomainsTable();
 
@@ -84,6 +86,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
+		if ( isset($settings['cdn']) && $settings['cdn'] ) {
+			add_filter( 'pre_get_rocket_option_cdn', '__return_true' );
+		}
+
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
 			$this->assertTrue( true ); // @phpstan-ignore-line
