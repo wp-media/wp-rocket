@@ -179,11 +179,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @param string|null $cdn CDN Option.
+	 * @param mixed $cdn CDN Option.
 	 *
 	 * @return mixed
 	 */
-	public function maybe_pause_cdn_for_inactive_subscription( ?string $cdn ) {
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
 		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
 	}
 }
