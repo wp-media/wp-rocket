@@ -36,18 +36,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_cdn_driver_sections'   => [
+			'rocket_cdn_driver_sections'      => [
 				[ 'add_rocketcdn_paid_section' ],
 				[ 'add_rocketcdn_free_section' ],
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'rocket_cdn_free_page_list'    => 'render_built_in_page_list',
-			'rocket_cdn_free_page_rows'    => 'render_built_in_page_rows',
-			'rocket_cdn_driver_tabs'       => 'render_cdn_driver_tabs',
-			'rocket_cdn_settings_fields'   => 'add_exclusions_fields',
-			'rocket_display_rocketcdn_cta' => 'maybe_display_rocketcdn_cta',
-			'rocket_cdn_tab_badge'         => 'maybe_hide_cdn_tab_badge',
+			'rocket_cdn_free_page_list'       => 'render_built_in_page_list',
+			'rocket_cdn_free_page_rows'       => 'render_built_in_page_rows',
+			'rocket_cdn_driver_tabs'          => 'render_cdn_driver_tabs',
+			'rocket_cdn_settings_fields'      => 'add_exclusions_fields',
+			'rocket_display_rocketcdn_cta'    => 'maybe_display_rocketcdn_cta',
+			'rocket_cdn_tab_badge'            => 'maybe_hide_cdn_tab_badge',
+			'rocket_byocdn_status_indicator'  => 'get_byocdn_status_indicator_data',
+			'pre_get_rocket_option_rocketcdn' => 'maybe_pause_rocketcdn_for_inactive_subscription',
 		];
 	}
 
@@ -171,5 +173,29 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_hide_cdn_tab_badge( string $badge ): string {
 		return $this->controller->maybe_hide_cdn_tab_badge( $badge );
+	}
+
+	/**
+	 * Returns the status indicator data for the Other CDN section.
+	 *
+	 * @since 3.22
+	 *
+	 * @return array
+	 */
+	public function get_byocdn_status_indicator_data(): array {
+		return $this->controller->get_byocdn_status_indicator_data();
+	}
+
+	/**
+	 * Pauses the CDN for inactive subscriptions.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn CDN Option.
+	 *
+	 * @return mixed
+	 */
+	public function maybe_pause_rocketcdn_for_inactive_subscription( $cdn ) {
+		return $this->controller->maybe_pause_rocketcdn_for_inactive_subscription( $cdn );
 	}
 }
