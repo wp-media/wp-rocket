@@ -103,7 +103,7 @@ class Context {
 	 * @return bool True if byocdn is paused, false otherwise.
 	 */
 	public function is_byocdn_paused(): bool {
-		return ! (bool) $this->options->get( self::BYOCDN_TYPE, false );
+		return ! (bool) $this->options->get( self::BYOCDN_TYPE, 0 );
 	}
 
 	/**
@@ -112,7 +112,7 @@ class Context {
 	 * @return bool True if rocketcdn is paused, false otherwise.
 	 */
 	public function is_rocketcdn_paused(): bool {
-		return ! (bool) $this->options->get( self::ROCKETCDN_TYPE, false );
+		return ! (bool) $this->options->get( self::ROCKETCDN_TYPE, 0 );
 	}
 
 	/**
