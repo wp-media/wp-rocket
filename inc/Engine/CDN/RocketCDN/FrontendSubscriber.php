@@ -58,8 +58,8 @@ class FrontendSubscriber implements Subscriber_Interface {
 			'pre_get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
 			'pre_get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
 			'pre_get_rocket_option_cdn'        => [
-				[ 'maybe_pause_resume_byocdn' ],
-				[ 'maybe_pause_resume_rocketcdn' ],
+				[ 'maybe_pause_resume_byocdn', 9 ],
+				[ 'maybe_pause_resume_rocketcdn', 9 ],
 			],
 		];
 	}
