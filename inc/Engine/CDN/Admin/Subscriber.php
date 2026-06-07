@@ -9,6 +9,21 @@ use WP_Rocket\Engine\Admin\Settings\Settings as AdminSettings;
 
 class Subscriber implements Subscriber_Interface {
 	/**
+	 * Settings instance.
+	 *
+	 * @var Settings
+	 */
+	private $settings;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Settings $settings Settings instance.
+	 */
+	public function __construct( Settings $settings ) {
+		$this->settings = $settings;
+	}
+	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
@@ -23,6 +38,14 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_input_sanitize'         => [
 				[ 'sanitize_cdn_type_option', 10, 2 ],
 				[ 'sanitize_cdn_driver_options', 10, 2 ],
+			],
+			'rocket_first_install_options'  => [
+				[ 'add_cdn_type_option' ],
+				[ 'add_cdn_driver_options_on_first_install' ],
+			],
+			'wp_rocket_upgrade'             => [
+				[ 'add_cdn_driver_options_on_update', 10, 2 ],
+				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
 		];
 	}
@@ -112,5 +135,56 @@ class Subscriber implements Subscriber_Interface {
 		$input[ Context::ROCKETCDN_TYPE ] = $settings->sanitize_checkbox( $input, Context::ROCKETCDN_TYPE );
 
 		return $input;
+	}
+
+	/**
+	 * Adds CDN driver options to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_driver_options_on_first_install( array $options ): array {
+		return $this->settings->add_cdn_driver_options_on_first_install( $options );
+	}
+
+	/**
+	 * Sets the CDN driver options when updating from a version prior to 3.22.0.
+	 *
+	 * @param string $new_version The new plugin version.
+	 * @param string $old_version The previous plugin version.
+	 * @return void
+	 */
+	public function add_cdn_driver_options_on_update( string $new_version, string $old_version ): void {
+		$this->settings->add_cdn_driver_options_on_update( $new_version, $old_version );
+	}
+
+	/**
+	 * Add cdn_type option when upgrading from a version older than 3.22
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_type_option( string $new_version, string $old_version ): void {
+		$this->settings->on_update_add_cdn_type_option( $new_version, $old_version );
+	}
+
+	/**
+	 * Adds cdn_type option to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_type_option( array $options ): array {
+		return $this->settings->add_cdn_type_option( $options );
 	}
 }
