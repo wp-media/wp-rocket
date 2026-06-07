@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Admin;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

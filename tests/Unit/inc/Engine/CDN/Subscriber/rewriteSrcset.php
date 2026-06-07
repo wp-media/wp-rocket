@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
@@ -48,7 +47,6 @@ class Test_RewriteSrcset extends TestCase {
 		$subscriber = new Subscriber(
 			$this->options,
 			$this->cdn,
-			Mockery::mock( Options::class ),
 			$subscription_controller,
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),

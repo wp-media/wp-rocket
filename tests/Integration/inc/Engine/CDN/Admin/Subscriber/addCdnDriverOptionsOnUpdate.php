@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Admin\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::add_cdn_driver_options_on_update
+ * @covers \WP_Rocket\Engine\CDN\Admin\Subscriber::add_cdn_driver_options_on_update
  * @group  CDN
  * @group AdminOnly
  */

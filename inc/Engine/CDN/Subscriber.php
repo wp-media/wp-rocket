@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\{
 	Context,
@@ -27,13 +26,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @var Options_Data
 	 */
 	private $options;
-
-	/**
-	 * Options instance.
-	 *
-	 * @var Options
-	 */
-	private $options_api;
 
 	/**
 	 * CDN instance
@@ -75,7 +67,6 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param Options_Data           $options WP Rocket Options_Data instance.
 	 * @param CDN                    $cdn     CDN instance.
-	 * @param Options                $options_api     Options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @param Cache                  $cache   Cache instance.
 	 * @param RocketCDNQuery         $query RocketCDN pages query.
@@ -84,7 +75,6 @@ class Subscriber implements Subscriber_Interface {
 	public function __construct(
 		Options_Data $options,
 		CDN $cdn,
-		Options $options_api,
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
@@ -92,7 +82,6 @@ class Subscriber implements Subscriber_Interface {
 	) {
 		$this->options                 = $options;
 		$this->cdn                     = $cdn;
-		$this->options_api             = $options_api;
 		$this->driver                  = $driver;
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
