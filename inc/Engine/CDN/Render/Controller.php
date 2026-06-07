@@ -472,7 +472,7 @@ class Controller extends Abstract_Render {
 	 * @since 3.22
 	 *
 	 * @return array {
-	 *     @type bool   $is_active          Always true; the CDN entry exists.
+	 *     @type bool   $is_active          True when cdn_cnames is non-empty.
 	 *     @type string $status_text        Current status label (active or paused).
 	 *     @type string $active_status_text Label shown when the CDN is active.
 	 *     @type string $paused_status_text Label shown when the CDN is paused.
