@@ -263,7 +263,7 @@
 				} ).then( () => {
 					button.disabled = false;
 
-					// Update hidden input value on success; Preserve state when submiting settings.
+					// Update hidden input value on success; Preserve state when submitting settings.
 					if ('byocdn' === cdnDriver) {
 						byocdnInput.value = paused;
 					}
