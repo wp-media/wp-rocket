@@ -5,7 +5,6 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\CDN\Drivers\{
 	Custom,
 	DriverFactory,
@@ -30,7 +29,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn',
 		'cdn_context',
 		'cdn_subscriber',
-		'cdn_admin_subscriber',
 		'cdn_render_controller',
 		'cdn_render_subscriber',
 		'cdn_driver_factory',
@@ -115,7 +113,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn_driver',
 				]
 			);
-		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
 
 		// CDN Render controller.
 		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
