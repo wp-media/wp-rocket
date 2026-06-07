@@ -324,7 +324,7 @@ class Controller extends Abstract_Render {
 			'sanitize_callback' => 'sanitize_textarea',
 		];
 
-		if( $this->is_cdn_paused() ) {
+		if ( $this->is_cdn_paused() ) {
 			foreach ( array_keys( $exclusion_fields ) as $field ) {
 				$exclusion_fields[ $field ]['class'][] = 'wpr-cdn-disabled';
 			}
