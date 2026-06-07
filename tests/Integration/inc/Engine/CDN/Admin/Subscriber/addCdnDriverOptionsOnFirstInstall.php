@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 /**
  * @covers \WP_Rocket\Engine\CDN\Subscriber::add_cdn_driver_options_on_first_install
  * @group  CDN
+ * @group AdminOnly
  */
 class Test_AddCdnDriverOptionsOnFirstInstall extends TestCase {
 

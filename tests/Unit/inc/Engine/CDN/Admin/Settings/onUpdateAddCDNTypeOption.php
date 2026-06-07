@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Admin\Settings;
 
 use Mockery;
 use WP_Rocket\Admin\Options;
@@ -11,36 +11,31 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
-use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Engine\CDN\Admin\Settings;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\Subscriber::on_update_add_cdn_type_option
+ * Test class covering \WP_Rocket\Engine\CDN\Admin\Settings::on_update_add_cdn_type_option
  *
  * @group  CDN
  */
-class Test_UpgradeCDN extends TestCase {
-	private $cdn;
+class Test_OnUpdateAddCDNTypeOption extends TestCase {
 	private $options;
 
 	private $options_api;
-	private $subscriber;
+	private $settings;
 	private $subscription_controller;
 
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->cdn                     = Mockery::mock( CDN::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->options_api             = Mockery::mock( Options::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 
-		$this->subscriber = new Subscriber(
+		$this->settings = new Settings(
 			$this->options,
-			$this->cdn,
 			$this->options_api,
 			$this->subscription_controller,
-			Mockery::mock( Cache::class ),
-			$this->createMock( RocketCDN::class )
 		);
 	}
 
@@ -58,6 +53,15 @@ class Test_UpgradeCDN extends TestCase {
 						return null;
 					}
 				);
+
+		if ( ! $expected['should_update'] ) {
+			$this->subscription_controller->expects()->has_active_subscription()->never();
+			$this->options_api->expects()->get()->never();
+			$this->options_api->expects()->set()->never();
+
+			$this->settings->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
+			return;
+		}
 
 		$this->subscription_controller->expects()->has_active_subscription()
 			->andReturn( $config['has_active_subscription'] ?? false );
@@ -78,6 +82,6 @@ class Test_UpgradeCDN extends TestCase {
 			->expects()
 			->set( 'settings', $expected['options'] );
 
-		$this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
+		$this->settings->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
 	}
 }
