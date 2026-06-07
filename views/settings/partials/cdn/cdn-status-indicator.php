@@ -61,7 +61,7 @@ if ( ! $data['is_active'] ) {
 			<?php if ( ! $rocket_hide_pause_btn ) : ?>
 				<button 
 					type="button" class="wpr-cdn-pause <?php echo $data['is_paused'] ? 'wpr-cdn-pause--paused' : ''; ?>" 
-					aria-pressed="false" 
+					aria-pressed="<?php echo $data['is_paused'] ? 'true' : 'false'; ?>" 
 					<?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>
 					data-cdn-driver="<?php echo esc_attr( $data['cdn_type'] ); ?>"
 				>
