@@ -60,6 +60,7 @@ use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServicePr
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
+use WP_Rocket\Engine\CDN\Admin\ServiceProvider as CDNAdminServiceProvider;
 
 /**
  * Plugin Manager.
@@ -206,6 +207,7 @@ class Plugin {
 		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
 		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
+		$this->container->addServiceProvider( new CDNAdminServiceProvider() );
 
 		$subscribers = [
 			'beacon',
@@ -235,6 +237,7 @@ class Plugin {
 			'preload_fonts_admin_subscriber',
 			'ri_subscriber',
 			'ri_settings_subscriber',
+			'cdn_admin_subscriber',
 		];
 
 		return $subscribers;
@@ -314,7 +317,6 @@ class Plugin {
 		$common_subscribers = [
 			'license_subscriber',
 			'cdn_subscriber',
-			'cdn_admin_subscriber',
 			'cdn_render_subscriber',
 			'rocketcdn_frontend_subscriber',
 			'critical_css_subscriber',
