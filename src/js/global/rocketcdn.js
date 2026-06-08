@@ -10,6 +10,7 @@
 
 	// Register early so we catch the wpr-cdn-state-change event.
 	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
+	document.addEventListener( 'rocketCDNBannerAutoExpanded', () => trackRocketCDNUpsellBannerExpanded('auto_limit_reached') );
 
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
@@ -85,6 +86,10 @@
 			ctaToggle.forEach( ( el ) => {
 				el.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
 			} );
+
+			if( ! isCollapsed ) {
+				trackRocketCDNUpsellBannerExpanded( 'manual' );
+			}
 		}
 
 		if ( ctaToggle.length && bigCTA ) {
@@ -105,6 +110,7 @@
 		// Track banner view when user navigates to CDN tab.
 		window.addEventListener( 'hashchange', () => {
 			maybeTrackBannerView();
+			trackCDNModeSelection();
 		} );
 
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
@@ -436,7 +442,7 @@
 			mixpanel.identify(rocket_mixpanel_data.user_id);
 		}
 
-		mixpanel.track('RocketCDN CDN Mode', {
+		mixpanel.track('RocketCDN Mode', {
 			context: rocket_mixpanel_data.context,
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
@@ -529,6 +535,18 @@
 			state:     is_collapsed ? 'collapsed' : 'opened',
 			page_name: hash,
 			path:      basePath + hash
+		} );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner expanded with Mixpanel.
+	 * 
+	 * @param {string} trigger 'manual' by default. 
+	 */
+	function trackRocketCDNUpsellBannerExpanded( trigger ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Expanded', {
+			location: window.location.hash,
+			trigger: trigger
 		} );
 	}
 
