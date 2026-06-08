@@ -482,7 +482,7 @@ class Controller extends Abstract_Render {
 
 			/**
 			 * Fires when the CDN state is changed to paused due to an inactive or invalid subscription.
-			 * 
+			 *
 			 * @param string $new_state The new state of the CDN, e.g. 'paused'.
 			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_pause'.
 			 * @since 3.22
@@ -497,7 +497,7 @@ class Controller extends Abstract_Render {
 
 			/**
 			 * Fires when the CDN state is changed to active.
-			 * 
+			 *
 			 * @param string $new_state The new state of the CDN, e.g. 'active'.
 			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_resume'.
 			 * @since 3.22
