@@ -321,7 +321,8 @@ class Rest extends WP_REST_Controller {
 		$this->clean_url_cache( $url );
 
 		$pages_count = $this->query->get_total_count( false );
-		$source      = $request->get_param( 'source' ) ?: 'manual';
+		$source_raw  = $request->get_param( 'source' );
+		$source      = is_string( $source_raw ) && '' !== $source_raw ? sanitize_key( $source_raw ) : 'manual';
 		do_action( 'rocket_rocketcdn_page_added', $url, $pages_count, $source );
 
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
@@ -414,9 +415,9 @@ class Rest extends WP_REST_Controller {
 	 * @return WP_REST_Response
 	 */
 	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
-		$paused = $request->get_param( 'paused' );
+		$paused = (int) $request->get_param( 'paused' );
 
-		$this->options->set( 'cdn', (int) $paused );
+		$this->options->set( 'cdn', $paused );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		$status = 0 === $paused ? 'paused' : 'active';
@@ -426,7 +427,7 @@ class Rest extends WP_REST_Controller {
 
 		return new WP_REST_Response(
 			[
-				'paused' => (int) $this->options->get( 'cdn', 0 ),
+				'paused' => $this->options->get( 'cdn', 0 ),
 			],
 			200
 		);

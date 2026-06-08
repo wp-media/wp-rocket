@@ -433,26 +433,24 @@
 			return;
 		}
 
-		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
-
 		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
 		
-		if( ! activeTab ) {
+		if ( ! activeTab ) {
 			return;
 		}
 
-		const cdnMode = activeTab.getAttribute('data-cdn-mode')
+		const cdnMode = activeTab.getAttribute( 'data-cdn-mode' )
 
 		if( ! cdnMode ) {
 			return;
 		} 
 
-		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
 			return;
 		}
 
 		// Check if user has opted in
-		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+		if ( typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0' ) {
 			return;
 		}
 
