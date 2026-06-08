@@ -102,18 +102,15 @@ required plugin — results would be invalid.
 
 ---
 
-### Step 2c — License pre-flight check
+### Step 2c — Settings page pre-flight check
 
-Before running any test that exercises a licensed feature, verify WP Rocket is activated with a valid license:
+Confirm the WP Rocket settings page is accessible (i.e. the plugin is installed and licensed):
 
 ```bash
-bin/wp option get wp_rocket_settings --path=/var/www/html 2>/dev/null | python3 -c "import sys,json; d=json.load(sys.stdin); print('license:', d.get('consumer_key','MISSING'))"
+curl -s -o /dev/null -w "%{http_code}" "http://localhost:8888/wp-admin/options-general.php?page=wprocket"
 ```
 
-If `consumer_key` is empty or `MISSING`:
-- Tests that rely on licensed features (caching, CDN, critical CSS, etc.) **must** return `CANNOT_VERIFY` with reason "WP Rocket license not configured — licensed features untestable".
-- Tests that are purely UI/structural (settings page renders, toggle changes saved) may proceed.
-- Do NOT mark licensed-feature tests as PASS without a valid license — that would be a false positive.
+If the response is not `200`, WP Rocket is either not installed or not licensed — abort and report to `qa-engineer` as an environment blocker. Without a valid license the plugin shows an activation wall and no test results would be meaningful.
 
 ---
 
@@ -285,7 +282,7 @@ After the prose report, return the following JSON object to `qa-engineer`:
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. a missing license blocks every licensed-feature criterion). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
+`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. the settings page is unreachable or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
 
 ## Constraints
 
