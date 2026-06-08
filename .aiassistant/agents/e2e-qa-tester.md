@@ -15,12 +15,13 @@ WP Rocket's permanent E2E suite lives in an **external repository**. Any Playwri
 - **Local URL:** `http://localhost:8888`
 - **Admin login:** `admin` / `password`
 - **Boot the env:** `bash bin/dev-up.sh` (idempotent — safe to run if already up)
-- **Screenshots root:** `.e2e-screenshots/` (gitignored locally; create if missing)
-- **Temp spec root:** `.e2e-temp/` (gitignored locally; never committed)
+- **Temp directory:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/` where `{N}` is extracted from the PR's linked issue (see Step 2a)
+- **Screenshots root:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-screenshots/` (created if missing)
+- **Temp spec root:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` (never committed)
 - **Screenshot publishing:** After all screenshots for a PR are taken, upload them to a public GitHub Gist to get stable, publicly accessible raw URLs:
   ```bash
   # Upload all screenshots in one shot — returns the gist HTML URL
-  GIST_URL=$(gh gist create --public .e2e-screenshots/*.png --json url -q .url)
+  GIST_URL=$(gh gist create --public "$TEMP_DIR"/.e2e-screenshots/*.png --json url -q .url)
   GIST_ID="${GIST_URL##*/}"
   GIST_USER=$(gh api user --jq .login)
 
@@ -58,9 +59,27 @@ If the PR fixes a reported bug (has a linked issue with "bug" label or "Fixes #N
 
 The "How to test" section of the PR body is your guide. Treat the original bug description as a test case that must be shown to fail first, then pass.
 
-### Step 2 — Bring up the environment
+### Step 2 — Set up temp directory and bring up the environment
 
-**Branch verification:** Before booting, confirm you are on the correct feature branch:
+**Step 2a — Extract issue number and create temp directory:**
+
+Extract the linked issue number from the PR and set up the centralized temp directory:
+
+```bash
+PR_NUMBER=<N>  # from qa-engineer or user input
+ISSUE_NUMBER=$(gh pr view $PR_NUMBER --json body -q .body 2>/dev/null | grep -oP "Fixes #\K[0-9]+" | head -1)
+
+if [ -z "$ISSUE_NUMBER" ]; then
+  echo "WARNING: Could not extract issue number from PR body. Using PR number as fallback."
+  ISSUE_NUMBER=$PR_NUMBER
+fi
+
+TEMP_DIR=".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}"
+mkdir -p "$TEMP_DIR/.e2e-screenshots" "$TEMP_DIR/.e2e-temp"
+export TEMP_DIR ISSUE_NUMBER
+```
+
+**Step 2b — Branch verification:** Before booting, confirm you are on the correct feature branch:
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
 EXPECTED_BRANCH=$(gh pr view <N> --repo wp-media/wp-rocket --json headRefName --jq .headRefName 2>/dev/null)
@@ -77,7 +96,7 @@ bash bin/dev-up.sh
 
 Confirm WordPress is reachable at `http://localhost:8888`. If it is not, abort and report the environment as a blocker to `qa-engineer`.
 
-### Step 2b — Install required third-party plugins
+**Step 2c — Install required third-party plugins**
 
 Read the PR's "How to test" section and the linked issue for any mention of a third-party
 plugin that must be present. If one is required:
@@ -102,7 +121,7 @@ required plugin — results would be invalid.
 
 ---
 
-### Step 2c — License pre-flight check
+**Step 2d — License pre-flight check**
 
 Before testing, verify WP Rocket is licensed:
 
@@ -117,7 +136,7 @@ If the check fails (no `consumer_key` in settings), abort and report to `qa-engi
 ### Step 3 — Drive the flow manually with Playwright MCP
 
 Walk through the PR's "How to test" steps one by one in the browser. At each meaningful checkpoint:
-- Take a screenshot to `.e2e-screenshots/<pr-or-feature>-<step>.png`.
+- Take a screenshot to `$TEMP_DIR/.e2e-screenshots/<pr-or-feature>-<step>.png`.
 - Capture console errors and failed network requests.
 - Record actual vs. expected.
 
@@ -127,9 +146,9 @@ If the flow exposes a bug, write a clear repro: exact URL, exact clicks, exact o
 
 ### Step 4 — Write temporary Playwright specs
 
-Once a flow is green manually, write a deterministic spec to `.e2e-temp/` that captures what was validated:
+Once a flow is green manually, write a deterministic spec to `$TEMP_DIR/.e2e-temp/` that captures what was validated:
 
-**File naming:** `.e2e-temp/<feature>-<criterion-slug>.spec.js`
+**File naming:** `$TEMP_DIR/.e2e-temp/<feature>-<criterion-slug>.spec.js`
 
 **Rules:**
 - Use `@playwright/test` (CommonJS `require`)
@@ -150,14 +169,14 @@ test('<criterion description>', async ({ page }) => {
   await page.goto('http://localhost:8888/wp-admin/options-general.php?page=wprocket');
   // interactions
   await expect(page.locator('...')).toBeVisible();
-  await page.screenshot({ path: '.e2e-screenshots/<feature>-<step>.png' });
+  await page.screenshot({ path: process.env.TEMP_DIR + '/.e2e-screenshots/<feature>-<step>.png' });
 });
 ```
 
 ### Step 5 — Run the specs
 
 ```bash
-npx --yes playwright test .e2e-temp/ --reporter=line 2>&1
+npx --yes playwright test "$TEMP_DIR/.e2e-temp/" --reporter=line 2>&1
 ```
 
 If `npx playwright` is unavailable, skip this step — the Playwright MCP validation from Step 3 is sufficient evidence.
@@ -184,7 +203,7 @@ the content lives in the PR comment.
 
 ```bash
 # Collect spec content into a variable (or a temp string in your context)
-for f in .e2e-temp/*.spec.js; do
+for f in "$TEMP_DIR"/.e2e-temp/*.spec.js; do
   echo "=== $f ===" && cat "$f"
 done
 ```
@@ -196,10 +215,10 @@ report.
 **6c — Remove temporary files:**
 ```bash
 # Screenshots were published to a public gist — local files are no longer needed
-rm -rf .e2e-screenshots/
+rm -rf "$TEMP_DIR/.e2e-screenshots/"
 
 # Spec files were never committed — just delete them locally
-rm -rf .e2e-temp/
+rm -rf "$TEMP_DIR/.e2e-temp/"
 ```
 
 **6d — Duplicate / re-run comment check (before posting the report):**
@@ -277,7 +296,7 @@ After the prose report, return the following JSON object to `qa-engineer`:
   "specs_run": true,
   "specs_cleaned_up": true,
   "specs_content": [
-    { "filename": ".e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
+    { "filename": ".TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
   ]
 }
 ```
@@ -286,6 +305,6 @@ After the prose report, return the following JSON object to `qa-engineer`:
 
 ## Constraints
 
-- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2); take screenshots at each checkpoint; publish screenshots to a public gist before deleting them; check for an existing QA Report comment before posting (Step 6d); clean up all temp files; uninstall any plugins you installed in Step 2b
+- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist before deleting them; check for an existing QA Report comment before posting (Step 6d); clean up all temp files; uninstall any plugins you installed in Step 2c
 - ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
-- 🚫 **Never do:** commit `.e2e-temp/` spec files to the repository (not even temporarily); modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave `.e2e-screenshots/` or `.e2e-temp/` on the branch after the run; install plugins not explicitly required by the issue
+- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave any temp files under the issue directory after the run; install plugins not explicitly required by the issue

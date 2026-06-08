@@ -112,7 +112,7 @@ comparison, and Playwright spec authoring with screenshot evidence.
 
 **Execution:** the qa-engineer agent delegates browser flows to the `e2e-qa-tester`
 sub-agent, which handles Playwright MCP driving, temporary spec authoring under
-`.e2e-temp/`, screenshot publishing via a public GitHub Gist, and clean-up.
+`.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`, screenshot publishing via a public GitHub Gist, and clean-up.
 
 The qa-engineer agent itself handles:
 - Strategy A (API / functional validation via curl and WP-CLI)
@@ -122,11 +122,11 @@ For details, read:
 - `.aiassistant/agents/qa-engineer.md` — strategy selection and report format
 - `.aiassistant/agents/e2e-qa-tester.md` — browser flow execution, spec authoring, screenshot publishing
 
-The extended tier writes Playwright specs to `.e2e-temp/` (gitignored, never committed)
-and screenshots to `.e2e-screenshots/`. Screenshots are published to a public GitHub Gist
+The extended tier writes Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` (gitignored, never committed)
+and screenshots to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-screenshots/`. Screenshots are published to a public GitHub Gist
 to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR comments),
 then the local files are deleted. WP Rocket's permanent E2E suite lives in an external
-repository — nothing in `.e2e-temp/` or `.e2e-screenshots/` is ever committed to this repo.
+repository — nothing under `.TemporaryItems/Issues/` is ever committed to this repo.
 
 ### Video recording
 
@@ -138,7 +138,7 @@ Status: **not implemented** — pending Playwright MCP video support or a migrat
 
 ### On-demand promotion to permanent e2e suite
 
-Temporary Playwright specs written during QA (in `.e2e-temp/`) are not currently promoted to the permanent e2e suite. The permanent suite lives in an external repository and requires separate process/tooling alignment.
+Temporary Playwright specs written during QA (in `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`) are not currently promoted to the permanent e2e suite. The permanent suite lives in an external repository and requires separate process/tooling alignment.
 
 **Status:** not yet implemented. Needs team discussion before a promotion path is designed.
 

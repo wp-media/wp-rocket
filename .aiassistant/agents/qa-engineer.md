@@ -108,7 +108,7 @@ Delegate to the `e2e-qa-tester` agent. Provide:
 
 The `e2e-qa-tester` agent will:
 1. Walk through the UI flows using Playwright MCP
-2. Write temporary Playwright specs (`.e2e-temp/`) for each acceptance criterion
+2. Write temporary Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` for each acceptance criterion
 3. Run those specs against the local environment
 4. Capture screenshots, publish them to a public GitHub Gist, then remove all temp files
 5. Return per-criterion results and permanent screenshot URLs
