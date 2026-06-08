@@ -197,13 +197,9 @@ After generating the report, post it as a PR comment so it is immediately visibl
 **Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
 **Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
-```bash
-EXISTING=$(gh pr view <PR_number> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
-```
-**Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
 
 ```bash
-EXISTING=$(gh pr view <PR_number> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("**QA:"))] | last | .url // empty')
+EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("**QA:"))] | last | .url // empty')
 ```
 
 If an existing QA comment is found, edit it in place:
@@ -213,7 +209,16 @@ COMMENT_ID="${EXISTING##*/}"
 gh api repos/wp-media/wp-rocket/issues/comments/$COMMENT_ID \
   --method PATCH \
   -f body="$(cat <<'REPORT'
-[full updated report]
+[full report content]
+REPORT
+)"
+```
+
+Otherwise, post a new comment:
+
+```bash
+gh pr comment $PR_NUMBER --body "$(cat <<'REPORT'
+[full report content]
 REPORT
 )"
 ```
@@ -224,14 +229,15 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-Otherwise, post a new comment:
+**After posting (or updating), always write the event to the orchestrator fallback file:**
 
 ```bash
-gh pr comment <PR_number> --body "$(cat <<'REPORT'
-[full report content]
-REPORT
-)"
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
+{"type":"github_operation","operation":"post_comment_to_pr","issue_id":${ISSUE_NUMBER},"pr_number":${PR_NUMBER},"data":{"body":"[full QA report content]","result":"PASS|FAIL|PARTIAL|CANNOT_VERIFY"}}
+EOF
 ```
+
+This allows the orchestrator to detect whether the comment was posted and retry if something went wrong.
 
 ---
 
