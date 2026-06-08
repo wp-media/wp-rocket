@@ -30,6 +30,37 @@
 	}
 
 	/**
+	 * Toggles the disabled state of CDN-related UI elements based on the active driver.
+	 *
+	 * For the 'rocketcdn' driver, targets both shared CDN and RocketCDN sections.
+	 * For all other drivers, only targets the shared CDN section and always enables it.
+	 *
+	 * @param {string}  driver   The CDN driver identifier (e.g. 'rocketcdn').
+	 * @param {boolean} disabled Whether to disable the CDN UI elements.
+	 */
+	function updateRocketCDNElementsState( driver, disabled ) {
+		if ( 'rocketcdn' === driver ) {
+			if ( ! disabled ) {
+				document.querySelectorAll( '.cdn-shared-section, .rocketcdn-shared-section' ).forEach( ( el ) => {
+					el.classList.remove( 'wpr-cdn-disabled' );
+				} );
+
+				return;
+			}
+
+			document.querySelectorAll( '.cdn-shared-section, .rocketcdn-shared-section' ).forEach( ( el ) => {
+				el.classList.add( 'wpr-cdn-disabled' );
+			} );
+
+			return;
+		}
+
+		document.querySelectorAll( '.cdn-shared-section' ).forEach( ( el ) => {
+			el.classList.remove( 'wpr-cdn-disabled' );
+		} );
+	}
+
+	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
 	 *
 	 * @param {number} count Current number of free-tier pages.
@@ -206,9 +237,12 @@
 					path: '/wp-rocket/v1/rocketcdn/driver',
 					method: 'POST',
 					data: { driver: driverValue },
-				} ).then(() => {
+				} ).then((response) => {
 					// Updated hidden input value on success.
 					cdnTypeInput.value = driverValue;
+					
+					// Update the state of RocketCDN specific elements based on the selected driver and response from the server.
+					updateRocketCDNElementsState( driverValue, response.disable_rocket_cdn_elements );
 				} ).catch(() => {
 					// Revert active tab and sections on failure.
 					cdnTypeInput.value = currentValue;
@@ -238,57 +272,62 @@
 	 * swapping the icon via a CSS modifier class.
 	 */
 	function initCdnPauseToggle() {
-		document.querySelectorAll( '.wpr-cdn-pause' ).forEach( ( button ) => {
-			button.addEventListener( 'click', () => {
-				const isPaused = button.classList.toggle( 'wpr-cdn-pause--paused' );
-				button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
-				button.disabled = true;
+		document.addEventListener( 'click', ( event ) => {
+			const button = event.target.closest( '.wpr-cdn-pause' );
+			if ( ! button ) {
+				return;
+			}
 
-				window.wp.apiFetch( {
-					path: '/wp-rocket/v1/rocketcdn/pause',
-					method: 'POST',
-					data: { paused: isPaused ? 0 : 1 },
-				} ).then( () => {
-					button.disabled = false;
+			const isPaused = button.classList.toggle( 'wpr-cdn-pause--paused' );
+			button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
+			button.disabled = true;
 
-					const statusContainer = button.closest( '.wpr-cdn-status' );
-					if ( ! statusContainer ) {
-						return;
-					}
+			window.wp.apiFetch( {
+				path: '/wp-rocket/v1/rocketcdn/pause',
+				method: 'POST',
+				data: { paused: isPaused ? 0 : 1 },
+			} ).then( () => {
+				button.disabled = false;
 
-					statusContainer.classList.toggle( 'wpr-cdn-status--paused', isPaused );
-					statusContainer.classList.toggle(
-						'wpr-cdn-status--long-details',
-						isPaused && '1' === statusContainer.dataset.longDetails
-					);
+				updateRocketCDNElementsState( 'rocketcdn', isPaused );
 
-					const builtIn = statusContainer.closest( '.wpr-cdn-built-in' );
-					if ( builtIn ) {
-						builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
-					}
+				const statusContainer = button.closest( '.wpr-cdn-status' );
+				if ( ! statusContainer ) {
+					return;
+				}
 
-					notifyCdnStateChange();
+				statusContainer.classList.toggle( 'wpr-cdn-status--paused', isPaused );
+				statusContainer.classList.toggle(
+					'wpr-cdn-status--long-details',
+					isPaused && '1' === statusContainer.dataset.longDetails
+				);
 
-					const textKey = isPaused ? 'pausedText' : 'activeText';
+				const builtIn = statusContainer.closest( '.wpr-cdn-built-in' );
+				if ( builtIn ) {
+					builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
+				}
 
-					const statusText = statusContainer.querySelector( '.wpr-cdn-indicator__text' );
+				notifyCdnStateChange();
 
-					if ( statusText && statusContainer.dataset[ textKey ] ) {
-						statusText.textContent = statusContainer.dataset[ textKey ];
-					}
+				const textKey = isPaused ? 'pausedText' : 'activeText';
 
-					const detailsKey = isPaused ? 'pausedDetails' : 'activeDetails';
-					const detailsEl = statusContainer.querySelector( '.wpr-cdn-indicator__details' );
+				const statusText = statusContainer.querySelector( '.wpr-cdn-indicator__text' );
 
-					if ( detailsEl && statusContainer.dataset[ detailsKey ] ) {
-						detailsEl.textContent = statusContainer.dataset[ detailsKey ];
-					}
-				} ).catch( () => {
-					// Revert toggle on failure.
-					button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
-					button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
-					button.disabled = false;
-				} );
+				if ( statusText && statusContainer.dataset[ textKey ] ) {
+					statusText.textContent = statusContainer.dataset[ textKey ];
+				}
+
+				const detailsKey = isPaused ? 'pausedDetails' : 'activeDetails';
+				const detailsEl = statusContainer.querySelector( '.wpr-cdn-indicator__details' );
+
+				if ( detailsEl && statusContainer.dataset[ detailsKey ] ) {
+					detailsEl.textContent = statusContainer.dataset[ detailsKey ];
+				}
+			} ).catch( () => {
+				// Revert toggle on failure.
+				button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
+				button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
+				button.disabled = false;
 			} );
 		} );
 	}
@@ -299,18 +338,19 @@
 	 * the site homepage as a free-tier CDN page.
 	 */
 	function initAddHomepage() {
-		if ( ! addHomeButton ) {
-			return;
-		}
+		document.addEventListener( 'click', ( event ) => {
+			const button = event.target.closest( '#wpr_add_page_component .wpr-cdn-add-page__homepage' );
+			if ( ! button ) {
+				return;
+			}
 
-		addHomeButton.addEventListener( 'click', () => {
-			addHomeButton.disabled = true;
+			button.disabled = true;
 
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pages/homepage',
 				method: 'POST',
 			} ).then( ( response ) => {
-				addHomeButton.classList.add( 'wpr-isHidden' );
+				button.classList.add( 'wpr-isHidden' );
 				updateRocketCtaState( response.count, response.limit );
 
 				if ( response.items_html ) {
@@ -335,7 +375,7 @@
 				// Update status indicator component.
 				updateStatusIndicatorComponent( response.status_indicator_html );
 			} ).catch( () => {
-				addHomeButton.disabled = false;
+				button.disabled = false;
 			} );
 		} );
 	}
@@ -485,6 +525,7 @@
 
 					if ( homepageBtn ) {
 						homepageBtn.classList.remove( 'wpr-isHidden' );
+						homepageBtn.disabled = false;
 					}
 				}
 
