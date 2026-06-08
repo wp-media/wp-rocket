@@ -129,14 +129,6 @@ to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR 
 Local temp files are kept for debugging after the run — they are not deleted. WP Rocket's permanent E2E suite lives in an external
 repository — nothing under `.TemporaryItems/Issues/` is ever committed to this repo.
 
-### Video recording
-
-Playwright MCP does not currently expose a video recording API. Playwright's native `page.video()` / `use: { video: 'on' }` config is available when running Playwright directly (not via MCP). Video recording is therefore **not available in the current Playwright MCP integration**.
-
-If video evidence is needed for a specific investigation, note it as a blocker in the QA report and fall back to sequential screenshots at key steps.
-
-Status: **not implemented** — pending Playwright MCP video support or a migration to direct Playwright CLI execution.
-
 ### On-demand promotion to permanent e2e suite
 
 Temporary Playwright specs written during QA (in `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`) are not currently promoted to the permanent e2e suite. The permanent suite lives in an external repository and requires separate process/tooling alignment.
