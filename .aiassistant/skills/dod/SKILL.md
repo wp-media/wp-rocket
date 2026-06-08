@@ -347,8 +347,8 @@ The Layer 2 JSON result must also be written to disk — see the `## Result file
 Before returning, if you are running Layer 2 (the orchestrator gate), you MUST write the JSON result to disk:
 
 ```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/dod-l2-result.json" <<'EOF'
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/dod-l2-result.json" <<'EOF'
 {
   "overall": "PASS|WARN|FAIL",
   "checks": [...],
