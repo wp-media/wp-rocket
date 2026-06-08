@@ -261,8 +261,9 @@ Return the verdict AND the following JSON object to the orchestrator. The orches
 Before returning, you MUST write the JSON result to disk:
 
 ```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/lead-review-result.json" <<'EOF'
+ISSUE_NUMBER=<N>  # the issue number from your orchestrator inputs
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/lead-review-result.json" <<'EOF'
 {
   "pr_url": "...",
   "verdict": "...",
