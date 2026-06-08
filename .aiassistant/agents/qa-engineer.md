@@ -328,8 +328,8 @@ The orchestrator will ask the user to classify any unexpected finding before rou
 Before returning, you MUST write the JSON result to disk:
 
 ```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/qa-result.json" <<'EOF'
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/qa-result.json" <<'EOF'
 {
   "overall": "...",
   "strategies_used": [...],
