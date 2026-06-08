@@ -110,10 +110,10 @@ The `e2e-qa-tester` agent will:
 1. Walk through the UI flows using Playwright MCP
 2. Write temporary Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` for each acceptance criterion
 3. Run those specs against the local environment
-4. Capture screenshots, publish them to a public GitHub Gist, then remove all temp files
+4. Capture screenshots, publish them to a public GitHub Gist
 5. Return per-criterion results and permanent screenshot URLs
 
-Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
+Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and kept under `.TemporaryItems/` for debugging (never committed to this repository).
 
 Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or `localhost:8888` is still unreachable after the boot script finishes. Document the exact failure.
 
@@ -194,19 +194,22 @@ After generating the report, post it as a PR comment so it is immediately visibl
 ```bash
 EXISTING=$(gh pr view <PR_number> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
 ```
-If a QA comment already exists on this PR from a previous run, do not post a duplicate — instead note the existing URL in the `existing_comment_url` JSON field and post only a short follow-up comment with the delta (what changed since the last run).
+**Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
 
-Emit an event to handle:
-```json
-{
-  "type": "github_operation",
-  "operation": "post_comment_to_pr",
-  "issue_id": "<N>",
-  "pr_number": <PR_NUMBER>,
-  "data": {
-    "body": "[full QA report content as markdown]"
-  }
-}
+```bash
+EXISTING=$(gh pr view <PR_number> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report") or contains("QA:"))] | last | .url // empty')
+```
+
+If an existing QA comment is found, edit it in place:
+
+```bash
+COMMENT_ID="${EXISTING##*/}"
+gh api repos/wp-media/wp-rocket/issues/comments/$COMMENT_ID \
+  --method PATCH \
+  -f body="$(cat <<'REPORT'
+[full updated report]
+REPORT
+)"
 ```
 
 **For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
@@ -215,9 +218,7 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-Emit the event to `.../orchestrator-events.jsonl`. 
-
-Post the comment using:
+Otherwise, post a new comment:
 
 ```bash
 gh pr comment <PR_number> --body "$(cat <<'REPORT'

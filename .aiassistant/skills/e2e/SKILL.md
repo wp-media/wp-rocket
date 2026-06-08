@@ -76,7 +76,8 @@ or implementation agent's execution window.
    mcp__playwright__click({ selector: "#wp-submit" })
    # primary scenario
    mcp__playwright__navigate({ url: "http://localhost:8888/wp-admin/options-general.php?page=wprocket" })
-   mcp__playwright__assert_text({ selector: "...", text: "..." })
+   mcp__playwright__snapshot({})
+   # Inspect snapshot output to confirm expected element/text is present
    ```
 
    Take at most 1–2 screenshots if helpful, but do not publish them at this tier.
@@ -112,7 +113,7 @@ comparison, and Playwright spec authoring with screenshot evidence.
 
 **Execution:** the qa-engineer agent delegates browser flows to the `e2e-qa-tester`
 sub-agent, which handles Playwright MCP driving, temporary spec authoring under
-`.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`, screenshot publishing via a public GitHub Gist, and clean-up.
+`.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`, and screenshot publishing via a public GitHub Gist. Temp files are kept for debugging — they are not deleted after the run.
 
 The qa-engineer agent itself handles:
 - Strategy A (API / functional validation via curl and WP-CLI)
@@ -124,8 +125,8 @@ For details, read:
 
 The extended tier writes Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` (gitignored, never committed)
 and screenshots to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-screenshots/`. Screenshots are published to a public GitHub Gist
-to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR comments),
-then the local files are deleted. WP Rocket's permanent E2E suite lives in an external
+to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR comments).
+Local temp files are kept for debugging after the run — they are not deleted. WP Rocket's permanent E2E suite lives in an external
 repository — nothing under `.TemporaryItems/Issues/` is ever committed to this repo.
 
 ### Video recording

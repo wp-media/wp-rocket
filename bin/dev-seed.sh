@@ -18,12 +18,15 @@ if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
   "
   echo "  License key set."
 
-  # Also set WP_ROCKET_EMAIL and WP_ROCKET_KEY as wp-config constants for dual validation
+  # Set WP_ROCKET_EMAIL and WP_ROCKET_KEY as wp-config constants for dual validation.
+  # Always set the key constant if we have a license key
+  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}" --raw
+
+  # Only set the email constant if explicitly provided
   if [[ -n "${WP_ROCKET_EMAIL:-}" ]]; then
     $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL" --raw
-    $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}" --raw
-    echo "  wp-config constants set."
   fi
+  echo "  wp-config constants set."
 fi
 
 # Flush the cache so the settings page starts from a clean state.
