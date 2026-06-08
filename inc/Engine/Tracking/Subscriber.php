@@ -232,7 +232,6 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Track when a RocketCDN admin notice is dismissed.
 	 *
-	 *
 	 * @return void
 	 */
 	public function track_rocketcdn_notice_dismissed(): void {

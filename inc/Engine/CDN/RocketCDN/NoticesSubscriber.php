@@ -592,7 +592,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		/**
 		 * Fires when a user dismiss the admin notice for rocketcdn.
-		 *
 		 */
 		do_action( 'rocket_rocketcdn_notice_dismissed' );
 	}
