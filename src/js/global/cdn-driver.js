@@ -282,12 +282,21 @@
 
 		addHomeButton.addEventListener( 'click', () => {
 			addHomeButton.disabled = true;
+			const builtIn = document.querySelector( '.wpr-cdn-built-in' );
+
+			if ( builtIn ) {
+				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
+			}
 
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pages/homepage',
 				method: 'POST',
 			} ).then( ( response ) => {
 				addHomeButton.classList.add( 'wpr-isHidden' );
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 
 				if ( response.items_html ) {
 					const existing = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
@@ -349,6 +358,11 @@
 			// Prevent duplicate request while request is in flight.
 			input.disabled = true;
 			button.disabled = true;
+			const builtIn = document.querySelector( '.wpr-cdn-built-in' );
+
+			if ( builtIn ) {
+				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
+			}
 
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pages',
@@ -359,6 +373,10 @@
 				input.disabled = false;
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 
 				// Update page list with response.
 				if ( response.items_html ) {

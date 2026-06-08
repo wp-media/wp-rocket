@@ -293,7 +293,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	public function is_website_attached(): bool {
 		$subscription = $this->get_subscription_data();
-		return (bool) $subscription['website_attached'];
+		return ! empty( $subscription['website_attached'] );
 	}
 
 	/**
