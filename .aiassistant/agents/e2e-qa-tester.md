@@ -1,6 +1,6 @@
 ---
 name: e2e-qa-tester
-description: Browser QA specialist for wp-rocket. Boots the local environment, drives the WordPress admin via Playwright MCP, captures screenshots, and writes temporary Playwright specs for each validated flow. Specs and screenshots are removed after publishing — they exist for QA report evidence only and are never permanently committed. Invoked by qa-engineer for UI/browser changes.
+description: Browser QA specialist for wp-rocket. Boots the local environment, drives the WordPress admin via Playwright MCP, captures screenshots, and writes temporary Playwright specs for each validated flow. Specs and screenshots persist in `.TemporaryItems/Issues/wp-rocket/issue-{N}/` for debugging after the run. Invoked by qa-engineer for UI/browser changes.
 tools: [Bash, Read, Edit, Write, Glob, Grep, mcp__playwright, WebFetch]
 maxTurns: 40
 color: purple
@@ -21,7 +21,7 @@ WP Rocket's permanent E2E suite lives in an **external repository**. Any Playwri
 - **Screenshot publishing:** After all screenshots for a PR are taken, upload them to a public GitHub Gist to get stable, publicly accessible raw URLs:
   ```bash
   # Upload all screenshots in one shot — returns the gist HTML URL
-  GIST_URL=$(gh gist create --public "$TEMP_DIR"/.e2e-screenshots/*.png --json url -q .url)
+  GIST_URL=$(gh gist create --public "$TEMP_DIR"/.e2e-screenshots/*.png)
   GIST_ID="${GIST_URL##*/}"
   GIST_USER=$(gh api user --jq .login)
 
@@ -67,7 +67,7 @@ The issue directory is normally created earlier by the `issue_workflow` pipeline
 
 ```bash
 PR_NUMBER=<N>  # from qa-engineer or user input
-ISSUE_NUMBER=$(gh pr view $PR_NUMBER --json body -q .body 2>/dev/null | grep -oP "Fixes #\K[0-9]+" | head -1)
+ISSUE_NUMBER=$(gh pr view $PR_NUMBER --json body -q .body 2>/dev/null | grep -oE "Fixes #[0-9]+" | grep -oE "[0-9]+" | head -1)
 
 if [ -z "$ISSUE_NUMBER" ]; then
   echo "WARNING: Could not extract issue number from PR body. Using PR number as fallback."
@@ -82,9 +82,9 @@ export TEMP_DIR ISSUE_NUMBER
 **Step 2b — Branch verification:** Before booting, confirm you are on the correct feature branch:
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
-EXPECTED_BRANCH=$(gh pr view <N> --repo wp-media/wp-rocket --json headRefName --jq .headRefName 2>/dev/null)
+EXPECTED_BRANCH=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json headRefName --jq .headRefName 2>/dev/null)
 if [ "$CURRENT_BRANCH" != "$EXPECTED_BRANCH" ]; then
-  echo "ERROR: On branch '$CURRENT_BRANCH', expected '$EXPECTED_BRANCH'. Run: gh pr checkout <N>"
+  echo "ERROR: On branch '$CURRENT_BRANCH', expected '$EXPECTED_BRANCH'. Run: gh pr checkout $PR_NUMBER"
   exit 1
 fi
 ```
@@ -103,14 +103,14 @@ plugin that must be present. If one is required:
 
 **For plugins available on wordpress.org (free plugins):**
 ```bash
-bin/wp plugin install <slug> --activate
+npx @wordpress/env run cli wp plugin install <slug> --activate
 ```
 Record every plugin slug you install in a local list — you will need it for teardown.
 
 **For premium or non-public plugins:**
 Check whether the zip is already present in the environment:
 ```bash
-bin/wp plugin list
+npx @wordpress/env run cli wp plugin list
 ls wp-content/plugins/
 ```
 If the plugin is not installed and cannot be installed via `wp plugin install`, report it
@@ -126,7 +126,7 @@ required plugin — results would be invalid.
 Before testing, verify WP Rocket is licensed:
 
 ```bash
-bin/wp option get wp_rocket_settings --path=/var/www/html 2>/dev/null | grep -q "consumer_key" && echo "Licensed"
+npx @wordpress/env run cli wp option get wp_rocket_settings 2>/dev/null | grep -q "consumer_key" && echo "Licensed"
 ```
 
 If the check fails (no `consumer_key` in settings), abort and report to `qa-engineer` as an environment blocker. WP Rocket shows an activation wall without a valid license — test results would be invalid.
@@ -154,7 +154,7 @@ Once a flow is green manually, write a deterministic spec to `$TEMP_DIR/.e2e-tem
 - Use `@playwright/test` (CommonJS `require`)
 - Never use `setTimeout` / `waitForTimeout` — always use web-first assertions (`toBeVisible`, `toHaveText`, etc.)
 - Take a screenshot at the key assertion
-- These files are **local only** — they are run then deleted, never committed
+- These files are **local only** — they are run, never committed
 
 **Example:**
 ```js
@@ -187,19 +187,19 @@ If a spec fails:
 
 ### Step 6 — Clean up
 
-**6a — Remove installed plugins** (teardown for anything installed in Step 2b):
+**6a — Remove installed plugins** (teardown for anything installed in Step 2c):
 ```bash
-# For each plugin installed in Step 2b:
-bin/wp plugin deactivate <slug>
-bin/wp plugin uninstall <slug>
+# For each plugin installed in Step 2c:
+npx @wordpress/env run cli wp plugin deactivate <slug>
+npx @wordpress/env run cli wp plugin uninstall <slug>
 ```
 Leave the environment in the same state it was in before the run.
 
-**6b — Capture spec content before deletion:**
+**6b — Capture spec content for the report:**
 
-Before removing any file, capture the full content of every spec you wrote. This content
-goes into the report so reviewers can verify what was tested — the file will be gone but
-the content lives in the PR comment.
+Before the run completes, capture the full content of every spec you wrote. This content
+goes into the report so reviewers can verify what was tested — the content lives in the
+PR comment alongside the persisted spec files.
 
 ```bash
 # Collect spec content into a variable (or a temp string in your context)
@@ -217,7 +217,7 @@ report.
 Before posting a QA comment, check whether one already exists for this PR from a previous run:
 
 ```bash
-EXISTING=$(gh pr view <N> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
+EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
 ```
 
 **Update mode:** If a QA comment already exists, edit it in place rather than posting a duplicate:
