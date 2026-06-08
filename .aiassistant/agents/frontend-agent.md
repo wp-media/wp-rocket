@@ -224,14 +224,14 @@ cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/frontend-res
 EOF
 ```
 
-This file is read by the orchestrator for routing decisions.
+This file is a session-recovery fallback. The primary routing input is the JSON object returned directly to the orchestrator.
 
 ### Emit start and complete events
 
 **At the beginning of Step 1 (after you receive inputs):**
 
 ```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<EOF
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
 {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"agent_start","issue_id":"${ISSUE_ID}","data":{"step":5,"domain":"frontend"}}
 EOF
 ```
@@ -239,8 +239,9 @@ EOF
 **Before returning this JSON object (after Step 3b is done and commit succeeds):**
 
 ```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"frontend","tests_passing":true/false,"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
+TESTS_OK=true  # set to false if any test failed
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"frontend","tests_passing":${TESTS_OK},"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
 EOF
 ```
 

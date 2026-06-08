@@ -64,22 +64,15 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    - **EPIC**: create the EPIC with label `epics` first, then create sub-tickets referencing it.
    - **Single**: create directly.
 
-7. Emit a GitHub operation event before creating the issue:
-   ```json
-   {
-     "type": "github_operation",
-     "operation": "create_issue",
-     "data": {
-       "title": "Short imperative title under 70 chars",
-       "body": "> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Context**\n[Why this work is needed.]\n\n**Acceptance Criteria**\n- [ ] [Specific, verifiable criterion]\n- [ ] [Specific, verifiable criterion]\n\n**Development steps**\n- [ ] [Concrete implementation step]\n\n**Effort estimation**\nXS / S / M / L / XL",
-       "labels": ["Made by AI", "<additional labels>"]
-     }
-   }
+7. Emit a session-recovery record to `orchestrator-events.jsonl`, then create the issue:
+
+   ```bash
+   cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
+   {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"ticket-writer","type":"github_operation","data":{"operation":"create_issue","title":"Short imperative title under 70 chars"}}
+   EOF
    ```
 
-   Emit to `.../orchestrator-events.jsonl`. Emit and continue.
-
-7a. Create the issue with the AI-generated notice at the top of the body:
+   Then create the issue with the AI-generated notice at the top of the body:
    ```bash
    gh issue create --repo wp-media/wp-rocket \
      --title "Short imperative title under 70 chars" \
@@ -103,7 +96,6 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
      --label "Made by AI" \
      --label "<additional labels>"
    ```
-
 
 8. Return the ticket object to the orchestrator (see schema below).
 
