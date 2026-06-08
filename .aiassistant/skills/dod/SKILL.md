@@ -41,7 +41,22 @@ Before running the checks, acknowledge these. Agents are good at producing plaus
 
 ---
 
-## The 5 checks
+## Base branch guard
+
+Before running any check, determine the PR base branch. All `git diff` commands below assume `origin/develop`, but if the PR targets a different base this silently compares the wrong tree.
+
+```bash
+BASE=$(gh pr view "$PR_URL" --json baseRefName --jq .baseRefName 2>/dev/null)
+if [ "$BASE" != "develop" ]; then
+  echo "WARNING: Base branch is '$BASE', not 'develop'. Adjust git diff commands accordingly."
+fi
+```
+
+Use `origin/$BASE` in place of `origin/develop` in every diff command throughout this skill. If `$BASE` is empty (Layer 1, no PR yet), default to `develop`.
+
+---
+
+## The 6 checks
 
 Run each check in order. Report **PASS**, **WARN**, or **FAIL** with specific evidence for each.
 
@@ -68,9 +83,8 @@ designed to independently test a PR and share feedback.
 
 Identify changed source files:
 ```bash
-git diff origin/develop --name-only
+git diff origin/$BASE --name-only
 ```
-(Substitute the actual base branch if not `origin/develop`.)
 
 For each changed PHP source file in `inc/` or `src/`, check that a corresponding test file
 exists. Test files mirror the source structure:
@@ -80,8 +94,10 @@ Then run the test suite:
 ```bash
 composer test-unit
 # For feature-specific integration tests:
-vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <FeatureName>
+vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group FeatureName
 ```
+
+`FeatureName` is the group tag matching the changed feature — the same tag Check 2 uses to scope tests. This runs only the feature-relevant integration tests, not the full integration suite.
 
 - **PASS**: All changed PHP source files have tests AND tests pass
 - **WARN**: A changed file has no corresponding test. When reporting this, you MUST include an explicit written statement in `evidence`: the filename, the reason a test does not exist (not "too small" or "follow-up ticket" — those are rationalizations), and whether the missing test represents a real gap. "Later" is the load-bearing word — there is no later. If the only honest reason is "I didn't write it", that is a FAIL, not a WARN.
@@ -91,21 +107,19 @@ vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <F
 
 ### Check 3 — Documentation updated
 
-Run `git diff origin/develop --name-only` and look for changes to the public API surface:
+Run `git diff origin/$BASE --name-only` and look for changes to the public API surface:
 - New or changed WordPress hooks (`apply_filters`, `do_action`, `wpm_apply_filters_typed`)
 - New or changed AJAX actions or REST routes
+- New or changed WP-CLI commands
 - New or changed configuration keys, option names, or capabilities
 - New or changed plugin metadata
 - New or changed exported public methods on ServiceProvider-bound services
 
-Then check if docs were updated:
-```bash
-git diff origin/develop -- docs/ README.md
-```
+WP Rocket has no `docs/` directory or `README.md` that serves as public API documentation, so there is no single file path to diff. Instead, evaluate the diff itself: if it introduces new public API surface (new hooks, filters, REST endpoints, WP-CLI commands), note that documentation must be updated and mark **WARN** — without requiring any specific file to have changed.
 
-- **PASS**: Doc files updated for every public-facing change, or no public API change occurred
-- **WARN**: A public API or hook changed with no doc update (flag which file)
-- **FAIL**: Multiple public-facing changes with zero documentation updates
+- **PASS**: No new public API surface introduced, or the change is internal-only
+- **WARN**: The diff introduces new public API surface (hooks, filters, REST endpoints, WP-CLI commands) — note that documentation must be updated for it
+- **FAIL**: Multiple new public-facing API additions with no acknowledgement that documentation is required
 
 ---
 
@@ -113,11 +127,8 @@ git diff origin/develop -- docs/ README.md
 
 Read the repo's PR template:
 ```bash
-cat .github/PULL_REQUEST_TEMPLATE.md 2>/dev/null
+cat .aiassistant/skills/issue-workflow/refs/pr-template.md
 ```
-
-(Falls back to `.aiassistant/skills/issue-workflow/refs/pr-template.md` if no GitHub
-template exists — same content.)
 
 Then fetch the PR body:
 - Layer 1: read `.TemporaryItems/Issues/wp-rocket/pull/<N>.md`
@@ -126,11 +137,15 @@ Then fetch the PR body:
 Check that all required sections from the template are present and non-empty:
 - Description (with `Fixes #N`)
 - Type of change (one checkbox ticked)
-- What was tested
-- How to test
-- Affected Features & Quality Assurance Scope
-- Technical description
-- Mandatory Checklist items
+- Detailed scenario → What was tested
+- Detailed scenario → How to test
+- Detailed scenario → Affected Features & Quality Assurance Scope
+- Technical description → Documentation
+- Technical description → New dependencies
+- Technical description → Risks
+- Mandatory Checklist → Code validation
+- Mandatory Checklist → Code style
+- Additional Checks
 
 - **PASS**: All required sections present and filled
 - **WARN**: One section is thin or partially filled
@@ -161,20 +176,22 @@ ls .github/workflows/
 ```
 Note the check names (e.g. `lint / PHP CodeSniffer`, `lint / PHPStan`, `task-check`).
 
-Poll GitHub Actions status until all checks complete or 5-minute timeout:
+Wait for all checks to complete, then report any failures:
 ```bash
-for i in $(seq 1 10); do
-  STATUS=$(gh pr checks "$PR_URL" 2>/dev/null)
-  echo "$STATUS" | grep -qE "(pending|in_progress)" || break
-  sleep 30
-done
-gh pr checks "$PR_URL"
+# Wait for all checks to complete
+gh pr checks "$PR_URL" --watch
+
+# Then report any failures
+gh pr checks "$PR_URL" --json name,state,link \
+  --jq '.[] | select(.state == "FAILURE") | {name, link}'
 ```
 
-For any check that shows `fail`, fetch its log URL and extract the relevant error excerpt:
+`gh pr checks --watch` blocks until all checks complete, so no manual polling loop is needed. State values from the JSON API are uppercase: `SUCCESS`, `FAILURE`, `CANCELLED`.
+
+For any check with state `FAILURE`, fetch the run ID and extract the relevant error excerpt:
 ```bash
-# Get the run ID for the failing check
-gh pr checks "$PR_URL" --json name,state,detailsUrl
+# Get the run ID and log link for the failing check
+gh pr checks "$PR_URL" --json name,state,link
 # Fetch last ~30 lines of the failing job log
 gh run view <run_id> --log-failed 2>/dev/null | tail -30
 ```
@@ -198,8 +215,6 @@ done
 
 ---
 
----
-
 ### Check 6 — File scope compliance
 
 **Layer 1 only** (in Layer 2, file scope is not tracked — this check is skipped with status `N/A`).
@@ -217,6 +232,7 @@ Exceptions that do not count as violations:
 - Auto-generated files (`*.min.js`, `*.min.css`, lock files)
 - Files in `tests/` that directly correspond to a changed source file (mirrored test files)
 - Files the orchestrator explicitly added to scope via a `blocked_reason` note
+- Files modified solely by `composer phpcs:fix` (the phpcbf auto-formatter). phpcbf has no "changed files only" mode, so it may reformat files outside scope. Note which files were auto-fixed and exclude them from the scope-violation count.
 
 If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check with status `N/A`.
 
@@ -224,11 +240,11 @@ If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check
 - **WARN**: One file outside scope was modified — name it and explain why
 - **FAIL**: Two or more files outside scope were modified without explanation
 
-A FAIL here does not block hand-off automatically, but the orchestrator must acknowledge it before proceeding. Log the out-of-scope files in the implementation result under `notes`.
+**Interaction with the overall verdict:**
+- **Layer 1:** a Check 6 FAIL is reported as **WARN** in the overall verdict. Scope creep was detected, but handoff proceeds with a note — this preserves the Layer 1 rule that `overall` is only ever `PASS` or `WARN`. Log the out-of-scope files in the implementation result under `notes`.
+- **Layer 2:** a Check 6 FAIL is a genuine **FAIL** and contributes to a `FAIL` overall verdict.
 
 ---
-
-## Output format
 
 ## L2 output format constraints
 
@@ -269,7 +285,7 @@ Reserve prose evidence for: WARN, FAIL, and PASS-with-caveats checks only.
 | 5. CI                 | FAIL | run-stan failing: DiscourageApplyFilters in inc/Engine/Cache/Subscriber.php:142 |
 | 6. File scope         | PASS | All 4 changed files within declared scope |
 
-Overall: BLOCKED
+Overall: FAIL
 
 Blockers:
 - Check 5: PHPStan failing on inc/Engine/Cache/Subscriber.php:142 — replace apply_filters() with wpm_apply_filters_typed()
@@ -278,8 +294,8 @@ Warnings (non-blocking):
 - Check 2: inc/Engine/Foo/Bar.php has no test — consider filing a ticket
 ```
 
-If all checks pass: print **READY TO MERGE** clearly.
-If blocked: list each blocker with a suggested fix.
+If all checks pass: print **PASS** clearly.
+If any check fails: print **FAIL** and list each blocker with a suggested fix.
 
 ---
 
