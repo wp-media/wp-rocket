@@ -153,7 +153,7 @@ This is the weakest strategy for UI changes — prefer A or B when possible. For
 
 ---
 
-### Step 3 — Execute (with safety check)
+### Step 3 — Execute
 
 Before running strategies, **sanity check your selection:**
 - Did you select Strategy B? If the issue mentions visual/UI keywords or the PR touches frontend files, this should be true.
