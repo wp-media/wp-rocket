@@ -507,10 +507,9 @@ class Tracking extends Abstract_Render {
 	/**
 	 * Track when a RocketCDN notice is dismissed
 	 *
-	 * @param string $box The notice box identifier.
 	 * @return void
 	 */
-	public function track_rocketcdn_notice_dismissed( string $box ) {
+	public function track_rocketcdn_notice_dismissed() {
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}

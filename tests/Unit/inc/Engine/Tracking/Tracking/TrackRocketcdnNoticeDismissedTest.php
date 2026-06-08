@@ -66,6 +66,6 @@ class TrackRocketcdnNoticeDismissedTest extends TestCase {
 				->with( 'RocketCDN Admin Notice Dismissed', [ 'context' => 'wp_plugin' ] );
 		}
 
-		$this->tracking->track_rocketcdn_notice_dismissed( $config['box'] );
+		$this->tracking->track_rocketcdn_notice_dismissed();
 	}
 }
