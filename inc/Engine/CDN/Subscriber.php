@@ -410,10 +410,6 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
-			return false;
-		}
-
 		if ( is_rocket_post_excluded_option( 'cdn' ) ) {
 			return false;
 		}
