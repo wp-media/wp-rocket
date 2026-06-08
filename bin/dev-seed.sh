@@ -17,6 +17,12 @@ if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
     update_option( 'wp_rocket_settings', \$options );
   "
   echo "  License key set."
+
+  # Also set WP_ROCKET_EMAIL and WP_ROCKET_KEY as wp-config constants for dual validation
+  WP_ROCKET_EMAIL="${WP_ROCKET_EMAIL:-gael@wp-media.me}"
+  $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL" --raw
+  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}" --raw
+  echo "  wp-config constants set."
 fi
 
 # Flush the cache so the settings page starts from a clean state.
