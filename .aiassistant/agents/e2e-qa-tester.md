@@ -212,16 +212,7 @@ Store this output in your context as `specs_source`. It will be embedded verbati
 `specs_content` field of the return JSON and in the `### Playwright Specs` section of your
 report.
 
-**6c — Remove temporary files:**
-```bash
-# Screenshots were published to a public gist — local files are no longer needed
-rm -rf "$TEMP_DIR/.e2e-screenshots/"
-
-# Spec files were never committed — just delete them locally
-rm -rf "$TEMP_DIR/.e2e-temp/"
-```
-
-**6d — Duplicate / re-run comment check (before posting the report):**
+**6c — Duplicate / re-run comment check (before posting the report):**
 
 Before posting a QA comment, check whether one already exists for this PR from a previous run:
 
@@ -231,7 +222,7 @@ EXISTING=$(gh pr view <N> --repo wp-media/wp-rocket --json comments --jq '[.comm
 
 **Update mode:** If a QA comment already exists on this PR from a previous run, do not post a duplicate — instead note the existing URL in `existing_comment_url` and post only a short follow-up comment with the delta (what changed since the last run). Updating an existing comment in place via GraphQL is complex; the simpler, required pattern is: record `$EXISTING` in the `existing_comment_url` JSON field and post a concise delta-only follow-up rather than re-posting the full report.
 
-**6e — Spec coverage cross-check (before posting the report):**
+**6d — Spec coverage cross-check (before posting the report):**
 
 Before posting the report, verify that every `test()` or `it()` block in your written spec has a matching entry in the `criteria` array in your JSON output. If any test block was written but not executed, mark it as `status: "SKIPPED"` with a reason — do not omit it. A spec with 5 tests where only 3 were run must report 2 SKIPs, not 3 PASSes.
 
@@ -294,17 +285,16 @@ After the prose report, return the following JSON object to `qa-engineer`:
   "environment_boot": "exit 0|exit N — last error line",
   "existing_comment_url": "URL of a pre-existing QA Report comment on this PR, or empty string",
   "specs_run": true,
-  "specs_cleaned_up": true,
   "specs_content": [
     { "filename": ".TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
   ]
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. WP Rocket is not licensed, or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
+`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. WP Rocket is not licensed, or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6c (so the report runs in update mode), otherwise an empty string.
 
 ## Constraints
 
-- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist before deleting them; check for an existing QA Report comment before posting (Step 6d); clean up all temp files; uninstall any plugins you installed in Step 2c
+- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist; check for an existing QA Report comment before posting (Step 6c); uninstall any plugins you installed in Step 2c
 - ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
-- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; leave any temp files under the issue directory after the run; install plugins not explicitly required by the issue
+- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; install plugins not explicitly required by the issue
