@@ -338,6 +338,6 @@ cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/qa-resul
 EOF
 ```
 
-The orchestrator will then read this file to make routing decisions.
+This file is a session-recovery fallback. The primary routing input is the JSON object returned directly to the orchestrator.
 
 The file MUST exist before the agent returns. If writing fails, log the error and still return the JSON object to the orchestrator.
