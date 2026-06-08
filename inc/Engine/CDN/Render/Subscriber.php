@@ -48,6 +48,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_settings_fields'   => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta' => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'         => 'maybe_hide_cdn_tab_badge',
+			'pre_get_rocket_option_cdn'    => 'maybe_pause_cdn_for_inactive_subscription',
 		];
 	}
 
@@ -152,12 +153,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Displays the RocketCDN Call to Action on the CDN tab of WP Rocket settings page.
 	 *
+	 * @param bool $display Whether to display the CTA. Default true.
+	 *
 	 * @since 3.22
 	 *
 	 * @return bool
 	 */
-	public function maybe_display_rocketcdn_cta(): bool {
-		return $this->controller->maybe_display_rocketcdn_cta();
+	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
+		return $this->controller->maybe_display_rocketcdn_cta( $display );
 	}
 
 	/**
@@ -171,5 +174,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_hide_cdn_tab_badge( string $badge ): string {
 		return $this->controller->maybe_hide_cdn_tab_badge( $badge );
+	}
+
+	/**
+	 * Pauses the CDN for inactive subscriptions.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn CDN Option.
+	 *
+	 * @return mixed
+	 */
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
+		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
 	}
 }
