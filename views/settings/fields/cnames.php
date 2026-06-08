@@ -7,10 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_options = get_option( rocket_get_constant( 'WP_ROCKET_SLUG' ) );
+$rocket_cnames      = get_rocket_option( 'cdn_cnames', [] );
+$rocket_cnames_zone = get_rocket_option( 'cdn_zone', [] );
 
-$rocket_cnames      = $rocket_options['cdn_cnames'] ?? [];
-$rocket_cnames_zone = $rocket_options['cdn_zone'] ?? [];
 /**
  * Filters the fields to be disabled for the CDN section.
  *

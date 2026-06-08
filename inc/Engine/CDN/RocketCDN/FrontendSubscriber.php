@@ -72,6 +72,15 @@ class FrontendSubscriber implements Subscriber_Interface {
 	public function set_cdn_cnames( $value ) {
 		$cdn_url = $this->get_rocketcdn_url();
 
+		if ( is_admin() ) {
+			if ( empty( $value ) ) {
+				return $value;
+			}
+			return array_filter( $value, function ( $value ) use ( $cdn_url ) {
+				return $cdn_url === $value;
+			} );
+		}
+
 		if ( empty( $cdn_url ) ) {
 			return $value;
 		}
