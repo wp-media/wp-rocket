@@ -132,12 +132,15 @@ and `<details>` tags for long technical content.
 
 ### Step 5 — Create the PR (draft)
 
+Capture the PR URL from the command output — it is NOT the same as the issue number:
+
 ```bash
-gh pr create \
+PR_URL=$(gh pr create \
   --title "Closes #<N>: <short descriptive title>" \
   --body "$(cat .TemporaryItems/Issues/wp-rocket/pull/<N>.md)" \
   --base <base_branch> \
-  --draft
+  --draft)
+PR_NUMBER=$(echo "$PR_URL" | grep -oE '[0-9]+$')
 ```
 
 Then assign and label:
@@ -147,18 +150,18 @@ Then assign and label:
 gh label list --repo wp-media/wp-rocket --json name -q '.[].name' | grep -q "^Made by AI$" \
   || gh label create "Made by AI" --repo wp-media/wp-rocket --color "0075ca" --description "Created or assisted by an AI agent"
 
-gh pr edit <PR_number> --add-assignee @me --add-label "Made by AI"
+gh pr edit "$PR_NUMBER" --add-assignee @me --add-label "Made by AI"
 ```
 
 Verify both were applied:
 ```bash
-gh pr view <PR_number> --json assignees,labels -q '{assignees: [.assignees[].login], labels: [.labels[].name]}'
+gh pr view "$PR_NUMBER" --json assignees,labels -q '{assignees: [.assignees[].login], labels: [.labels[].name]}'
 ```
 If `labels` does not include `"Made by AI"` or `assignees` is empty, retry the `gh pr edit` command once. If it still fails, log the error in `notes` — do not proceed silently.
 
 Verify the AI-generated notice is the first line of the live PR body:
 ```bash
-gh pr view <PR_number> --json body -q .body | head -1
+gh pr view "$PR_NUMBER" --json body -q .body | head -1
 ```
 If the first line is not the notice, edit the PR body to fix it.
 
@@ -166,14 +169,14 @@ If the first line is not the notice, edit the PR body to fix it.
 
 ## Return
 
-Return the following JSON object to the orchestrator:
+Return the following JSON object to the orchestrator. Use the actual PR URL and number captured above — never the issue number `<N>`:
 
 ```json
 {
   "branch_pushed": true,
   "trailer_verified": true,
-  "pr_url": "https://github.com/wp-media/wp-rocket/pull/<N>",
-  "pr_number": <N>,
+  "pr_url": "<the URL output by gh pr create — e.g. https://github.com/wp-media/wp-rocket/pull/8250>",
+  "pr_number": <the actual PR number extracted from that URL — NOT the issue number>,
   "pr_created": true,
   "notes": "any non-Claude human commits skipped from trailer check, or empty string"
 }

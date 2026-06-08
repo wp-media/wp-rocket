@@ -67,7 +67,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
 7. Emit a session-recovery record to `orchestrator-events.jsonl`, then create the issue:
 
    ```bash
-   cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
+   cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
    {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"ticket-writer","type":"github_operation","data":{"operation":"create_issue","title":"Short imperative title under 70 chars"}}
    EOF
    ```

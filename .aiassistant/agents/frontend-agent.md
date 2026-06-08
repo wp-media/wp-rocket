@@ -211,11 +211,15 @@ Then return the following JSON object to the orchestrator. The orchestrator read
 
 Before returning the JSON object, perform these final steps:
 
+```bash
+ISSUE_NUMBER=<N>  # the issue number from your orchestrator inputs
+```
+
 ### Write result file
 
 ```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/contracts/frontend-result.json" <<'EOF'
+mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
+cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/frontend-result.json" <<'EOF'
 {
   "ticket_id": "...",
   "branch": "...",
@@ -231,8 +235,8 @@ This file is a session-recovery fallback. The primary routing input is the JSON 
 **At the beginning of Step 1 (after you receive inputs):**
 
 ```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"agent_start","issue_id":"${ISSUE_ID}","data":{"step":5,"domain":"frontend"}}
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"agent_start","issue_id":"${ISSUE_NUMBER}","data":{"step":5,"domain":"frontend"}}
 EOF
 ```
 
@@ -240,8 +244,8 @@ EOF
 
 ```bash
 TESTS_OK=true  # set to false if any test failed
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_ID}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_ID}","data":{"domain":"frontend","tests_passing":${TESTS_OK},"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
+cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
+{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_NUMBER}","data":{"domain":"frontend","tests_passing":${TESTS_OK},"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
 EOF
 ```
 
