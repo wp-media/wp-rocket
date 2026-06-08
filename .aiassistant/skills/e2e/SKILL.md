@@ -129,11 +129,7 @@ to obtain stable raw URLs (gists are always public, so the URLs never 404 in PR 
 Local temp files are kept for debugging after the run — they are not deleted. WP Rocket's permanent E2E suite lives in an external
 repository — nothing under `.TemporaryItems/Issues/` is ever committed to this repo.
 
-### On-demand promotion to permanent e2e suite
-
-Temporary Playwright specs written during QA (in `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/`) are not currently promoted to the permanent e2e suite. The permanent suite lives in an external repository and requires separate process/tooling alignment.
-
-**Status:** not yet implemented. Needs team discussion before a promotion path is designed.
+**Do not port specs to the permanent e2e suite.** It lives in an external repository and the promotion path is not yet defined — do not attempt it even if asked.
 
 ---
 
