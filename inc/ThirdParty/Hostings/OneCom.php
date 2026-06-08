@@ -58,7 +58,7 @@ class OneCom implements Subscriber_Interface {
 	/**
 	 * Update CNAME
 	 *
-	 * @param string|null $cname CDN CNAME.
+	 * @param array|null $cname CDN CNAME.
 	 * @return array|null
 	 */
 	public function maybe_update_cdn_cname( ?array $cname ) {
@@ -68,7 +68,7 @@ class OneCom implements Subscriber_Interface {
 	/**
 	 * Update CDN Zones.
 	 *
-	 * @param string|null $zone CDN ZONES.
+	 * @param array|null $zone CDN ZONES.
 	 * @return array|null
 	 */
 	public function maybe_update_cdn_zone( ?array $zone ) {
