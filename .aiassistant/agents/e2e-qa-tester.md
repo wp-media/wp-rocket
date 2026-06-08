@@ -61,9 +61,9 @@ The "How to test" section of the PR body is your guide. Treat the original bug d
 
 ### Step 2 — Set up temp directory and bring up the environment
 
-**Step 2a — Extract issue number and create temp directory:**
+**Step 2a — Resolve issue number and temp directory:**
 
-Extract the linked issue number from the PR and set up the centralized temp directory:
+The issue directory is normally created earlier by the `issue_workflow` pipeline. This step resolves the path and ensures subdirectories exist (idempotent — safe even if already created, and required when running standalone).
 
 ```bash
 PR_NUMBER=<N>  # from qa-engineer or user input
