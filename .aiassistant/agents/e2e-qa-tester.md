@@ -71,11 +71,6 @@ fi
 ```
 If the check fails, abort and report to `qa-engineer` — do not test on the wrong branch.
 
-**Display requirement:** Playwright MCP requires a running display (headed mode). It cannot run headless in a background terminal or over SSH without a display server.
-- macOS (local): works natively if you are at the keyboard.
-- Remote/SSH/tmux without display: the agent will abort and report `CANNOT_VERIFY` with reason "No display available for Playwright MCP". Do not attempt to fake a display — report the blocker.
-- CI: handled by a separate CI configuration (out of scope here).
-
 ```bash
 bash bin/dev-up.sh
 ```
@@ -290,7 +285,7 @@ After the prose report, return the following JSON object to `qa-engineer`:
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. no display for Playwright MCP, or a missing license blocks every licensed-feature criterion). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
+`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. a missing license blocks every licensed-feature criterion). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
 
 ## Constraints
 
