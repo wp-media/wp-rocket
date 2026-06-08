@@ -102,15 +102,15 @@ required plugin — results would be invalid.
 
 ---
 
-### Step 2c — Settings page pre-flight check
+### Step 2c — License pre-flight check
 
-Confirm the WP Rocket settings page is accessible (i.e. the plugin is installed and licensed):
+Before testing, verify WP Rocket is licensed:
 
 ```bash
-curl -s -o /dev/null -w "%{http_code}" "http://localhost:8888/wp-admin/options-general.php?page=wprocket"
+bin/wp option get wp_rocket_settings --path=/var/www/html 2>/dev/null | grep -q "consumer_key" && echo "Licensed"
 ```
 
-If the response is not `200`, WP Rocket is either not installed or not licensed — abort and report to `qa-engineer` as an environment blocker. Without a valid license the plugin shows an activation wall and no test results would be meaningful.
+If the check fails (no `consumer_key` in settings), abort and report to `qa-engineer` as an environment blocker. WP Rocket shows an activation wall without a valid license — test results would be invalid.
 
 ---
 
@@ -282,7 +282,7 @@ After the prose report, return the following JSON object to `qa-engineer`:
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. the settings page is unreachable or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
+`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. WP Rocket is not licensed, or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_cleaned_up` must always be `true` — if cleanup failed for any reason, state it explicitly in a `notes` field. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6d (so the report runs in update mode), otherwise an empty string.
 
 ## Constraints
 
