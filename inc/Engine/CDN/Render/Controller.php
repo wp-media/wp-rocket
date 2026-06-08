@@ -714,6 +714,8 @@ class Controller extends Abstract_Render {
 	 * @return string
 	 */
 	public function get_rocketcdn_state( $state ): string {
-		return $this->is_cdn_paused() ? 'paused' : 'active';
+		$options = (array) $this->options->get_options();
+
+		return empty( $options['cdn'] ) ? 'paused' : 'active';
 	}
 }
