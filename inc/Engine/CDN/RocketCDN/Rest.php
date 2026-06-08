@@ -474,7 +474,8 @@ class Rest extends WP_REST_Controller {
 
 		return new WP_REST_Response(
 			[
-				'cdn_type' => $cdn_type,
+				'cdn_type'                    => $cdn_type,
+				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
 			],
 			200
 		);
