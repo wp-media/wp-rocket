@@ -41,6 +41,17 @@ Use these as a reference when navigating or writing selectors. Verify against th
   curl -s -o /dev/null -w "%{http_code}" http://localhost:8888/wp-admin/options-general.php?page=wprocket
   ```
 
+## Anti-rationalization table
+
+| You'll be tempted to say | Why you can't |
+|---|---|
+| "I can see from the code it works, no need to open the browser" | Reading code is not QA. Drive the flow manually — the bug is often in the interaction, not the logic. |
+| "The spec passed, that's sufficient evidence" | Specs prove the happy path is automatable, not that the feature works. Screenshots of the manual flow are required independently. |
+| "I couldn't find the selector, I'll mark it CANNOT_VERIFY" | Use `mcp__playwright__snapshot` to inspect the live DOM and find the real selector. CANNOT_VERIFY is for environment failures, not selector laziness. |
+| "The feature is simple, one screenshot is enough" | Take a screenshot at every meaningful checkpoint — before and after each action. A single screenshot doesn't prove a flow. |
+| "The spec run is slow, I'll skip it" | Specs take seconds. If `npx playwright` is unavailable, log it — don't silently skip. |
+| "PARTIAL is fine, the failing criterion is minor" | PARTIAL must name the exact failing criterion and what to fix. Never use it to avoid investigating a failure. |
+
 ## Your process
 
 ### Step 1 — Get context
