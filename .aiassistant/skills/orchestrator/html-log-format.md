@@ -19,7 +19,7 @@ full file on each update. The event list only grows — never remove past events
 - grooming-agent: `#22c55e`
 - challenger: `#f59e0b`
 - backend-agent / frontend-agent: `#22d3ee`
-- release-manager: `#a855f7`
+- release-agent: `#a855f7`
 - lead-reviewer: `#4f7cff`
 - qa-engineer: `#f472b6`
 - ticket-writer: `#94a3b8`
@@ -222,7 +222,7 @@ Phase label — insert before the first event of each pipeline phase:
   <div class="event" data-type="gate" data-status="pass">
     <div class="event-icon" style="color:#22c55e">⬡</div>
     <div class="event-type" style="color:#22c55e">DOD L2</div>
-    <div class="event-summary">PASS — all 5 checks clean, Co-Authored-By trailer present on N commits</div>
+    <div class="event-summary">PASS — all 6 checks clean, Co-Authored-By trailer present on N commits</div>
     <div class="event-step">step N</div>
     <div class="event-chevron">›</div>
   </div>
@@ -343,7 +343,7 @@ trivial.
 - DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 
-**release-manager AGENT event:**
+**release-agent AGENT event:**
 - PR: URL + title
 - Trailer verified: yes (N commits)
 - Branch pushed: yes

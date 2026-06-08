@@ -139,10 +139,11 @@ Maintain in your context tracking:
 - Escalation reason if stopped
 - Calibration mode chosen
 
-**Synthesis rule:** Read routing-relevant fields from each agent's `result_path` (in
-`tasks.json`) rather than holding full agent JSONs in this context. This keeps the
-orchestrator context lean across long pipeline runs. Full JSONs are written to the HTML log
-from the contract files.
+**Synthesis rule:** Route based on the return JSON received directly from each agent —
+`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc. The
+`result_path` files under `contracts/` are session-recovery fallbacks only — never read
+them as the primary routing input. Full JSONs are written to the HTML log from the contract
+files to keep orchestrator context lean across long pipeline runs.
 
 ---
 
@@ -423,20 +424,17 @@ Pass the resolved model as the `model` parameter on every Agent tool spawn. For 
 
 **Complexity signal assessment:**
 Before invoking grooming-agent, classify the issue based on visible signals:
-```python
-def assess_complexity(title, body):
-    title_len, body_len = len(title), len(body)
-    complex_keywords = ["architecture", "refactor", "redesign", "module", "migration", "breaking"]
-    has_keywords = any(k in body.lower() for k in complex_keywords)
-    
-    if title_len < 50 and body_len < 200 and not has_keywords:
-        return "simple"  # → haiku model
-    elif body_len > 500 or has_keywords:
-        return "complex"  # → opus model
-    else:
-        return "medium"  # → sonnet model
-```
-Pass this as `complexity_signal` input to grooming-agent.
+
+Assess complexity from the issue's visible signals:
+
+| Signal | Model |
+|---|---|
+| Title < 50 chars AND body < 200 chars AND no complexity keywords | `haiku` ("simple") |
+| Body > 500 chars OR any complexity keyword present | `opus` ("complex") |
+| Otherwise | `sonnet` ("medium") |
+
+Complexity keywords: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`.
+Pass the resulting signal as `complexity_signal: "simple"|"medium"|"complex"` to grooming-agent.
 
 **Opus escalation** — when `complexity == HIGH`: before proceeding to branch creation, ask the user:
 
@@ -583,10 +581,11 @@ Do NOT create git worktrees. All agents work on the same branch.
 >
 > Both agents commit atomically to the same branch. Commits are ordered: backend first, then frontend.
 
-**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
-`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
-JSONs go to the HTML log directly from contract files — do not accumulate them in
-orchestrator context.
+**Synthesis:** Route based on the return JSON received directly from each agent —
+`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc. The
+`result_path` files under `contracts/` are session-recovery fallbacks only — never read
+them as the primary routing input. Full implementation JSONs go to the HTML log directly
+from contract files — do not accumulate them in orchestrator context.
 
 Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
 commit SHA.
@@ -717,11 +716,7 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
 3. Move PR out of draft — this step is **mandatory and must be verified**:
    ```bash
    gh pr ready <PR#>
-   # Verify — must return "false"
-   gh pr view <PR#> --json isDraft -q .isDraft
    ```
-   If `isDraft` is still `true`, run `gh pr ready <PR#>` again and re-verify. Do not proceed
-   to Step 4 until the PR is confirmed out of draft.
 
    **After `gh pr ready`:**
    1. Verify the PR is no longer in DRAFT state: `gh pr view <N> --json isDraft --jq .isDraft` must return `false`
