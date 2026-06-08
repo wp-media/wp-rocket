@@ -157,6 +157,36 @@
 		}
 
 		/**
+		 * Syncs the shared CDN exclusions disabled state with the currently selected driver.
+		 *
+		 * @param {string} activeDriver Active CDN driver slug.
+		 */
+		function syncSharedDriverState( activeDriver ) {
+			const excludeHeader = document.querySelector( '.wpr-cdn-exclude-section' );
+			const exclusionFields = document.querySelectorAll( '.wpr-cdn-exclusions' );
+			const rocketCdnStateInput = document.getElementById( 'rocketcdn_state' );
+			const isRocketCdnDisabled = rocketCdnStateInput
+				? 'paused' === rocketCdnStateInput.value
+				: Boolean( document.querySelector( '.rocketcdn .wpr-cdn-status--paused, .rocketcdn .wpr-cdn-built-in--paused, .rocketcdn .wpr-icon-orange-loader' ) );
+
+			const shouldDisableExclusions = 'rocketcdn' === activeDriver && isRocketCdnDisabled;
+
+			if ( excludeHeader ) {
+				excludeHeader.classList.toggle( 'wpr-cdn-disabled', shouldDisableExclusions );
+			}
+
+			exclusionFields.forEach( ( field ) => {
+				field.classList.toggle( 'wpr-cdn-disabled', shouldDisableExclusions );
+
+				const textarea = field.querySelector( 'textarea' );
+
+				if ( textarea ) {
+					textarea.disabled = shouldDisableExclusions;
+				}
+			} );
+		}
+
+		/**
 		 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
 		 * The label is read from the active tab's data-title attribute, preserving
 		 * the original capitalisation set by the PHP translation.
@@ -190,6 +220,7 @@
 
 				// Toggle sections: show matching driver, hide others.
 				toggleDriverSections( driver );
+				syncSharedDriverState( 'your-own-cdn' === driver ? 'byocdn' : 'rocketcdn' );
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
@@ -222,6 +253,7 @@
 
 		if ( activeDriver ) {
 			toggleDriverSections( activeDriver );
+			syncSharedDriverState( 'your-own-cdn' === activeDriver ? 'byocdn' : 'rocketcdn' );
 			notifyCdnStateChange();
 		}
 
@@ -265,6 +297,12 @@
 					const builtIn = statusContainer.closest( '.wpr-cdn-built-in' );
 					if ( builtIn ) {
 						builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
+					}
+
+					const rocketCdnStateInput = document.getElementById( 'rocketcdn_state' );
+
+					if ( rocketCdnStateInput ) {
+						rocketCdnStateInput.value = isPaused ? 'paused' : 'active';
 					}
 
 					notifyCdnStateChange();

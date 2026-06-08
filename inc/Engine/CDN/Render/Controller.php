@@ -271,11 +271,12 @@ class Controller extends Abstract_Render {
 				'url' => $cdn_exclude_beacon['url'],
 			],
 			'page'  => 'page_cdn',
+			'class' => [ 'wpr-cdn-exclude-section' ],
 		];
 
 		// Disable exclusions fields when subscription is processing.
 		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
-			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
+			$sections['exclude_cdn_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
 		return $sections;
@@ -324,13 +325,13 @@ class Controller extends Abstract_Render {
 			'sanitize_callback' => 'sanitize_textarea',
 		];
 
-		if ( $this->is_cdn_paused() ) {
+		if ( $this->context->is_rocketcdn() && $this->is_cdn_paused() ) {
 			foreach ( array_keys( $exclusion_fields ) as $field ) {
 				$exclusion_fields[ $field ]['class'][] = 'wpr-cdn-disabled';
 			}
 		}
 
-		if ( ! $this->has_active_valid_subscription() ) {
+		if ( $this->context->is_rocketcdn() && ! $this->has_active_valid_subscription() ) {
 			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -703,5 +704,16 @@ class Controller extends Abstract_Render {
 		}
 
 		return $cdn;
+	}
+
+	/**
+	 * Gets the current RocketCDN state for hidden field sync.
+	 *
+	 * @param mixed $state Current state value.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_state( $state ): string {
+		return $this->is_cdn_paused() ? 'paused' : 'active';
 	}
 }

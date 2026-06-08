@@ -57,6 +57,7 @@ class FrontendSubscriber implements Subscriber_Interface {
 		return [
 			'pre_get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
 			'pre_get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
+			'pre_get_rocket_option_cdn'        => [ 'maybe_pause_cdn', 9 ],
 		];
 	}
 
@@ -124,5 +125,22 @@ class FrontendSubscriber implements Subscriber_Interface {
 		$this->rocketcdn_url = $this->subscription_controller->get_rocketcdn_url();
 
 		return $this->rocketcdn_url;
+	}
+
+	/**
+	 * Ensure the free cdn paused doesn't affect other cdn.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $value The current pre-filter value.
+	 *
+	 * @return mixed The original value if RocketCDN is active, true if otherwise.
+	 */
+	public function maybe_pause_cdn( $value ) {
+		if ( $this->context->is_rocketcdn() ) {
+			return $value;
+		}
+
+		return true;
 	}
 }

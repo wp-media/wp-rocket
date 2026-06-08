@@ -47,6 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
+		$fields[] = 'rocketcdn_state';
 
 		return $fields;
 	}
@@ -59,6 +60,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function sanitize_cdn_type_option( array $input ) {
+		unset( $input['rocketcdn_state'] );
+
 		// Set default value if empty.
 		if ( empty( $input['cdn_type'] ) ) {
 			$input['cdn_type'] = Context::ROCKETCDN_TYPE;

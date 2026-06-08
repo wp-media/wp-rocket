@@ -36,19 +36,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_cdn_driver_sections'   => [
+			'rocket_cdn_driver_sections'            => [
 				[ 'add_rocketcdn_paid_section' ],
 				[ 'add_rocketcdn_free_section' ],
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'rocket_cdn_free_page_list'    => 'render_built_in_page_list',
-			'rocket_cdn_free_page_rows'    => 'render_built_in_page_rows',
-			'rocket_cdn_driver_tabs'       => 'render_cdn_driver_tabs',
-			'rocket_cdn_settings_fields'   => 'add_exclusions_fields',
-			'rocket_display_rocketcdn_cta' => 'maybe_display_rocketcdn_cta',
-			'rocket_cdn_tab_badge'         => 'maybe_hide_cdn_tab_badge',
-			'pre_get_rocket_option_cdn'    => 'maybe_pause_cdn_for_inactive_subscription',
+			'rocket_cdn_free_page_list'             => 'render_built_in_page_list',
+			'rocket_cdn_free_page_rows'             => 'render_built_in_page_rows',
+			'rocket_cdn_driver_tabs'                => 'render_cdn_driver_tabs',
+			'rocket_cdn_settings_fields'            => 'add_exclusions_fields',
+			'rocket_display_rocketcdn_cta'          => 'maybe_display_rocketcdn_cta',
+			'rocket_cdn_tab_badge'                  => 'maybe_hide_cdn_tab_badge',
+			'pre_get_rocket_option_cdn'             => 'maybe_pause_cdn_for_inactive_subscription',
+			'pre_get_rocket_option_rocketcdn_state' => 'get_rocketcdn_state',
 		];
 	}
 
@@ -187,5 +188,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
 		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
+	}
+
+	/**
+	 * Returns the current RocketCDN state for hidden field sync.
+	 *
+	 * @param mixed $state Current state value.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_state( $state ): string {
+		return $this->controller->get_rocketcdn_state( $state );
 	}
 }
