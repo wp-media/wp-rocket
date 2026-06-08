@@ -481,6 +481,40 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
-		$this->track_event( 'CDN Activated' );
+		$this->track_event( 'RocketCDN Activated' );
+	}
+
+	/**
+	 * Track when a RocketCDN notice is viewed
+	 *
+	 * @param string $box The notice box identifier.
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_viewed( string $box ) {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$rocketcdn_boxes = [ 'rocketcdn_install_notice', 'rocket_update_notice' ];
+
+		if ( ! in_array( $box, $rocketcdn_boxes, true ) ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Notice Viewed' );
+	}
+
+	/**
+	 * Track when a RocketCDN notice is dismissed
+	 *
+	 * @param string $box The notice box identifier.
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_dismissed( string $box ) {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Admin Notice Dismissed' );
 	}
 }

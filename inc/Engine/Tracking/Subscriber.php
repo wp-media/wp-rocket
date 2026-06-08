@@ -46,6 +46,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocketcdn_page_added'          => [ 'track_rocketcdn_page_added', 10, 3 ],
 			'rocket_rocketcdn_page_removed'        => [ 'track_rocketcdn_page_removed', 10, 2 ],
 			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
+			'rocket_notice_displayed'              => [ 'track_rocketcdn_notice_viewed', 10, 1 ],
+			'rocket_rocketcdn_notice_dismissed'    => [ 'track_rocketcdn_notice_dismissed', 10, 1 ],
 		];
 	}
 
@@ -214,5 +216,27 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocketcdn_free_activated(): void {
 		$this->tracking->track_rocketcdn_free_activated();
+	}
+
+	/**
+	 * Track when a RocketCDN notice is viewed.
+	 *
+	 * @param string $box The notice box identifier.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_viewed( string $box ): void {
+		$this->tracking->track_rocketcdn_notice_viewed( $box );
+	}
+
+	/**
+	 * Track when a RocketCDN admin notice is dismissed.
+	 *
+	 * @param string $box The notice box identifier.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_dismissed( string $box ): void {
+		$this->tracking->track_rocketcdn_notice_dismissed( $box );
 	}
 }
