@@ -48,6 +48,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_settings_fields'   => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta' => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'         => 'maybe_hide_cdn_tab_badge',
+			'pre_get_rocket_option_cdn'    => 'maybe_pause_cdn_for_inactive_subscription',
 		];
 	}
 
@@ -173,5 +174,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_hide_cdn_tab_badge( string $badge ): string {
 		return $this->controller->maybe_hide_cdn_tab_badge( $badge );
+	}
+
+	/**
+	 * Pauses the CDN for inactive subscriptions.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn CDN Option.
+	 *
+	 * @return mixed
+	 */
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
+		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
 	}
 }
