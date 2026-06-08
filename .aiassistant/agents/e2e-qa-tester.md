@@ -220,7 +220,16 @@ Before posting a QA comment, check whether one already exists for this PR from a
 EXISTING=$(gh pr view <N> --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | startswith("## QA Report"))] | last | .url // empty')
 ```
 
-**Update mode:** If a QA comment already exists on this PR from a previous run, do not post a duplicate — instead note the existing URL in `existing_comment_url` and post only a short follow-up comment with the delta (what changed since the last run). Updating an existing comment in place via GraphQL is complex; the simpler, required pattern is: record `$EXISTING` in the `existing_comment_url` JSON field and post a concise delta-only follow-up rather than re-posting the full report.
+**Update mode:** If a QA comment already exists, edit it in place rather than posting a duplicate:
+
+```bash
+COMMENT_ID="${EXISTING##*/}"
+gh api repos/wp-media/wp-rocket/issues/comments/$COMMENT_ID \
+  --method PATCH \
+  -f body="<full updated report>"
+```
+
+Set `existing_comment_url` in the return JSON to the URL of the comment that was updated, or empty string if a new comment was posted.
 
 **6d — Spec coverage cross-check (before posting the report):**
 
