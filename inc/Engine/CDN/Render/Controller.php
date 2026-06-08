@@ -180,7 +180,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->is_cdn_paused() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -200,6 +200,8 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
+				'is_visible'            => $this->page_count > 0,
+				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
 			'active_subscription' => $this->has_active_valid_subscription(),
@@ -248,7 +250,7 @@ class Controller extends Abstract_Render {
 			'class'       => $classes,
 		];
 
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
 			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -279,7 +281,7 @@ class Controller extends Abstract_Render {
 		];
 
 		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused_or_invalid() ) {
+		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
 			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
 		}
 
@@ -328,6 +330,12 @@ class Controller extends Abstract_Render {
 			'class'             => [ 'wpr-cdn-exclusions' ],
 			'sanitize_callback' => 'sanitize_textarea',
 		];
+
+		if ( $this->is_cdn_paused() ) {
+			foreach ( array_keys( $exclusion_fields ) as $field ) {
+				$exclusion_fields[ $field ]['class'][] = 'wpr-cdn-disabled';
+			}
+		}
 
 		if ( ! $this->has_active_valid_subscription() ) {
 			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
@@ -412,10 +420,21 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the RocketCDN CTA banner.
 	 *
+	 * @param bool $display Whether to display the CTA. Default true.
+	 *
+	 * @return bool
 	 * @since 3.22
 	 */
-	public function maybe_display_rocketcdn_cta(): bool {
+	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
+		if ( ! $display ) {
+			return false;
+		}
+
 		if ( $this->is_subscription_loading() ) {
+			return false;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return false;
 		}
 
@@ -461,6 +480,13 @@ class Controller extends Abstract_Render {
 		if ( $is_forced && ! $was_forced ) {
 			update_option( self::FORCED_PAUSE_TRACKING_OPTION, true, false );
 
+			/**
+			 * Fires when the CDN state is changed to paused due to an inactive or invalid subscription.
+			 * 
+			 * @param string $new_state The new state of the CDN, e.g. 'paused'.
+			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_pause'.
+			 * @since 3.22
+			 */
 			do_action( 'rocket_rocketcdn_cdn_state_changed', 'paused', 'wpr_forced_pause' );
 
 			return;
@@ -469,6 +495,13 @@ class Controller extends Abstract_Render {
 		if ( ! $is_forced && $was_forced ) {
 			update_option( self::FORCED_PAUSE_TRACKING_OPTION, false, false );
 
+			/**
+			 * Fires when the CDN state is changed to active.
+			 * 
+			 * @param string $new_state The new state of the CDN, e.g. 'active'.
+			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_resume'.
+			 * @since 3.22
+			 */
 			do_action( 'rocket_rocketcdn_cdn_state_changed', 'active', 'wpr_forced_resume' );
 		}
 	}
@@ -574,16 +607,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Checks if the CDN should be treated as paused.
-	 *
-	 * @return bool True when the CDN is paused or the license is invalid.
-	 */
-	private function is_cdn_paused_or_invalid(): bool {
-		return $this->is_cdn_paused()
-			|| $this->subscription_controller->is_license_invalid();
-	}
-
-	/**
 	 * Checks if the CDN type is currently filtered.
 	 *
 	 * @since 3.22
@@ -660,7 +683,7 @@ class Controller extends Abstract_Render {
 			$status_text        = $active_status_text;
 		}
 
-		// Update status inidicator details when subscription is processing.
+		// Update status indicator details when subscription is processing.
 		if ( $is_subscription_loading ) {
 			$status_text = __( 'Creating your subscription...', 'rocket' );
 			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
@@ -675,7 +698,7 @@ class Controller extends Abstract_Render {
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
 
-		if ( $this->is_cdn_paused_or_invalid() ) {
+		if ( $is_paused ) {
 			$status_text = $paused_status_text;
 			$details     = $paused_details;
 			$class      .= ' wpr-cdn-status--paused';
@@ -702,10 +725,37 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		$transient = $this->subscription_controller->get_rocketcdn_status();
+		return ! (bool) $this->options->get( 'cdn' );
+	}
 
-		return false !== $transient
-			? ! $this->options->get( 'cdn' )
-			: ! $this->subscription_controller->has_active_subscription();
+	/**
+	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
+	 *
+	 * If the user has an inactive subscription, this will force the CDN option to be false,
+	 * effectively pausing CDN functionality until they renew or reactivate their subscription.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn Current value of the CDN option.
+	 *
+	 * @return mixed False if the user has an inactive subscription, original value otherwise.
+	 */
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
+		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $cdn;
+		}
+
+		// If subscription is free and licence is not valid, forced pause cdn.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return false;
+		}
+
+		$transient = $this->subscription_controller->get_rocketcdn_status();
+		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
+			return false;
+		}
+
+		return $cdn;
 	}
 }

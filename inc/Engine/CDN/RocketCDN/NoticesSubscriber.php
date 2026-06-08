@@ -416,6 +416,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return bool True if notice should be displayed, false otherwise.
 	 */
 	private function should_display_activation_failed_notice(): bool {
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return false;
+		}
+
 		// Do not show the notice if there is no RocketCDN user token saved:
 		// this usually means the user never went through the checkout/activation flow.
 		if ( empty( get_option( 'rocketcdn_user_token', '' ) ) ) {
