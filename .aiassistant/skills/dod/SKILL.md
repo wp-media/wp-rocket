@@ -26,6 +26,17 @@ implementation handoff and the PR is open. Provides an unbiased second opinion. 
 
 ---
 
+## Inputs
+
+| Parameter | Type | Description |
+|---|---|---|
+| `layer` | `"1"` or `"2"` | Which gate to run. Layer 1 = self-correction inside implementation agent; Layer 2 = independent orchestrator gate. |
+| `file_scope` | array of file paths | Files declared in-scope by the orchestrator for this issue. Used by Check 6. Passed by the orchestrator in the dispatch plan. |
+| `base_branch` | string (optional) | The PR base branch. Defaults to `develop`. Used in all `git diff` commands. |
+| `pr_url` | string (optional) | The GitHub PR URL. Required for Layer 2 (Check 1, Check 4, Check 5). |
+
+---
+
 ## Anti-rationalization table
 
 Before running the checks, acknowledge these. Agents are good at producing plausible reasons to skip steps — this table preempts them.
@@ -219,14 +230,14 @@ done
 
 **Layer 1 only** (in Layer 2, file scope is not tracked — this check is skipped with status `N/A`).
 
-The orchestrator writes `file_scope` for each implementation task in `.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`. Read your task entry and extract the declared scope.
+The orchestrator passes `file_scope` (array of paths) in the dispatch inputs. The skill compares it against `git diff <base_branch>..HEAD --name-only`.
 
 List every file changed on the branch:
 ```bash
 git diff <base_branch>..HEAD --name-only
 ```
 
-Compare against `file_scope`. Flag any file that appears in the diff but not in `file_scope`.
+Compare against the `file_scope` input. Flag any file that appears in the diff but not in `file_scope`.
 
 Exceptions that do not count as violations:
 - Auto-generated files (`*.min.js`, `*.min.css`, lock files)
@@ -331,7 +342,6 @@ Always return this JSON object in addition to the human-readable output above:
 **Layer 2:** `overall` can be `PASS`, `WARN`, or `FAIL`. Populate `layer1_delta` with
 any issues that were not flagged in layer 1.
 
-The Layer 2 JSON result must also be written to disk — see the `## Result file write (Layer 2 only)` section below.
 
 ---
 
@@ -342,19 +352,3 @@ The Layer 2 JSON result must also be written to disk — see the `## Result file
 - The "public API surface" for Check 3 includes WordPress hooks and capabilities defined in the `wordpress-compliance` skill.
 - The `Co-Authored-By` trailer uses the model-versioned form: `<MODEL> <noreply@anthropic.com>`. Match exactly.
 
-## Result file write (Layer 2 only)
-
-Before returning, if you are running Layer 2 (the orchestrator gate), you MUST write the JSON result to disk:
-
-```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/dod-l2-result.json" <<'EOF'
-{
-  "overall": "PASS|WARN|FAIL",
-  "checks": [...],
-  ...
-}
-EOF
-```
-
-This file is monitored by the orchestrator. The file MUST be written before the skill returns.
