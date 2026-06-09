@@ -55,8 +55,8 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'pre_get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
-			'pre_get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
+			'get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
+			'get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
 		];
 	}
 
@@ -65,15 +65,18 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @param mixed $value The current pre-filter value.
+	 * @param mixed $cnames The current filter value.
 	 *
 	 * @return mixed The CDN CNAME array if RocketCDN is active, or the original value.
 	 */
-	public function set_cdn_cnames( $value ) {
-		$cdn_url = $this->get_rocketcdn_url();
+	public function set_cdn_cnames( $cnames ) {
+		if ( is_admin() ) {
+			return $this->handle_admin_cname( $cnames );
+		}
 
+		$cdn_url = $this->get_rocketcdn_url();
 		if ( empty( $cdn_url ) ) {
-			return $value;
+			return $cnames;
 		}
 
 		return [ $cdn_url ];
@@ -84,7 +87,7 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @param mixed $value The current pre-filter value.
+	 * @param mixed $value The current filter value.
 	 *
 	 * @return mixed The CDN zone array if RocketCDN is active, or the original value.
 	 */
@@ -121,8 +124,41 @@ class FrontendSubscriber implements Subscriber_Interface {
 			return '';
 		}
 
-		$this->rocketcdn_url = $this->subscription_controller->get_rocketcdn_url();
+		$this->rocketcdn_url = $this->get_raw_rocketcdn_url();
 
 		return $this->rocketcdn_url;
+	}
+
+	/**
+	 * Get raw rocketcdn url without any check.
+	 *
+	 * @return string
+	 */
+	private function get_raw_rocketcdn_url() {
+		return $this->subscription_controller->get_rocketcdn_url();
+	}
+
+	/**
+	 * Handles the CDN CNAME value in the admin area to ensure that the RocketCDN URL is removed from the list of CNAMEs when the user saves the settings.
+	 *
+	 * @param array $cnames CNAME array.
+	 * @return array
+	 */
+	private function handle_admin_cname( $cnames ) {
+		if ( empty( $cnames ) ) {
+			return $cnames;
+		}
+
+		return array_filter( $cnames, [ $this, 'filter_rocketcdn_cname' ] );
+	}
+
+	/**
+	 * Filter rocketcdn cname by comparing the current rocketcdn url with the CNAME value.
+	 *
+	 * @param string $cname CNAME string.
+	 * @return bool
+	 */
+	private function filter_rocketcdn_cname( $cname ) {
+		return $cname !== $this->get_raw_rocketcdn_url();
 	}
 }

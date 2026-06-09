@@ -187,16 +187,16 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
 
 		$sections['rocketcdn_free_section'] = [
-			'title'               => __( 'RocketCDN', 'rocket' ),
-			'type'                => 'rocketcdn_free',
-			'class'               => $classes,
-			'page'                => 'page_cdn',
-			'help'                => [
+			'title'            => __( 'RocketCDN', 'rocket' ),
+			'type'             => 'rocketcdn_free',
+			'class'            => $classes,
+			'page'             => 'page_cdn',
+			'help'             => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'    => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'            => [
+			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'         => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
@@ -204,8 +204,6 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
-			'active_subscription' => $this->has_active_valid_subscription(),
-			'renewal_url'         => $this->user->get_renewal_url(),
 		];
 
 		return $sections;
@@ -226,11 +224,7 @@ class Controller extends Abstract_Render {
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
 		}
-		$classes = [ 'rocketcdn' ];
-
-		if ( $this->subscription_controller->has_inactive_subscription() ) {
-			$classes[] = 'wpr-cdn-disabled';
-		}
+		$classes = [ 'rocketcdn', 'rocketcdn-shared-section' ];
 
 		$sections['purge_cdn_cache_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
@@ -250,7 +244,7 @@ class Controller extends Abstract_Render {
 			'class'       => $classes,
 		];
 
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
+		if ( $this->context->is_rocketcdn() && $this->should_disable_element_for_rocketcdn() ) {
 			$sections['purge_cdn_cache_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -278,11 +272,11 @@ class Controller extends Abstract_Render {
 				'url' => $cdn_exclude_beacon['url'],
 			],
 			'page'  => 'page_cdn',
+			'class' => [ 'cdn-shared-section' ],
 		];
 
-		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
-			$sections['exclude_cdn_section']['class'] = [ 'wpr-cdn-disabled' ];
+		if ( $this->context->is_rocketcdn() && $this->should_disable_element_for_rocketcdn() ) {
+			$sections['exclude_cdn_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
 		return $sections;
@@ -327,23 +321,13 @@ class Controller extends Abstract_Render {
 			'section'           => 'exclude_cdn_section',
 			'page'              => 'page_cdn',
 			'default'           => [],
-			'class'             => [ 'wpr-cdn-exclusions' ],
+			'class'             => [ 'cdn-shared-section', 'wpr-cdn-exclusions' ],
 			'sanitize_callback' => 'sanitize_textarea',
 		];
 
-		if ( $this->is_cdn_paused() ) {
-			foreach ( array_keys( $exclusion_fields ) as $field ) {
-				$exclusion_fields[ $field ]['class'][] = 'wpr-cdn-disabled';
-			}
-		}
-
-		if ( ! $this->has_active_valid_subscription() ) {
-			$exclusion_fields['cdn_reject_files']['class'][] = 'wpr-cdn-disabled';
-		}
-
 		// Disable exclusions fields when subscription is processing.
 		foreach ( array_keys( $exclusion_fields ) as $field ) {
-			if ( $this->is_subscription_loading() ) {
+			if ( $this->context->is_rocketcdn() && $this->should_disable_element_for_rocketcdn() ) {
 				$exclusion_fields[ $field ]['class'][]    = 'wpr-cdn-disabled';
 				$exclusion_fields[ $field ]['attributes'] = [
 					'disabled' => 'disabled',
@@ -527,6 +511,72 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Renders the expired WP Rocket license notice.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function render_expired_wpr_licence_notice(): void {
+		if ( ! $this->should_display_licence_expired_notice() ) {
+			return;
+		}
+
+		$data = [
+			'renewal_url' => $this->user->get_renewal_url(),
+		];
+
+		echo $this->generate( 'partials/cdn/wpr-licence-expired-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
+	 *
+	 * If the user has an inactive subscription, this will force the CDN option to be false,
+	 * effectively pausing CDN functionality until they renew or reactivate their subscription.
+	 *
+	 * @since 3.22
+	 *
+	 * @param mixed $cdn Current value of the CDN option.
+	 *
+	 * @return mixed False if the user has an inactive subscription, original value otherwise.
+	 */
+	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
+		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $cdn;
+		}
+
+		// If subscription is free and licence is not valid, forced pause cdn.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return false;
+		}
+
+		$transient = $this->subscription_controller->get_rocketcdn_status();
+		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
+			return false;
+		}
+
+		return $cdn;
+	}
+
+	/**
+	 * Determines whether a UI element should be disabled for RocketCDN.
+	 *
+	 * Returns true only when all of the following are true: the current context
+	 * is RocketCDN, the CDN is paused, the user has an active subscription,
+	 * the license is invalid, and the subscription is in a loading state.
+	 *
+	 * @return bool True if the element should be disabled, false otherwise.
+	 */
+	public function should_disable_element_for_rocketcdn(): bool {
+		return $this->is_subscription_loading()
+			|| $this->is_cdn_paused()
+			|| $this->should_display_licence_expired_notice()
+			|| ! $this->subscription_controller->has_active_subscription();
+	}
+
+	/**
 	 * Builds a table-list-row data array from a page object.
 	 *
 	 * @since 3.22
@@ -587,23 +637,10 @@ class Controller extends Abstract_Render {
 	 *
 	 * @return bool True when the subscription can be used.
 	 */
-	private function has_active_valid_subscription(): bool {
-		if ( $this->subscription_controller->is_free() ) {
-			return ! $this->subscription_controller->is_license_invalid();
-		}
-
-		return $this->subscription_controller->has_active_subscription()
-			&& ! $this->subscription_controller->is_license_invalid();
-	}
-
-	/**
-	 * Checks if the current subscription is inactive or the license is invalid.
-	 *
-	 * @return bool True when the subscription is expired or unusable.
-	 */
-	private function has_inactive_or_invalid_subscription(): bool {
-		return $this->subscription_controller->has_inactive_subscription()
-			|| $this->subscription_controller->is_license_invalid();
+	private function should_display_licence_expired_notice(): bool {
+		return $this->subscription_controller->has_active_subscription() &&
+				$this->subscription_controller->is_free() &&
+				$this->subscription_controller->is_license_invalid();
 	}
 
 	/**
@@ -693,7 +730,7 @@ class Controller extends Abstract_Render {
 
 		$class = '';
 
-		if ( $this->has_inactive_or_invalid_subscription() ) {
+		if ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() ) {
 			$class         .= ' wpr-cdn-status--expired';
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
@@ -726,36 +763,5 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_cdn_paused(): bool {
 		return ! (bool) $this->options->get( 'cdn' );
-	}
-
-	/**
-	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
-	 *
-	 * If the user has an inactive subscription, this will force the CDN option to be false,
-	 * effectively pausing CDN functionality until they renew or reactivate their subscription.
-	 *
-	 * @since 3.22
-	 *
-	 * @param mixed $cdn Current value of the CDN option.
-	 *
-	 * @return mixed False if the user has an inactive subscription, original value otherwise.
-	 */
-	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
-		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
-		if ( ! $this->context->is_rocketcdn() ) {
-			return $cdn;
-		}
-
-		// If subscription is free and licence is not valid, forced pause cdn.
-		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
-			return false;
-		}
-
-		$transient = $this->subscription_controller->get_rocketcdn_status();
-		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
-			return false;
-		}
-
-		return $cdn;
 	}
 }
