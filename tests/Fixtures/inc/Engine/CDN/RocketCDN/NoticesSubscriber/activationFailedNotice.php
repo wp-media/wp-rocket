@@ -95,8 +95,7 @@ return [
 			'user_role'         => 'administrator',
 			'token'             => '1234567890123456789012345678901234567890',
 			'subscription_data' => [
-				'is_active' => false,
-				'cdn_url'   => '',
+				'website_attached' => false,
 			],
 			'user_data'         => [
 				'rocketcdn' => [

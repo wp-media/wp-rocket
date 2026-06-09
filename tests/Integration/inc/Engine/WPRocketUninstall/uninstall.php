@@ -148,6 +148,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		$preload_fonts_table = $container->get( 'preload_fonts_table' );
 		$preconnect_table    = $container->get( 'preconnect_external_domains_table' );
 		$ri_table            = $container->get( 'ri_table' );
+		$rocketcdn_table     = $container->get( 'rocketcdn_table' );
 
 		$tables = [
 			$rucss_usedcss_table,
@@ -157,6 +158,7 @@ class Test_Uninstall extends FilesystemTestCase {
 			$preload_fonts_table,
 			$preconnect_table,
 			$ri_table,
+			$rocketcdn_table,
 		];
 
 		$uninstall = new WPRocketUninstall(

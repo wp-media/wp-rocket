@@ -4,10 +4,15 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\Subscriber::maybe_replace_url
@@ -17,6 +22,10 @@ class Test_MaybeReplaceUrl extends TestCase {
 	private $cdn;
 	private $options;
 	private $subscriber;
+
+	private $subscription_controller;
+
+	private $query;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -41,17 +50,26 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 		$this->cdn        = Mockery::mock( CDN::class );
 		$this->options    = Mockery::mock( Options_Data::class );
+		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+		$this->query = $this->createMock( RocketCDN::class );
+
 		$this->subscriber = new Subscriber(
 			$this->options,
-			$this->cdn
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$this->subscription_controller,
+			Mockery::mock( Cache::class ),
+			$this->query
 		);
 	}
 
+	public function tearDown(): void {
+		parent::tearDown();
+		$this->donotrocketoptimize = false;
+	}
+
 	public function testShouldReturnOriginalWhenDONOTROCKETOPTIMIZE() {
-		Functions\expect( 'rocket_get_constant' )
-			->once()
-			->with( 'DONOTROCKETOPTIMIZE' )
-			->andReturn( true );
+		$this->donotrocketoptimize = true;
 
 		$this->assertSame(
 			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
@@ -63,6 +81,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
 		$this->assertSame(
 			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
 			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
@@ -73,6 +94,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->andReturn( true );
 
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( true );
 
 		$this->assertSame(
@@ -81,22 +105,61 @@ class Test_MaybeReplaceUrl extends TestCase {
 		);
 	}
 
-	public function addDataProvider() {
-		return $this->getTestData( __DIR__, 'maybe-replace-url' );
+	public function testShouldReturnOriginalWhenDriverReturnsFalse() {
+		$driver = Mockery::mock( DriverInterface::class );
+		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
+		$subscription_controller = Mockery::mock( SubscriptionController::class );
+
+		$this->subscriber = new Subscriber(
+			$this->options,
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$subscription_controller,
+			Mockery::mock( Cache::class ),
+			$this->query,
+			$driver
+		);
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( true );
+
+		$subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->setupDriverGatingMocks();
+
+		$this->assertSame(
+			'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css',
+			$this->subscriber->maybe_replace_url( 'https://123456.rocketcdn.me/wordpress/wp-content/plugins/hello-dolly/style.css', [ 'all' ] )
+		);
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * Sets up common WordPress function mocks needed when testing driver-based gating.
 	 */
-	public function testShouldMaybeReplaceURL( $original, $zones, $cdn_urls, $site_url, $expected ) {
+	private function setupDriverGatingMocks(): void {
+		Functions\when( 'rocket_get_constant' )->justReturn( false );
+		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
+		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldMaybeReplaceURL( $config, $expected ) {
 		$this->options->shouldReceive( 'get' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
 		Functions\when( 'is_rocket_post_excluded_option' )->justReturn( false );
 
 		$this->cdn->shouldReceive( 'get_cdn_urls' )
 			->zeroOrMoreTimes()
-			->andReturn( $cdn_urls );
+			->andReturn( $config['cdn_urls'] );
 
 			Functions\when( 'rocket_add_url_protocol' )->alias( function( $url ) {
 				if ( strpos( $url, 'http://' ) !== false || strpos( $url, 'https://' ) !== false ) {
@@ -109,11 +172,11 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 				return 'http://' . $url;
 			} );
-		Functions\when( 'site_url' )->justReturn( $site_url );
+		Functions\when( 'site_url' )->justReturn( $config['site_url'] );
 
 		$this->assertSame(
 			$expected,
-			$this->subscriber->maybe_replace_url( $original, $zones )
+			$this->subscriber->maybe_replace_url( $config['original'], $config['zones'] )
 		);
 	}
 }
