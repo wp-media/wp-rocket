@@ -103,6 +103,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
+			'admin_post_rocket_ignore'                => [
+				[ 'track_notice_homepage_cta_click', 5 ],
+				[ 'track_rocketcdn_notice_dismissed', 5 ],
+			],
+			'wp_ajax_rocket_ignore'                   => [ [ 'track_rocketcdn_notice_dismissed', 5 ] ],
 		];
 	}
 
@@ -546,6 +551,59 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'previous_version' => $previous_version,
 		];
 
+		/**
+		 * Fires after the RocketCDN notice is displayed, allowing to track the impression of the notice.
+		 *
+		 * @param string $dismiss_button The notice button identifier.
+		 */
+		do_action( 'rocket_notice_displayed', $notice_info['dismiss_button'] );
+
 		Utils::display_update_notice( $notice_info, true );
+	}
+
+	/**
+	 * Tracks the "Start with my homepage" CTA click from the RocketCDN promo admin notice.
+	 *
+	 * Fires before rocket_dismiss_boxes() redirects, so we can track before the exit.
+	 *
+	 * @return void
+	 */
+	public function track_notice_homepage_cta_click(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce is verified later by rocket_dismiss_boxes().
+		$box = isset( $_GET['box'] ) ? sanitize_key( wp_unslash( $_GET['box'] ) ) : '';
+
+		if ( 'rocketcdn_install_notice' !== $box ) {
+			return;
+		}
+
+		/**
+		 * Fires when the homepage cta button is clicked.
+		 *
+		 * @param string $source The source of the click, either 'add_homepage_button' or 'admin_notices'.
+		 */
+		do_action( 'rocket_rocketcdn_add_homepage', 'admin_notices' );
+	}
+
+	/**
+	 * Tracks when a RocketCDN admin notice is dismissed.
+	 *
+	 * Fires before rocket_dismiss_boxes() redirects, so we can track before the exit.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_dismissed(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Nonce is verified later by rocket_dismiss_boxes().
+		$box = isset( $_GET['box'] ) ? sanitize_key( wp_unslash( $_GET['box'] ) ) : '';
+
+		$rocketcdn_boxes = [ 'rocketcdn_install_notice', 'rocket_update_notice' ];
+
+		if ( ! in_array( $box, $rocketcdn_boxes, true ) ) {
+			return;
+		}
+
+		/**
+		 * Fires when a user dismiss the admin notice for rocketcdn.
+		 */
+		do_action( 'rocket_rocketcdn_notice_dismissed' );
 	}
 }
