@@ -56,10 +56,14 @@ class Test_RewriteSrcset extends TestCase {
 		);
 
 		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_type', 'rocketcdn' )
+			->andReturn( $config['cdn_type'] );
+
+		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
 			->andReturn( $config['cdn_enabled'] );
 
-		if ( $config['driver_returns'] ) {
+		if ( $expected['rewrite_called'] ) {
 			$this->cdn->shouldReceive( 'rewrite_srcset' )
 				->once()
 				->andReturn( $config['rewritten_html'] );

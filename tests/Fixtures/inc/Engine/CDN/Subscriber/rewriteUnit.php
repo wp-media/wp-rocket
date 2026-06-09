@@ -1,25 +1,66 @@
 <?php
 
 return [
-	'shouldReturnOriginalHtmlWhenDriverReturnsFalse' => [
+	'shouldReturnOriginalHtmlWhenRocketcdnIsPaused'             => [
 		'config'   => [
-			'cdn_enabled'    => true,
+			'cdn_type'       => 'rocketcdn',
+			'cdn_enabled'    => 0,
+			'driver_returns' => true,
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+		],
+		'expected' => [
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'rewrite_called' => false,
+		],
+	],
+	'shouldReturnOriginalHtmlWhenDriverReturnsFalse'             => [
+		'config'   => [
+			'cdn_type'       => 'rocketcdn',
+			'cdn_enabled'    => 1,
 			'driver_returns' => false,
 			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
 		],
 		'expected' => [
-			'html' => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'rewrite_called' => false,
 		],
 	],
-	'shouldRewriteHtmlWhenDriverReturnsTrue'         => [
+	'shouldRewriteHtmlWhenDriverReturnsTrue'                     => [
 		'config'   => [
-			'cdn_enabled'    => true,
+			'cdn_type'       => 'rocketcdn',
+			'cdn_enabled'    => 1,
 			'driver_returns' => true,
 			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
 			'rewritten_html' => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',
 		],
 		'expected' => [
-			'html' => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',
+			'html'           => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',
+			'rewrite_called' => true,
+		],
+	],
+	'shouldRewriteHtmlWhenByocdnEvenIfCdnOptionIsDisabled'       => [
+		'config'   => [
+			'cdn_type'       => 'byocdn',
+			'cdn_enabled'    => 0,
+			'driver_returns' => true,
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'rewritten_html' => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',
+		],
+		'expected' => [
+			'html'           => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',
+			'rewrite_called' => true,
+		],
+	],
+	'shouldReturnOriginalHtmlWhenByocdnDriverReturnsFalse'       => [
+		'config'   => [
+			'cdn_type'       => 'byocdn',
+			'cdn_enabled'    => 0,
+			'driver_returns' => false,
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+		],
+		'expected' => [
+			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
+			'rewrite_called' => false,
 		],
 	],
 ];
