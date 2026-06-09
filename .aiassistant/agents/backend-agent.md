@@ -120,30 +120,22 @@ Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
 ---
 
-### Step 3c — Write API contract
+### Step 3c — Capture API surface for return JSON
 
-Before committing, write `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-api.json`
-with the actual API surface as implemented (not just as specced). This is a **separate file**
-from the full result JSON you write in Step 5 — do not conflate them.
+Before committing, document the actual API surface as implemented (not just as specced).
+You will include this as `backend_api` in your return JSON (Step 5).
 
-```json
-{
-  "hooks": [
-    { "type": "filter|action", "name": "rocket_...", "signature": "( $value, $context )" }
-  ],
-  "option_keys": ["key_name"],
-  "rest_endpoints": [
-    { "method": "GET|POST", "route": "/wp-json/wp-rocket/v1/..." }
-  ],
-  "ajax_actions": [],
-  "notes": "any drift from spec"
-}
-```
+Fields to capture:
+- `hooks`: every new or modified filter/action, with type, name, and signature
+- `option_keys`: every option key added or changed
+- `rest_endpoints`: every REST route added or changed, with method and route
+- `ajax_actions`: every AJAX action added or changed
+- `notes`: any drift from spec
 
-The orchestrator reads this file after you complete and passes the relevant fields
-(`hooks`, `option_keys`, `rest_endpoints`) to the frontend-agent in sequential mode.
-Populate every field even if empty (`[]`).
-If nothing changed in a category, leave the array empty — do not omit the key.
+Populate every field even if empty (`[]`). Do not omit keys.
+
+The orchestrator extracts `backend_api` from this return JSON and passes it to the
+frontend-agent dispatch plan when scopes overlap.
 
 ---
 
@@ -210,54 +202,19 @@ Then return the following JSON object to the orchestrator. The orchestrator read
     "hesitations": ["what was unclear or uncertain — spec gaps, ambiguous edge cases, behaviour not covered by tests"],
     "decision_rationale": "why the chosen approach was taken over the alternatives"
   },
+  "backend_api": {
+    "hooks": [],
+    "option_keys": [],
+    "rest_endpoints": [],
+    "ajax_actions": [],
+    "notes": "any drift from spec"
+  },
   "notes": "any deviations from spec with reason, or empty string"
 }
 ```
 
+The orchestrator extracts `backend_api` from this return JSON and passes it to the
+frontend-agent dispatch plan when scopes overlap.
+
 `dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3b).
 
----
-
-## Result file and event emission
-
-Before returning the JSON object, perform these final steps:
-
-```bash
-ISSUE_NUMBER=<N>  # the issue number from your orchestrator inputs
-```
-
-### Write result file
-
-```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/backend-result.json" <<'EOF'
-{
-  "ticket_id": "...",
-  "branch": "...",
-  ...
-}
-EOF
-```
-
-This file is a session-recovery fallback. The primary routing input is the JSON object returned directly to the orchestrator.
-
-### Emit start and complete events
-
-**At the beginning of Step 1 (after you receive inputs):**
-
-```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"backend-agent","type":"agent_start","issue_id":"${ISSUE_NUMBER}","data":{"step":5,"domain":"backend"}}
-EOF
-```
-
-**Before returning this JSON object (after Step 3b is done and commit succeeds):**
-
-```bash
-TESTS_OK=true  # set to false if any test failed
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"backend-agent","type":"implementation_complete","issue_id":"${ISSUE_NUMBER}","data":{"domain":"backend","tests_passing":${TESTS_OK},"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
-EOF
-```
-
-Do not commit these events or result files — they are coordination infrastructure, not code.

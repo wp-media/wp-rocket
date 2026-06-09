@@ -40,22 +40,15 @@ You receive:
 
 ### Step 1b — API contract reconciliation
 
-All coordination goes through the orchestrator. How you receive the backend API surface
-depends on which execution mode the orchestrator used:
+The orchestrator passes the backend API surface in the dispatch plan inputs (key: `backend_api`).
+Read it from there — no file read needed.
 
-**Sequential mode (preferred):** the orchestrator already extracted the backend API surface
-from `contracts/backend-api.json` and included it in your dispatch plan. Use that — do
-not read the contract file yourself.
+If `backend_api` is not present in the dispatch plan, proceed from the spec and note
+"API contract not available — using spec" in `notes`.
 
-**Parallel mode (fallback):** if your dispatch plan does not include the API surface, check
-whether `contracts/backend-api.json` exists. If it does, read it as orchestrator-managed
-shared state (the orchestrator owns this file — backend wrote it, orchestrator logged it).
-If it does not exist, proceed from spec and note "API contract not available — using spec"
-in `notes`.
-
-In both cases: if the contract and the spec diverge, the contract wins (it reflects what
-was actually implemented). Compare `option_keys`, `hooks`, and `rest_endpoints`; note any
-drift in your `notes` on return. Do not block or wait for the contract.
+If the contract and the spec diverge, the contract wins (it reflects what was actually
+implemented). Compare `option_keys`, `hooks`, and `rest_endpoints`; note any drift in
+your `notes` on return. Do not block or wait for the contract.
 
 ---
 
@@ -205,48 +198,3 @@ Then return the following JSON object to the orchestrator. The orchestrator read
 
 `dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3b).
 
----
-
-## Result file and event emission
-
-Before returning the JSON object, perform these final steps:
-
-```bash
-ISSUE_NUMBER=<N>  # the issue number from your orchestrator inputs
-```
-
-### Write result file
-
-```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/frontend-result.json" <<'EOF'
-{
-  "ticket_id": "...",
-  "branch": "...",
-  ...
-}
-EOF
-```
-
-This file is a session-recovery fallback. The primary routing input is the JSON object returned directly to the orchestrator.
-
-### Emit start and complete events
-
-**At the beginning of Step 1 (after you receive inputs):**
-
-```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"agent_start","issue_id":"${ISSUE_NUMBER}","data":{"step":5,"domain":"frontend"}}
-EOF
-```
-
-**Before returning this JSON object (after Step 3b is done and commit succeeds):**
-
-```bash
-TESTS_OK=true  # set to false if any test failed
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-{"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"frontend-agent","type":"implementation_complete","issue_id":"${ISSUE_NUMBER}","data":{"domain":"frontend","tests_passing":${TESTS_OK},"dod_l1_overall":"PASS|WARN","files_changed":N,"commit_sha":"..."}}
-EOF
-```
-
-Do not commit these events or result files — they are coordination infrastructure, not code.

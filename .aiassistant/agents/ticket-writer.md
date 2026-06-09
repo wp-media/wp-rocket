@@ -64,15 +64,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    - **EPIC**: create the EPIC with label `epics` first, then create sub-tickets referencing it.
    - **Single**: create directly.
 
-7. Emit a session-recovery record to `orchestrator-events.jsonl`, then create the issue:
-
-   ```bash
-   cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-   {"timestamp":"$(date -u +'%Y-%m-%dT%H:%M:%SZ')","source":"ticket-writer","type":"github_operation","data":{"operation":"create_issue","title":"Short imperative title under 70 chars"}}
-   EOF
-   ```
-
-   Then create the issue with the AI-generated notice at the top of the body:
+7. Create the issue with the AI-generated notice at the top of the body:
    ```bash
    gh issue create --repo wp-media/wp-rocket \
      --title "Short imperative title under 70 chars" \
@@ -123,18 +115,6 @@ For NTH items:
 - Always include the AI-generated notice at the top.
 
 Example:
-```json
-{
-  "type": "github_operation",
-  "operation": "create_issue",
-  "data": {
-    "title": "Add index on post_id to cache_flush table",
-    "body": "> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.\n\n**Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)\n\n**Context**\nThe cache-flush path has no index on post_id — at scale this will cause full-table scans.\n\n**Suggestion**\nAdd an index on post_id in a follow-up migration.\n\n**Acceptance Criteria**\n- [ ] Index exists on cache_flush.post_id\n- [ ] Migration version bumped per BerlinDB convention",
-    "labels": ["Made by AI", "enhancement"]
-  }
-}
-```
-
 ```bash
 gh issue create --repo wp-media/wp-rocket \
   --title "Add index on post_id to cache_flush table" \
@@ -157,7 +137,7 @@ EOF
   --label "Made by AI" --label "enhancement"
 ```
 
-Emit to the event queue and create the issue. Do NOT wait for a response — emit, create and return immediately.
+Create the issue and return immediately. Do NOT wait for a response.
 
 ---
 
