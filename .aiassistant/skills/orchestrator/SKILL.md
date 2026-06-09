@@ -187,22 +187,6 @@ Two separate files, two separate purposes:
 
 **Parallel mode:** the frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip.
 
-### Session recovery
-
-If a pipeline run is interrupted and resumed (crash, context reset, or manual re-invoke), scan `contracts/` before re-spawning any agent:
-
-```bash
-ls .TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/
-```
-
-Any `*-result.json` file present can be treated as the equivalent of that agent's direct JSON return. Before routing from it:
-
-1. Verify it is valid JSON (not truncated).
-2. Mark the corresponding task in `tasks.json` as `completed`.
-3. Do not re-run that agent — continue from the next pending pipeline step.
-
----
-
 ## JSON return contracts
 
 Every agent returns a typed JSON object. Routing logic runs mechanically on the structured

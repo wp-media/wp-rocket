@@ -229,16 +229,6 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-**After posting (or updating), always write the event to the orchestrator fallback file:**
-
-```bash
-cat >> ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/orchestrator-events.jsonl" <<EOF
-{"type":"github_operation","operation":"post_comment_to_pr","issue_id":${ISSUE_NUMBER},"pr_number":${PR_NUMBER},"data":{"body":"[full QA report content]","result":"PASS|FAIL|PARTIAL|CANNOT_VERIFY"}}
-EOF
-```
-
-This allows the orchestrator to detect whether the comment was posted and retry if something went wrong.
-
 ---
 
 ## Output format
@@ -320,24 +310,3 @@ The orchestrator will ask the user to classify any unexpected finding before rou
 - ✅ **Always do:** read ticket spec before testing, read full changed files, map every acceptance criterion to a test result, provide concrete evidence for every result
 - ⚠️ **Ask first:** if no ticket spec or acceptance criteria are available; if the local server is unreachable
 - 🚫 **Never do:** modify any plugin code or files, skip acceptance criteria without noting them, report PASS without evidence, conflate "no test failures" with "acceptance criteria met"
-
----
-
-## Result file write
-
-Before returning, you MUST write the JSON result to disk:
-
-```bash
-mkdir -p ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts"
-cat > ".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}/contracts/qa-result.json" <<'EOF'
-{
-  "overall": "...",
-  "strategies_used": [...],
-  ...
-}
-EOF
-```
-
-This file is a session-recovery fallback. The primary routing input is the JSON object returned directly to the orchestrator.
-
-The file MUST exist before the agent returns. If writing fails, log the error and still return the JSON object to the orchestrator.
