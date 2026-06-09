@@ -36,21 +36,6 @@ defined( 'ABSPATH' ) || exit;
 	<?php endif; ?>
 </div>
 
-<?php if ( ! $data['active_subscription'] ) : ?>
-<div class="wpr-notice wpr-ri-notice wpr-cdn-expired__notice" id="wpr-cdn-licence-banner">
-	<div class="wpr-notice-container">
-		<div class="wpr-notice-description wpr-notice-70">
-			<h3 class="wpr-cdn-expired__notice-title">
-				<?php esc_html_e( 'Your WPRocket license has expired', 'rocket' ); ?>
-			</h3>
-			<p><?php esc_html_e( 'Please renew it to keep using RocketCDN.', 'rocket' ); ?></p>
-		</div>
-		<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
-			<?php esc_html_e( 'Renew Licence', 'rocket' ); ?>
-		</a>
-	</div>
-</div>
-<?php endif; ?>
 <div class="<?php echo esc_attr( $data['class'] ); ?>">
 	<?php
 	/**

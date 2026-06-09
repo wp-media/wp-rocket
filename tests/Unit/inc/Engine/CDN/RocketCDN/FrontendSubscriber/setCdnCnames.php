@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CDN\Context;
-use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -49,6 +49,9 @@ class Test_SetCdnCnames extends TestCase {
 					->andReturn( $config['cdn_url'] );
 			}
 		}
+
+		Functions\when( 'is_admin' )
+			->justReturn( false );
 
 		$result = $this->subscriber->set_cdn_cnames( null );
 
