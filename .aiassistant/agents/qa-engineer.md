@@ -159,9 +159,15 @@ Before running strategies, **sanity check your selection:**
 - Did you select Strategy B? If the issue mentions visual/UI keywords or the PR touches frontend files, this should be true.
 - If you did NOT select Strategy B but the PR clearly involves UI changes (issue title says "display", "add button", "visual", etc.), **pause and re-select Strategy B**.
 
-Run each selected strategy. For every acceptance criterion:
+**Run each selected strategy:**
+
+- **Strategy A (API)**: run `curl` commands, WP-CLI commands, or test scripts to validate backend behavior.
+- **Strategy B (Browser)**: delegate to `e2e-qa-tester`. Wait for it to return results including per-criterion verdicts, screenshots, and Playwright specs. Incorporate these results into your report.
+- **Strategy C (Analysis)**: read changed files and tests; run test suites if needed.
+
+For every acceptance criterion:
 - State which strategy you used
-- State what you did (command run, URL navigated, test read)
+- State what you did (command run, URL navigated, test read, or delegated to e2e-qa-tester)
 - State what you observed
 - Conclude PASS, FAIL, or PARTIAL with a one-line reason
 
@@ -199,7 +205,7 @@ After generating the report, post it as a PR comment so it is immediately visibl
 **Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
 
 ```bash
-EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("**QA:"))] | last | .url // empty')
+EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("<!-- ai-pipeline:qa-report -->"))] | last | .url // empty')
 ```
 
 If an existing QA comment is found, edit it in place:
@@ -235,6 +241,8 @@ exit 1, see Environment Boot table").
 
 Keep the PR comment short. Reviewers can see the diff and CI output themselves — only surface what they cannot see.
 
+**Required:** Every report (PASS, FAIL, or PARTIAL) must end with the line `<!-- ai-pipeline:qa-report -->` — this is the update-mode marker that lets qa-engineer find and update prior reports on re-runs. Do not remove or alter this line.
+
 **If overall is PASS:**
 ```
 > [!NOTE]
@@ -246,6 +254,8 @@ Keep the PR comment short. Reviewers can see the diff and CI output themselves �
 |---|---|---|
 | [criterion 1] | API / Browser / Analysis | ✅ |
 | [criterion 2] | API / Browser / Analysis | ✅ |
+
+<!-- ai-pipeline:qa-report -->
 ```
 
 **If overall is FAIL or PARTIAL:**
@@ -262,9 +272,26 @@ Keep the PR comment short. Reviewers can see the diff and CI output themselves �
 
 **Blockers:**
 - [criterion]: [what to fix]
+
+<!-- ai-pipeline:qa-report -->
 ```
 
-**Screenshots** (frontend PRs only — omit for backend-only): include only if Strategy B ran. One screenshot per key step, inline.
+**Screenshots** (frontend PRs only — omit for backend-only): include only if Strategy B ran. One screenshot per key step, inline. Format as a table with step descriptions and gist raw image URLs (received from e2e-qa-tester).
+
+**Playwright Specs** (when Strategy B ran and specs were written): include the full source of each spec under a collapsible block so it doesn't dominate the comment. Specs content comes from e2e-qa-tester's `specs_content` return field.
+
+```
+### Playwright Specs
+
+<details>
+<summary>View spec source (feature-criterion.spec.js)</summary>
+
+```js
+[full spec source from e2e-qa-tester]
+```
+
+</details>
+```
 
 No strategy selection table, no smoke test table, no recommendations prose — those go in the JSON return object only.
 
