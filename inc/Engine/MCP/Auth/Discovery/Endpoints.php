@@ -1,0 +1,108 @@
+<?php
+/**
+ * OAuth 2.0 Discovery Endpoints.
+ *
+ * Registers the two RFC-mandated well-known documents so MCP clients can
+ * auto-discover the authorization server metadata without hard-coding URLs.
+ *
+ * Paths served:
+ *   GET /.well-known/oauth-protected-resource  (RFC 9728)
+ *   GET /.well-known/oauth-authorization-server (RFC 8414)
+ */
+
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\MCP\Auth\Discovery;
+
+use WP_Rocket\Engine\MCP\Auth\McpLogger;
+
+class Endpoints {
+	/**
+	 * Query var name used to route discovery requests.
+	 */
+	const QUERY_VAR = 'mcp_oauth_discovery';
+
+	/**
+	 * Register rewrite rules for the .well-known paths.
+	 *
+	 * Called both on the 'init' action (normal requests) and directly during
+	 * plugin activation before flush_rewrite_rules().
+	 *
+	 * @return void
+	 */
+	public function add_rewrite_rules(): void {
+		add_rewrite_rule(
+			'^\\.well-known/oauth-protected-resource$',
+			'index.php?' . self::QUERY_VAR . '=protected-resource',
+			'top'
+		);
+		add_rewrite_rule(
+			'^\\.well-known/oauth-authorization-server$',
+			'index.php?' . self::QUERY_VAR . '=authorization-server',
+			'top'
+		);
+	}
+
+	/**
+	 * Add the OAuth query var to WordPress's list of recognised vars.
+	 *
+	 * @param string[] $vars Existing query vars.
+	 * @return string[] Modified list.
+	 */
+	public function add_oauth_query_vars( array $vars ): array {
+		$vars[] = Endpoints::QUERY_VAR;
+
+		return $vars;
+	}
+
+	/**
+	 * Serve the discovery document if the request matches.
+	 *
+	 * @return void
+	 */
+	public function handle_request(): void {
+		$discovery = (string) get_query_var( self::QUERY_VAR, '' );
+
+		if ( '' === $discovery ) {
+			return;
+		}
+
+		$site_url = get_site_url();
+
+		McpLogger::log(
+			'DISCOVERY',
+			'request received',
+			array(
+				'document'    => $discovery,
+				'remote_addr' => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
+				'user_agent'  => isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
+			)
+		);
+
+		if ( 'protected-resource' === $discovery ) {
+			$body = array(
+				'resource'                 => get_rest_url( null, 'mcp/mcp-oauth-server' ),
+				'authorization_servers'    => array( $site_url ),
+				'bearer_methods_supported' => array( 'header' ),
+				'scopes_supported'         => array( 'mcp' ),
+			);
+			McpLogger::log( 'DISCOVERY', 'serving protected-resource document', $body );
+			wp_send_json( $body );
+		} elseif ( 'authorization-server' === $discovery ) {
+			$body = array(
+				'issuer'                                => $site_url,
+				'authorization_endpoint'                => $site_url . '/oauth/authorize',
+				'token_endpoint'                        => $site_url . '/oauth/token',
+				'revocation_endpoint'                   => $site_url . '/oauth/revoke',
+				'response_types_supported'              => array( 'code' ),
+				'grant_types_supported'                 => array( 'authorization_code', 'refresh_token' ),
+				'code_challenge_methods_supported'      => array( 'S256' ),
+				'scopes_supported'                      => array( 'mcp' ),
+				'token_endpoint_auth_methods_supported' => array( 'none' ),
+				'client_id_metadata_document_supported' => true,
+			);
+			McpLogger::log( 'DISCOVERY', 'serving authorization-server document', $body );
+			wp_send_json( $body );
+		}
+	}
+}
