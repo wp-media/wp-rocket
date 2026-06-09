@@ -628,7 +628,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
-		if ( is_wp_error( $connection ) ) {
+		if ( is_wp_error( $connection ) && function_exists( 'add_settings_error' ) ) {
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 		}
 

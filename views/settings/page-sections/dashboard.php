@@ -28,7 +28,16 @@ $rocket_cdn_token        = get_option( 'rocketcdn_user_token', '' );
 $rocket_box_is_dismissed = in_array( 'rocket_activation_notice', (array) $rocket_boxes, true );
 $rocketcdn_paid_plan     = ! empty( $rocket_cdn_token ) && $data['is_rocketcdn_paid_user'];
 
-if ( $rocketcdn_paid_plan ) {
+/**
+ * Filters showing rocketcdn banner message instead of welcome banner.
+ *
+ * @since 3.22
+ *
+ * @param bool $show_rocketcdn_banner Show rocketcdn banner, by default it's shown for not paid rocketcdn.
+ */
+$rocket_show_rocketcdn_banner = wpm_apply_filters_typed( 'boolean', 'rocket_show_rocketcdn_banner', ! $rocketcdn_paid_plan );
+
+if ( ! $rocket_show_rocketcdn_banner ) {
 	$rocket_hero_title       = __( 'Congratulations!', 'rocket' );
 	$rocket_title            = __( 'WP Rocket is now activated and already working for you.', 'rocket' )
 		. '<br>'
@@ -39,7 +48,7 @@ if ( $rocketcdn_paid_plan ) {
 } else {
 	$rocket_hero_title       = __( 'NEW!', 'rocket' );
 	$rocket_title            = __( 'You can now enable RocketCDN for free on up to 3 pages of your choice!', 'rocket' );
-	$rocket_hero_description = __( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the RocketCDN tab, choose up to 3 pages, and add them to the CDN to improve their performance globally.', 'rocket' );
+	$rocket_hero_description = __( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the Content Delivery tab, choose up to 3 pages, and add them to RocketCDN to improve their performance globally.', 'rocket' );
 }
 ?>
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">

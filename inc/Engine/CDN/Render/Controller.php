@@ -119,7 +119,7 @@ class Controller extends Abstract_Render {
 			return $sections;
 		}
 
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn' );
 
 		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
@@ -184,7 +184,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$sections['rocketcdn_free_section'] = [
 			'title'            => __( 'RocketCDN', 'rocket' ),
@@ -219,7 +219,7 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_purge_cdn_cache_section( array $sections ): array {
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'purge_cdn' );
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
