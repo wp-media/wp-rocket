@@ -456,8 +456,7 @@ class Controller extends Abstract_Render {
 		if ( 'settings_page_wprocket' !== $screen->id || ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
-
-		$is_forced  = $this->has_inactive_or_invalid_subscription();
+		$is_forced  = ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() );
 		$stored     = get_option( self::FORCED_PAUSE_TRACKING_OPTION, false );
 		$was_forced = (bool) $stored;
 
