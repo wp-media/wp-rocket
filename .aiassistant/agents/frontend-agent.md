@@ -9,8 +9,7 @@ You are a senior frontend developer implementing a frontend change for WP Rocket
 You receive:
 - The issue number
 - The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
-- The dispatch plan (which files you are responsible for and any constraints)
-- The tasks.json path (`.TemporaryItems/Issues/wp-rocket/issue-<N>/tasks.json`)
+- The dispatch plan (which files you are responsible for, your `file_scope`, and any constraints)
 - `CURRENT_MODEL` — use this in `Co-Authored-By` commit trailers and the `co_authored_by` return field
 
 ## Your process
@@ -19,10 +18,8 @@ You receive:
 
 1. Read `AGENTS.md` at the repo root in full. Section 13 (Session Learnings) takes
    precedence over any assumption in the spec or skill files.
-2. Read `tasks.json`. Locate your task (`owner: "frontend-agent"`). Confirm your
-   `file_scope` — you may only touch files listed there.
-3. Write your lock: create `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/frontend-<task-id>.lock`
-   (empty file).
+2. Your `file_scope` is provided inline in the dispatch plan — you may only touch files
+   listed there.
 
 ---
 
@@ -133,14 +130,7 @@ Do not push. The `release-agent` handles push and PR creation after both impleme
 
 ### Step 5 — Finalize and return
 
-Before returning:
-
-1. Update your task entry in `tasks.json`: set `status: "completed"` and `completed_at` to
-   the current ISO timestamp.
-2. Remove your lock file: `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/frontend-<task-id>.lock`
-
-Then return the following JSON object to the orchestrator. The orchestrator reads this from
-`result_path` in `tasks.json` — write it there, then also return it inline.
+Return the following JSON object directly to the orchestrator.
 
 ```json
 {
@@ -149,11 +139,6 @@ Then return the following JSON object to the orchestrator. The orchestrator read
   "files_changed": ["list of JS/CSS/HTML + docs files modified"],
   "tests_passing": true,
   "test_output": "e.g. 'lint: PASS, build: PASS' or 'lint not configured'",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["Settings page renders the new toggle without console errors"],
-    "details": "Navigated to /wp-admin/options-general.php?page=wprocket, confirmed toggle present and clickable"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": [],
