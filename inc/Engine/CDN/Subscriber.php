@@ -429,6 +429,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_cdn_enabled() {
+		$cdn_type = (string) $this->options->get( 'cdn_type', 'rocketcdn' );
+		// Bail early if it's not rocketcdn.
+		if ( 'rocketcdn' !== $cdn_type ) {
+			return true;
+		}
+
 		return (bool) $this->options->get( 'cdn', 0 );
 	}
 

@@ -126,7 +126,9 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_url( $url ) {
-		if ( ! $this->options->get( 'cdn', 0 ) ) {
+		$cdn_type = $this->options->get( 'cdn_type', 'rocketcdn' );
+
+		if ( ! $this->options->get( 'cdn', 0 ) && 'rocketcdn' === $cdn_type ) {
 			return $url;
 		}
 
