@@ -81,6 +81,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->andReturn( false );
 
+		$this->options->shouldReceive( 'cdn_type' )
+			->andReturn( 'byocdn' );
+
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
@@ -123,6 +126,10 @@ class Test_MaybeReplaceUrl extends TestCase {
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )
 			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_type', 'rocketcdn' )
+			->andReturn( 'rocketcdn' );
 
 		$subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
