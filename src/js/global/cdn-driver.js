@@ -164,12 +164,24 @@
 		function syncSharedDriverState( activeDriver ) {
 			const excludeHeader = document.querySelector( '.wpr-cdn-exclude-section' );
 			const exclusionFields = document.querySelectorAll( '.wpr-cdn-exclusions' );
+			const rocketBuiltIn = document.querySelector( '.rocketcdn.wpr-cdn-built-in' );
+			const rocketPurgeSection = document.querySelector( '.rocketcdn.wpr-cdn-purge' );
 			const rocketCdnStateInput = document.getElementById( 'rocketcdn_state' );
 			const isRocketCdnDisabled = rocketCdnStateInput
 				? 'paused' === rocketCdnStateInput.value
 				: Boolean( document.querySelector( '.rocketcdn .wpr-cdn-status--paused, .rocketcdn .wpr-cdn-built-in--paused, .rocketcdn .wpr-icon-orange-loader' ) );
 
 			const shouldDisableExclusions = 'rocketcdn' === activeDriver && isRocketCdnDisabled;
+			const shouldDisableRocketCdnSections = 'rocketcdn' === activeDriver && isRocketCdnDisabled;
+
+			if ( rocketBuiltIn ) {
+				rocketBuiltIn.classList.toggle( 'wpr-cdn-built-in--paused', shouldDisableRocketCdnSections );
+				rocketBuiltIn.classList.toggle( 'wpr-cdn-built-in--disabled', shouldDisableRocketCdnSections );
+			}
+
+			if ( rocketPurgeSection ) {
+				rocketPurgeSection.classList.toggle( 'wpr-cdn-disabled', shouldDisableRocketCdnSections );
+			}
 
 			if ( excludeHeader ) {
 				excludeHeader.classList.toggle( 'wpr-cdn-disabled', shouldDisableExclusions );

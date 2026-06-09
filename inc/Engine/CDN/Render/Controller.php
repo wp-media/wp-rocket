@@ -274,8 +274,8 @@ class Controller extends Abstract_Render {
 			'class' => [ 'wpr-cdn-exclude-section' ],
 		];
 
-		// Disable exclusions fields when subscription is processing.
-		if ( $this->is_subscription_loading() || $this->is_cdn_paused() ) {
+		// Disable exclusions fields when subscription is processing or RocketCDN is paused.
+		if ( $this->is_subscription_loading() || ( $this->context->is_rocketcdn() && $this->is_cdn_paused() ) ) {
 			$sections['exclude_cdn_section']['class'][] = 'wpr-cdn-disabled';
 		}
 
@@ -669,37 +669,41 @@ class Controller extends Abstract_Render {
 	/**
 	 * Check if cdn should pause or not.
 	 *
+	 * Delegates to get_rocketcdn_state() via the option filter so that both manual pause
+	 * and subscription-forced pause are detected correctly regardless of active driver.
+	 *
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return ! (bool) $this->options->get( 'cdn' );
+		return 'paused' === $this->options->get( 'rocketcdn_state' );
+	}
+
+	/**
+	 * Checks whether the RocketCDN subscription forces a pause.
+	 *
+	 * @return bool True if the subscription state requires RocketCDN to be paused.
+	 */
+	private function is_subscription_force_paused(): bool {
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return true;
+		}
+
+		$transient = $this->subscription_controller->get_rocketcdn_status();
+
+		return false !== $transient && $this->subscription_controller->has_inactive_subscription();
 	}
 
 	/**
 	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
 	 *
-	 * If the user has an inactive subscription, this will force the CDN option to be false,
-	 * effectively pausing CDN functionality until they renew or reactivate their subscription.
-	 *
 	 * @since 3.22
 	 *
 	 * @param mixed $cdn Current value of the CDN option.
 	 *
-	 * @return mixed False if the user has an inactive subscription, original value otherwise.
+	 * @return mixed False if the subscription forces a pause, original value otherwise.
 	 */
 	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
-		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
-		if ( ! $this->context->is_rocketcdn() ) {
-			return $cdn;
-		}
-
-		// If subscription is free and licence is not valid, forced pause cdn.
-		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
-			return false;
-		}
-
-		$transient = $this->subscription_controller->get_rocketcdn_status();
-		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
+		if ( $this->is_subscription_force_paused() ) {
 			return false;
 		}
 
@@ -714,8 +718,6 @@ class Controller extends Abstract_Render {
 	 * @return string
 	 */
 	public function get_rocketcdn_state( $state ): string {
-		$options = (array) $this->options->get_options();
-
-		return empty( $options['cdn'] ) ? 'paused' : 'active';
+		return $this->options->get( 'cdn' ) ? 'active' : 'paused';
 	}
 }

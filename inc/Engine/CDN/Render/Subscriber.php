@@ -48,7 +48,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_settings_fields'            => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta'          => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'                  => 'maybe_hide_cdn_tab_badge',
-			'pre_get_rocket_option_cdn'             => 'maybe_pause_cdn_for_inactive_subscription',
+			'pre_get_rocket_option_cdn'             => [ 'maybe_pause_cdn_for_inactive_subscription', 8 ],
 			'pre_get_rocket_option_rocketcdn_state' => 'get_rocketcdn_state',
 		];
 	}

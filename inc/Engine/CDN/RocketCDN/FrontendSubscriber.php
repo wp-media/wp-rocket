@@ -141,6 +141,10 @@ class FrontendSubscriber implements Subscriber_Interface {
 			return $value;
 		}
 
+		if ( doing_filter( 'pre_get_rocket_option_rocketcdn_state' ) ) {
+			return $value;
+		}
+
 		return true;
 	}
 }
