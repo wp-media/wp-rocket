@@ -154,8 +154,7 @@ Each pipeline run creates an isolated working directory for coordination artifac
 ```
 issue-<N>/
 ├── tasks.json               # shared task ledger — read/written by all agents
-├── contracts/
-│   └── backend-api.json     # written by backend-agent: hooks, option_keys, rest_endpoints
+├── contracts/               # reserved for future coordination artifacts
 └── locks/
     └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
 ```
@@ -200,7 +199,7 @@ issue-<N>/
 
 ### Backend API contract
 
-- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent before committing. When scopes overlap (sequential mode), the orchestrator uses the `backend_api` field from the backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
+- The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
 ---
 
@@ -564,7 +563,7 @@ Do NOT create git worktrees. All agents work on the same branch.
 
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
-> When backend completes, orchestrator reads `contracts/backend-api.json` if it exists and passes it to frontend.
+> When backend completes, orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it to frontend.
 >
 > Both agents commit atomically to the same branch. Commits are ordered: backend first, then frontend.
 
