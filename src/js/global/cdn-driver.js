@@ -289,6 +289,9 @@
 			} ).then( () => {
 				button.disabled = false;
 
+				// Simulate real click to prepare checkbox state for form submission.
+				document.querySelector('label[for="cdn"]').click();
+
 				updateRocketCDNElementsState( 'rocketcdn', isPaused );
 
 				const statusContainer = button.closest( '.wpr-cdn-status' );
