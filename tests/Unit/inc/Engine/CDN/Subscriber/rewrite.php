@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -44,6 +45,7 @@ class Test_Rewrite extends TestCase {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
 		$subscription_controller = Mockery::mock( SubscriptionController::class );
+		$context = Mockery::mock( Context::class );
 
 		$subscriber = new Subscriber(
 			$this->options,
@@ -52,12 +54,11 @@ class Test_Rewrite extends TestCase {
 			$subscription_controller,
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
+			$context,
 			$driver
 		);
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_type', 'rocketcdn' )
-			->andReturn( $config['cdn_type'] );
+		$context->shouldReceive('is_rocketcdn')->andReturn( $config['cdn_type'] );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn', 0 )

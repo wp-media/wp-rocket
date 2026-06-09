@@ -3,7 +3,7 @@
 return [
 	'shouldReturnOriginalHtmlWhenRocketcdnIsPaused'             => [
 		'config'   => [
-			'cdn_type'       => 'rocketcdn',
+			'cdn_type'       => true,
 			'cdn_enabled'    => 0,
 			'driver_returns' => true,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
@@ -15,7 +15,7 @@ return [
 	],
 	'shouldReturnOriginalHtmlWhenDriverReturnsFalse'             => [
 		'config'   => [
-			'cdn_type'       => 'rocketcdn',
+			'cdn_type'       => true,
 			'cdn_enabled'    => 1,
 			'driver_returns' => false,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x, https://example.org/wp-content/uploads/image-2x.jpg 2x">',
@@ -27,7 +27,7 @@ return [
 	],
 	'shouldRewriteSrcsetWhenDriverReturnsTrue'                   => [
 		'config'   => [
-			'cdn_type'       => 'rocketcdn',
+			'cdn_type'       => true,
 			'cdn_enabled'    => 1,
 			'driver_returns' => true,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
@@ -40,7 +40,7 @@ return [
 	],
 	'shouldRewriteSrcsetWhenByocdnEvenIfCdnOptionIsDisabled'     => [
 		'config'   => [
-			'cdn_type'       => 'byocdn',
+			'cdn_type'       => false,
 			'cdn_enabled'    => 0,
 			'driver_returns' => true,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
@@ -53,7 +53,7 @@ return [
 	],
 	'shouldReturnOriginalHtmlWhenByocdnDriverReturnsFalse'       => [
 		'config'   => [
-			'cdn_type'       => 'byocdn',
+			'cdn_type'       => false,
 			'cdn_enabled'    => 0,
 			'driver_returns' => false,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',

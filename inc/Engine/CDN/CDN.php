@@ -29,12 +29,21 @@ class CDN {
 	private $home_host;
 
 	/**
+	 * CDN context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param Context      $context Context instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( Options_Data $options, Context $context ) {
 		$this->options = $options;
+		$this->context = $context;
 	}
 
 	/**
@@ -126,9 +135,7 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite_url( $url ) {
-		$cdn_type = $this->options->get( 'cdn_type', 'rocketcdn' );
-
-		if ( ! $this->options->get( 'cdn', 0 ) && 'rocketcdn' === $cdn_type ) {
+		if ( ! $this->options->get( 'cdn', 0 ) && $this->context->is_rocketcdn() ) {
 			return $url;
 		}
 

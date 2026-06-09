@@ -68,6 +68,13 @@ class Subscriber implements Subscriber_Interface {
 	private $query;
 
 	/**
+	 * CDN context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data           $options WP Rocket Options_Data instance.
@@ -76,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @param Cache                  $cache   Cache instance.
 	 * @param RocketCDNQuery         $query RocketCDN pages query.
+	 * @param Context                $context Context instance.
 	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
 	public function __construct(
@@ -85,6 +93,7 @@ class Subscriber implements Subscriber_Interface {
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
+		Context $context,
 		?DriverInterface $driver = null
 	) {
 		$this->options                 = $options;
@@ -94,6 +103,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
+		$this->context                 = $context;
 	}
 
 	/**
@@ -429,9 +439,8 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_cdn_enabled() {
-		$cdn_type = (string) $this->options->get( 'cdn_type', 'rocketcdn' );
 		// Bail early if it's not rocketcdn.
-		if ( 'rocketcdn' !== $cdn_type ) {
+		if ( ! $this->context->is_rocketcdn() ) {
 			return true;
 		}
 
