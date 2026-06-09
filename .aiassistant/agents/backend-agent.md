@@ -139,8 +139,7 @@ Before returning:
    the current ISO timestamp.
 2. Remove your lock file: `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/backend-<task-id>.lock`
 
-Then return the following JSON object to the orchestrator. The orchestrator reads this from
-`result_path` in `tasks.json` — write it there, then also return it inline.
+Return the following JSON object directly to the orchestrator.
 
 ```json
 {
