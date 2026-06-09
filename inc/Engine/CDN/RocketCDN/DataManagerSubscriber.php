@@ -100,6 +100,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'refresh_cdn_cname', 10, 2 ],
 				[ 'refresh_subscription_details_with_update', 10, 2 ],
 			],
+			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
 		];
 	}
 
@@ -564,6 +565,21 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$this->user_client->flush_cache();// Flush customer details cache to set the transient and then refresh rocketcdn subscription details.
+	}
+
+	/**
+	 * Save the token with any change in rocket customer details in case it's not saved.
+	 *
+	 * @param object $user_data Rocket customer data.
+	 * @return void
+	 */
+	public function maybe_refresh_rocketcdn_details( $user_data ) {
+		if ( empty( $user_data->rocketcdn->cdn_token ) || $this->cdn_options->has_token() ) {
+			return;
+		}
+
+		$this->cdn_options->save_token( sanitize_key( $user_data->rocketcdn->cdn_token ) );
 		$this->cdn_options->flush_subscription_cache();
 	}
 }
