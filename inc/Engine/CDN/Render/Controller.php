@@ -20,6 +20,13 @@ use WP_Rocket\Engine\License\API\User;
  */
 class Controller extends Abstract_Render {
 	/**
+	 * Option name used to store forced pause tracking state.
+	 *
+	 * @var string
+	 */
+	private const FORCED_PAUSE_TRACKING_OPTION = 'rocket_rocketcdn_forced_pause_state';
+
+	/**
 	 * Beacon instance.
 	 *
 	 * @var Beacon
@@ -112,7 +119,7 @@ class Controller extends Abstract_Render {
 			return $sections;
 		}
 
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn' );
 
 		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
@@ -177,7 +184,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$sections['rocketcdn_free_section'] = [
 			'title'            => __( 'RocketCDN', 'rocket' ),
@@ -212,7 +219,7 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_purge_cdn_cache_section( array $sections ): array {
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'purge_cdn' );
 
 		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
 			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
@@ -440,6 +447,50 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Synchronizes forced pause state and emits tracking events on transitions.
+	 *
+	 * @param \WP_Screen $screen Current admin screen.
+	 *
+	 * @return void
+	 */
+	public function maybe_sync_forced_pause_tracking_state( \WP_Screen $screen ): void {
+		if ( 'settings_page_wprocket' !== $screen->id || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+		$is_forced  = ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() );
+		$stored     = get_option( self::FORCED_PAUSE_TRACKING_OPTION, false );
+		$was_forced = (bool) $stored;
+
+		if ( $is_forced && ! $was_forced ) {
+			update_option( self::FORCED_PAUSE_TRACKING_OPTION, true, false );
+
+			/**
+			 * Fires when the CDN state is changed to paused due to an inactive or invalid subscription.
+			 *
+			 * @param string $new_state The new state of the CDN, e.g. 'paused'.
+			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_pause'.
+			 * @since 3.22
+			 */
+			do_action( 'rocket_rocketcdn_cdn_state_changed', 'paused', 'wpr_forced_pause' );
+
+			return;
+		}
+
+		if ( ! $is_forced && $was_forced ) {
+			update_option( self::FORCED_PAUSE_TRACKING_OPTION, false, false );
+
+			/**
+			 * Fires when the CDN state is changed to active.
+			 *
+			 * @param string $new_state The new state of the CDN, e.g. 'active'.
+			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_resume'.
+			 * @since 3.22
+			 */
+			do_action( 'rocket_rocketcdn_cdn_state_changed', 'active', 'wpr_forced_resume' );
+		}
+	}
+
+	/**
 	 * Renders the CDN driver tabs.
 	 *
 	 * @since 3.22
@@ -448,10 +499,12 @@ class Controller extends Abstract_Render {
 	 */
 	public function render_cdn_driver_tabs(): void {
 
-		$data = [
-			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver(),
+		$driver = $this->context->get_driver();
+		$data   = [
+			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $driver,
 			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
 			'display_tabs'      => ! $this->is_cdn_type_filtered(),
+			'rocketcdn_mode'    => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
