@@ -61,8 +61,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'cache_controller', Cache::class )
 			->addArgument( 'rocketcdn_query' );
 		$this->getContainer()->addShared( 'cdn', CDN::class )
-			->addArgument( 'options' )
-			->addArgument( 'cdn_context' );
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'cdn_context', Context::class )
 			->addArguments(
 				[
@@ -113,7 +112,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_subscription_controller',
 					'cache_controller',
 					'rocketcdn_query',
-					'cdn_context',
 					'cdn_driver',
 				]
 			);

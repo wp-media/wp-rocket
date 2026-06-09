@@ -6,7 +6,6 @@ use Mockery;
 use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
-use WP_Rocket\Engine\CDN\Context;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\CDN::rewrite
@@ -20,8 +19,7 @@ class Test_Rewrite extends TestCase {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );
-		$context       = Mockery::mock( Context::class );
-		$this->cdn     = new CDN( $this->options, $context );
+		$this->cdn     = new CDN( $this->options );
 	}
 
 	/**

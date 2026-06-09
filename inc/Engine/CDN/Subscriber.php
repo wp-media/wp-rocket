@@ -68,13 +68,6 @@ class Subscriber implements Subscriber_Interface {
 	private $query;
 
 	/**
-	 * CDN context instance.
-	 *
-	 * @var Context
-	 */
-	private $context;
-
-	/**
 	 * Constructor
 	 *
 	 * @param Options_Data           $options WP Rocket Options_Data instance.
@@ -83,7 +76,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @param Cache                  $cache   Cache instance.
 	 * @param RocketCDNQuery         $query RocketCDN pages query.
-	 * @param Context                $context Context instance.
 	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
 	 */
 	public function __construct(
@@ -93,7 +85,6 @@ class Subscriber implements Subscriber_Interface {
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
-		Context $context,
 		?DriverInterface $driver = null
 	) {
 		$this->options                 = $options;
@@ -103,7 +94,6 @@ class Subscriber implements Subscriber_Interface {
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
-		$this->context                 = $context;
 	}
 
 	/**
@@ -135,6 +125,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 			'update_option_wp_rocket_settings'         => [ 'maybe_clear_cache', 10, 2 ],
+			'get_rocket_option_cdn'                    => 'apply_pause_on_rocketcdn_only',
 		];
 	}
 
@@ -439,11 +430,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_cdn_enabled() {
-		// Bail early if it's not rocketcdn.
-		if ( ! $this->context->is_rocketcdn() ) {
-			return true;
-		}
-
 		return (bool) $this->options->get( 'cdn', 0 );
 	}
 
@@ -587,5 +573,20 @@ class Subscriber implements Subscriber_Interface {
 
 		// CDN type is changed, Clear whole cache.
 		$this->cache->clear_all_cache();
+	}
+
+	/**
+	 * Apply the pause of CDN on RocketCDN only.
+	 *
+	 * @param bool $cdn The current CDN status.
+	 *
+	 * @return bool
+	 */
+	public function apply_pause_on_rocketcdn_only( $cdn ) {
+		if ( is_admin() ) {
+			return $cdn;
+		}
+
+		return $cdn || 'rocketcdn' !== $this->options->get( 'cdn_type' );
 	}
 }
