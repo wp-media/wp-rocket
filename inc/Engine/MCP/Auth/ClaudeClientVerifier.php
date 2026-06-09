@@ -85,7 +85,7 @@ class ClaudeClientVerifier {
 			'claude' => array(
 				'client_ids' => array(
 					'https://claude.ai/oauth/claude-code-client-metadata',
-					'https://claude.ai/api/oauth/mcp-oauth-client-metadata',
+					'https://claude.ai/oauth/mcp-oauth-client-metadata',
 				),
 				'host'       => 'claude.ai',
 			),
