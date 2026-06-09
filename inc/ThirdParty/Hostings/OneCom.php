@@ -33,6 +33,10 @@ class OneCom implements Subscriber_Interface {
 			'rocket_display_rocketcdn_cta'            => 'return_false',
 			'rocket_display_rocketcdn_status'         => 'return_false',
 			'rocket_cdn_driver_sections'              => [ 'disable_cdn_pause_option', PHP_INT_MAX ],
+			'rocket_cdn_tab_badge'                    => 'return_empty_string',
+			'rocket_show_rocketcdn_banner'            => 'return_false',
+			'rocket_hide_rocketcdn_notices'           => 'return_true',
+			'pre_get_rocket_option_cdn_type'          => 'disable_rocketcdn_tab',
 		];
 	}
 
@@ -177,5 +181,14 @@ class OneCom implements Subscriber_Interface {
 
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
+	}
+
+	/**
+	 * Disable rocketcdn tab completely.
+	 *
+	 * @return string
+	 */
+	public function disable_rocketcdn_tab() {
+		return 'byocdn';
 	}
 }

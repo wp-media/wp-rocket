@@ -8,6 +8,10 @@
 		COLLAPSED: true   // Small CTA - collapsed state
 	};
 
+	// Register early so we catch the wpr-cdn-state-change event.
+	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
+	document.addEventListener( 'rocketCDNBannerAutoExpanded', () => trackRocketCDNUpsellBannerExpanded('auto_limit_reached') );
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -83,6 +87,10 @@
 			ctaToggle.forEach( ( el ) => {
 				el.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
 			} );
+
+			if( ! isCollapsed ) {
+				trackRocketCDNUpsellBannerExpanded( 'manual' );
+			}
 		}
 
 		if ( ctaToggle.length && bigCTA ) {
@@ -103,6 +111,7 @@
 		// Track banner view when user navigates to CDN tab.
 		window.addEventListener( 'hashchange', () => {
 			maybeTrackBannerView();
+			trackCDNModeSelection();
 		} );
 
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
@@ -417,6 +426,49 @@
 	}
 
 	/**
+	 * Tracks CDN mode selection with Mixpanel.
+	 */
+	function trackCDNModeSelection() {
+		if ( ! isOnCDNTab() ) {
+			return;
+		}
+
+		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
+		
+		if ( ! activeTab ) {
+			return;
+		}
+
+		const cdnMode = activeTab.getAttribute( 'data-cdn-mode' )
+
+		if( ! cdnMode ) {
+			return;
+		} 
+
+		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
+			return;
+		}
+
+		// Check if user has opted in
+		if ( typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0' ) {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN Mode', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			cdn_mode: cdnMode
+		});
+	}
+
+	/**
 	 * Tracks RocketCDN activation failed CTA click with Mixpanel.
 	 */
 	function trackRocketCDNActivationCTA() {
@@ -494,8 +546,24 @@
 		if ( ! isOnCDNTab() ) {
 			return;
 		}
+		const hash = window.location.hash;
+		const basePath = ( typeof rocket_mixpanel_data !== 'undefined' && rocket_mixpanel_data.path ) ? rocket_mixpanel_data.path : '';
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed', {
-			state: is_collapsed ? 'collapsed' : 'opened'
+			state:     is_collapsed ? 'collapsed' : 'opened',
+			page_name: hash,
+			path:      basePath + hash
+		} );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner expanded with Mixpanel.
+	 * 
+	 * @param {string} trigger 'manual' by default. 
+	 */
+	function trackRocketCDNUpsellBannerExpanded( trigger ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Expanded', {
+			location: window.location.hash,
+			trigger: trigger
 		} );
 	}
 
@@ -503,8 +571,12 @@
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
 	function trackRocketCDNUpsellCTAClicked( iframeVisit = false ) {
+		const tableList = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
+		const pagesCount = tableList ? tableList.querySelectorAll( '[data-id]' ).length : 0;
+
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked', {
-			destination: iframeVisit ? 'iframe' : 'express-checkout'
+			destination: iframeVisit ? 'iframe' : 'express-checkout',
+			pages_count: pagesCount
 		} );
 	}
 } )( document, window );

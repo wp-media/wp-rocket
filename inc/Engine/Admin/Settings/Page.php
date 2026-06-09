@@ -1534,7 +1534,7 @@ class Page extends Abstract_Render {
 			]
 		);
 
-		$cdn_beacon = $this->beacon->get_suggest( 'cdn' );
+		$cdn_beacon = $this->beacon->get_suggest( 'own_cdn' );
 
 		$cdn_sections = [
 			'cdn_section' => [
