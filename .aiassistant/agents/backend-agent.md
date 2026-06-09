@@ -1,6 +1,6 @@
 ---
 name: backend-agent
-description: Backend implementation agent. Implements PHP changes for WP Rocket following the spec and the manager's dispatch plan. Writes or updates unit and integration tests. Runs the docs skill, e2e skill (basic tier), and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
+description: Backend implementation agent. Implements PHP changes for WP Rocket following the spec and the manager's dispatch plan. Writes or updates unit and integration tests. Runs the docs skill and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
 tools: [Bash, Read, Edit, Write, Glob, Grep, WebFetch, WebSearch]
 ---
 
@@ -64,19 +64,7 @@ Record: `docs.status`, `docs.files_updated`, `docs.files_created`.
 
 ---
 
-### Step 3 — E2E smoke test (basic tier)
-
-Invoke the `e2e` skill inline (`.aiassistant/skills/e2e/SKILL.md`) with `tier: "basic"`.
-
-Run the primary happy path scenario from the spec's `test_plan` to confirm your changes don't break the main flow. Use curl, WP-CLI, or Playwright MCP as appropriate for what you changed.
-
-If the dev environment (`bash bin/dev-up.sh`) cannot start, set `e2e_smoke.status: "SKIP"` and note the reason. Do not block on environment issues — flag them and proceed.
-
-Record: `e2e_smoke.status`, `e2e_smoke.scenarios_tested`, `e2e_smoke.details`.
-
----
-
-### Step 3b — DOD L1 (self-check)
+### Step 3 — DOD L1 (self-check)
 
 Invoke the `dod` skill inline (`.aiassistant/skills/dod/SKILL.md`) with `layer: "1"`.
 
@@ -96,7 +84,7 @@ Record: `dod_layer1.overall`, `dod_layer1.checks`.
 
 ---
 
-### Step 3c — Write API contract
+### Step 3b — Write API contract
 
 Before committing, write `.TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-api.json`
 with the actual API surface as implemented (not just as specced). This is a **separate file**
@@ -161,11 +149,6 @@ Then return the following JSON object to the orchestrator. The orchestrator read
   "files_changed": ["list of PHP + docs files modified"],
   "tests_passing": true,
   "test_output": "one-line summary, e.g. '42 tests, 0 failures'",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["Primary happy path: cache header returned on /sample-page"],
-    "details": "curl http://localhost:8888/ returned X-Rocket-Cached: 1"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": ["docs/api/<file>.md"],
@@ -191,4 +174,4 @@ Then return the following JSON object to the orchestrator. The orchestrator read
 }
 ```
 
-`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3b).
+`dod_layer1.overall` must be `PASS` or `WARN` — never `FAIL`. Self-correct all failures before committing (Step 3).
