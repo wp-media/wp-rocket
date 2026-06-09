@@ -300,6 +300,7 @@ class Controller extends Abstract_Render {
 				'class'             => [
 					'wpr-cdn-exclusions',
 					'rocketcdn',
+					'rocketcdn-shared-section',
 				],
 				'sanitize_callback' => 'sanitize_textarea',
 			];
