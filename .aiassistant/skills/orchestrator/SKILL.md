@@ -140,10 +140,8 @@ Maintain in your context tracking:
 - Calibration mode chosen
 
 **Synthesis rule:** Route based on the return JSON received directly from each agent —
-`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc. The
-`result_path` files under `contracts/` are session-recovery fallbacks only — never read
-them as the primary routing input. Full JSONs are written to the HTML log from the contract
-files to keep orchestrator context lean across long pipeline runs.
+`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc.
+Do not accumulate full agent JSONs in orchestrator context — log them to the HTML run log instead.
 
 ---
 
@@ -157,9 +155,7 @@ Each pipeline run creates an isolated working directory for coordination artifac
 issue-<N>/
 ├── tasks.json               # shared task ledger — read/written by all agents
 ├── contracts/
-│   ├── backend-api.json     # written by backend-agent (Step 3c): hooks, option_keys, rest_endpoints
-│   ├── backend-result.json  # written by backend-agent (Step 5): full implementation result
-│   └── frontend-result.json # written by frontend-agent on completion
+│   └── backend-api.json     # written by backend-agent: hooks, option_keys, rest_endpoints
 └── locks/
     └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
 ```
@@ -182,7 +178,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["inc/Engine/...", "tests/Unit/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -195,7 +190,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["assets/src/...", "views/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/frontend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -206,12 +200,7 @@ issue-<N>/
 
 ### Backend API contract
 
-Two separate files, two separate purposes:
-
-- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent in Step 3c, before committing. The orchestrator reads this to share the actual API surface with frontend-agent.
-- **`contracts/backend-result.json`** — Full implementation result (`ticket_id`, `branch`, `files_changed`, `dod_layer1`, etc.). Written by backend-agent in Step 5. The orchestrator reads this for routing decisions. `result_path` in `tasks.json` points here.
-
-The frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip. When scopes overlap (sequential fallback), the orchestrator reads `backend-api.json` after backend completes and passes its contents explicitly in the frontend dispatch plan.
+- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent before committing. When scopes overlap (sequential mode), the orchestrator uses the `backend_api` field from the backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
 ---
 
@@ -562,11 +551,9 @@ Update each task's `worktree` field in `tasks.json`.
 > (including `file_scope` and `worktree` path).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
-> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
-> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
-> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
-> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
-> orchestrator-managed shared state, not direct agent-to-agent communication.
+> When backend completes, the orchestrator uses the `backend_api` field from backend-agent's return JSON,
+> logs the API surface to the HTML log, and updates `tasks.json`.
+> The orchestrator is the coordination hub — agents do not communicate with each other.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
@@ -582,10 +569,8 @@ Do NOT create git worktrees. All agents work on the same branch.
 > Both agents commit atomically to the same branch. Commits are ordered: backend first, then frontend.
 
 **Synthesis:** Route based on the return JSON received directly from each agent —
-`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc. The
-`result_path` files under `contracts/` are session-recovery fallbacks only — never read
-them as the primary routing input. Full implementation JSONs go to the HTML log directly
-from contract files — do not accumulate them in orchestrator context.
+`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc.
+Log implementation JSONs to the HTML run log — do not accumulate them in orchestrator context.
 
 Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
 commit SHA.
@@ -633,7 +618,7 @@ CI is monitored by DOD L2 Check 5.
   explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
 
 **Inputs for each:**
-- DOD L2: branch name, base branch, PR URL
+- DOD L2: branch name, base branch, PR URL, `file_scope` (list of files in scope for this issue, from the dispatch plan)
 - Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
 - QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
 
