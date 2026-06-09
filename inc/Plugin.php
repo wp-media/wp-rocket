@@ -61,6 +61,8 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as Preconne
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
 use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
+use WP_Rocket\Engine\MCP\Auth\ServiceProvider as McpAuthServiceProvider;
+use WP_Rocket\Engine\MCP\Transport\ServiceProvider as McpTransportServiceProvider;
 
 /**
  * Plugin Manager.
@@ -312,6 +314,8 @@ class Plugin {
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 		$this->container->addServiceProvider( new TrackingServiceProvider() );
 		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
+		$this->container->addServiceProvider( new McpAuthServiceProvider() );
+		$this->container->addServiceProvider( new McpTransportServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -425,6 +429,9 @@ class Plugin {
 			'optimole_subscriber',
 			'abilities_subscriber',
 			'ri_abilities_subscriber',
+			'mcp_auth_subscriber',
+			'mcp_auth_discovery_subscriber',
+			'mcp_transport_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
