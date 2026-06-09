@@ -41,7 +41,7 @@ return [
 	'shouldRewriteHtmlWhenByocdnEvenIfCdnOptionIsDisabled'       => [
 		'config'   => [
 			'cdn_type'       => false,
-			'cdn_enabled'    => 0,
+			'cdn_enabled'    => 1,
 			'driver_returns' => true,
 			'html'           => '<img src="https://example.org/wp-content/uploads/image.jpg">',
 			'rewritten_html' => '<img src="https://cdn.example.org/wp-content/uploads/image.jpg">',

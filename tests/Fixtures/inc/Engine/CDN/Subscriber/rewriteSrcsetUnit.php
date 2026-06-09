@@ -41,7 +41,7 @@ return [
 	'shouldRewriteSrcsetWhenByocdnEvenIfCdnOptionIsDisabled'     => [
 		'config'   => [
 			'cdn_type'       => false,
-			'cdn_enabled'    => 0,
+			'cdn_enabled'    => 1,
 			'driver_returns' => true,
 			'html'           => '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">',
 			'rewritten_html' => '<img srcset="https://cdn.example.org/wp-content/uploads/image.jpg 1x">',
