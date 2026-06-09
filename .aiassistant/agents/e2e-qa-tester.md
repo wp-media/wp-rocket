@@ -223,64 +223,24 @@ Store this output in your context as `specs_source`. It will be embedded verbati
 `specs_content` field of the return JSON and in the `### Playwright Specs` section of your
 report.
 
-**6c — Duplicate / re-run comment check (before posting the report):**
-
-Before posting a QA comment, check whether one already exists for this PR from a previous run:
-
-```bash
-EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("**QA:"))] | last | .url // empty')
-```
-
-**Update mode:** If a QA comment already exists, edit it in place rather than posting a duplicate:
-
-```bash
-COMMENT_ID="${EXISTING##*/}"
-gh api repos/wp-media/wp-rocket/issues/comments/$COMMENT_ID \
-  --method PATCH \
-  -f body="<full updated report>"
-```
-
-Set `existing_comment_url` in the return JSON to the URL of the comment that was updated, or empty string if a new comment was posted.
-
-**6d — Spec coverage cross-check (before posting the report):**
+**6c — Spec coverage cross-check (before completing the report):**
 
 Before posting the report, verify that every `test()` or `it()` block in your written spec has a matching entry in the `criteria` array in your JSON output. If any test block was written but not executed, mark it as `status: "SKIPPED"` with a reason — do not omit it. A spec with 5 tests where only 3 were run must report 2 SKIPs, not 3 PASSes.
 
-### Step 7 — Report back to qa-engineer
+### Step 7 — Return results to qa-engineer
 
-Follow the `qa-engineer` output format. For every acceptance criterion:
-- Strategy used (Browser via Playwright MCP, Spec run, Analysis fallback)
+Return structured results as JSON (see Return JSON below). qa-engineer will incorporate your findings into the unified QA report and post it to the PR. Do not post or comment on the PR yourself.
+
+**Report structure qa-engineer will render:**
+For every acceptance criterion:
+- Criterion text
+- Strategy used (Browser via Playwright MCP, Spec run)
 - Exact action (URL navigated, element interacted with)
 - Observed result
 - Evidence (gist raw screenshot URL, console error excerpt)
 - PASS / FAIL / PARTIAL / CANNOT_VERIFY
 
-Include a `### Screenshots` section with inline images using the gist raw URLs:
-```
-### Screenshots
-| Step | Screenshot |
-|------|-----------|
-| Settings page loaded | ![settings](https://gist.githubusercontent.com/USER/GIST_ID/raw/filename.png) |
-```
-
-Include a `### Playwright Specs` section with the full source of every spec you wrote,
-under a collapsible block so it doesn't dominate the comment:
-```
-### Playwright Specs
-
-<details>
-<summary>View spec source (feature-criterion.spec.js)</summary>
-
-```js
-[full spec source here]
-```
-
-</details>
-```
-
-If no spec was written (Playwright MCP path only), omit this section.
-
-End with **READY TO MERGE** or a blocker list.
+qa-engineer will include a `### Screenshots` section with inline images using the gist raw URLs you provide, and a `### Playwright Specs` section with the full source of every spec you wrote (under a collapsible block).
 
 ## Return JSON
 
@@ -303,7 +263,6 @@ After the prose report, return the following JSON object to `qa-engineer`:
   ],
   "blockers": ["criterion: what failed — what to fix"],
   "environment_boot": "exit 0|exit N — last error line",
-  "existing_comment_url": "URL of a pre-existing QA Report comment on this PR, or empty string",
   "specs_run": true,
   "specs_content": [
     { "filename": ".TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
@@ -311,10 +270,10 @@ After the prose report, return the following JSON object to `qa-engineer`:
 }
 ```
 
-`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. WP Rocket is not licensed, or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_content` is an empty array if no spec was written — never omit the field. `existing_comment_url` is the URL of a prior QA Report comment if one was found in Step 6c (so the report runs in update mode), otherwise an empty string.
+`blockers` is an empty array when `overall == "PASS"`. `overall` is `CANNOT_VERIFY` when the environment cannot support verification (e.g. WP Rocket is not licensed, or the environment failed to boot). `specs_run` is `false` if `npx playwright` was unavailable. `specs_content` is an empty array if no spec was written — never omit the field.
 
 ## Constraints
 
-- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist; check for an existing QA Report comment before posting (Step 6c); uninstall any plugins you installed in Step 2c
+- ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist; uninstall any plugins you installed in Step 2c
 - ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
-- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; install plugins not explicitly required by the issue
+- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; install plugins not explicitly required by the issue; post or comment on the PR (qa-engineer handles all comment lifecycle)
