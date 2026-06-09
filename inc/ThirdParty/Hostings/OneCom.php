@@ -58,20 +58,20 @@ class OneCom implements Subscriber_Interface {
 	/**
 	 * Update CNAME
 	 *
-	 * @param string|null $cname CDN CNAME.
+	 * @param array|null $cname CDN CNAME.
 	 * @return array|null
 	 */
-	public function maybe_update_cdn_cname( ?string $cname ) {
+	public function maybe_update_cdn_cname( ?array $cname ) {
 		return $this->is_oc_cdn_enabled() ? [ $this->build_cname() ] : $cname;
 	}
 
 	/**
 	 * Update CDN Zones.
 	 *
-	 * @param string|null $zone CDN ZONES.
+	 * @param array|null $zone CDN ZONES.
 	 * @return array|null
 	 */
-	public function maybe_update_cdn_zone( ?string $zone ) {
+	public function maybe_update_cdn_zone( ?array $zone ) {
 		return $this->is_oc_cdn_enabled() ? [ 'all' ] : $zone;
 	}
 
@@ -176,7 +176,6 @@ class OneCom implements Subscriber_Interface {
 		$http_host   = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
 
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
-
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
 	}
 }
