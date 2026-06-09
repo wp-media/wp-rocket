@@ -462,6 +462,7 @@
 				if ( response.limit === response.count ) {
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
 				// Set subscription loading state when first page is added.

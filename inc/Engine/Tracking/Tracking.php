@@ -378,4 +378,142 @@ class Tracking extends Abstract_Render {
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}
+
+	/**
+	 * Track when the "Add Homepage" button is clicked for RocketCDN.
+	 *
+	 * @param string $source Either 'add_homepage_button' (CDN settings) or 'admin_notices'.
+	 * @return void
+	 */
+	public function track_add_rocket_cdn_homepage( string $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'  => 'rocket cdn add homepage',
+				'context' => 'wp_plugin',
+				'source'  => $source,
+			]
+		);
+	}
+
+	/**
+	 * Track when the RocketCDN pause status is changed.
+	 *
+	 * @param string $status  The new status of the CDN (e.g., 'paused', 'active').
+	 * @param string $trigger The trigger for the status change (e.g., 'user_paused', 'user_resume').
+	 *
+	 * @return void
+	 */
+	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'status'  => $status,
+				'trigger' => $trigger,
+				'button'  => 'rocket cdn pause',
+			]
+		);
+	}
+
+	/**
+	 * Track when a page is added to RocketCDN free-tier.
+	 *
+	 * @param string $url        The URL that was added.
+	 * @param int    $pages_count The count of pages after addition.
+	 * @param string $source     The source of the addition (manual, add_homepage_button, admin_notice).
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'      => 'rocket cdn add page',
+				'is_homepage' => Utils::is_home( $url ),
+				'pages_count' => $pages_count,
+				'source'      => $source,
+			]
+		);
+	}
+
+	/**
+	 * Track when a page is removed from RocketCDN free-tier.
+	 *
+	 * @param string $url        The URL that was removed.
+	 * @param int    $pages_count The count of pages after removal.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'      => 'rocket cdn remove page',
+				'is_homepage' => Utils::is_home( $url ),
+				'pages_count' => $pages_count,
+			]
+		);
+	}
+
+	/**
+	 * Track when RocketCDN free-tier is activated.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_free_activated(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Activated' );
+	}
+
+	/**
+	 * Track when a RocketCDN notice is viewed
+	 *
+	 * @param string $box The notice box identifier.
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_viewed( string $box ) {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$rocketcdn_boxes = [ 'rocketcdn_install_notice', 'rocket_update_notice' ];
+
+		if ( ! in_array( $box, $rocketcdn_boxes, true ) ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Notice Viewed' );
+	}
+
+	/**
+	 * Track when a RocketCDN notice is dismissed
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_dismissed() {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Admin Notice Dismissed' );
+	}
 }
