@@ -59,7 +59,7 @@ class Test_RewriteSrcset extends TestCase {
 			->with( 'cdn', 0 )
 			->andReturn( $config['cdn_enabled'] );
 
-		if ( $config['driver_returns'] ) {
+		if ( $expected['rewrite_called'] ) {
 			$this->cdn->shouldReceive( 'rewrite_srcset' )
 				->once()
 				->andReturn( $config['rewritten_html'] );

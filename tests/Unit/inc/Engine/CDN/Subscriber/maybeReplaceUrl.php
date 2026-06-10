@@ -78,7 +78,9 @@ class Test_MaybeReplaceUrl extends TestCase {
 	}
 
 	public function testShouldReturnOriginalWhenCDNDisabled() {
+
 		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
 			->andReturn( false );
 
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
