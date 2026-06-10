@@ -101,7 +101,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'refresh_subscription_details_with_update', 10, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
-			'wp_rocket_first_install'                => 'save_rocketcdn_token_with_fresh_install',
+			//'wp_rocket_first_install'                => 'save_rocketcdn_token_with_fresh_install',
 		];
 	}
 
