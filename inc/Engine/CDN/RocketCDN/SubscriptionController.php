@@ -7,6 +7,7 @@ use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -56,6 +57,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $user;
 
 	/**
+	 * User client instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Subscription creation loading state transient name.
 	 *
 	 * @var string
@@ -78,14 +86,16 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @param Queue                $queue Queue instance.
 	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
 	 * @param User                 $user  License User instance.
+	 * @param UserClient           $user_client User client instance.
 	 */
-	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client, User $user ) {
+	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client, User $user, UserClient $user_client ) {
 		$this->api_client              = $api_client;
 		$this->create_api_client       = $create_api_client;
 		$this->options_manager         = $options_manager;
 		$this->queue                   = $queue;
 		$this->check_status_api_client = $check_status_api_client;
 		$this->user                    = $user;
+		$this->user_client             = $user_client;
 	}
 
 	/**
@@ -197,6 +207,12 @@ class SubscriptionController implements LoggerAwareInterface {
 
 				$this->options_manager->flush_subscription_cache();
 				break;
+
+			case 'paid_subscription_exists':
+				$this->stop_subscription_creation_loader();
+				$this->user_client->flush_cache();
+				break;
+
 			default:
 				// Log this not known code.
 				$this->logger::error(
