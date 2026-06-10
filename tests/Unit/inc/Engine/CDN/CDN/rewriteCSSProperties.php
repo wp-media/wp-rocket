@@ -52,6 +52,10 @@ class TestRewriteCSSProperties extends TestCase {
 				'default' => [],
 				'value' => [],
 			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
+			]
 		];
 
 		foreach ( $options as $key => $option ) {
