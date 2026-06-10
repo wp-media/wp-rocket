@@ -11,6 +11,7 @@
 	// Register early so we catch the wpr-cdn-state-change event.
 	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
 	document.addEventListener( 'rocketCDNBannerAutoExpanded', () => trackRocketCDNUpsellBannerExpanded('auto_limit_reached') );
+	document.addEventListener( 'rocketCDNBannerFirstVisible', () => trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED ) );
 
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {

@@ -380,6 +380,11 @@
 					}
 				}
 
+				// Track banner view when first page is added and banner becomes visible.
+				if ( 1 === response.count ) {
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
+				}
+
 				// Set subscription loading state when first page is added.
 				if ( response.is_subscription_creation_loading ) {
 					setSubscriptionLoadingState();
@@ -460,6 +465,11 @@
 					if ( addPageSection ) {
 						addPageSection.insertAdjacentHTML( 'beforebegin', response.items_html );
 					}
+				}
+
+				// Track banner view when first page is added and banner becomes visible.
+				if ( 1 === response.count ) {
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
 				if ( response.limit === response.count ) {
