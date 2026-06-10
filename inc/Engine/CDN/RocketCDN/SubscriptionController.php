@@ -197,7 +197,6 @@ class SubscriptionController implements LoggerAwareInterface {
 
 				$this->options_manager->flush_subscription_cache();
 				break;
-
 			default:
 				// Log this not known code.
 				$this->logger::error(
