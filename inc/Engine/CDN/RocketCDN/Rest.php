@@ -19,6 +19,7 @@ use WP_Rocket\Engine\Common\{
 	Utils,
 	Page\PageHandlerTrait
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * REST API controller for RocketCDN free-tier page management.
@@ -27,6 +28,7 @@ use WP_Rocket\Engine\Common\{
  */
 class Rest extends WP_REST_Controller {
 	use PageHandlerTrait;
+	use TrackingTrait;
 
 	const ROUTE_NAMESPACE = 'wp-rocket/v1';
 	const ROUTE_BASE      = 'rocketcdn';
@@ -320,10 +322,23 @@ class Rest extends WP_REST_Controller {
 
 		$this->clean_url_cache( $url );
 
-		$pages_count = $this->query->get_total_count( false );
-		$source_raw  = $request->get_param( 'source' );
-		$source      = is_string( $source_raw ) && '' !== $source_raw ? sanitize_key( $source_raw ) : 'manual';
-		do_action( 'rocket_rocketcdn_page_added', $url, $pages_count, $source );
+		$pages_count   = $this->query->get_total_count( false );
+		$source_raw    = $request->get_param( 'source' );
+		$source        = is_string( $source_raw ) && '' !== $source_raw ? sanitize_key( $source_raw ) : 'manual';
+		$tracked_event = [
+			'button'      => 'rocket cdn add page',
+			'is_homepage' => Utils::is_home( $url ),
+			'pages_count' => $pages_count,
+			'source'      => $source,
+		];
+
+		if ( Utils::is_home( $url ) ) {
+			$tracked_event['button'] = 'rocket cdn add homepage';
+			unset( $tracked_event['is_homepage'] );
+			unset( $tracked_event['pages_count'] );
+		}
+
+		$this->track_event( 'Button Clicked', $tracked_event );
 
 		return new WP_REST_Response( $this->get_pages_data(), 201 );
 	}
@@ -372,7 +387,15 @@ class Rest extends WP_REST_Controller {
 		$this->clean_url_cache( $removed_url );
 
 		$pages_count = $this->query->get_total_count( false );
-		do_action( 'rocket_rocketcdn_page_removed', $removed_url, $pages_count );
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'      => 'rocket cdn remove page',
+				'is_homepage' => Utils::is_home( $removed_url ),
+				'pages_count' => $pages_count,
+			]
+		);
 
 		return new WP_REST_Response( $this->get_pages_data(), 200 );
 	}
@@ -395,13 +418,6 @@ class Rest extends WP_REST_Controller {
 		$request = new WP_REST_Request( 'POST' );
 		$request->set_param( 'url', untrailingslashit( home_url() ) );
 		$request->set_param( 'source', 'add_homepage_button' );
-
-		/**
-		 * Fires when the RocketCDN "Add Homepage" button is clicked from the CDN settings page.
-		 *
-		 * @param string $source The source of the click.
-		 */
-		do_action( 'rocket_rocketcdn_add_homepage', 'add_homepage_button' );
 
 		return $this->add_page( $request );
 	}

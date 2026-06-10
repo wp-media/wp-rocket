@@ -19,6 +19,8 @@ class Test_ActivationFailedNotice extends TestCase {
 	 */
 	private $original_user_id;
 
+	private $test_config;
+
 	/**
 	 * NoticesSubscriber instance.
 	 *
@@ -40,6 +42,8 @@ class Test_ActivationFailedNotice extends TestCase {
 		// Get the subscriber from container.
 		$container        = apply_filters( 'rocket_container', null );
 		$this->subscriber = $container->get( 'rocketcdn_notices_subscriber' );
+
+		add_filter( 'pre_transient_rocketcdn_status', [ $this, 'mock_rocketcdn_status_transient' ] );
 	}
 
 	public function tear_down() {
@@ -48,6 +52,7 @@ class Test_ActivationFailedNotice extends TestCase {
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
 		remove_all_filters( 'pre_http_request' );
+		remove_filter( 'pre_transient_rocketcdn_status', [ $this, 'mock_rocketcdn_status_transient' ] );
 
 		parent::tear_down();
 	}
@@ -67,6 +72,8 @@ class Test_ActivationFailedNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayOrBailBasedOnConfig( $config, $expected ) {
+		$this->test_config = $config;
+
 		// Set up user.
 		if ( isset( $config['user_role'] ) ) {
 			$user_id = $this->factory->user->create( [ 'role' => $config['user_role'] ] );
@@ -89,11 +96,6 @@ class Test_ActivationFailedNotice extends TestCase {
 
 		// Set up white label.
 		$this->white_label = $config['white_label'] ?? false;
-
-		// Set up subscription data.
-		if ( isset( $config['subscription_data'] ) ) {
-			set_transient( 'rocketcdn_status', $config['subscription_data'], MINUTE_IN_SECONDS );
-		}
 
 		// Set up user data for express checkout URL.
 		if ( isset( $config['user_data'] ) ) {
@@ -143,5 +145,12 @@ class Test_ActivationFailedNotice extends TestCase {
 		} else {
 			$this->assertEmpty( $actual );
 		}
+	}
+
+	public function mock_rocketcdn_status_transient( $pre ) {
+		if ( empty( $this->test_config['subscription_data'] ) ){
+			return $pre;
+		}
+		return $this->test_config['subscription_data'];
 	}
 }

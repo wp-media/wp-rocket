@@ -167,6 +167,15 @@ class Utils {
 			return;
 		}
 
+		if ( $notice_info['track_event'] ?? false ) {
+			/**
+			 * Fires after the RocketCDN notice is displayed, allowing to track the impression of the notice.
+			 *
+			 * @param string $dismiss_button The notice button identifier.
+			 */
+			do_action( 'rocket_notice_displayed', $notice_info['dismiss_button'] );
+		}
+
 		$notice_id = 'rocket-notice-' . sanitize_html_class( $notice_info['dismiss_button'] );
 
 		rocket_notice_html(

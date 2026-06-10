@@ -481,10 +481,12 @@ class Subscriber implements Subscriber_Interface {
 		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
 			return;
 		}
-		$cdn_type = 'rocketcdn';
+
+		$has_active_subscription = $this->subscription_controller->has_active_subscription();
+		$cdn_type                = 'rocketcdn';
 		// Check if a CNAME is saved and no RocketCDN subscription, then default to byocdn.
 		if (
-			! $this->subscription_controller->has_active_subscription()
+			! $has_active_subscription
 			&&
 			! empty( $this->options->get( 'cdn_cnames', [] ) )
 		) {
@@ -493,7 +495,9 @@ class Subscriber implements Subscriber_Interface {
 
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = $cdn_type;
-		$current_options['cdn']      = 1;
+		if ( ! $has_active_subscription ) {
+			$current_options['cdn'] = 1;
+		}
 
 		$this->options_api->set( 'settings', $current_options );
 	}
