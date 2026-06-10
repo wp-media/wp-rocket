@@ -97,6 +97,7 @@ return [
 			'subscription_data' => [
 				'website_attached' => false,
 				'plan_type' => 'paid',
+				'status'    => 'running',
 			],
 			'user_data'         => [
 				'rocketcdn' => [
