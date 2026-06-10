@@ -565,6 +565,11 @@
 				if ( response.limit > response.count ) {
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
+
+					// Track auto-collapse when deletion drops count just below the limit.
+					if ( response.count === response.limit - 1 ) {
+						document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoCollapsed' ) );
+					}
 				}
 
 				if ( 0 === response.count ) {

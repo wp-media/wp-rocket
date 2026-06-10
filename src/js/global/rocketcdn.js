@@ -11,6 +11,7 @@
 	// Register early so we catch the wpr-cdn-state-change event.
 	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
 	document.addEventListener( 'rocketCDNBannerAutoExpanded', () => trackRocketCDNUpsellBannerExpanded('auto_limit_reached') );
+	document.addEventListener( 'rocketCDNBannerAutoCollapsed', () => trackRocketCDNUpsellBannerCollapsed( 'auto_limit_released' ) );
 	document.addEventListener( 'rocketCDNBannerFirstVisible', () => trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED ) );
 
 	document.addEventListener( 'DOMContentLoaded', () => {
@@ -91,6 +92,8 @@
 
 			if( ! isCollapsed ) {
 				trackRocketCDNUpsellBannerExpanded( 'manual' );
+			} else {
+				trackRocketCDNUpsellBannerCollapsed();
 			}
 		}
 
@@ -558,11 +561,23 @@
 
 	/**
 	 * Tracks RocketCDN upsell banner expanded with Mixpanel.
-	 * 
-	 * @param {string} trigger 'manual' by default. 
+	 *
+	 * @param {string} trigger 'manual' by default.
 	 */
 	function trackRocketCDNUpsellBannerExpanded( trigger ) {
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Expanded', {
+			location: window.location.hash,
+			trigger: trigger
+		} );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner collapsed with Mixpanel.
+	 *
+	 * @param {string} [trigger='manual'] 'manual' when user clicks toggle, 'auto_limit_released' when a page deletion drops count below limit.
+	 */
+	function trackRocketCDNUpsellBannerCollapsed( trigger = 'manual' ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Collapsed', {
 			location: window.location.hash,
 			trigger: trigger
 		} );
