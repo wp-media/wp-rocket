@@ -566,6 +566,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->user_client->flush_cache();// Flush customer details cache to set the transient and then refresh rocketcdn subscription details.
+		$this->cdn_options->flush_subscription_cache();
 	}
 
 	/**
