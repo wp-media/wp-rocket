@@ -5,11 +5,11 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\Common\Notice\Notice;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Subscriber for the RocketCDN notices on WP Rocket settings page
@@ -17,6 +17,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.5
  */
 class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface {
+	use TrackingTrait;
+
 	/**
 	 * RocketCDN API Client instance.
 	 *
@@ -515,6 +517,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'message'         => $message,
 				'action'          => 'rocketcdn_install_page',
 				'status'          => 'success',
+				'track_event'     => true,
 			];
 
 			Utils::display_update_notice( $notice_info, true );
@@ -549,14 +552,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'message'          => $message,
 			'action'           => 'rocketcdn_upgrade_page',
 			'previous_version' => $previous_version,
+			'track_event'      => true,
 		];
-
-		/**
-		 * Fires after the RocketCDN notice is displayed, allowing to track the impression of the notice.
-		 *
-		 * @param string $dismiss_button The notice button identifier.
-		 */
-		do_action( 'rocket_notice_displayed', $notice_info['dismiss_button'] );
 
 		Utils::display_update_notice( $notice_info, true );
 	}
@@ -601,9 +598,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		/**
-		 * Fires when a user dismiss the admin notice for rocketcdn.
-		 */
-		do_action( 'rocket_rocketcdn_notice_dismissed' );
+		// Track Mixpanel event immediately.
+		$this->track_event( 'RocketCDN Admin Notice Dismissed' );
 	}
 }
