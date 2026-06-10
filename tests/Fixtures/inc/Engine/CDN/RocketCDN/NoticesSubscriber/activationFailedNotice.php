@@ -96,6 +96,7 @@ return [
 			'token'             => '1234567890123456789012345678901234567890',
 			'subscription_data' => [
 				'website_attached' => false,
+				'plan_type' => 'paid',
 			],
 			'user_data'         => [
 				'rocketcdn' => [
