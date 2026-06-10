@@ -135,7 +135,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_queue',
 					'rocketcdn_check_status_api_client',
 					'user',
-					'user_client',
 				]
 				);
 
