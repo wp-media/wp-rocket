@@ -380,6 +380,11 @@
 					}
 				}
 
+				// Track banner view when first page is added and banner becomes visible.
+				if ( 1 === response.count ) {
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
+				}
+
 				// Set subscription loading state when first page is added.
 				if ( response.is_subscription_creation_loading ) {
 					setSubscriptionLoadingState();
@@ -460,6 +465,11 @@
 					if ( addPageSection ) {
 						addPageSection.insertAdjacentHTML( 'beforebegin', response.items_html );
 					}
+				}
+
+				// Track banner view when first page is added and banner becomes visible.
+				if ( 1 === response.count ) {
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
 				if ( response.limit === response.count ) {
@@ -555,6 +565,11 @@
 				if ( response.limit > response.count ) {
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
+
+					// Track auto-collapse when deletion drops count just below the limit.
+					if ( response.count === response.limit - 1 ) {
+						document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoCollapsed' ) );
+					}
 				}
 
 				if ( 0 === response.count ) {

@@ -43,11 +43,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
 			'rocket_rocketcdn_add_homepage'        => [ 'track_add_rocket_cdn_homepage', 10, 1 ],
 			'rocket_rocketcdn_cdn_state_changed'   => [ 'track_rocket_cdn_pause_status', 10, 2 ],
-			'rocket_rocketcdn_page_added'          => [ 'track_rocketcdn_page_added', 10, 3 ],
-			'rocket_rocketcdn_page_removed'        => [ 'track_rocketcdn_page_removed', 10, 2 ],
 			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
 			'rocket_notice_displayed'              => [ 'track_rocketcdn_notice_viewed', 10, 1 ],
-			'rocket_rocketcdn_notice_dismissed'    => [ 'track_rocketcdn_notice_dismissed' ],
 		];
 	}
 
@@ -185,31 +182,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Track when a page is added to RocketCDN free-tier.
-	 *
-	 * @param string $url         The URL that was added.
-	 * @param int    $pages_count The count of pages after addition.
-	 * @param string $source      The source of the addition.
-	 *
-	 * @return void
-	 */
-	public function track_rocketcdn_page_added( string $url, int $pages_count, string $source ): void {
-		$this->tracking->track_rocketcdn_page_added( $url, $pages_count, $source );
-	}
-
-	/**
-	 * Track when a page is removed from RocketCDN free-tier.
-	 *
-	 * @param string $url         The URL that was removed.
-	 * @param int    $pages_count The count of pages after removal.
-	 *
-	 * @return void
-	 */
-	public function track_rocketcdn_page_removed( string $url, int $pages_count ): void {
-		$this->tracking->track_rocketcdn_page_removed( $url, $pages_count );
-	}
-
-	/**
 	 * Track when RocketCDN free-tier is activated.
 	 *
 	 * @return void
@@ -227,14 +199,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocketcdn_notice_viewed( string $box ): void {
 		$this->tracking->track_rocketcdn_notice_viewed( $box );
-	}
-
-	/**
-	 * Track when a RocketCDN admin notice is dismissed.
-	 *
-	 * @return void
-	 */
-	public function track_rocketcdn_notice_dismissed(): void {
-		$this->tracking->track_rocketcdn_notice_dismissed();
 	}
 }
