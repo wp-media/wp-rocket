@@ -125,6 +125,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 			'update_option_wp_rocket_settings'         => [ 'maybe_clear_cache', 10, 2 ],
+			'get_rocket_option_cdn'                    => 'apply_pause_on_rocketcdn_only',
 		];
 	}
 
@@ -572,5 +573,20 @@ class Subscriber implements Subscriber_Interface {
 
 		// CDN type is changed, Clear whole cache.
 		$this->cache->clear_all_cache();
+	}
+
+	/**
+	 * Apply the pause of CDN on RocketCDN only.
+	 *
+	 * @param bool $cdn The current CDN status.
+	 *
+	 * @return bool
+	 */
+	public function apply_pause_on_rocketcdn_only( $cdn ) {
+		if ( is_admin() ) {
+			return $cdn;
+		}
+
+		return $cdn || 'rocketcdn' !== $this->options->get( 'cdn_type' );
 	}
 }
