@@ -607,5 +607,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->cdn_options->save_token( $token );
+		$this->subscription_controller->get_subscription_data();
 	}
 }

@@ -93,7 +93,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 *
 	 * @return array
 	 */
-	private function get_subscription_data() {
+	public function get_subscription_data() {
 		if ( $this->is_subscription_creation_loading() ) {
 			return [];
 		}
