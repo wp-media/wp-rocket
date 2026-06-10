@@ -427,7 +427,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		// Show notice when webiste is not attached.
-		return ! $this->subscription_controller->is_website_attached();
+		return ! $this->subscription_controller->is_website_attached() && $this->subscription_controller->has_active_subscription();
 	}
 
 	/**
