@@ -208,12 +208,6 @@ class SubscriptionController implements LoggerAwareInterface {
 				$this->options_manager->flush_subscription_cache();
 				break;
 
-			case 'paid_subscription_exists':
-				$this->stop_subscription_creation_loader();
-				$this->user_client->flush_cache();
-
-				return false;
-
 			default:
 				// Log this not known code.
 				$this->logger::error(
