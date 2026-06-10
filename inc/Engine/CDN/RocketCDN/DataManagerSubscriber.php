@@ -101,6 +101,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'refresh_subscription_details_with_update', 10, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
+			'wp_rocket_first_install'                => 'save_rocketcdn_token_with_fresh_install',
 		];
 	}
 
@@ -585,5 +586,26 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->cdn_options->flush_subscription_cache();
+	}
+
+	/**
+	 * With fresh install, save the token if found in the user endpoint.
+	 *
+	 * @return void
+	 */
+	public function save_rocketcdn_token_with_fresh_install() {
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) ) {
+			return;
+		}
+
+		$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
+
+		if ( 40 !== strlen( $token ) ) {
+			return;
+		}
+
+		$this->cdn_options->save_token( $token );
 	}
 }
