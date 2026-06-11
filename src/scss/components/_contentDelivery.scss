@@ -54,10 +54,12 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		letter-spacing: 0.02em;
-		transform: rotate(270deg);
-		left: -17px;
+		writing-mode: vertical-rl;
+		transform: rotate(180deg);
+		left: -11px;
 		position: absolute;
-		top: 26px;
+		top: 50%;
+		translate: 0 -50%;
 	}
 }
 
