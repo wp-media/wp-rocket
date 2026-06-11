@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22-alpha2\n"
+"Project-Id-Version: WP Rocket 3.22-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-06-09T11:58:22+00:00\n"
+"POT-Creation-Date: 2026-06-10T16:30:51+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -1476,7 +1476,7 @@ msgstr "Regénérer les fichiers de configuration de WP Rocket maintenant"
 
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
-#: inc/Engine/CDN/RocketCDN/Rest.php:270
+#: inc/Engine/CDN/RocketCDN/Rest.php:272
 msgid "Homepage"
 msgstr "Page d'accueil"
 
@@ -3142,19 +3142,19 @@ msgstr ""
 #: inc/Engine/CDN/Render/Controller.php:231
 #, php-format
 msgid "Purge %s Cache"
-msgstr "Purger le%s cache"
+msgstr "Purger le cache %s"
 
 #. translators: %s = CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:235
 #, php-format
 msgid "Purges %s cached resources for your website."
-msgstr "Purger%s la mémoire cache des ressources de votre site web."
+msgstr "Purger %s la mémoire cache des ressources de votre site web."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:268
 #, php-format
 msgid "Manage %s Exclusions"
-msgstr "Gérer les %sexclusions"
+msgstr "Gérer les exclusions %s"
 
 #: inc/Engine/CDN/Render/Controller.php:300
 msgid "Exclude Pages from CDN"
@@ -3312,20 +3312,20 @@ msgid "RocketCDN cache purge successful."
 msgstr "Purge du cache de RocketCDN réussie."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:171
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:265
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sPlus d'infos%2$s"
 
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:334
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "Nous avons mis à jour le CNAME de RocketCDN de %1$s vers %2$s."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3334,19 +3334,19 @@ msgstr ""
 "Le changement est déjà appliqué aux réglages du plugin. Si vous utilisiez le"
 " CNAME dans votre code, assurez-vous de le mettre à jour : %1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:345
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
 msgid "contact support"
 msgstr "contacter le support"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:393
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
 msgid "RocketCDN activation incomplete"
 msgstr "Activation de RocketCDN incomplète"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:394
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
 msgid "RocketCDN isn’t active on this website yet."
 msgstr "RocketCDN n'est pas encore actif sur ce site web."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
@@ -3354,12 +3354,12 @@ msgstr ""
 "Cliquez ci-dessous pour terminer l'activation. Vous serez redirigé vers la "
 "page de paiement pour confirmer votre abonnement."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:407
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
 msgid "Complete activation"
 msgstr "Activation complète"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:493
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
@@ -3367,7 +3367,7 @@ msgstr ""
 "clés%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:503
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
 #, php-format
 msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
@@ -3377,19 +3377,19 @@ msgstr ""
 "RocketCDN, pour accélérer le chargement de votre page d'accueil et de deux "
 "autres pages, sans frais supplémentaires.%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:514
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
 msgid "Dismiss"
 msgstr "Ignorer"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:527
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 "%1$sUtilisez RocketCDN gratuitement pour optimiser jusqu'à 3 pages 🚀%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:537
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
 #, php-format
 msgid ""
 "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 "
@@ -3399,21 +3399,21 @@ msgstr ""
 "RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages les "
 "plus consultées et optimisez leurs performances partout dans le monde !%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:548
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
 msgid "Check it later"
 msgstr "Voir ça plus tard"
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:235
+#: inc/Engine/CDN/RocketCDN/Rest.php:237
 msgid "Addition of pages to RocketCDN is disabled for local environment."
 msgstr ""
 "L'ajout de pages à RocketCDN est désactivé dans l'environnement local."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:243
+#: inc/Engine/CDN/RocketCDN/Rest.php:245
 msgid "You do not have an active RocketCDN subscription."
 msgstr "Vous ne disposez pas d'un abonnement RocketCDN actif."
 
 #. translators: %d: maximum number of free pages
-#: inc/Engine/CDN/RocketCDN/Rest.php:253
+#: inc/Engine/CDN/RocketCDN/Rest.php:255
 #, php-format
 msgid ""
 "Page limit of %d has been reached. Remove a page before adding a new one."
@@ -3421,27 +3421,27 @@ msgstr ""
 "La limite de %d pages a été atteinte. Supprimez une page avant d'en ajouter "
 "une nouvelle."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:281
+#: inc/Engine/CDN/RocketCDN/Rest.php:283
 msgid "This page is already registered for RocketCDN delivery."
 msgstr "Cette page est déjà enregistrée pour la diffusion via RocketCDN."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:299
+#: inc/Engine/CDN/RocketCDN/Rest.php:301
 msgid "Adding page is disabled by the filter."
 msgstr "L'ajout de pages est désactivé par le filtre."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:316
+#: inc/Engine/CDN/RocketCDN/Rest.php:318
 msgid "Failed to save page to the database."
 msgstr "Impossible d'enregistrer la page dans la base de données."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:363
+#: inc/Engine/CDN/RocketCDN/Rest.php:378
 msgid "The specified page was not found."
 msgstr "La page demandée est introuvable."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:542
+#: inc/Engine/CDN/RocketCDN/Rest.php:558
 msgid "Invalid URL provided."
 msgstr "L'URL fournie n'est pas valide."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:548
+#: inc/Engine/CDN/RocketCDN/Rest.php:564
 msgid "URL must be on the same domain as the site."
 msgstr "L'URL doit appartenir au même domaine que le site."
 
@@ -5963,7 +5963,7 @@ msgstr "En savoir plus sur la Purge"
 #: views/settings/sections/cdn/purge-cdn-cache.php:59
 #, php-format
 msgid "CLEAR ALL %s CACHE FILES"
-msgstr "VIDER TOUS%s LES FICHIERS DU CACHE"
+msgstr "VIDER TOUS LES FICHIERS DU CACHE %s"
 
 #: views/settings/sections/cdn/rocketcdn-free.php:32
 msgid "Free"
