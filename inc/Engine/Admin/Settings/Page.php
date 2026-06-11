@@ -1541,7 +1541,7 @@ class Page extends Abstract_Render {
 				'title'            => __( 'Your CDN', 'rocket' ),
 				'type'             => 'your_own_cdn',
 				'help'             => [
-					'id'  => $this->beacon->get_suggest( 'cdn_section' ),
+					'id'  => $cdn_beacon['id'],
 					'url' => $cdn_beacon['url'],
 				],
 				'page'             => 'page_cdn',
