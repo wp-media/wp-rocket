@@ -38,7 +38,7 @@ $rocketcdn_paid_plan     = ! empty( $rocket_cdn_token ) && $data['is_rocketcdn_p
 $rocket_show_rocketcdn_banner = wpm_apply_filters_typed( 'boolean', 'rocket_show_rocketcdn_banner', ! $rocketcdn_paid_plan );
 
 if ( ! $rocket_show_rocketcdn_banner ) {
-	$rocket_hero_title       = esc_html__( 'Congratulations!', 'rocket' );
+	$rocket_hero_title       = __( 'Congratulations!', 'rocket' );
 	$rocket_title            = esc_html__( 'WP Rocket is now activated and already working for you.', 'rocket' )
 		. '<br>'
 		. esc_html__( 'Your website should be loading faster now!', 'rocket' );
@@ -46,7 +46,7 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 		. '<br>'
 		. esc_html__( 'We also enable options that provide immediate benefits to your website.', 'rocket' );
 } else {
-	$rocket_hero_title       = esc_html__( 'NEW!', 'rocket' );
+	$rocket_hero_title       = __( 'NEW!', 'rocket' );
 	$rocket_title            = esc_html__( 'You can now enable RocketCDN for free on up to 3 pages of your choice!', 'rocket' );
 	$rocket_hero_description = esc_html__( 'RocketCDN serves your content from locations closer to your visitors, helping your top pages load faster around the world. Go to the Content Delivery tab, choose up to 3 pages, and add them to RocketCDN to improve their performance globally.', 'rocket' );
 }
