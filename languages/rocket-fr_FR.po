@@ -3142,7 +3142,7 @@ msgstr ""
 #: inc/Engine/CDN/Render/Controller.php:231
 #, php-format
 msgid "Purge %s Cache"
-msgstr "Purger le %s cache"
+msgstr "Purger le cache %s"
 
 #. translators: %s = CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:235
