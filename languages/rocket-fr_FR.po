@@ -3148,7 +3148,7 @@ msgstr "Purger le cache %s"
 #: inc/Engine/CDN/Render/Controller.php:235
 #, php-format
 msgid "Purges %s cached resources for your website."
-msgstr "Purger%s la mémoire cache des ressources de votre site web."
+msgstr "Purger %s la mémoire cache des ressources de votre site web."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:268
