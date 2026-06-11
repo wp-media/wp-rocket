@@ -23,6 +23,9 @@ class Test_DeferInlineJs extends TestCase {
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
+		// Prevent remote HTTP calls from the RocketCDN subscription check.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled', 'cdn_url' => '' ], MINUTE_IN_SECONDS );
+
 		set_current_screen( 'front' );
 
 		self::installPreloadCacheTable();
@@ -47,6 +50,7 @@ class Test_DeferInlineJs extends TestCase {
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 		delete_transient( 'wpr_dynamic_lists' );
+		delete_transient( 'rocketcdn_status' );
 
 		parent::tear_down();
 	}
