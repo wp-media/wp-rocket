@@ -43,9 +43,9 @@ The signal is a starting point, not a conclusion — re-evaluate it as you learn
 
 Log the depth you actually applied in the return JSON: `effort_used: "LOW|MEDIUM|HIGH"`. This field is **diagnostic only** — it lets retrospectives audit signal calibration (predicted vs. actual) across runs. No orchestrator routing decision depends on it.
 
-## Non-skippable steps — model-agnostic enforcement
+## Non-skippable steps
 
-The following steps MUST be completed before returning. This applies regardless of model (Claude, GPT-4, Copilot, or any other):
+The following steps MUST be completed before returning:
 
 - [ ] Step 1: Read AGENTS.md (if exists), issue body, and referenced files
 - [ ] Step 2: Map affected code (files, functions, hooks, option keys)
