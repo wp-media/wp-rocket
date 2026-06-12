@@ -41,7 +41,7 @@ The signal is a starting point, not a conclusion — re-evaluate it as you learn
 - Signal says "simple" but you uncover architectural misplacement, hidden coupling, or unexpected dependents in the graph → escalate to medium/high reasoning immediately
 - Signal says "complex" but the issue is well-scoped and straightforward → finish in fewer turns
 
-Log your reasoning depth choice in the return JSON: `effort_used: "LOW|MEDIUM|HIGH"`.
+Log the depth you actually applied in the return JSON: `effort_used: "LOW|MEDIUM|HIGH"`. This field is **diagnostic only** — it lets retrospectives audit signal calibration (predicted vs. actual) across runs. No orchestrator routing decision depends on it.
 
 ## Non-skippable steps — model-agnostic enforcement
 
@@ -271,7 +271,7 @@ Return the spec file path AND the following JSON object to the orchestrator. The
   "test_plan": "string",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
-  "effort_used": "LOW|MEDIUM|HIGH",
+  "effort_used": "LOW|MEDIUM|HIGH — diagnostic only: the reasoning depth actually applied, for retrospective calibration audits; not a routing input",
   "complexity": "LOW|MEDIUM|HIGH",
   "risk_level": "LOW|MEDIUM|HIGH",
   "risk_notes": "prose: confidence level, key concerns, anything unusual the orchestrator should weight",
