@@ -31,14 +31,14 @@ This heuristic mirrors the orchestrator's own assessment, so behavior is identic
 
 ## Reasoning depth adaptation
 
-Adjust your reasoning depth based on the complexity_signal:
+**The signal never lowers the quality bar.** Every issue, at every depth, gets the full process: map the affected code (Step 2), trace the call chain, answer all architectural questions (Step 3), list edge cases, write the complete spec. The `complexity_signal` only calibrates how much *exploration* happens beyond that baseline — so a 2-line rename does not consume the turn budget of an architectural refactor:
 
-- **simple** (XS/S issues): Quick read of relevant code. Single architectural pass. Minimal loops. Finish in ~5-8 turns.
-- **medium** (M issues): Standard analysis. Multiple code reads, trace dependencies. Finishes in ~15-20 turns.
+- **simple** (XS/S issues): Complete every step in a single pass — read the affected code once, one architectural analysis round, no broad exploration. Typically ~5-8 turns.
+- **medium** (M issues): Standard analysis. Multiple code reads, trace dependencies. Typically ~15-20 turns.
 - **complex** (L/XL issues): Deep analysis. Full dependency graphs, multiple rounds of discovery. May need 30-40 turns.
 
-If you discover the signal is wrong, adjust your effort. For example:
-- Signal says "simple" but you uncover architectural misplacement → escalate to medium/high reasoning
+The signal is a starting point, not a conclusion — re-evaluate it as you learn:
+- Signal says "simple" but you uncover architectural misplacement, hidden coupling, or unexpected dependents in the graph → escalate to medium/high reasoning immediately
 - Signal says "complex" but the issue is well-scoped and straightforward → finish in fewer turns
 
 Log your reasoning depth choice in the return JSON: `effort_used: "LOW|MEDIUM|HIGH"`.
