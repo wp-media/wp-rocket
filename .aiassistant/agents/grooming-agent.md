@@ -307,6 +307,4 @@ The decision channel for the splitting plan is the GitHub comment (Step 5): the 
 
 **risk_notes guidance:** This is the orchestrator's most important input for routing decisions. State: your confidence level (HIGH/MEDIUM/LOW), the one or two key risks you see, and any unverified assumptions (auth behavior, multisite, concurrency) that a challenger should probe. If everything is straightforward, say so explicitly.
 
-After returning the JSON, ownership passes to the orchestrator. Issue labels and state transitions belong to the pipeline and happen at their own stages — none of them at grooming time (e.g. "Ready for review" is only applied once the PR is actually open). The grooming agent never edits labels or issue state.
-
 Do not implement anything. Do not modify any source file.
