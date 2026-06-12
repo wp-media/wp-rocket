@@ -41,33 +41,6 @@ return JSON `co_authored_by` fields, and GitHub comments.
 
 ---
 
-## Mandatory pipeline gates
-
-These steps **never skip**, regardless of which model runs the orchestrator, how simple the issue appears, or how confident you feel about the implementation:
-
-| Gate | Step | Enforcement |
-|---|---|---|
-| **Grooming** | Step 2 | ALWAYS runs. No implementation without a grooming JSON. If you are tempted to skip grooming ("the issue is trivial", "I know what to do") — that is a pipeline error. STOP and invoke `grooming-agent`. |
-| **Label "Made by AI" + Assignee** | Step 7 (release-agent) | ALWAYS applied and ALWAYS verified. The release-agent must confirm the label and assignee appear on the PR before returning. |
-| **`gh pr ready <PR#>`** | Step 11 | ALWAYS executed after QA passes. Verify with `gh pr view <PR#> --json isDraft -q .isDraft` — must return `false`. If it returns `true`, run `gh pr ready` again. |
-
-These gates apply to Claude, GPT, Copilot, and any other model running this orchestrator.
-
-### Anti-scope-creep gate (mandatory)
-
-Before spawning any implementation agent, verify the proposed spec matches the ticket scope:
-
-| Check | Question | If no |
-|---|---|---|
-| Scope match | Does every change in the spec map to a stated requirement in the ticket? | Remove it |
-| Complexity ceiling | Is the solution the simplest one that satisfies all AC? | Simplify first |
-| Agent count | Is each spawned agent doing something the calling agent genuinely cannot? | Collapse into one |
-| Feature flags | Are you adding config/flags not asked for in the ticket? | Remove them |
-
-> **Rule:** If a step, file, or feature is not required by the ticket's acceptance criteria, it does not belong in the implementation. Push back to grooming-agent if the spec is out of scope — do not implement and hope for the best.
-
----
-
 ## Core principle
 
 **TICKET and GROOMING always run.** All routing decisions happen *after* GROOMING returns.
@@ -415,18 +388,7 @@ suggests low actual risk), confirm with the user before deciding.
 
 Pass the resolved model as the `model` parameter on every Agent tool spawn. For agents with frontmatter `model: haiku`, this is redundant but harmless — always pass it explicitly so the intent is clear in the orchestrator context.
 
-**Complexity signal assessment:**
-Before invoking grooming-agent, classify the issue based on visible signals:
-
-Assess complexity from the issue's visible signals:
-
-| Signal | Model |
-|---|---|
-| Body > 500 chars OR any complexity keyword present | `opus` ("complex") |
-| Otherwise | `sonnet` ("simple" or "medium") |
-
-Complexity keywords: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`.
-Pass the resulting signal as `complexity_signal: "simple"|"medium"|"complex"` to grooming-agent.
+Complexity keywords for "complex" signal: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`. Pass `complexity_signal: "simple"|"medium"|"complex"` to grooming-agent.
 
 **Opus escalation** — when `complexity == HIGH`: before proceeding to branch creation, ask the user:
 
@@ -696,17 +658,7 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
    to append or replace the "Follow-up tickets" section with links to all created tickets.
    If no NTH tickets were created, write "None".
 2. Update PR body: replace "What was tested" with the full QA report
-3. Move PR out of draft — this step is **mandatory and must be verified**:
-   ```bash
-   gh pr ready <PR#>
-   ```
-
-   **After `gh pr ready`:**
-   1. Verify the PR is no longer in DRAFT state: `gh pr view <N> --json isDraft --jq .isDraft` must return `false`
-   2. Verify the `Made by AI` label is applied: `gh pr view <N> --json labels --jq '[.labels[].name] | contains(["Made by AI"])'` must return `true`
-   3. If either check fails, retry once. If it fails again, log a warning in the run log — do not silently continue.
-
-   > **Linked GitHub issue:** If the linked GitHub issue has a 'In Progress' or 'In Review' label, transition it to 'Ready for review' after the PR is created: `gh issue edit <N> --remove-label 'In Progress' --add-label 'Ready for review'`
+3. `gh pr ready <PR#>` (move out of draft)
 4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
 5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
