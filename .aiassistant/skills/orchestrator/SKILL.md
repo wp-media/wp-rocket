@@ -403,7 +403,7 @@ suggests low actual risk), confirm with the user before deciding.
 
 | Agent | Default model | Condition for override |
 |---|---|---|
-| `grooming-agent` | `sonnet` | **Adaptive:** Assess issue title + body length before spawning. Use `haiku` if title <50 chars, body <200 chars, no keywords ("architecture", "refactor", "redesign", "migration", "module", "breaking"). Use `opus` if body >500 chars OR keywords present. Otherwise `sonnet`. Pass `complexity_signal: "simple"|"medium"|"complex"` as input. |
+| `grooming-agent` | `sonnet` | `opus` when signal is "complex" (body >500 chars OR complexity keywords present). Pass `complexity_signal: "simple"|"medium"|"complex"` as input. |
 | `challenger` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
 | `backend-agent` | `sonnet` | `opus` if user confirmed (see Opus escalation below) |
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
@@ -422,9 +422,8 @@ Assess complexity from the issue's visible signals:
 
 | Signal | Model |
 |---|---|
-| Title < 50 chars AND body < 200 chars AND no complexity keywords | `haiku` ("simple") |
 | Body > 500 chars OR any complexity keyword present | `opus` ("complex") |
-| Otherwise | `sonnet` ("medium") |
+| Otherwise | `sonnet` ("simple" or "medium") |
 
 Complexity keywords: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`.
 Pass the resulting signal as `complexity_signal: "simple"|"medium"|"complex"` to grooming-agent.
