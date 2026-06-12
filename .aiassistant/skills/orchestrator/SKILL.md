@@ -112,10 +112,7 @@ Maintain in your context tracking:
 - Escalation reason if stopped
 - Calibration mode chosen
 
-**Synthesis rule:** Read routing-relevant fields from each agent's `result_path` (in
-`tasks.json`) rather than holding full agent JSONs in this context. This keeps the
-orchestrator context lean across long pipeline runs. Full JSONs are written to the HTML log
-from the contract files.
+**Synthesis rule:** Read routing-relevant fields directly from each agent's return JSON. This keeps the orchestrator context lean across long pipeline runs. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
 ---
 
@@ -128,10 +125,7 @@ Each pipeline run creates an isolated working directory for coordination artifac
 ```
 issue-<N>/
 ├── tasks.json               # shared task ledger — read/written by all agents
-├── contracts/
-│   ├── backend-api.json     # written by backend-agent (Step 3c): hooks, option_keys, rest_endpoints
-│   ├── backend-result.json  # written by backend-agent (Step 5): full implementation result
-│   └── frontend-result.json # written by frontend-agent on completion
+├── contracts/               # reserved for future coordination artifacts
 └── locks/
     └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
 ```
@@ -154,7 +148,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["inc/Engine/...", "tests/Unit/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -167,7 +160,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["assets/src/...", "views/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/frontend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -178,14 +170,11 @@ issue-<N>/
 
 ### Backend API contract
 
-Two separate files, two separate purposes:
+- The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
-- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent in Step 3c, before committing. The orchestrator reads this to share the actual API surface with frontend-agent.
-- **`contracts/backend-result.json`** — Full implementation result (`ticket_id`, `branch`, `files_changed`, `dod_layer1`, etc.). Written by backend-agent in Step 5. The orchestrator reads this for routing decisions. `result_path` in `tasks.json` points here.
+**Sequential mode:** when backend finishes before frontend starts, the orchestrator extracts `backend_api` from the return JSON and includes it in the frontend agent's dispatch plan.
 
-**Sequential mode:** when backend finishes before frontend starts, the orchestrator reads `backend-api.json`, extracts `hooks`, `option_keys`, and `rest_endpoints`, and includes them explicitly in the frontend agent's dispatch plan. The frontend agent never reads the file itself.
-
-**Parallel mode:** the frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip.
+**Parallel mode:** if `backend_api` is not yet available when frontend starts, frontend proceeds from spec and notes "API contract not available — using spec".
 
 ---
 
@@ -253,9 +242,18 @@ fields — prose is for human readability only.
     "hesitations": ["what was unclear or uncertain during implementation"],
     "decision_rationale": "why the chosen approach was taken over the alternatives"
   },
+  "backend_api": {
+    "hooks": [],
+    "option_keys": [],
+    "rest_endpoints": [],
+    "ajax_actions": [],
+    "notes": "any drift from spec"
+  },
   "notes": "string"
 }
 ```
+
+`backend_api` is only present in backend-agent's return JSON. The orchestrator extracts it and passes it to the frontend-agent dispatch plan when scopes overlap.
 
 ### Release (`release-agent`)
 ```json
@@ -521,11 +519,10 @@ Update each task's `worktree` field in `tasks.json`.
 > (including `file_scope` and `worktree` path).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
-> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
-> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
-> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
-> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
-> orchestrator-managed shared state, not direct agent-to-agent communication.
+> Backend returns `backend_api` (hooks, option_keys, rest_endpoints) in its return JSON on completion.
+> When backend completes, orchestrator extracts `backend_api` from the return JSON, logs the API surface to the HTML log,
+> and passes it explicitly in the frontend-agent dispatch plan.
+> Frontend receives it from the orchestrator — no file read involved.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
@@ -534,13 +531,9 @@ Update each task's `worktree` field in `tasks.json`.
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
 
-**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
-`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
-JSONs go to the HTML log directly from contract files — do not accumulate them in
-orchestrator context.
+**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, and `files_changed` directly from each agent's return JSON. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
-Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
-commit SHA.
+Log AGENT events after each with `docs` status, DOD L1 summary, and commit SHA.
 
 ---
 
