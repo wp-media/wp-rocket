@@ -139,9 +139,7 @@ Maintain in your context tracking:
 - Escalation reason if stopped
 - Calibration mode chosen
 
-**Synthesis rule:** Route based on the return JSON received directly from each agent —
-`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc.
-Do not accumulate full agent JSONs in orchestrator context — log them to the HTML run log instead.
+**Synthesis rule:** Read routing-relevant fields directly from each agent's return JSON. This keeps the orchestrator context lean across long pipeline runs. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
 ---
 
@@ -550,9 +548,10 @@ Update each task's `worktree` field in `tasks.json`.
 > (including `file_scope` and `worktree` path).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
-> When backend completes, the orchestrator uses the `backend_api` field from backend-agent's return JSON,
-> logs the API surface to the HTML log, and updates `tasks.json`.
-> The orchestrator is the coordination hub — agents do not communicate with each other.
+> Backend returns `backend_api` (hooks, option_keys, rest_endpoints) in its return JSON on completion.
+> When backend completes, orchestrator extracts `backend_api` from the return JSON, logs the API surface to the HTML log,
+> and passes it explicitly in the frontend-agent dispatch plan.
+> Frontend receives it from the orchestrator — no file read involved.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
@@ -567,9 +566,7 @@ Do NOT create git worktrees. All agents work on the same branch.
 >
 > Both agents commit atomically to the same branch. Commits are ordered: backend first, then frontend.
 
-**Synthesis:** Route based on the return JSON received directly from each agent —
-`tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, `files_changed`, etc.
-Log implementation JSONs to the HTML run log — do not accumulate them in orchestrator context.
+**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, and `files_changed` directly from each agent's return JSON. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
 Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
 commit SHA.
