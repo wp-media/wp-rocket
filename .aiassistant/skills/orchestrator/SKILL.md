@@ -204,14 +204,18 @@ fields — prose is for human readability only.
   "test_plan": "string",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
+  "effort_used": "LOW|MEDIUM|HIGH",
   "complexity": "LOW|MEDIUM|HIGH",
   "risk_level": "LOW|MEDIUM|HIGH",
   "risk_notes": "string",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["string"],
+  "pr_splitting_plan": [{ "slice": 1, "scope": ["string"], "deliverable": "string" }],
   "comment_posted": true
 }
 ```
+
+`effort_used` is diagnostic only — log it in the grooming AGENT event; no routing depends on it. `pr_splitting_plan` is populated for L/XL efforts (`null` otherwise) — surface it in the post-grooming ROUTING DECISION event so the team can decide whether to split before implementation starts.
 
 ### Challenger (`challenger`)
 ```json
@@ -345,7 +349,7 @@ Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
 ### Step 2 — Grooming *(always)*
 
 Invoke `grooming-agent`:
-> Inputs: issue `#N`, issue file path, base branch
+> Inputs: issue `#N`, issue file path, base branch, `complexity_signal: "simple"|"medium"|"complex"` (derived from issue title/body length and keywords — see model routing table)
 
 Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
 JSON. Log an AGENT event with the grooming JSON summary.
@@ -355,7 +359,8 @@ JSON. Log an AGENT event with the grooming JSON summary.
 ### Step 3 — Post-grooming routing *(always)*
 
 Read grooming JSON. Log a ROUTING DECISION event with full reasoning:
-- `risk_level`, `effort`, `complexity`, `risk_notes` values
+- `risk_level`, `effort`, `complexity`, `risk_notes` values (plus `effort_used` for the record)
+- For L/XL efforts: `pr_splitting_plan` summary — surface it so the team can decide whether to split before implementation starts
 - Whether CHALLENGER will be invoked and why (or explicit skip reason)
 - Whether PR REVIEWER will be skipped (XS+LOW only, team discretion)
 - Whether QA will be skipped (internal-only refactors, team discretion)

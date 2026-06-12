@@ -269,7 +269,10 @@ EOF
 
 ### Step 6 — Return
 
-Return the spec file path AND the following JSON object to the orchestrator. The orchestrator reads the structured fields for routing — fill every field accurately.
+Return two things to the orchestrator:
+
+1. **The spec file path** — the `.md` file you wrote in Step 4 (`<N>-spec.md`). The orchestrator passes this path to the implementation agents alongside the dispatch plan so they can read the full spec inline.
+2. **The JSON object below** — structured routing fields. Fill every field accurately; the orchestrator routes mechanically on them.
 
 ```json
 {
