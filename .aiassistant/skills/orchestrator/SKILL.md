@@ -592,10 +592,6 @@ the description. Log AGENT event with PR URL.
 
 Update the decisions strip Pull request field with the PR URL.
 
-> ⚠️ **The draft PR is the midpoint of the pipeline, not the end.**
-> Do not stop, do not ask the user what to do next. Proceed immediately to Steps 7–9.
-> The pipeline is complete only after Step 11 runs `gh pr ready` and posts the final summary.
-
 ---
 
 ### Steps 7–9 — Parallel quality gates
