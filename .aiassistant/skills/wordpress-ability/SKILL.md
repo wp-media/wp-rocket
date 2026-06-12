@@ -19,10 +19,14 @@ if ( ! function_exists( 'wp_register_ability' ) ) {
 # Adding a new ability
 
 To add a new ability, follow these steps:
-- One ability = one class implementing `Ability_Interface`
+- One ability = one class implementing `AbilitiesInterface`
 - Place the class adjacent to the feature it belongs to
 - Register the ability class in the feature's `ServiceProvider`
 - Register the ability in the related subscriber, using the `wp_abilities_api_init` hook
+
+An ability name must be unique and follow the format `wp-rocket/ability-name`, where `wp-rocket` is the vendor name and `ability-name` is a descriptive name for the ability. Use hyphens to separate words in the ability name.
+
+The `check_permissions()`method should always verify against the current user capabilities, using `current_user_can( 'rocket_manage_options )` by default, to ensure that only authorized users can execute the ability, except explicitly required otherwise.
 
 An ability must be associated to an ability category. If the category doesn't exist yet, register a new one in the related subscriber using the `wp_abilities_api_categories_init` hook.
 
