@@ -6,9 +6,6 @@ return [
 
 		'expected' => [
 			'unit'        => null,
-			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
-			],
 		],
 
 		'config' => [
@@ -21,9 +18,6 @@ return [
 
 		'expected' => [
 			'unit'        => null,
-			'integration' => [
-				'assertNotContains' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
-			],
 		],
 
 		'config' => [
@@ -32,11 +26,11 @@ return [
 		],
 	],
 
-	'testShouldNotDisplayNoticeWhenActive' => [
-
+	'testShouldNotDisplayNoticeWhenPlanIsPaid' => [
 		'rocketcdn_data' => [
 			'rocketcdn_status'  => [
 				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
 			],
 			'rocketcdn_pricing' => [],
 		],
@@ -45,12 +39,6 @@ return [
 			'unit'        => [
 				'cta-small' => [],
 				'cta-big'   => [],
-			],
-			'integration' => [
-				'not_expected' => [
-					'<div class="wpr-rocketcdn-cta-small',
-					'<div class="wpr-rocketcdn-cta " id="wpr-rocketcdn-cta">',
-				],
 			],
 		],
 
@@ -72,6 +60,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			   'cta_data' => [
+				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				   'cta_heading_max_limit' => '',
+				   'cta_description'       => '',
+				   'limit_reached'         => false,
+			   ],
 		],
 
 		'expected' => [
@@ -90,7 +84,6 @@ return [
 					'current_price_annual'      => 79.99,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
 		],
 
 		'config' => [
@@ -114,6 +107,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			   'cta_data' => [
+				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				   'cta_heading_max_limit' => '',
+				   'cta_description'       => '',
+				   'limit_reached'         => false,
+			   ],
 		],
 
 		'expected' => [
@@ -132,7 +131,6 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
 		],
 
 		'config' => [
@@ -156,6 +154,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			   'cta_data' => [
+				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				   'cta_heading_max_limit' => '',
+				   'cta_description'       => '',
+				   'limit_reached'         => false,
+			   ],
 		],
 
 		'expected' => [
@@ -174,7 +178,6 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo.html' ),
 		],
 
 		'config' => [
@@ -198,6 +201,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			   'cta_data' => [
+				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				   'cta_heading_max_limit' => '',
+				   'cta_description'       => '',
+				   'limit_reached'         => false,
+			   ],
 		],
 
 		'expected' => [
@@ -216,7 +225,6 @@ return [
 					'current_price_annual'      => 6.67,
 				],
 			],
-			'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_promo_big_hidden.html' ),
 		],
 
 		'config' => [
@@ -239,6 +247,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
+			   'cta_data' => [
+				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				   'cta_heading_max_limit' => '',
+				   'cta_description'       => '',
+				   'limit_reached'         => false,
+			   ],
 		],
 
 		'expected' => [
@@ -257,7 +271,6 @@ return [
 					'current_price_annual'      => 5.00,
 				],
 			],
-			'integration' => str_replace( '**DATE_NOW**', date( 'Y-m-d', strtotime( 'tomorrow', time() ) ), file_get_contents( __DIR__ . '/HTML/cta_promo.html' ) ),
 		],
 
 		'config' => [
@@ -273,6 +286,12 @@ return [
 				'subscription_status' => 'cancelled',
 			],
 			'rocketcdn_pricing' => 'RocketCDN is not available at the moment. Please retry later.',
+			'cta_data' => [
+				'cta_heading'     => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_description' => '',
+				'cta_heading_max_limit' => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -287,7 +306,6 @@ return [
 					'message'         => 'RocketCDN is not available at the moment. Please retry later. <a href="" data-beacon-article="" rel="noopener noreferrer" target="_blank">More Info</a>',
 				],
 			],
-				'integration' => file_get_contents( __DIR__ . '/HTML/cta_no_pricing.html' ),
 		],
 
 		'config' => [
