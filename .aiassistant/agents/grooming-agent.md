@@ -217,6 +217,10 @@ Based on the effort and risk assessment above, specify EXACTLY which tests the i
 
 Explicitly state the test command(s) to run in the spec. "Run tests" is not sufficient — name the command.
 
+This guidance feeds two outputs, which must agree:
+1. The spec file (this section) — read by the implementation agents alongside the Implementation Plan.
+2. The `test_plan` field of the Step 6 return JSON — copy the exact command(s) decided here into it. The orchestrator logs that field and passes it with the spec to the implementation agents; it is the structured mirror of this section, not a separate plan.
+
 ---
 
 ### Step 4b — PR splitting plan (required for L and XL efforts)
@@ -268,7 +272,7 @@ Return the spec file path AND the following JSON object to the orchestrator. The
   "relevant_files": [{ "path": "string", "reason": "string" }],
   "approach": "chosen approach summary",
   "development_steps": [{ "step": "string", "files": ["string"] }],
-  "test_plan": "string",
+  "test_plan": "the exact test command(s) decided in the spec's Test execution guidance — structured mirror of that section",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
   "effort_used": "LOW|MEDIUM|HIGH — diagnostic only: the reasoning depth actually applied, for retrospective calibration audits; not a routing input",
