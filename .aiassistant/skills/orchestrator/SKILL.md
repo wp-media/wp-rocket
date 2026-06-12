@@ -272,12 +272,14 @@ fields — prose is for human readability only.
 ```json
 {
   "overall": "PASS|WARN|FAIL",
-  "checks": [{ "name": "string", "status": "PASS|WARN|FAIL", "evidence": "string" }],
-  "blockers": ["string"],
+  "checks": [{ "name": "string", "status": "PASS|WARN|FAIL|N/A", "evidence": "string" }],
+  "blockers": [{ "check": "string", "description": "string", "error_excerpt": "string", "suggested_fix": "string" }],
   "warnings": ["string"],
   "layer1_delta": ["string"]
 }
 ```
+
+`checks` includes the six named checks (`manual-validation`, `automated-tests`, `documentation`, `pr-description`, `ci`, `file-scope`). `blockers` are structured objects — the routing table reads `blockers[*].error_excerpt` for CI failures and passes `suggested_fix` to the implementation agent on loop-back.
 
 ### Lead review (`lead-reviewer`)
 ```json
@@ -581,7 +583,7 @@ CI is monitored by DOD L2 Check 5
   explicitly instruct the qa-engineer that Strategy B is the **primary** strategy.
 
 **Inputs for each:**
-- DOD L2: branch name, base branch, PR URL
+- DOD L2: branch name, base branch, PR URL, `file_scope` (list of files in scope for this issue, from the dispatch plan)
 - Lead Review: issue #N, spec path, base branch, acceptance criteria (numbered list)
 - QA: issue #N, PR number, base branch, acceptance criteria (numbered list), domains, ui_visible flag
 
