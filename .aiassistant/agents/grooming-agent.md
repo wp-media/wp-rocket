@@ -234,6 +234,8 @@ Rules for splitting:
 
 If you cannot split the work into independent slices (strong coupling, single atomic migration), document why splitting is not feasible. That is an acceptable outcome — but it must be explicit, not assumed.
 
+The splitting plan must also appear in the GitHub comment (Step 5) — it is a decision for the team (split into several PRs, or proceed as one), so it has to be visible on the issue before implementation starts, not only in the spec file and return JSON.
+
 ---
 
 ### Step 5 — Post to GitHub
@@ -256,6 +258,9 @@ gh issue comment <N> --body "$(cat <<'EOF'
 **Effort:** XS|S|M|L|XL · **Risk:** LOW|MEDIUM|HIGH · **Complexity:** LOW|MEDIUM|HIGH
 
 [key decisions, relevant files, test plan]
+
+[For L/XL efforts only — include the PR Splitting Plan table from the spec, or the explicit
+reason the work is unsplittable. The team decides on the issue whether to split.]
 EOF
 )"
 ```
@@ -290,6 +295,8 @@ Return the spec file path AND the following JSON object to the orchestrator. The
 ```
 
 `pr_splitting_plan` is **required when `effort` is `L` or `XL`**. Set to `null` for XS / S / M. If the work cannot be split, set to `[{ "slice": 1, "scope": ["all files"], "deliverable": "unsplittable — reason: <explicit explanation>" }]`.
+
+The decision channel for the splitting plan is the GitHub comment (Step 5): the team reads it on the issue and decides whether to split before implementation. The JSON field is the structured copy, kept so the orchestrator can surface it in its post-grooming routing log and pause for that decision when splitting support is wired in.
 
 **Effort calibration:**
 - `XS`: ≤ 1 file, trivial change
