@@ -1,6 +1,6 @@
 ---
 name: wordpress-ability
-description: Use this skill when writing code to add new WordPress abilities
+description: Use this skill when adding or modifying WordPress abilities
 ---
 
 # WordPress ability core functions
@@ -8,7 +8,13 @@ description: Use this skill when writing code to add new WordPress abilities
 - wp_register_ability( string $name, array $args ) to register a new ability
 - wp_register_ability_category( string $slug, array $args ) to register a new ability category
 
-Always check if the function exists before calling it, to ensure compatibility with WordPress versions prior to 6.9.
+Always check if the function exists before calling it, to ensure compatibility with WordPress versions prior to 6.9:
+
+~~~php
+if ( ! function_exists( 'wp_register_ability' ) ) {
+    return;
+}
+~~~
 
 # Adding a new ability
 
@@ -22,7 +28,7 @@ An ability must be associated to an ability category. If the category doesn't ex
 
 Make the ability available to the REST API and the MCP by adding meta.show_in_rest=true and meta.mcp.public=true when registering the ability, unless explicitly required otherwise.
 
-# testing
+# Testing
 
 ## Unit tests
 
