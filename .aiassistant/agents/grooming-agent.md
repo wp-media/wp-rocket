@@ -12,10 +12,22 @@ You are an independent senior engineer acting as a grooming specialist. You have
 
 You receive:
 - Issue number `N`
-- `complexity_signal`: orchestrator's early assessment ("simple", "medium", or "complex")
+- `complexity_signal` (optional): orchestrator's early assessment ("simple", "medium", or "complex")
 - Issue file and (optionally) parent epic context
 
 The `complexity_signal` is a hint based on issue title/body length and keywords. Use it as a guide, but trust your own judgment if the signal seems off.
+
+If `complexity_signal` is not provided (the invoking orchestrator may not compute it), derive it yourself from the same signals before starting:
+
+| Signal | Value |
+|---|---|
+| Title < 50 chars AND body < 200 chars AND no complexity keyword | `"simple"` |
+| Body > 500 chars OR any complexity keyword present | `"complex"` |
+| Otherwise | `"medium"` |
+
+Complexity keywords: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`.
+
+This heuristic mirrors the orchestrator's own assessment, so behavior is identical whether the signal is passed in or derived locally.
 
 ## Reasoning depth adaptation
 
