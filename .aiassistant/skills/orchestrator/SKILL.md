@@ -216,14 +216,18 @@ fields — prose is for human readability only.
   "test_plan": "string",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
+  "effort_used": "LOW|MEDIUM|HIGH",
   "complexity": "LOW|MEDIUM|HIGH",
   "risk_level": "LOW|MEDIUM|HIGH",
   "risk_notes": "string",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["string"],
+  "pr_splitting_plan": [{ "slice": 1, "scope": ["string"], "deliverable": "string" }],
   "comment_posted": true
 }
 ```
+
+`effort_used` is diagnostic only (the reasoning depth grooming actually applied) — log it in the grooming AGENT event; no routing depends on it. `pr_splitting_plan` is populated for L/XL efforts (`null` otherwise) — surface it in the post-grooming ROUTING DECISION event so the team can decide whether to split before implementation starts.
 
 ### Challenger (`challenger`)
 ```json
@@ -369,13 +373,14 @@ JSON. Log an AGENT event with the grooming JSON summary.
 ### Step 3 — Post-grooming routing *(always)*
 
 Read grooming JSON. Log a ROUTING DECISION event with full reasoning:
-- `risk_level`, `effort`, `complexity`, `risk_notes` values
+- `risk_level`, `effort`, `complexity`, `risk_notes` values (plus `effort_used` for the record)
 - Whether CHALLENGER will be invoked and why (or explicit skip reason)
 - Whether PR REVIEWER will be skipped (XS+LOW only, team discretion)
 - Whether QA will be skipped (internal-only refactors, team discretion)
 - Domain set: `backend` / `frontend` / `both`
 - Branch prefix: `fix` for bugs · `enhancement` for features · `test` for test-only
 - Scope: Option A (default) or Option B (low-risk or explicitly requested)
+- For L/XL efforts: the `pr_splitting_plan` summary (slices and deliverables, or the explicit unsplittable reason). In high-oversight mode, pause and ask the user whether to split before proceeding; otherwise log it and surface it in the final report.
 
 Update the decisions strip in the log.
 
