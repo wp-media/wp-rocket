@@ -143,6 +143,11 @@ Step-by-step instructions the implementing agent must follow. Be specific: class
 
 ### Step 5 — Post to GitHub
 
+**Markdown formatting rules for GitHub comments:**
+- Use a single-quoted heredoc (`<<'EOF'`) — the shell will not interpret any special characters inside it.
+- Never escape backticks with a backslash (`` \` `` is wrong). Write them as plain `` ` `` characters.
+- Never use `#N` (e.g. `#1`, `#2`) for numbered list items — GitHub interprets these as issue/PR links. Use `1.`, `2.` instead.
+
 Post the grooming plan as a comment on issue #N (update the comment if one already exists for this plan version):
 
 ```bash
