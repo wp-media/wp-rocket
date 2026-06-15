@@ -5715,7 +5715,7 @@ msgstr "Votre licence WPRocket a expiré"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
 msgid "Please renew it to keep using RocketCDN."
-msgstr "Veuillez la renouveler pour continuer à utiliser RocketCDN."
+msgstr "Veuillez renouveler pour continuer à utiliser RocketCDN."
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
 msgid "Renew Licence"
