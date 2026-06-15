@@ -5307,8 +5307,8 @@ msgstr "NOUVEAU !"
 #: views/settings/page-sections/dashboard.php:50
 msgid "You can now enable RocketCDN for free on up to 3 pages of your choice!"
 msgstr ""
-"Vous pouvez désormais activer RocketCDN gratuitement sur un maximum de 3 "
-"pages de votre choix !"
+"Vous pouvez désormais activer RocketCDN gratuitement sur 3 pages de votre "
+"choix !"
 
 #: views/settings/page-sections/dashboard.php:51
 msgid ""
