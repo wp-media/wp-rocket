@@ -48,7 +48,7 @@
 	&--new {
 		background: #0d5ec3;
 		color: $cWhite;
-		padding: 2px 4px;
+		padding: 4px 2px;
 		border-radius: 4px;
 		@include font-size(9, 12);
 		font-weight: 600;
@@ -223,7 +223,7 @@
 
 	&__details {
 		@include font-size(14, 18);
-		color: #464f59;
+		color: #666;
 		margin: 0;
 	}
 
@@ -542,7 +542,7 @@
 
 	&__description {
 		@include font-size(14, 18);
-		color: #464f59;
+		color: #666;
 		margin: 0;
 	}
 

@@ -4615,7 +4615,7 @@ div.wpr-tutorial-item {
 .wpr-badge--new {
   background: #0d5ec3;
   color: #fff;
-  padding: 2px 4px;
+  padding: 4px 2px;
   border-radius: 4px;
   font-size: 0.5625rem;
   line-height: 1.3333333333;
@@ -4771,7 +4771,7 @@ div.wpr-tutorial-item {
 .wpr-cdn-indicator__details {
   font-size: 0.875rem;
   line-height: 1.2857142857;
-  color: #464f59;
+  color: #666;
   margin: 0;
 }
 .wpr-cdn-indicator .wpr-icon-orange-loader:before {
@@ -5049,7 +5049,7 @@ div.wpr-tutorial-item {
 .wpr-cdn-purge__description {
   font-size: 0.875rem;
   line-height: 1.2857142857;
-  color: #464f59;
+  color: #666;
   margin: 0;
 }
 .wpr-cdn-purge__learn-more {
