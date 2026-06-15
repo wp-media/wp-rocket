@@ -126,5 +126,38 @@ return [
 				'new_value'      => [],
 			],
 		],
+
+		'testShouldMergeArrayOptionByDefault' => [
+			'config'   => [
+				'has_permission' => true,
+				'input'          => [
+					'option_name'  => 'cdn_cnames',
+					'option_value' => [ 'cdn2.example.com' ],
+				],
+			],
+			'expected' => [
+				'is_error'       => false,
+				'success'        => true,
+				'previous_value' => [],
+				'new_value'      => [ 'cdn2.example.com' ],
+			],
+		],
+
+		'testShouldReplaceArrayOptionWhenReplaceModeRequested' => [
+			'config'   => [
+				'has_permission' => true,
+				'input'          => [
+					'option_name'  => 'cdn_cnames',
+					'option_value' => [ 'cdn2.example.com' ],
+					'update_mode'  => 'replace',
+				],
+			],
+			'expected' => [
+				'is_error'       => false,
+				'success'        => true,
+				'previous_value' => [],
+				'new_value'      => [ 'cdn2.example.com' ],
+			],
+		],
 	],
 ];
