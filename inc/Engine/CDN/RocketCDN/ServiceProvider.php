@@ -145,6 +145,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_api_client',
 					'user_client',
 					new StringArgument( __DIR__ . '/views' ),
+					'cdn_context'
 				]
 			);
 

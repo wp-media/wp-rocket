@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -27,17 +28,26 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	private $user_client;
 
 	/**
+	 * CDN context instance
+	 * 
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient  $api_client    RocketCDN API Client instance.
 	 * @param UserClient $user_client   UserClient instance.
 	 * @param string     $template_path Path to the templates.
+	 * @param Context    $context   CDN context instance.
 	 */
-	public function __construct( APIClient $api_client, $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, $user_client, $template_path, Context $context ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->user_client = $user_client;
+		$this->context     = $context;
 	}
 
 	/**
@@ -239,6 +249,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		if ( ! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) ) ) {
+			return true;
+		}
+
+		if( in_array( $this->context->get_driver(), [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ], true ) ) {
 			return true;
 		}
 
