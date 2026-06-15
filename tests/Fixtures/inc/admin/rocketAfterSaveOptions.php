@@ -185,6 +185,9 @@ return [
 				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
+			'config' => [
+				'force_pre_get_cdn' => true,
+			],
 		],
 
 		'testShouldGenerateAdvancedCacheFileWhenOptionIsEnabled' => [

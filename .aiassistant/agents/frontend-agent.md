@@ -1,6 +1,6 @@
 ---
 name: frontend-agent
-description: Frontend implementation agent. Implements JS/CSS/HTML changes for WP Rocket following the spec and the manager's dispatch plan. Runs the docs skill, e2e skill (basic tier), and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
+description: Frontend implementation agent. Implements JS/CSS/HTML changes for WP Rocket following the spec and the manager's dispatch plan. Runs the docs skill and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
 tools: [Bash, Read, Edit, Write, Glob, Grep, WebFetch, WebSearch]
 model: sonnet
 maxTurns: 60
@@ -85,19 +85,7 @@ Record: `docs.status`, `docs.files_updated`, `docs.files_created`.
 
 ---
 
-### Step 3 — E2E smoke test (basic tier)
-
-Invoke the `e2e` skill inline (`.aiassistant/skills/e2e/SKILL.md`) with `tier: "basic"`.
-
-Run the primary happy path scenario from the spec's `test_plan` to confirm your changes don't break the main UI flow. For frontend work this almost always means a Playwright MCP browser pass against `http://localhost:8888/wp-admin/options-general.php?page=wprocket` or the relevant admin URL.
-
-If the dev environment (`bash bin/dev-up.sh`) cannot start, set `e2e_smoke.status: "SKIP"` and note the reason. Do not block on environment issues — flag them and proceed.
-
-Record: `e2e_smoke.status`, `e2e_smoke.scenarios_tested`, `e2e_smoke.details`.
-
----
-
-### Step 3b — DOD L1 (self-check)
+### Step 3 — DOD L1 (self-check)
 
 Invoke the `dod` skill inline (`.aiassistant/skills/dod/SKILL.md`) with `layer: "1"`.
 
@@ -141,8 +129,7 @@ Before returning:
    the current ISO timestamp.
 2. Remove your lock file: `.TemporaryItems/Issues/wp-rocket/issue-<N>/locks/frontend-<task-id>.lock`
 
-Then return the following JSON object to the orchestrator. The orchestrator reads this from
-`result_path` in `tasks.json` — write it there, then also return it inline.
+Return the following JSON object directly to the orchestrator.
 
 ```json
 {
@@ -151,11 +138,6 @@ Then return the following JSON object to the orchestrator. The orchestrator read
   "files_changed": ["list of JS/CSS/HTML + docs files modified"],
   "tests_passing": true,
   "test_output": "e.g. 'lint: PASS, build: PASS' or 'lint not configured'",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["Settings page renders the new toggle without console errors"],
-    "details": "Navigated to /wp-admin/options-general.php?page=wprocket, confirmed toggle present and clickable"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": [],

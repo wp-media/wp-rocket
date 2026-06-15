@@ -17,8 +17,14 @@ Before testing anything, the local WordPress environment at `http://localhost:88
 **Always run these two commands unconditionally — do not check reachability first, do not skip this step because the environment appears to be down:**
 
 ```bash
-# 1. Check out the PR branch
-gh pr checkout <PR number>
+# 1. Resolve the PR number from the issue number, then check out the branch
+ISSUE_NUMBER=<N>  # the GitHub issue number — the primary identifier throughout
+PR_NUMBER=$(gh issue view $ISSUE_NUMBER --repo wp-media/wp-rocket --json pullRequests --jq '.pullRequests[0].number // empty')
+if [ -z "$PR_NUMBER" ]; then
+  echo "ERROR: No PR linked to issue #$ISSUE_NUMBER"
+  exit 1
+fi
+gh pr checkout $PR_NUMBER
 
 # 2. Boot (or restart) the environment — always run this, whether or not it appears to be running already
 bash bin/dev-up.sh
@@ -104,16 +110,16 @@ Strategy B. The only valid reason to skip it is a documented boot failure from S
 Delegate to the `e2e-qa-tester` agent. Provide:
 - The acceptance criteria and "How to test" steps from the PR
 - The list of changed frontend files
-- The PR number (needed for screenshot publishing)
+- The issue number (the primary identifier — PR number is derived from it)
 
 The `e2e-qa-tester` agent will:
 1. Walk through the UI flows using Playwright MCP
-2. Write temporary Playwright specs (`.e2e-temp/`) for each acceptance criterion
+2. Write temporary Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` for each acceptance criterion
 3. Run those specs against the local environment
-4. Capture screenshots, publish them via the commit-SHA method, then remove all temp files
+4. Capture screenshots, publish them to a public GitHub Gist
 5. Return per-criterion results and permanent screenshot URLs
 
-Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and removed after the run.
+Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and kept under `.TemporaryItems/` for debugging (never committed to this repository).
 
 Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or `localhost:8888` is still unreachable after the boot script finishes. Document the exact failure.
 
@@ -153,9 +159,19 @@ Before running strategies, **sanity check your selection:**
 - Did you select Strategy B? If the issue mentions visual/UI keywords or the PR touches frontend files, this should be true.
 - If you did NOT select Strategy B but the PR clearly involves UI changes (issue title says "display", "add button", "visual", etc.), **pause and re-select Strategy B**.
 
-Run each selected strategy. For every acceptance criterion:
+Before running strategies, **sanity check your selection:**
+- Did you select Strategy B? If the issue mentions visual/UI keywords or the PR touches frontend files, this should be true.
+- If you did NOT select Strategy B but the PR clearly involves UI changes (issue title says "display", "add button", "visual", etc.), **pause and re-select Strategy B**.
+
+**Run each selected strategy:**
+
+- **Strategy A (API)**: run `curl` commands, WP-CLI commands, or test scripts to validate backend behavior.
+- **Strategy B (Browser)**: delegate to `e2e-qa-tester`. Wait for it to return results including per-criterion verdicts, screenshots, and Playwright specs. Incorporate these results into your report.
+- **Strategy C (Analysis)**: read changed files and tests; run test suites if needed.
+
+For every acceptance criterion:
 - State which strategy you used
-- State what you did (command run, URL navigated, test read)
+- State what you did (command run, URL navigated, test read, or delegated to e2e-qa-tester)
 - State what you observed
 - Conclude PASS, FAIL, or PARTIAL with a one-line reason
 
@@ -190,17 +206,31 @@ Produce the test report in the format below. Be specific — "tested locally" is
 After generating the report, post it as a PR comment so it is immediately visible to all reviewers.
 **Post the comment regardless of the overall result** (PASS, FAIL, or PARTIAL).
 
-Emit an event to handle:
-```json
-{
-  "type": "github_operation",
-  "operation": "post_comment_to_pr",
-  "issue_id": "<N>",
-  "pr_number": <PR_NUMBER>,
-  "data": {
-    "body": "[full QA report content as markdown]"
-  }
-}
+**Update mode (avoid duplicate / re-run comments):** Before posting, check whether a QA comment already exists on this PR from a previous run:
+
+```bash
+EXISTING=$(gh pr view $PR_NUMBER --repo wp-media/wp-rocket --json comments --jq '[.comments[] | select(.body | contains("<!-- ai-pipeline:qa-report -->"))] | last | .url // empty')
+```
+
+If an existing QA comment is found, edit it in place:
+
+```bash
+COMMENT_ID="${EXISTING##*/}"
+gh api repos/wp-media/wp-rocket/issues/comments/$COMMENT_ID \
+  --method PATCH \
+  -f body="$(cat <<'REPORT'
+[full report content]
+REPORT
+)"
+```
+
+Otherwise, post a new comment:
+
+```bash
+gh pr comment $PR_NUMBER --body "$(cat <<'REPORT'
+[full report content]
+REPORT
+)"
 ```
 
 **For any PR that touches frontend files (JS, CSS, HTML, Twig templates): screenshots are
@@ -209,22 +239,13 @@ URLs — always include them in the `### Screenshots` section. If no screenshots
 frontend PR, the report is incomplete; state the reason explicitly (e.g. "boot failed —
 exit 1, see Environment Boot table").
 
-Emit the event to `.../orchestrator-events.jsonl`. 
-
-Post the comment using:
-
-```bash
-gh pr comment <PR_number> --body "$(cat <<'REPORT'
-[full report content]
-REPORT
-)"
-```
-
 ---
 
 ## Output format
 
 Keep the PR comment short. Reviewers can see the diff and CI output themselves — only surface what they cannot see.
+
+**Required:** Every report (PASS, FAIL, or PARTIAL) must end with the line `<!-- ai-pipeline:qa-report -->` — this is the update-mode marker that lets qa-engineer find and update prior reports on re-runs. Do not remove or alter this line.
 
 **If overall is PASS:**
 ```
@@ -237,6 +258,8 @@ Keep the PR comment short. Reviewers can see the diff and CI output themselves �
 |---|---|---|
 | [criterion 1] | API / Browser / Analysis | ✅ |
 | [criterion 2] | API / Browser / Analysis | ✅ |
+
+<!-- ai-pipeline:qa-report -->
 ```
 
 **If overall is FAIL or PARTIAL:**
@@ -253,9 +276,26 @@ Keep the PR comment short. Reviewers can see the diff and CI output themselves �
 
 **Blockers:**
 - [criterion]: [what to fix]
+
+<!-- ai-pipeline:qa-report -->
 ```
 
-**Screenshots** (frontend PRs only — omit for backend-only): include only if Strategy B ran. One screenshot per key step, inline.
+**Screenshots** (frontend PRs only — omit for backend-only): include only if Strategy B ran. One screenshot per key step, inline. Format as a table with step descriptions and gist raw image URLs (received from e2e-qa-tester).
+
+**Playwright Specs** (when Strategy B ran and specs were written): include the full source of each spec under a collapsible block so it doesn't dominate the comment. Specs content comes from e2e-qa-tester's `specs_content` return field.
+
+```
+### Playwright Specs
+
+<details>
+<summary>View spec source (feature-criterion.spec.js)</summary>
+
+```js
+[full spec source from e2e-qa-tester]
+```
+
+</details>
+```
 
 No strategy selection table, no smoke test table, no recommendations prose — those go in the JSON return object only.
 
@@ -281,6 +321,7 @@ After producing the report, return the following JSON object to the orchestrator
   ],
   "tests_authored": ["list of new test files written and committed, or empty array"],
   "pr_comment_url": "URL of the posted QA report comment",
+  "existing_comment_url": "URL of a pre-existing QA Report comment found before posting (update mode), or empty string",
   "blockers": ["criterion: what failed — what to fix"],
   "recommendations": [
     {

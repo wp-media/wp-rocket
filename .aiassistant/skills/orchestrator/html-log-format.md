@@ -339,7 +339,6 @@ trivial.
 - Implementation decisions: key choices made during implementation
 - Files modified: list with one-line description each
 - docs result: DONE/SKIP + files
-- e2e_smoke result: PASS/FAIL/SKIP + scenarios
 - DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 
