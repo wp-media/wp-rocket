@@ -29,7 +29,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 
 	/**
 	 * CDN context instance
-	 * 
+	 *
 	 * @var Context
 	 */
 	private $context;
@@ -252,7 +252,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return true;
 		}
 
-		if( in_array( $this->context->get_driver(), [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ], true ) ) {
+		if ( in_array( $this->context->get_driver(), [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ], true ) ) {
 			return true;
 		}
 
