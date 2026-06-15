@@ -1,10 +1,13 @@
 <?php
 
+$modified_ts      = (int) strtotime( '2026-03-20T10:00:00Z' );
+$modified_str     = gmdate( 'Y-m-d\TH:i:s\Z', $modified_ts );
+
 $desktop_row = new stdClass();
 $desktop_row->url         = 'https://example.com/page';
 $desktop_row->score       = 85;
 $desktop_row->status      = 'completed';
-$desktop_row->modified    = '2026-03-20 10:00:00';
+$desktop_row->modified    = $modified_ts;
 $desktop_row->report_url  = 'https://gtmetrix.com/reports/page-desktop';
 $desktop_row->metric_data = null;
 $desktop_row->is_mobile   = false;
@@ -14,9 +17,9 @@ $mobile_row = new stdClass();
 $mobile_row->url         = 'https://example.com/page';
 $mobile_row->score       = 75;
 $mobile_row->status      = 'completed';
-$mobile_row->modified    = '2026-03-20 10:00:00';
+$mobile_row->modified    = $modified_ts;
 $mobile_row->report_url  = 'https://gtmetrix.com/reports/page-mobile';
-$mobile_row->metric_data = '{"lcp":1200}';
+$mobile_row->metric_data = [ 'lcp' => 1200 ];
 $mobile_row->is_mobile   = true;
 $mobile_row->title       = 'Page Title';
 
@@ -37,7 +40,7 @@ return [
 						'url'         => 'https://example.com/page',
 						'score'       => 85,
 						'status'      => 'completed',
-						'modified'    => '2026-03-20 10:00:00',
+						'modified'    => $modified_str,
 						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
 						'metric_data' => null,
 						'is_mobile'   => false,
@@ -63,7 +66,7 @@ return [
 						'url'         => 'https://example.com/page',
 						'score'       => 85,
 						'status'      => 'completed',
-						'modified'    => '2026-03-20 10:00:00',
+						'modified'    => $modified_str,
 						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
 						'metric_data' => null,
 						'is_mobile'   => false,
@@ -73,9 +76,9 @@ return [
 						'url'         => 'https://example.com/page',
 						'score'       => 75,
 						'status'      => 'completed',
-						'modified'    => '2026-03-20 10:00:00',
+						'modified'    => $modified_str,
 						'report_url'  => 'https://gtmetrix.com/reports/page-mobile',
-						'metric_data' => '{"lcp":1200}',
+						'metric_data' => [ 'lcp' => 1200 ],
 						'is_mobile'   => true,
 						'title'       => 'Page Title',
 					],

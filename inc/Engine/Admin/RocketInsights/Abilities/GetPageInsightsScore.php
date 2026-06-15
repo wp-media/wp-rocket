@@ -82,18 +82,16 @@ class GetPageInsightsScore implements AbilitiesInterface {
 										'type' => 'string',
 									],
 									'modified'    => [
-										'type'   => 'string',
-										'format' => 'date-time',
+										'type' => [ 'string', 'null' ],
 									],
 									'score'       => [
 										'type' => [ 'number', 'null' ],
 									],
 									'report_url'  => [
-										'type'   => [ 'string', 'null' ],
-										'format' => 'uri',
+										'type' => [ 'string', 'null' ],
 									],
 									'metric_data' => [
-										'type' => [ 'string', 'null' ],
+										'type' => [ 'object', 'null' ],
 									],
 								],
 							],
@@ -152,8 +150,8 @@ class GetPageInsightsScore implements AbilitiesInterface {
 				'url'         => $row->url,
 				'score'       => $row->score,
 				'status'      => $row->status,
-				'modified'    => $row->modified,
-				'report_url'  => $row->report_url,
+				'modified'    => $row->modified ? gmdate( 'Y-m-d\TH:i:s\Z', $row->modified ) : null,
+				'report_url'  => ! empty( $row->report_url ) ? $row->report_url : null,
 				'metric_data' => $row->metric_data,
 				'is_mobile'   => $row->is_mobile,
 				'title'       => $row->title,
