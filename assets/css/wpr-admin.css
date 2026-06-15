@@ -746,6 +746,7 @@ a:focus, button:focus {
   background: none;
   width: 0;
   height: 0;
+  margin-right: 0;
 }
 .wpr-Page#dashboard .wpr-infoAccount.wpr-isInvalid {
   color: #D60E5B;

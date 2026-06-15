@@ -5,12 +5,10 @@
  * @since 3.5
  *
  * @param array $data {
- *    @type bool   $is_live_site    Identifies if the current website is a live or local/staging one
+ *    @type bool   $is_live_site    Identifies if the current website is a live or local/staging one.
  *    @type string $container_class Flex container CSS class.
- *    @type string $label           Content label.
- *    @type string $status_class    CSS Class to display the status.
- *    @type string $status_text     Text to display the subscription status.
  *    @type bool   $is_active       Boolean identifying the activation status.
+ *    @type array  $items           List of plan info rows, each with 'label', 'value', and 'class'.
  * }
  */
 
@@ -25,7 +23,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 	<?php else : ?>
 	<div class="wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
 		<div class="wpr-dashboard-plans">
-		<?php foreach ( $data['items'] as $rocket_plan_item ) : ?>
+		<?php foreach ( $data['items'] ?? [] as $rocket_plan_item ) : ?>
 		<div>
 			<span class="wpr-title3"><?php echo esc_html( $rocket_plan_item['label'] ); ?></span>
 			<span class="wpr-infoAccount<?php echo esc_attr( $rocket_plan_item['class'] ); ?>"><?php echo esc_html( $rocket_plan_item['value'] ); ?></span>

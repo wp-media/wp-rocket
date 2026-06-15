@@ -34,10 +34,14 @@ return [
 			'unit'        => [
 				'is_live_site'    => false,
 				'container_class' => ' wpr-flex--egal',
-				'label'           => '',
-				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No RocketCDN Pro Subscription',
 				'is_active'       => false,
+				'items'           => [
+					[
+						'label' => '',
+						'value' => 'No RocketCDN Pro Subscription',
+						'class' => ' wpr-isInvalid',
+					],
+				],
 			],
 			'integration' => '<div class="wpr-optionHeader">
 					<h3 class="wpr-title2">RocketCDN</h3>
@@ -67,19 +71,25 @@ return [
 			'unit'        => [
 				'is_live_site'    => true,
 				'container_class' => ' wpr-flex--egal',
-				'label'           => '',
-				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No RocketCDN Pro Subscription',
 				'is_active'       => false,
+				'items'           => [
+					[
+						'label' => '',
+						'value' => 'No RocketCDN Pro Subscription',
+						'class' => ' wpr-isInvalid',
+					],
+				],
 			],
 			'integration' => '<div class="wpr-optionHeader">
 					<h3 class="wpr-title2">RocketCDN</h3>
 				</div>
 				<div class="wpr-field wpr-field-account">
 					<div class="wpr-flex wpr-flex--egal">
-						<div>
-							<span class="wpr-title3"></span>
-							<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
+						<div class="wpr-dashboard-plans">
+							<div>
+								<span class="wpr-title3"></span>
+								<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
+							</div>
 						</div>
 						<div>
 							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
@@ -108,19 +118,25 @@ return [
 			'unit'        => [
 				'is_live_site'    => true,
 				'container_class' => ' wpr-flex--egal',
-				'label'           => '',
-				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No RocketCDN Pro Subscription',
 				'is_active'       => false,
+				'items'           => [
+					[
+						'label' => '',
+						'value' => 'No RocketCDN Pro Subscription',
+						'class' => ' wpr-isInvalid',
+					],
+				],
 			],
 			'integration' => '<div class="wpr-optionHeader">
 					<h3 class="wpr-title2">RocketCDN</h3>
 				</div>
 				<div class="wpr-field wpr-field-account">
 					<div class="wpr-flex wpr-flex--egal">
-						<div>
-							<span class="wpr-title3"></span>
-							<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
+						<div class="wpr-dashboard-plans">
+							<div>
+								<span class="wpr-title3"></span>
+								<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
+							</div>
 						</div>
 						<div>
 							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
@@ -149,10 +165,19 @@ return [
 			'unit'        => [
 				'is_live_site'    => true,
 				'container_class' => '',
-				'label'           => 'Plan RocketCDN Pro',
-				'status_class'    => ' wpr-isValid',
-				'status_text'     => 'Next Billing Date 2020-01-01',
 				'is_active'       => true,
+				'items'           => [
+					[
+						'label' => 'Plan',
+						'value' => 'RocketCDN Pro',
+						'class' => ' wpr-isValid wpr-no-icon',
+					],
+					[
+						'label' => 'Next Billing Date',
+						'value' => '2020-01-01',
+						'class' => ' wpr-isValid',
+					],
+				],
 			],
 			'integration' => <<<HTML
 <div class="wpr-optionHeader">
@@ -160,9 +185,15 @@ return [
 </div>
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex">
-		<div>
-			<span class="wpr-title3">Plan RocketCDN Pro</span>
-			<span class="wpr-infoAccount wpr-isValid">Next Billing Date 2020-01-01</span>
+		<div class="wpr-dashboard-plans">
+			<div>
+				<span class="wpr-title3">Plan</span>
+				<span class="wpr-infoAccount wpr-isValid wpr-no-icon">RocketCDN Pro</span>
+			</div>
+			<div>
+				<span class="wpr-title3">Next Billing Date</span>
+				<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
+			</div>
 		</div>
 	</div>
 </div>
