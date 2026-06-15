@@ -84,15 +84,15 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$status_text     = '';
 		$is_active       = false;
 
-		if ( 'running' === $subscription_data['subscription_status'] ) {
-			$label        = __( 'Next Billing Date', 'rocket' );
+		if ( 'running' === $subscription_data['subscription_status'] && 'paid' === $subscription_data['plan_type'] ) {
+			$label        = __( 'Plan RocketCDN Pro', 'rocket' );
 			$status_class = ' wpr-isValid';
-			$status_text  = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
+			$status_text  = __( 'Next Billing Date', 'rocket' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
 			$is_active    = true;
 		} else {
 			$status_class    = ' wpr-isInvalid';
 			$container_class = ' wpr-flex--egal';
-			$status_text     = __( 'No Subscription', 'rocket' );
+			$status_text     = __( 'No RocketCDN Pro Subscription', 'rocket' );
 		}
 
 		$data = [

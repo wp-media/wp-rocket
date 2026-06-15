@@ -2,31 +2,21 @@
 
 return [
 
-	'testShouldDisplayNothingWhenNotLiveSite' => [
+	'testShouldReturnEarlyWhenWhiteLabelAccount' => [
 		'rocketcdn_status' => [
 			'is_active'                     => false,
 			'subscription_status'           => 'cancelled',
 			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'free',
 		],
 		'expected'         => [
-			'unit'        => [
-				'is_live_site'    => false,
-				'container_class' => ' wpr-flex--egal',
-				'label'           => '',
-				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No Subscription',
-				'is_active'       => false,
-			],
-			'integration' => '<div class="wpr-optionHeader">
-					<h3 class="wpr-title2">RocketCDN</h3>
-				</div>
-				<div class="wpr-field wpr-field-account">
-					<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
-				</div>',
+			'unit'        => [],
+			'integration' => '',
 		],
 
 		'config' => [
 			'white_label' => true,
+			'is_live_site' => false,
 			'home_url'    => 'http://localhost',
 			'get_option'  => '',
 			'date_i18n'   => '',
@@ -38,6 +28,7 @@ return [
 			'is_active'                     => false,
 			'subscription_status'           => 'cancelled',
 			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'free',
 		],
 		'expected' => [
 			'unit'        => [
@@ -45,7 +36,7 @@ return [
 				'container_class' => ' wpr-flex--egal',
 				'label'           => '',
 				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No Subscription',
+				'status_text'     => 'No RocketCDN Pro Subscription',
 				'is_active'       => false,
 			],
 			'integration' => '<div class="wpr-optionHeader">
@@ -57,6 +48,7 @@ return [
 		],
 
 		'config' => [
+			'is_live_site' => false,
 			'home_url'   => 'http://localhost',
 			'get_option' => '',
 			'date_i18n'  => '',
@@ -68,6 +60,7 @@ return [
 			'is_active'                     => false,
 			'subscription_status'           => 'cancelled',
 			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'free',
 		],
 
 		'expected' => [
@@ -76,7 +69,7 @@ return [
 				'container_class' => ' wpr-flex--egal',
 				'label'           => '',
 				'status_class'    => ' wpr-isInvalid',
-				'status_text'     => 'No Subscription',
+				'status_text'     => 'No RocketCDN Pro Subscription',
 				'is_active'       => false,
 			],
 			'integration' => '<div class="wpr-optionHeader">
@@ -86,37 +79,79 @@ return [
 					<div class="wpr-flex wpr-flex--egal">
 						<div>
 							<span class="wpr-title3"></span>
-							<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
+							<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
 						</div>
 						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN</a>
+							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
 						</div>
 					</div>
 				</div>',
 		],
 
 		'config' => [
+			'is_live_site' => true,
 			'home_url'   => 'http://example.org',
 			'get_option' => '',
 			'date_i18n'  => '',
 		],
 	],
 
-	'testShouldOutputSubscriptionDataWhenActive' => [
+	'testShouldRenderNoSubscriptionHTMLWhenFreeRunningPlan' => [
 		'rocketcdn_status' => [
 			'is_active'                     => true,
 			'subscription_status'           => 'running',
 			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'free',
 		],
 
 		'expected' => [
+			'unit'        => [
+				'is_live_site'    => true,
+				'container_class' => ' wpr-flex--egal',
+				'label'           => '',
+				'status_class'    => ' wpr-isInvalid',
+				'status_text'     => 'No RocketCDN Pro Subscription',
+				'is_active'       => false,
+			],
+			'integration' => '<div class="wpr-optionHeader">
+					<h3 class="wpr-title2">RocketCDN</h3>
+				</div>
+				<div class="wpr-field wpr-field-account">
+					<div class="wpr-flex wpr-flex--egal">
+						<div>
+							<span class="wpr-title3"></span>
+							<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
+						</div>
+						<div>
+							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
+						</div>
+					</div>
+				</div>',
+		],
 
+		'config' => [
+			'is_live_site' => true,
+			'home_url'   => 'http://example.org',
+			'get_option' => '',
+			'date_i18n'  => '',
+		],
+	],
+
+	'testShouldOutputSubscriptionDataWhenPaidPlanActive' => [
+		'rocketcdn_status' => [
+			'is_active'                     => true,
+			'subscription_status'           => 'running',
+			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'paid',
+		],
+
+		'expected' => [
 			'unit'        => [
 				'is_live_site'    => true,
 				'container_class' => '',
-				'label'           => 'Next Billing Date',
+				'label'           => 'Plan RocketCDN Pro',
 				'status_class'    => ' wpr-isValid',
-				'status_text'     => '2020-01-01',
+				'status_text'     => 'Next Billing Date 2020-01-01',
 				'is_active'       => true,
 			],
 			'integration' => <<<HTML
@@ -126,8 +161,8 @@ return [
 <div class="wpr-field wpr-field-account">
 	<div class="wpr-flex">
 		<div>
-			<span class="wpr-title3">Next Billing Date</span>
-			<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
+			<span class="wpr-title3">Plan RocketCDN Pro</span>
+			<span class="wpr-infoAccount wpr-isValid">Next Billing Date 2020-01-01</span>
 		</div>
 	</div>
 </div>
@@ -136,6 +171,7 @@ HTML
 		],
 
 		'config' => [
+			'is_live_site' => true,
 			'home_url'   => 'http://example.org',
 			'get_option' => 'Y-m-d',
 			'date_i18n'  => '2020-01-01',
