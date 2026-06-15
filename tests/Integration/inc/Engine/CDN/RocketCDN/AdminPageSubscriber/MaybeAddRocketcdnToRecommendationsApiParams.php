@@ -45,13 +45,14 @@ class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
 		}
 
 		if ( isset( $config['subscription_status'] ) ) {
-			set_transient(
-				'rocketcdn_status',
-				[
-					'subscription_status' => $config['subscription_status'],
-				],
-				HOUR_IN_SECONDS
-			);
+			$transient_data = [
+				'subscription_status' => $config['subscription_status'],
+			];
+
+			if( isset( $config['plan_type'] ) ) {
+				$transient_data['plan_type'] = $config['plan_type'];
+			}
+			set_transient( 'rocketcdn_status', $transient_data, HOUR_IN_SECONDS );
 		}
 
 		$result = wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $config['params'] );

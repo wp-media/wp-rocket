@@ -256,10 +256,6 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return true;
 		}
 
-		if ( in_array( 'cdn', $params['enabled_options'], true ) ) {
-			return true;
-		}
-
 		return false;
 	}
 
