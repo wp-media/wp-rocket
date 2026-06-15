@@ -3228,7 +3228,7 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:718
 msgid "Serving files from 100+ edge locations"
-msgstr "Diffusion de fichiers depuis plus de 100 sites périphériques"
+msgstr "Diffusion de fichiers depuis 100+ emplacements"
 
 #: inc/Engine/CDN/Render/Controller.php:719
 msgid "RocketCDN is active on your website"
