@@ -109,6 +109,17 @@
 			} );
 		}
 
+		// Auto-expand the purchasing banner when navigating from the dashboard "Get RocketCDN" button.
+		const dashboardCTABtn = document.getElementById( 'wpr-rocketcdn-dashboard-btn' );
+		if ( dashboardCTABtn ) {
+			dashboardCTABtn.addEventListener( 'click', () => {
+				if ( ! bigCTA || ! bigCTA.classList.contains( 'wpr-rocketcdn-cta--collapsed' ) ) {
+					return;
+				}
+				toggleBigCTAState();
+			} );
+		}
+
 		// Track banner view on page load if banner is visible and user is on CDN tab.
 		maybeTrackBannerView();
 
@@ -438,7 +449,7 @@
 		}
 
 		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
-		
+
 		if ( ! activeTab ) {
 			return;
 		}
@@ -447,7 +458,7 @@
 
 		if( ! cdnMode ) {
 			return;
-		} 
+		}
 
 		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
 			return;

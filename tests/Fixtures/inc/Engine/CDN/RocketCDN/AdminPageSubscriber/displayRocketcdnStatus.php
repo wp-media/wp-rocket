@@ -89,7 +89,7 @@ return [
 							<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
 						</div>
 						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN</a>
+							<a href="#page_cdn" id="wpr-rocketcdn-dashboard-btn" class="wpr-button">Get RocketCDN</a>
 						</div>
 					</div>
 				</div>',
