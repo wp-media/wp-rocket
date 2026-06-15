@@ -5317,11 +5317,10 @@ msgid ""
 "Delivery tab, choose up to 3 pages, and add them to RocketCDN to improve "
 "their performance globally."
 msgstr ""
-"RocketCDN diffuse votre contenu à partir de serveurs situés à proximité de "
-"vos visiteurs, ce qui permet à vos pages les plus consultées de se charger "
-"plus rapidement partout dans le monde. Rendez-vous dans l'onglet « Diffusion"
-" de contenu », sélectionnez jusqu'à 3 pages et ajoutez-les à RocketCDN pour "
-"améliorer leurs performances à l'échelle mondiale."
+"RocketCDN diffuse votre contenu à proximité de vos visiteurs, ce qui aide "
+"vos pages les plus consultées à être plus rapides, partout dans le monde. "
+"Rendez-vous dans l'onglet Diffusion de contenu, sélectionnez jusqu'à 3 pages"
+" et ajoutez-les à RocketCDN pour améliorer leurs performances mondialement."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/page-sections/dashboard.php:79
