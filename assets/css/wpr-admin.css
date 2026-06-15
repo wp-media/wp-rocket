@@ -707,6 +707,10 @@ a:focus, button:focus {
 .wpr-Page#dashboard .wpr-field-account {
   padding-bottom: 0;
 }
+.wpr-Page#dashboard .wpr-dashboard-plans > div {
+  margin-bottom: 10px;
+  text-align: left;
+}
 .wpr-Page#dashboard .wpr-infoAccount {
   font-weight: bold;
   margin-left: 8px;
@@ -736,6 +740,13 @@ a:focus, button:focus {
   speak: none;
   background: #3ECE9D;
   top: -1px;
+}
+.wpr-Page#dashboard .wpr-infoAccount.wpr-isValid.wpr-no-icon:before {
+  content: "";
+  background: none;
+  width: 0;
+  height: 0;
+  margin-right: 0;
 }
 .wpr-Page#dashboard .wpr-infoAccount.wpr-isInvalid {
   color: #D60E5B;
