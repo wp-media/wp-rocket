@@ -6,7 +6,7 @@ description: >
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
   challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
-  docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
+  docs, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
 ---
 
@@ -176,8 +176,6 @@ issue-<N>/
 
 **Parallel mode:** if `backend_api` is not yet available when frontend starts, frontend proceeds from spec and notes "API contract not available — using spec".
 
----
-
 ## JSON return contracts
 
 Every agent returns a typed JSON object. Routing logic runs mechanically on the structured
@@ -222,11 +220,6 @@ fields — prose is for human readability only.
   "files_changed": ["string"],
   "tests_passing": true,
   "test_output": "string",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["string"],
-    "details": "string"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": ["string"],
@@ -500,8 +493,8 @@ parallel: YES | NO" (with explicit reason if NO: overlapping files).
 
 ### Step 5 — Implementation
 
-Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (layer 1)
-inline before committing, then commits atomically.
+Each agent runs the `docs` skill and `dod` skill (layer 1) inline before committing,
+then commits atomically.
 
 Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
 `started_at`. If scopes are disjoint, create git worktrees:
@@ -1098,7 +1091,6 @@ trivial.
 - Implementation decisions: key choices made during implementation
 - Files modified: list with one-line description each
 - docs result: DONE/SKIP + files
-- e2e_smoke result: PASS/FAIL/SKIP + scenarios
 - DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 
