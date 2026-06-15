@@ -6,7 +6,7 @@ description: >
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
   challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
-  docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
+  docs, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
 ---
 
@@ -172,8 +172,6 @@ issue-<N>/
 
 - The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
----
-
 ## JSON return contracts
 
 Every agent returns a typed JSON object. Routing logic runs mechanically on the structured
@@ -222,11 +220,6 @@ fields — prose is for human readability only.
   "files_changed": ["string"],
   "tests_passing": true,
   "test_output": "string",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["string"],
-    "details": "string"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": ["string"],
@@ -495,8 +488,8 @@ parallel: YES | NO (reason: overlapping files | single domain)".
 
 ### Step 5 — Implementation
 
-Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (layer 1)
-inline before committing, then commits atomically.
+Each agent runs the `docs` skill and `dod` skill (layer 1) inline before committing,
+then commits atomically.
 
 Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
 `started_at`.
@@ -536,8 +529,7 @@ Do NOT create git worktrees. All agents work on the same branch.
 
 **Synthesis:** Read `tests_passing`, `dod_layer1.overall`, and `files_changed` directly from each agent's return JSON. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
-Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
-commit SHA.
+Log AGENT events after each with `docs` status, DOD L1 summary, and commit SHA.
 
 ---
 
