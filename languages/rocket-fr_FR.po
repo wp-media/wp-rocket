@@ -3371,9 +3371,9 @@ msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
 " homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
-"%1$sVous pouvez désormais utiliser la diffusion de contenu, optimisé par "
-"RocketCDN, pour accélérer le chargement de votre page d'accueil et de deux "
-"autres pages, sans frais supplémentaires.%2$s"
+"%1$sVous pouvez désormais utiliser la diffusion de contenu, optimisée par "
+"RocketCDN, pour accélérer votre page d'accueil et de deux autres pages, "
+"gratuitement.%2$s"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
 msgid "Dismiss"
