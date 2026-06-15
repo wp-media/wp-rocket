@@ -32,11 +32,15 @@ An ability must be associated to an ability category. If the category doesn't ex
 
 Make the ability available to the REST API and the MCP by adding meta.show_in_rest=true and meta.mcp.public=true when registering the ability, unless explicitly required otherwise.
 
+An example of an ability class can be found in the `/inc/Engine/Abilities/Options/GetOptions.php` file.
+
 # Testing
 
 ## Unit tests
 
 Test only the `execute()` method of the ability class, which contains the logic to perform the action associated with the ability. Mock any dependencies and assert that the method behaves as expected under different conditions.
+
+An example of unit tests for an ability class can be found in the `/tests/Unit/inc/Engine/Abilities/Options/GetOptions/ExecuteTest.php` file.
 
 ## Integration tests
 
@@ -45,3 +49,5 @@ Check for WordPress version compatibility, abilities are available starting Word
 Set up user to ensure ability permissions are correctly applied. Add scenario where user has the ability and another where they don't, and assert that the expected outcomes occur in both cases.
 
 Test ability execution output by getting the ability WP_Ability object using `wp_get_ability( $ability_name )` and calling the `execute()` method. Assert that the output is correct based on the input parameters and the expected behavior of the ability.
+
+An example of integration tests for an ability class can be found in the `/tests/Integration/inc/Engine/Abilities/Options/GetOptions/RegisterGetOptionsAbilityTest.php` file.
