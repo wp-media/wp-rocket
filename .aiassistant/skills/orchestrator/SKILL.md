@@ -6,7 +6,7 @@ description: >
   conversation context; spawns specialist agents (ticket-writer, grooming-agent,
   challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
-  docs, e2e, issue-workflow) inline. Routes based on structured JSON outputs from each
+  docs, issue-workflow) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
 ---
 
@@ -112,10 +112,7 @@ Maintain in your context tracking:
 - Escalation reason if stopped
 - Calibration mode chosen
 
-**Synthesis rule:** Read routing-relevant fields from each agent's `result_path` (in
-`tasks.json`) rather than holding full agent JSONs in this context. This keeps the
-orchestrator context lean across long pipeline runs. Full JSONs are written to the HTML log
-from the contract files.
+**Synthesis rule:** Read routing-relevant fields directly from each agent's return JSON. This keeps the orchestrator context lean across long pipeline runs. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
 ---
 
@@ -181,13 +178,11 @@ issue-<N>/
 Two separate files, two separate purposes:
 
 - **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent in Step 3c, before committing. The orchestrator reads this to share the actual API surface with frontend-agent.
-- **`contracts/backend-result.json`** — Full implementation result (`ticket_id`, `branch`, `files_changed`, `dod_layer1`, etc.). Written by backend-agent in Step 5. The orchestrator reads this for routing decisions. `result_path` in `tasks.json` points here.
+- **`backend_api` (return JSON field)** — API surface (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Returned by backend-agent in its JSON. The orchestrator extracts it and passes it explicitly in the frontend-agent dispatch plan (sequential mode only).
 
 **Sequential mode:** when backend finishes before frontend starts, the orchestrator reads `backend-api.json`, extracts `hooks`, `option_keys`, and `rest_endpoints`, and includes them explicitly in the frontend agent's dispatch plan. The frontend agent never reads the file itself.
 
 **Parallel mode:** the frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip.
-
----
 
 ## JSON return contracts
 
@@ -233,11 +228,6 @@ fields — prose is for human readability only.
   "files_changed": ["string"],
   "tests_passing": true,
   "test_output": "string",
-  "e2e_smoke": {
-    "status": "PASS|FAIL|SKIP",
-    "scenarios_tested": ["string"],
-    "details": "string"
-  },
   "docs": {
     "status": "DONE|SKIP",
     "files_updated": ["string"],
@@ -295,10 +285,10 @@ fields — prose is for human readability only.
 ### QA (`qa-engineer`)
 ```json
 {
-  "overall": "PASS|FAIL|PARTIAL",
+  "overall": "PASS|FAIL|PARTIAL|CANNOT_VERIFY",
   "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
   "pr_commented": true,
-  "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL", "evidence": "string" }],
+  "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL|CANNOT_VERIFY", "evidence": "string", "blocking_guard": "string" }],
   "smoke_tests": [{ "area": "string", "result": "PASS|FAIL", "evidence": "string" }],
   "tests_authored": ["string"],
   "pr_comment_url": "string",
@@ -306,6 +296,8 @@ fields — prose is for human readability only.
   "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
 }
 ```
+
+`overall` is `CANNOT_VERIFY` only when *every* criterion is `CANNOT_VERIFY` (all acceptance criteria sat behind a license/environment guard that could not be satisfied locally); if some pass and some are unverifiable, `overall` is `PARTIAL`. `blocking_guard` names the guard that prevented verification (function + `file:line`), or is an empty string when not applicable — it mirrors the field `qa-engineer` and `e2e-qa-tester` already emit.
 
 ### Ticket writer (`ticket-writer`)
 ```json
@@ -502,8 +494,8 @@ parallel: YES | NO" (with explicit reason if NO: overlapping files).
 
 ### Step 5 — Implementation
 
-Each agent runs the `docs` skill, `e2e` skill (basic tier), and `dod` skill (layer 1)
-inline before committing, then commits atomically.
+Each agent runs the `docs` skill and `dod` skill (layer 1) inline before committing,
+then commits atomically.
 
 Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
 `started_at`. If scopes are disjoint, create git worktrees:
@@ -521,11 +513,10 @@ Update each task's `worktree` field in `tasks.json`.
 > (including `file_scope` and `worktree` path).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
-> Backend writes `contracts/backend-api.json` (API surface) and `contracts/backend-result.json` (full result) on completion.
-> When backend completes, orchestrator reads `backend-api.json`, logs the API surface to the HTML log,
-> and updates `tasks.json`. Routing decisions use `backend-result.json` (via `result_path`).
-> Frontend reads `contracts/backend-api.json` opportunistically if it exists — this is
-> orchestrator-managed shared state, not direct agent-to-agent communication.
+> Backend returns `backend_api` (hooks, option_keys, rest_endpoints) in its return JSON on completion.
+> When backend completes, orchestrator extracts `backend_api` from the return JSON, logs the API surface to the HTML log,
+> and passes it explicitly in the frontend-agent dispatch plan.
+> Frontend receives it from the orchestrator — no file read involved.
 >
 > Orchestrator proceeds when both tasks show `completed` in `tasks.json`
 > (or either shows `blocked`).
@@ -534,13 +525,9 @@ Update each task's `worktree` field in `tasks.json`.
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
 
-**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, `e2e_smoke.status`, and
-`files_changed` from each agent's `result_path` in `tasks.json`. Full implementation
-JSONs go to the HTML log directly from contract files — do not accumulate them in
-orchestrator context.
+**Synthesis:** Read `tests_passing`, `dod_layer1.overall`, and `files_changed` directly from each agent's return JSON. Write full return JSONs to the HTML log — do not accumulate them in orchestrator context.
 
-Log AGENT events after each with `docs` status, `e2e_smoke` status, DOD L1 summary, and
-commit SHA.
+Log AGENT events after each with `docs` status, DOD L1 summary, and commit SHA.
 
 ---
 
@@ -638,6 +625,7 @@ Route on `overall`:
 |---|---|---|
 | `PASS` | any | Proceed to finalize. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
+| `CANNOT_VERIFY` | any | All acceptance criteria sat behind a license/environment guard and could not be verified locally. **Do not treat as PASS.** Surface to user with each criterion's `blocking_guard` (function + `file:line`) so they can verify in a licensed/live environment or accept the risk. Log ESCALATION event. |
 | `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
 | `FAIL` | `qa_loop >= 1` | Escalate with failing criteria and `alternative_suggestions`. |
 
@@ -1105,7 +1093,6 @@ trivial.
 - Implementation decisions: key choices made during implementation
 - Files modified: list with one-line description each
 - docs result: DONE/SKIP + files
-- e2e_smoke result: PASS/FAIL/SKIP + scenarios
 - DOD L1 result: checks with PASS/WARN and counts
 - Commit: SHA + message
 

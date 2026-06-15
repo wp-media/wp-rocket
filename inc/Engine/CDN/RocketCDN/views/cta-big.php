@@ -106,7 +106,7 @@ if ( ! empty( $data['container_class'] ) ) {
 						?>
 					</li>
 					<li class="wpr-rocketcdn-cta-footer">
-						<a href="https://wp-rocket.me/rocketcdn/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
+						<a href="https://wp-rocket.me/rocketcdn-pro/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Learn more about RocketCDN', 'rocket' ); ?></a>
 					</li>
 					<?php if ( ! empty( $data['promotion_campaign'] ) ) : ?>
 						<li class="wpr-rocketcdn-cta-promo-footer">
