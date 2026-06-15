@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22-beta1\n"
+"Project-Id-Version: WP Rocket 3.22-beta2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-06-10T16:30:51+00:00\n"
+"POT-Creation-Date: 2026-06-11T09:24:01+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -3118,9 +3118,8 @@ msgid ""
 "%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all "
 "your pages with unlimited bandwidth."
 msgstr ""
-"%1$sVous souhaitez bénéficier d'une couverture complète pour la diffusion de"
-" contenu sur l'ensemble de votre site ?%2$s Étendez RocketCDN à toutes vos "
-"pages avec une bande passante illimitée."
+"%1$sVous souhaitez la Diffusion de contenu pour tout votre site ?%2$s "
+"Étendez RocketCDN à toutes vos pages avec une bande passante illimitée."
 
 #. translators: %1$s = opening strong tag, %2$s = number of pages allowed,
 #. %3$s = closing strong tag.
