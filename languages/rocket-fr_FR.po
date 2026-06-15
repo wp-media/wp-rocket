@@ -3133,9 +3133,8 @@ msgid ""
 "Upgrade to RocketCDN Pro to extend faster content delivery across all your "
 "pages from 100+ edge locations worldwide."
 msgstr ""
-"Passez à RocketCDN Pro pour bénéficier d'une diffusion plus rapide de votre "
-"contenu sur toutes vos pages depuis plus de 100 sites périphériques répartis"
-" dans le monde entier."
+"Passez à RocketCDN Pro pour une diffusion plus rapide de votre contenu, sur "
+"toutes vos pages, depuis +100 emplacements dans le monde."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:231
