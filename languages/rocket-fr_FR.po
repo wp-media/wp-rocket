@@ -3481,9 +3481,7 @@ msgstr "%1$sPas de limite de bande passante%2$s, pas de frais cachés"
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:105
 #, php-format
 msgid "%1$s100+ edge locations%2$s for wider global coverage"
-msgstr ""
-"%1$sPlus de 100 sites périphériques%2$s pour une couverture mondiale plus "
-"étendue"
+msgstr "%1$sPlus de 100 emplacements %2$s pour une couverture mondiale"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:109
 msgid "Learn more about RocketCDN"
