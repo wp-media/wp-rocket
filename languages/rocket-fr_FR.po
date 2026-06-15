@@ -5227,7 +5227,7 @@ msgstr "CNAME CDN"
 #: views/settings/fields/rocket-cdn.php:62
 #, php-format
 msgid "Purges RocketCDN cached resources for your website. %s"
-msgstr "Purge les ressources mises en cache de votre RocketCDN. %s"
+msgstr "Purge les ressources mises en cache par RocketCDN. %s"
 
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
