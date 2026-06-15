@@ -5237,7 +5237,7 @@ msgstr "En savoir plus"
 
 #: views/settings/fields/rocket-cdn.php:72
 msgid "Clear all RocketCDN cache files"
-msgstr "Purge tous les fichiers mis en cache de RocketCDN"
+msgstr "Purge tous les fichiers mis en cache par RocketCDN"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
