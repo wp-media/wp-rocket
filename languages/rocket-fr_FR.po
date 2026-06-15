@@ -3236,7 +3236,7 @@ msgstr "RocketCDN est actif sur votre site web"
 
 #: inc/Engine/CDN/Render/Controller.php:725
 msgid "Creating your subscription..."
-msgstr "Création de votre abonnement..."
+msgstr "Création de votre accès..."
 
 #: inc/Engine/CDN/Render/Controller.php:726
 msgid "Please wait, RocketCDN will be ready and active shortly."
