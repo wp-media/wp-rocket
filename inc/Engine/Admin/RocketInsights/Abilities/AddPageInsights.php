@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Database\Queries\RocketInsights as Query,
 	Managers\Plan
 };
-use WP_Rocket\Engine\Admin\RocketInsights\PageHandlerTrait;
+use WP_Rocket\Engine\Common\Page\PageHandlerTrait;
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
 	JobManager\Queue\Queue,
