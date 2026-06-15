@@ -15,8 +15,6 @@ return [
 				],
 				'settings'     => [
 					'cdn'        => 0,
-					'cdn_cnames' => [],
-					'cdn_zone'   => [],
 				],
 			],
 		],

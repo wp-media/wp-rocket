@@ -12,6 +12,19 @@ use WP_Rocket\Tests\Integration\ApiTestCase;
  */
 class Test_Disable extends ApiTestCase {
 
+	private $original_settings;
+
+	public function set_up() {
+		parent::set_up();
+		$this->original_settings = get_option( 'wp_rocket_settings' );
+	}
+
+	public function tear_down() {
+		update_option( 'wp_rocket_settings', $this->original_settings );
+		delete_transient( 'rocketcdn_status' );
+		parent::tear_down();
+	}
+
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		// Set up the transient.
 		set_transient( 'rocketcdn_status', 'some value', WEEK_IN_SECONDS );
@@ -43,16 +56,9 @@ class Test_Disable extends ApiTestCase {
 		$this->assertSame( $expected_response, $this->requestDisableEndpoint( $body_params ) );
 
 		$options = get_option( 'wp_rocket_settings' );
-		$expected = [
-			'cdn'        => 0,
-			'cdn_cnames' => [],
-			'cdn_zone'   => [],
-		];
 
-		foreach ( $expected as $key => $value ) {
-			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[ $key ] );
-		}
+		$this->assertArrayHasKey( 'cdn', $options );
+		$this->assertSame( 0, $options['cdn'] );
 
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
 	}

@@ -9,6 +9,8 @@ package-lock.json
 
 # Local issue sync cache
 /.TemporaryItems
+/.qa-screenshot
+/.e2e-temp
 
 # Claude Code user-local settings
 .claude/settings.local.json

@@ -203,3 +203,12 @@
 	background-position: center center;
 }
 
+.wpr-icon-orange-loader:before {
+  display: block;
+  content: "";
+  background: url("../img/orange-loading.svg") no-repeat center center;
+  background-size: contain;
+  width: 22.857px;
+  height: 24px;
+  aspect-ratio: 20/21;
+}

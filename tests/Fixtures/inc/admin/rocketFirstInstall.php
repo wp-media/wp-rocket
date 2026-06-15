@@ -42,7 +42,7 @@ $default = [
 	'database_optimize_tables'    => 0,
 	'schedule_automatic_cleanup'  => 0,
 	'automatic_cleanup_frequency' => 'daily',
-	'cdn'                         => 0,
+	'cdn'                         => 1,
 	'cdn_cnames'                  => [],
 	'cdn_zone'                    => [],
 	'cdn_reject_files'            => [],
@@ -68,6 +68,7 @@ $default = [
 $integration                                 					 = $default;
 $integration[ 'async_css_mobile' ]           					 = 1;
 $integration[ 'exclude_defer_js' ]           					 = [];
+$integration['cdn_type']                                         = 'rocketcdn';
 $integration[ 'delay_js' ]                   					 = 0;
 $integration[ 'delay_js_exclusions' ]        					 = [];
 $integration[ 'delay_js_execution_safe_mode' ]                   = 0;
@@ -80,7 +81,6 @@ $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
 $integration['host_fonts_locally']           					 = 0;
 $integration['auto_preload_fonts']  	   					     = 0;
-
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [

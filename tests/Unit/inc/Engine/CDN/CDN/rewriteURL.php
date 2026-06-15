@@ -65,6 +65,10 @@ class Test_RewriteURL extends TestCase {
 					'/wp-content/uploads/post.css',
 				],
 			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
+			],
 		];
 
 		foreach ( $options as $key => $option ) {

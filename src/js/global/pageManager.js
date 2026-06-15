@@ -86,6 +86,10 @@ function PageManager(aElem) {
         };
     }
 
+    document.addEventListener( 'wpr-cdn-state-change', function() {
+        refThis.updateSubmitDisabledState();
+    } );
+
 }
 
 
@@ -162,19 +166,54 @@ PageManager.prototype.change = function() {
         'plugins',
     ];
 
+    const pagesWithoutSidebarToggle = [
+        'dashboard',
+        'imagify',
+        'page_cdn',
+    ];
+
     // Exception for dashboard
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
-        this.$tips.style.display = 'none';
         this.$content.classList.remove('isNotFull');
     }
 
     if (this.pageId == "imagify") {
         this.$sidebar.style.display = 'none';
+    }
+
+    if (pagesWithoutSidebarToggle.includes(this.pageId)) {
         this.$tips.style.display = 'none';
     }
 
     if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';
     }
+
+    this.updateSubmitDisabledState();
+
+	// Dispatch custom event after page navigation for other scripts to hook into.
+	document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
+		detail: {
+			pageId: this.pageId,
+			submitButton: this.$submitButton,
+		}
+	} ) );
+};
+
+
+/*
+* Update submit button disabled state
+*/
+PageManager.prototype.updateSubmitDisabledState = function() {
+	if (!this.$submitButton || 'none' === this.$submitButton.style.display) {
+		return;
+	}
+
+	var isCdnPage = 'page_cdn' === this.pageId;
+	var pausedRocketCdnBlock = document.querySelector(
+		'.wpr-Page#page_cdn .wpr-notice.wpr-ri-notice.wpr-cdn-expired__notice'
+	);
+
+	this.$submitButton.disabled = isCdnPage && !!pausedRocketCdnBlock;
 };
