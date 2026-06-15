@@ -79,29 +79,36 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		$container_class = '';
-		$status_class    = '';
-		$label           = '';
-		$status_text     = '';
 		$is_active       = false;
+		$items           = [];
 
 		if ( 'running' === $subscription_data['subscription_status'] && 'paid' === $subscription_data['plan_type'] ) {
-			$label        = __( 'Plan RocketCDN Pro', 'rocket' );
-			$status_class = ' wpr-isValid';
-			$status_text  = __( 'Next Billing Date', 'rocket' ) . ' ' . date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
-			$is_active    = true;
+			$items[] = [
+				'label' => __( 'Plan', 'rocket' ),
+				'value' => __( 'RocketCDN Pro', 'rocket' ),
+				'class' => ' wpr-isValid wpr-no-icon',
+			];
+			$items[] = [
+				'label' => __( 'Next Billing Date', 'rocket' ),
+				'value' => date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) ),
+				'class' => ' wpr-isValid',
+			];
+
+			$is_active = true;
 		} else {
-			$status_class    = ' wpr-isInvalid';
+			$items[]         = [
+				'label' => '',
+				'value' => __( 'No RocketCDN Pro Subscription', 'rocket' ),
+				'class' => ' wpr-isInvalid',
+			];
 			$container_class = ' wpr-flex--egal';
-			$status_text     = __( 'No RocketCDN Pro Subscription', 'rocket' );
 		}
 
 		$data = [
 			'is_live_site'    => rocket_is_live_site(),
 			'container_class' => $container_class,
-			'label'           => $label,
-			'status_class'    => $status_class,
-			'status_text'     => $status_text,
 			'is_active'       => $is_active,
+			'items'           => $items,
 		];
 
 		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.

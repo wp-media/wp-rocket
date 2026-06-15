@@ -24,9 +24,13 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 	<span class="wpr-infoAccount wpr-isInvalid"><?php esc_html_e( 'RocketCDN is unavailable on local domains and staging sites.', 'rocket' ); ?></span>
 	<?php else : ?>
 	<div class="wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
+		<div class="wpr-dashboard-plans">
+		<?php foreach ( $data['items'] as $rocket_plan_item ) : ?>
 		<div>
-			<span class="wpr-title3"><?php echo esc_html( $data['label'] ); ?></span>
-			<span class="wpr-infoAccount<?php echo esc_attr( $data['status_class'] ); ?>"><?php echo esc_html( $data['status_text'] ); ?></span>
+			<span class="wpr-title3"><?php echo esc_html( $rocket_plan_item['label'] ); ?></span>
+			<span class="wpr-infoAccount<?php echo esc_attr( $rocket_plan_item['class'] ); ?>"><?php echo esc_html( $rocket_plan_item['value'] ); ?></span>
+		</div>
+		<?php endforeach; ?>
 		</div>
 		<?php if ( ! $data['is_active'] ) : ?>
 		<div>
