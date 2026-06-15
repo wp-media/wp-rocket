@@ -34,6 +34,12 @@ Make the ability available to the REST API and the MCP by adding meta.show_in_re
 
 An example of an ability class can be found in the `/inc/Engine/Abilities/Options/GetOptions.php` file.
 
+# Input and Output Schema
+
+If an ability requires input parameters, the parameters of the `execute()` method should always match the input schema defined when registering the ability.
+
+The return value of the `execute()` method of an ability should always match the output schema defined when registering the ability.
+
 # Testing
 
 ## Unit tests
