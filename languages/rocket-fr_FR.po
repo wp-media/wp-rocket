@@ -3394,8 +3394,8 @@ msgid ""
 "pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
 "%1$sEn tant qu'utilisateur de WP Rocket, vous pouvez désormais activer "
-"RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages les "
-"plus consultées et optimisez leurs performances partout dans le monde !%2$s"
+"RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages  et "
+"optimisez leurs performances partout dans le monde !%2$s"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
 msgid "Check it later"
