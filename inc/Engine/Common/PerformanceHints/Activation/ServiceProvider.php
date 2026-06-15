@@ -61,7 +61,8 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
-		$this->getContainer()->add( 'lrc_context', LRCContext::class );
+		$this->getContainer()->add( 'lrc_context', LRCContext::class )
+			->addArgument( 'options' );
 
 		$this->getContainer()->addShared( 'lrc_activation_factory', LRCActivationFactory::class )
 			->addArguments(
