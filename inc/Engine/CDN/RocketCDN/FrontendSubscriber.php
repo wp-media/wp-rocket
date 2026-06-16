@@ -74,13 +74,13 @@ class FrontendSubscriber implements Subscriber_Interface {
 			return $this->handle_admin_cname( $cnames );
 		}
 
-		if( ! $this->context->is_rocketcdn() ) {
+		if ( ! $this->context->is_rocketcdn() ) {
 			return $cnames;
 		}
 
 		$cdn_url = $this->get_rocketcdn_url();
 
-		return empty( $cdn_url) ? [] : [ $cdn_url ];
+		return empty( $cdn_url ) ? [] : [ $cdn_url ];
 	}
 
 	/**
