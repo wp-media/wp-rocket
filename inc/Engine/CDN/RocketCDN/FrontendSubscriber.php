@@ -67,19 +67,20 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 *
 	 * @param mixed $cnames The current filter value.
 	 *
-	 * @return mixed The CDN CNAME array if RocketCDN is active, or the original value.
+	 * @return mixed The CDN CNAME array if RocketCDN is active, or the original value for BYOCDN, or empty otherwise.
 	 */
 	public function set_cdn_cnames( $cnames ) {
 		if ( is_admin() ) {
 			return $this->handle_admin_cname( $cnames );
 		}
 
-		$cdn_url = $this->get_rocketcdn_url();
-		if ( empty( $cdn_url ) ) {
+		if( ! $this->context->is_rocketcdn() ) {
 			return $cnames;
 		}
 
-		return [ $cdn_url ];
+		$cdn_url = $this->get_rocketcdn_url();
+
+		return empty( $cdn_url) ? [] : [ $cdn_url ];
 	}
 
 	/**
