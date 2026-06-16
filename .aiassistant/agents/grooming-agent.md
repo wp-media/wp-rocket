@@ -182,27 +182,17 @@ Step-by-step instructions the implementing agent must follow. Be specific: class
 | PR 2 | `<files>` | `<what behavior this slice completes>` |
 ```
 
-**Test execution guidance** (required in every spec):
+**Smoke test scenario** (required in every spec):
 
-Based on the effort and risk assessment above, specify EXACTLY which tests the implementation agent should run:
+Describe the primary happy path the implementation agent should manually verify after making changes — not automated test commands (those are the agent's responsibility), but the human-readable scenario that confirms the feature works end-to-end.
 
-- If risk is LOW and complexity is LOW/XS/S:
-  → Run only the PHPUnit group(s) that cover the changed files. Example: `composer run-tests -- --group=<GroupName>`
-  → Find the correct group annotation by grepping: `grep -r "@group" tests/ --include="*.php" | grep -i <feature-keyword>`
-  → Do NOT run the full suite.
+Be concrete: name the URL, the admin page, the WP-CLI command, or the HTTP request. One to three steps is enough. Example:
 
-- If risk is MEDIUM or complexity is M:
-  → Run the specific group(s) + one broad regression group if it exists.
+> 1. Clear the cache from Settings > WP Rocket > Dashboard.
+> 2. Load a cached page and inspect the `X-Rocket-Nginx-Serving-Static` response header — it should be present.
+> 3. Log in as a subscriber and reload — the header should be absent.
 
-- If risk is HIGH or complexity is L/XL:
-  → Run the full test suite: `composer run-tests`
-  → This is the only case where full-suite execution is justified.
-
-Explicitly state the test command(s) to run in the spec. "Run tests" is not sufficient — name the command.
-
-This guidance feeds two outputs, which must agree:
-1. The spec file (this section) — read by the implementation agents alongside the Implementation Plan.
-2. The `test_plan` field of the Step 6 return JSON — copy the exact command(s) decided here into it. The orchestrator logs that field and passes it with the spec to the implementation agents; it is the structured mirror of this section, not a separate plan.
+Copy this scenario verbatim into the `test_plan` field of the Step 6 return JSON.
 
 ---
 
@@ -263,7 +253,7 @@ Return two things to the orchestrator:
   "relevant_files": [{ "path": "string", "reason": "string" }],
   "approach": "chosen approach summary",
   "development_steps": [{ "step": "string", "files": ["string"] }],
-  "test_plan": "the exact test command(s) decided in the spec's Test execution guidance — structured mirror of that section",
+  "test_plan": "verbatim copy of the smoke test scenario from the spec — the happy path steps the implementation agent should manually verify after making changes",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
   "effort_used": "LOW|MEDIUM|HIGH — diagnostic only: the reasoning depth actually applied, for retrospective calibration audits; not a routing input",
