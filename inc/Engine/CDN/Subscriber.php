@@ -3,9 +3,12 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
-use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\CDN\{
+	Context,
+	Drivers\DriverInterface,
+	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
+	RocketCDN\SubscriptionController
+};
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -488,7 +491,7 @@ class Subscriber implements Subscriber_Interface {
 		if (
 			! $has_active_subscription
 			&&
-			! empty( $this->options->get( 'cdn_cnames', [] ) )
+			! empty( $this->options->get( 'cdn_cnames', [] ) ) && $this->options->get( 'cdn' )
 		) {
 			$cdn_type = 'byocdn';
 		}
