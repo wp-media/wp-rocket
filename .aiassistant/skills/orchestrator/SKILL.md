@@ -29,11 +29,11 @@ Accept any of the following as a starting point:
 - Raw input (prose, Slack thread, paste) — in this case invoke the `ticket-writer` agent
   first to formalize the issue
 - `base_branch` — defaults to `origin/develop`
+- `complexity_signal` (optional): `"medium"` (default) or `"complex"`. User's assessment of the issue's depth. Pass it through to `grooming-agent`. If omitted, default to `"medium"`.
 
 At startup, read `AGENTS.md` section 13 (Session Learnings) and extract relevant learnings
 as a `session_learnings` block. Pass this block in the dispatch input to every agent you
-spawn. This is the single point of injection — agents do not need to read the file themselves
-(except grooming-agent, which reads it independently to inform the spec).
+spawn.
 
 Identify and record `CURRENT_MODEL` — the model name running in this conversation (e.g.
 `Claude Haiku 4.5`). Pass it to every spawned agent so they can use it in commit trailers,
@@ -344,7 +344,7 @@ Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
 ### Step 2 — Grooming *(always)*
 
 Invoke `grooming-agent`:
-> Inputs: issue `#N`, issue file path, base branch
+> Inputs: issue `#N`, issue file path, base branch, `complexity_signal: "medium"|"complex"` (from user input, defaults to `"medium"`)
 
 Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
 JSON. Log an AGENT event with the grooming JSON summary.
@@ -384,7 +384,7 @@ suggests low actual risk), confirm with the user before deciding.
 
 | Agent | Default model | Condition for override |
 |---|---|---|
-| `grooming-agent` | `sonnet` | `opus` when signal is "complex" (body >500 chars OR complexity keywords present). |
+| `grooming-agent` | `sonnet` | `opus` when `complexity_signal == "complex"` |
 | `challenger` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
 | `backend-agent` | `sonnet` | `opus` if user confirmed (see Opus escalation below) |
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
