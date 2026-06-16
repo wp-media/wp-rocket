@@ -2,6 +2,8 @@
 name: challenger
 description: Adversarial spec reviewer. Challenges the grooming spec for complex or high-risk issues. Finds hidden risks, unvalidated assumptions, and missing dependencies — does not improve the spec. Returns APPROVED, NEEDS_REVISION, or BLOCKED with MoSCoW-classified findings. Conditionally invoked by the orchestrator based on risk/effort signals.
 tools: [Bash, Read, Glob, Grep, WebFetch, WebSearch]
+maxTurns: 20
+color: red
 ---
 
 # Challenger
@@ -36,7 +38,8 @@ For each angle below, ask: **what would cause this plan to fail?**
    | `XL` | 10+ files or new module |
 
 5. **Scope and risk** — Is anything in scope introducing disproportionate risk for the stated benefit?
-6. **Alternatives** — Is there a simpler or lower-risk approach that achieves the same outcome?
+6. **Observable behavior (Hyrum's Law)** — Does this change any observable behavior, including undocumented behavior? WordPress plugin users and third-party plugins build on everything: hook timing, filter return value shapes, cache header presence, admin notice order. Any observable behavior change is a potential breaking change regardless of whether it is documented. Ask: is the behavior change intentional? Is it documented in the spec? If neither answer is clearly yes, flag it as at least SHOULD_HAVE.
+7. **Alternatives** — Is there a simpler or lower-risk approach that achieves the same outcome?
 
 ## Step 3 — Classify each finding
 
