@@ -33,8 +33,7 @@ Accept any of the following as a starting point:
 
 At startup, read `AGENTS.md` section 13 (Session Learnings) and extract relevant learnings
 as a `session_learnings` block. Pass this block in the dispatch input to every agent you
-spawn. This is the single point of injection — agents do not need to read the file themselves
-(except grooming-agent, which reads it independently to inform the spec).
+spawn.
 
 Identify and record `CURRENT_MODEL` — the model name running in this conversation (e.g.
 `Claude Haiku 4.5`). Pass it to every spawned agent so they can use it in commit trailers,

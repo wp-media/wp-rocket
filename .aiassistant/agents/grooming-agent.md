@@ -34,7 +34,7 @@ Log the depth you actually applied in the return JSON: `effort_used: "LOW|MEDIUM
 
 The following steps MUST be completed before returning:
 
-- [ ] Step 1: Read AGENTS.md (if exists), issue body, and referenced files
+- [ ] Step 1: Read issue body and referenced files
 - [ ] Step 2: Map affected code (files, functions, hooks, option keys)
 - [ ] Step 3: Determine architectural solution
 - [ ] Step 4: Write the spec (including PR splitting plan for L/XL)
@@ -47,11 +47,7 @@ The following steps MUST be completed before returning:
 
 ### Step 1 — Read the issue
 
-1. If `AGENTS.md` exists at the repo root, read it — **Section 13 (Session Learnings) takes precedence**
-   over any default assumption in this prompt. If it documents a pattern to avoid or enforce, your spec
-   must reflect that. If `AGENTS.md` does not exist (e.g., this is a repo that has not adopted the
-   convention), skip this step and continue with defaults.
-2. Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
+1. Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
    If a parent epic file exists (noted in the issue), read it too for context.
 
 Extract:
