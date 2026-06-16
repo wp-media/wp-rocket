@@ -125,10 +125,7 @@ Each pipeline run creates an isolated working directory for coordination artifac
 ```
 issue-<N>/
 ├── tasks.json               # shared task ledger — read/written by all agents
-├── contracts/
-│   ├── backend-api.json     # written by backend-agent (Step 3c): hooks, option_keys, rest_endpoints
-│   ├── backend-result.json  # written by backend-agent (Step 5): full implementation result
-│   └── frontend-result.json # written by frontend-agent on completion
+├── contracts/               # reserved for future coordination artifacts
 └── locks/
     └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
 ```
@@ -151,7 +148,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["inc/Engine/...", "tests/Unit/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/backend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -164,7 +160,6 @@ issue-<N>/
       "depends_on": [],
       "file_scope": ["assets/src/...", "views/..."],
       "worktree": null,
-      "result_path": ".TemporaryItems/Issues/wp-rocket/issue-<N>/contracts/frontend-result.json",
       "started_at": null,
       "completed_at": null,
       "blocked_reason": null
@@ -175,14 +170,11 @@ issue-<N>/
 
 ### Backend API contract
 
-Two separate files, two separate purposes:
+- The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
-- **`contracts/backend-api.json`** — API surface only (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Written by backend-agent in Step 3c, before committing. The orchestrator reads this to share the actual API surface with frontend-agent.
-- **`backend_api` (return JSON field)** — API surface (`hooks`, `option_keys`, `rest_endpoints`, `ajax_actions`). Returned by backend-agent in its JSON. The orchestrator extracts it and passes it explicitly in the frontend-agent dispatch plan (sequential mode only).
+**Sequential mode:** when backend finishes before frontend starts, the orchestrator extracts `backend_api` from the return JSON and includes it in the frontend agent's dispatch plan.
 
-**Sequential mode:** when backend finishes before frontend starts, the orchestrator reads `backend-api.json`, extracts `hooks`, `option_keys`, and `rest_endpoints`, and includes them explicitly in the frontend agent's dispatch plan. The frontend agent never reads the file itself.
-
-**Parallel mode:** the frontend agent may read `contracts/backend-api.json` as a fallback — orchestrator-managed shared state only. If absent, frontend proceeds from spec and notes the skip.
+**Parallel mode:** if `backend_api` is not yet available when frontend starts, frontend proceeds from spec and notes "API contract not available — using spec".
 
 ## JSON return contracts
 
@@ -243,9 +235,18 @@ fields — prose is for human readability only.
     "hesitations": ["what was unclear or uncertain during implementation"],
     "decision_rationale": "why the chosen approach was taken over the alternatives"
   },
+  "backend_api": {
+    "hooks": [],
+    "option_keys": [],
+    "rest_endpoints": [],
+    "ajax_actions": [],
+    "drift": "any drift from spec"
+  },
   "notes": "string"
 }
 ```
+
+`backend_api` is only present in backend-agent's return JSON. The orchestrator extracts it and passes it to the frontend-agent dispatch plan when scopes overlap.
 
 ### Release (`release-agent`)
 ```json
