@@ -189,7 +189,7 @@ Return the following JSON object directly to the orchestrator.
     "option_keys": [],
     "rest_endpoints": [],
     "ajax_actions": [],
-    "notes": "any drift from spec"
+    "drift": "any drift from spec"
   },
   "notes": "any deviations from spec with reason, or empty string"
 }
