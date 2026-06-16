@@ -31,7 +31,7 @@ implementation handoff and the PR is open. Provides an unbiased second opinion. 
 | Parameter | Type | Description |
 |---|---|---|
 | `layer` | `"1"` or `"2"` | Which gate to run. Layer 1 = self-correction inside implementation agent; Layer 2 = independent orchestrator gate. |
-| `file_scope` | array of file paths | Files declared in-scope by the orchestrator for this issue. Used by Check 6. Passed by the orchestrator in the dispatch plan. |
+| `file_scope` | array of file paths (optional) | Files declared in-scope by the orchestrator for this issue. Used by Check 6 (Layer 1 only). Omit or pass `null` for Layer 2. |
 | `base_branch` | string (optional) | The PR base branch. Defaults to `develop`. Used in all `git diff` commands. |
 | `pr_url` | string (optional) | The GitHub PR URL. Required for Layer 2 (Check 1, Check 4, Check 5). |
 
@@ -248,18 +248,14 @@ Exceptions that do not count as violations:
 If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check with status `N/A`.
 
 - **PASS**: All modified files are within declared scope (or no scope was declared)
-- **WARN**: One file outside scope was modified — name it and explain why
+- **WARN**: One or more files outside scope were modified — name them and explain why
 - **FAIL**: Two or more files outside scope were modified without explanation
-
-**Interaction with the overall verdict:**
-- **Layer 1:** a Check 6 FAIL is reported as **WARN** in the overall verdict. Scope creep was detected, but handoff proceeds with a note — this preserves the Layer 1 rule that `overall` is only ever `PASS` or `WARN`. Log the out-of-scope files in the implementation result under `notes`.
-- **Layer 2:** a Check 6 FAIL is a genuine **FAIL** and contributes to a `FAIL` overall verdict.
 
 ---
 
-## L2 output format constraints
+## Output format constraints
 
-To keep the L2 report readable, apply these constraints strictly:
+Apply these constraints strictly for both Layer 1 and Layer 2 reports:
 
 **Length targets:**
 - Total report: aim for ≤ 400 words (excluding JSON). If you exceed this, cut PASS summaries first.
