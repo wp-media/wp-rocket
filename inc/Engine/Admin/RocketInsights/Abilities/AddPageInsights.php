@@ -333,7 +333,7 @@ class AddPageInsights implements AbilitiesInterface {
 			return false;
 		}
 
-		Logger::error(
+		Logger::info(
 			'Rocket Insights: Synchronous Submission successful, Now scheduling single job to run in 30 seconds.',
 			[
 				'url' => $url,
