@@ -8,6 +8,12 @@
 		COLLAPSED: true   // Small CTA - collapsed state
 	};
 
+	// Register early so we catch the wpr-cdn-state-change event.
+	document.addEventListener( 'wpr-cdn-state-change', trackCDNModeSelection );
+	document.addEventListener( 'rocketCDNBannerAutoExpanded', () => trackRocketCDNUpsellBannerExpanded('auto_limit_reached') );
+	document.addEventListener( 'rocketCDNBannerAutoCollapsed', () => trackRocketCDNUpsellBannerCollapsed( 'auto_limit_released' ) );
+	document.addEventListener( 'rocketCDNBannerFirstVisible', () => trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED ) );
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
 			el.addEventListener( 'click', ( e ) => {
@@ -63,7 +69,45 @@
 		let openCTA = document.querySelector( '#wpr-rocketcdn-open-cta' ),
 			closeCTA = document.querySelector( '#wpr-rocketcdn-close-cta' ),
 			smallCTA = document.querySelector( '#wpr-rocketcdn-cta-small' ),
-			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' );
+			bigCTA = document.querySelector( '#wpr-rocketcdn-cta' ),
+			inputToggle = document.querySelector('.wpr-rocketcdn-toggle--input');
+
+		const ctaToggle = document.querySelectorAll( '.wpr-rocketcdn-cta-toggle' );
+
+		/**
+		 * Toggles RocketCDN CTA internal collapsed/expanded state.
+		 *
+		 * @return {void}
+		 */
+		function toggleBigCTAState() {
+			if ( ! bigCTA || ! ctaToggle.length ) {
+				return;
+			}
+
+			const isCollapsed = bigCTA.classList.toggle( 'wpr-rocketcdn-cta--collapsed' );
+			bigCTA.classList.toggle( 'wpr-rocketcdn-cta--expanded', ! isCollapsed );
+			ctaToggle.forEach( ( el ) => {
+				el.setAttribute( 'aria-expanded', isCollapsed ? 'false' : 'true' );
+			} );
+
+			if( ! isCollapsed ) {
+				trackRocketCDNUpsellBannerExpanded( 'manual' );
+			} else {
+				trackRocketCDNUpsellBannerCollapsed();
+			}
+		}
+
+		if ( ctaToggle.length && bigCTA ) {
+			ctaToggle.forEach( ( el ) => {
+				el.addEventListener( 'click', toggleBigCTAState );
+				el.addEventListener( 'keydown', ( event ) => {
+					if ( 'Enter' === event.key || ' ' === event.key ) {
+						event.preventDefault();
+						toggleBigCTAState();
+					}
+				} );
+			} );
+		}
 
 		// Track banner view on page load if banner is visible and user is on CDN tab.
 		maybeTrackBannerView();
@@ -71,6 +115,7 @@
 		// Track banner view when user navigates to CDN tab.
 		window.addEventListener( 'hashchange', () => {
 			maybeTrackBannerView();
+			trackCDNModeSelection();
 		} );
 
 		// Prices selectors for toggling visibility based on the billing cycle toggle state.
@@ -87,40 +132,22 @@
 			}
 		}
 
-		if ( null !== openCTA && null !== smallCTA && null !== bigCTA ) {
-			openCTA.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
+		// Display the correct prices on page based on billing cycle toggle state.
+		if ( inputToggle ) {
+			inputToggle.addEventListener('change', function () {
+				const isYearly = this.checked;
 
-				smallCTA.classList.add( 'wpr-isHidden' );
-				bigCTA.classList.remove( 'wpr-isHidden' );
+				if (isYearly) {
+					Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+					Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+				} else {
+					Object.values(prices.monthly).forEach(list => list.forEach(el => el.classList.remove('wpr-isHidden')));
+					Object.values(prices.yearly).forEach(list => list.forEach(el => el.classList.add('wpr-isHidden')));
+				}
 
-				trackRocketCDNUpsellBannerViewed( BANNER_STATE.OPENED );
-
-				sendHTTPRequest( getPostData( 'big' ) );
-			} );
-		}
-
-		if ( null !== closeCTA && null !== smallCTA && null !== bigCTA ) {
-			closeCTA.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-
-				smallCTA.classList.remove( 'wpr-isHidden' );
-				bigCTA.classList.add( 'wpr-isHidden' );
-
-				trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED );
-
-				sendHTTPRequest( getPostData( 'small' ) );
-			} );
-		}
-
-		function getPostData( status ) {
-			let postData = '';
-
-			postData += 'action=toggle_rocketcdn_cta';
-			postData += '&status=' + status;
-			postData += '&nonce=' + rocket_ajax_data.nonce;
-
-			return postData;
+				// Update the button URL with the correct is_monthly parameter.
+				updateButtonUrlBillingCycle(isYearly);
+			});
 		}
 
 		// Track RocketCDN activation failed CTA click
@@ -403,6 +430,49 @@
 	}
 
 	/**
+	 * Tracks CDN mode selection with Mixpanel.
+	 */
+	function trackCDNModeSelection() {
+		if ( ! isOnCDNTab() ) {
+			return;
+		}
+
+		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
+		
+		if ( ! activeTab ) {
+			return;
+		}
+
+		const cdnMode = activeTab.getAttribute( 'data-cdn-mode' )
+
+		if( ! cdnMode ) {
+			return;
+		} 
+
+		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
+			return;
+		}
+
+		// Check if user has opted in
+		if ( typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0' ) {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		mixpanel.track('RocketCDN Mode', {
+			context: rocket_mixpanel_data.context,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			cdn_mode: cdnMode
+		});
+	}
+
+	/**
 	 * Tracks RocketCDN activation failed CTA click with Mixpanel.
 	 */
 	function trackRocketCDNActivationCTA() {
@@ -480,8 +550,36 @@
 		if ( ! isOnCDNTab() ) {
 			return;
 		}
+		const hash = window.location.hash;
+		const basePath = ( typeof rocket_mixpanel_data !== 'undefined' && rocket_mixpanel_data.path ) ? rocket_mixpanel_data.path : '';
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Viewed', {
-			state: is_collapsed ? 'collapsed' : 'opened'
+			state:     is_collapsed ? 'collapsed' : 'opened',
+			page_name: hash,
+			path:      basePath + hash
+		} );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner expanded with Mixpanel.
+	 *
+	 * @param {string} trigger 'manual' by default.
+	 */
+	function trackRocketCDNUpsellBannerExpanded( trigger ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Expanded', {
+			location: window.location.hash,
+			trigger: trigger
+		} );
+	}
+
+	/**
+	 * Tracks RocketCDN upsell banner collapsed with Mixpanel.
+	 *
+	 * @param {string} [trigger='manual'] 'manual' when user clicks toggle, 'auto_limit_released' when a page deletion drops count below limit.
+	 */
+	function trackRocketCDNUpsellBannerCollapsed( trigger = 'manual' ) {
+		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell Banner Collapsed', {
+			location: window.location.hash,
+			trigger: trigger
 		} );
 	}
 
@@ -489,8 +587,12 @@
 	 * Tracks RocketCDN upsell CTA click with Mixpanel.
 	 */
 	function trackRocketCDNUpsellCTAClicked( iframeVisit = false ) {
+		const tableList = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
+		const pagesCount = tableList ? tableList.querySelectorAll( '[data-id]' ).length : 0;
+
 		trackRocketCDNUpsellMixpanelEvent( 'RocketCDN Upsell CTA Clicked', {
-			destination: iframeVisit ? 'iframe' : 'express-checkout'
+			destination: iframeVisit ? 'iframe' : 'express-checkout',
+			pages_count: pagesCount
 		} );
 	}
 } )( document, window );

@@ -37,6 +37,8 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
+	private $shouldForceCdnOption;
+
 
 	public function set_up() {
 		self::installPreconnectExternalDomainsTable();
@@ -54,6 +56,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->rocketCleanMinifyEntriesBefore  = [];
 		$this->rocketCleanDomainShouldNotClean = [];
 		$this->rocketCleanMinifyShouldNotClean = [];
+		$this->shouldForceCdnOption            = false;
 		$GLOBALS['is_apache'] = true;
 
 		// Set up the container.
@@ -68,6 +71,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 	public function tear_down() {
 		parent::tear_down();
+		if ( $this->shouldForceCdnOption ) {
+			remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
+
 		self::uninstallPreconnectDomainsTable();
 
 		$this->dicontainer->tearDown();
@@ -83,7 +90,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
+	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected, array $config = [] ) {
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
 			$this->assertTrue( true ); // @phpstan-ignore-line
@@ -93,6 +100,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->shouldForceCdnOption = ! empty( $config['force_pre_get_cdn'] );
+
+		if ( $this->shouldForceCdnOption ) {
+			add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
 
 		$this->rocket_clean_domain( true );
 		$this->rocket_clean_minify( true );
@@ -108,6 +120,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
 		$this->set_transient();
+	}
+
+	public function return_true() {
+		return true;
 	}
 
 	private function rocket_clean_domain( $before_updating = false ) {

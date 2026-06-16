@@ -111,6 +111,10 @@ trait DBTrait {
 		$ri_table = $container->get( 'ri_table' );
 		$ri_table->install();
 		self::add_exists_filter( $ri_table );
+
+		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+		$rocketcdn_table->install();
+		self::add_exists_filter( $rocketcdn_table );
 	}
 
 	public static function installUsedCssTable() {
@@ -190,6 +194,17 @@ trait DBTrait {
 		self::add_exists_filter( $ri_table );
 	}
 
+	public static function installRocketCDNTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+
+		if ( $rocketcdn_table && ! $rocketcdn_table->exists() ) {
+			$rocketcdn_table->install();
+		}
+
+		self::add_exists_filter( $rocketcdn_table );
+	}
+
 	public static function uninstallAll() {
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
@@ -237,6 +252,12 @@ trait DBTrait {
 			$ri_table->uninstall();
 		}
 		self::remove_exists_filter( $ri_table );
+
+		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
+			$rocketcdn_table->uninstall();
+		}
+		self::remove_exists_filter( $rocketcdn_table );
 	}
 
 	public static function uninstallPreconnectDomainsTable() {
@@ -314,6 +335,17 @@ trait DBTrait {
 		self::remove_exists_filter( $ri_table );
 	}
 
+	public static function uninstallRocketCDNTable() {
+		$container = apply_filters( 'rocket_container', null );
+		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+
+		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
+			$rocketcdn_table->uninstall();
+		}
+
+		self::remove_exists_filter( $rocketcdn_table );
+	}
+
 	public static function removeDBHooks() {
 		$container           = apply_filters( 'rocket_container', null );
 
@@ -327,6 +359,10 @@ trait DBTrait {
 		];
 		if ( $container->has( 'ri_table' ) ) {
 			$tables[] = $container->get( 'ri_table' );
+		}
+
+		if ( $container->has( 'rocketcdn_table' ) ) {
+			$tables[] = $container->get( 'rocketcdn_table' );
 		}
 
 		foreach ( $tables as $table ) {
@@ -372,6 +408,15 @@ trait DBTrait {
 			$ri_table->truncate();
 		}
 
+	}
+
+	public static function truncateRocketCDNTable() {
+		$container       = apply_filters( 'rocket_container', null );
+		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+
+		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
+			$rocketcdn_table->truncate();
+		}
 	}
 
 	private static function add_exists_filter( $table ) {

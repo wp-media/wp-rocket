@@ -734,6 +734,34 @@ function rocket_notice_html( $args ) {
 		case 'rocket_insights_page':
 			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
 			break;
+		case 'rocketcdn_upgrade_page':
+			$dismiss_key    = 'rocket_update_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Add your pages now', 'rocket' )
+				. '</a>';
+			break;
+		case 'rocketcdn_install_page':
+			$dismiss_key    = 'rocketcdn_install_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_promotion#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Start with my homepage', 'rocket' )
+				. '</a>';
+			break;
 	}
 	/**
 	 * Notice arguments.

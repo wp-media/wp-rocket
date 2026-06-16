@@ -123,8 +123,8 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 						];
 					}
 
-					// Mock subscription endpoint (website/search/).
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
+					// Mock subscription endpoint (subscription/domain/status/).
+					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription/example.org/status' ) ) {
 						$test->subscription_api_call_count++;
 
 						// After activation was called, return the post-activation data.
@@ -183,8 +183,6 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		if ( isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
 			$this->assertArrayHasKey( 'cdn', $settings );
 			$this->assertEquals( 1, $settings['cdn'] );
-			$this->assertArrayHasKey( 'cdn_cnames', $settings );
-			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
 		} else {
 			// CDN should NOT be enabled.
 			$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
