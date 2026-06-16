@@ -70,6 +70,10 @@ class GetRecommendations implements AbilitiesInterface {
 	 * Registers the ability to get Rocket Insights recommendations.
 	 */
 	public function register(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
 		wp_register_ability(
 			'wp-rocket/get-recommendations',
 			[
