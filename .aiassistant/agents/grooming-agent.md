@@ -156,11 +156,13 @@ Return the spec file path AND the following JSON object to the orchestrator. The
   "test_plan": "string",
   "risks": [{ "description": "string", "severity": "LOW|MEDIUM|HIGH", "mitigation": "string" }],
   "effort": "XS|S|M|L|XL",
+  "effort_used": "LOW|MEDIUM|HIGH",
   "complexity": "LOW|MEDIUM|HIGH",
   "risk_level": "LOW|MEDIUM|HIGH",
   "risk_notes": "prose: confidence level, key concerns, anything unusual the orchestrator should weight",
   "grooming_confidence": "LOW|MEDIUM|HIGH",
   "open_questions": ["unresolved items requiring human input, or empty array"],
+  "pr_splitting_plan": [{ "slice": 1, "scope": ["string"], "deliverable": "string" }],
   "comment_posted": true
 }
 ```
@@ -171,6 +173,10 @@ Return the spec file path AND the following JSON object to the orchestrator. The
 - `M`: 3–6 files, or introduces a new class/interface
 - `L`: 7–10 files, architectural shift
 - `XL`: 10+ files or new module
+
+**`effort_used`** — the reasoning depth you actually applied: `LOW` (quick scan, obvious fix), `MEDIUM` (moderate investigation), `HIGH` (deep architectural analysis). Diagnostic only; the orchestrator logs it but no routing depends on it.
+
+**`pr_splitting_plan`** — populate for `L`/`XL` efforts: list each proposed PR slice with its scope (file or area names) and a one-line deliverable. Set to `null` for `XS`/`S`/`M`. The orchestrator surfaces this to the team before implementation starts so they can decide whether to split.
 
 **risk_notes guidance:** This is the orchestrator's most important input for routing decisions. State: your confidence level (HIGH/MEDIUM/LOW), the one or two key risks you see, and any unverified assumptions (auth behavior, multisite, concurrency) that a challenger should probe. If everything is straightforward, say so explicitly.
 
