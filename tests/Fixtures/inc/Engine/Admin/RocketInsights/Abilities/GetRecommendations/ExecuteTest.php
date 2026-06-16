@@ -185,4 +185,30 @@ return [
 			],
 		],
 	],
+	'testShouldDefaultOptionSlugAndTitleToEmptyStringWhenAbsent' => [
+		'config'   => [
+			'recommendations_data' => [
+				'status'          => 'completed',
+				'recommendations' => [
+					[
+						'description' => 'A recommendation missing both option_slug and title.',
+					],
+				],
+			],
+		],
+		'expected' => [
+			'result' => [
+				'status'          => 'completed',
+				'recommendations' => [
+					[
+						'option_slug'    => '',
+						'title'          => '',
+						'description'    => 'A recommendation missing both option_slug and title.',
+						'mcp_actionable' => false,
+						'mcp_ability'    => null,
+					],
+				],
+			],
+		],
+	],
 ];

@@ -155,11 +155,11 @@ class GetRecommendations implements AbilitiesInterface {
 
 		$formatted = [];
 		foreach ( $data['recommendations'] ?? [] as $recommendation ) {
-			$slug        = $recommendation['option_slug'];
+			$slug        = $recommendation['option_slug'] ?? '';
 			$actionable  = in_array( $slug, self::MCP_ACTIONABLE_OPTION_SLUGS, true );
 			$formatted[] = [
 				'option_slug'    => $slug,
-				'title'          => $recommendation['title'],
+				'title'          => $recommendation['title'] ?? '',
 				'description'    => $recommendation['description'] ?? '',
 				'mcp_actionable' => $actionable,
 				'mcp_ability'    => $actionable ? 'wp-rocket/set-option' : null,
