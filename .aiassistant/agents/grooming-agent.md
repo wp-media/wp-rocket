@@ -198,13 +198,9 @@ The splitting plan must also appear in the GitHub comment (Step 5) — it is a d
 - Use a single-quoted heredoc (`<<'EOF'`) — the shell will not interpret any special characters inside it.
 - Never escape backticks with a backslash (`` \` `` is wrong). Write them as plain `` ` `` characters.
 - Never use `#N` (e.g. `#1`, `#2`) for numbered list items — GitHub interprets these as issue/PR links. Use `1.`, `2.` instead.
+- Use fenced code blocks (triple backtick) or inline code (single backtick) exactly as you would in normal Markdown. No escaping needed.
 
 Post the grooming plan as a comment on issue #N (update the comment if one already exists for this plan version):
-
-**Markdown formatting rules for GitHub comments:**
-- Use a single-quoted heredoc (`<<'EOF'`) — the shell will not interpret any special characters inside it.
-- Never escape backticks with a backslash (`` \` `` is wrong). Write them as plain `` ` `` characters.
-- Use fenced code blocks (triple backtick) or inline code (single backtick) exactly as you would in normal Markdown. No escaping needed.
 
 ```bash
 gh issue comment <N> --body "$(cat <<'EOF'
