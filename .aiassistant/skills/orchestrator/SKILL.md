@@ -274,7 +274,7 @@ fields — prose is for human readability only.
 }
 ```
 
-`checks` includes the six named checks from the dod skill (`manual-validation`, `automated-tests`, `documentation`, `pr-description`, `ci`, `file-scope`). `blockers` are structured objects — the routing table below reads `blockers[*].error_excerpt` for CI failures and passes `suggested_fix` to the implementation agent on loop-back.
+`checks` includes the six named checks (`manual-validation`, `automated-tests`, `documentation`, `pr-description`, `ci`, `file-scope`). `blockers` are structured objects — the routing table reads `blockers[*].error_excerpt` for CI failures and passes `suggested_fix` to the implementation agent on loop-back.
 
 ### Lead review (`lead-reviewer`)
 ```json
