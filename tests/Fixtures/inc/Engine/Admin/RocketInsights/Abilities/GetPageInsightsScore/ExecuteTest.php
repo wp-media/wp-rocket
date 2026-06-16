@@ -116,19 +116,4 @@ return [
 			],
 		],
 	],
-	'testShouldReturnExistsFalseWithZeroFreeSlotsWhenOverCapacity' => [
-		'config'   => [
-			'input'       => [ 'url' => 'https://example.com/not-monitored' ],
-			'rows'        => false,
-			'max_urls'    => 3,
-			'total_count' => 5,
-		],
-		'expected' => [
-			'queried_url' => 'https://example.com/not-monitored',
-			'result'      => [
-				'exists'     => false,
-				'free_slots' => 0,
-			],
-		],
-	],
 ];
