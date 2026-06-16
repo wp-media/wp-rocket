@@ -22,8 +22,8 @@ Use shell commands as the primary approach. The GitHub MCP (`mcp_github_*`) may 
 
 | Operation | Shell (primary) | GitHub MCP (if connected) |
 |---|---|---|
-| Issue fetch | `bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh <N>` | `mcp_github_github_issue_read` |
-| Branch creation | `bash .aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh` | — |
+| Issue fetch | `bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>` | `mcp_github_github_issue_read` |
+| Branch creation | `bash .claude/skills/issue-workflow/scripts/make-issue-branch.sh` | — |
 | Staging & committing | `git add` / `git commit` | — |
 | Pushing | `git push -u origin <branch>` | — |
 | PR creation | `gh pr create` | `mcp_github_github_create_pull_request` |
@@ -33,7 +33,7 @@ Use shell commands as the primary approach. The GitHub MCP (`mcp_github_*`) may 
 
 1. **Extract** the issue number from the user's message.
 
-2. **Fetch the issue** — run `bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh <N>` (or use the MCP equivalent). Read the resulting file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
+2. **Fetch the issue** — run `bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>` (or use the MCP equivalent). Read the resulting file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
 
 3. **Check for parent epics** — if `Parent Epic (GitHub)` or `Parent Epics (Task List)` has entries, sync each parent with `issue-sync.sh <epic-N>` and read those files for context.
 

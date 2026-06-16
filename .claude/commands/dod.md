@@ -1,1 +1,1 @@
-../../.aiassistant/skills/dod/SKILL.md
+../skills/dod/SKILL.md

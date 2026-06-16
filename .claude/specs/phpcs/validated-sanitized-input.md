@@ -16,7 +16,7 @@ Files in `inc/`, `views/`, and `src/` that read superglobals or external input.
    - `sanitize_key()` + allowlist (`in_array`) for filters/ordering
    - `array_map( 'absint', (array) wp_unslash( $_GET['ids'] ) )`
 3. Verify nonces for admin actions (see
-   `.aiassistant/specs/phpcs/nonce-verification-recommended.md`).
+   `.claude/specs/phpcs/nonce-verification-recommended.md`).
 
 ## Decision (quick tree)
 1. Is the input from a superglobal? If yes, apply `wp_unslash()`.

@@ -106,5 +106,5 @@ For each gap:
 
 - The docs root is `docs/`. The README at the repo root is for users; developer docs live in `docs/`.
 - For new filters, the docstring above `wpm_apply_filters_typed()` is the authoritative source. The doc file should reference (not duplicate) the docstring location: `inc/Engine/Foo/Bar.php:42`.
-- For new capabilities, add them to the list in `.aiassistant/skills/wordpress-compliance/SKILL.md` (so PHPCS does not flag future uses).
+- For new capabilities, add them to the list in `.claude/skills/wordpress-compliance/SKILL.md` (so PHPCS does not flag future uses).
 - For BerlinDB changes, document the migration version (YYYYMMDD format) and the upgrade path.

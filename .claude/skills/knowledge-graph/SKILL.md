@@ -1,7 +1,7 @@
 ---
 name: knowledge-graph
 description: >
-  Read and refresh wp-rocket's pre-built dependency graph at .aiassistant/graph/dependency-graph.json.
+  Read and refresh wp-rocket's pre-built dependency graph at .claude/graph/dependency-graph.json.
   Use to locate a class file, trace dependencies, find the ServiceProvider that wires a service,
   or enumerate Subscribers in a module — without re-scanning the codebase from scratch. This
   skill is primarily a reader: the graph is built (and incrementally refreshed) by
@@ -11,7 +11,7 @@ description: >
 
 # Knowledge Graph
 
-A pre-built dependency graph lives at `.aiassistant/graph/dependency-graph.json`. The
+A pre-built dependency graph lives at `.claude/graph/dependency-graph.json`. The
 builder is `node bin/build-knowledge-graph.js` (incremental by default, `--full` to force
 rebuild).
 

@@ -27,7 +27,7 @@ Read `AGENTS.md` at the repo root in full. Section 13 (Session Learnings) takes 
 
 1. Read the spec in full.
 2. Read the dispatch plan — note exactly which files you own and any constraints.
-3. Read `.aiassistant/skills/wp-rocket-frontend-architecture/SKILL.md` and `.aiassistant/skills/wordpress-compliance/SKILL.md`.
+3. Read `.claude/skills/wp-rocket-frontend-architecture/SKILL.md` and `.claude/skills/wordpress-compliance/SKILL.md`.
 4. Read each JS/CSS/HTML file you are responsible for in full.
 
 ---
@@ -82,7 +82,7 @@ The spec written by grooming-agent should explicitly state which command to run.
 
 ### Step 2.5 — Documentation update
 
-Invoke the `docs` skill inline (`.aiassistant/skills/docs/SKILL.md`).
+Invoke the `docs` skill inline (`.claude/skills/docs/SKILL.md`).
 
 Pass the explicit list of JS/CSS/HTML files you changed in Step 2 — the skill needs this rather than inferring from git.
 
@@ -96,7 +96,7 @@ Record: `docs.status`, `docs.files_updated`, `docs.files_created`.
 
 ### Step 3 — DOD L1 (self-check)
 
-Invoke the `dod` skill inline (`.aiassistant/skills/dod/SKILL.md`) with `layer: "1"`.
+Invoke the `dod` skill inline (`.claude/skills/dod/SKILL.md`) with `layer: "1"`.
 
 For frontend changes, the relevant checks are:
 - `automated-tests` → Jest is not yet set up in wp-rocket — mark as `N/A`

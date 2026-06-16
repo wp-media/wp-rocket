@@ -138,7 +138,7 @@ WP Rocket has no `docs/` directory or `README.md` that serves as public API docu
 
 Read the repo's PR template:
 ```bash
-cat .aiassistant/skills/issue-workflow/refs/pr-template.md
+cat .claude/skills/issue-workflow/refs/pr-template.md
 ```
 
 Then fetch the PR body:
@@ -215,7 +215,7 @@ Include each failure as a separate blocker in the return JSON with:
 Also verify the `Co-Authored-By: Claude` trailer is present on every commit on the branch:
 ```bash
 git log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
-  git show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude" \
+  git show $sha --format="%b" -s | grep -qE "Co-Authored-By: .+ <noreply@anthropic.com>" \
     || echo "MISSING Co-Authored-By on $sha"
 done
 ```
@@ -248,6 +248,10 @@ Exceptions that do not count as violations:
 - **PASS**: All modified files are within declared scope (or no scope was declared)
 - **WARN**: One or more files outside scope were modified — name them and explain why
 - **FAIL**: Two or more files outside scope were modified without explanation
+
+**Layer differentiation:**
+- **Layer 1:** a Check 6 FAIL is reported as WARN in the overall verdict — handoff proceeds with a note. The L1 overall verdict is only ever PASS or WARN, never FAIL.
+- **Layer 2:** a Check 6 FAIL is a genuine FAIL that blocks the gate.
 
 ---
 

@@ -40,7 +40,7 @@ Before pushing anything, audit the branch:
 
 ```bash
 git --no-pager log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
-  if ! git --no-pager show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude"; then
+  if ! git --no-pager show $sha --format="%b" -s | grep -qE "Co-Authored-By: .+ <noreply@anthropic.com>"; then
     echo "MISSING trailer on $sha: $msg"
   fi
 done
@@ -85,7 +85,7 @@ attempt force-push without explicit instruction.
 ### Step 3 — Initialize PR draft
 
 ```bash
-bash .aiassistant/skills/issue-workflow/scripts/init-pr-draft.sh <N>
+bash .claude/skills/issue-workflow/scripts/init-pr-draft.sh <N>
 ```
 
 This creates `.TemporaryItems/Issues/wp-rocket/pull/<N>.md` from the template.

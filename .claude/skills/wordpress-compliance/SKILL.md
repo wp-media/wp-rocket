@@ -68,11 +68,11 @@ Using `manage_options` directly for WP Rocket–specific actions is incorrect an
 
 ## Related Specs
 
-When relevant, consult repository specs under `.aiassistant/specs/`, especially:
+When relevant, consult repository specs under `.claude/specs/`, especially:
 
-- `.aiassistant/specs/phpcs/nonce-verification-recommended.md`
-- `.aiassistant/specs/phpcs/validated-sanitized-input.md`
-- `.aiassistant/specs/phpcs/escaped-output.md`
+- `.claude/specs/phpcs/nonce-verification-recommended.md`
+- `.claude/specs/phpcs/validated-sanitized-input.md`
+- `.claude/specs/phpcs/escaped-output.md`
 
 ## Git Operations
 Follow the policy defined in AGENTS.md §5.1. Outside the issue workflow, do not run `git commit` or `git push`.

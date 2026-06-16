@@ -25,7 +25,7 @@ if [ ! -d "$ROOT_DIR" ]; then
 fi
 
 # Template path and output location.
-TEMPLATE="${ROOT_DIR}/.aiassistant/skills/issue-workflow/refs/pr-template.md"
+TEMPLATE="${ROOT_DIR}/.claude/skills/issue-workflow/refs/pr-template.md"
 OUT_DIR="${ROOT_DIR}/.TemporaryItems/Issues/wp-rocket/pull"
 OUT_FILE="${OUT_DIR}/${ISSUE_NUMBER}.md"
 

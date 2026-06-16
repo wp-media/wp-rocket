@@ -41,6 +41,20 @@ return JSON `co_authored_by` fields, and GitHub comments.
 
 ---
 
+## Mandatory pipeline gates
+
+These steps **never skip**, regardless of which model runs the orchestrator, how simple the issue appears, or how confident you feel about the implementation:
+
+| Gate | Step | Enforcement |
+|---|---|---|
+| **Grooming** | Step 2 | ALWAYS runs. No implementation without a grooming JSON. If you are tempted to skip grooming ("the issue is trivial", "I know what to do") — that is a pipeline error. STOP and invoke `grooming-agent`. |
+| **Label "Made by AI" + Assignee** | Step 6 (release-agent) | ALWAYS applied and ALWAYS verified. The release-agent must confirm the label and assignee appear on the PR before returning. |
+| **`gh pr ready <PR#>`** | Step 11 | ALWAYS executed after QA passes. Verify with `gh pr view <PR#> --json isDraft -q .isDraft` — must return `false`. If it returns `true`, run `gh pr ready` again. |
+
+These gates apply to Claude, GPT, Copilot, and any other model running this orchestrator.
+
+---
+
 ## Core principle
 
 **TICKET and GROOMING always run.** All routing decisions happen *after* GROOMING returns.
@@ -103,7 +117,7 @@ Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
 
 - **Create** the log at startup with just the header and an empty event list.
 - **Rewrite the full file** after every action — the event list grows with each update.
-- See `.aiassistant/skills/orchestrator/html-log-format.md` for the full HTML structure and event patterns. Load it on demand (not at session start) to keep context lean.
+- See `.claude/skills/orchestrator/html-log-format.md` for the full HTML structure and event patterns. Load it on demand (not at session start) to keep context lean.
 
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
@@ -410,7 +424,7 @@ parallel (non-blocking). Main pipeline continues immediately. Log PARALLEL event
 ### Step 4 — Branch creation
 
 ```bash
-bash .aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh <N> "<title>" <prefix> <base_branch>
+bash .claude/skills/issue-workflow/scripts/make-issue-branch.sh <N> "<title>" <prefix> <base_branch>
 ```
 
 Log AGENT event.
@@ -432,6 +446,21 @@ file in `blocked_reason` for the other task so it doesn't touch it.
 
 Log a ROUTING DECISION event: "Task graph initialized — N backend files, M frontend files,
 parallel: YES | NO (reason: overlapping files | single domain)".
+
+---
+
+### Step 4d — Anti-scope-creep gate *(mandatory before implementation)*
+
+Before spawning any implementation agent, run a 4-point scope check. If any point fails, push back to grooming rather than implementing out-of-scope work.
+
+| Point | Check | Pass condition |
+|---|---|---|
+| Scope match | Does the dispatch plan map 1:1 to what the ticket asks for? | Every implementation step traces to an acceptance criterion |
+| Complexity ceiling | Is the implementation within the groomed effort estimate? | Actual file count and change size match `effort` (XS/S/M/L/XL) |
+| Agent count | Are we spawning only the agents the spec requires? | No extra agents added beyond backend/frontend as needed |
+| Unnecessary additions | Are we adding flags, options, or abstractions the ticket doesn't ask for? | Zero additions not traceable to an acceptance criterion |
+
+If any point fails: **do not start implementation**. Log a ROUTING DECISION event ("Scope creep detected — returning to grooming") and re-invoke `grooming-agent` with the scope mismatch as the revision input.
 
 ---
 
@@ -481,6 +510,10 @@ pushes the branch, and creates the PR as draft with the AI-generated notice prep
 the description. Log AGENT event with PR URL.
 
 Update the decisions strip Pull request field with the PR URL.
+
+> **The draft PR is the midpoint of the pipeline, not the end.**
+> Do not stop, do not ask the user what to do next. Proceed immediately to Steps 7–9.
+> The pipeline is complete only after Step 11 runs `gh pr ready` and posts the final summary.
 
 ---
 
@@ -615,7 +648,30 @@ has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried
    to append or replace the "Follow-up tickets" section with links to all created tickets.
    If no NTH tickets were created, write "None".
 2. Update PR body: replace "What was tested" with the full QA report
-3. `gh pr ready <PR#>` (move out of draft)
+3. Move PR out of draft — this step is **mandatory and must be verified**:
+   ```bash
+   gh pr ready <PR#>
+   # Verify isDraft == false
+   gh pr view <PR#> --json isDraft,labels -q '{isDraft: .isDraft, labels: [.labels[].name]}'
+   ```
+   If `isDraft` is still `true`, run `gh pr ready <PR#>` again and re-verify. Do not proceed
+   until the PR is confirmed out of draft.
+
+   Also verify `Made by AI` is still on the PR labels. If it is missing, re-apply it:
+   ```bash
+   gh pr edit <PR#> --add-label "Made by AI"
+   ```
+
+   Then transition the linked issue label from `In Progress` → `Ready for review` (best-effort — log the skip if the label does not exist rather than failing the pipeline):
+   ```bash
+   ISSUE_N=<N>
+   # Remove "In Progress" label if present
+   gh issue edit $ISSUE_N --remove-label "In Progress" 2>/dev/null || true
+   # Add "Ready for review" label (create it if missing)
+   gh label list --repo wp-media/wp-rocket --json name -q '.[].name' | grep -q "^Ready for review$" \
+     || gh label create "Ready for review" --repo wp-media/wp-rocket --color "0e8a16" --description "Ready for human review" 2>/dev/null || true
+   gh issue edit $ISSUE_N --add-label "Ready for review" 2>/dev/null || true
+   ```
 4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
 5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
@@ -720,7 +776,7 @@ verifying that downstream agents comply:
 
 ## HTML log format
 
-See `.aiassistant/skills/orchestrator/html-log-format.md` for the complete HTML structure,
+See `.claude/skills/orchestrator/html-log-format.md` for the complete HTML structure,
 CSS, event type patterns, and per-agent detail panel guidelines. Load it on demand when
 you need to write or update a log event — not at session start.
 
