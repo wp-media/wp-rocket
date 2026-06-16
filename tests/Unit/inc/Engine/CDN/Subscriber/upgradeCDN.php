@@ -72,7 +72,7 @@ class Test_UpgradeCDN extends TestCase {
 		if ( ! ( $config['has_active_subscription'] ?? false ) && ! empty( $config['cdn_cnames'] ?? [] ) ) {
 			$this->options
 				->expects()
-				->get( 'cdn' )
+				->get( 'cdn', 0 )
 				->andReturn( $config['cdn_enabled'] );
 		}
 
