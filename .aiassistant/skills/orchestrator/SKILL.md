@@ -240,7 +240,7 @@ fields — prose is for human readability only.
     "option_keys": [],
     "rest_endpoints": [],
     "ajax_actions": [],
-    "notes": "any drift from spec"
+    "drift": "any drift from spec"
   },
   "notes": "string"
 }

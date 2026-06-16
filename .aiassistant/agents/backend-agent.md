@@ -118,7 +118,7 @@ Fields to capture:
 - `option_keys`: every option key added or changed
 - `rest_endpoints`: every REST route added or changed, with method and route
 - `ajax_actions`: every AJAX action added or changed
-- `notes`: any drift from spec
+- `drift`: any drift from spec
 
 Populate every field even if empty (`[]`). Do not omit keys.
 
