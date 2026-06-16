@@ -265,8 +265,7 @@ Return two things to the orchestrator:
   "pr_splitting_plan": [
     { "slice": 1, "scope": ["file1.php", "file2.php"], "deliverable": "what complete behavior this slice ships" }
   ],
-  "comment_posted": true,
-  "_note": "The orchestrator handles issue labeling and PR readiness — grooming agent does not set labels directly."
+  "comment_posted": true
 }
 ```
 
