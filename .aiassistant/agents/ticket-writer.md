@@ -7,6 +7,8 @@ description: >
   sub-agent by the orchestrator. Returns a structured ticket object.
 tools: [Bash, Read, Write, Glob, Grep]
 model: haiku
+maxTurns: 15
+color: gray
 ---
 
 # TICKET WRITER AGENT
@@ -67,7 +69,7 @@ WP Rocket lives on GitHub. Always use `gh` for issue operations. The canonical r
    gh issue create --repo wp-media/wp-rocket \
      --title "Short imperative title under 70 chars" \
      --body "$(cat <<'EOF'
-   > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+   > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
    **Context**
    [Why this work is needed.]
@@ -117,7 +119,7 @@ Example:
 gh issue create --repo wp-media/wp-rocket \
   --title "Add index on post_id to cache_flush table" \
   --body "$(cat <<'EOF'
-> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
 **Source:** Follow-up from lead-reviewer on PR #42 (NICE_TO_HAVE)
 
@@ -134,6 +136,8 @@ EOF
 )" \
   --label "Made by AI" --label "enhancement"
 ```
+
+Create the issue and return immediately. Do NOT wait for a response.
 
 ---
 
@@ -161,7 +165,7 @@ EOF
 - Each issue must be **standalone**: one concern, one definition of done
 - Never create an issue without first searching for duplicates (skip this check in `nth_followup` mode)
 - **All created issues must include the AI-generated notice** at the top of the body:
-  `> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.`
+  `> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.`
 - Apply the `Made by AI` label on every issue created by this agent
 
 ---
@@ -171,7 +175,7 @@ EOF
 Use when no issue template is found in the repo:
 
 ```
-> ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+> 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
 
 **Context**
 [Why this work is needed. Reference the parent EPIC (#N) if applicable.]

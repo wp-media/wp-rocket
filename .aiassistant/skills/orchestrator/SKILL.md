@@ -235,9 +235,18 @@ fields — prose is for human readability only.
     "hesitations": ["what was unclear or uncertain during implementation"],
     "decision_rationale": "why the chosen approach was taken over the alternatives"
   },
+  "backend_api": {
+    "hooks": [],
+    "option_keys": [],
+    "rest_endpoints": [],
+    "ajax_actions": [],
+    "drift": "any drift from spec"
+  },
   "notes": "string"
 }
 ```
+
+`backend_api` is only present in backend-agent's return JSON. The orchestrator extracts it and passes it to the frontend-agent dispatch plan when scopes overlap.
 
 ### Release (`release-agent`)
 ```json
@@ -279,10 +288,10 @@ fields — prose is for human readability only.
 ### QA (`qa-engineer`)
 ```json
 {
-  "overall": "PASS|FAIL|PARTIAL",
+  "overall": "PASS|FAIL|PARTIAL|CANNOT_VERIFY",
   "strategies_used": ["API|BROWSER|VISUAL|ANALYSIS"],
   "pr_commented": true,
-  "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL", "evidence": "string" }],
+  "criteria_results": [{ "criterion": "string", "method": "string", "result": "PASS|FAIL|PARTIAL|CANNOT_VERIFY", "evidence": "string", "blocking_guard": "string" }],
   "smoke_tests": [{ "area": "string", "result": "PASS|FAIL", "evidence": "string" }],
   "tests_authored": ["string"],
   "pr_comment_url": "string",
@@ -290,6 +299,8 @@ fields — prose is for human readability only.
   "recommendations": [{ "description": "string", "severity": "MUST_HAVE|SHOULD_HAVE|COULD_HAVE|NICE_TO_HAVE" }]
 }
 ```
+
+`overall` is `CANNOT_VERIFY` only when *every* criterion is `CANNOT_VERIFY` (all acceptance criteria sat behind a license/environment guard that could not be satisfied locally); if some pass and some are unverifiable, `overall` is `PARTIAL`. `blocking_guard` names the guard that prevented verification (function + `file:line`), or is an empty string when not applicable — it mirrors the field `qa-engineer` and `e2e-qa-tester` already emit.
 
 ### Ticket writer (`ticket-writer`)
 ```json
@@ -625,6 +636,7 @@ Route on `overall`:
 |---|---|---|
 | `PASS` | any | Proceed to finalize. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
+| `CANNOT_VERIFY` | any | All acceptance criteria sat behind a license/environment guard and could not be verified locally. **Do not treat as PASS.** Surface to user with each criterion's `blocking_guard` (function + `file:line`) so they can verify in a licensed/live environment or accept the risk. Log ESCALATION event. |
 | `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
 | `FAIL` | `qa_loop >= 1` | Escalate with failing criteria and `alternative_suggestions`. |
 

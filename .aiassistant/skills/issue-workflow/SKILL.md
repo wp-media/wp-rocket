@@ -16,16 +16,18 @@ follow this workflow. The orchestrator runs **inline in this conversation** — 
 user's opening message before kicking it off, since it uses that for escalation
 calibration (high autonomy / standard / high oversight).
 
-## Tooling — Prefer MCPs, Fall Back to Shell
+## Tooling
 
-| Operation | Preferred (MCP) | Fallback |
+Use shell commands as the primary approach. The GitHub MCP (`mcp_github_*`) may be used if it is connected — but shell is always the safe fallback and is preferred for reliability.
+
+| Operation | Shell (primary) | GitHub MCP (if connected) |
 |---|---|---|
-| Issue fetch | `mcp_github_github_issue_read` | `issue-sync.sh <N>` → read `.TemporaryItems/…/<N>.md` |
-| Branch creation | `mcp_gitkraken_git_branch` + `mcp_gitkraken_git_checkout` | `make-issue-branch.sh` |
-| Staging & committing | `mcp_gitkraken_git_add_or_commit` | `git add` / `git commit` |
-| Pushing | `mcp_gitkraken_git_push` | `git push` |
-| PR creation | `mcp_github_github_create_pull_request` | `gh pr create` |
-| CI monitoring | `mcp_github_github_pull_request_read` (method: `get_check_runs`) | Ask user to check GitHub Actions |
+| Issue fetch | `bash .aiassistant/skills/issue-workflow/scripts/issue-sync.sh <N>` | `mcp_github_github_issue_read` |
+| Branch creation | `bash .aiassistant/skills/issue-workflow/scripts/make-issue-branch.sh` | — |
+| Staging & committing | `git add` / `git commit` | — |
+| Pushing | `git push -u origin <branch>` | — |
+| PR creation | `gh pr create` | `mcp_github_github_create_pull_request` |
+| CI monitoring | `gh pr checks <PR#>` | `mcp_github_github_pull_request_read` |
 
 ## Steps
 
@@ -42,6 +44,6 @@ calibration (high autonomy / standard / high oversight).
 6. **Invoke the `orchestrator` skill inline** (do not spawn it as a sub-agent — it runs in this conversation context so it can read the user's intent for escalation calibration):
    > Inputs: issue number `N`, issue file `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`, base branch
 
-The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `release-agent`, `lead-reviewer`, `ci-agent`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
+The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `release-agent`, `lead-reviewer`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
 
 Monitor progress at `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`.

@@ -10,7 +10,7 @@ return [
 			'customer_data' => (new UserDataGenerator())->with_reseller_status(0)->generate()
 		],
 		'expected' => <<<HTML
-<span class="wpr-infoAccount wpr-isInvalid">No Subscription</span>
+<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
 HTML
 	],
 	'testShouldNotDisplayWhenRocketInsightsDisabled' => [
