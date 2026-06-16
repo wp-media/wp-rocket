@@ -369,7 +369,7 @@ suggests low actual risk), confirm with the user before deciding.
 
 | Agent | Default model | Condition for override |
 |---|---|---|
-| `grooming-agent` | `sonnet` | `opus` when signal is "complex" (body >500 chars OR complexity keywords present). Pass `complexity_signal: "simple"|"medium"|"complex"` as input. |
+| `grooming-agent` | `sonnet` | `opus` when signal is "complex" (body >500 chars OR complexity keywords present). |
 | `challenger` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
 | `backend-agent` | `sonnet` | `opus` if user confirmed (see Opus escalation below) |
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
