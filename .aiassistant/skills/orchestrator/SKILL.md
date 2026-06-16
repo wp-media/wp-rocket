@@ -116,58 +116,6 @@ Maintain in your context tracking:
 
 ---
 
-## Runtime Coordination Layer
-
-Each pipeline run creates an isolated working directory for coordination artifacts:
-
-**Run root:** `.TemporaryItems/Issues/wp-rocket/issue-<N>/`
-
-```
-issue-<N>/
-├── tasks.json               # shared task ledger — read/written by all agents
-├── contracts/               # reserved for future coordination artifacts
-└── locks/
-    └── <agent>-<task-id>.lock  # file ownership — removed when agent finishes
-```
-
-### `tasks.json` structure
-
-```json
-{
-  "run_id": "issue-<N>-<unix-timestamp>",
-  "issue_id": "<N>",
-  "branch": "<branch-name>",
-  "base_branch": "origin/develop",
-  "worktrees": {},
-  "tasks": [
-    {
-      "id": "impl-backend",
-      "type": "implementation",
-      "owner": "backend-agent",
-      "status": "pending | in-progress | completed | blocked",
-      "depends_on": [],
-      "file_scope": ["inc/Engine/...", "tests/Unit/..."],
-      "worktree": null,
-      "started_at": null,
-      "completed_at": null,
-      "blocked_reason": null
-    },
-    {
-      "id": "impl-frontend",
-      "type": "implementation",
-      "owner": "frontend-agent",
-      "status": "pending | in-progress | completed | blocked",
-      "depends_on": [],
-      "file_scope": ["assets/src/...", "views/..."],
-      "worktree": null,
-      "started_at": null,
-      "completed_at": null,
-      "blocked_reason": null
-    }
-  ]
-}
-```
-
 ### Backend API contract
 
 - The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
@@ -469,16 +417,9 @@ Log AGENT event.
 
 ---
 
-### Step 4b — Task graph initialization
+### Step 4b — Scope and parallel eligibility
 
-Create the run directory and write the initial `tasks.json`:
-
-```bash
-mkdir -p .TemporaryItems/Issues/wp-rocket/issue-<N>/contracts
-mkdir -p .TemporaryItems/Issues/wp-rocket/issue-<N>/locks
-```
-
-Populate `file_scope` for each task from `grooming.development_steps[*].files`:
+Determine `file_scope` for each domain from `grooming.development_steps[*].files`:
 - **backend scope**: `.php` files in `inc/`, `src/`, `tests/`
 - **frontend scope**: `.js`, `.css`, `.twig`, `.html` files in `assets/`, `views/`
 
@@ -499,22 +440,10 @@ parallel: YES | NO (reason: overlapping files | single domain)".
 Each agent runs the `docs` skill and `dod` skill (layer 1) inline before committing,
 then commits atomically.
 
-Before spawning, mark each in-scope task `in-progress` in `tasks.json` and record
-`started_at`.
-
 **05a/b — Parallel** (scopes disjoint):
 
-Create git worktrees for isolation:
-```bash
-git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/backend <branch>
-git worktree add .TemporaryItems/Issues/wp-rocket/issue-<N>/worktrees/frontend <branch>
-```
-
-Update each task's `worktree` field in `tasks.json`.
-
 > Spawn `backend-agent` and `frontend-agent` simultaneously.
-> Each agent receives: issue #N, spec path, dispatch plan, their task entry from `tasks.json`
-> (including `file_scope` and `worktree` path).
+> Each agent receives: issue #N, spec path, dispatch plan (including `file_scope`).
 >
 > The orchestrator is the coordination hub — agents do not communicate with each other.
 > Backend returns `backend_api` (hooks, option_keys, rest_endpoints) in its return JSON on completion.
@@ -522,12 +451,11 @@ Update each task's `worktree` field in `tasks.json`.
 > and passes it explicitly in the frontend-agent dispatch plan.
 > Frontend receives it from the orchestrator — no file read involved.
 >
-> Orchestrator proceeds when both tasks show `completed` in `tasks.json`
-> (or either shows `blocked`).
+> Orchestrator proceeds when it has received the return JSON from both agents (or either errors out).
 
 **05a/b — Sequential fallback** (scopes overlap):
 
-Do NOT create git worktrees. All agents work on the same branch.
+All agents work on the same branch.
 
 > Invoke `backend-agent` first (if in scope), then `frontend-agent` (if in scope).
 > Max 3 attempts each. Hard stop after 3 — escalate.
@@ -722,12 +650,9 @@ Final summary template:
 | L | 30 min |
 | XL | 45 min |
 
-If any agent's task remains `in-progress` past its timeout:
-1. Mark it `blocked` in `tasks.json` with `blocked_reason: "timeout"`.
-2. Remove any worktree created for it: `git worktree remove <path>`.
-3. Log an ESCALATION event — do not silently retry with the same scope.
-4. Offer the human two options: (a) re-spawn with a narrower `file_scope` (split the task
-   entry in `tasks.json`), or (b) hand off to manual implementation.
+If any agent does not return within its timeout:
+1. Log an ESCALATION event — do not silently retry with the same scope.
+2. Offer the human two options: (a) re-spawn with a narrower `file_scope`, or (b) hand off to manual implementation.
 
 Reassign rather than retry when the same agent has failed 3 times with the same error —
 that pattern signals a spec ambiguity, not a transient failure.

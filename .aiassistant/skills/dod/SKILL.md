@@ -245,8 +245,6 @@ Exceptions that do not count as violations:
 - Files the orchestrator explicitly added to scope via a `blocked_reason` note
 - Files modified solely by `composer phpcs:fix` (the phpcbf auto-formatter). phpcbf has no "changed files only" mode, so it may reformat files outside scope. Note which files were auto-fixed and exclude them from the scope-violation count.
 
-If no `tasks.json` exists (e.g., the orchestrator was not used), skip this check with status `N/A`.
-
 - **PASS**: All modified files are within declared scope (or no scope was declared)
 - **WARN**: One or more files outside scope were modified — name them and explain why
 - **FAIL**: Two or more files outside scope were modified without explanation
