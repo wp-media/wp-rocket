@@ -29,6 +29,7 @@ Accept any of the following as a starting point:
 - Raw input (prose, Slack thread, paste) — in this case invoke the `ticket-writer` agent
   first to formalize the issue
 - `base_branch` — defaults to `origin/develop`
+- `complexity_signal` (optional): `"medium"` (default) or `"complex"`. User's assessment of the issue's depth. Pass it through to `grooming-agent`. If omitted, default to `"medium"`.
 
 At startup, read `AGENTS.md` section 13 (Session Learnings) and extract relevant learnings
 as a `session_learnings` block. Pass this block in the dispatch input to every agent you
@@ -349,7 +350,7 @@ Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
 ### Step 2 — Grooming *(always)*
 
 Invoke `grooming-agent`:
-> Inputs: issue `#N`, issue file path, base branch, `complexity_signal: "simple"|"medium"|"complex"` (derived from issue title/body length and keywords — see model routing table)
+> Inputs: issue `#N`, issue file path, base branch, `complexity_signal: "medium"|"complex"` (from user input, defaults to `"medium"`)
 
 Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
 JSON. Log an AGENT event with the grooming JSON summary.
@@ -389,7 +390,7 @@ suggests low actual risk), confirm with the user before deciding.
 
 | Agent | Default model | Condition for override |
 |---|---|---|
-| `grooming-agent` | `sonnet` | — |
+| `grooming-agent` | `sonnet` | `opus` when `complexity_signal == "complex"` |
 | `challenger` | `sonnet` | `haiku` when `effort=XS AND risk=LOW AND complexity=LOW` |
 | `backend-agent` | `sonnet` | `opus` if user confirmed (see Opus escalation below) |
 | `frontend-agent` | `sonnet` | `opus` if user confirmed |
