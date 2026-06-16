@@ -172,10 +172,6 @@ issue-<N>/
 
 - The orchestrator uses the `backend_api` field from backend-agent's return JSON and passes it explicitly in the frontend dispatch plan — no file read required.
 
-**Sequential mode:** when backend finishes before frontend starts, the orchestrator extracts `backend_api` from the return JSON and includes it in the frontend agent's dispatch plan.
-
-**Parallel mode:** if `backend_api` is not yet available when frontend starts, frontend proceeds from spec and notes "API contract not available — using spec".
-
 ## JSON return contracts
 
 Every agent returns a typed JSON object. Routing logic runs mechanically on the structured
