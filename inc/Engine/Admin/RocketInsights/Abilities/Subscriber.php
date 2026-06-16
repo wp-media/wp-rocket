@@ -57,6 +57,10 @@ class Subscriber implements Subscriber_Interface {
 	 * Registers the Rocket Insights ability category.
 	 */
 	public function register_rocket_insights_category() {
+		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+			return;
+		}
+
 		wp_register_ability_category(
 			'wp-rocket-insights',
 			[

@@ -86,6 +86,10 @@ class AddPageInsights implements AbilitiesInterface {
 	 * Registers the ability to add page insights.
 	 */
 	public function register(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
 		wp_register_ability(
 			'wp-rocket/add-page-insights',
 			[
