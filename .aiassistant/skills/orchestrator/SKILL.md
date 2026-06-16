@@ -381,8 +381,6 @@ suggests low actual risk), confirm with the user before deciding.
 
 Pass the resolved model as the `model` parameter on every Agent tool spawn. For agents with frontmatter `model: haiku`, this is redundant but harmless — always pass it explicitly so the intent is clear in the orchestrator context.
 
-Complexity keywords for "complex" signal: `architecture`, `refactor`, `redesign`, `module`, `migration`, `breaking`. Pass `complexity_signal: "simple"|"medium"|"complex"` to grooming-agent.
-
 **Opus escalation** — when `complexity == HIGH`: before proceeding to branch creation, ask the user:
 
 > "Grooming returned `complexity=HIGH`. Should I run implementation on Claude Opus 4.8 (more capable but slower and more expensive) or stay on Sonnet 4.6?"
