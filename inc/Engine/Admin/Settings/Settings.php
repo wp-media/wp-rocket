@@ -385,6 +385,12 @@ class Settings {
 			$input['cdn_zone'] = array_values( $input['cdn_zone'] );
 		}
 
+		if ( ! empty( $input['cdn_reject_pages'] ) ) {
+			$input['cdn_reject_pages'] = rocket_sanitize_textarea_field( 'cdn_reject_pages', $input['cdn_reject_pages'] );
+		} else {
+			$input['cdn_reject_pages'] = [];
+		}
+
 		// Option : Files to exclude from the CDN process.
 		if ( ! empty( $input['cdn_reject_files'] ) ) {
 			$input['cdn_reject_files'] = rocket_sanitize_textarea_field( 'cdn_reject_files', $input['cdn_reject_files'] );

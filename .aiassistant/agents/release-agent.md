@@ -3,6 +3,8 @@ name: release-agent
 description: Handles trailer verification, pushing the branch to remote, and creating the GitHub pull request as draft. Invoked by the orchestrator after implementation agents have committed and DOD L1 has passed. Does not write code or modify implementation files. Prepends the AI-generated notice to the PR description.
 tools: [Bash, Read, Write]
 model: haiku
+maxTurns: 10
+color: orange
 ---
 
 # Release Agent
@@ -15,6 +17,10 @@ unconditional and non-negotiable:
    — verify this before pushing and amend any commit that is missing it.
 2. **The AI-generated notice must appear at the top of the PR description** — before any
    other content, so it is visible without scrolling.
+
+> **Git command safety:** All git commands must use `--no-pager` or `GIT_PAGER=cat` to
+> prevent interactive pager hangs in non-terminal environments. Set `GIT_TERMINAL_PROMPT=0`
+> so git never blocks on an interactive credential/auth prompt either.
 
 ## Inputs
 - Issue number `N`
@@ -33,8 +39,8 @@ unconditional and non-negotiable:
 Before pushing anything, audit the branch:
 
 ```bash
-git log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
-  if ! git show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude"; then
+git --no-pager log <base_branch>..HEAD --format="%H %s" | while read sha msg; do
+  if ! git --no-pager show $sha --format="%b" -s | grep -q "Co-Authored-By: Claude"; then
     echo "MISSING trailer on $sha: $msg"
   fi
 done
@@ -48,11 +54,12 @@ git commit --amend --no-edit --trailer "Co-Authored-By: CURRENT_MODEL <noreply@a
 For multiple commits, use a non-interactive rebase with `--exec`:
 ```bash
 TRAILER="Co-Authored-By: CURRENT_MODEL <noreply@anthropic.com>"
-git rebase <base_branch> --exec \
-  "git show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer '$TRAILER'"
+GIT_TERMINAL_PROMPT=0 git --no-pager rebase <base_branch> --exec \
+  "git --no-pager show -s --format='%B' HEAD | grep -q 'Co-Authored-By' || git commit --amend --no-edit --trailer \"$TRAILER\""
 ```
 
 `--exec` runs after each commit without opening an editor — safe in automated contexts.
+`GIT_TERMINAL_PROMPT=0` ensures the rebase never stalls on an interactive auth prompt.
 
 After amending, re-run the audit until every commit has the trailer. Set
 `trailer_verified: true` in the return JSON only after the audit shows zero missing.
@@ -92,14 +99,22 @@ left behind.
 
 - **The first line of the PR body must be the AI-generated notice:**
   ```
-  > ⚠️ AI-generated — created by an automated pipeline. Review before acting on this.
+  > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
   ```
   Prepend it to the draft content. This notice is unconditional — it cannot be omitted,
   abbreviated, or moved further down.
 - Title line: `Closes #<N>: <short descriptive title>`. **Never** use conventional-commit
   prefix format (`fix(xxx):`, `feat(xxx):`, etc.) in the PR title — that format is for
   git commits only.
-- "Description": one or two sentences of user-or-developer impact, ending with `Fixes #<N>`.
+- **Closing keyword line** (mandatory — this is what GitHub uses to link the PR to the issue):
+  the PR body must contain a standalone line `Closes #<N>` **not** buried in prose. Place it
+  immediately after the AI-generated notice:
+  ```
+  > 🤖 AI-generated — created by an automated pipeline. Review before acting on this.
+
+  Closes #<N>
+  ```
+- "Description": one or two sentences of user-or-developer impact.
 - "What was done": summarize the implementation from the spec.
 - "How to test": derive from the acceptance criteria.
 - "Type of change": select exactly one checkbox matching the change type.
@@ -117,23 +132,36 @@ and `<details>` tags for long technical content.
 
 ### Step 5 — Create the PR (draft)
 
+Capture the PR URL from the command output — it is NOT the same as the issue number:
+
 ```bash
-gh pr create \
+PR_URL=$(gh pr create \
   --title "Closes #<N>: <short descriptive title>" \
   --body "$(cat .TemporaryItems/Issues/wp-rocket/pull/<N>.md)" \
   --base <base_branch> \
-  --draft
+  --draft)
+PR_NUMBER=$(echo "$PR_URL" | grep -oE '[0-9]+$')
 ```
 
 Then assign and label:
+
 ```bash
-gh pr edit <PR_number> --add-assignee @me --add-label "Made by AI"
+# Ensure the label exists — create it if missing (never skip silently)
+gh label list --repo wp-media/wp-rocket --json name -q '.[].name' | grep -q "^Made by AI$" \
+  || gh label create "Made by AI" --repo wp-media/wp-rocket --color "0075ca" --description "Created or assisted by an AI agent"
+
+gh pr edit "$PR_NUMBER" --add-assignee @me --add-label "Made by AI"
 ```
-(Skip the label silently if it does not exist in the repo.)
+
+Verify both were applied:
+```bash
+gh pr view "$PR_NUMBER" --json assignees,labels -q '{assignees: [.assignees[].login], labels: [.labels[].name]}'
+```
+If `labels` does not include `"Made by AI"` or `assignees` is empty, retry the `gh pr edit` command once. If it still fails, log the error in `notes` — do not proceed silently.
 
 Verify the AI-generated notice is the first line of the live PR body:
 ```bash
-gh pr view <PR_number> --json body -q .body | head -1
+gh pr view "$PR_NUMBER" --json body -q .body | head -1
 ```
 If the first line is not the notice, edit the PR body to fix it.
 
@@ -141,14 +169,14 @@ If the first line is not the notice, edit the PR body to fix it.
 
 ## Return
 
-Return the following JSON object to the orchestrator:
+Return the following JSON object to the orchestrator. Use the actual PR URL and number captured above — never the issue number `<N>`:
 
 ```json
 {
   "branch_pushed": true,
   "trailer_verified": true,
-  "pr_url": "https://github.com/wp-media/wp-rocket/pull/<N>",
-  "pr_number": <N>,
+  "pr_url": "<the URL output by gh pr create — e.g. https://github.com/wp-media/wp-rocket/pull/8250>",
+  "pr_number": <the actual PR number extracted from that URL — NOT the issue number>,
   "pr_created": true,
   "notes": "any non-Claude human commits skipped from trailer check, or empty string"
 }

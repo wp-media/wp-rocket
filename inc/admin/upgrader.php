@@ -122,7 +122,7 @@ function rocket_first_install() {
 				'database_optimize_tables'    => 0,
 				'schedule_automatic_cleanup'  => 0,
 				'automatic_cleanup_frequency' => 'daily',
-				'cdn'                         => 0,
+				'cdn'                         => 1,
 				'cdn_cnames'                  => [],
 				'cdn_zone'                    => [],
 				'cdn_reject_files'            => [],

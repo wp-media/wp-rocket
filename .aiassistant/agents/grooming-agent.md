@@ -73,25 +73,6 @@ Use the knowledge graph first, then read files.
 
 ---
 
-### Step 2b — (Optional) Probe the running system with E2E basic tier
-
-If the issue describes a current behavior that you want to verify *before* writing the
-spec — for example, "the cache header is missing on logged-in users" — invoke the `e2e`
-skill (`.aiassistant/skills/e2e/SKILL.md`) with `tier: "basic"` to reproduce against the
-local environment at `http://localhost:8888`.
-
-Use this only when an assumption needs verification. Skip it for changes where the
-behavior is already clear from reading the code. Examples:
-
-- ✅ Useful: confirm the current API response shape before designing a change to it
-- ✅ Useful: reproduce a bug to capture the exact failure mode before planning the fix
-- 🚫 Wasteful: probing for a feature you can fully understand from the source
-- 🚫 Wasteful: running E2E when the issue is purely refactoring or test-only
-
-Record what you observed in the spec's `Problem` or `Edge Cases` section if relevant.
-
----
-
 ### Step 3 — Architectural analysis
 
 Answer these questions explicitly:
@@ -279,6 +260,10 @@ The decision channel for the splitting plan is the GitHub comment (Step 5): the 
 - `M`: 3–6 files, or introduces a new class/interface
 - `L`: 7–10 files, architectural shift
 - `XL`: 10+ files or new module
+
+**`effort_used`** — the reasoning depth you actually applied: `LOW` (quick scan, obvious fix), `MEDIUM` (moderate investigation), `HIGH` (deep architectural analysis). Diagnostic only; the orchestrator logs it but no routing depends on it.
+
+**`pr_splitting_plan`** — populate for `L`/`XL` efforts: list each proposed PR slice with its scope (file or area names) and a one-line deliverable. Set to `null` for `XS`/`S`/`M`. The orchestrator surfaces this to the team before implementation starts so they can decide whether to split.
 
 **risk_notes guidance:** This is the orchestrator's most important input for routing decisions. State: your confidence level (HIGH/MEDIUM/LOW), the one or two key risks you see, and any unverified assumptions (auth behavior, multisite, concurrency) that a challenger should probe. If everything is straightforward, say so explicitly.
 

@@ -8,6 +8,20 @@ Skills define behavioral guidance.
 AGENTS.md defines mandatory guardrails.
 If a conflict exists, AGENTS.md prevails.
 
+---
+
+## Operating Principles
+
+These five rules apply to every agent, in every phase, before any skill-specific guidance loads.
+
+1. **Surface assumptions before building.** If the spec or codebase leaves something ambiguous, state the assumption explicitly before acting on it — don't silently guess.
+2. **Stop when requirements conflict.** If the issue, the spec, and the codebase contradict each other, stop and surface the conflict. Proceeding on a guess produces bugs that are hard to trace.
+3. **Push back when warranted.** If the simplest correct solution differs from the plan, say so. Prefer boring, obvious solutions over clever ones. An elegant approach that introduces risk is worse than a dull one that doesn't.
+4. **Touch only what you are asked to touch.** Scope discipline is the single biggest determinant of whether a PR is mergeable. Do not refactor adjacent code, rename unrelated identifiers, or "clean up while you're in the area."
+5. **Verification is not optional.** "Seems right" never closes a task. Every change must be confirmed by running tests, tools, or a manual scenario — not by reading the code and inferring it should work.
+
+---
+
 The objective is to keep WP Rocket:
 
 - WordPress.org compliant
