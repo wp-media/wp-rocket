@@ -480,7 +480,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
 		// Bail early.
-		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+		if ( version_compare( $old_version, '3.22', '>=' ) ) {
 			return;
 		}
 
