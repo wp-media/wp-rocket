@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -69,6 +70,8 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	private $subscription;
 
+	private $website_search_api_client;
+
 	/**
 	 * Constructor.
 	 *
@@ -79,13 +82,22 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
 	 * @param User                 $user  License User instance.
 	 */
-	public function __construct( APIClient $api_client, CreateAPIClient $create_api_client, CDNOptionsManager $options_manager, Queue $queue, CheckStatusAPIClient $check_status_api_client, User $user ) {
-		$this->api_client              = $api_client;
-		$this->create_api_client       = $create_api_client;
-		$this->options_manager         = $options_manager;
-		$this->queue                   = $queue;
-		$this->check_status_api_client = $check_status_api_client;
-		$this->user                    = $user;
+	public function __construct(
+		APIClient $api_client,
+		CreateAPIClient $create_api_client,
+		CDNOptionsManager $options_manager,
+		Queue $queue,
+		CheckStatusAPIClient $check_status_api_client,
+		User $user,
+		WebsiteSearch $website_search_api_client
+	) {
+		$this->api_client                = $api_client;
+		$this->create_api_client         = $create_api_client;
+		$this->options_manager           = $options_manager;
+		$this->queue                     = $queue;
+		$this->check_status_api_client   = $check_status_api_client;
+		$this->user                      = $user;
+		$this->website_search_api_client = $website_search_api_client;
 	}
 
 	/**
@@ -103,6 +115,14 @@ class SubscriptionController implements LoggerAwareInterface {
 		}
 
 		$this->subscription = $this->api_client->get_subscription_data();
+		if ( 404 === $this->subscription['status_code'] ) {
+			$this->website_search_api_client->set_site_url( home_url() );
+			$website = $this->website_search_api_client->find();
+			if ( ! empty( $website ) ) {
+				$this->subscription = array_merge( $this->subscription, $website );
+			}
+		}
+
 		return $this->subscription;
 	}
 
@@ -353,5 +373,23 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	public function get_rocketcdn_status() {
 		return get_transient( 'rocketcdn_status' );
+	}
+
+	public function is_cancelled(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['subscription_status'] ) && 'cancelled' === $subscription['subscription_status'];
+	}
+
+	public function is_website_pending_deletion(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['website_status'] ) && 'pending_deletion' === $subscription['website_status'];
+	}
+
+	public function is_in_grace_period(): bool {
+		return $this->is_cancelled() && $this->is_website_pending_deletion();
+	}
+
+	public function is_cancelled_outside_grace_period(): bool {
+		return $this->is_cancelled() && ! $this->is_website_pending_deletion();
 	}
 }

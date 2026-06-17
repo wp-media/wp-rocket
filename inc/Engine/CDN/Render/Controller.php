@@ -730,7 +730,12 @@ class Controller extends Abstract_Render {
 
 		$class = '';
 
-		if ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() ) {
+		if ( $this->subscription_controller->is_in_grace_period() ) {
+			$class         .= ' wpr-cdn-status--expired';
+			$paused_details = __( 'RocketCDN is currently paused because your licence was cancelled, you need to wait up to two days before resuming.', 'rocket' );
+		}
+
+		if ( $this->subscription_controller->is_license_invalid() ) {
 			$class         .= ' wpr-cdn-status--expired';
 			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
@@ -762,6 +767,14 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return ! (bool) $this->options->get( 'cdn' );
+		return $this->is_forced_paused() || ! (bool) $this->options->get( 'cdn' );
+	}
+
+	private function is_forced_paused(): bool {
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return true;
+		}
+
+		return false;
 	}
 }

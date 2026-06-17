@@ -46,6 +46,7 @@ class APIClient {
 			'plan_type'                     => 'free',
 			'plan_page_limit'               => 0,
 			'website_id'                    => 0,
+			'status_code'                   => 500,
 		];
 
 		$token = get_option( 'rocketcdn_user_token' );
@@ -72,8 +73,11 @@ class APIClient {
 			$args
 		);
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
-			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+		$status_code            = wp_remote_retrieve_response_code( $response );
+		$default['status_code'] = $status_code;
+
+		if ( 200 !== $status_code ) {
+			$this->set_status_transient( $default, 404 !== $status_code ? 3 * MINUTE_IN_SECONDS : DAY_IN_SECONDS );
 
 			return $default;
 		}
@@ -103,6 +107,7 @@ class APIClient {
 			'plan_type'                     => $data['plan_type'] ?? 'free',
 			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
 			'website_id'                    => $data['website_id'] ?? 0,
+			'status_code'                   => $data['status_code'] ?? 0,
 		];
 
 		$this->set_status_transient( $final_data, DAY_IN_SECONDS );
