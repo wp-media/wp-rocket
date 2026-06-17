@@ -63,11 +63,12 @@
 	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
 	 *
-	 * @param {number} count Current number of free-tier pages.
-	 * @param {number} limit Free-tier page limit.
+	 * @param {number}  count       Current number of free-tier pages.
+	 * @param {number}  limit       Free-tier page limit.
+	 * @param {boolean} allowExpand Whether the banner may enter the expanded state. Defaults to true.
 	 * @returns {void}
 	 */
-	function updateRocketCtaState( count, limit ) {
+	function updateRocketCtaState( count, limit, allowExpand = true ) {
 		const cta = document.getElementById( 'wpr-rocketcdn-cta' );
 
 		if ( ! cta ) {
@@ -75,12 +76,60 @@
 		}
 
 		const isVisible = count > 0;
-		const isExpanded = count >= limit;
+		const isExpanded = allowExpand && count >= limit;
 
 		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
 		cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
 		cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
 		cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+	}
+
+	/** Pending auto-expand timer ID, or null when no timer is active. */
+	let autoExpandTimer = null;
+
+	/** Cancels any in-flight auto-expand timer and cleans up its listeners. */
+	function cancelAutoExpand() {
+		if ( autoExpandTimer !== null ) {
+			clearTimeout( autoExpandTimer );
+			autoExpandTimer = null;
+		}
+	}
+
+	/**
+	 * Schedules the RocketCDN upsell banner to auto-expand after a 15-second delay.
+	 *
+	 * Cancels automatically if the user navigates away from the CDN tab or leaves the page
+	 * before the delay ends.
+	 *
+	 * @param {number} count Current number of free-tier pages.
+	 * @param {number} limit Free-tier page limit.
+	 * @returns {void}
+	 */
+	function scheduleAutoExpand( count, limit ) {
+		cancelAutoExpand();
+
+		function onHashChange() {
+			if ( window.location.hash !== '#page_cdn' ) {
+				cancel();
+			}
+		}
+
+		function cancel() {
+			cancelAutoExpand();
+			window.removeEventListener( 'hashchange', onHashChange );
+			window.removeEventListener( 'beforeunload', cancel );
+		}
+
+		window.addEventListener( 'hashchange', onHashChange );
+		window.addEventListener( 'beforeunload', cancel );
+
+		autoExpandTimer = setTimeout( () => {
+			autoExpandTimer = null;
+			window.removeEventListener( 'hashchange', onHashChange );
+			window.removeEventListener( 'beforeunload', cancel );
+			updateRocketCtaState( count, limit );
+			document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+		}, 15000 );
 	}
 
 	/**
@@ -446,7 +495,9 @@
 				input.disabled = false;
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
-				updateRocketCtaState( response.count, response.limit );
+				// When limit is reached, keep the banner collapsed for now — scheduleAutoExpand
+				// will expand it (and fire tracking) after a 15-second delay.
+				updateRocketCtaState( response.count, response.limit, response.limit !== response.count );
 
 				if ( builtIn ) {
 					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
@@ -475,7 +526,8 @@
 				if ( response.limit === response.count ) {
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
-					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+					// Delay banner expansion and tracking. If user leaves before delay ends, cancel.
+					scheduleAutoExpand( response.count, response.limit );
 				}
 
 				// Set subscription loading state when first page is added.
