@@ -15,11 +15,15 @@ use WP_Rocket\Tests\Unit\TestCase;
 class RocketAnalyticsOptinThankyouNoticeTest extends TestCase {
 
 	/**
-	 * Set up the test environment.
+	 * Load the file under test once before any test in this class runs,
+	 * before Brain Monkey can create eval stubs for functions declared in it.
+	 *
+	 * Brain Monkey's wp-hook-functions.php is required first so that add_action()
+	 * is available when the top-level calls in notices.php execute.
 	 */
-	protected function setUp(): void {
-		parent::setUp();
-
+	public static function setUpBeforeClass(): void {
+		parent::setUpBeforeClass();
+		require_once WP_ROCKET_PLUGIN_ROOT . 'vendor/brain/monkey/inc/wp-hook-functions.php';
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/ui/notices.php';
 	}
 
