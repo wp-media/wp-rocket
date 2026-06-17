@@ -618,7 +618,7 @@ Route on `overall`:
 
 | Result | Loop count | Action |
 |---|---|---|
-| `PASS` | any | Proceed to finalize. |
+| `PASS` | any | Proceed to Step 10. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
 | `CANNOT_VERIFY` | any | All acceptance criteria sat behind a license/environment guard and could not be verified locally. **Do not treat as PASS.** Surface to user with each criterion's `blocking_guard` (function + `file:line`) so they can verify in a licensed/live environment or accept the risk. Log ESCALATION event. |
 | `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
@@ -656,8 +656,8 @@ If the list is non-empty:
    1. [LOW] Consider extracting the retry logic into a dedicated helper — currently duplicated in 2 places. (inc/Engine/RetryHandler.php)
 
    **From review (2 items)**
-   2. [REFACTORING] Rename `$tmp` to `$parsed_response` for clarity. (inc/API/Client.php)
-   3. [DOCS] Add inline docblock to the new filter hook.
+   2. [LOW] Rename `$tmp` to `$parsed_response` for clarity. (inc/API/Client.php)
+   3. [LOW] Add inline docblock to the new filter hook.
 
    For each item, reply with one of:
    - **tackle** — implement it in this PR
@@ -676,7 +676,7 @@ If the list is non-empty:
      After the agent commits, re-run DOD L2 + Lead Review + QA in parallel (same loop counters
      apply). Log a ROUTING DECISION event: "Tackling NTH item N in current PR."
    - **ticket** — dispatch `ticket-writer` (`mode: "nth_followup"`) with the single NTH item.
-     Collect the returned ticket URL. Log a PARALLEL event with the ticket URL.
+     Collect the returned ticket URL. Log an AGENT event with the ticket URL.
    - **discard** — log a ROUTING DECISION event: "NTH item N discarded by user." No further action.
 
 4. After all items are resolved, proceed to Step 11. Log a ROUTING DECISION event listing
@@ -687,7 +687,7 @@ If the list is non-empty:
 ### Step 11 — Finalize
 
 1. Update PR body: replace "What was tested" with the full QA report
-3. Move PR out of draft — this step is **mandatory and must be verified**:
+2. Move PR out of draft — this step is **mandatory and must be verified**:
    ```bash
    gh pr ready <PR#>
    # Verify isDraft == false
@@ -711,8 +711,8 @@ If the list is non-empty:
      || gh label create "Ready for review" --repo wp-media/wp-rocket --color "0e8a16" --description "Ready for human review" 2>/dev/null || true
    gh issue edit $ISSUE_N --add-label "Ready for review" 2>/dev/null || true
    ```
-4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
-5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
+3. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
+4. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 Final summary template:
 ```markdown
