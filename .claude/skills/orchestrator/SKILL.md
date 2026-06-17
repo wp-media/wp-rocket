@@ -612,7 +612,7 @@ Log AGENT event with verdict, loop count, and any NTH items accumulated.
 #### Step 9 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
-to finalize.
+to Step 10.
 
 Route on `overall`:
 
