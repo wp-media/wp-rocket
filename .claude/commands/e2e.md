@@ -1,1 +1,1 @@
-../../.aiassistant/skills/e2e/SKILL.md
+../skills/e2e/SKILL.md
