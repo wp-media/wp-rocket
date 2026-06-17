@@ -8,21 +8,23 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Test class covering ::rocket_analytics_optin_thankyou_notice
  *
+ * Each test runs in a separate process to avoid cross-suite function-declaration
+ * conflicts: other test classes mock rocket_notice_html() via Brain Monkey eval stubs
+ * before inc/admin/ui/notices.php is loaded, making PHP unable to redeclare it.
+ *
  * @group admin
  * @group notices
  * @group analytics
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
  */
 class RocketAnalyticsOptinThankyouNoticeTest extends TestCase {
 
 	/**
-	 * Load the file under test once before any test in this class runs,
-	 * before Brain Monkey can create eval stubs for functions declared in it.
-	 *
-	 * Brain Monkey's wp-hook-functions.php is required first so that add_action()
-	 * is available when the top-level calls in notices.php execute.
+	 * Load the notices file in each isolated process before Brain Monkey stubs any function it declares.
 	 */
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
+	protected function setUp(): void {
+		parent::setUp();
 		require_once WP_ROCKET_PLUGIN_ROOT . 'vendor/brain/monkey/inc/wp-hook-functions.php';
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/ui/notices.php';
 	}
