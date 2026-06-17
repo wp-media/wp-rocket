@@ -140,7 +140,6 @@ Do not rewrite the spec. Return the verdict and findings AND the following JSON 
   ],
   "alternative_suggestions": ["required when verdict != APPROVED — 1-2 concrete alternatives"],
   "revised_risk_level": "LOW|MEDIUM|HIGH",
-  "comment_posted": true,
   "reasoning": {
     "alternatives_considered": ["other framings or scopes weighed before settling on this verdict"],
     "hesitations": ["what was borderline or uncertain — findings that could go either way"],
