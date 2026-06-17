@@ -377,7 +377,7 @@ class SubscriptionController implements LoggerAwareInterface {
 
 	public function is_cancelled(): bool {
 		$subscription = $this->get_subscription_data();
-		return ! empty( $subscription['subscription_status'] ) && in_array( $subscription['subscription_status'], [ 'cancelled', 'refunded' ] );
+		return ! empty( $subscription['subscription_status'] ) && in_array( $subscription['subscription_status'], [ 'cancelled', 'refunded' ], true );
 	}
 
 	public function is_website_pending_deletion(): bool {
