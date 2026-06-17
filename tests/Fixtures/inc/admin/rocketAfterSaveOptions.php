@@ -235,7 +235,6 @@ return [
 					$htaccess['end'],
 				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
-				'set_transient'               => '1',
 			],
 		],
 

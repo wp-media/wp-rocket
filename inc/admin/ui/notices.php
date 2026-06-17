@@ -548,53 +548,6 @@ function rocket_analytics_optin_notice() {
 }
 add_action( 'admin_notices', 'rocket_analytics_optin_notice' );
 
-/**
- * Displays a notice after analytics opt-in
- *
- * @since 2.11
- * @author Remy Perona
- */
-function rocket_analytics_optin_thankyou_notice() {
-	$screen = get_current_screen();
-
-	if ( ! current_user_can( 'rocket_manage_options' ) ) {
-		return;
-	}
-
-	if ( 'settings_page_wprocket' !== $screen->id ) {
-		return;
-	}
-
-	$analytics_optin = get_transient( 'rocket_analytics_optin' );
-
-	if ( ! $analytics_optin ) {
-		return;
-	}
-
-	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html().
-		'<strong>%s</strong></p>',
-		__( 'Thank you!', 'rocket' )
-	);
-
-	$thankyou_message .= sprintf(
-		'<p>%1$s</p><div>%2$s</div>',
-		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
-		rocket_data_collection_preview_table()
-	);
-
-	// Closing </p> provided by rocket_notice_html().
-	$thankyou_message .= '<p>';
-
-	rocket_notice_html(
-		[
-			'message' => $thankyou_message,
-		]
-	);
-
-	delete_transient( 'rocket_analytics_optin' );
-}
-add_action( 'admin_notices', 'rocket_analytics_optin_thankyou_notice' );
 
 /**
  * Displays a notice after clearing the cache

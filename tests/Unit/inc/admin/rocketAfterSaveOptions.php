@@ -45,7 +45,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_advanced_cache_file();
 		$this->rocket_generate_config_file();
-		$this->set_transient();
 
 		// Run it.
 		rocket_after_save_options( $this->config['settings'], $settings );
@@ -93,11 +92,4 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		}
 	}
 
-	private function set_transient() {
-		if ( isset( $this->expected['set_transient'] ) ) {
-			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->andReturnNull();
-		} else {
-			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
-		}
-	}
 }

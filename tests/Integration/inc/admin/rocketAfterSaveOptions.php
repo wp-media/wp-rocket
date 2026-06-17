@@ -26,9 +26,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
 	protected static $use_settings_trait = true;
-	protected static $transients         = [
-		'rocket_analytics_optin' => null,
-	];
+	protected static $transients = [];
 
 	private $is_apache;
 	private $expected;
@@ -119,7 +117,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->rocket_generate_advanced_cache_file();
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
-		$this->set_transient();
 	}
 
 	public function return_true() {
@@ -238,11 +235,4 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		}
 	}
 
-	private function set_transient() {
-		if ( isset( $this->expected['set_transient'] ) ) {
-			$this->assertEquals( '1', get_transient( 'rocket_analytics_optin' ) );
-		} else {
-			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
-		}
-	}
 }

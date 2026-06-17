@@ -62,9 +62,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	// Update config file.
 	rocket_generate_config_file();
 
-	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
-		set_transient( 'rocket_analytics_optin', 1 );
-	}
 	// If it's different, clean the domain.
 	if ( rocket_create_options_hash( $value ) !== rocket_create_options_hash( $oldvalue ) ) {
 		// Purge all cache files.
