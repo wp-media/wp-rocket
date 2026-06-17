@@ -324,7 +324,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_manager',
 					'job_processor',
 					'job_manager_queue',
-					'ri_query',
 				]
 			);
 

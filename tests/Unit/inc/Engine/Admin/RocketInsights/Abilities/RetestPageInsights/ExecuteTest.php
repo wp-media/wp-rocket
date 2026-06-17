@@ -7,7 +7,6 @@ use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Admin\RocketInsights\Abilities\RetestPageInsights;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
-use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights as RocketInsightsRow;
 use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Manager;
 use WP_Rocket\Engine\Common\JobManager\JobProcessor;
@@ -44,11 +43,6 @@ class ExecuteTest extends TestCase {
 	private $queue;
 
 	/**
-	 * @var Query|\PHPUnit\Framework\MockObject\MockObject
-	 */
-	private $query;
-
-	/**
 	 * @var RetestPageInsights
 	 */
 	private $ability;
@@ -60,14 +54,12 @@ class ExecuteTest extends TestCase {
 		$this->manager       = $this->createMock( Manager::class );
 		$this->job_processor = $this->createMock( JobProcessor::class );
 		$this->queue         = $this->createMock( Queue::class );
-		$this->query         = $this->createMock( Query::class );
 
 		$this->ability = new RetestPageInsights(
 			$this->context,
 			$this->manager,
 			$this->job_processor,
-			$this->queue,
-			$this->query
+			$this->queue
 		);
 
 		$this->stubTranslationFunctions();

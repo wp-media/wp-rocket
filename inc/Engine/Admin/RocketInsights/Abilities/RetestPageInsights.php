@@ -6,8 +6,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
-	Context\Context,
-	Database\Queries\RocketInsights as Query
+	Context\Context
 };
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
@@ -46,27 +45,18 @@ class RetestPageInsights implements AbilitiesInterface {
 	private $queue;
 
 	/**
-	 * Database query class for interacting with Rocket Insights data.
-	 *
-	 * @var Query
-	 */
-	private $query;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param Context      $context       The context instance providing necessary dependencies and configuration.
 	 * @param Manager      $manager       The job manager responsible for handling Rocket Insights jobs.
 	 * @param JobProcessor $job_processor The class responsible for processing jobs and communicating with the API.
 	 * @param Queue        $queue         The queue system for scheduling and managing asynchronous jobs.
-	 * @param Query        $query         The database query class for interacting with Rocket Insights data.
 	 */
-	public function __construct( Context $context, Manager $manager, JobProcessor $job_processor, Queue $queue, Query $query ) {
+	public function __construct( Context $context, Manager $manager, JobProcessor $job_processor, Queue $queue ) {
 		$this->context       = $context;
 		$this->manager       = $manager;
 		$this->job_processor = $job_processor;
 		$this->queue         = $queue;
-		$this->query         = $query;
 	}
 
 	/**
@@ -168,10 +158,10 @@ class RetestPageInsights implements AbilitiesInterface {
 		// Normalize URL — add protocol if missing.
 		$url = rocket_add_url_protocol( $input['url'] );
 
-		// Look up the existing DB row for this URL.
+		// Look up the existing DB row for this URL. get_single_job() returns bool|object.
 		$row = $this->manager->get_single_job( $url, true );
 
-		if ( false === $row || empty( $row ) ) {
+		if ( ! is_object( $row ) ) {
 			return [
 				'success' => false,
 				'status'  => 'not_found',

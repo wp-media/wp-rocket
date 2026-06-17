@@ -150,7 +150,8 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 
 			if ( ! empty( $rows ) ) {
 				$row = reset( $rows );
-				$this->assertSame( '', $row->score, 'Score should be cleared after retest trigger' );
+				// score and is_blurred are tinyint columns, so a cleared value reads back as 0, not ''.
+				$this->assertSame( 0, (int) $row->score, 'Score should be cleared after retest trigger' );
 				$this->assertSame( '', $row->report_url, 'Report URL should be cleared after retest trigger' );
 				$this->assertSame( 0, (int) $row->is_blurred, 'is_blurred should be cleared after retest trigger' );
 			}
