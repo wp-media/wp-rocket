@@ -108,6 +108,11 @@ class GetPageInsightsScore implements AbilitiesInterface {
 						'public' => true,
 					],
 					'show_in_rest' => true,
+					'annotations'  => [
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
+					],
 				],
 			]
 		);
