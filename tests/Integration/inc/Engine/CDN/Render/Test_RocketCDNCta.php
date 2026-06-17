@@ -58,6 +58,22 @@ class Test_RocketCDNCta extends BaseTestCase {
 		parent::tear_down();
 	}
 
+	public function testShouldExposeLimitReachedAsToplevelKeyWhenPageCountEqualsLimit() {
+		$sections = $this->controller->add_rocketcdn_free_section( [] );
+		$this->assertFalse( $sections['rocketcdn_free_section']['limit_reached'], 'limit_reached should be false when no pages are added.' );
+
+		$this->add_page( 'http://example.org/page-1', 'Page 1' );
+		$this->add_page( 'http://example.org/page-2', 'Page 2' );
+		wp_cache_flush();
+		$sections = $this->controller->add_rocketcdn_free_section( [] );
+		$this->assertFalse( $sections['rocketcdn_free_section']['limit_reached'], 'limit_reached should be false when under the limit.' );
+
+		$this->add_page( 'http://example.org/page-3', 'Page 3' );
+		wp_cache_flush();
+		$sections = $this->controller->add_rocketcdn_free_section( [] );
+		$this->assertTrue( $sections['rocketcdn_free_section']['limit_reached'], 'limit_reached should be true when page count equals the free page limit.' );
+	}
+
 	public function testShouldExposeHiddenCollapsedAndExpandedStates() {
 		$sections = $this->controller->add_rocketcdn_free_section( [] );
 		$cta_data = $sections['rocketcdn_free_section']['cta_data'];

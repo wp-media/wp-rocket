@@ -72,10 +72,19 @@ defined( 'ABSPATH' ) || exit;
 				<?php esc_html_e( 'ADD HOMEPAGE', 'rocket' ); ?>
 			</button>
 		</div>
-		<button type="button" class="wpr-cdn-add-page__button">
-			<span class="wpr-icon-plus"></span>
-			<?php esc_html_e( 'ADD PAGE', 'rocket' ); ?>
-		</button>
+		<div class="wpr-cdn-add-page__button-wrapper<?php echo ! empty( $data['limit_reached'] ) ? ' wpr-btn-with-tool-tip' : ''; ?>">
+			<button type="button" class="wpr-cdn-add-page__button"<?php echo ! empty( $data['limit_reached'] ) ? ' disabled="disabled"' : ''; ?>>
+				<span class="wpr-icon-plus"></span>
+				<?php esc_html_e( 'ADD PAGE', 'rocket' ); ?>
+			</button>
+			<?php if ( ! empty( $data['limit_reached'] ) ) : ?>
+			<div class="wpr-tooltip">
+				<div class="wpr-tooltip-content">
+					<?php esc_html_e( 'You have reached the limit of 3 free pages.', 'rocket' ); ?>
+				</div>
+			</div>
+			<?php endif; ?>
+		</div>
 	</div>
 
 	<?php
