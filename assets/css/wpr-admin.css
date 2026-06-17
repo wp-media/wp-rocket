@@ -5005,6 +5005,36 @@ div.wpr-tutorial-item {
 .wpr-cdn-add-page__button [class^=wpr-icon-] {
   font-size: 16px;
 }
+.wpr-cdn-add-page__button-wrapper {
+  position: relative;
+  display: inline-flex;
+}
+.wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip {
+  pointer-events: auto;
+}
+.wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-cdn-add-page__button {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-tooltip {
+  bottom: calc(100% + 8px);
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: none;
+}
+.wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  top: auto;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: none;
+  border-top: 8px solid #0e1428;
+}
 
 .wpr-cdn-upsell__text {
   font-size: 0.875rem;

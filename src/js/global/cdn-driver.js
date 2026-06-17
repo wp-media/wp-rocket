@@ -475,6 +475,14 @@
 				if ( response.limit === response.count ) {
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.add( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = true;
+					}
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
@@ -565,6 +573,14 @@
 				if ( response.limit > response.count ) {
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.remove( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = false;
+					}
 
 					// Track auto-collapse when deletion drops count just below the limit.
 					if ( response.count === response.limit - 1 ) {

@@ -492,6 +492,41 @@
 			font-size: 16px;
 		}
 	}
+
+	&__button-wrapper {
+		position: relative;
+		display: inline-flex;
+
+		&.wpr-btn-with-tool-tip {
+			pointer-events: auto; // override parent pointer-events: none so tooltip is hoverable
+
+			.wpr-cdn-add-page__button {
+				cursor: not-allowed;
+				opacity: 0.5;
+				pointer-events: none; // clicks blocked on button itself, hover on wrapper
+			}
+
+			.wpr-tooltip {
+				bottom: calc(100% + 8px);
+				top: auto;
+				left: 50%;
+				transform: translateX(-50%);
+				white-space: nowrap;
+				font-size: 14px;
+				font-weight: normal;
+				text-transform: none;
+			}
+
+			.wpr-tooltip:before {
+				top: auto;
+				bottom: -6px;
+				left: 50%;
+				transform: translateX(-50%);
+				border-bottom: none;
+				border-top: 8px solid #0e1428;
+			}
+		}
+	}
 }
 
 // Upsell banner
