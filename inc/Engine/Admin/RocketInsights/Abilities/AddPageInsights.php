@@ -94,7 +94,7 @@ class AddPageInsights implements AbilitiesInterface {
 			'wp-rocket/add-page-insights',
 			[
 				'label'               => __( 'Add Page Insights', 'rocket' ),
-				'description'         => __( 'Add a page to be monitored by Rocket Insights.', 'rocket' ),
+				'description'         => __( 'Adds a page URL to the list of pages monitored by Rocket Insights. Use this when the user wants to track the performance score of a specific page. Adding a page triggers a performance test, and results will be available with get-insights-scores and [insert name of the ability to get a specific page score].', 'rocket' ),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',
@@ -126,6 +126,11 @@ class AddPageInsights implements AbilitiesInterface {
 						'public' => true,
 					],
 					'show_in_rest' => true,
+					'annotations'  => [
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					],
 				],
 			]
 		);

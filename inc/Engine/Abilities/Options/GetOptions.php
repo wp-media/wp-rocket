@@ -37,7 +37,7 @@ class GetOptions implements AbilitiesInterface {
 			'wp-rocket/get-options',
 			[
 				'label'               => __( 'Get WP Rocket options', 'rocket' ),
-				'description'         => __( 'Get all WP Rocket options and their current values.', 'rocket' ),
+				'description'         => __( 'Retrieve the current WP Rocket configuration. Use this before changing any setting to inspect the current state, or to answer user questions about how their site is configured.', 'rocket' ),
 				'category'            => 'wp-rocket-options',
 				'output_schema'       => [
 					'type'       => 'object',
@@ -381,6 +381,11 @@ class GetOptions implements AbilitiesInterface {
 					'show_in_rest' => true,
 					'mcp'          => [
 						'public' => true,
+					],
+					'annotations'  => [
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
 					],
 				],
 			]

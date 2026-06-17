@@ -45,7 +45,7 @@ class GetInsightsScore implements AbilitiesInterface {
 			'wp-rocket/get-insights-scores',
 			[
 				'label'               => __( 'Get Rocket Insights Score', 'rocket' ),
-				'description'         => __( 'Gets detailed insights data for all pages monitored by Rocket Insights, and the global score.', 'rocket' ),
+				'description'         => __( 'Retrieve performance scores and monitoring status for all pages tracked by Rocket Insights, including the overall site score. Use this to report on site performance, check whether a URL is already being monitored, or verify that a recently added page has a score. Pass include_metrics: true for full metric breakdowns.', 'rocket' ),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'anyOf' => [
@@ -135,6 +135,11 @@ class GetInsightsScore implements AbilitiesInterface {
 						'public' => true,
 					],
 					'show_in_rest' => true,
+					'annotations'  => [
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
+					],
 				],
 			]
 		);
