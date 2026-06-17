@@ -45,7 +45,7 @@ class GetPageInsightsScore implements AbilitiesInterface {
 			'wp-rocket/get-page-insights-score',
 			[
 				'label'               => __( 'Get Rocket Insights Score for a Page', 'rocket' ),
-				'description'         => __( 'Gets detailed Rocket Insights performance results for a specific page URL.', 'rocket' ),
+				'description'         => __( 'Gets Rocket Insights performance results for a specific page URL. Use this to check whether a page is being monitored, retrieve its latest performance score and status, or get per-device (desktop and mobile) metric breakdowns. Returns exists: false with free_slots when the URL is not monitored, or exists: true with a results array containing score, status, last modified date, report URL, and metric data for each device type.', 'rocket' ),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',
