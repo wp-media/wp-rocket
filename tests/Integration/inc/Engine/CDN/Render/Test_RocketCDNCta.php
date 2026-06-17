@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase as BaseTestCase;
+use WP_Rocket\Engine\Admin\Settings\Render as SettingsRender;
 
 /**
  * @group RocketCDN
@@ -28,6 +29,13 @@ class Test_RocketCDNCta extends BaseTestCase {
 	 */
 	private $query;
 
+	/**
+	 * Settings Render instance.
+	 *
+	 * @var SettingsRender
+	 */
+	private $settings_render;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installRocketCDNTable();
@@ -41,9 +49,10 @@ class Test_RocketCDNCta extends BaseTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$container         = apply_filters( 'rocket_container', null );
-		$this->controller  = $container->get( 'cdn_render_controller' );
-		$this->query       = $container->get( 'rocketcdn_query' );
+		$container             = apply_filters( 'rocket_container', null );
+		$this->controller      = $container->get( 'cdn_render_controller' );
+		$this->query           = $container->get( 'rocketcdn_query' );
+		$this->settings_render = $container->get( 'settings_render' );
 
 		self::truncateRocketCDNTable();
 		delete_transient( 'wp_rocket_customer_data' );
@@ -96,6 +105,54 @@ class Test_RocketCDNCta extends BaseTestCase {
 
 		$this->assertTrue( $cta_data['is_visible'] );
 		$this->assertTrue( $cta_data['is_expanded'] );
+	}
+
+	/**
+	 * Tests that the template renders the tooltip wrapper class, disabled attribute, and tooltip text when the page limit is reached.
+	 */
+	public function testShouldRenderTooltipMarkupWhenLimitReached() {
+		$this->add_page( 'http://example.org/page-1', 'Page 1' );
+		$this->add_page( 'http://example.org/page-2', 'Page 2' );
+		$this->add_page( 'http://example.org/page-3', 'Page 3' );
+		wp_cache_flush();
+
+		$sections = $this->controller->add_rocketcdn_free_section( [] );
+		$args     = $sections['rocketcdn_free_section'];
+
+		if ( ! empty( $args['class'] ) ) {
+			$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+		}
+
+		ob_start();
+		$this->settings_render->rocketcdn_free( $args );
+		$html = ob_get_clean();
+
+		$this->assertStringContainsString( 'wpr-btn-with-tool-tip', $html, 'Wrapper div should have wpr-btn-with-tool-tip class when limit_reached is true.' );
+		$this->assertStringContainsString( 'disabled="disabled"', $html, 'Add Page button should be disabled when limit_reached is true.' );
+		$this->assertStringContainsString( 'You have reached the limit of 3 free pages.', $html, 'Tooltip text should appear when limit_reached is true.' );
+	}
+
+	/**
+	 * Tests that the template does not render the tooltip wrapper class or tooltip text when the page limit is not reached.
+	 */
+	public function testShouldNotRenderTooltipMarkupWhenLimitNotReached() {
+		$this->add_page( 'http://example.org/page-1', 'Page 1' );
+		$this->add_page( 'http://example.org/page-2', 'Page 2' );
+		wp_cache_flush();
+
+		$sections = $this->controller->add_rocketcdn_free_section( [] );
+		$args     = $sections['rocketcdn_free_section'];
+
+		if ( ! empty( $args['class'] ) ) {
+			$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
+		}
+
+		ob_start();
+		$this->settings_render->rocketcdn_free( $args );
+		$html = ob_get_clean();
+
+		$this->assertStringNotContainsString( 'wpr-btn-with-tool-tip', $html, 'Wrapper div should not have wpr-btn-with-tool-tip class when limit_reached is false.' );
+		$this->assertStringNotContainsString( 'You have reached the limit of 3 free pages.', $html, 'Tooltip text should not appear when limit_reached is false.' );
 	}
 
 	/**
