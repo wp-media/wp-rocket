@@ -572,19 +572,9 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html().
-		'<strong>%s</strong></p>',
+		'<strong>%s</strong>',
 		__( 'Thank you!', 'rocket' )
 	);
-
-	$thankyou_message .= sprintf(
-		'<p>%1$s</p><div>%2$s</div>',
-		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
-		rocket_data_collection_preview_table()
-	);
-
-	// Closing </p> provided by rocket_notice_html().
-	$thankyou_message .= '<p>';
 
 	rocket_notice_html(
 		[
