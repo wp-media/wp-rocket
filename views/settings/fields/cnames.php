@@ -40,6 +40,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 					<div class="wpr-select">
 						<select name="wp_rocket_settings[cdn_zone][<?php echo esc_attr( $key ); ?>]" <?php echo $rocket_disable_input_alt ? 'disabled' : ''; ?> >
 							<option value="all" <?php selected( $rocket_cnames_zone[ $key ], 'all' ); ?>><?php esc_html_e( 'For All Files', 'rocket' ); ?></option>
+							<option value="css" <?php selected( $rocket_cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'For CSS', 'rocket' ); ?></option>
 							<?php
 							/**
 							 * Controls the inclusion of images option for the CDN dropdown
@@ -53,9 +54,8 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 								?>
 								<option value="images" <?php selected( $rocket_cnames_zone[ $key ], 'images' ); ?>><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
 							<?php endif; ?>
-							<option value="css_and_js" <?php selected( $rocket_cnames_zone[ $key ], 'css_and_js' ); ?>><?php esc_html_e( 'For CSS & JavaScript', 'rocket' ); ?></option>
 							<option value="js" <?php selected( $rocket_cnames_zone[ $key ], 'js' ); ?>><?php esc_html_e( 'For JavaScript', 'rocket' ); ?></option>
-							<option value="css" <?php selected( $rocket_cnames_zone[ $key ], 'css' ); ?>><?php esc_html_e( 'For CSS', 'rocket' ); ?></option>
+							<option value="css_and_js" <?php selected( $rocket_cnames_zone[ $key ], 'css_and_js' ); ?>><?php esc_html_e( 'For CSS & JavaScript', 'rocket' ); ?></option>
 						</select>
 					</div>
 					<?php if ( ! $rocket_disable_input_alt ) : ?>
@@ -75,6 +75,7 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 			<div class="wpr-select">
 				<select name="wp_rocket_settings[cdn_zone][]">
 					<option value="all"><?php esc_html_e( 'For All Files', 'rocket' ); ?></option>
+					<option value="css"><?php esc_html_e( 'For CSS', 'rocket' ); ?></option>
 					<?php
 					/**
 					 * Controls the inclusion of images option for the CDN dropdown
@@ -88,9 +89,8 @@ $rocket_disable_input_alt = wpm_apply_filters_typed( 'boolean', 'rocket_disable_
 						?>
 					<option value="images"><?php esc_html_e( 'For Images', 'rocket' ); ?></option>
 					<?php endif; ?>
-					<option value="css_and_js"><?php esc_html_e( 'For CSS & JavaScript', 'rocket' ); ?></option>
 					<option value="js"><?php esc_html_e( 'For JavaScript', 'rocket' ); ?></option>
-					<option value="css"><?php esc_html_e( 'For CSS', 'rocket' ); ?></option>
+					<option value="css_and_js"><?php esc_html_e( 'For CSS & JavaScript', 'rocket' ); ?></option>
 				</select>
 			</div>
 			<button class="wpr-multiple-close hide-if-no-js"></button>
