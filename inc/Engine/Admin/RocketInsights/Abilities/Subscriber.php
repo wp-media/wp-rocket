@@ -80,7 +80,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Registers the ability to get insights scores.
 	 */
 	public function register_get_insights_scores_ability() {
-		$this->get_insights_score->register_get_insights_scores_ability();
+		$this->get_insights_score->register();
 	}
 
 	/**
@@ -104,7 +104,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Registers the ability to add page insights.
 	 */
 	public function register_add_page_insights_ability() {
-		$this->add_page_insights->register_add_page_insights_ability();
+		$this->add_page_insights->register();
 	}
 
 	/**
