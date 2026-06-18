@@ -125,21 +125,34 @@ class RemovePageInsights implements AbilitiesInterface {
 			];
 		}
 
+		// A page can have both a mobile and a desktop row; remove all of them.
+		$deleted_id = null;
 		foreach ( $rows as $row ) {
-			// Skip firing the deletion side-effects if the row was already gone (e.g. a concurrent delete).
-			if ( ! $this->query->delete_item( $row->id ) ) {
-				continue;
+			if ( $this->query->delete_item( $row->id ) ) {
+				$deleted_id = $row->id;
 			}
-
-			/**
-			 * Fires when a performance monitoring job is deleted.
-			 *
-			 * @since 3.20
-			 *
-			 * @param int $id The ID of the deleted performance monitoring job.
-			 */
-			do_action( 'rocket_rocket_insights_job_deleted', $row->id );
 		}
+
+		// Nothing was removed (e.g. the rows were deleted concurrently); skip the side-effects.
+		if ( null === $deleted_id ) {
+			return [
+				'success' => false,
+				'error'   => 'URL is not currently being monitored.',
+			];
+		}
+
+		/**
+		 * Fires when a performance monitoring job is deleted.
+		 *
+		 * Removing a page is a single logical event: the listeners reset the global
+		 * score and refresh recommendations globally, so the action is fired once even
+		 * when several rows (mobile and desktop) were removed.
+		 *
+		 * @since 3.20
+		 *
+		 * @param int $id The ID of a deleted performance monitoring job.
+		 */
+		do_action( 'rocket_rocket_insights_job_deleted', $deleted_id );
 
 		return [
 			'success' => true,

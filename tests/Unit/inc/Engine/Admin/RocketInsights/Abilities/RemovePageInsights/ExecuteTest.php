@@ -84,9 +84,9 @@ class ExecuteTest extends TestCase {
 		$deleted_ids = $expected['deleted_ids'] ?? [];
 
 		if ( ! empty( $deleted_ids ) ) {
-			// Assert delete_item() is called with each expected ID in order, and return success
-			// so the deletion side-effect fires. willReturnCallback is used over withConsecutive()
-			// for forward compatibility (withConsecutive was removed in PHPUnit 10).
+			// Assert delete_item() is called with each expected ID in order, and return success.
+			// willReturnCallback is used over withConsecutive() for forward compatibility
+			// (withConsecutive was removed in PHPUnit 10).
 			$call_index = 0;
 
 			$this->query
@@ -98,7 +98,8 @@ class ExecuteTest extends TestCase {
 					return true;
 				} );
 
-			Actions\expectDone( 'rocket_rocket_insights_job_deleted' )->times( count( $deleted_ids ) );
+			// Removing a page fires the deletion event once, regardless of how many rows were removed.
+			Actions\expectDone( 'rocket_rocket_insights_job_deleted' )->once();
 		} else {
 			$this->query
 				->expects( $this->never() )

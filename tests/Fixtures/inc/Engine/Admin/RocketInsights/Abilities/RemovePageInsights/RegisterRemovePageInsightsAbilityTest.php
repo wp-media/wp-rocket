@@ -73,7 +73,7 @@ return [
 			'is_error'               => false,
 			'success'                => true,
 			'hook_fired'             => true,
-			'hook_count'             => 2,
+			'hook_count'             => 1,
 			'database_entries_after' => 0,
 		],
 	],
