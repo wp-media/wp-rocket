@@ -35,9 +35,10 @@ return [
 			],
 		],
 		'expected' => [
-			'is_error'   => false,
-			'success'    => true,
-			'hook_fired' => true,
+			'is_error'               => false,
+			'success'                => true,
+			'hook_fired'             => true,
+			'database_entries_after' => 0,
 		],
 	],
 
@@ -69,10 +70,11 @@ return [
 			],
 		],
 		'expected' => [
-			'is_error'   => false,
-			'success'    => true,
-			'hook_fired' => true,
-			'hook_count' => 2,
+			'is_error'               => false,
+			'success'                => true,
+			'hook_fired'             => true,
+			'hook_count'             => 2,
+			'database_entries_after' => 0,
 		],
 	],
 
@@ -95,10 +97,11 @@ return [
 			],
 		],
 		'expected' => [
-			'is_error'   => false,
-			'success'    => false,
-			'error'      => 'URL is not currently being monitored.',
-			'hook_fired' => false,
+			'is_error'               => false,
+			'success'                => false,
+			'error'                  => 'URL is not currently being monitored.',
+			'hook_fired'             => false,
+			'database_entries_after' => 1,
 		],
 	],
 ];

@@ -119,13 +119,14 @@ class RegisterRemovePageInsightsAbilityTest extends TestCase {
 			$this->assertSame( $expected['hook_count'] ?? 1, $this->hook_count );
 		}
 
-		// On success, the page should no longer be monitored.
-		if ( $expected['success'] ) {
+		// Verify the resulting database state: every monitored row for the URL is gone.
+		if ( isset( $expected['database_entries_after'] ) ) {
 			$container = apply_filters( 'rocket_container', null );
 			$query     = $container->get( 'ri_query' );
 
-			$this->assertEmpty(
-				$query->get_rows_by_url( $config['input']['url'] ),
+			$this->assertCount(
+				$expected['database_entries_after'],
+				$query->query( [] ),
 				'The page should be removed from monitoring.'
 			);
 		}
