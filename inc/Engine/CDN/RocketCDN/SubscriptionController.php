@@ -70,6 +70,11 @@ class SubscriptionController implements LoggerAwareInterface {
 	 */
 	private $subscription;
 
+	/**
+	 * Website Search API Client instance.
+	 *
+	 * @var WebsiteSearch
+	 */
 	private $website_search_api_client;
 
 	/**
@@ -81,6 +86,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @param Queue                $queue Queue instance.
 	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
 	 * @param User                 $user  License User instance.
+	 * @param WebsiteSearch        $website_search_api_client Website Search API Client instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -375,20 +381,54 @@ class SubscriptionController implements LoggerAwareInterface {
 		return get_transient( 'rocketcdn_status' );
 	}
 
+	/**
+	 * Checks whether the subscription has been cancelled or refunded.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the subscription status is 'cancelled' or 'refunded', false otherwise.
+	 */
 	public function is_cancelled(): bool {
 		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['subscription_status'] ) && in_array( $subscription['subscription_status'], [ 'cancelled', 'refunded' ], true );
 	}
 
+	/**
+	 * Checks whether the website is pending deletion on the RocketCDN side.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the website status is 'pending_deletion', false otherwise.
+	 */
 	public function is_website_pending_deletion(): bool {
 		$subscription = $this->get_subscription_data();
 		return ! empty( $subscription['website_status'] ) && 'pending_deletion' === $subscription['website_status'];
 	}
 
+	/**
+	 * Checks whether the subscription is within the cancellation grace period.
+	 *
+	 * The grace period is active when the subscription is cancelled but the website
+	 * is still pending deletion, meaning it has not yet been fully removed.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the subscription is cancelled and the website is pending deletion, false otherwise.
+	 */
 	public function is_in_grace_period(): bool {
 		return $this->is_cancelled() && $this->is_website_pending_deletion();
 	}
 
+	/**
+	 * Checks whether the subscription is cancelled and the grace period has elapsed.
+	 *
+	 * Returns true when the subscription is cancelled and the website is no longer
+	 * pending deletion, indicating the grace period has fully passed.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if cancelled and outside the grace period, false otherwise.
+	 */
 	public function is_cancelled_outside_grace_period(): bool {
 		return $this->is_cancelled() && ! $this->is_website_pending_deletion();
 	}

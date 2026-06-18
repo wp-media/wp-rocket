@@ -12,6 +12,11 @@ use WP_Rocket\Engine\License\API\User;
  */
 class WebsiteSearch extends AbstractSafeAPIClient {
 
+	/**
+	 * The site URL to search for in the RocketCDN API.
+	 *
+	 * @var string
+	 */
 	private $site_url;
 
 	/**
