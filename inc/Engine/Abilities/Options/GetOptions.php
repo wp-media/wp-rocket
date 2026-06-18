@@ -37,7 +37,7 @@ class GetOptions implements AbilitiesInterface {
 			'wp-rocket/get-options',
 			[
 				'label'               => __( 'Get WP Rocket options', 'rocket' ),
-				'description'         => __( 'Retrieve the current WP Rocket configuration. Use this before changing any setting to inspect the current state, or to answer user questions about how their site is configured.', 'rocket' ),
+				'description'         => _x( 'Call when user asks what is currently enabled or excluded. Always call before wp-rocket/set-option: for array options like exclusion lists, retrieve the full existing array before appending or removing a value. Do not expose internal, credential, or read-only keys to the user.', 'Ability description', 'rocket' ),
 				'category'            => 'wp-rocket-options',
 				'output_schema'       => [
 					'type'       => 'object',
