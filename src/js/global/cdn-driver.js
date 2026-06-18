@@ -87,19 +87,49 @@
 	/** Pending auto-expand timer ID, or null when no timer is active. */
 	let autoExpandTimer = null;
 
-	/** Cancels any in-flight auto-expand timer and cleans up its listeners. */
-	function cancelAutoExpand() {
+	/** Count/limit captured when scheduleAutoExpand() was last called; null when idle. */
+	let autoExpandCount = null;
+	let autoExpandLimit = null;
+
+	/** Stable listener references so cancelAutoExpand() can always unregister them. */
+	let autoExpandHashChangeListener = null;
+	let autoExpandBeforeUnloadListener = null;
+
+	/**
+	 * Cancels any in-flight auto-expand timer and removes its event listeners.
+	 * Clears the stored intent (count/limit) unless keepIntent is true, which
+	 * preserves it so the timer can restart when the user returns to the CDN tab.
+	 *
+	 * @param {boolean} keepIntent Preserve count/limit for a later restart.
+	 */
+	function cancelAutoExpand( keepIntent = false ) {
 		if ( autoExpandTimer !== null ) {
 			clearTimeout( autoExpandTimer );
 			autoExpandTimer = null;
+		}
+		if ( autoExpandHashChangeListener !== null ) {
+			window.removeEventListener( 'hashchange', autoExpandHashChangeListener );
+			autoExpandHashChangeListener = null;
+		}
+		if ( autoExpandBeforeUnloadListener !== null ) {
+			window.removeEventListener( 'beforeunload', autoExpandBeforeUnloadListener );
+			autoExpandBeforeUnloadListener = null;
+		}
+		if ( ! keepIntent ) {
+			autoExpandCount = null;
+			autoExpandLimit = null;
 		}
 	}
 
 	/**
 	 * Schedules the RocketCDN upsell banner to auto-expand after a 15-second delay.
 	 *
-	 * Cancels automatically if the user navigates away from the CDN tab or leaves the page
-	 * before the delay ends.
+	 * - Cancels and restarts if called again before the delay ends.
+	 * - Pauses when the user leaves the CDN tab and restarts the full 15-second delay
+	 *   when they return while the page count is still at the limit.
+	 * - Cancels automatically when the user navigates away from the page (beforeunload).
+	 * - Re-validates count/limit at fire time so a deletion during the delay suppresses
+	 *   the expand.
 	 *
 	 * @param {number} count Current number of free-tier pages.
 	 * @param {number} limit Free-tier page limit.
@@ -108,28 +138,42 @@
 	function scheduleAutoExpand( count, limit ) {
 		cancelAutoExpand();
 
-		function onHashChange() {
+		autoExpandCount = count;
+		autoExpandLimit = limit;
+
+		autoExpandHashChangeListener = function () {
 			if ( window.location.hash !== '#page_cdn' ) {
-				cancel();
+				// Left CDN tab — pause the timer but keep the intent so we can restart on return.
+				clearTimeout( autoExpandTimer );
+				autoExpandTimer = null;
+			} else if ( autoExpandTimer === null && autoExpandCount !== null && autoExpandCount >= autoExpandLimit ) {
+				// Returned to CDN tab while still at the limit — restart the delay.
+				startTimer();
 			}
-		}
+		};
 
-		function cancel() {
+		autoExpandBeforeUnloadListener = function () {
 			cancelAutoExpand();
-			window.removeEventListener( 'hashchange', onHashChange );
-			window.removeEventListener( 'beforeunload', cancel );
+		};
+
+		window.addEventListener( 'hashchange', autoExpandHashChangeListener );
+		window.addEventListener( 'beforeunload', autoExpandBeforeUnloadListener );
+
+		startTimer();
+
+		function startTimer() {
+			autoExpandTimer = setTimeout( () => {
+				const capturedCount = autoExpandCount;
+				const capturedLimit = autoExpandLimit;
+				cancelAutoExpand();
+
+				// Re-check at fire time: a deletion during the delay may have dropped the count.
+				if ( capturedCount !== null && capturedCount >= capturedLimit ) {
+					updateRocketCtaState( capturedCount, capturedLimit );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+				}
+			}, 15000 );
 		}
-
-		window.addEventListener( 'hashchange', onHashChange );
-		window.addEventListener( 'beforeunload', cancel );
-
-		autoExpandTimer = setTimeout( () => {
-			autoExpandTimer = null;
-			window.removeEventListener( 'hashchange', onHashChange );
-			window.removeEventListener( 'beforeunload', cancel );
-			updateRocketCtaState( count, limit );
-			document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
-		}, 15000 );
 	}
 
 	/**
@@ -615,6 +659,9 @@
 				}
 
 				if ( response.limit > response.count ) {
+					// Deletion dropped count below limit — cancel any pending auto-expand.
+					cancelAutoExpand();
+
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
 
