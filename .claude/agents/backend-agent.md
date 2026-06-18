@@ -3,7 +3,7 @@ name: backend-agent
 description: Backend implementation agent. Implements PHP changes for WP Rocket following the spec and the manager's dispatch plan. Writes or updates unit and integration tests. Runs the docs skill and dod skill (layer 1) inline before committing. Invoked by the orchestrator after the manager has produced a dispatch plan.
 tools: [Bash, Read, Edit, Write, Glob, Grep, Skill, WebFetch, WebSearch]
 model: sonnet
-maxTurns: 60
+maxTurns: 100
 color: green
 ---
 
