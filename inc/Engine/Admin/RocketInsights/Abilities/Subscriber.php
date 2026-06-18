@@ -21,14 +21,23 @@ class Subscriber implements Subscriber_Interface {
 	private $add_page_insights;
 
 	/**
+	 * RemovePageInsights ability instance.
+	 *
+	 * @var RemovePageInsights
+	 */
+	private $remove_page_insights;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param GetInsightsScore $get_insights_score The ability to get insights scores.
-	 * @param AddPageInsights  $add_page_insights  The ability to add page insights.
+	 * @param GetInsightsScore   $get_insights_score   The ability to get insights scores.
+	 * @param AddPageInsights    $add_page_insights    The ability to add page insights.
+	 * @param RemovePageInsights $remove_page_insights The ability to remove page insights.
 	 */
-	public function __construct( GetInsightsScore $get_insights_score, AddPageInsights $add_page_insights ) {
-		$this->get_insights_score = $get_insights_score;
-		$this->add_page_insights  = $add_page_insights;
+	public function __construct( GetInsightsScore $get_insights_score, AddPageInsights $add_page_insights, RemovePageInsights $remove_page_insights ) {
+		$this->get_insights_score   = $get_insights_score;
+		$this->add_page_insights    = $add_page_insights;
+		$this->remove_page_insights = $remove_page_insights;
 	}
 
 	/**
@@ -41,6 +50,7 @@ class Subscriber implements Subscriber_Interface {
 			'wp_abilities_api_init'            => [
 				[ 'register_get_insights_scores_ability' ],
 				[ 'register_add_page_insights_ability' ],
+				[ 'register_remove_page_insights_ability' ],
 			],
 			'wp_abilities_api_categories_init' => 'register_rocket_insights_category',
 		];
@@ -75,5 +85,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function register_add_page_insights_ability() {
 		$this->add_page_insights->register();
+	}
+
+	/**
+	 * Registers the ability to remove page insights.
+	 */
+	public function register_remove_page_insights_ability() {
+		$this->remove_page_insights->register();
 	}
 }
