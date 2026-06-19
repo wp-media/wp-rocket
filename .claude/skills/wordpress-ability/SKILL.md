@@ -32,6 +32,11 @@ An ability must be associated to an ability category. If the category doesn't ex
 
 Make the ability available to the REST API and the MCP by adding meta.show_in_rest=true and meta.mcp.public=true when registering the ability, unless explicitly required otherwise.
 
+Annotations should be added to the meta field when registering the ability, as an array of key-value pairs:
+- readonly: true or false, to indicate if the ability doesn't modify data
+- destructive: true or false, to indicate if the ability may delete/destroy data
+- idempotent: true or false, to indicate Same input → same output
+
 An example of an ability class can be found in the `/inc/Engine/Abilities/Options/GetOptions.php` file.
 
 # Input and Output Schema

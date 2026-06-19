@@ -1,7 +1,7 @@
 ---
 name: challenger
 description: Adversarial spec reviewer. Challenges the grooming spec for complex or high-risk issues. Finds hidden risks, unvalidated assumptions, and missing dependencies — does not improve the spec. Returns APPROVED, NEEDS_REVISION, or BLOCKED with MoSCoW-classified findings. Conditionally invoked by the orchestrator based on risk/effort signals.
-tools: [Bash, Read, Glob, Grep, WebFetch, WebSearch]
+tools: [Bash, Read, Glob, Grep, Skill, WebFetch, WebSearch]
 maxTurns: 20
 color: red
 ---
@@ -140,7 +140,6 @@ Do not rewrite the spec. Return the verdict and findings AND the following JSON 
   ],
   "alternative_suggestions": ["required when verdict != APPROVED — 1-2 concrete alternatives"],
   "revised_risk_level": "LOW|MEDIUM|HIGH",
-  "comment_posted": true,
   "reasoning": {
     "alternatives_considered": ["other framings or scopes weighed before settling on this verdict"],
     "hesitations": ["what was borderline or uncertain — findings that could go either way"],

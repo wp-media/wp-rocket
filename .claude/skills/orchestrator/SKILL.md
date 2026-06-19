@@ -122,7 +122,7 @@ Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
 - Loop counters per decision point (`grooming_loop`, `dod_loop`, `review_loop`, `qa_loop`)
-- Non-blocking NTH tasks dispatched (log ticket URLs when created)
+- Accumulated NTH items list — each item carries: source (grooming/challenger/review/qa), description, severity, file (if applicable), suggestion (if applicable)
 - Escalation reason if stopped
 - Calibration mode chosen
 
@@ -391,16 +391,11 @@ Handling:
 Log a ROUTING DECISION event for each open_question — either "paused for user input" or
 "proceeding with documented assumption: <text>".
 
-**NTH items (COULD_HAVE / NICE_TO_HAVE) — asynchronous, non-blocking additional work:**
+**NTH items (COULD_HAVE / NICE_TO_HAVE) — accumulated for user review at Step 10:**
 
 If grooming surfaced any `COULD_HAVE` / `NICE_TO_HAVE` items in `risks[]` or `risk_notes`,
-dispatch the `ticket-writer` agent in parallel (`mode: "nth_followup"`), non-blocking.
-The main pipeline continues without waiting. Log a PARALLEL event with ticket URLs once
-they come back.
-
-In **high-oversight mode**, surface NTH items to the user mid-flow at your discretion,
-especially when they reveal a pattern worth noting.
-In all other modes, suppress mid-flow surfacing — save for the final report.
+add each to the accumulated NTH items list (source: "grooming"). The main pipeline continues
+immediately. Log an ACCUMULATE event for each item added.
 
 ---
 
@@ -416,8 +411,9 @@ Route on `verdict`:
 - **BLOCKED** AND `grooming_loop < 1` → re-invoke `grooming-agent` once with blocker context. Log ROUTING DECISION + AGENT events. Re-invoke `challenger`.
 - **BLOCKED** AND `grooming_loop >= 1` → escalate to user with blockers and `alternative_suggestions`. Log ESCALATION event.
 
-**NTH dispatch:** Any COULD_HAVE or NICE_TO_HAVE feedback → dispatch `ticket-writer` in
-parallel (non-blocking). Main pipeline continues immediately. Log PARALLEL event.
+**NTH accumulation:** Any COULD_HAVE or NICE_TO_HAVE feedback → add each to the accumulated
+NTH items list (source: "challenger"). Main pipeline continues immediately. Log an
+ACCUMULATE event for each item added.
 
 ---
 
@@ -576,10 +572,10 @@ Route on highest `criticality` in `blockers`:
 | `CRITICAL` | any | **Abort any in-flight QA.** Evaluate if fixable. If yes (specific missing guard, missing validation): attempt one fix loop (same as HIGH). Re-invoke QA only if at least one blocker has `type == "LOGIC"` — otherwise carry the existing QA verdict forward. If architectural/unresolved after 1 attempt → escalate immediately. Log ESCALATION event. |
 | `HIGH` / `MEDIUM` | `review_loop < 1` | **Abort any in-flight QA.** Re-invoke relevant implementation agent with the `fix` field from that blocker. Re-push. Re-invoke Lead Review in parallel. **Re-invoke QA only if at least one blocker has `type == "LOGIC"`** — if all blockers are `SECURITY`, `TESTS`, or `CONVENTIONS`, behavior did not change; carry the existing QA verdict forward. Log ROUTING DECISION. |
 | `HIGH` / `MEDIUM` | `review_loop >= 1` | Escalate. |
-| `LOW` only | any | Dispatch `ticket-writer` (NICE_TO_HAVE, non-blocking). Parallel gates continue. Log PARALLEL event. |
+| `LOW` only | any | Accumulate `nice_to_haves[]` items into NTH list (source: "review"). Parallel gates continue. Log ACCUMULATE event per item. |
 
-**NTH dispatch:** `nice_to_haves` items → `ticket-writer` in parallel (non-blocking). Max 3
-total lead-reviewer invocations.
+**NTH accumulation:** `nice_to_haves[]` items → add each to the accumulated NTH items list
+(source: "review"). Max 3 total lead-reviewer invocations.
 
 **Resolve addressed review threads (required after every fix push):**
 After re-pushing the fix commit, resolve all open review threads so the PR shows a clean status before lead-reviewer re-runs. Get the fix SHA, fetch every unresolved thread via GraphQL, post a "Fixed in <sha>" reply on each, then mark it resolved:
@@ -609,20 +605,48 @@ done
 
 Only run this block when `lead-reviewer` previously returned `inline_comments_posted: true` and there are unresolved threads. Skip silently if the GraphQL query returns zero unresolved threads.
 
-Log AGENT event with verdict, loop count, and any NTH dispatch.
+**Resolve addressed review threads (required after every fix push):**
+After re-pushing the fix commit, resolve all open review threads so the PR shows a clean status before lead-reviewer re-runs. Get the fix SHA, fetch every unresolved thread via GraphQL, post a "Fixed in <sha>" reply on each, then mark it resolved:
+
+```bash
+FIX_SHA=$(git rev-parse --short HEAD)
+PR_N=<PR number>
+OWNER=wp-media
+REPO_NAME=wp-rocket
+
+gh api graphql -f query="
+query {
+  repository(owner: \"$OWNER\", name: \"$REPO_NAME\") {
+    pullRequest(number: $PR_N) {
+      reviewThreads(first: 50) {
+        nodes { id isResolved comments(first: 1) { nodes { databaseId } } }
+      }
+    }
+  }
+}" --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved == false) | [.id, (.comments.nodes[0].databaseId | tostring)] | @tsv' \
+| while IFS=$'\t' read THREAD_ID COMMENT_DB_ID; do
+  gh api repos/wp-media/wp-rocket/pulls/$PR_N/comments \
+    --method POST -f body="Fixed in $FIX_SHA." -F "in_reply_to=$COMMENT_DB_ID" --silent
+  gh api graphql -f query="mutation { resolveReviewThread(input: { threadId: \"$THREAD_ID\" }) { thread { isResolved } } }" --silent
+done
+```
+
+Only run this block when `lead-reviewer` previously returned `inline_comments_posted: true` and there are unresolved threads. Skip silently if the GraphQL query returns zero unresolved threads.
+
+Log AGENT event with verdict, loop count, and any NTH items accumulated.
 
 ---
 
 #### Step 9 — QA result
 
 If skipped (internal refactor): log a ROUTING DECISION event with skip reason, proceed
-to finalize.
+to Step 10.
 
 Route on `overall`:
 
 | Result | Loop count | Action |
 |---|---|---|
-| `PASS` | any | Proceed to finalize. |
+| `PASS` | any | Proceed to Step 10. |
 | `PARTIAL` | any | Surface to user for decision. Log ESCALATION event. |
 | `CANNOT_VERIFY` | any | All acceptance criteria sat behind a license/environment guard and could not be verified locally. **Do not treat as PASS.** Surface to user with each criterion's `blocking_guard` (function + `file:line`) so they can verify in a licensed/live environment or accept the risk. Log ESCALATION event. |
 | `FAIL` | `qa_loop < 1` | Re-invoke relevant implementation agent with `qa.blockers` list. Re-push. Log ROUTING DECISION. Re-invoke `qa-engineer`. |
@@ -630,14 +654,61 @@ Route on `overall`:
 
 For `unclear` unexpected findings: ask user before routing.
 
-**NTH dispatch:** COULD_HAVE/NICE_TO_HAVE recommendations → `ticket-writer` in parallel.
+**NTH accumulation:** COULD_HAVE/NICE_TO_HAVE recommendations → add each to the accumulated
+NTH items list (source: "qa"). Log an ACCUMULATE event per item.
 
 Max 3 QA invocations.
 
 ---
 
-**Proceed to Step 11 when:** DOD L2 is PASS or WARN (CI included in check 5), Lead Review
+**Proceed to Step 10 when:** DOD L2 is PASS or WARN (CI included in check 5), Lead Review
 has no HIGH/CRITICAL blockers (or is skipped), QA is PASS (or skipped or carried forward).
+
+---
+
+### Step 10 — NTH review *(interactive)*
+
+If the accumulated NTH items list is empty → skip silently and proceed to Step 11.
+
+If the list is non-empty:
+
+1. Present all items to the user **grouped by source** (grooming → challenger → review → qa),
+   numbered sequentially. For each item show: source, description, severity, and (if
+   present) file and suggestion.
+
+   Example format:
+   ```
+   ## Nice-to-have items surfaced during this pipeline run
+
+   **From grooming (1 item)**
+   1. [LOW] Consider extracting the retry logic into a dedicated helper — currently duplicated in 2 places. (inc/Engine/RetryHandler.php)
+
+   **From review (2 items)**
+   2. [LOW] Rename `$tmp` to `$parsed_response` for clarity. (inc/API/Client.php)
+   3. [LOW] Add inline docblock to the new filter hook.
+
+   For each item, reply with one of:
+   - **tackle** — implement it in this PR
+   - **ticket** — open a follow-up GitHub issue
+   - **discard** — drop it
+
+   You can give a blanket answer (e.g. "ticket all") or specify per item (e.g. "1: tackle, 2: discard, 3: ticket").
+   ```
+
+2. Wait for the user's response. Parse dispositions per item (blanket answers apply to all
+   unspecified items).
+
+3. Process each disposition:
+   - **tackle** — append the item's scope to the implementation plan. Re-invoke the relevant
+     implementation agent (backend, frontend, or both) with the NTH item as additional scope.
+     After the agent commits, re-run DOD L2 + Lead Review + QA in parallel (same loop counters
+     apply). Log a ROUTING DECISION event: "Tackling NTH item N in current PR."
+   - **ticket** — dispatch `ticket-writer` (`mode: "nth_followup"`) with the single NTH item.
+     Collect the returned ticket URL. Log an AGENT event with the ticket URL.
+   - **discard** — log a ROUTING DECISION event: "NTH item N discarded by user." No further action.
+
+4. After all items are resolved, proceed to Step 11. Log a ROUTING DECISION event listing
+   all dispositions and any ticket URLs created.
 
 ---
 
@@ -691,7 +762,7 @@ Final summary template:
 | Lead Review | ✅ PASS / ❌ → fixed | details on PR #<M> |
 | CI | ✅ All Pass | — |
 | QA | ✅ PASS | details on PR #<M> |
-| Follow-up tickets | [links or "None"] | — |
+| Follow-up tickets | [ticket links / "Tackled in PR" / "Discarded" / "None"] | — |
 ```
 
 ---
@@ -757,7 +828,7 @@ All agents also receive `CURRENT_MODEL` and `session_learnings` (section 13 of `
 | `release-agent` | Issue #, branch name, base branch, acceptance criteria, spec path |
 | `lead-reviewer` | PR URL + spec path + acceptance criteria + `session_learnings` |
 | `qa-engineer` | PR number + acceptance criteria + base branch |
-| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) |
+| `ticket-writer` (nth_followup) | Single NTH feedback item (not full context) — invoked from Step 10 only, after user chooses "ticket" disposition |
 
 ---
 
