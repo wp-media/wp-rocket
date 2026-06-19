@@ -130,7 +130,7 @@ class SetOption implements AbilitiesInterface {
 			'wp-rocket/set-option',
 			[
 				'label'               => __( 'Set a WP Rocket option', 'rocket' ),
-				'description'         => __( 'Change a single WP Rocket configuration option. Use this when the user wants to enable, disable, or update a specific feature. For array/textarea options (exclusion lists, CDN URLs, etc.) use update_mode: "update" to append entries or "replace" to overwrite the full list. Call get-options first if you are unsure of the current value. Always validate with the user before calling this tool.', 'rocket' ),
+				'description'         => _x( 'Change a single WP Rocket configuration option. Use this when the user wants to enable, disable, or update a specific feature. For array/textarea options (exclusion lists, CDN URLs, etc.) use update_mode: "update" to append entries or "replace" to overwrite the full list. Call get-options first if you are unsure of the current value. Always validate with the user before calling this tool.', 'Ability description', 'rocket' ),
 				'category'            => 'wp-rocket-options',
 				'input_schema'        => [
 					'type'       => 'object',
