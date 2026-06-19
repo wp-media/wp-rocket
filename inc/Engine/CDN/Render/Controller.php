@@ -650,8 +650,8 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		// Bail out if the subscription is still within the cancellation grace period — too early to auto-resume.
-		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+		// Bail out if the subscription is paid and is still within the cancellation grace period — too early to auto-resume.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return;
 		}
 
@@ -893,10 +893,17 @@ class Controller extends Abstract_Render {
 	 * @return bool True if the CDN should be force-paused, false otherwise.
 	 */
 	private function is_forced_paused(): bool {
-		if ( $this->subscription_controller->is_in_grace_period() ) {
+		// Force paused if paid plan cancelled but in grace period.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return true;
 		}
 
+		// Force paused if free plan with an invalid WP Rocket licence.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return true;
+		}
+
+		// Force paused if subscription cancelled beyond the grace period and WP Rocket licence is invalid.
 		if ( $this->subscription_controller->is_cancelled_outside_grace_period() && $this->subscription_controller->is_license_invalid() ) {
 			return true;
 		}
