@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Abilities\GetInsightsScore,
 	Abilities\AddPageInsights,
+	Abilities\RetestPageInsights,
 	Abilities\RemovePageInsights,
 	Abilities\GetRecommendations,
 	Abilities\GetPageInsightsScore,
@@ -77,6 +78,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_recommendations_settings_subscriber',
 		'ri_get_insights_scores_ability',
 		'ri_add_page_insights_ability',
+		'ri_retest_page_insights_ability',
 		'ri_remove_page_insights_ability',
 		'ri_get_recommendations_ability',
 		'ri_get_page_insights_score_ability',
@@ -321,6 +323,16 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		$this->getContainer()->add( 'ri_retest_page_insights_ability', RetestPageInsights::class )
+			->addArguments(
+				[
+					'ri_context',
+					'ri_manager',
+					'job_processor',
+					'job_manager_queue',
+				]
+			);
+
 		$this->getContainer()->add( 'ri_remove_page_insights_ability', RemovePageInsights::class )
 			->addArguments(
 				[
@@ -345,6 +357,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'ri_get_insights_scores_ability',
 					'ri_add_page_insights_ability',
+					'ri_retest_page_insights_ability',
 					'ri_remove_page_insights_ability',
 					'ri_get_recommendations_ability',
 					'ri_get_page_insights_score_ability',
