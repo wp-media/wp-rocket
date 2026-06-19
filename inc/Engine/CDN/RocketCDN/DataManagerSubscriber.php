@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -99,6 +100,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_rocket_upgrade'                      => [
 				[ 'refresh_cdn_cname', 10, 2 ],
 				[ 'refresh_subscription_details_with_update', 10, 2 ],
+				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
 		];
@@ -585,5 +587,29 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->cdn_options->flush_subscription_cache();
+	}
+
+	/**
+	 * Sets cdn_type to rocketcdn when upgrading from a version affected by the grace period bug.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_rocketcdn_as_cdn_type_on_upgrade( string $new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.22.0.2', '>=' ) ) {
+			return;
+		}
+
+		if ( ! $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
+		$this->options_api->set( 'settings', $current_options );
 	}
 }
