@@ -121,7 +121,7 @@ class SubscriptionController implements LoggerAwareInterface {
 		}
 
 		$this->subscription = $this->api_client->get_subscription_data();
-		if ( 404 === $this->subscription['status_code'] ) {
+		if ( 404 === ( $this->subscription['status_code'] ?? null ) ) {
 			$this->website_search_api_client->set_site_url( home_url() );
 			$website = $this->website_search_api_client->find();
 			if ( ! empty( $website ) ) {
