@@ -167,7 +167,7 @@ parameters:
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
+			count: 3
 			path: inc/Engine/CDN/Render/Controller.php
 
 		-
