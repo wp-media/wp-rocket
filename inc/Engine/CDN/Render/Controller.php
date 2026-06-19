@@ -655,6 +655,10 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->subscription_controller->is_license_invalid() ) {
+			return;
+		}
+
 		// Update the forced pause tracking option to indicate the forced pause has been resolved.
 		$stored['persistent'] = false;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
@@ -890,6 +894,10 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_forced_paused(): bool {
 		if ( $this->subscription_controller->is_in_grace_period() ) {
+			return true;
+		}
+
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() && $this->subscription_controller->is_license_invalid() ) {
 			return true;
 		}
 
