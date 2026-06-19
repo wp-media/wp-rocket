@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group Abilities
  */
-class Test_IsEnabled extends TestCase {
+class IsEnabledTest extends TestCase {
 	/**
 	 * Test should return expected result based on filter value.
 	 *
