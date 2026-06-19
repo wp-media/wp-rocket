@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Abilities\Options;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetOptions implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Options data instance.
 	 *
@@ -407,6 +410,7 @@ class GetOptions implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute(): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-options' ] );
 		$denylist = [
 			'cache_mobile',
 			'do_caching_mobile_files',

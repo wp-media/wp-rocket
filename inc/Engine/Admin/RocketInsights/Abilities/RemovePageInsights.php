@@ -8,8 +8,11 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Context\Context,
 	Database\Queries\RocketInsights as Query
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class RemovePageInsights implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Context instance providing necessary dependencies and configuration.
 	 *
@@ -107,6 +110,7 @@ class RemovePageInsights implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/remove-page-insights' ] );
 		if ( ! $this->context->is_allowed() ) {
 			return [
 				'success' => false,

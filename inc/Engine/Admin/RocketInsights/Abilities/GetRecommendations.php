@@ -5,8 +5,10 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetRecommendations implements AbilitiesInterface {
+	use TrackingTrait;
 
 	/**
 	 * Option slugs that are both tracked by Rocket Insights (DataManager::TRACKED_OPTIONS)
@@ -140,6 +142,7 @@ class GetRecommendations implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-recommendations' ] );
 		$data = $this->data_manager->get_recommendations();
 
 		if ( false === $data ) {

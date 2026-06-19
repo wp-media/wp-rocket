@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Abilities\Options;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class SetOption implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Options that accept boolean values (0 or 1).
 	 */
@@ -229,6 +232,7 @@ class SetOption implements AbilitiesInterface {
 	 * @return array Response with success status and option values.
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/set-option' ] );
 		$option_name  = $input['option_name'];
 		$option_value = $input['option_value'];
 		$update_mode  = $input['update_mode'] ?? 'update';
