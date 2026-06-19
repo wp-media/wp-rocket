@@ -846,7 +846,7 @@ class Controller extends Abstract_Render {
 		 *
 		 * @since 3.22.0.2
 		 */
-		$texts = (array) apply_filters( 'rocket_rocketcdn_status_indicator_texts', $texts, $pages_count, $is_subscription_loading, $free );
+		$texts = wpm_apply_filters_typed( 'array', 'rocket_rocketcdn_status_indicator_texts', $texts, $pages_count, $is_subscription_loading, $free );
 
 		if ( $is_subscription_loading ) {
 			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
