@@ -79,8 +79,7 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 
 		$response = $this->send_get_request( $args, true );
 
-		$status_code = wp_remote_retrieve_response_code( $response );
-		if ( is_wp_error( $response ) || 200 !== $status_code ) {
+		if ( is_wp_error( $response ) ) {
 			return false;
 		}
 
@@ -95,13 +94,21 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 		}
 
 		$final = [
-			'subscription_status' => $response['subscription_status'],
-			'plan_type'           => $response['subscription_plan_type'],
-			'status_code'         => $status_code,
+			'subscription_status' => $response['subscription_status'] ?? 'cancelled',
+			'plan_type'           => $response['subscription_plan_type'] ?? 'free',
+			'status_code'         => wp_remote_retrieve_response_code( $response ),
 			'website_status'      => $response['status'] ?? '',
 		];
 		set_transient( $this->get_transient_key(), $final, HOUR_IN_SECONDS );
 
 		return $final;
+	}
+
+	protected function valid_response_code( $response ) {
+		return in_array( wp_remote_retrieve_response_code( $response ), [ 200, 404 ], true );
+	}
+
+	protected function valid_response_body( $response ) {
+		return ! empty( wp_remote_retrieve_body( $response ) );
 	}
 }

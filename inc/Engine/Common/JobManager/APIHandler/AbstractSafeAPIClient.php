@@ -82,10 +82,14 @@ abstract class AbstractSafeAPIClient {
 			return $response;
 		}
 
-		$body = wp_remote_retrieve_body( $response );
-		if ( empty( $body ) || ( ! empty( $response['response']['code'] ) && ! in_array( $response['response']['code'], [ 200, 202 ], true ) ) ) {
+		if ( ! $this->valid_response_code( $response ) ) {
 			$this->set_timeout_transients( $previous_expiration );
-			return new WP_Error( 500, 'Not valid response.' );
+			return new WP_Error( 500, 'Not valid response code.' );
+		}
+
+		if ( ! $this->valid_response_body( $response ) ) {
+			$this->set_timeout_transients( $previous_expiration );
+			return new WP_Error( 500, 'Not valid response body.' );
 		}
 
 		$this->delete_timeout_transients();
@@ -152,5 +156,13 @@ abstract class AbstractSafeAPIClient {
 		}
 
 		return new WP_Error( 400, 'Not valid request type.' );
+	}
+
+	protected function valid_response_code( $response ) {
+		return empty( $response['response']['code'] ) || in_array( $response['response']['code'], [ 200, 202 ], true );
+	}
+
+	protected function valid_response_body( $response) {
+		return ! empty( wp_remote_retrieve_body( $response ) );
 	}
 }

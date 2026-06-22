@@ -918,6 +918,10 @@ class Controller extends Abstract_Render {
 			return true;
 		}
 
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return true;
+		}
+
 		// Force paused if free plan with an invalid WP Rocket licence.
 		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
 			return true;
