@@ -94,7 +94,7 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		$final    = [
+		$final = [
 			'subscription_status' => $response['subscription_status'],
 			'plan_type'           => $response['subscription_plan_type'],
 			'status_code'         => $status_code,
