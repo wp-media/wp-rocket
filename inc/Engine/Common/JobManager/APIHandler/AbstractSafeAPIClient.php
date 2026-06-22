@@ -158,11 +158,23 @@ abstract class AbstractSafeAPIClient {
 		return new WP_Error( 400, 'Not valid request type.' );
 	}
 
+	/**
+	 * Validate response code.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
 	protected function valid_response_code( $response ) {
 		return empty( $response['response']['code'] ) || in_array( $response['response']['code'], [ 200, 202 ], true );
 	}
 
-	protected function valid_response_body( $response) {
+	/**
+	 * Validate response body.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
+	protected function valid_response_body( $response ) {
 		return ! empty( wp_remote_retrieve_body( $response ) );
 	}
 }

@@ -104,10 +104,22 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 		return $final;
 	}
 
+	/**
+	 * Validate response code.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
 	protected function valid_response_code( $response ) {
 		return in_array( wp_remote_retrieve_response_code( $response ), [ 200, 404 ], true );
 	}
 
+	/**
+	 * Validate response body.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
 	protected function valid_response_body( $response ) {
 		return ! empty( wp_remote_retrieve_body( $response ) );
 	}
