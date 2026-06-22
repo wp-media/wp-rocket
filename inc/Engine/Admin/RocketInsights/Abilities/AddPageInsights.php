@@ -16,10 +16,12 @@ use WP_Rocket\Engine\Common\{
 	JobManager\Queue\Queue,
 	Utils
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\Logger;
 
 class AddPageInsights implements AbilitiesInterface {
 	use PageHandlerTrait;
+	use TrackingTrait;
 
 	/**
 	 * Context instance providing necessary dependencies and configuration.
@@ -153,6 +155,7 @@ class AddPageInsights implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/add-page-insights' ] );
 		$payload = $this->get_url_validation_payload( $input['url'] );
 
 		if ( $payload['error'] ) {

@@ -12,9 +12,11 @@ use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
 	JobManager\Queue\Queue
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\Logger;
 
 class RetestPageInsights implements AbilitiesInterface {
+	use TrackingTrait;
 
 	/**
 	 * Context instance providing necessary dependencies and configuration.
@@ -137,6 +139,7 @@ class RetestPageInsights implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/retest-page-insights' ] );
 		// Guard: local environments do not support performance monitoring.
 		if ( 'local' === wp_get_environment_type() ) {
 			return [
