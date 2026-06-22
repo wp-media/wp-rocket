@@ -4888,7 +4888,6 @@ div.wpr-tutorial-item {
   background: #F9FAFB;
   border: 1px solid #E2E5E9;
   border-radius: 4px;
-  overflow: hidden;
 }
 .wpr-cdn-built-in__separator {
   width: 100%;
@@ -4896,8 +4895,13 @@ div.wpr-tutorial-item {
   background: #E2E5E9;
 }
 .wpr-cdn-built-in--paused .wpr-cdn-add-page, .wpr-cdn-built-in--disabled .wpr-cdn-add-page {
-  opacity: 0.5;
   pointer-events: none;
+}
+.wpr-cdn-built-in--paused .wpr-cdn-add-page .wpr-cdn-add-page__input-wrap, .wpr-cdn-built-in--disabled .wpr-cdn-add-page .wpr-cdn-add-page__input-wrap {
+  border: 1px solid #eceef1;
+}
+.wpr-cdn-built-in--paused .wpr-cdn-add-page input[type=text]::placeholder, .wpr-cdn-built-in--disabled .wpr-cdn-add-page input[type=text]::placeholder {
+  color: #b4b7ba;
 }
 .wpr-cdn-built-in .wpr-table-list__row {
   background: #FFF;
@@ -5018,7 +5022,7 @@ div.wpr-tutorial-item {
   pointer-events: none;
 }
 .wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-tooltip {
-  bottom: calc(100% + 8px);
+  bottom: -40px;
   top: auto;
   left: 50%;
   transform: translateX(-50%);
@@ -5027,11 +5031,14 @@ div.wpr-tutorial-item {
   font-weight: normal;
   text-transform: none;
 }
+.wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-tooltip.wpr-isHidden {
+  display: none;
+}
 .wpr-cdn-add-page__button-wrapper.wpr-btn-with-tool-tip .wpr-tooltip:before {
   top: auto;
-  bottom: -6px;
+  bottom: 33px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) rotate(180deg);
   border-bottom: none;
   border-top: 8px solid #0e1428;
 }
