@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Render\Controller;
 
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
@@ -65,6 +66,13 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	private $user;
 
 	/**
+	 * Cache mock instance.
+	 *
+	 * @var Mockery\MockInterface|Cache
+	 */
+	private $cache;
+
+	/**
 	 * Sets up the test fixture.
 	 *
 	 * @return void
@@ -80,6 +88,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
+		$this->cache                    = Mockery::mock( Cache::class );
 	}
 
 	/**
@@ -95,7 +104,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			$this->options,
 			$this->cdn_query,
 			$this->subscription_controller,
-			$this->user
+			$this->user,
+			$this->cache
 		);
 	}
 
