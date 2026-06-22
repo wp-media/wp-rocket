@@ -6,8 +6,11 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetInsightsScore implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Rocket Insights Query instance.
 	 *
@@ -162,6 +165,7 @@ class GetInsightsScore implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ) {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-insights-scores' ] );
 		$global_score = $this->global_score->get_global_score_data();
 		$results      = [];
 
