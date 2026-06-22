@@ -77,13 +77,11 @@ defined( 'ABSPATH' ) || exit;
 				<span class="wpr-icon-plus"></span>
 				<?php esc_html_e( 'ADD PAGE', 'rocket' ); ?>
 			</button>
-			<?php if ( ! empty( $data['limit_reached'] ) ) : ?>
-			<div class="wpr-tooltip">
+			<div class="wpr-tooltip<?php echo empty( $data['limit_reached'] ) ? ' wpr-isHidden' : ''; ?>">
 				<div class="wpr-tooltip-content">
 					<?php esc_html_e( 'You have reached the limit of 3 free pages.', 'rocket' ); ?>
 				</div>
 			</div>
-			<?php endif; ?>
 		</div>
 	</div>
 
