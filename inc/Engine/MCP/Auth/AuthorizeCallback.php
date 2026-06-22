@@ -102,13 +102,18 @@ class AuthorizeCallback {
 	private function render_consent_screen( string $state, array $client ): void {
 		nocache_headers();
 
-		$client_name = esc_html( (string) ( $client['client_name'] ?? '' ) );
+		// Text values are kept raw here and escaped at each output site below.
+		// client_name and publisher come from the fetched CIMD document; keeping
+		// their escaping next to the echo/printf that renders them means a later
+		// refactor cannot silently drop it. URLs are esc_url'd here because they
+		// are only ever emitted into href/action attributes.
+		$client_name = (string) ( $client['client_name'] ?? '' );
 		$client_id   = esc_url( (string) ( $client['client_id'] ?? '' ) );
 		$client_uri  = esc_url( (string) ( $client['client_uri'] ?? '' ) );
 		$verified    = ! empty( $client['verified'] );
-		$publisher   = esc_html( (string) ( $client['publisher'] ?? '' ) );
-		$site_name   = esc_html( get_bloginfo( 'name' ) );
-		$consent_url = esc_url( get_site_url() . '/oauth/consent' );
+		$publisher   = (string) ( $client['publisher'] ?? '' );
+		$site_name   = (string) get_bloginfo( 'name' );
+		$consent_url = esc_url( home_url( '/oauth/consent' ) ); // Rewrite endpoint: home_url(), not get_site_url().
 
 		// The display name links to client_uri if available, otherwise client_id.
 		$display_href = '' !== $client_uri ? $client_uri : $client_id;
@@ -119,7 +124,7 @@ class AuthorizeCallback {
 		<head>
 			<meta charset="<?php bloginfo( 'charset' ); ?>">
 			<meta name="viewport" content="width=device-width, initial-scale=1">
-			<title><?php echo esc_html__( 'Authorize Access', 'wp-rocket' ) . ' — ' . $site_name; ?></title>
+			<title><?php echo esc_html( __( 'Authorize Access', 'wp-rocket' ) . ' — ' . $site_name ); ?></title>
 			<style>
 				*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 				body {
@@ -218,9 +223,9 @@ class AuthorizeCallback {
 				<div class="client-block">
 					<div class="client-name">
 						<?php if ( '' !== $display_href ) : ?>
-							<a href="<?php echo $display_href; // Already esc_url'd above. ?>" rel="noopener noreferrer" target="_blank"><?php echo $client_name; ?></a>
+							<a href="<?php echo $display_href; // Already esc_url'd above. ?>" rel="noopener noreferrer" target="_blank"><?php echo esc_html( $client_name ); ?></a>
 						<?php else : ?>
-							<?php echo $client_name; ?>
+							<?php echo esc_html( $client_name ); ?>
 						<?php endif; ?>
 					</div>
 					<?php if ( '' !== $client_id ) : ?>
@@ -233,7 +238,7 @@ class AuthorizeCallback {
 						<div class="verified-badge">
 							<?php
 							/* translators: %s: publisher name */
-							printf( esc_html__( 'Verified publisher: %s', 'wp-rocket' ), $publisher );
+							printf( esc_html__( 'Verified publisher: %s', 'wp-rocket' ), esc_html( $publisher ) );
 							?>
 						</div>
 					<?php endif; ?>
@@ -244,8 +249,8 @@ class AuthorizeCallback {
 					printf(
 						/* translators: 1: client name, 2: site name */
 						esc_html__( '%1$s is requesting access to the WP Rocket MCP tools on %2$s on your behalf.', 'wp-rocket' ),
-						'<strong>' . $client_name . '</strong>',
-						'<strong>' . $site_name . '</strong>'
+						'<strong>' . esc_html( $client_name ) . '</strong>',
+						'<strong>' . esc_html( $site_name ) . '</strong>'
 					);
 					?>
 				</p>

@@ -67,7 +67,13 @@ class Endpoints {
 			return;
 		}
 
-		$site_url = get_site_url();
+		// Every OAuth endpoint and both .well-known documents are served through
+		// rewrite rules, which resolve against home_url() (the Site Address) — the
+		// same base get_rest_url() uses for the resource/audience below. Advertising
+		// them under get_site_url() (the WordPress Address) would point clients at
+		// the wrong location on installs where WordPress lives in its own directory
+		// (siteurl !== home).
+		$base_url = home_url();
 
 		McpLogger::log(
 			'DISCOVERY',
@@ -82,7 +88,7 @@ class Endpoints {
 		if ( 'protected-resource' === $discovery ) {
 			$body = array(
 				'resource'                 => get_rest_url( null, 'mcp/mcp-oauth-server' ),
-				'authorization_servers'    => array( $site_url ),
+				'authorization_servers'    => array( $base_url ),
 				'bearer_methods_supported' => array( 'header' ),
 				'scopes_supported'         => array( 'mcp' ),
 			);
@@ -90,10 +96,10 @@ class Endpoints {
 			wp_send_json( $body );
 		} elseif ( 'authorization-server' === $discovery ) {
 			$body = array(
-				'issuer'                                => $site_url,
-				'authorization_endpoint'                => $site_url . '/oauth/authorize',
-				'token_endpoint'                        => $site_url . '/oauth/token',
-				'revocation_endpoint'                   => $site_url . '/oauth/revoke',
+				'issuer'                                => $base_url,
+				'authorization_endpoint'                => $base_url . '/oauth/authorize',
+				'token_endpoint'                        => $base_url . '/oauth/token',
+				'revocation_endpoint'                   => $base_url . '/oauth/revoke',
 				'response_types_supported'              => array( 'code' ),
 				'grant_types_supported'                 => array( 'authorization_code', 'refresh_token' ),
 				'code_challenge_methods_supported'      => array( 'S256' ),

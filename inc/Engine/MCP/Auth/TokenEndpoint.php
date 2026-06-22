@@ -26,6 +26,18 @@ class TokenEndpoint {
 	const REFRESH_JTI_META_PREFIX = 'mcp_refresh_jti_';
 
 	/**
+	 * Maximum number of concurrent MCP sessions (Application Passwords) retained
+	 * per user per client. Every successful code exchange mints a new Application
+	 * Password, so a client that re-runs the authorize→token flow repeatedly would
+	 * otherwise accumulate unbounded rows — bloating the user's Application
+	 * Passwords screen and slowing the per-request revocation lookup in
+	 * OAuthHttpTransport, which scans all of the user's Application Passwords. When
+	 * a new session would exceed this cap, the oldest sessions for that client are
+	 * evicted first.
+	 */
+	const MAX_SESSIONS_PER_CLIENT = 5;
+
+	/**
 	 * Handle the token request.
 	 *
 	 * @return void
@@ -158,6 +170,9 @@ class TokenEndpoint {
 
 		McpLogger::log( 'TOKEN', 'PKCE verified — creating Application Password', array( 'user_id' => $user_id ) );
 
+		// Bound the number of sessions this client can stockpile before adding one more.
+		$this->prune_sessions( $user_id, $client_id );
+
 		// Create a WordPress Application Password (raw password is discarded).
 		$result = \WP_Application_Passwords::create_new_application_password(
 			$user_id,
@@ -232,13 +247,13 @@ class TokenEndpoint {
 		// Verify the token was issued by this site. A staging clone sharing the same
 		// JWT secret would otherwise allow cross-site token replay.
 		$token_iss = (string) ( $claims['iss'] ?? '' );
-		if ( $token_iss !== get_site_url() ) {
+		if ( $token_iss !== home_url() ) {
 			McpLogger::log(
 				'TOKEN',
 				'rejected: refresh token issuer mismatch',
 				array(
 					'token_iss'    => $token_iss,
-					'expected_iss' => get_site_url(),
+					'expected_iss' => home_url(),
 				)
 			);
 			$this->send_error( 401, 'invalid_token', 'Refresh token was not issued by this server.' );
@@ -307,7 +322,9 @@ class TokenEndpoint {
 	 */
 	private function issue_token_pair( int $user_id, string $app_pass_uuid, string $client_id = '' ): void {
 		$secret   = SecretManager::get_secret();
-		$site_url = get_site_url();
+		// iss is home_url() (the Site Address), matching the base get_rest_url()
+		// uses for aud and where the OAuth/.well-known routes are actually served.
+		$issuer   = home_url();
 		$now      = time();
 		$aud      = get_rest_url( null, 'mcp/mcp-oauth-server' );
 
@@ -318,7 +335,7 @@ class TokenEndpoint {
 		update_user_meta( $user_id, self::REFRESH_JTI_META_PREFIX . $app_pass_uuid, $refresh_jti );
 
 		$access_payload = array(
-			'iss'         => $site_url,
+			'iss'         => $issuer,
 			'aud'         => $aud,
 			'sub'         => (string) $user_id,
 			'app_pass_id' => $app_pass_uuid,
@@ -329,7 +346,7 @@ class TokenEndpoint {
 		);
 
 		$refresh_payload = array(
-			'iss'         => $site_url,
+			'iss'         => $issuer,
 			'sub'         => (string) $user_id,
 			'app_pass_id' => $app_pass_uuid,
 			'client_id'   => $client_id,
@@ -364,6 +381,78 @@ class TokenEndpoint {
 				'scope'         => 'mcp',
 			)
 		);
+	}
+
+	/**
+	 * Evict the oldest MCP sessions for a user+client so that creating one more
+	 * stays within MAX_SESSIONS_PER_CLIENT.
+	 *
+	 * Only Application Passwords this feature created are considered — they are
+	 * matched by the `app_id` we set to the client_id at creation time, so
+	 * Application Passwords the user created for other integrations are never
+	 * touched. Deleting one fires `wp_delete_application_password`, which removes
+	 * its `mcp_refresh_jti_*` meta via purge_refresh_jti_meta(), so no orphaned
+	 * rows are left behind.
+	 *
+	 * @param int    $user_id   WordPress user ID.
+	 * @param string $client_id Client ID URL the sessions belong to.
+	 * @return void
+	 */
+	private function prune_sessions( int $user_id, string $client_id ): void {
+		if ( '' === $client_id ) {
+			return;
+		}
+
+		$passwords = \WP_Application_Passwords::get_user_application_passwords( $user_id );
+		if ( ! is_array( $passwords ) ) {
+			return;
+		}
+
+		// Keep only this feature's Application Passwords for this client.
+		$ours = array_values(
+			array_filter(
+				$passwords,
+				static function ( $item ) use ( $client_id ) {
+					return is_array( $item ) && ( $item['app_id'] ?? '' ) === $client_id;
+				}
+			)
+		);
+
+		// Below the cap: the new session about to be created still fits.
+		if ( count( $ours ) < self::MAX_SESSIONS_PER_CLIENT ) {
+			return;
+		}
+
+		// Oldest first.
+		usort(
+			$ours,
+			static function ( $a, $b ) {
+				return ( (int) ( $a['created'] ?? 0 ) ) <=> ( (int) ( $b['created'] ?? 0 ) );
+			}
+		);
+
+		// Evict enough of the oldest so that, after the new one is created, the
+		// total sits at exactly MAX_SESSIONS_PER_CLIENT.
+		$evict_count = ( count( $ours ) - self::MAX_SESSIONS_PER_CLIENT ) + 1;
+
+		for ( $i = 0; $i < $evict_count; $i++ ) {
+			$uuid = (string) ( $ours[ $i ]['uuid'] ?? '' );
+			if ( '' === $uuid ) {
+				continue;
+			}
+
+			\WP_Application_Passwords::delete_application_password( $user_id, $uuid );
+
+			McpLogger::log(
+				'TOKEN',
+				'evicted oldest MCP session to enforce per-client cap',
+				array(
+					'user_id'       => $user_id,
+					'client_id'     => $client_id,
+					'app_pass_uuid' => $uuid,
+				)
+			);
+		}
 	}
 
 	/**

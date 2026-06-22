@@ -149,7 +149,9 @@ class AuthorizeEndpoint {
 			self::STATE_TTL
 		);
 
-		$callback_url = add_query_arg( 'state', rawurlencode( $state ), get_site_url() . '/oauth/authorize-callback' );
+		// home_url(): the callback is a rewrite endpoint served from the Site Address,
+		// so it must match home_url() and not get_site_url() on split-directory installs.
+		$callback_url = add_query_arg( 'state', rawurlencode( $state ), home_url( '/oauth/authorize-callback' ) );
 		$login_url    = wp_login_url( $callback_url );
 
 		McpLogger::log(

@@ -178,7 +178,9 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		// would otherwise allow cross-site token replay — the audience already
 		// embeds the site URL, but verifying iss explicitly keeps this check in
 		// step with the refresh-token flow in TokenEndpoint::handle_refresh_token().
-		$expected_iss = get_site_url();
+		// home_url() matches what TokenEndpoint mints into iss and the home-based
+		// base get_rest_url() uses for aud.
+		$expected_iss = home_url();
 		$token_iss    = (string) ( $claims['iss'] ?? '' );
 
 		if ( $token_iss !== $expected_iss ) {
@@ -262,12 +264,14 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 	 * @return \WP_Error
 	 */
 	private function unauthenticated_error( string $code = 'unauthorized', string $description = '' ): \WP_Error {
-		$site_url = get_site_url();
+		// home_url(): the .well-known document is served via a rewrite rule, so the
+		// realm and resource_metadata URL must use the Site Address base.
+		$base_url = home_url();
 
 		$www_auth = sprintf(
 			'Bearer realm="%s", resource_metadata="%s/.well-known/oauth-protected-resource"',
-			esc_url( $site_url ),
-			esc_url( $site_url )
+			esc_url( $base_url ),
+			esc_url( $base_url )
 		);
 
 		if ( '' !== $description ) {
