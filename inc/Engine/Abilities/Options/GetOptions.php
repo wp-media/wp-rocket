@@ -43,6 +43,16 @@ class GetOptions implements AbilitiesInterface {
 					'type'       => 'object',
 					'properties' => [
 						// Cache settings.
+						'cache_mobile'                 => [
+							'type'        => 'integer',
+							'description' => 'Enable caching for mobile devices.',
+							'enum'        => [ 0, 1 ],
+						],
+						'do_caching_mobile_files'      => [
+							'type'        => 'integer',
+							'description' => 'Create separate cache files for mobile.',
+							'enum'        => [ 0, 1 ],
+						],
 						'cache_webp'                   => [
 							'type'        => 'integer',
 							'description' => 'Enable WebP caching.',
@@ -236,6 +246,16 @@ class GetOptions implements AbilitiesInterface {
 							'description' => 'Enable cache preloading.',
 							'enum'        => [ 0, 1 ],
 						],
+						'preload_fonts'                => [
+							'type'        => 'array',
+							'items'       => [ 'type' => 'string' ],
+							'description' => 'Font URLs to preload.',
+						],
+						'dns_prefetch'                 => [
+							'type'        => 'array',
+							'items'       => [ 'type' => 'string' ],
+							'description' => 'Domains to DNS prefetch.',
+						],
 						'preload_links'                => [
 							'type'        => 'integer',
 							'description' => 'Enable link preloading on hover.',
@@ -408,15 +428,11 @@ class GetOptions implements AbilitiesInterface {
 	 */
 	public function execute(): array {
 		$denylist = [
-			'cache_mobile',
-			'do_caching_mobile_files',
 			'secret_cache_key',
 			'cache_ssl',
 			'minify_css_key',
 			'minify_js_key',
 			'defer_all_js_safe',
-			'preload_fonts',
-			'dns_prefetch',
 			'cloudflare_email',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',
