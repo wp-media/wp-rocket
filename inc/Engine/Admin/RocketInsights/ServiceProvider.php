@@ -361,6 +361,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_remove_page_insights_ability',
 					'ri_get_recommendations_ability',
 					'ri_get_page_insights_score_ability',
+					'abilities_context',
 				]
 			);
 
