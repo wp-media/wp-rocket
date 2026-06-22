@@ -723,7 +723,7 @@ class Controller extends Abstract_Render {
 		// Update status indicator details when subscription is processing.
 		if ( $is_subscription_loading ) {
 			$status_text = __( 'Creating your subscription...', 'rocket' );
-			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+			$details     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
 		$is_paused = $this->is_cdn_paused();
