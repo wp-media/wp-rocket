@@ -123,7 +123,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 					'id'  => 'beacon-id',
 					'url' => 'https://example.com',
 				]
-				);
+			);
 
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( false );
@@ -146,7 +146,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 				'url'   => 'http://example.org/',
 				'title' => 'Page',
 			]
-			);
+		);
 
 		$this->cdn_query->method( 'query' )
 			->willReturn( $pages );

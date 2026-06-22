@@ -113,6 +113,7 @@ class Controller extends Abstract_Render {
 		$this->cdn_query               = $cdn_query;
 		$this->subscription_controller = $subscription_controller;
 		$this->user                    = $user;
+		$this->cache                   = $cache;
 	}
 
 	/**
@@ -643,7 +644,7 @@ class Controller extends Abstract_Render {
 		$texts['status_text']        = $texts['active_status_text'];
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your licence was cancelled, you need to wait up to two days before resuming.', 'rocket' );
+			$texts['paused_details'] = __( 'RocketCDN is currently paused because your RocketCDN subscription was cancelled. Please wait up to two days before resuming.', 'rocket' );
 			$texts['class']         .= ' wpr-cdn-status--expired';
 		}
 

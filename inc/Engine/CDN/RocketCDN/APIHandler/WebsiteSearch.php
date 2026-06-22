@@ -47,7 +47,11 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 		if ( empty( $this->site_url ) ) {
 			return '';
 		}
-		return sprintf( '%1$swebsite/search/?url=%2$s/', APIClient::ROCKETCDN_API, $this->site_url );
+		return add_query_arg(
+			'url',
+			untrailingslashit( $this->site_url ),
+			APIClient::ROCKETCDN_API . 'website/search/'
+		);
 	}
 
 	/**
@@ -86,11 +90,15 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 		}
 
 		$response = json_decode( $response, true );
+		if ( ! is_array( $response ) ) {
+			return false;
+		}
+
 		$final    = [
 			'subscription_status' => $response['subscription_status'],
 			'plan_type'           => $response['subscription_plan_type'],
 			'status_code'         => $status_code,
-			'website_status'      => $response['status'],
+			'website_status'      => $response['status'] ?? '',
 		];
 		set_transient( $this->get_transient_key(), $final, HOUR_IN_SECONDS );
 

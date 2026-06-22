@@ -107,7 +107,7 @@ class APIClient {
 			'plan_type'                     => $data['plan_type'] ?? 'free',
 			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
 			'website_id'                    => $data['website_id'] ?? 0,
-			'status_code'                   => $data['status_code'] ?? 0,
+			'status_code'                   => $status_code,
 		];
 
 		$this->set_status_transient( $final_data, DAY_IN_SECONDS );
