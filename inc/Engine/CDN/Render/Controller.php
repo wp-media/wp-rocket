@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\Render;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -76,6 +77,13 @@ class Controller extends Abstract_Render {
 	private $user;
 
 	/**
+	 * Cache instance
+	 *
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Beacon                 $beacon        Beacon instance.
@@ -85,6 +93,7 @@ class Controller extends Abstract_Render {
 	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
 	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
 	 * @param User                   $user          User instance.
+	 * @param Cache                  $cache Cache instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
@@ -93,7 +102,8 @@ class Controller extends Abstract_Render {
 		Options_Data $options,
 		RocketCDNQuery $cdn_query,
 		SubscriptionController $subscription_controller,
-		User $user
+		User $user,
+		Cache $cache
 	) {
 		parent::__construct( $template_path );
 
@@ -469,6 +479,9 @@ class Controller extends Abstract_Render {
 		$stored['tracking'] = $is_forced;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
+		//Clear whole cache.
+		$this->cache->clear_all_cache();
+
 		/**
 		 * Fires when the CDN state changes between paused and active.
 		 *
@@ -547,6 +560,9 @@ class Controller extends Abstract_Render {
 			if ( empty( $stored['persistent'] ) ) {
 				$stored['persistent'] = true;
 				update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+
+				//Clear whole cache.
+				$this->cache->clear_all_cache();
 			}
 
 			return false;
@@ -662,6 +678,9 @@ class Controller extends Abstract_Render {
 		// Update the forced pause tracking option to indicate the forced pause has been resolved.
 		$stored['persistent'] = false;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+
+		//Clear whole cache.
+		$this->cache->clear_all_cache();
 
 		// Bail out if there are no add pages in the free plan — no need to auto create, allow normal flow.
 		if ( empty( $this->get_items() ) ) {
