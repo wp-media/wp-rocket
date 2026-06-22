@@ -359,7 +359,6 @@
 	background: $cGreyLight3;
 	border: 1px solid $cGreyLighter1;
 	border-radius: 4px;
-	overflow: hidden;
 
 	&__separator {
 		width: 100%;
@@ -369,8 +368,15 @@
 
 	&--paused, &--disabled {
 		.wpr-cdn-add-page {
-			opacity: 0.5;
 			pointer-events: none;
+
+			.wpr-cdn-add-page__input-wrap {
+				border: 1px solid #eceef1;
+			}
+
+			input[type="text"]::placeholder {
+				color: #b4b7ba;
+			}
 		}
 	}
 
@@ -507,7 +513,7 @@
 			}
 
 			.wpr-tooltip {
-				bottom: calc(100% + 8px);
+				bottom: -40px;
 				top: auto;
 				left: 50%;
 				transform: translateX(-50%);
@@ -515,13 +521,17 @@
 				font-size: 14px;
 				font-weight: normal;
 				text-transform: none;
+
+				&.wpr-isHidden {
+					display: none;
+				}
 			}
 
 			.wpr-tooltip:before {
 				top: auto;
-				bottom: -6px;
+				bottom: 33px;
 				left: 50%;
-				transform: translateX(-50%);
+				transform: translateX(-50%) rotate(180deg);
 				border-bottom: none;
 				border-top: 8px solid #0e1428;
 			}
