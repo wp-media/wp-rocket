@@ -479,7 +479,7 @@ class Controller extends Abstract_Render {
 		$stored['tracking'] = $is_forced;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
-		//Clear whole cache.
+		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
 		/**
@@ -561,7 +561,7 @@ class Controller extends Abstract_Render {
 				$stored['persistent'] = true;
 				update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
-				//Clear whole cache.
+				// Clear whole cache.
 				$this->cache->clear_all_cache();
 			}
 
@@ -679,7 +679,7 @@ class Controller extends Abstract_Render {
 		$stored['persistent'] = false;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
-		//Clear whole cache.
+		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
 		// Bail out if there are no add pages in the free plan — no need to auto create, allow normal flow.
