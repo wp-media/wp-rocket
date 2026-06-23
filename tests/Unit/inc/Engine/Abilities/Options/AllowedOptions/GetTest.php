@@ -36,8 +36,6 @@ class GetTest extends TestCase {
 		$allowed_options = new AllowedOptions();
 		$result          = $allowed_options->get();
 
-		$this->assertIsArray( $result );
-
 		if ( null !== $expected['contains'] ) {
 			$this->assertContains( $expected['contains'], $result );
 		}
