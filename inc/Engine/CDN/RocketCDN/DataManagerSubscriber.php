@@ -556,14 +556,14 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Refresh subscription details with update to v3.22.
+	 * Refresh subscription details with update to v3.22.0.2.
 	 *
 	 * @param string $new_version Plugin new version.
 	 * @param string $old_version Plugin old version.
 	 * @return void
 	 */
 	public function refresh_subscription_details_with_update( $new_version, $old_version ) {
-		if ( version_compare( $old_version, '3.22', '>=' ) ) {
+		if ( version_compare( $old_version, '3.22.0.2', '>=' ) ) {
 			return;
 		}
 
