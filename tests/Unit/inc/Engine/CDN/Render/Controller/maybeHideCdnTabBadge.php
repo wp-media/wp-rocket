@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Render\Controller;
 use Mockery;
 use PHPUnit\Framework\MockObject\MockObject;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
@@ -51,6 +52,7 @@ class Test_MaybeHideCdnTabBadge extends TestCase {
 		$cdn_query                     = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$user                          = Mockery::mock( User::class );
+		$cache                         = Mockery::mock( Cache::class );
 
 		$this->controller = new Controller(
 			$beacon,
@@ -59,7 +61,8 @@ class Test_MaybeHideCdnTabBadge extends TestCase {
 			$options,
 			$cdn_query,
 			$this->subscription_controller,
-			$user
+			$user,
+			$cache
 		);
 	}
 

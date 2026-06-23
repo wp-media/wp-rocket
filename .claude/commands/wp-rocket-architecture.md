@@ -1,1 +1,1 @@
-../../.aiassistant/skills/wp-rocket-architecture/SKILL.md
+../skills/wp-rocket-architecture/SKILL.md
