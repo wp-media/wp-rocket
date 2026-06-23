@@ -659,11 +659,8 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_auto_create_rocketcdn_free_subscription() {
-		$stored           = $this->get_forced_pause_tracking();
-		$was_forced_pause = (bool) ( $stored['persistent'] ?? false );
-
-		// Bail out if there was never a forced paused state to avoid unnecessary subscription creation on new accounts.
-		if ( ! $was_forced_pause ) {
+		// Bail out if customer is outside the grace period to avoid unnecessary subscription creation on new accounts.
+		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
 			return;
 		}
 
@@ -677,6 +674,7 @@ class Controller extends Abstract_Render {
 		}
 
 		// Update the forced pause tracking option to indicate the forced pause has been resolved.
+		$stored               = $this->get_forced_pause_tracking();
 		$stored['persistent'] = false;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
