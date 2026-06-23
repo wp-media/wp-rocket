@@ -50,7 +50,7 @@ class GetPageInsightsScore implements AbilitiesInterface {
 				'label'               => __( 'Get Rocket Insights Score for a Page', 'rocket' ),
 				'description'         => _x(
 					'Returns the latest Rocket Insights score for one specific URL. Requires a URI and returns score, status, report_url, and metric_data such as LCP, FCP, and TBT.
-Use this when the user asks about the performance or score of one page. Do not use it for fresh tests; use run-page-test instead. Do not use it for all pages; use get-insights-scores instead.
+Use this when the user asks about the performance or score of one page. Do not use it for fresh tests; use retest-page-insights instead. Do not use it for all pages; use get-insights-scores instead.
 If exists is false, tell the user the URL is not monitored and offer to add it with add-page-insights. This ability is read-only and does not trigger a new test.
 Always open with a one-line verdict, such as `Score: 94/100 - page is healthy.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.
 Do not open or read GTmetrix report_url links. You may show them as complementary report links. When showing scores or metrics, use only the approved performance colors and thresholds.',
