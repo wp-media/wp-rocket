@@ -10,6 +10,13 @@ class SetOption implements AbilitiesInterface {
 	use TrackingTrait;
 
 	/**
+	 * Allowed options instance.
+	 *
+	 * @var AllowedOptions
+	 */
+	private $allowed_options;
+
+	/**
 	 * Options that accept boolean values (0 or 1).
 	 */
 	private const BOOLEAN_OPTIONS = [
@@ -18,21 +25,16 @@ class SetOption implements AbilitiesInterface {
 		'cache_logged_user',
 		// File optimization - CSS.
 		'minify_css',
-		'async_css',
-		'async_css_mobile',
+		'minify_google_fonts',
 		'remove_unused_css',
-		'optimize_css_delivery',
 		// File optimization - JS.
 		'minify_js',
-		'minify_concatenate_js',
 		'defer_all_js',
 		'delay_js',
-		'delay_js_execution_safe_mode',
 		// Media.
 		'lazyload',
 		'lazyload_iframes',
 		'lazyload_youtube',
-		'lazyload_css_bg_img',
 		'image_dimensions',
 		// Fonts.
 		'host_fonts_locally',
@@ -58,11 +60,13 @@ class SetOption implements AbilitiesInterface {
 		'cloudflare_auto_settings',
 		// Heartbeat.
 		'control_heartbeat',
+		// Performance monitoring.
+		'performance_monitoring',
 		// Add-ons.
 		'varnish_auto_purge',
 		'sucury_waf_cache_sync',
-		// Analytics.
-		'analytics_enabled',
+		// Misc.
+		'emoji',
 	];
 
 	/**
@@ -70,6 +74,7 @@ class SetOption implements AbilitiesInterface {
 	 */
 	private const INTEGER_OPTIONS = [
 		'purge_cron_interval',
+		'performance_monitoring_schedule_frequency',
 	];
 
 	/**
@@ -81,13 +86,7 @@ class SetOption implements AbilitiesInterface {
 		'heartbeat_site_behavior'     => [ '', 'reduce_periodicity', 'disable' ],
 		'heartbeat_admin_behavior'    => [ '', 'reduce_periodicity', 'disable' ],
 		'heartbeat_editor_behavior'   => [ '', 'reduce_periodicity', 'disable' ],
-	];
-
-	/**
-	 * Options that require special string sanitization (CSS content).
-	 */
-	private const STRING_OPTIONS = [
-		'critical_css',
+		'cdn_type'                    => [ 'byocdn' ],
 	];
 
 	/**
@@ -115,9 +114,20 @@ class SetOption implements AbilitiesInterface {
 	private const ARRAY_OPTIONS = [
 		'cdn_cnames',
 		'cdn_zone',
-		'delay_js_exclusions_selected',
-		'delay_js_exclusions_selected_exclusions',
+		'preload_fonts',
+		'dns_prefetch',
+		'preload_excluded_uri',
+		'cdn_reject_pages',
 	];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AllowedOptions $allowed_options Allowed options instance.
+	 */
+	public function __construct( AllowedOptions $allowed_options ) {
+		$this->allowed_options = $allowed_options;
+	}
 
 	/**
 	 * Registers the set option ability.
@@ -141,6 +151,7 @@ class SetOption implements AbilitiesInterface {
 						'option_name'  => [
 							'type'        => 'string',
 							'description' => __( 'The name of the WP Rocket option to set', 'rocket' ),
+							'enum'        => $this->allowed_options->get(),
 						],
 						'option_value' => [
 							'anyOf'       => [
@@ -266,14 +277,7 @@ class SetOption implements AbilitiesInterface {
 	 * @return array List of allowed option names.
 	 */
 	private function get_allowed_options(): array {
-		return array_merge(
-			self::BOOLEAN_OPTIONS,
-			self::INTEGER_OPTIONS,
-			array_keys( self::ENUM_OPTIONS ),
-			self::STRING_OPTIONS,
-			self::TEXTAREA_FIELD_OPTIONS,
-			self::ARRAY_OPTIONS
-		);
+		return $this->allowed_options->get();
 	}
 
 	/**
@@ -314,17 +318,6 @@ class SetOption implements AbilitiesInterface {
 			}
 			// Return current value if invalid.
 			return $previous_value;
-		}
-
-		// String options (critical_css): strip tags and style elements.
-		if ( in_array( $option_name, self::STRING_OPTIONS, true ) ) {
-			if ( empty( $option_value ) ) {
-				return '';
-			}
-			return wp_strip_all_tags(
-				str_replace( [ '<style>', '</style>' ], '', $option_value ),
-				true
-			);
 		}
 
 		// Textarea field options: use rocket_sanitize_textarea_field.
