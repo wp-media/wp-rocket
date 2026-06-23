@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22-beta1\n"
+"Project-Id-Version: WP Rocket 3.22-beta2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-06-10T16:30:51+00:00\n"
+"POT-Creation-Date: 2026-06-11T09:24:01+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -3118,9 +3118,8 @@ msgid ""
 "%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all "
 "your pages with unlimited bandwidth."
 msgstr ""
-"%1$sVous souhaitez bénéficier d'une couverture complète pour la diffusion de"
-" contenu sur l'ensemble de votre site ?%2$s Étendez RocketCDN à toutes vos "
-"pages avec une bande passante illimitée."
+"%1$sVous souhaitez la Diffusion de contenu pour tout votre site ?%2$s "
+"Étendez RocketCDN à toutes vos pages avec une bande passante illimitée."
 
 #. translators: %1$s = opening strong tag, %2$s = number of pages allowed,
 #. %3$s = closing strong tag.
@@ -3134,9 +3133,8 @@ msgid ""
 "Upgrade to RocketCDN Pro to extend faster content delivery across all your "
 "pages from 100+ edge locations worldwide."
 msgstr ""
-"Passez à RocketCDN Pro pour bénéficier d'une diffusion plus rapide de votre "
-"contenu sur toutes vos pages depuis plus de 100 sites périphériques répartis"
-" dans le monde entier."
+"Passez à RocketCDN Pro pour une diffusion plus rapide de votre contenu, sur "
+"toutes vos pages, depuis +100 emplacements dans le monde."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
 #: inc/Engine/CDN/Render/Controller.php:231
@@ -3230,7 +3228,7 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:718
 msgid "Serving files from 100+ edge locations"
-msgstr "Diffusion de fichiers depuis plus de 100 sites périphériques"
+msgstr "Diffusion de fichiers depuis 100+ emplacements"
 
 #: inc/Engine/CDN/Render/Controller.php:719
 msgid "RocketCDN is active on your website"
@@ -3238,7 +3236,7 @@ msgstr "RocketCDN est actif sur votre site web"
 
 #: inc/Engine/CDN/Render/Controller.php:725
 msgid "Creating your subscription..."
-msgstr "Création de votre abonnement..."
+msgstr "Création de votre accès..."
 
 #: inc/Engine/CDN/Render/Controller.php:726
 msgid "Please wait, RocketCDN will be ready and active shortly."
@@ -3373,9 +3371,9 @@ msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
 " homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
-"%1$sVous pouvez désormais utiliser la diffusion de contenu, optimisé par "
-"RocketCDN, pour accélérer le chargement de votre page d'accueil et de deux "
-"autres pages, sans frais supplémentaires.%2$s"
+"%1$sVous pouvez désormais utiliser la diffusion de contenu, optimisée par "
+"RocketCDN, pour accélérer votre page d'accueil et de deux autres pages, "
+"gratuitement.%2$s"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
 msgid "Dismiss"
@@ -3396,8 +3394,8 @@ msgid ""
 "pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
 "%1$sEn tant qu'utilisateur de WP Rocket, vous pouvez désormais activer "
-"RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages les "
-"plus consultées et optimisez leurs performances partout dans le monde !%2$s"
+"RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages  et "
+"optimisez leurs performances partout dans le monde !%2$s"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
 msgid "Check it later"
@@ -3483,9 +3481,7 @@ msgstr "%1$sPas de limite de bande passante%2$s, pas de frais cachés"
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:105
 #, php-format
 msgid "%1$s100+ edge locations%2$s for wider global coverage"
-msgstr ""
-"%1$sPlus de 100 sites périphériques%2$s pour une couverture mondiale plus "
-"étendue"
+msgstr "%1$sPlus de 100 emplacements %2$s pour une couverture mondiale"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:109
 msgid "Learn more about RocketCDN"
@@ -5231,7 +5227,7 @@ msgstr "CNAME CDN"
 #: views/settings/fields/rocket-cdn.php:62
 #, php-format
 msgid "Purges RocketCDN cached resources for your website. %s"
-msgstr "Purge les ressources mises en cache de votre RocketCDN. %s"
+msgstr "Purge les ressources mises en cache par RocketCDN. %s"
 
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
@@ -5241,7 +5237,7 @@ msgstr "En savoir plus"
 
 #: views/settings/fields/rocket-cdn.php:72
 msgid "Clear all RocketCDN cache files"
-msgstr "Purge tous les fichiers mis en cache de RocketCDN"
+msgstr "Purge tous les fichiers mis en cache par RocketCDN"
 
 #: views/settings/mobile-cache.php:11
 msgid "Mobile Cache"
@@ -5311,8 +5307,8 @@ msgstr "NOUVEAU !"
 #: views/settings/page-sections/dashboard.php:50
 msgid "You can now enable RocketCDN for free on up to 3 pages of your choice!"
 msgstr ""
-"Vous pouvez désormais activer RocketCDN gratuitement sur un maximum de 3 "
-"pages de votre choix !"
+"Vous pouvez désormais activer RocketCDN gratuitement sur 3 pages de votre "
+"choix !"
 
 #: views/settings/page-sections/dashboard.php:51
 msgid ""
@@ -5321,11 +5317,10 @@ msgid ""
 "Delivery tab, choose up to 3 pages, and add them to RocketCDN to improve "
 "their performance globally."
 msgstr ""
-"RocketCDN diffuse votre contenu à partir de serveurs situés à proximité de "
-"vos visiteurs, ce qui permet à vos pages les plus consultées de se charger "
-"plus rapidement partout dans le monde. Rendez-vous dans l'onglet « Diffusion"
-" de contenu », sélectionnez jusqu'à 3 pages et ajoutez-les à RocketCDN pour "
-"améliorer leurs performances à l'échelle mondiale."
+"RocketCDN diffuse votre contenu à proximité de vos visiteurs, ce qui aide "
+"vos pages les plus consultées à être plus rapides, partout dans le monde. "
+"Rendez-vous dans l'onglet Diffusion de contenu, sélectionnez jusqu'à 3 pages"
+" et ajoutez-les à RocketCDN pour améliorer leurs performances mondialement."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/page-sections/dashboard.php:79
@@ -5717,7 +5712,7 @@ msgstr "Votre licence WPRocket a expiré"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
 msgid "Please renew it to keep using RocketCDN."
-msgstr "Veuillez la renouveler pour continuer à utiliser RocketCDN."
+msgstr "Veuillez renouveler pour continuer à utiliser RocketCDN."
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
 msgid "Renew Licence"
