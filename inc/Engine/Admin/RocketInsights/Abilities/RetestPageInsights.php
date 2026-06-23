@@ -73,7 +73,13 @@ class RetestPageInsights implements AbilitiesInterface {
 			'wp-rocket/retest-page-insights',
 			[
 				'label'               => __( 'Retest Page Insights', 'rocket' ),
-				'description'         => __( 'Retests a specific URL already being monitored by Rocket Insights. Use get-insights-scores first to find the URL and confirm it is tracked before calling this ability.', 'rocket' ),
+				'description'         => __(
+					'Triggers a fresh Rocket Insights performance test for an already monitored URL. Requires a valid URI.
+Use this when the user wants a fresh test for a monitored page. Do not call it while a test is already running.
+Handle response statuses as follows: triggered means the test was queued and results should be polled with get-page-insights-score; running means a test is already in progress and should not be triggered again; not_found means the page is not tracked and add-page-insights should be offered; failed means an error occurred.
+If the user wants results, wait and check every minute with get-page-insights-score, since the test may take a few minutes.',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',

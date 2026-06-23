@@ -50,7 +50,13 @@ class RemovePageInsights implements AbilitiesInterface {
 			'wp-rocket/remove-page-insights',
 			[
 				'label'               => __( 'Remove Page Insights', 'rocket' ),
-				'description'         => _x( 'Call when user wants to stop monitoring a page and delete its data. Always confirm before calling: state the URL and that results data will be permanently removed. Never call speculatively or in bulk without explicit per-page confirmation.', 'Ability description', 'rocket' ),
+				'description'         => _x(
+					'Permanently removes a URL from Rocket Insights monitoring and deletes its historical score data.
+Use this only when the user explicitly asks to stop monitoring a page and accepts data deletion. Do not use it for pausing or retesting.
+This action is destructive and non-idempotent. Before calling, explicitly confirm the exact URL with the user. Never remove multiple pages in bulk; require separate confirmation for each URL.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',
