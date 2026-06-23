@@ -128,6 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_query',
 					'rocketcdn_subscription_controller',
 					'user',
+					'cache_controller',
 				]
 			);
 

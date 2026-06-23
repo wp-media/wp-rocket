@@ -96,6 +96,7 @@ class WPRocketUninstall {
 		'wpr_global_score_data',
 		'wp_rocket_log_file_size_check',
 		'wpr_ri_recommendations',
+		'rocket_cdn_website_search',
 	];
 
 	/**
