@@ -47,6 +47,8 @@ class Test_SetCdnZone extends TestCase {
 	}
 
 	public function tear_down() {
+		$this->memoized_url_prop->setValue( $this->subscriber, null );
+
 		$settings = $this->options_api->get( 'settings', [] );
 		unset( $settings['cdn_type'] );
 		$this->options_api->set( 'settings', $settings );

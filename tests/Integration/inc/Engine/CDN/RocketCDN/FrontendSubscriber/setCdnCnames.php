@@ -31,6 +31,13 @@ class Test_SetCdnCnames extends TestCase {
 	 */
 	private $memoized_url_prop;
 
+	/**
+	 * Stored filter callback so it can be removed in tear_down.
+	 *
+	 * @var callable|null
+	 */
+	private $cdn_type_filter_callback = null;
+
 	public function set_up() {
 		parent::set_up();
 
@@ -48,6 +55,13 @@ class Test_SetCdnCnames extends TestCase {
 	}
 
 	public function tear_down() {
+		if ( null !== $this->cdn_type_filter_callback ) {
+			remove_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
+			$this->cdn_type_filter_callback = null;
+		}
+
+		$this->memoized_url_prop->setValue( $this->subscriber, null );
+
 		$settings = $this->options_api->get( 'settings', [] );
 		unset( $settings['cdn_type'] );
 		$this->options_api->set( 'settings', $settings );
@@ -64,6 +78,13 @@ class Test_SetCdnCnames extends TestCase {
 		$settings             = $this->options_api->get( 'settings', [] );
 		$settings['cdn_type'] = $config['cdn_type'];
 		$this->options_api->set( 'settings', $settings );
+
+		// Override the in-memory Options_Data so Context::is_rocketcdn() sees the right cdn_type.
+		$cdn_type                       = $config['cdn_type'];
+		$this->cdn_type_filter_callback = static function () use ( $cdn_type ) {
+			return $cdn_type;
+		};
+		add_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
 
 		$this->setup_subscription_transient( $config );
 
