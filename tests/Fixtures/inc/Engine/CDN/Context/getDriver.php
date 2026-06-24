@@ -43,6 +43,7 @@ return [
 		'config'   => [
 			'cdn_type'           => 'rocketcdn',
 			'is_in_grace_period' => true,
+			'is_paid'            => true,
 		],
 		'expected' => 'rocketcdn_paid',
 	],
