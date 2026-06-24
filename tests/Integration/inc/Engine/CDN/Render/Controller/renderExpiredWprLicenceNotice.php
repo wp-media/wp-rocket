@@ -39,7 +39,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 
 	public static function tear_down_after_class() {
 		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
-		static::$cdn_type_override = null;
+		self::$cdn_type_override = null;
 		parent::tear_down_after_class();
 	}
 
@@ -49,7 +49,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 * @return string|null
 	 */
 	public static function cdn_type_cb(): ?string {
-		return static::$cdn_type_override;
+		return self::$cdn_type_override;
 	}
 
 	public function set_up() {
@@ -63,7 +63,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	}
 
 	public function tear_down() {
-		static::$cdn_type_override = null;
+		self::$cdn_type_override = null;
 
 		delete_transient( 'rocketcdn_status' );
 
@@ -74,7 +74,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, bool $expected ): void {
-		static::$cdn_type_override = 'byocdn' === $config['cdn_type'] ? 'byocdn' : null;
+		self::$cdn_type_override = 'byocdn' === $config['cdn_type'] ? 'byocdn' : null;
 
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
