@@ -54,7 +54,7 @@ class Test_GetDriver extends TestCase {
 		$this->cdn_type_value = $config['cdn_type'];
 		add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
 
-		if ( isset( $config['has_active_subscription'] ) ) {
+		if ( isset( $config['has_active_subscription'] ) || ! empty( $config['is_in_grace_period'] ) ) {
 			set_transient( 'rocketcdn_status', $this->build_transient( $config ), HOUR_IN_SECONDS );
 		}
 
@@ -74,6 +74,16 @@ class Test_GetDriver extends TestCase {
 				'plan_type'           => ! empty( $config['is_paid'] ) ? 'paid' : 'free',
 				'status_code'         => 200,
 				'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			];
+		}
+
+		if ( ! empty( $config['is_in_grace_period'] ) ) {
+			return [
+				'subscription_status' => 'cancelled',
+				'plan_type'           => 'paid',
+				'status_code'         => 200,
+				'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+				'website_status'      => 'pending_deletion',
 			];
 		}
 

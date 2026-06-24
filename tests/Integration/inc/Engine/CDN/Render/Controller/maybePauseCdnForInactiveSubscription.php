@@ -81,16 +81,18 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 			return;
 		}
 
-		set_transient(
-			'rocketcdn_status',
-			[
-				'subscription_status' => $config['subscription_status'],
-				'plan_type'           => $config['plan_type'] ?? 'free',
-				'status_code'         => 200,
-				'cdn_url'             => $config['cdn_url'] ?? '',
-			],
-			HOUR_IN_SECONDS
-		);
+		$data = [
+			'subscription_status' => $config['subscription_status'],
+			'plan_type'           => $config['plan_type'] ?? 'free',
+			'status_code'         => 200,
+			'cdn_url'             => $config['cdn_url'] ?? '',
+		];
+
+		if ( isset( $config['website_status'] ) ) {
+			$data['website_status'] = $config['website_status'];
+		}
+
+		set_transient( 'rocketcdn_status', $data, HOUR_IN_SECONDS );
 	}
 
 	/**

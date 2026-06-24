@@ -98,4 +98,62 @@ return [
 		],
 		'expected' => false,
 	],
+
+	// TC-4.1 / TC-4.3: Paid CDN in grace period, CDN was enabled (cdn=1) → force-paused to false.
+	'testPaidGracePeriodWithCdnEnabledForcePaused'                        => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'cdn_option'          => 1,
+			'subscription_status' => 'cancelled',
+			'plan_type'           => 'paid',
+			'website_status'      => 'pending_deletion',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => false,
+		],
+		'expected' => false,
+	],
+
+	// TC-4.2 / TC-4.4: Paid CDN in grace period, CDN was disabled (cdn=0) → still returns false (force-paused).
+	'testPaidGracePeriodWithCdnDisabledForcePaused'                       => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'cdn_option'          => 0,
+			'subscription_status' => 'cancelled',
+			'plan_type'           => 'paid',
+			'website_status'      => 'pending_deletion',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => false,
+		],
+		'expected' => false,
+	],
+
+	// TC-6.1: Active paid subscription + CDN enabled (cdn=1) + valid license → not force-paused, cdn_option passes through as 1.
+	'testActivePaidSubscriptionWithCdnEnabledPassesThrough'               => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'cdn_option'          => 1,
+			'subscription_status' => 'running',
+			'plan_type'           => 'paid',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => false,
+		],
+		'expected' => 1,
+	],
+
+	// TC-6.2: Active paid subscription + CDN disabled (manually paused, cdn=0) + valid license → not force-paused, manual pause preserved.
+	'testActivePaidSubscriptionWithCdnDisabledPreservesManualPause'       => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'cdn_option'          => 0,
+			'subscription_status' => 'running',
+			'plan_type'           => 'paid',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => false,
+		],
+		'expected' => 0,
+	],
 ];
