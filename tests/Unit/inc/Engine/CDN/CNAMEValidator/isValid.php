@@ -61,8 +61,6 @@ class Test_IsValid extends TestCase {
 				->with( $config['response'] )
 				->andReturn( $config['is_wp_error'] );
 
-
-
 			Functions\expect( 'set_transient' )
 				->with( $transient_key, $expected['transient_value'], DAY_IN_SECONDS );
 		}

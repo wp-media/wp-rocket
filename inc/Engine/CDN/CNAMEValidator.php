@@ -7,14 +7,13 @@ namespace WP_Rocket\Engine\CDN;
  * Validates CDN CNAME URLs are reachable before rewrites are applied.
  *
  * Issues a HEAD request to the active theme stylesheet via the CNAME and caches
- * the result for one day. Only a hard HTTP 404 disqualifies a CNAME — network
- * errors and all other status codes are treated as valid (fail-open) so
- * legitimate CDN setups are never accidentally blocked.
+ * the result for one day. A hard HTTP 404 or a network/connection error disqualifies
+ * a CNAME; all other HTTP status codes are treated as valid.
  */
 class CNAMEValidator {
 
 	/**
-	 * Returns true when the CNAME is reachable (or indeterminate), false only on a hard 404.
+	 * Returns true when the CNAME responds with a non-404 HTTP code, false on a 404 or network error.
 	 *
 	 * @since 3.22.1
 	 *
@@ -33,8 +32,8 @@ class CNAMEValidator {
 		$response  = wp_remote_head( $check_url, [ 'timeout' => 5 ] );
 
 		if ( is_wp_error( $response ) ) {
-			set_transient( $transient_key, 1, DAY_IN_SECONDS );
-			return true;
+			set_transient( $transient_key, 0, DAY_IN_SECONDS );
+			return false;
 		}
 
 		$code  = isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0; // @phpstan-ignore-line - code may be absent in certain HTTP transport error states

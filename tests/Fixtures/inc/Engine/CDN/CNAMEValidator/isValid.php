@@ -27,7 +27,7 @@ return [
 			'transient_value' => null,
 		],
 	],
-	'returnsTrueAndCachesWhenWpError'         => [
+	'returnsFalseAndCachesWhenWpError'        => [
 		'config'   => [
 			'cname_url'    => 'https://cdn.example.com',
 			'cached_value' => false,
@@ -36,8 +36,8 @@ return [
 			'response_code' => 0,
 		],
 		'expected' => [
-			'result'          => true,
-			'transient_value' => 1,
+			'result'          => false,
+			'transient_value' => 0,
 		],
 	],
 	'returnsFalseAndCachesWhenResponseIs404'  => [
