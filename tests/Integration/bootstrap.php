@@ -284,6 +284,20 @@ tests_add_filter(
 			}
 		}
 
+		// Mock HEAD requests so CDN CNAME validation passes without real HTTP calls in CI.
+		add_filter( 'pre_http_request', function ( $preempt, $args, $url ) {
+			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] ) {
+				return [
+					'headers'  => [],
+					'body'     => '',
+					'response' => [ 'code' => 200, 'message' => 'OK' ],
+					'cookies'  => [],
+					'filename' => '',
+				];
+			}
+			return $preempt;
+		}, 10, 3 );
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
