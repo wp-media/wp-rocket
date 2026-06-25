@@ -40,17 +40,13 @@ class Test_Update321CdnDisabled extends AbstractSubscriptionControllerTestCase {
 		);
 
 		// Phase 1 option overrides (CDN disabled, RocketCDN type).
-		add_filter( 'pre_get_rocket_option_cdn', fn() => 0, 5 );
-		add_filter( 'pre_get_rocket_option_cdn_type', fn() => 'rocketcdn', 5 );
-		add_filter( 'pre_get_rocket_option_cdn_cnames', fn() => [ self::CDN_URL ], 5 );
+		$this->set_cdn_option_overrides( 0, 'rocketcdn', [ self::CDN_URL ] );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_get_rocket_option_cdn' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
+		$this->clear_cdn_option_overrides();
 
 		$this->restoreWpHook( 'rocket_buffer' );
 
@@ -99,33 +95,8 @@ class Test_Update321CdnDisabled extends AbstractSubscriptionControllerTestCase {
 		$result_phase1 = apply_filters( 'rocket_buffer', $html );
 		$this->assertStringNotContainsString( '.rocketcdn.me',  $result_phase1 );
 
-		remove_all_filters( 'pre_get_rocket_option_cdn' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
-
-		add_filter(
-			'pre_get_rocket_option_cdn',
-			function () {
-				return 1;
-			},
-			5
-		);
-
-		add_filter(
-			'pre_get_rocket_option_cdn_type',
-			function () {
-				return 'byocdn';
-			},
-			5
-		);
-
-		add_filter(
-			'pre_get_rocket_option_cdn_cnames',
-			function () {
-				return [ self::CDN_URL ];
-			},
-			5
-		);
+		$this->clear_cdn_option_overrides();
+		$this->set_cdn_option_overrides( 1, 'byocdn', [ self::CDN_URL ] );
 
 		// Reset FrontendSubscriber CDN URL.
 		$this->reset_frontend_subscriber_memo( $this->getRocketContainer() );

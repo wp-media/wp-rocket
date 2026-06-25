@@ -35,17 +35,13 @@ class Test_Update321CDNEnabled extends AbstractSubscriptionControllerTestCase {
 		);
 
 		// Override via pre-filters to bypass any Options_Data singleton caching.
-		add_filter( 'pre_get_rocket_option_cdn', fn() => 1, 5 );
-		add_filter( 'pre_get_rocket_option_cdn_type', fn() => 'byocdn', 5 );
-		add_filter( 'pre_get_rocket_option_cdn_cnames', fn() => [ self::CDN_URL ], 5 );
+		$this->set_cdn_option_overrides( 1, 'byocdn', [ self::CDN_URL ] );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_get_rocket_option_cdn' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
+		$this->clear_cdn_option_overrides();
 
 		$this->restoreWpHook( 'rocket_buffer' );
 

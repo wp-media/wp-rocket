@@ -17,15 +17,12 @@ class Test_RepurchasedPaidActive extends AbstractSubscriptionControllerTestCase 
 
 	private $context;
 
-	private $render_controller;
-
 	public function set_up() {
 		parent::set_up();
 
 		$container = $this->getRocketContainer();
 
-		$this->context           = $container->get( 'cdn_context' );
-		$this->render_controller = $container->get( 'cdn_render_controller' );
+		$this->context = $container->get( 'cdn_context' );
 
 		$this->update_rocketcdn_settings(
 			[

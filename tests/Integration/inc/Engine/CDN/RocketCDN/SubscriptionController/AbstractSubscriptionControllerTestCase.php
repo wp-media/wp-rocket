@@ -103,4 +103,38 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	protected function set_rocketcdn_user_token(): void {
 		update_option( 'rocketcdn_user_token', self::TOKEN );
 	}
+
+	/**
+	 * Overrides cdn/cdn_type/cdn_cnames/cdn_zone via the pre_get_rocket_option_*
+	 * filters, bypassing any Options_Data singleton caching.
+	 *
+	 * `cdn_zone` is derived from `cdn_cnames` (one 'all' zone per CNAME) rather
+	 * than taken as a parameter, since CDN::get_cdn_urls() indexes into it by
+	 * the same key as `cdn_cnames` and the two must always stay in lockstep.
+	 *
+	 * @return void
+	 */
+	protected function set_cdn_option_overrides( int $cdn, string $cdn_type, array $cdn_cnames ): void {
+		$cdn_zone = array_fill( 0, count( $cdn_cnames ), 'all' );
+
+		add_filter( 'pre_get_rocket_option_cdn', function () use ( $cdn ) {
+			return $cdn;
+		}, 5 );
+		add_filter( 'pre_get_rocket_option_cdn_type', function () use ( $cdn_type ) {
+			return $cdn_type;
+		}, 5 );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', function () use ( $cdn_cnames ) {
+			return $cdn_cnames;
+		}, 5 );
+		add_filter( 'pre_get_rocket_option_cdn_zone', function () use ( $cdn_zone ) {
+			return $cdn_zone;
+		}, 5 );
+	}
+
+	protected function clear_cdn_option_overrides(): void {
+		remove_all_filters( 'pre_get_rocket_option_cdn' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_zone' );
+	}
 }
