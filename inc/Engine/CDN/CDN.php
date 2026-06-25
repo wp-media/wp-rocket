@@ -320,12 +320,6 @@ class CDN {
 			return true;
 		}
 
-		// Exclude URLs where the file extension lives only in the query string, not the path
-		// (e.g. /.well-known/sgcaptcha/?r=placeholder.png — the relative-path regex can match these).
-		if ( wp_parse_url( $url, PHP_URL_QUERY ) && ! pathinfo( $path, PATHINFO_EXTENSION ) ) {
-			return true;
-		}
-
 		if ( preg_match( '#^(' . $this->get_excluded_files( '#' ) . ')$#', $path ) ) {
 			return true;
 		}
