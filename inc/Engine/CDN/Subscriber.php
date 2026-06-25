@@ -612,9 +612,9 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$old_cnames = isset( $old_value['cdn_cnames'] ) ? (array) $old_value['cdn_cnames'] : [];
-		$new_cnames = isset( $value['cdn_cnames'] ) ? (array) $value['cdn_cnames'] : [];
-		$all_cnames = array_unique( array_merge( $old_cnames, $new_cnames ) );
+		$old_cnames = is_array( $old_value ) && ! empty( $old_value['cdn_cnames'] ) ? (array) $old_value['cdn_cnames'] : [];
+		$new_cnames = is_array( $value ) && ! empty( $value['cdn_cnames'] ) ? (array) $value['cdn_cnames'] : [];
+		$all_cnames = array_filter( array_unique( array_merge( $old_cnames, $new_cnames ) ), 'is_string' );
 
 		$this->cname_validator->clear_validation_cache( $all_cnames );
 	}

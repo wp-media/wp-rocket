@@ -37,7 +37,7 @@ class CNAMEValidator {
 			return true;
 		}
 
-		$code  = isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0;
+		$code  = isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0; // @phpstan-ignore-line - code may be absent in certain HTTP transport error states
 		$valid = 404 !== $code ? 1 : 0;
 
 		set_transient( $transient_key, $valid, DAY_IN_SECONDS );
