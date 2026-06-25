@@ -70,11 +70,14 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 
 	protected function clear_rocketcdn_transients(): void {
 		delete_transient( 'rocketcdn_status' );
-		delete_transient( 'rocket_cdn_website_search' );
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
-		delete_transient( 'rocket_cdn_create_request' );
-		delete_transient( 'rocket_cdn_check_status_request' );
 		delete_transient( 'wp_rocket_customer_data' );
+
+		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request' ] as $transient_key ) {
+			delete_transient( $transient_key );
+			delete_transient( $transient_key . '_timeout' );
+			delete_transient( $transient_key . '_timeout_active' );
+		}
 	}
 
 	protected function clear_rocketcdn_options(): void {
