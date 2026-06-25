@@ -8,6 +8,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\CNAMEValidator;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\CDN::get_cdn_urls with CNAME validation

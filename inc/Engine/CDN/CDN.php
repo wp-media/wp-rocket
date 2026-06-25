@@ -43,8 +43,8 @@ class CDN {
 	 * @param CNAMEValidator|null $cname_validator CNAME Validator instance.
 	 */
 	public function __construct( Options_Data $options, ?CNAMEValidator $cname_validator = null ) {
-		$this->options          = $options;
-		$this->cname_validator  = $cname_validator;
+		$this->options         = $options;
+		$this->cname_validator = $cname_validator;
 	}
 
 	/**
