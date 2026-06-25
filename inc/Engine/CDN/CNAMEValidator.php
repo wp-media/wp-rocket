@@ -37,7 +37,7 @@ class CNAMEValidator {
 			return true;
 		}
 
-		$code  = (int) wp_remote_retrieve_response_code( $response );
+		$code  = isset( $response['response']['code'] ) ? (int) $response['response']['code'] : 0;
 		$valid = 404 !== $code ? 1 : 0;
 
 		set_transient( $transient_key, $valid, DAY_IN_SECONDS );

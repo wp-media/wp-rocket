@@ -61,11 +61,7 @@ class Test_IsValid extends TestCase {
 				->with( $config['response'] )
 				->andReturn( $config['is_wp_error'] );
 
-			if ( ! $config['is_wp_error'] ) {
-				Functions\expect( 'wp_remote_retrieve_response_code' )
-					->with( $config['response'] )
-					->andReturn( $config['response_code'] );
-			}
+
 
 			Functions\expect( 'set_transient' )
 				->with( $transient_key, $expected['transient_value'], DAY_IN_SECONDS );
