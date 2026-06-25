@@ -57,7 +57,7 @@ class CNAMEValidator {
 	 */
 	public function clear_validation_cache( array $cname_urls ): void {
 		foreach ( $cname_urls as $url ) {
-			delete_transient( 'rocket_cname_valid_' . md5( $url ) );
+			delete_transient( 'rocket_cname_valid_' . md5( rocket_add_url_protocol( $url ) ) );
 		}
 	}
 
@@ -74,8 +74,8 @@ class CNAMEValidator {
 	 * @return string
 	 */
 	private function build_check_url( string $cname_url ): string {
-		$stylesheet_path = str_replace( home_url(), '', get_stylesheet_uri() );
-		$cname_host      = wp_parse_url( rocket_add_url_protocol( $cname_url ), PHP_URL_HOST );
+		$stylesheet_path = wp_parse_url( get_stylesheet_uri(), PHP_URL_PATH ) ?? '';
+		$cname_host      = wp_parse_url( rocket_add_url_protocol( $cname_url ), PHP_URL_HOST ) ?? '';
 
 		return 'https://' . $cname_host . $stylesheet_path;
 	}

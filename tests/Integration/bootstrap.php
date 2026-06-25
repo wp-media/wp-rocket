@@ -284,9 +284,9 @@ tests_add_filter(
 			}
 		}
 
-		// Mock HEAD requests so CDN CNAME validation passes without real HTTP calls in CI.
+		// Mock CDN CNAME validation HEAD requests so they return 200 without real HTTP calls in CI.
 		add_filter( 'pre_http_request', function ( $preempt, $args, $url ) {
-			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] ) {
+			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] && false !== strpos( $url, '/style.css' ) ) {
 				return [
 					'headers'  => [],
 					'body'     => '',
