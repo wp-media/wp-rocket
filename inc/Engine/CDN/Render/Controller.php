@@ -683,9 +683,6 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		// Clear whole cache.
-		$this->cache->clear_all_cache();
-
 		// Auto-create a new subscription to resume free RocketCDN service.
 		$this->subscription_controller->create_subscription();
 	}
