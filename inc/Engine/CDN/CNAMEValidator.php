@@ -15,7 +15,7 @@ class CNAMEValidator {
 	/**
 	 * Returns true when the CNAME responds with a non-404 HTTP code, false on a 404 or network error.
 	 *
-	 * @since 3.22.1
+	 * @since 3.22.0.3
 	 *
 	 * @param string $cname_url Full CDN URL, e.g. "https://cdn.example.com".
 	 * @return bool
@@ -50,7 +50,7 @@ class CNAMEValidator {
 	 * Called when CDN settings are saved so stale cached results are not used
 	 * after the user updates their CNAME list.
 	 *
-	 * @since 3.22.1
+	 * @since 3.22.0.3
 	 *
 	 * @param array $cname_urls List of CNAME URLs whose transients should be deleted.
 	 * @return void
@@ -68,7 +68,7 @@ class CNAMEValidator {
 	 * Using style.css guarantees the file exists on any WordPress install and
 	 * that the check works with any CDN provider — not just RocketCDN.
 	 *
-	 * @since 3.22.1
+	 * @since 3.22.0.3
 	 *
 	 * @param string $cname_url CDN URL.
 	 * @return string

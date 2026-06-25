@@ -601,7 +601,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Runs on both old and new CNAME lists so no stale cache entry survives a
 	 * settings update regardless of whether CNAMEs were added or removed.
 	 *
-	 * @since 3.22.1
+	 * @since 3.22.0.3
 	 *
 	 * @param mixed $old_value Previous option value.
 	 * @param mixed $value     New option value.
