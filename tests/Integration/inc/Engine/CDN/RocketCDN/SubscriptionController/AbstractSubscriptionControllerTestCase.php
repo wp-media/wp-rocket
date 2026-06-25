@@ -92,6 +92,7 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	protected function reset_frontend_subscriber_memo( $container ): void {
 		$frontend = $container->get( 'rocketcdn_frontend_subscriber' );
 		$prop     = new ReflectionProperty( $frontend, 'rocketcdn_url' );
+		$prop->setAccessible( true );
 		$prop->setValue( $frontend, null );
 	}
 
