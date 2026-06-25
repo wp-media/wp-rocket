@@ -4,71 +4,60 @@ declare( strict_types=1 );
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController;
 
 /**
- * Scenario: The user requests a refund; the subscription is cancelled and the
- * website is deleted from the CDN (outside the grace period).
+ * TC-5.3 — Update from 3.21.3: CDN enabled · RocketCDN type · CNAME empty.
+ *
+ * Scenario: After updating from 3.21.3, the subscription was cancelled from
+ * the account and the website was deleted. CDN was left enabled (cdn=1) and
+ * cdn_type='rocketcdn', but no custom CNAME was ever configured. Since there
+ * is no active subscription and FrontendSubscriber's RocketCDN path returns []
+ * when has_active_subscription() is false, no CNAME is applied to the frontend.
+ *
+ * API state:
+ *   subscription/status → 404
+ *   website/search      → 404
  *
  * @group RocketCDN
  * @group CDN
  * @group AdminOnly
  */
-class Test_RefundAndDeleteWebsite extends AbstractSubscriptionControllerTestCase {
+class Test_Update321CdnEnabledCnameEmpty extends AbstractSubscriptionControllerTestCase {
 
 	private $context;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installRocketCDNTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallRocketCDNTable();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();
 
 		$this->context = $this->getRocketContainer()->get( 'cdn_context' );
 
-		self::truncateRocketCDNTable();
-
+		// Simulate 3.21.3 saved state: CDN on, RocketCDN type, no custom CNAME.
 		$this->update_rocketcdn_settings(
 			[
-				'cdn'      => 1,
-				'cdn_type' => 'rocketcdn',
+				'cdn'        => 1,
+				'cdn_type'   => 'rocketcdn',
+				'cdn_cnames' => [],
 			]
 		);
-		$this->set_rocketcdn_user_token();
+
+		// Override via pre-filters to bypass any Options_Data singleton caching.
+		add_filter( 'pre_get_rocket_option_cdn', fn() => 1, 5 );
+		add_filter( 'pre_get_rocket_option_cdn_type', fn() => 'rocketcdn', 5 );
+		add_filter( 'pre_get_rocket_option_cdn_cnames', fn() => [], 5 );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
 
 	public function tear_down() {
-		self::truncateRocketCDNTable();
+		remove_all_filters( 'pre_get_rocket_option_cdn' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
+		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}
 
-	/**
-	 * @dataProvider configTestData
-	 */
-	public function testShouldDoAsExpected( array $config, array $expected ): void {
-		if ( ! empty( $config['free_pages'] ) ) {
-			$query = $this->getRocketContainer()->get( 'rocketcdn_query' );
-			foreach ( $config['free_pages'] as $page ) {
-				$query->add_item(
-					[
-						'url'           => $page['url'],
-						'title'         => $page['title'],
-						'modified'      => current_time( 'mysql' ),
-						'last_accessed' => current_time( 'mysql' ),
-					]
-				);
-			}
-		}
-
+	public function testShouldDoAsExpected(): void {
+		// Both endpoints return 404: no active subscription, website was deleted.
 		add_filter(
 			'pre_http_request',
 			function ( $preempt, $args, $url ) {
@@ -96,21 +85,18 @@ class Test_RefundAndDeleteWebsite extends AbstractSubscriptionControllerTestCase
 			3
 		);
 
+		// Subscription state.
 		$this->assertFalse( $this->subscription_controller->has_active_subscription() );
 		$this->assertFalse( $this->subscription_controller->is_in_grace_period() );
-		$this->assertTrue( $this->subscription_controller->is_cancelled_outside_grace_period() );
-		$this->assertFalse( $this->subscription_controller->is_paid() );
 
+		$this->assertTrue( $this->subscription_controller->is_cancelled_outside_grace_period() );
+
+		// Context returns the base 'rocketcdn' state.
 		$this->assertSame( 'rocketcdn',  $this->context->get_driver() );
 
+		// CDN is enabled but no subscription and no CNAME — nothing to inject.
 		$html   = '<html><body><img src="http://example.org/wp-content/uploads/test.jpg"></body></html>';
 		$result = apply_filters( 'rocket_buffer', $html );
 		$this->assertStringNotContainsString( '.rocketcdn.me',  $result );
-
-		// Pages added before the paid subscription must still be in the free-tier DB.
-		if ( array_key_exists( 'free_pages_count_in_db', $expected ) ) {
-			$query = $this->getRocketContainer()->get( 'rocketcdn_query' );
-			$this->assertCount( $expected['free_pages_count_in_db'],  $query->query( [] ) );
-		}
 	}
 }

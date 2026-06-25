@@ -911,6 +911,31 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
 
 		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/AbstractSubscriptionControllerTestCase.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/AbstractSubscriptionControllerTestCase.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/cancelDeleteWebsite.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/cancelPaidAndGracePeriod.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/upgradeWithGracePeriod.php
+
+		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php

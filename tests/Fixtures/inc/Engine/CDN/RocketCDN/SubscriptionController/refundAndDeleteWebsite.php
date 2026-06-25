@@ -1,11 +1,16 @@
 <?php
 return [
-
 	'withMultiplePrePaidFreePages' => [
 		'config'   => [
 			'free_pages' => [
-				[ 'url' => 'http://example.org/', 'title' => 'Home' ],
-				[ 'url' => 'http://example.org/about/', 'title' => 'About' ],
+				[
+					'url'   => 'http://example.org/',
+					'title' => 'Home',
+				],
+				[
+					'url'   => 'http://example.org/about/',
+					'title' => 'About',
+				],
 			],
 		],
 		'expected' => [
@@ -13,10 +18,13 @@ return [
 		],
 	],
 
-	'withOnePrePaidFreePage' => [
+	'withOnePrePaidFreePage'       => [
 		'config'   => [
 			'free_pages' => [
-				[ 'url' => 'http://example.org/', 'title' => 'Home' ],
+				[
+					'url'   => 'http://example.org/',
+					'title' => 'Home',
+				],
 			],
 		],
 		'expected' => [
@@ -24,7 +32,7 @@ return [
 		],
 	],
 
-	'withNoPrePaidFreePages' => [
+	'withNoPrePaidFreePages'       => [
 		'config'   => [
 			'free_pages' => [],
 		],
