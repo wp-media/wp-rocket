@@ -96,7 +96,14 @@ class AddPageInsights implements AbilitiesInterface {
 			'wp-rocket/add-page-insights',
 			[
 				'label'               => __( 'Add Page Insights', 'rocket' ),
-				'description'         => _x( 'Call when user wants to start monitoring the performance of a new page. Confirm URL before calling. After success, inform user the first result may take a few minutes and offer to trigger a run to get it using wp-rocket/get-page-insights-score ', 'Ability description', 'rocket' ),
+				'description'         => _x(
+					'Adds a URL to Rocket Insights monitoring. Requires a valid URI.
+Use this when the user wants to monitor a new page. Do not use it when the page is already monitored; use retest-page-insights instead.
+Confirm the exact URL with the user before calling. This action is non-idempotent, so calling it twice for the same URL may return an error.
+On success, tell the user the first score may take a few minutes and offer to trigger an immediate test with retest-page-insights Recheck every minute in the background and poll results with get-page-insights-score.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',
