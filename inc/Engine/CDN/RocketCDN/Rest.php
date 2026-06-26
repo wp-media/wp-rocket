@@ -239,14 +239,6 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		if ( $this->subscription_controller->has_inactive_subscription() ) {
-			return new WP_Error(
-				'rocketcdn_no_active_subscription',
-				__( 'You do not have an active RocketCDN subscription.', 'rocket' ),
-				[ 'status' => 403 ]
-			);
-		}
-
 		if ( $this->is_limit_reached() ) {
 			return new WP_Error(
 				'rocketcdn_page_limit_reached',

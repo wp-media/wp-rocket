@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\Render;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -76,6 +77,13 @@ class Controller extends Abstract_Render {
 	private $user;
 
 	/**
+	 * Cache instance
+	 *
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Beacon                 $beacon        Beacon instance.
@@ -85,6 +93,7 @@ class Controller extends Abstract_Render {
 	 * @param RocketCDNQuery         $cdn_query RocketCDNQuery instance.
 	 * @param SubscriptionController $subscription_controller RocketCDN Subscription controller instance.
 	 * @param User                   $user          User instance.
+	 * @param Cache                  $cache Cache instance.
 	 */
 	public function __construct(
 		Beacon $beacon,
@@ -93,7 +102,8 @@ class Controller extends Abstract_Render {
 		Options_Data $options,
 		RocketCDNQuery $cdn_query,
 		SubscriptionController $subscription_controller,
-		User $user
+		User $user,
+		Cache $cache
 	) {
 		parent::__construct( $template_path );
 
@@ -103,6 +113,7 @@ class Controller extends Abstract_Render {
 		$this->cdn_query               = $cdn_query;
 		$this->subscription_controller = $subscription_controller;
 		$this->user                    = $user;
+		$this->cache                   = $cache;
 	}
 
 	/**
@@ -458,37 +469,33 @@ class Controller extends Abstract_Render {
 		if ( 'settings_page_wprocket' !== $screen->id || ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
-		$is_forced  = ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() );
-		$stored     = get_option( self::FORCED_PAUSE_TRACKING_OPTION, false );
-		$was_forced = (bool) $stored;
+		$is_forced  = $this->is_forced_paused();
+		$stored     = $this->get_forced_pause_tracking();
+		$was_forced = (bool) ( $stored['tracking'] ?? false );
 
-		if ( $is_forced && ! $was_forced ) {
-			update_option( self::FORCED_PAUSE_TRACKING_OPTION, true, false );
-
-			/**
-			 * Fires when the CDN state is changed to paused due to an inactive or invalid subscription.
-			 *
-			 * @param string $new_state The new state of the CDN, e.g. 'paused'.
-			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_pause'.
-			 * @since 3.22
-			 */
-			do_action( 'rocket_rocketcdn_cdn_state_changed', 'paused', 'wpr_forced_pause' );
-
+		// Bail out when state hasn't changed to avoid unnecessary option updates and tracking events.
+		if ( $is_forced === $was_forced ) {
 			return;
 		}
 
-		if ( ! $is_forced && $was_forced ) {
-			update_option( self::FORCED_PAUSE_TRACKING_OPTION, false, false );
+		$stored['tracking'] = $is_forced;
+		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
 
-			/**
-			 * Fires when the CDN state is changed to active.
-			 *
-			 * @param string $new_state The new state of the CDN, e.g. 'active'.
-			 * @param string $reason The reason for the state change, e.g. 'wpr_forced_resume'.
-			 * @since 3.22
-			 */
-			do_action( 'rocket_rocketcdn_cdn_state_changed', 'active', 'wpr_forced_resume' );
-		}
+		// Clear whole cache.
+		$this->cache->clear_all_cache();
+
+		/**
+		 * Fires when the CDN state changes between paused and active.
+		 *
+		 * @param string $new_state The new state of the CDN: 'paused' or 'active'.
+		 * @param string $reason    'wpr_forced_pause' when pausing, 'wpr_forced_resume' when resuming.
+		 * @since 3.22
+		 */
+		do_action(
+			'rocket_rocketcdn_cdn_state_changed',
+			$is_forced ? 'paused' : 'active',
+			$is_forced ? 'wpr_forced_pause' : 'wpr_forced_resume'
+		);
 	}
 
 	/**
@@ -548,13 +555,18 @@ class Controller extends Abstract_Render {
 			return $cdn;
 		}
 
-		// If subscription is free and licence is not valid, forced pause cdn.
-		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
-			return false;
-		}
+		if ( $this->is_forced_paused() ) {
+			$stored = $this->get_forced_pause_tracking();
 
-		$transient = $this->subscription_controller->get_rocketcdn_status();
-		if ( false !== $transient && $this->subscription_controller->has_inactive_subscription() ) {
+			// Prevent unnecessary DB write on every request.
+			if ( empty( $stored['persistent'] ) ) {
+				$stored['persistent'] = true;
+				update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+
+				// Clear whole cache.
+				$this->cache->clear_all_cache();
+			}
+
 			return false;
 		}
 
@@ -575,6 +587,121 @@ class Controller extends Abstract_Render {
 			|| $this->is_cdn_paused()
 			|| $this->should_display_licence_expired_notice()
 			|| ! $this->subscription_controller->has_active_subscription();
+	}
+
+	/**
+	 * Filters status indicator texts for the free RocketCDN tier.
+	 *
+	 * Hooked to {@see 'rocket_rocketcdn_status_indicator_texts'} at priority 10.
+	 * Activates the status text once pages have been added, and surfaces an
+	 * expiry notice when the WP Rocket licence is invalid.
+	 *
+	 * @param array $texts                   Text strings for the status indicator.
+	 * @param int   $pages_count             Number of pages using RocketCDN.
+	 * @param bool  $is_subscription_loading Whether the subscription is loading.
+	 * @param bool  $free                    Whether this is for the free version.
+	 *
+	 * @return array
+	 */
+	public function get_free_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
+		if ( ! $free ) {
+			return $texts;
+		}
+
+		if ( $pages_count > 0 ) {
+			$texts['status_text'] = $texts['active_status_text'];
+			$texts['details']     = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
+		}
+
+		if ( $this->subscription_controller->is_license_invalid() ) {
+			$texts['class']         .= ' wpr-cdn-status--expired';
+			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+		}
+
+		return $texts;
+	}
+
+	/**
+	 * Filters status indicator texts for the paid RocketCDN tier.
+	 *
+	 * Hooked to {@see 'rocket_rocketcdn_status_indicator_texts'} at priority 10.
+	 * Activates the paid status text and surfaces a cancellation notice during
+	 * the grace period.
+	 *
+	 * @param array $texts                   Text strings for the status indicator.
+	 * @param int   $pages_count             Number of pages using RocketCDN.
+	 * @param bool  $is_subscription_loading Whether the subscription is loading.
+	 * @param bool  $free                    Whether this is for the free version.
+	 *
+	 * @return array
+	 */
+	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
+		if ( $free ) {
+			return $texts;
+		}
+
+		$texts['details']            = __( 'Serving files from 100+ edge locations', 'rocket' );
+		$texts['active_status_text'] = __( 'RocketCDN is active on your website', 'rocket' );
+		$texts['status_text']        = $texts['active_status_text'];
+
+		if ( $this->subscription_controller->is_in_grace_period() ) {
+			$texts['paused_details'] = __( 'RocketCDN is currently paused because your RocketCDN subscription was cancelled. Please wait up to two days before resuming.', 'rocket' );
+			$texts['class']         .= ' wpr-cdn-status--expired';
+		}
+
+		return $texts;
+	}
+
+	/**
+	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return void
+	 */
+	public function maybe_auto_create_rocketcdn_free_subscription() {
+		// Bail out if customer is outside the grace period to avoid unnecessary subscription creation on new accounts.
+		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return;
+		}
+
+		// Bail out if the subscription is paid and is still within the cancellation grace period — too early to auto-resume.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		if ( $this->subscription_controller->is_license_invalid() ) {
+			return;
+		}
+
+		// Update the forced pause tracking option to indicate the forced pause has been resolved.
+		$stored               = $this->get_forced_pause_tracking();
+		$stored['persistent'] = false;
+		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+
+		// Bail out if there are no add pages in the free plan — no need to auto create, allow normal flow.
+		if ( empty( $this->get_items() ) ) {
+			return;
+		}
+
+		// Auto-create a new subscription to resume free RocketCDN service.
+		$this->subscription_controller->create_subscription();
+	}
+
+	/**
+	 * Reads the forced pause tracking option, migrating the legacy bool format to the current array format.
+	 *
+	 * @return array
+	 */
+	private function get_forced_pause_tracking(): array {
+		$stored = get_option( self::FORCED_PAUSE_TRACKING_OPTION, [] );
+
+		// Migrate legacy bool value: the option used to be stored as a plain bool.
+		if ( is_bool( $stored ) ) {
+			return [ 'tracking' => $stored ];
+		}
+
+		return (array) $stored;
 	}
 
 	/**
@@ -697,59 +824,67 @@ class Controller extends Abstract_Render {
 	 *     @type bool   $hide_pause_btn         Whether to hide the pause button.
 	 * }
 	 */
-	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ) {
-		$paused_status_text = __( 'RocketCDN is paused', 'rocket' );
-		$active_status_text = __( 'RocketCDN is active', 'rocket' );
-		$paused_details     = __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' );
+	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ): array {
+		$texts = [
+			'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+			'active_status_text' => __( 'RocketCDN is active', 'rocket' ),
+			'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
+			'status_text'        => '',
+			'details'            => sprintf(
+			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			),
+			'class'              => '',
+		];
 
-		$status_text = '';
-		$details     = sprintf(
-		// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-			__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
-			'<strong>',
-			'</strong>'
-		);
+		/**
+		 * Filters the status indicator text strings for RocketCDN.
+		 *
+		 * Free- and paid-tier callbacks are registered by default to apply
+		 * tier-specific overrides. Additional callbacks may be added to
+		 * customise the indicator for custom subscription states.
+		 *
+		 * @param array $texts                   {
+		 *     Text strings and CSS modifier class for the status indicator.
+		 *
+		 *     @type string $paused_status_text Text displayed when CDN is paused.
+		 *     @type string $active_status_text Text displayed when CDN is active.
+		 *     @type string $paused_details     Details shown while CDN is paused.
+		 *     @type string $status_text        Currently-shown status text (empty = inactive state).
+		 *     @type string $details            Currently-shown details text.
+		 *     @type string $class              CSS modifier class(es) for the indicator element.
+		 * }
+		 * @param int   $pages_count             Number of pages currently using RocketCDN.
+		 * @param bool  $is_subscription_loading Whether the subscription is currently being processed.
+		 * @param bool  $free                    Whether this is for the free version of RocketCDN.
+		 *
+		 * @since 3.22.0.2
+		 */
+		$texts = wpm_apply_filters_typed( 'array', 'rocket_rocketcdn_status_indicator_texts', $texts, $pages_count, $is_subscription_loading, $free );
 
-		if ( $pages_count > 0 ) {
-			$status_text = $active_status_text;
-			$details     = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
-		}
-
-		if ( ! $free ) {
-			$details            = __( 'Serving files from 100+ edge locations', 'rocket' );
-			$active_status_text = __( 'RocketCDN is active on your website', 'rocket' );
-			$status_text        = $active_status_text;
-		}
-
-		// Update status indicator details when subscription is processing.
 		if ( $is_subscription_loading ) {
-			$status_text = __( 'Creating your subscription...', 'rocket' );
-			$details     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
+			$texts['details']     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
 		}
 
 		$is_paused = $this->is_cdn_paused();
 
-		$class = '';
-
-		if ( $this->subscription_controller->has_inactive_subscription() || $this->subscription_controller->is_license_invalid() ) {
-			$class         .= ' wpr-cdn-status--expired';
-			$paused_details = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
-		}
-
 		if ( $is_paused ) {
-			$status_text = $paused_status_text;
-			$details     = $paused_details;
-			$class      .= ' wpr-cdn-status--paused';
+			$texts['status_text'] = $texts['paused_status_text'];
+			$texts['details']     = $texts['paused_details'];
+			$texts['class']      .= ' wpr-cdn-status--paused';
 		}
 
 		return [
-			'class'                   => $class,
+			'class'                   => $texts['class'],
 			'is_active'               => true,
-			'status_text'             => $status_text,
-			'details'                 => $details,
-			'active_status_text'      => $active_status_text,
-			'paused_status_text'      => $paused_status_text,
-			'paused_details'          => $paused_details,
+			'status_text'             => $texts['status_text'],
+			'details'                 => $texts['details'],
+			'active_status_text'      => $texts['active_status_text'],
+			'paused_status_text'      => $texts['paused_status_text'],
+			'paused_details'          => $texts['paused_details'],
 			'is_paused'               => $is_paused,
 			'pages_count'             => $pages_count,
 			'is_subscription_loading' => $is_subscription_loading,
@@ -764,5 +899,35 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_cdn_paused(): bool {
 		return ! (bool) $this->options->get( 'cdn' );
+	}
+
+	/**
+	 * Determines whether the CDN should be force-paused due to an inactive or invalid subscription state.
+	 *
+	 * @since 3.22
+	 *
+	 * @return bool True if the CDN should be force-paused, false otherwise.
+	 */
+	private function is_forced_paused(): bool {
+		// Force paused if paid plan cancelled but in grace period.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return true;
+		}
+
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return true;
+		}
+
+		// Force paused if free plan with an invalid WP Rocket licence.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+			return true;
+		}
+
+		// Force paused if subscription cancelled beyond the grace period and WP Rocket licence is invalid.
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() && $this->subscription_controller->is_license_invalid() ) {
+			return true;
+		}
+
+		return false;
 	}
 }
