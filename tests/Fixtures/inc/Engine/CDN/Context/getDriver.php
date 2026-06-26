@@ -31,8 +31,9 @@ return [
 	],
 	'testShouldReturnRocketcdnWhenNoActiveSubscription' => [
 		'config'   => [
-			'cdn_type'                => 'rocketcdn',
-			'has_active_subscription' => false,
+			'cdn_type'                          => 'rocketcdn',
+			'has_active_subscription'           => false,
+			'is_cancelled_outside_grace_period' => true,
 		],
 		'expected' => 'rocketcdn',
 	],
