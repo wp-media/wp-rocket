@@ -573,7 +573,7 @@ function rocket_analytics_optin_thankyou_notice() {
 
 	$thankyou_message = sprintf(
 		'<strong>%s</strong>',
-		__( 'Thank you!', 'rocket' )
+		__( 'Thank you! The data you share helps us improve WP Rocket', 'rocket' )
 	);
 
 	rocket_notice_html(
