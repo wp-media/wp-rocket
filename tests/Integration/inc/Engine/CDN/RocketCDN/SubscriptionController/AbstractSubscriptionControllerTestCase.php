@@ -9,12 +9,6 @@ use WP_Rocket\Tests\Integration\TestCase;
 /**
  * Shared scaffolding for the RocketCDN SubscriptionController integration tests.
  *
- * Scenario-specific setup (the `wp_rocket_settings` shape being simulated, the
- * `cdn_context`/`cdn_render_controller` services, the RocketCDN DB table, the
- * `rocket_buffer` hook isolation) is intentionally left to each subclass, since
- * those vary per test and forcing them here would hide what each test actually
- * relies on.
- *
  */
 abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 
@@ -109,12 +103,9 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	}
 
 	/**
-	 * Overrides cdn/cdn_type/cdn_cnames/cdn_zone via the pre_get_rocket_option_*
+	 * Overrides cdn/cdn_type/cdn_cnames via the pre_get_rocket_option_*
 	 * filters, bypassing any Options_Data singleton caching.
 	 *
-	 * `cdn_zone` is derived from `cdn_cnames` (one 'all' zone per CNAME) rather
-	 * than taken as a parameter, since CDN::get_cdn_urls() indexes into it by
-	 * the same key as `cdn_cnames` and the two must always stay in lockstep.
 	 *
 	 * @return void
 	 */
@@ -140,5 +131,69 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
 		remove_all_filters( 'pre_get_rocket_option_cdn_cnames' );
 		remove_all_filters( 'pre_get_rocket_option_cdn_zone' );
+	}
+
+	/**
+	 * Intercepts HTTP requests via `pre_http_request` based on a fixture config.
+	 *
+	 * Recognised config keys:
+	 *   subscription_status_code (int, default 404)
+	 *   subscription_status_body (array, used when code is 200)
+	 *   website_search_code      (int, default 404)
+	 *   website_search_body      (array, used when code is 200)
+	 *   create_free_code         (int, default 404)
+	 *   create_free_body         (array, used when code is 200)
+	 *   create_free_error        (string) — returns WP_Error instead of an HTTP response
+	 *   task_code                (int, default 404)
+	 *   task_body                (array, used when code is 200)
+	 */
+	protected function mock_api( array $config ): void {
+		add_filter(
+			'pre_http_request',
+			function ( $preempt, $_args, $url ) use ( $config ) {
+				if ( preg_match( '#https://rocketcdn\.me/api/subscription/[^/]+/status#', $url ) ) {
+					if ( 200 === ( $config['subscription_status_code'] ?? 404 ) ) {
+						return [
+							'response' => [ 'code' => 200, 'message' => 'OK' ],
+							'body'     => json_encode( $config['subscription_status_body'] ?? [] ),
+						];
+					}
+					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
+				}
+				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
+					if ( 200 === ( $config['website_search_code'] ?? 404 ) ) {
+						return [
+							'response' => [ 'code' => 200, 'message' => 'OK' ],
+							'body'     => json_encode( $config['website_search_body'] ?? [] ),
+						];
+					}
+					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
+				}
+				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/create-free/' ) ) {
+					if ( isset( $config['create_free_error'] ) ) {
+						return new \WP_Error( 'http_request_failed', $config['create_free_error'] );
+					}
+					if ( 200 === ( $config['create_free_code'] ?? 404 ) ) {
+						return [
+							'response' => [ 'code' => 200, 'message' => 'OK' ],
+							'body'     => json_encode( $config['create_free_body'] ?? [] ),
+						];
+					}
+					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
+				}
+				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/task/' ) ) {
+					if ( 200 === ( $config['task_code'] ?? 404 ) ) {
+						return [
+							'response' => [ 'code' => 200, 'message' => 'OK' ],
+							'body'     => json_encode( $config['task_body'] ?? [] ),
+						];
+					}
+					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
+				}
+				return $preempt;
+			},
+			10,
+			3
+		);
 	}
 }
