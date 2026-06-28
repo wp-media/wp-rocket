@@ -29,6 +29,8 @@ class Test_ShouldDisableElementForRocketcdn extends AbstractSubscriptionControll
 			update_option( 'rocket_rocketcdn_forced_pause_state', [ 'persistent' => true ] );
 		}
 
+		$this->mock_api( $config );
+
 		$this->assertSame( $expected, $this->render_controller->should_disable_element_for_rocketcdn() );
 	}
 }

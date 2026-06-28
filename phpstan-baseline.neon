@@ -923,17 +923,12 @@ parameters:
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/cancelDeleteWebsite.php
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/createSubscription.php
 
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/cancelPaidAndGracePeriod.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/upgradeWithGracePeriod.php
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/shouldDisableElementForRocketcdn.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
