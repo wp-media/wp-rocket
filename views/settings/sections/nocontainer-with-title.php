@@ -29,7 +29,9 @@ defined( 'ABSPATH' ) || exit;
 		data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>"
 		<?php if ( ! empty( $data['help']['rocketcdn_url'] ) ) : ?>
 		data-rocketcdn-url="<?php echo esc_url( $data['help']['rocketcdn_url'] ); ?>"
+		data-rocketcdn-id="<?php echo esc_attr( $data['help']['rocketcdn_id'] ); ?>"
 		data-other-cdn-url="<?php echo esc_url( $data['help']['other_cdn_url'] ); ?>"
+		data-other-cdn-id="<?php echo esc_attr( $data['help']['other_cdn_id'] ); ?>"
 		<?php endif; ?>
 		data-wpr_track_button="Need Help"
 		data-wpr_track_context="Settings"

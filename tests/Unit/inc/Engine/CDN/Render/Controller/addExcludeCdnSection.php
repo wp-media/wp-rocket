@@ -169,6 +169,8 @@ class Test_AddExcludeCdnSection extends TestCase {
 		$this->assertArrayHasKey( 'exclude_cdn_section', $sections );
 		$this->assertSame( $expected['initial_url'], $sections['exclude_cdn_section']['help']['url'] );
 		$this->assertSame( $expected['rocketcdn_url'], $sections['exclude_cdn_section']['help']['rocketcdn_url'] );
+		$this->assertSame( $expected['rocketcdn_id'], $sections['exclude_cdn_section']['help']['rocketcdn_id'] );
 		$this->assertSame( $expected['other_cdn_url'], $sections['exclude_cdn_section']['help']['other_cdn_url'] );
+		$this->assertSame( $expected['other_cdn_id'], $sections['exclude_cdn_section']['help']['other_cdn_id'] );
 	}
 }
