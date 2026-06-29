@@ -1224,3 +1224,8 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/maybePauseCdnForInactiveSubscription.php
