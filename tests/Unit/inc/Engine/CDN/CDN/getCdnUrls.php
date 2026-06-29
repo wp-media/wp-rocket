@@ -8,6 +8,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\CNAMEValidator;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -26,7 +27,9 @@ class Test_GetCdnUrls extends TestCase {
 
 		$this->options         = Mockery::mock( Options_Data::class );
 		$this->cname_validator = Mockery::mock( CNAMEValidator::class );
-		$this->cdn             = new CDN( $this->options, $this->cname_validator );
+		$context               = Mockery::mock( Context::class );
+		$context->shouldReceive( 'is_rocketcdn' )->andReturn( false );
+		$this->cdn             = new CDN( $this->options, $this->cname_validator, $context );
 
 		Functions\when( 'rocket_add_url_protocol' )->alias(
 			function ( $url ) {
