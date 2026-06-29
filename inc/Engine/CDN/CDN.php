@@ -37,14 +37,23 @@ class CDN {
 	private $cname_validator;
 
 	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data        $options         WP Rocket Options instance.
-	 * @param CNAMEValidator|null $cname_validator CNAME Validator instance.
+	 * @param Options_Data   $options         WP Rocket Options instance.
+	 * @param CNAMEValidator $cname_validator CNAME Validator instance.
+	 * @param Context        $context Context instance.
 	 */
-	public function __construct( Options_Data $options, ?CNAMEValidator $cname_validator = null ) {
+	public function __construct( Options_Data $options, CNAMEValidator $cname_validator, Context $context ) {
 		$this->options         = $options;
 		$this->cname_validator = $cname_validator;
+		$this->context         = $context;
 	}
 
 	/**
@@ -243,7 +252,7 @@ class CDN {
 		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zones );
 		$hosts = array_filter( $hosts );
 
-		if ( null !== $this->cname_validator ) {
+		if ( ! $this->context->is_rocketcdn() ) {
 			$hosts = array_filter(
 				$hosts,
 				function ( $url ) {
