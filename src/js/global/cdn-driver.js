@@ -61,6 +61,19 @@
 	}
 
 	/**
+	 * Shows or hides the limit-reached tooltip on the ADD PAGE button.
+	 *
+	 * @param {boolean} limitReached Whether the free-tier page limit has been reached.
+	 * @returns {void}
+	 */
+	function updateTooltipState( limitReached ) {
+		const tooltip = document.querySelector( '.wpr-cdn-add-page__button-wrapper .wpr-tooltip' );
+		if ( tooltip ) {
+			tooltip.classList.toggle( 'wpr-isHidden', ! limitReached );
+		}
+	}
+
+	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
 	 *
 	 * @param {number} count Current number of free-tier pages.
@@ -394,6 +407,10 @@
 				updateStatusIndicatorComponent( response.status_indicator_html );
 			} ).catch( () => {
 				button.disabled = false;
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 			} );
 		} );
 	}
@@ -475,6 +492,15 @@
 				if ( response.limit === response.count ) {
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.add( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = true;
+					}
+					updateTooltipState( true );
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
@@ -488,6 +514,10 @@
 			} ).catch( () => {
 				input.disabled = false;
 				button.disabled = false;
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 			} );
 		}
 
@@ -565,6 +595,15 @@
 				if ( response.limit > response.count ) {
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.remove( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = false;
+					}
+					updateTooltipState( false );
 
 					// Track auto-collapse when deletion drops count just below the limit.
 					if ( response.count === response.limit - 1 ) {

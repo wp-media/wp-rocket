@@ -215,6 +215,7 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
+			'limit_reached'    => $limit_reached,
 		];
 
 		return $sections;
@@ -677,9 +678,6 @@ class Controller extends Abstract_Render {
 		$stored               = $this->get_forced_pause_tracking();
 		$stored['persistent'] = false;
 		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
-
-		// Clear whole cache.
-		$this->cache->clear_all_cache();
 
 		// Bail out if there are no add pages in the free plan — no need to auto create, allow normal flow.
 		if ( empty( $this->get_items() ) ) {
