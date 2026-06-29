@@ -1,9 +1,10 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render\Controller;
 
 use ReflectionProperty;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 
 /**
  * @group RocketCDN
