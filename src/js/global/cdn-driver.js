@@ -220,6 +220,23 @@
 			} );
 		}
 
+		/**
+		 * Updates the "Need Help?" link href for the CDN Exclusions section
+		 * to point to the correct docs article for the active driver.
+		 *
+		 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+		 */
+		function updateExcludeCdnHelpUrl( driver ) {
+			const link = document.querySelector( '.exclude-cdn-help-js' );
+			if ( ! link ) {
+				return;
+			}
+			const url = 'rocketcdn' === driver ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
+			if ( url ) {
+				link.href = url;
+			}
+		}
+
 		tabs.forEach( ( tab ) => {
 			tab.addEventListener( 'click', () => {
 				const driver = tab.getAttribute( 'data-cdn-driver' );
@@ -237,6 +254,7 @@
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
+				updateExcludeCdnHelpUrl( driver );
 				notifyCdnStateChange();
 
 				// Initial value of the hidden input is set on page load by PHP based on the active driver.
@@ -275,6 +293,7 @@
 		// Set initial label from the active tab.
 		if ( activeTab ) {
 			updateDriverLabel( activeTab );
+			updateExcludeCdnHelpUrl( activeDriver );
 		}
 	}
 
