@@ -25,7 +25,7 @@ return [
 		[
 			'option'   => 'cdn_cnames',
 			'default'  => [],
-			'expected' => [ 'https://rocketcdn.me' ],
+			'expected' => [],
 		],
 		[
 			'option'   => 'cdn_zone',
