@@ -632,7 +632,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'exclude_cdn'                => [
 				'en' => [
 					'id'  => '5e4c84bd04286364bc958833',
-					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcd/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
+					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn#exclude-files-from-your-cdn',
 				],
 				'fr' => [
 					'id'  => '5f351e42042863444aa04652',
