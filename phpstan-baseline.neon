@@ -813,6 +813,11 @@ parameters:
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/shouldDisableElementForRocketcdn.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php
 
 		-
@@ -924,11 +929,6 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/createSubscription.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/shouldDisableElementForRocketcdn.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
