@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Plugin\OptionsBackup;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Filesystem_Direct;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Plugin\OptionsBackup;
 use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
 
@@ -15,15 +16,24 @@ use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
  */
 class TestBackup extends BaseTestCase {
 
-	const CONFIG_PATH  = '/wp-rocket-config/';
-	const OPTIONS_SLUG = 'wp_rocket_settings';
-	const FIXED_DATE   = '2026-06-29-10-00-00';
+	const CONFIG_PATH = '/wp-rocket-config/';
+	const FIXED_DATE  = '2026-06-29-10-00-00';
 
-	private OptionsBackup $subject;
+	/**
+	 * @var OptionsBackup
+	 */
+	private $subject;
+
+	/**
+	 * @var Options_Data|Mockery\MockInterface
+	 */
+	private $options;
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->subject = new OptionsBackup( self::CONFIG_PATH, self::OPTIONS_SLUG );
+
+		$this->options = Mockery::mock( Options_Data::class );
+		$this->subject = new OptionsBackup( self::CONFIG_PATH, $this->options );
 	}
 
 	public function testShouldReturnFalseOnRollback(): void {
@@ -36,21 +46,20 @@ class TestBackup extends BaseTestCase {
 			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
 			->andReturn( [ self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_2026-06-01-10-00-00.json' ] );
 
-		Functions\expect( 'get_option' )->never();
+		$this->options->shouldNotReceive( 'get_options' );
 
 		$this->assertFalse( $this->subject->backup( '3.22.1', '3.22.0' ) );
 	}
 
-	public function testShouldReturnFalseWhenOptionsNotFound(): void {
+	public function testShouldReturnFalseWhenOptionsEmpty(): void {
 		Functions\expect( 'glob' )
 			->once()
 			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
 			->andReturn( [] );
 
-		Functions\expect( 'get_option' )
+		$this->options->shouldReceive( 'get_options' )
 			->once()
-			->with( self::OPTIONS_SLUG )
-			->andReturn( false );
+			->andReturn( [] );
 
 		Functions\expect( 'rocket_put_content' )->never();
 
@@ -58,21 +67,20 @@ class TestBackup extends BaseTestCase {
 	}
 
 	public function testShouldReturnFalseWhenWriteFails(): void {
-		$options = [ 'version' => '3.22.0', 'minify_css' => 1 ];
+		$options_array = [ 'version' => '3.22.0', 'minify_css' => 1 ];
 
 		Functions\expect( 'glob' )
 			->once()
 			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
 			->andReturn( [] );
 
-		Functions\expect( 'get_option' )
+		$this->options->shouldReceive( 'get_options' )
 			->once()
-			->with( self::OPTIONS_SLUG )
-			->andReturn( $options );
+			->andReturn( $options_array );
 
 		Functions\expect( 'rocket_init_config_dir' )->once();
 		Functions\when( 'gmdate' )->justReturn( self::FIXED_DATE );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options, JSON_PRETTY_PRINT ) );
+		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
 
 		Functions\expect( 'rocket_put_content' )
 			->once()
@@ -82,21 +90,20 @@ class TestBackup extends BaseTestCase {
 	}
 
 	public function testShouldReturnTrueAndSkipGcWhenUnderLimit(): void {
-		$options = [ 'version' => '3.22.0', 'minify_css' => 1 ];
+		$options_array = [ 'version' => '3.22.0', 'minify_css' => 1 ];
 
 		Functions\expect( 'glob' )
 			->once()
 			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
 			->andReturn( [] );
 
-		Functions\expect( 'get_option' )
+		$this->options->shouldReceive( 'get_options' )
 			->once()
-			->with( self::OPTIONS_SLUG )
-			->andReturn( $options );
+			->andReturn( $options_array );
 
 		Functions\expect( 'rocket_init_config_dir' )->once();
 		Functions\when( 'gmdate' )->justReturn( self::FIXED_DATE );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options, JSON_PRETTY_PRINT ) );
+		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
 
 		Functions\expect( 'rocket_put_content' )
 			->once()
@@ -113,15 +120,15 @@ class TestBackup extends BaseTestCase {
 	}
 
 	public function testShouldDeleteOldestFileWhenGcThresholdExceeded(): void {
-		$options   = [ 'version' => '3.22.3', 'minify_css' => 1 ];
-		$all_files = [
+		$options_array = [ 'version' => '3.22.3', 'minify_css' => 1 ];
+		$all_files     = [
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json',
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json',
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json',
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-01.json',
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json',
 		];
-		$mtimes    = [
+		$mtimes        = [
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json' => 1751189204,
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json' => 1751189203,
 			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json' => 1751189202,
@@ -134,14 +141,13 @@ class TestBackup extends BaseTestCase {
 			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_*.json' )
 			->andReturn( [] );
 
-		Functions\expect( 'get_option' )
+		$this->options->shouldReceive( 'get_options' )
 			->once()
-			->with( self::OPTIONS_SLUG )
-			->andReturn( $options );
+			->andReturn( $options_array );
 
 		Functions\expect( 'rocket_init_config_dir' )->once();
 		Functions\when( 'gmdate' )->justReturn( '2026-06-29-10-00-04' );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options, JSON_PRETTY_PRINT ) );
+		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
 
 		Functions\expect( 'rocket_put_content' )
 			->once()

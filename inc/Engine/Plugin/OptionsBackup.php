@@ -3,16 +3,35 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Plugin;
 
+use WP_Rocket\Admin\Options_Data;
+
 class OptionsBackup {
 
 	const KEEP_COUNT = 4;
 
-	private string $config_path;
-	private string $options_slug;
+	/**
+	 * Path to the wp-rocket-config/ directory.
+	 *
+	 * @var string
+	 */
+	private $config_path;
 
-	public function __construct( string $config_path, string $options_slug ) {
-		$this->config_path  = $config_path;
-		$this->options_slug = $options_slug;
+	/**
+	 * Plugin options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param string       $config_path Absolute path to the config directory (trailing slash).
+	 * @param Options_Data $options     Plugin options instance.
+	 */
+	public function __construct( string $config_path, Options_Data $options ) {
+		$this->config_path = $config_path;
+		$this->options     = $options;
 	}
 
 	/**
@@ -34,9 +53,9 @@ class OptionsBackup {
 			return false;
 		}
 
-		$options = get_option( $this->options_slug );
+		$options = $this->options->get_options();
 
-		if ( false === $options ) {
+		if ( empty( $options ) ) {
 			return false;
 		}
 

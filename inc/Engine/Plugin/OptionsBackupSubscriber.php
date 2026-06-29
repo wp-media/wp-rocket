@@ -7,8 +7,18 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class OptionsBackupSubscriber implements Subscriber_Interface {
 
-	private OptionsBackup $backup;
+	/**
+	 * Options backup service.
+	 *
+	 * @var OptionsBackup
+	 */
+	private $backup;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param OptionsBackup $backup Options backup service.
+	 */
 	public function __construct( OptionsBackup $backup ) {
 		$this->backup = $backup;
 	}

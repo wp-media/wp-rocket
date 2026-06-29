@@ -90,7 +90,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					new StringArgument( WP_ROCKET_CONFIG_PATH ),
-					new StringArgument( WP_ROCKET_SLUG ),
+					'options',
 				]
 			);
 		$this->getContainer()->addShared( 'options_backup_subscriber', OptionsBackupSubscriber::class )
