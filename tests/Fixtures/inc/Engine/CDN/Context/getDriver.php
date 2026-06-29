@@ -37,4 +37,14 @@ return [
 		],
 		'expected' => 'rocketcdn',
 	],
+
+	// TC-4.x: Paid CDN in grace period (cancelled + pending_deletion) → resolved as rocketcdn_paid driver.
+	'testShouldReturnRocketcdnPaidDriverInGracePeriod' => [
+		'config'   => [
+			'cdn_type'           => 'rocketcdn',
+			'is_in_grace_period' => true,
+			'is_paid'            => true,
+		],
+		'expected' => 'rocketcdn_paid',
+	],
 ];

@@ -215,6 +215,7 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
+			'limit_reached'    => $limit_reached,
 		];
 
 		return $sections;
