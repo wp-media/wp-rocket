@@ -866,7 +866,7 @@ class Controller extends Abstract_Render {
 
 		if ( $is_subscription_loading ) {
 			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
-			$texts['details']     = __( 'Please wait, RocketCDN will be ready and active shortly.', 'rocket' );
+			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
 		$is_paused = $this->is_cdn_paused();
