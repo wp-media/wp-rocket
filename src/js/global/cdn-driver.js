@@ -319,11 +319,21 @@
 			button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
 			button.disabled = true;
 
+			const statusDot = document.querySelector( '.rocketcdn .wpr-cdn-indicator__dot' );
+			if ( statusDot ) {
+				statusDot.className = 'wpr-icon-orange-loader';
+			}
+
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pause',
 				method: 'POST',
 				data: { paused: isPaused ? 0 : 1 },
 			} ).then( () => {
+				// Remove the loader.
+				if ( statusDot ) {
+					statusDot.className = 'wpr-cdn-indicator__dot';
+				}
+
 				button.disabled = false;
 
 				// Simulate real click to prepare checkbox state for form submission.
@@ -368,6 +378,11 @@
 				button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
 				button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
 				button.disabled = false;
+
+				// Remove the loader.
+				if ( statusDot ) {
+					statusDot.className = 'wpr-cdn-indicator__dot';
+				}
 			} );
 		} );
 	}
