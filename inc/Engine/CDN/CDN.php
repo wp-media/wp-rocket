@@ -32,7 +32,7 @@ class CDN {
 	/**
 	 * CNAME Validator instance
 	 *
-	 * @var CNAMEValidator|null
+	 * @var CNAMEValidator
 	 */
 	private $cname_validator;
 
