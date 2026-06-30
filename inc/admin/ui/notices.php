@@ -572,8 +572,11 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		'<strong>%s</strong>',
-		__( 'Thank you! The data you share helps us improve WP Rocket', 'rocket' )
+		/* translators: This is a doc title! %1$s = opening strong tag; %2$s = plugin name; %3$s = closing strong tag */
+		__esc_html( '%1$sThank you! The data you share helps us improve %2$s.%3$s', 'rocket' ),
+		'<strong>',
+		rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+		'</strong>',
 	);
 
 	rocket_notice_html(
