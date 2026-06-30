@@ -483,10 +483,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		// @phpstan-ignore-next-line
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
+		// Don't show the notice if RocketCDN is already active (token exists).
 		if ( ! empty( $rocket_cdn_token ) ) {
 			return;
 		}
 
+		// Fresh install, show new install notice.
 		if ( empty( $previous_version ) ) {
 			$message = sprintf(
 				// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.

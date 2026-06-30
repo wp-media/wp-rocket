@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: inc/Engine/Plugin/Admin/NoticeSubscriber.php
+
+
+		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 3
 			path: inc/Addon/Cloudflare/Subscriber.php

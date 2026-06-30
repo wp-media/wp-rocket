@@ -153,7 +153,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	private function extract_major( string $version ): string {
 		$parts = explode( '.', $version );
 
-		return ( $parts[0] ?? '0' ) . '.' . ( $parts[1] ?? '0' );
+    	return $parts[0] . '.' . ( $parts[1] ?? '0' );
 	}
 
 	/**
@@ -227,7 +227,6 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function display_major_release_notice(): void {
-		// @phpstan-ignore-next-line
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
 		if ( ! empty( $rocket_cdn_token ) ) {
