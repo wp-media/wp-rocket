@@ -35,7 +35,7 @@ return [
 		'exclude_cdn',
 		[
 			'id'  => '5696830b9033603f7da308ac',
-			'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-your-cdn',
+			'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclure-des-fichiers-du-cdn',
 		],
 	],
 	[
