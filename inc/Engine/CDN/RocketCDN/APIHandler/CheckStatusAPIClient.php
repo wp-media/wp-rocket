@@ -56,7 +56,19 @@ class CheckStatusAPIClient extends AbstractSafeAPIClient {
 	 * @return array|false
 	 */
 	public function check() {
-		$response = $this->send_get_request( [], true );
+		$token = get_option( 'rocketcdn_user_token' );
+
+		if ( empty( $token ) ) {
+			return false;
+		}
+
+		$args = [
+			'headers' => [
+				'Authorization' => 'Token ' . $token,
+			],
+		];
+
+		$response = $this->send_get_request( $args, true );
 
 		if ( is_wp_error( $response ) ) {
 			return false;
