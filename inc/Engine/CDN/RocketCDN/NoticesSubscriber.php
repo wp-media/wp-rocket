@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Utils;
@@ -48,7 +47,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
-	 * WP Rocket options instance
+	 * WP Rocket options instance.
 	 *
 	 * @var Options_Data
 	 */
@@ -64,12 +63,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	/**
 	 * Constructor
 	 *
-	 * @param APIClient              $api_client    RocketCDN API Client instance.
-	 * @param Beacon                 $beacon        Beacon instance.
-	 * @param UserClient             $user_client   UserClient instance.
-	 * @param Tracking               $tracking      Tracking instance.
-	 * @param string                 $template_path Path to the templates.
-	 * @param Options_Data           $options WP Rocket options instance.
+	 * @param APIClient              $api_client              RocketCDN API Client instance.
+	 * @param Beacon                 $beacon                  Beacon instance.
+	 * @param UserClient             $user_client             UserClient instance.
+	 * @param Tracking               $tracking                Tracking instance.
+	 * @param string                 $template_path           Path to the templates.
+	 * @param Options_Data           $options                 WP Rocket options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 */
 	public function __construct(
@@ -87,7 +86,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->beacon                  = $beacon;
 		$this->user_client             = $user_client;
 		$this->tracking                = $tracking;
-			$this->options             = $options;
+		$this->options                 = $options;
 		$this->subscription_controller = $subscription_controller;
 	}
 
@@ -102,7 +101,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
-				[ 'maybe_display_rocketcdn_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => 'display_rocketcdn_cta',
 			'admin_post_rocket_ignore'                => [
@@ -461,7 +459,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed.
+	 * Kept for backward compatibility — no longer hooked via get_subscribed_events().
+	 * Post-activation notice display is now handled by ActivationNoticeSubscriber.
 	 *
 	 * @since 3.22
 	 *
@@ -483,15 +483,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		// @phpstan-ignore-next-line
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
-		// Don't show the notice if RocketCDN is already active (token exists).
 		if ( ! empty( $rocket_cdn_token ) ) {
 			return;
 		}
 
-		// Fresh install, show new install notice.
 		if ( empty( $previous_version ) ) {
 			$message = sprintf(
-			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+				// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 				esc_html__(
 					'%1$sNew in WP Rocket: Faster loading for your key pages%2$s',
 					'rocket'
@@ -501,7 +499,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			);
 
 			$message .= sprintf(
-			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+				// translators: %1$s opening <p> tag, %2$s closing </p> tag.
 				esc_html__(
 					'%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s',
 					'rocket'
@@ -526,7 +524,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		$message = sprintf(
-		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 			esc_html__(
 				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
 				'rocket'
@@ -536,7 +534,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		);
 
 		$message .= sprintf(
-		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
 			esc_html__(
 				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
 				'rocket'
