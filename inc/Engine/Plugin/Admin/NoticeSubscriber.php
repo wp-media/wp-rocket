@@ -10,7 +10,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 class NoticeSubscriber implements Subscriber_Interface {
 
 	const ACTIVATION_NOTICE_KEY = 'rocket_new_user_activation_notice';
-	const MAJOR_RELEASE_VERSION = '3.22.0';
 
 	/**
 	 * Rocket Insights controller instance.
@@ -124,11 +123,11 @@ class NoticeSubscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		if ( version_compare( $previous, self::MAJOR_RELEASE_VERSION, '<' ) ) {
-			return true;
-		}
-
-		return $this->extract_major( $previous ) === $this->extract_major( self::MAJOR_RELEASE_VERSION );
+		return version_compare(
+			$this->extract_major( $previous ),
+			$this->extract_major( WP_ROCKET_VERSION ),
+			'<='
+		);
 	}
 
 	/**
@@ -162,7 +161,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	private function get_major_release_notice_key(): string {
-		return 'rocket_major_release_notice_' . str_replace( '.', '_', $this->extract_major( self::MAJOR_RELEASE_VERSION ) );
+		return 'rocket_major_release_notice_' . str_replace( '.', '_', $this->extract_major( WP_ROCKET_VERSION ) );
 	}
 
 	/**
@@ -264,7 +263,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 		);
 
 		$notice_info = [
-			'new_version'     => self::MAJOR_RELEASE_VERSION,
+			'new_version'     => WP_ROCKET_VERSION,
 			'dismiss_button'  => $notice_key,
 			'dismiss_message' => __( 'Check it later', 'rocket' ),
 			'message'         => $message,
