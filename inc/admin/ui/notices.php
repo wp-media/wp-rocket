@@ -572,19 +572,12 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html().
-		'<strong>%s</strong></p>',
-		__( 'Thank you!', 'rocket' )
+		/* translators: %1$s = opening strong tag; %2$s = plugin name; %3$s = closing strong tag */
+		esc_html__( '%1$sThank you! The data you share helps us improve %2$s.%3$s', 'rocket' ),
+		'<strong>',
+		rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+		'</strong>',
 	);
-
-	$thankyou_message .= sprintf(
-		'<p>%1$s</p><div>%2$s</div>',
-		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
-		rocket_data_collection_preview_table()
-	);
-
-	// Closing </p> provided by rocket_notice_html().
-	$thankyou_message .= '<p>';
 
 	rocket_notice_html(
 		[
