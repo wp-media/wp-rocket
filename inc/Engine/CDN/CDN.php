@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Support\CommentTrait;
+use WP_Rocket\Engine\CDN\CNAMEValidator;
 
 /**
  * CDN class
@@ -29,12 +30,30 @@ class CDN {
 	private $home_host;
 
 	/**
+	 * CNAME Validator instance
+	 *
+	 * @var CNAMEValidator
+	 */
+	private $cname_validator;
+
+	/**
+	 * Context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket Options instance.
+	 * @param Options_Data   $options         WP Rocket Options instance.
+	 * @param CNAMEValidator $cname_validator CNAME Validator instance.
+	 * @param Context        $context Context instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, CNAMEValidator $cname_validator, Context $context ) {
+		$this->options         = $options;
+		$this->cname_validator = $cname_validator;
+		$this->context         = $context;
 	}
 
 	/**
@@ -232,6 +251,16 @@ class CDN {
 		 */
 		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zones );
 		$hosts = array_filter( $hosts );
+
+		if ( ! $this->context->is_rocketcdn() ) {
+			$hosts = array_filter(
+				$hosts,
+				function ( $url ) {
+					return $this->cname_validator->is_valid( rocket_add_url_protocol( $url ) );
+				}
+			);
+		}
+
 		$hosts = array_flip( array_flip( $hosts ) );
 		$hosts = array_values( $hosts );
 

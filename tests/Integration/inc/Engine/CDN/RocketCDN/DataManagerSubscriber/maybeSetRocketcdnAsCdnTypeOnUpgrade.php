@@ -47,5 +47,13 @@ class Test_MaybeSetRocketcdnAsCdnTypeOnUpgrade extends TestCase {
 
 		$settings = get_option( 'wp_rocket_settings', [] );
 		$this->assertSame( $expected['cdn_type'], $settings['cdn_type'] ?? '' );
+
+		if ( array_key_exists( 'cdn', $expected ) ) {
+			$this->assertSame( $expected['cdn'], $settings['cdn'] ?? 0 );
+		}
+
+		if ( array_key_exists( 'cdn_cnames', $expected ) ) {
+			$this->assertSame( $expected['cdn_cnames'], $settings['cdn_cnames'] ?? [] );
+		}
 	}
 }
