@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering ::rocket_analytics_optin_thankyou_notice
- * 
+ *
  * @group admin
  * @group notices
  * @runTestsInSeparateProcesses
@@ -67,6 +67,8 @@ class Test_RocketAnalyticsOptinThankyouNotice extends TestCase {
 		} else {
 			Functions\expect( 'delete_transient' )->never();
 		}
+
+		Functions\when( 'esc_html__' )->returnArg( 1 );
 
 		rocket_analytics_optin_thankyou_notice();
 	}
