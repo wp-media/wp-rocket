@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Plugin\Admin;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller as RocketInsightsController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -12,13 +11,6 @@ class NoticeSubscriber implements Subscriber_Interface {
 
 	const ACTIVATION_NOTICE_KEY = 'rocket_new_user_activation_notice';
 	const MAJOR_RELEASE_VERSION = '3.22.0';
-
-	/**
-	 * WP Rocket options instance.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
 
 	/**
 	 * Rocket Insights controller instance.
@@ -30,11 +22,9 @@ class NoticeSubscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data             $options         WP Rocket options instance.
 	 * @param RocketInsightsController $rocket_insights Rocket Insights controller instance.
 	 */
-	public function __construct( Options_Data $options, RocketInsightsController $rocket_insights ) {
-		$this->options         = $options;
+	public function __construct( RocketInsightsController $rocket_insights ) {
 		$this->rocket_insights = $rocket_insights;
 	}
 
@@ -45,25 +35,9 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'admin_init'    => 'suppress_wp_activation_notice',
 			'admin_notices' => 'maybe_display_post_activation_notice',
 			'admin_post_rocket_insights_add_homepage_notice' => 'handle_add_homepage',
 		];
-	}
-
-	/**
-	 * Suppresses WordPress's native "Plugin activated" notice.
-	 *
-	 * @return void
-	 */
-	public function suppress_wp_activation_notice(): void {
-		if ( ! get_transient( 'rocket_just_activated' ) ) {
-			return;
-		}
-
-		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		unset( $_GET['activate'] );
-		delete_transient( 'rocket_just_activated' );
 	}
 
 	/**
@@ -79,6 +53,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 		// Show this notice to new users after activation.
 		if ( $this->is_new_user() ) {
 			$this->display_activation_notice();
+
 			return;
 		}
 
@@ -125,7 +100,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_new_user(): bool {
-		return empty( $this->options->get( 'previous_version', '' ) );
+		return empty( $this->get_previous_version() );
 	}
 
 	/**
@@ -134,9 +109,18 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * @return bool
 	 */
 	private function is_major_release(): bool {
-		$previous = $this->options->get( 'previous_version', '' );
+		$previous = $this->get_previous_version();
 
 		if ( empty( $previous ) ) {
+			return false;
+		}
+
+		$boxes = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		if (
+			in_array( 'rocket_update_notice', $boxes, true ) ||
+			in_array( 'rocketcdn_install_notice', $boxes, true )
+		) {
 			return false;
 		}
 
@@ -148,6 +132,19 @@ class NoticeSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Returns the previous_version value read directly from the options table.
+	 *
+	 * Options_Data is returning a stale empty string on the first page load until page refresh.
+	 *
+	 * @return string
+	 */
+	private function get_previous_version(): string {
+		$settings = get_option( WP_ROCKET_SLUG, [] );
+
+		return (string) ( $settings['previous_version'] ?? '' );
+	}
+
+	/**
 	 * Extracts the major.minor segment (X.Y) from a version string.
 	 *
 	 * @param string $version Full version string (e.g. "3.21.4").
@@ -155,13 +152,12 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 */
 	private function extract_major( string $version ): string {
 		$parts = explode( '.', $version );
+
 		return ( $parts[0] ?? '0' ) . '.' . ( $parts[1] ?? '0' );
 	}
 
 	/**
-	 * Derives the major release notice dismiss key from MAJOR_RELEASE_VERSION.
-	 * Updating the version constant is the only change needed per major release —
-	 * the key (and therefore dismiss state) is automatically scoped to that version.
+	 * Create a unique key for the release based on the version.
 	 *
 	 * @return string
 	 */
@@ -178,11 +174,11 @@ class NoticeSubscriber implements Subscriber_Interface {
 		$message = sprintf(
 			// translators: %1$s = opening strong+paragraph tags, %2$s = site name, %3$s = closing strong opening paragraph, %4$s = opening link tag, %5$s = closing link+paragraph tags.
 			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
-			'<p><strong>',
-			esc_html( get_bloginfo( 'name' ) ),
-			'</strong></p><p>',
+			'<strong>',
+			WP_ROCKET_PLUGIN_NAME,
+			'</strong>',
 			'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) ) . '">',
-			'</a></p>'
+			'</a>'
 		);
 
 		$action_url = wp_nonce_url(
@@ -213,12 +209,18 @@ class NoticeSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Renders the major release notice using the existing Utils display helper.
-	 * Content is currently the RocketCDN announcement and may change per release.
+	 * Renders the major release notice.
 	 *
 	 * @return void
 	 */
 	private function display_major_release_notice(): void {
+		// @phpstan-ignore-next-line
+		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
+
+		if ( ! empty( $rocket_cdn_token ) ) {
+			return;
+		}
+
 		$message = sprintf(
 			// translators: %1$s = opening strong+paragraph tags, %2$s = closing strong+paragraph tags.
 			esc_html__(

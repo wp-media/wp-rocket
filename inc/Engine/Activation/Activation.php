@@ -113,8 +113,6 @@ class Activation {
 			]
 		);
 
-		set_transient( 'rocket_just_activated', true, MINUTE_IN_SECONDS );
-
 		/**
 		 * Fires after WP Rocket is activated
 		 */
