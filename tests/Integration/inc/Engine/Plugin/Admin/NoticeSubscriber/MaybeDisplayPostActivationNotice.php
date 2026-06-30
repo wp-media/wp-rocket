@@ -27,6 +27,8 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		delete_option( 'rocketcdn_user_token' );
+
 		if ( ! function_exists( 'rocket_notice_html' ) ) {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
