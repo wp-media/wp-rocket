@@ -7,14 +7,14 @@ use Mockery;
 use WP_Filesystem_Direct;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Plugin\OptionsBackup;
-use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Plugin\OptionsBackup::backup
  *
  * @group Plugin
  */
-class Test_Backup extends BaseTestCase {
+class Test_Backup extends TestCase {
 
 	const CONFIG_PATH = '/wp-rocket-config/';
 	const FIXED_DATE  = '2026-06-29-10-00-00';
