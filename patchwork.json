@@ -1,4 +1,3 @@
 {
-	"redefinable-internals": ["glob", "filemtime", "gmdate"],
-	"whitelist": ["inc/"]
+	"redefinable-internals": ["glob", "filemtime", "gmdate"]
 }
