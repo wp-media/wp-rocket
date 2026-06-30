@@ -172,14 +172,27 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 */
 	private function display_activation_notice(): void {
 		$message = sprintf(
-			// translators: %1$s = opening strong+paragraph tags, %2$s = site name, %3$s = closing strong opening paragraph, %4$s = opening link tag, %5$s = closing link+paragraph tags.
-			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+			/* translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong> */
+			__( '%1$s %2$s is good to go! %3$s Your website is already faster.', 'rocket' ),
 			'<strong>',
 			WP_ROCKET_PLUGIN_NAME,
-			'</strong>',
-			'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) ) . '">',
-			'</a>'
-		);
+			'</strong>'
+			);
+
+		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
+		$rocket_insights_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
+
+		if ( $rocket_insights_enabled ) {
+			$message = sprintf(
+				// translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing strong, %4$s = opening link tag, %5$s = closing link.
+				esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+				'<strong>',
+				WP_ROCKET_PLUGIN_NAME,
+				'</strong>',
+				'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) ) . '">',
+				'</a>'
+			);
+		}
 
 		$action_url = wp_nonce_url(
 			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
