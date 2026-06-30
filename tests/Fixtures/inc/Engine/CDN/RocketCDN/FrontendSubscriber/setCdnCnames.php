@@ -10,24 +10,24 @@ return [
 		],
 	],
 
-	'shouldReturnOriginalValueWhenNoActiveSubscription' => [
+	'shouldReturnEmptyCnamesWhenNoActiveSubscription' => [
 		'config'   => [
 			'cdn_type'          => 'rocketcdn',
 			'has_active_subscription' => false,
 		],
 		'expected' => [
-			'cdn_cnames' => null,
+			'cdn_cnames' => [],
 		],
 	],
 
-	'shouldReturnOriginalValueWhenSubscriptionRunningButNoCdnUrl' => [
+	'shouldReturnEmptyCnamesWhenSubscriptionRunningButNoCdnUrl' => [
 		'config'   => [
 			'cdn_type'          => 'rocketcdn',
 			'has_active_subscription' => true,
 			'cdn_url' => '',
 		],
 		'expected' => [
-			'cdn_cnames' => null,
+			'cdn_cnames' => [],
 		],
 	],
 

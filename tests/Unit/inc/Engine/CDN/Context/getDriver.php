@@ -46,7 +46,12 @@ class Test_GetDriver extends TestCase {
 			->andReturn( $config['has_active_subscription'] ?? false );
 
 		if ( 'rocketcdn' === $cdn_type ) {
-			if ( ! empty( $config['has_active_subscription'] ) ) {
+			if ( ! ( $config['has_active_subscription'] ?? false ) ) {
+				$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+					->andReturn( $config['is_cancelled_outside_grace_period'] ?? false );
+			}
+
+			if ( ( $config['has_active_subscription'] ?? false ) || ! ( $config['is_cancelled_outside_grace_period'] ?? false ) ) {
 				$this->subscription_controller->shouldReceive( 'is_paid' )
 					->andReturn( $config['is_paid'] ?? false );
 			}
