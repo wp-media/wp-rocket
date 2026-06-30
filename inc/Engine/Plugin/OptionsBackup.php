@@ -7,6 +7,11 @@ use WP_Rocket\Admin\Options_Data;
 
 class OptionsBackup {
 
+	/**
+	 * Number of backup files to keep.
+	 *
+	 * @var int
+	 */
 	const KEEP_COUNT = 4;
 
 	/**

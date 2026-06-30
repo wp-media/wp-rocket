@@ -14,7 +14,7 @@ use WPMedia\PHPUnit\Unit\TestCase as BaseTestCase;
  *
  * @group Plugin
  */
-class TestBackup extends BaseTestCase {
+class Test_Backup extends BaseTestCase {
 
 	const CONFIG_PATH = '/wp-rocket-config/';
 	const FIXED_DATE  = '2026-06-29-10-00-00';
@@ -36,144 +36,77 @@ class TestBackup extends BaseTestCase {
 		$this->subject = new OptionsBackup( self::CONFIG_PATH, $this->options );
 	}
 
-	public function testShouldReturnFalseOnRollback(): void {
-		$this->assertFalse( $this->subject->backup( '3.21.0', '3.22.0' ) );
-	}
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( array $config, array $expected ): void {
+		$new_version   = $config['new_version'];
+		$old_version   = $config['old_version'];
+		$is_rollback   = version_compare( $new_version, $old_version, '<' );
+		$backup_exists = false;
 
-	public function testShouldReturnFalseWhenBackupAlreadyExistsForVersion(): void {
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
-			->andReturn( [ self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_2026-06-01-10-00-00.json' ] );
+		if ( ! $is_rollback ) {
+			$existing = $config['existing_files'] ?? [];
+			Functions\expect( 'glob' )
+				->once()
+				->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_' . $new_version . '_*.json' )
+				->andReturn( $existing );
+			$backup_exists = ! empty( $existing );
+		}
 
-		$this->options->shouldNotReceive( 'get_options' );
+		if ( ! $is_rollback && ! $backup_exists ) {
+			$options = is_array( $config['options'] ) ? $config['options'] : [];
 
-		$this->assertFalse( $this->subject->backup( '3.22.1', '3.22.0' ) );
-	}
+			$this->options->shouldReceive( 'get_options' )
+				->once()
+				->andReturn( $options );
 
-	public function testShouldReturnFalseWhenOptionsEmpty(): void {
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
-			->andReturn( [] );
+			if ( ! empty( $options ) ) {
+				Functions\expect( 'rocket_init_config_dir' )->once();
+				Functions\when( 'gmdate' )->justReturn( self::FIXED_DATE );
+				Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options, JSON_PRETTY_PRINT ) );
 
-		$this->options->shouldReceive( 'get_options' )
-			->once()
-			->andReturn( [] );
+				$write_result = $config['write_result'] ?? false;
+				Functions\expect( 'rocket_put_content' )
+					->once()
+					->andReturn( $write_result );
 
-		Functions\expect( 'rocket_put_content' )->never();
+				if ( $write_result ) {
+					$all_backups = $config['all_backups'] ?? [];
+					Functions\expect( 'glob' )
+						->once()
+						->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_*.json' )
+						->andReturn( $all_backups );
 
-		$this->assertFalse( $this->subject->backup( '3.22.1', '3.22.0' ) );
-	}
+					if ( count( $all_backups ) > OptionsBackup::KEEP_COUNT ) {
+						$mtimes = $config['mtimes'] ?? [];
+						Functions\when( 'filemtime' )->alias(
+							function ( string $file ) use ( $mtimes ): int {
+								return $mtimes[ $file ] ?? 0;
+							}
+						);
 
-	public function testShouldReturnFalseWhenWriteFails(): void {
-		$options_array = [ 'version' => '3.22.0', 'minify_css' => 1 ];
+						$filesystem = Mockery::mock( WP_Filesystem_Direct::class );
+						Functions\expect( 'rocket_direct_filesystem' )
+							->once()
+							->andReturn( $filesystem );
 
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
-			->andReturn( [] );
-
-		$this->options->shouldReceive( 'get_options' )
-			->once()
-			->andReturn( $options_array );
-
-		Functions\expect( 'rocket_init_config_dir' )->once();
-		Functions\when( 'gmdate' )->justReturn( self::FIXED_DATE );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
-
-		Functions\expect( 'rocket_put_content' )
-			->once()
-			->andReturn( false );
-
-		$this->assertFalse( $this->subject->backup( '3.22.1', '3.22.0' ) );
-	}
-
-	public function testShouldReturnTrueAndSkipGcWhenUnderLimit(): void {
-		$options_array = [ 'version' => '3.22.0', 'minify_css' => 1 ];
-
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_*.json' )
-			->andReturn( [] );
-
-		$this->options->shouldReceive( 'get_options' )
-			->once()
-			->andReturn( $options_array );
-
-		Functions\expect( 'rocket_init_config_dir' )->once();
-		Functions\when( 'gmdate' )->justReturn( self::FIXED_DATE );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
-
-		Functions\expect( 'rocket_put_content' )
-			->once()
-			->andReturn( true );
-
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_*.json' )
-			->andReturn( [ self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_' . self::FIXED_DATE . '.json' ] );
-
-		Functions\expect( 'rocket_direct_filesystem' )->never();
-
-		$this->assertTrue( $this->subject->backup( '3.22.1', '3.22.0' ) );
-	}
-
-	public function testShouldDeleteOldestFileWhenGcThresholdExceeded(): void {
-		$options_array = [ 'version' => '3.22.3', 'minify_css' => 1 ];
-		$all_files     = [
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json',
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json',
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json',
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-01.json',
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json',
-		];
-		$mtimes        = [
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json' => 1751189204,
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json' => 1751189203,
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json' => 1751189202,
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-01.json' => 1751189201,
-			self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json' => 1751189200,
-		];
-
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.4_*.json' )
-			->andReturn( [] );
-
-		$this->options->shouldReceive( 'get_options' )
-			->once()
-			->andReturn( $options_array );
-
-		Functions\expect( 'rocket_init_config_dir' )->once();
-		Functions\when( 'gmdate' )->justReturn( '2026-06-29-10-00-04' );
-		Functions\when( 'wp_json_encode' )->justReturn( (string) json_encode( $options_array, JSON_PRETTY_PRINT ) );
-
-		Functions\expect( 'rocket_put_content' )
-			->once()
-			->andReturn( true );
-
-		Functions\expect( 'glob' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_*.json' )
-			->andReturn( $all_files );
-
-		// filemtime is called repeatedly by usort — use when() alias to avoid count issues.
-		Functions\when( 'filemtime' )->alias(
-			function ( string $file ) use ( $mtimes ): int {
-				return $mtimes[ $file ] ?? 0;
+						foreach ( $config['files_to_delete'] ?? [] as $file ) {
+							$filesystem->shouldReceive( 'delete' )
+								->once()
+								->with( $file );
+						}
+					} else {
+						Functions\expect( 'rocket_direct_filesystem' )->never();
+					}
+				}
+			} else {
+				Functions\expect( 'rocket_put_content' )->never();
 			}
-		);
+		} else {
+			$this->options->shouldNotReceive( 'get_options' );
+		}
 
-		$filesystem = Mockery::mock( WP_Filesystem_Direct::class );
-		Functions\expect( 'rocket_direct_filesystem' )
-			->once()
-			->andReturn( $filesystem );
-
-		$filesystem->shouldReceive( 'delete' )
-			->once()
-			->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json' );
-
-		$this->assertTrue( $this->subject->backup( '3.22.4', '3.22.3' ) );
+		$this->assertSame( $expected['result'], $this->subject->backup( $new_version, $old_version ) );
 	}
 }
