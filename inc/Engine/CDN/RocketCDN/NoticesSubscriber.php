@@ -461,7 +461,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	/**
 	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed.
 	 * Kept for backward compatibility — no longer hooked via get_subscribed_events().
-	 * Post-activation notice display is now handled by ActivationNoticeSubscriber.
+	 * Post-activation notice display is now handled by NoticeSubscriber.
 	 *
 	 * @since 3.22
 	 *

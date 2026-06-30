@@ -89,7 +89,6 @@ class NoticeSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Handles the "Start with my homepage" admin-post action.
 	 * Adds the homepage to Rocket Insights and dismisses the activation notice.
 	 *
 	 * @return void
@@ -132,12 +131,6 @@ class NoticeSubscriber implements Subscriber_Interface {
 	/**
 	 * Returns true when the site should display the major release notice.
 	 *
-	 * Two conditions trigger it (no DB writes required):
-	 * 1. Direct boundary crossing: previous version is older than the major release.
-	 * 2. Within-series update: previous version is in the same X.Y series, meaning the
-	 *    boundary was already crossed in a prior upgrade. The notice stays active until
-	 *    the user explicitly dismisses it (handled by rocket_boxes in display_update_notice).
-	 *
 	 * @return bool
 	 */
 	private function is_major_release(): bool {
@@ -170,7 +163,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * Updating the version constant is the only change needed per major release —
 	 * the key (and therefore dismiss state) is automatically scoped to that version.
 	 *
-	 * @return string e.g. "rocket_major_release_notice_3_22"
+	 * @return string
 	 */
 	private function get_major_release_notice_key(): string {
 		return 'rocket_major_release_notice_' . str_replace( '.', '_', $this->extract_major( self::MAJOR_RELEASE_VERSION ) );
@@ -182,12 +175,6 @@ class NoticeSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function display_activation_notice(): void {
-		$boxes = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( self::ACTIVATION_NOTICE_KEY, $boxes, true ) ) {
-			return;
-		}
-
 		$message = sprintf(
 			// translators: %1$s = opening strong+paragraph tags, %2$s = site name, %3$s = closing strong opening paragraph, %4$s = opening link tag, %5$s = closing link+paragraph tags.
 			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
@@ -198,31 +185,31 @@ class NoticeSubscriber implements Subscriber_Interface {
 			'</a></p>'
 		);
 
-		rocket_notice_html(
-			[
-				'id'                     => 'rocket-notice-' . sanitize_html_class( self::ACTIVATION_NOTICE_KEY ),
-				'status'                 => 'success',
-				'message'                => $message,
-				'action'                 => $this->build_activation_action_html( __( 'Start with my homepage', 'rocket' ) ),
-				'dismiss_button'         => self::ACTIVATION_NOTICE_KEY,
-				'dismiss_button_message' => __( 'Dismiss', 'rocket' ),
-			]
-		);
+		$action_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
+				'rocket_insights_add_homepage_notice'
+			);
+
+		$notice_info = [
+			'dismiss_button'  => self::ACTIVATION_NOTICE_KEY,
+			'dismiss_message' => __( 'Dismiss', 'rocket' ),
+			'message'         => $message,
+			'action'          => $this->build_action_html( __( 'Start with my homepage', 'rocket' ), $action_url ),
+			'status'          => 'success',
+		];
+
+		Utils::display_update_notice( $notice_info, true );
 	}
 
 	/**
-	 * Builds the activation notice primary button HTML.
+	 * Builds a primary action button HTML for a notice.
 	 *
 	 * @param string $label Button label text.
+	 * @param string $url   Button URL.
 	 * @return string
 	 */
-	private function build_activation_action_html( string $label ): string {
-		return '<a class="button button-primary" href="' . esc_url(
-			wp_nonce_url(
-				admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
-				'rocket_insights_add_homepage_notice'
-			)
-		) . '">' . esc_html( $label ) . '</a>';
+	private function build_action_html( string $label, string $url ): string {
+		return '<a class="button button-primary" href="' . esc_url( $url ) . '">' . esc_html( $label ) . '</a>';
 	}
 
 	/**
@@ -252,29 +239,9 @@ class NoticeSubscriber implements Subscriber_Interface {
 			'</p>'
 		);
 
-		$notice_info = [
-			'new_version'     => self::MAJOR_RELEASE_VERSION,
-			'dismiss_button'  => $this->get_major_release_notice_key(),
-			'dismiss_message' => __( 'Check it later', 'rocket' ),
-			'message'         => $message,
-			'action'          => $this->build_major_release_action_html(),
-			'status'          => 'info',
-			'track_event'     => true,
-		];
-
-		Utils::display_update_notice( $notice_info, true );
-	}
-
-	/**
-	 * Builds the "Add your pages now" button HTML for the major release notice.
-	 * Clicking it dismisses the notice and redirects to the CDN settings tab.
-	 *
-	 * @return string
-	 */
-	private function build_major_release_action_html(): string {
 		$notice_key   = $this->get_major_release_notice_key();
 		$redirect_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' );
-		$dismiss_url  = wp_nonce_url(
+		$action_url   = wp_nonce_url(
 			admin_url(
 				'admin-post.php?action=rocket_ignore&box=' . $notice_key
 				. '&redirect=' . rawurlencode( $redirect_url )
@@ -282,8 +249,16 @@ class NoticeSubscriber implements Subscriber_Interface {
 			'rocket_ignore_' . $notice_key
 		);
 
-		return '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
-			. esc_html__( 'Add your pages now', 'rocket' )
-			. '</a>';
+		$notice_info = [
+			'new_version'     => self::MAJOR_RELEASE_VERSION,
+			'dismiss_button'  => $notice_key,
+			'dismiss_message' => __( 'Check it later', 'rocket' ),
+			'message'         => $message,
+			'action'          => $this->build_action_html( __( 'Add your pages now', 'rocket' ), $action_url ),
+			'status'          => 'info',
+			'track_event'     => true,
+		];
+
+		Utils::display_update_notice( $notice_info, true );
 	}
 }
