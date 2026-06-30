@@ -108,5 +108,6 @@ class CDNOptionsManager {
 	 */
 	public function flush_subscription_cache() {
 		delete_transient( 'rocketcdn_status' );
+		delete_transient( 'rocket_cdn_website_search' );
 	}
 }

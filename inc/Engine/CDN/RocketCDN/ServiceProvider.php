@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Tables\RocketCDN as RocketCDNTable;
 
@@ -34,6 +35,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_create_api_client',
 		'rocketcdn_queue',
 		'rocketcdn_check_status_api_client',
+		'rocketcdn_website_search_api_client',
 	];
 
 	/**
@@ -126,6 +128,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->add( 'rocketcdn_queue', Queue::class );
 		$this->getContainer()->add( 'rocketcdn_create_api_client', CreateAPIClient::class )->addArgument( 'user' );
 		$this->getContainer()->add( 'rocketcdn_check_status_api_client', CheckStatusAPIClient::class );
+		$this->getContainer()->add( 'rocketcdn_website_search_api_client', WebsiteSearch::class );
 		$this->getContainer()->add( 'rocketcdn_subscription_controller', SubscriptionController::class )
 			->addArguments(
 				[
@@ -135,6 +138,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_queue',
 					'rocketcdn_check_status_api_client',
 					'user',
+					'rocketcdn_website_search_api_client',
 				]
 				);
 

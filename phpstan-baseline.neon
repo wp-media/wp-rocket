@@ -97,8 +97,28 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/Render/Controller.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 3
+			path: inc/Engine/CDN/Render/Controller.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 3
 			path: inc/Engine/CDN/RocketCDN/APIClient.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/APIHandler/CheckStatusAPIClient.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -147,7 +167,7 @@ parameters:
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
-			count: 2
+			count: 1
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
 		-
@@ -159,16 +179,6 @@ parameters:
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 1
 			path: inc/Engine/CDN/Subscriber.php
-
-		-
-			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/CDN/Render/Controller.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
-			path: inc/Engine/CDN/Render/Controller.php
 
 		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
@@ -803,6 +813,11 @@ parameters:
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/shouldDisableElementForRocketcdn.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/AdminPageSubscriber/displayRocketcdnStatus.php
 
 		-
@@ -861,6 +876,16 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
 
 		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeSetRocketcdnAsCdnTypeOnUpgrade.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeSetRocketcdnAsCdnTypeOnUpgrade.php
+
+		-
 			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
@@ -871,11 +896,6 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/activationFailedNotice.php
 
 		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: tests/Integration/inc/Engine/CDN/RocketCDN/NoticesSubscriber/displayRocketcdnCta.php
-
-		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/disable.php
@@ -889,11 +909,26 @@ parameters:
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
-		
+
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/RESTSubscriber/enable.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/AbstractSubscriptionControllerTestCase.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/AbstractSubscriptionControllerTestCase.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/SubscriptionController/createSubscription.php
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
@@ -1189,3 +1224,8 @@ parameters:
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
 			path: tests/Integration/inc/functions/rocketIsPluginActive.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/maybePauseCdnForInactiveSubscription.php

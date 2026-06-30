@@ -359,7 +359,6 @@
 	background: $cGreyLight3;
 	border: 1px solid $cGreyLighter1;
 	border-radius: 4px;
-	overflow: hidden;
 
 	&__separator {
 		width: 100%;
@@ -369,8 +368,19 @@
 
 	&--paused, &--disabled {
 		.wpr-cdn-add-page {
-			opacity: 0.5;
 			pointer-events: none;
+
+			.wpr-cdn-add-page__input-wrap {
+				border: 1px solid #eceef1;
+			}
+
+			input[type="text"]::placeholder {
+				color: #b4b7ba;
+			}
+
+			&__button {
+				background: #9186a7;
+			}
 		}
 	}
 
@@ -490,6 +500,45 @@
 
 		[class^="wpr-icon-"] {
 			font-size: 16px;
+		}
+	}
+
+	&__button-wrapper {
+		position: relative;
+		display: inline-flex;
+
+		&.wpr-btn-with-tool-tip {
+			pointer-events: auto; // override parent pointer-events: none so tooltip is hoverable
+
+			.wpr-cdn-add-page__button {
+				cursor: not-allowed;
+				opacity: 0.5;
+				pointer-events: none; // clicks blocked on button itself, hover on wrapper
+			}
+
+			.wpr-tooltip {
+				bottom: -40px;
+				top: auto;
+				left: 50%;
+				transform: translateX(-50%);
+				white-space: nowrap;
+				font-size: 14px;
+				font-weight: normal;
+				text-transform: none;
+
+				&.wpr-isHidden {
+					display: none;
+				}
+			}
+
+			.wpr-tooltip:before {
+				top: auto;
+				bottom: 33px;
+				left: 50%;
+				transform: translateX(-50%) rotate(180deg);
+				border-bottom: none;
+				border-top: 8px solid #0e1428;
+			}
 		}
 	}
 }
