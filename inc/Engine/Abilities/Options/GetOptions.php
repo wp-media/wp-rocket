@@ -201,6 +201,11 @@ class GetOptions implements AbilitiesInterface {
 				'description' => 'Replace YouTube videos with preview image.',
 				'enum'        => [ 0, 1 ],
 			],
+			'lazyload_css_bg_img'                       => [
+				'type'        => 'integer',
+				'description' => 'Enable CSS background image lazy loading.',
+				'enum'        => [ 0, 1 ],
+			],
 			'exclude_lazyload'                          => [
 				'type'        => 'array',
 				'items'       => [ 'type' => 'string' ],
@@ -313,11 +318,6 @@ class GetOptions implements AbilitiesInterface {
 				'type'        => 'array',
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'CDN zones for each CNAME.',
-			],
-			'cdn_type'                                  => [
-				'type'        => 'string',
-				'description' => 'CDN type. Note: rocketcdn requires manual configuration and cannot be set via AI.',
-				'enum'        => [ 'byocdn' ],
 			],
 			'cdn_reject_files'                          => [
 				'type'        => 'array',

@@ -41,6 +41,7 @@ class AllowedOptions {
 			'lazyload',
 			'lazyload_iframes',
 			'lazyload_youtube',
+			'lazyload_css_bg_img',
 			'exclude_lazyload',
 			'image_dimensions',
 			// Fonts.
@@ -66,7 +67,6 @@ class AllowedOptions {
 			'cdn',
 			'cdn_cnames',
 			'cdn_zone',
-			'cdn_type',
 			'cdn_reject_files',
 			'cdn_reject_pages',
 			// Cloudflare.
