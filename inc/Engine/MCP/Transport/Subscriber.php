@@ -62,7 +62,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private function must_register_shared_abilities_ourselves(): bool {
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- reading the mcp-adapter package's own filter, not defining a new hook.
-		return ! wpm_apply_filters_typed( 'bool', 'mcp_adapter_create_default_server', true );
+		return ! wpm_apply_filters_typed( 'boolean', 'mcp_adapter_create_default_server', true );
 	}
 
 	/**
