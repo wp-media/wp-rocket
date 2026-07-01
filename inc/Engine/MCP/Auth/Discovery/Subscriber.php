@@ -47,6 +47,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Check whether the MCP OAuth server is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_enabled(): bool {
+		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', true );
+	}
+
+	/**
 	 * Register rewrite rules for the .well-known paths.
 	 *
 	 * Called both on the 'init' action (normal requests) and directly during
@@ -55,6 +64,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_rewrite_rules(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
 		$this->endpoints->add_rewrite_rules();
 	}
 
@@ -64,6 +77,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_request(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
 		$this->endpoints->handle_request();
 	}
 }

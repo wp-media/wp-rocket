@@ -98,6 +98,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Check whether the MCP OAuth server is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_enabled(): bool {
+		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', true );
+	}
+
+	/**
 	 * Register WordPress rewrite rules for all four OAuth endpoints.
 	 *
 	 * Called both on the 'init' action (normal page load) and during plugin
@@ -106,6 +115,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_oauth_rewrite_rules(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
 		add_rewrite_rule( '^oauth/authorize$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize', 'top' );
 		add_rewrite_rule( '^oauth/authorize-callback$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize-callback', 'top' );
 		add_rewrite_rule( '^oauth/token$', 'index.php?' . self::OAUTH_QUERY_VAR . '=token', 'top' );
@@ -131,6 +144,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_oauth_request(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
 		$endpoint = (string) get_query_var( self::OAUTH_QUERY_VAR, '' );
 
 		if ( '' === $endpoint ) {
@@ -180,6 +196,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_activation(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
 		SecretManager::ensure_secret();
 		$this->register_oauth_rewrite_rules();
 		flush_rewrite_rules();

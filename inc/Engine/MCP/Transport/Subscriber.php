@@ -39,6 +39,15 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Check whether the MCP OAuth server is enabled.
+	 *
+	 * @return bool
+	 */
+	private function is_enabled(): bool {
+		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', true );
+	}
+
+	/**
 	 * Register the MCP server with the adapter.
 	 *
 	 * Creates an isolated server at /wp-json/mcp/mcp-oauth-server using the custom
@@ -47,6 +56,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_server(): void {
+		if ( ! $this->is_enabled() ) {
+			return;
+		}
+
 		$this->server->register_server();
 	}
 
