@@ -425,16 +425,13 @@ class TokenEndpoint {
 		}
 
 		$passwords = \WP_Application_Passwords::get_user_application_passwords( $user_id );
-		if ( ! is_array( $passwords ) ) {
-			return;
-		}
 
 		// Keep only this feature's Application Passwords for this client.
 		$ours = array_values(
 			array_filter(
 				$passwords,
 				static function ( $item ) use ( $client_id ) {
-					return is_array( $item ) && ( $item['app_id'] ?? '' ) === $client_id;
+					return $item['app_id'] === $client_id;
 				}
 			)
 		);
@@ -448,7 +445,7 @@ class TokenEndpoint {
 		usort(
 			$ours,
 			static function ( $a, $b ) {
-				return ( (int) ( $a['created'] ?? 0 ) ) <=> ( (int) ( $b['created'] ?? 0 ) );
+				return $a['created'] <=> $b['created'];
 			}
 		);
 

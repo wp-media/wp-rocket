@@ -141,7 +141,8 @@ class AuthorizeEndpoint {
 				'client_id'             => $client_id,
 				'client_name'           => (string) ( $client['client_name'] ?? '' ),
 				'client_uri'            => (string) ( $client['client_uri'] ?? '' ),
-				'verified'              => ! empty( $client['verified'] ),
+				// Already guaranteed truthy - the 'client not a verified publisher' guard above exits otherwise.
+				'verified'              => true,
 				'publisher'             => (string) ( $client['publisher'] ?? '' ),
 				'redirect_uri'          => $redirect_uri,
 				'code_challenge'        => $code_challenge,

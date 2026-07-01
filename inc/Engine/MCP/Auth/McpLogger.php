@@ -77,12 +77,10 @@ class McpLogger {
 		$headers = [];
 
 		if ( function_exists( 'getallheaders' ) ) {
-			$raw = getallheaders();
-			if ( is_array( $raw ) ) {
-				foreach ( $raw as $name => $value ) {
-					$key             = strtolower( (string) $name );
-					$headers[ $key ] = self::sanitize_header( $key, (string) $value );
-				}
+			// getallheaders() always returns an array on PHP 7.3+ once it exists.
+			foreach ( getallheaders() as $name => $value ) {
+				$key             = strtolower( (string) $name );
+				$headers[ $key ] = self::sanitize_header( $key, (string) $value );
 			}
 		}
 
