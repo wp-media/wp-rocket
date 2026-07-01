@@ -32,8 +32,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_abilities_api_init' => [ 'ensure_shared_abilities_registered', 20 ],
-			'mcp_adapter_init'      => 'register_server',
+			'wp_abilities_api_categories_init' => 'ensure_default_category',
+			'wp_abilities_api_init'            => 'ensure_shared_abilities_registered',
+			'mcp_adapter_init'                 => 'register_server',
 		];
 	}
 
@@ -50,35 +51,60 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Ensure the mcp-adapter package's shared abilities exist before our
-	 * server references them as tools.
+	 * Whether nobody else will register the shared mcp-adapter abilities.
 	 *
-	 * Our server's tool list reuses the mcp-adapter package's own
-	 * discover-abilities/get-ability-info/execute-ability abilities rather
-	 * than duplicating them. Those are normally registered by the package's
-	 * *default* server (McpAdapter::maybe_create_default_server()), which is
-	 * gated behind the `mcp_adapter_create_default_server` filter — disabled
-	 * in our own test bootstrap, and something any site could legitimately
-	 * disable. Registering our own server must not depend on that unrelated
-	 * toggle, so we register these abilities ourselves if nobody else has.
-	 * Runs at priority 20 so a genuinely-enabled default server (the common
-	 * case) registers them first and this becomes a no-op.
+	 * True only when the mcp-adapter package's *default* server is disabled
+	 * via the `mcp_adapter_create_default_server` filter — the only thing
+	 * that normally registers the 'mcp-adapter' category and its three
+	 * shared abilities (McpAdapter::maybe_create_default_server()).
+	 *
+	 * @return bool
+	 */
+	private function must_register_shared_abilities_ourselves(): bool {
+		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- reading the mcp-adapter package's own filter, not defining a new hook.
+		return ! wpm_apply_filters_typed( 'bool', 'mcp_adapter_create_default_server', true );
+	}
+
+	/**
+	 * Register the 'mcp-adapter' ability category ourselves when the
+	 * default server (which normally owns this) is disabled.
+	 *
+	 * Must run on the `wp_abilities_api_categories_init` action specifically
+	 * — the Abilities API rejects category registration anywhere else.
+	 *
+	 * @return void
+	 */
+	public function ensure_default_category(): void {
+		if ( ! $this->must_register_shared_abilities_ourselves() ) {
+			return;
+		}
+
+		wp_register_ability_category(
+			'mcp-adapter',
+			[
+				'label'       => 'MCP Adapter',
+				'description' => 'Abilities for the MCP Adapter',
+			]
+		);
+	}
+
+	/**
+	 * Register the mcp-adapter package's shared discover-abilities/
+	 * get-ability-info/execute-ability abilities ourselves when the default
+	 * server (which normally owns them) is disabled.
+	 *
+	 * Our server's tool list reuses these three abilities rather than
+	 * duplicating them, but they are normally only registered by the
+	 * mcp-adapter package's *default* server — gated behind the
+	 * `mcp_adapter_create_default_server` filter, disabled in our own test
+	 * bootstrap and something any site could legitimately disable.
+	 * Registering our own server must not depend on that unrelated toggle.
 	 *
 	 * @return void
 	 */
 	public function ensure_shared_abilities_registered(): void {
-		if ( wp_get_ability( 'mcp-adapter/discover-abilities' ) ) {
+		if ( ! $this->must_register_shared_abilities_ourselves() ) {
 			return;
-		}
-
-		if ( function_exists( 'wp_register_ability_category' ) ) {
-			wp_register_ability_category(
-				'mcp-adapter',
-				[
-					'label'       => 'MCP Adapter',
-					'description' => 'Abilities for the MCP Adapter',
-				]
-			);
 		}
 
 		DiscoverAbilitiesAbility::register();
