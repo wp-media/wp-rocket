@@ -23,7 +23,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @var string[]
 	 */
-	protected $provides = array(
+	protected $provides = [
 		'mcp_auth_claude_verifier',
 		'mcp_auth_cimd_resolver',
 		'mcp_auth_authorize_endpoint',
@@ -34,7 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'mcp_auth_discovery_endpoints',
 		'mcp_auth_discovery_subscriber',
 		'mcp_auth_subscriber',
-	);
+	];
 
 	/**
 	 * Check if this service provider provides a given service.
@@ -66,12 +66,14 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'mcp_auth_consent_endpoint', ConsentEndpoint::class );
 		$this->getContainer()->addShared( 'mcp_auth_revoke_endpoint', RevokeEndpoint::class );
 		$this->getContainer()->addShared( 'mcp_auth_subscriber', Subscriber::class )
-			->addArguments( array(
-				'mcp_auth_authorize_endpoint',
-				'mcp_auth_authorize_callback',
-				'mcp_auth_token_endpoint',
-				'mcp_auth_consent_endpoint',
-				'mcp_auth_revoke_endpoint',
-			) );
+			->addArguments(
+				[
+					'mcp_auth_authorize_endpoint',
+					'mcp_auth_authorize_callback',
+					'mcp_auth_token_endpoint',
+					'mcp_auth_consent_endpoint',
+					'mcp_auth_revoke_endpoint',
+				]
+				);
 	}
 }

@@ -39,7 +39,7 @@ class McpLogger {
 	 * @param bool                 $debug_only When true, only log if WP_DEBUG is enabled.
 	 * @return void
 	 */
-	public static function log( string $scope, string $message, array $context = array(), bool $debug_only = false ): void {
+	public static function log( string $scope, string $message, array $context = [], bool $debug_only = false ): void {
 		if ( $debug_only && ! self::is_debug_enabled() ) {
 			return;
 		}
@@ -74,15 +74,13 @@ class McpLogger {
 	 * @return array<string, string> Sanitized header map (lowercase names).
 	 */
 	public static function safe_request_headers(): array {
-		$headers = array();
+		$headers = [];
 
 		if ( function_exists( 'getallheaders' ) ) {
-			$raw = getallheaders();
-			if ( is_array( $raw ) ) {
-				foreach ( $raw as $name => $value ) {
-					$key            = strtolower( (string) $name );
-					$headers[ $key ] = self::sanitize_header( $key, (string) $value );
-				}
+			// getallheaders() always returns an array on PHP 7.3+ once it exists.
+			foreach ( getallheaders() as $name => $value ) {
+				$key             = strtolower( (string) $name );
+				$headers[ $key ] = self::sanitize_header( $key, (string) $value );
 			}
 		}
 
@@ -169,7 +167,7 @@ class McpLogger {
 	 * @return array<string, mixed> Redacted copy.
 	 */
 	private static function redact_sensitive_fields( array $data ): array {
-		$sensitive = array( 'code', 'code_verifier', 'client_secret', 'access_token', 'refresh_token', 'password' );
+		$sensitive = [ 'code', 'code_verifier', 'client_secret', 'access_token', 'refresh_token', 'password' ];
 
 		foreach ( $data as $key => $value ) {
 			if ( in_array( strtolower( (string) $key ), $sensitive, true ) ) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Abilities\Options;
 
+use WP_Rocket\Engine\Abilities\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -21,14 +22,23 @@ class Subscriber implements Subscriber_Interface {
 	private $set_option;
 
 	/**
+	 * Abilities context instance.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param GetOptions $get_options The options ability instance.
-	 * @param SetOption  $set_option The set option ability instance.
+	 * @param SetOption  $set_option  The set option ability instance.
+	 * @param Context    $context     The abilities context instance.
 	 */
-	public function __construct( GetOptions $get_options, SetOption $set_option ) {
+	public function __construct( GetOptions $get_options, SetOption $set_option, Context $context ) {
 		$this->get_options = $get_options;
 		$this->set_option  = $set_option;
+		$this->context     = $context;
 	}
 
 	/**
@@ -54,6 +64,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_options_category(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		if ( ! function_exists( 'wp_register_ability_category' ) ) {
 			return;
 		}
@@ -73,6 +87,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_get_options_ability(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		$this->get_options->register();
 	}
 
@@ -82,6 +100,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_set_option_ability(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		$this->set_option->register();
 	}
 }

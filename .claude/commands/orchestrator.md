@@ -1,1 +1,1 @@
-../../.aiassistant/skills/orchestrator/SKILL.md
+../skills/orchestrator/SKILL.md

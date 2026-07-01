@@ -5,8 +5,11 @@ namespace WP_Rocket\Engine\Abilities\Options;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetOptions implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Options data instance.
 	 *
@@ -37,12 +40,29 @@ class GetOptions implements AbilitiesInterface {
 			'wp-rocket/get-options',
 			[
 				'label'               => __( 'Get WP Rocket options', 'rocket' ),
-				'description'         => __( 'Get all WP Rocket options and their current values.', 'rocket' ),
+				'description'         => _x(
+					'Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.
+Use this when the user asks what is enabled, disabled, or excluded. Do not use it to change settings; use set-option instead.
+Always call this before set-option when changing an array-type option, to avoid overwriting existing values. Do not show internal, credential, or read-only keys to the user.
+Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-options',
 				'output_schema'       => [
 					'type'       => 'object',
 					'properties' => [
 						// Cache settings.
+						'cache_mobile'                 => [
+							'type'        => 'integer',
+							'description' => 'Enable caching for mobile devices.',
+							'enum'        => [ 0, 1 ],
+						],
+						'do_caching_mobile_files'      => [
+							'type'        => 'integer',
+							'description' => 'Create separate cache files for mobile.',
+							'enum'        => [ 0, 1 ],
+						],
 						'cache_webp'                   => [
 							'type'        => 'integer',
 							'description' => 'Enable WebP caching.',
@@ -236,6 +256,16 @@ class GetOptions implements AbilitiesInterface {
 							'description' => 'Enable cache preloading.',
 							'enum'        => [ 0, 1 ],
 						],
+						'preload_fonts'                => [
+							'type'        => 'array',
+							'items'       => [ 'type' => 'string' ],
+							'description' => 'Font URLs to preload.',
+						],
+						'dns_prefetch'                 => [
+							'type'        => 'array',
+							'items'       => [ 'type' => 'string' ],
+							'description' => 'Domains to DNS prefetch.',
+						],
 						'preload_links'                => [
 							'type'        => 'integer',
 							'description' => 'Enable link preloading on hover.',
@@ -382,6 +412,11 @@ class GetOptions implements AbilitiesInterface {
 					'mcp'          => [
 						'public' => true,
 					],
+					'annotations'  => [
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
+					],
 				],
 			]
 		);
@@ -402,16 +437,13 @@ class GetOptions implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute(): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-options' ] );
 		$denylist = [
-			'cache_mobile',
-			'do_caching_mobile_files',
 			'secret_cache_key',
 			'cache_ssl',
 			'minify_css_key',
 			'minify_js_key',
 			'defer_all_js_safe',
-			'preload_fonts',
-			'dns_prefetch',
 			'cloudflare_email',
 			'cloudflare_api_key',
 			'cloudflare_zone_id',

@@ -33,22 +33,22 @@ class RevokeEndpoint {
 		McpLogger::log(
 			'REVOKE',
 			'revocation request received',
-			array(
+			[
 				'method'      => $request_method,
 				'remote_addr' => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
 				'user_agent'  => isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
-			)
+			]
 		);
 
 		if ( 'POST' !== $request_method ) {
-			McpLogger::log( 'REVOKE', 'rejected: wrong method', array( 'method' => $request_method ) );
+			McpLogger::log( 'REVOKE', 'rejected: wrong method', [ 'method' => $request_method ] );
 			$this->send_error( 405, 'invalid_request', 'Method not allowed.' );
 			return;
 		}
 
-		$body             = $this->parse_body();
-		$token            = sanitize_text_field( $body['token'] ?? '' );
-		$client_id_param  = esc_url_raw( $body['client_id'] ?? '' );
+		$body            = $this->parse_body();
+		$token           = sanitize_text_field( $body['token'] ?? '' );
+		$client_id_param = esc_url_raw( $body['client_id'] ?? '' );
 
 		if ( '' === $token ) {
 			McpLogger::log( 'REVOKE', 'rejected: missing token parameter' );
@@ -86,11 +86,11 @@ class RevokeEndpoint {
 			McpLogger::log(
 				'REVOKE',
 				'no-op: client_id mismatch',
-				array(
+				[
 					'param_client_id' => $client_id_param,
 					'token_client_id' => $token_client_id,
 					'user_id'         => $user_id,
-				)
+				]
 			);
 			$this->send_success();
 			return;
@@ -101,12 +101,12 @@ class RevokeEndpoint {
 		McpLogger::log(
 			'REVOKE',
 			'session revoked',
-			array(
+			[
 				'user_id'       => $user_id,
 				'app_pass_uuid' => $app_pass_uuid,
 				'client_id'     => $token_client_id,
 				'token_type'    => isset( $claims['type'] ) && 'refresh' === $claims['type'] ? 'refresh' : 'access',
-			)
+			]
 		);
 
 		$this->send_success();
@@ -133,7 +133,7 @@ class RevokeEndpoint {
 	private function send_error( int $status, string $error, string $description = '' ): void {
 		status_header( $status );
 		nocache_headers();
-		$body = array( 'error' => $error );
+		$body = [ 'error' => $error ];
 		if ( '' !== $description ) {
 			$body['error_description'] = $description;
 		}

@@ -25,10 +25,10 @@ class JWT {
 	public static function encode( array $payload, string $secret ): string {
 		$header = self::base64url_encode(
 			(string) wp_json_encode(
-				array(
+				[
 					'typ' => 'JWT',
 					'alg' => 'HS256',
-				)
+				]
 			)
 		);
 		$body   = self::base64url_encode( (string) wp_json_encode( $payload ) );

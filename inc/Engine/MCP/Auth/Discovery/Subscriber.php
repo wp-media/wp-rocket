@@ -28,12 +28,12 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array<string, string|array>
 	 */
 	public static function get_subscribed_events(): array {
-		return array(
+		return [
 			'template_redirect' => 'handle_request',
 			'query_vars'        => 'add_oauth_query_vars',
 			'rocket_activation' => 'add_rewrite_rules',
 			'init'              => 'add_rewrite_rules',
-		);
+		];
 	}
 
 	/**

@@ -42,7 +42,7 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 	 */
 	public function __construct( McpTransportContext $transport_context ) {
 		$this->request_handler = new HttpRequestHandler( $transport_context );
-		add_action( 'rest_api_init', array( $this, 'register_routes' ), 16 );
+		add_action( 'rest_api_init', [ $this, 'register_routes' ], 16 );
 	}
 
 	/**
@@ -56,11 +56,11 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		register_rest_route(
 			$server->get_server_route_namespace(),
 			$server->get_server_route(),
-			array(
-				'methods'             => array( 'POST', 'GET', 'DELETE' ),
-				'callback'            => array( $this, 'handle_request' ),
-				'permission_callback' => array( $this, 'check_permission' ),
-			)
+			[
+				'methods'             => [ 'POST', 'GET', 'DELETE' ],
+				'callback'            => [ $this, 'handle_request' ],
+				'permission_callback' => [ $this, 'check_permission' ],
+			]
 		);
 	}
 
@@ -100,10 +100,10 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		McpLogger::log(
 			'TRANSPORT',
 			'JWT validated, delegating to MCP handler',
-			array(
+			[
 				'user_id' => $user_or_error->ID,
 				'method'  => $request->get_method(),
-			),
+			],
 			true
 		);
 
@@ -129,12 +129,12 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		McpLogger::log(
 			'TRANSPORT',
 			'validate_bearer_token called',
-			array(
+			[
 				'method'  => $method,
 				'route'   => $route,
 				'headers' => McpLogger::safe_request_headers(),
 				'body'    => McpLogger::safe_request_body(),
-			),
+			],
 			true
 		);
 
@@ -142,9 +142,9 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 			McpLogger::log(
 				'TRANSPORT',
 				'unauthenticated: no Bearer token',
-				array(
+				[
 					'authorization_header' => $authorization ? substr( $authorization, 0, 20 ) . '...' : '(empty)',
-				)
+				]
 			);
 			return $this->unauthenticated_error();
 		}
@@ -166,10 +166,10 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 			McpLogger::log(
 				'TRANSPORT',
 				'rejected: JWT audience mismatch',
-				array(
+				[
 					'token_aud'    => $token_aud,
 					'expected_aud' => $expected_aud,
-				)
+				]
 			);
 			return $this->unauthenticated_error( 'invalid_token', 'JWT audience mismatch.' );
 		}
@@ -187,10 +187,10 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 			McpLogger::log(
 				'TRANSPORT',
 				'rejected: JWT issuer mismatch',
-				array(
+				[
 					'token_iss'    => $token_iss,
 					'expected_iss' => $expected_iss,
-				)
+				]
 			);
 			return $this->unauthenticated_error( 'invalid_token', 'JWT issuer mismatch.' );
 		}
@@ -202,11 +202,11 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 			McpLogger::log(
 				'TRANSPORT',
 				'rejected: malformed JWT claims',
-				array(
+				[
 					'has_sub'         => isset( $claims['sub'] ) ? 'yes' : 'no',
 					'has_app_pass_id' => isset( $claims['app_pass_id'] ) ? 'yes' : 'no',
 					'claims_keys'     => array_keys( $claims ),
-				)
+				]
 			);
 			return $this->unauthenticated_error( 'invalid_token', 'Malformed JWT claims.' );
 		}
@@ -218,10 +218,10 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 			McpLogger::log(
 				'TRANSPORT',
 				'rejected: Application Password revoked or not found',
-				array(
+				[
 					'user_id'       => $user_id,
 					'app_pass_uuid' => $app_pass_uuid,
-				)
+				]
 			);
 			return $this->unauthenticated_error( 'invalid_token', 'MCP session has been revoked.' );
 		}
@@ -229,7 +229,7 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		$user = get_user_by( 'id', $user_id );
 
 		if ( false === $user ) {
-			McpLogger::log( 'TRANSPORT', 'rejected: user not found', array( 'user_id' => $user_id ) );
+			McpLogger::log( 'TRANSPORT', 'rejected: user not found', [ 'user_id' => $user_id ] );
 			return $this->unauthenticated_error( 'invalid_token', 'User not found.' );
 		}
 
@@ -241,13 +241,13 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		McpLogger::log(
 			'TRANSPORT',
 			'authentication successful',
-			array(
+			[
 				'user_id'       => $user_id,
 				'user_login'    => $user->user_login,
 				'app_pass_uuid' => $app_pass_uuid,
 				'token_exp'     => $claims['exp'] ?? 'unknown',
 				'token_scope'   => $claims['scope'] ?? 'unknown',
-			)
+			]
 		);
 
 		return $user;
@@ -280,11 +280,11 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 
 		return new \WP_Error(
 			'mcp_unauthorized',
-			'' !== $description ? $description : __( 'MCP authentication required.', 'wp-rocket' ),
-			array(
+			'' !== $description ? $description : __( 'MCP authentication required.', 'rocket' ),
+			[
 				'status'           => 401,
 				'WWW-Authenticate' => $www_auth,
-			)
+			]
 		);
 	}
 
@@ -300,11 +300,11 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		$status     = is_array( $error_data ) ? (int) ( $error_data['status'] ?? 401 ) : 401;
 
 		$response = new \WP_REST_Response(
-			array(
+			[
 				'code'    => $error->get_error_code(),
 				'message' => $error->get_error_message(),
-				'data'    => array( 'status' => $status ),
-			),
+				'data'    => [ 'status' => $status ],
+			],
 			$status
 		);
 
@@ -315,10 +315,10 @@ class OAuthHttpTransport implements McpRestTransportInterface {
 		McpLogger::log(
 			'TRANSPORT',
 			'JWT validation failed, returning 401',
-			array(
+			[
 				'error_code'   => $error->get_error_code(),
 				'has_www_auth' => '' !== $www_auth ? 'yes' : 'no',
-			)
+			]
 		);
 
 		return $response;

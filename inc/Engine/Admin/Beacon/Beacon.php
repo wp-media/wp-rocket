@@ -579,14 +579,44 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'rocketcdn'                  => [
+			'own_cdn'                    => [
+				'en' => [
+					'id'  => '54c7fa3de4b0512429885b5c',
+					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696830b9033603f7da308ac',
+					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'purge_cdn'                  => [
 				'en' => [
 					'id'  => '5e4c84bd04286364bc958833',
-					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#when-should-i-purge-the-rocketcdn-cache',
 				],
 				'fr' => [
 					'id'  => '5f351e42042863444aa04652',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#when-should-i-purge-the-rocketcdn-cache',
+				],
+			],
+			'rocketcdn'                  => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-pro-plan',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-pro-plan',
+				],
+			],
+			'rocketcdn_free'             => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-free-plan',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-free-plan',
 				],
 			],
 			'rocketcdn_error'            => [
@@ -601,12 +631,22 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'exclude_cdn'                => [
 				'en' => [
-					'id'  => '5434667fe4b0310ce5ee867a',
-					'url' => 'https://docs.wp-rocket.me/article/24-resolving-issues-with-cdn-and-fonts-icons/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '54c7fa3de4b0512429885b5c',
+					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn#exclude-files-from-your-cdn',
 				],
 				'fr' => [
-					'id'  => '569684d29033603f7da308b9',
-					'url' => 'https://fr.docs.wp-rocket.me/article/248-resoudre-des-problemes-avec-cdn-et-les-polices-icones/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5696830b9033603f7da308ac',
+					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclure-des-fichiers-du-cdn',
+				],
+			],
+			'exclude_cdn_rocketcdn'      => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcd/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
 				],
 			],
 			'cloudflare_credentials'     => [

@@ -35,7 +35,7 @@ class CimdResolver {
 	/**
 	 * Grant types this server supports.
 	 */
-	const SUPPORTED_GRANT_TYPES = ['authorization_code', 'refresh_token'];
+	const SUPPORTED_GRANT_TYPES = [ 'authorization_code', 'refresh_token' ];
 
 	/**
 	 * Trusted-publisher verifier.
@@ -61,7 +61,7 @@ class CimdResolver {
 	 */
 	public function resolve( string $client_id ): ?array {
 		if ( ! $this->is_valid_client_id_url( $client_id ) ) {
-			McpLogger::log( 'CIMD', 'rejected: invalid client_id url', array( 'client_id' => $client_id ) );
+			McpLogger::log( 'CIMD', 'rejected: invalid client_id url', [ 'client_id' => $client_id ] );
 			return null;
 		}
 
@@ -71,7 +71,7 @@ class CimdResolver {
 		// fetch proxy and pollute the transient cache. Only allowlisted hosts
 		// are ever fetched; exact client_id verification still happens later.
 		if ( ! $this->verifier->is_trusted_host( $client_id ) ) {
-			McpLogger::log( 'CIMD', 'rejected: client_id host not in trusted-publisher allowlist', array( 'client_id' => $client_id ) );
+			McpLogger::log( 'CIMD', 'rejected: client_id host not in trusted-publisher allowlist', [ 'client_id' => $client_id ] );
 			return null;
 		}
 
@@ -90,9 +90,9 @@ class CimdResolver {
 			return null;
 		}
 
-		$verification          = $this->verifier->verify( $client_id, $fetched['doc'] );
-		$record['verified']    = (bool) $verification['verified'];
-		$record['publisher']   = (string) $verification['publisher'];
+		$verification        = $this->verifier->verify( $client_id, $fetched['doc'] );
+		$record['verified']  = (bool) $verification['verified'];
+		$record['publisher'] = (string) $verification['publisher'];
 
 		$this->cache_set( $client_id, $record, $fetched['ttl'] );
 
@@ -147,53 +147,75 @@ class CimdResolver {
 	private function fetch_document( string $url ) {
 		$response = wp_safe_remote_get(
 			$url,
-			array(
+			[
 				'timeout'             => self::FETCH_TIMEOUT,
 				'redirection'         => 0,
 				'limit_response_size' => self::MAX_DOCUMENT_BYTES,
-				'headers'             => array( 'Accept' => 'application/json' ),
-			)
+				'headers'             => [ 'Accept' => 'application/json' ],
+			]
 		);
 
 		if ( is_wp_error( $response ) ) {
 			McpLogger::log(
 				'CIMD',
 				'rejected: fetch failed',
-				array(
+				[
 					'client_id' => $url,
 					'error'     => $response->get_error_message(),
-				)
+				]
 			);
 			return null;
 		}
 
 		$status = (int) wp_remote_retrieve_response_code( $response );
 		if ( 200 !== $status ) {
-			McpLogger::log( 'CIMD', 'rejected: non-200 status', array( 'client_id' => $url, 'status' => $status ) );
+			McpLogger::log(
+				'CIMD',
+				'rejected: non-200 status',
+				[
+					'client_id' => $url,
+					'status'    => $status,
+				]
+				);
 			return null;
 		}
 
 		$body = (string) wp_remote_retrieve_body( $response );
 		if ( strlen( $body ) > self::MAX_DOCUMENT_BYTES ) {
-			McpLogger::log( 'CIMD', 'rejected: document too large', array( 'client_id' => $url, 'bytes' => strlen( $body ) ) );
+			McpLogger::log(
+				'CIMD',
+				'rejected: document too large',
+				[
+					'client_id' => $url,
+					'bytes'     => strlen( $body ),
+				]
+				);
 			return null;
 		}
 
 		$content_type = (string) wp_remote_retrieve_header( $response, 'content-type' );
 		if ( '' !== $content_type && false === strpos( $content_type, 'application/json' ) ) {
-			McpLogger::log( 'CIMD', 'warning: unexpected content-type', array( 'client_id' => $url, 'content_type' => $content_type ), true );
+			McpLogger::log(
+				'CIMD',
+				'warning: unexpected content-type',
+				[
+					'client_id'    => $url,
+					'content_type' => $content_type,
+				],
+				true
+				);
 		}
 
 		$doc = json_decode( $body, true );
 		if ( ! is_array( $doc ) || empty( $doc ) ) {
-			McpLogger::log( 'CIMD', 'rejected: body is not a JSON object', array( 'client_id' => $url ) );
+			McpLogger::log( 'CIMD', 'rejected: body is not a JSON object', [ 'client_id' => $url ] );
 			return null;
 		}
 
-		return array(
+		return [
 			'doc' => $doc,
 			'ttl' => $this->parse_ttl( (string) wp_remote_retrieve_header( $response, 'cache-control' ) ),
-		);
+		];
 	}
 
 	/**
@@ -207,21 +229,35 @@ class CimdResolver {
 		// The document's client_id MUST exactly equal the document URL.
 		$doc_client_id = isset( $doc['client_id'] ) && is_string( $doc['client_id'] ) ? $doc['client_id'] : '';
 		if ( '' === $doc_client_id || $url !== $doc_client_id ) {
-			McpLogger::log( 'CIMD', 'rejected: client_id mismatch', array( 'client_id' => $url, 'document_client_id' => $doc_client_id ) );
+			McpLogger::log(
+				'CIMD',
+				'rejected: client_id mismatch',
+				[
+					'client_id'          => $url,
+					'document_client_id' => $doc_client_id,
+				]
+				);
 			return null;
 		}
 
 		// Only public clients are supported (no shared secret to authenticate).
 		$auth_method = isset( $doc['token_endpoint_auth_method'] ) ? (string) $doc['token_endpoint_auth_method'] : 'none';
 		if ( 'none' !== $auth_method ) {
-			McpLogger::log( 'CIMD', 'rejected: unsupported token_endpoint_auth_method', array( 'client_id' => $url, 'method' => $auth_method ) );
+			McpLogger::log(
+				'CIMD',
+				'rejected: unsupported token_endpoint_auth_method',
+				[
+					'client_id' => $url,
+					'method'    => $auth_method,
+				]
+				);
 			return null;
 		}
 
 		// redirect_uris is required.
-		$redirect_uris = $doc['redirect_uris'] ?? array();
+		$redirect_uris = $doc['redirect_uris'] ?? [];
 		if ( ! is_array( $redirect_uris ) || empty( $redirect_uris ) ) {
-			McpLogger::log( 'CIMD', 'rejected: missing redirect_uris', array( 'client_id' => $url ) );
+			McpLogger::log( 'CIMD', 'rejected: missing redirect_uris', [ 'client_id' => $url ] );
 			return null;
 		}
 
@@ -232,7 +268,7 @@ class CimdResolver {
 		);
 
 		if ( empty( $redirect_uris ) ) {
-			McpLogger::log( 'CIMD', 'rejected: no valid redirect_uris after sanitisation', array( 'client_id' => $url ) );
+			McpLogger::log( 'CIMD', 'rejected: no valid redirect_uris after sanitisation', [ 'client_id' => $url ] );
 			return null;
 		}
 
@@ -243,7 +279,14 @@ class CimdResolver {
 
 		$grant_types = array_values( array_intersect( self::SUPPORTED_GRANT_TYPES, $requested_grants ) );
 		if ( ! in_array( 'authorization_code', $grant_types, true ) ) {
-			McpLogger::log( 'CIMD', 'rejected: authorization_code grant not offered', array( 'client_id' => $url, 'grant_types' => $requested_grants ) );
+			McpLogger::log(
+				'CIMD',
+				'rejected: authorization_code grant not offered',
+				[
+					'client_id'   => $url,
+					'grant_types' => $requested_grants,
+				]
+				);
 			return null;
 		}
 
@@ -254,7 +297,7 @@ class CimdResolver {
 
 		$client_uri = isset( $doc['client_uri'] ) && is_string( $doc['client_uri'] ) ? esc_url_raw( $doc['client_uri'] ) : '';
 
-		return array(
+		return [
 			'client_id'                  => $url,
 			'client_name'                => $client_name,
 			'client_uri'                 => $client_uri,
@@ -264,7 +307,7 @@ class CimdResolver {
 			'source'                     => 'cimd',
 			'verified'                   => false,
 			'publisher'                  => '',
-		);
+		];
 	}
 
 	/**

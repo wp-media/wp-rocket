@@ -4,8 +4,11 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Abilities\Options;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class SetOption implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Options that accept boolean values (0 or 1).
 	 */
@@ -130,7 +133,14 @@ class SetOption implements AbilitiesInterface {
 			'wp-rocket/set-option',
 			[
 				'label'               => __( 'Set a WP Rocket option', 'rocket' ),
-				'description'         => __( 'Set the value for a WP Rocket option', 'rocket' ),
+				'description'         => _x(
+					'Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.
+Use this when the user wants to enable, disable, or update a specific setting. For array-type options, always call get-options first.
+Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.
+A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-options',
 				'input_schema'        => [
 					'type'       => 'object',
@@ -150,6 +160,11 @@ class SetOption implements AbilitiesInterface {
 								],
 							],
 							'description' => __( 'The value to set for the specified WP Rocket option', 'rocket' ),
+						],
+						'update_mode'  => [
+							'type'        => 'string',
+							'enum'        => [ 'update', 'replace' ],
+							'description' => __( 'For array and textarea options: "update" (default) adds new entries to the existing list; "replace" overwrites the entire list.', 'rocket' ),
 						],
 					],
 					'required'   => [ 'option_name', 'option_value' ],
@@ -198,6 +213,11 @@ class SetOption implements AbilitiesInterface {
 					'mcp'          => [
 						'public' => true,
 					],
+					'annotations'  => [
+						'readonly'    => false,
+						'destructive' => true,
+						'idempotent'  => true,
+					],
 				],
 			]
 		);
@@ -215,12 +235,14 @@ class SetOption implements AbilitiesInterface {
 	/**
 	 * Executes the ability to set a WP Rocket option.
 	 *
-	 * @param array|null $input Input containing option_name and option_value.
+	 * @param array|null $input Input containing option_name, option_value, and optionally update_mode.
 	 * @return array Response with success status and option values.
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/set-option' ] );
 		$option_name  = $input['option_name'];
 		$option_value = $input['option_value'];
+		$update_mode  = $input['update_mode'] ?? 'update';
 
 		if ( ! $this->validate_option_name( $option_name ) ) {
 			return [
@@ -234,7 +256,7 @@ class SetOption implements AbilitiesInterface {
 		}
 
 		$previous_value  = get_rocket_option( $option_name );
-		$sanitized_value = $this->sanitize_value( $option_name, $option_value );
+		$sanitized_value = $this->sanitize_value( $option_name, $option_value, $update_mode, $previous_value );
 
 		update_rocket_option( $option_name, $sanitized_value );
 
@@ -274,11 +296,13 @@ class SetOption implements AbilitiesInterface {
 	/**
 	 * Sanitizes the option value based on the option type.
 	 *
-	 * @param string $option_name  The option name.
-	 * @param mixed  $option_value The value to sanitize.
+	 * @param string $option_name     The option name.
+	 * @param mixed  $option_value    The value to sanitize.
+	 * @param string $update_mode     Either 'update' (merge into existing) or 'replace' (overwrite).
+	 * @param mixed  $previous_value  The current stored value, used for merging in update mode.
 	 * @return mixed Sanitized value.
 	 */
-	private function sanitize_value( string $option_name, $option_value ) {
+	private function sanitize_value( string $option_name, $option_value, string $update_mode = 'update', $previous_value = null ) {
 		// Boolean options: convert to 0 or 1.
 		if ( in_array( $option_name, self::BOOLEAN_OPTIONS, true ) ) {
 			return ! empty( $option_value ) ? 1 : 0;
@@ -296,7 +320,7 @@ class SetOption implements AbilitiesInterface {
 				return $option_value;
 			}
 			// Return current value if invalid.
-			return get_rocket_option( $option_name );
+			return $previous_value;
 		}
 
 		// String options (critical_css): strip tags and style elements.
@@ -313,10 +337,18 @@ class SetOption implements AbilitiesInterface {
 		// Textarea field options: use rocket_sanitize_textarea_field.
 		if ( in_array( $option_name, self::TEXTAREA_FIELD_OPTIONS, true ) ) {
 			if ( ! function_exists( 'rocket_sanitize_textarea_field' ) ) {
-				return is_array( $option_value ) ? $option_value : [];
+				$sanitized = is_array( $option_value ) ? $option_value : [];
+			} else {
+				$sanitized = rocket_sanitize_textarea_field( $option_name, $option_value ) ?? [];
 			}
-			$sanitized = rocket_sanitize_textarea_field( $option_name, $option_value );
-			return $sanitized ?? [];
+
+			if ( 'replace' === $update_mode ) {
+				return $sanitized;
+			}
+
+			// update mode: merge new entries into the existing list.
+			$existing = is_array( $previous_value ) ? $previous_value : [];
+			return array_values( array_unique( array_merge( $existing, $sanitized ) ) );
 		}
 
 		// Array options: sanitize each item with sanitize_text_field.
@@ -324,7 +356,16 @@ class SetOption implements AbilitiesInterface {
 			if ( ! is_array( $option_value ) ) {
 				return [];
 			}
-			return array_map( 'sanitize_text_field', $option_value );
+
+			$sanitized = array_map( 'sanitize_text_field', $option_value );
+
+			if ( 'replace' === $update_mode ) {
+				return $sanitized;
+			}
+
+			// update mode: merge new entries into the existing list.
+			$existing = is_array( $previous_value ) ? $previous_value : [];
+			return array_values( array_unique( array_merge( $existing, $sanitized ) ) );
 		}
 
 		// Fallback: return value as-is (should not reach here for valid options).
