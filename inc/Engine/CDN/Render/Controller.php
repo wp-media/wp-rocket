@@ -273,15 +273,24 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_exclude_cdn_section( array $sections ): array {
-		$cdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn' );
+		$cdn_exclude_beacon       = $this->beacon->get_suggest( 'exclude_cdn' );
+		$rocketcdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn_rocketcdn' );
+
+		$is_rocketcdn = $this->context->is_rocketcdn();
+		$initial_url  = $is_rocketcdn ? $rocketcdn_exclude_beacon['url'] : $cdn_exclude_beacon['url'];
+		$initial_id   = $is_rocketcdn ? $rocketcdn_exclude_beacon['id'] : $cdn_exclude_beacon['id'];
 
 		$sections['exclude_cdn_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
 			'title' => sprintf( __( 'Manage %s Exclusions', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
 			'type'  => 'nocontainer_with_title',
 			'help'  => [
-				'id'  => $cdn_exclude_beacon['id'],
-				'url' => $cdn_exclude_beacon['url'],
+				'id'            => $initial_id,
+				'url'           => $initial_url,
+				'rocketcdn_url' => $rocketcdn_exclude_beacon['url'],
+				'rocketcdn_id'  => $rocketcdn_exclude_beacon['id'],
+				'other_cdn_url' => $cdn_exclude_beacon['url'],
+				'other_cdn_id'  => $cdn_exclude_beacon['id'],
 			],
 			'page'  => 'page_cdn',
 			'class' => [ 'cdn-shared-section' ],
