@@ -26,15 +26,21 @@ class SetOption implements AbilitiesInterface {
 		// File optimization - CSS.
 		'minify_css',
 		'minify_google_fonts',
+		'async_css',
+		'async_css_mobile',
 		'remove_unused_css',
+		'optimize_css_delivery',
 		// File optimization - JS.
 		'minify_js',
+		'minify_concatenate_js',
 		'defer_all_js',
 		'delay_js',
+		'delay_js_execution_safe_mode',
 		// Media.
 		'lazyload',
 		'lazyload_iframes',
 		'lazyload_youtube',
+		'lazyload_css_bg_img',
 		'image_dimensions',
 		// Fonts.
 		'host_fonts_locally',
@@ -65,6 +71,8 @@ class SetOption implements AbilitiesInterface {
 		// Add-ons.
 		'varnish_auto_purge',
 		'sucury_waf_cache_sync',
+		// Analytics.
+		'analytics_enabled',
 		// Misc.
 		'emoji',
 	];
@@ -87,6 +95,13 @@ class SetOption implements AbilitiesInterface {
 		'heartbeat_admin_behavior'    => [ '', 'reduce_periodicity', 'disable' ],
 		'heartbeat_editor_behavior'   => [ '', 'reduce_periodicity', 'disable' ],
 		'cdn_type'                    => [ 'byocdn' ],
+	];
+
+	/**
+	 * Options that require special string sanitization (CSS content).
+	 */
+	private const STRING_OPTIONS = [
+		'critical_css',
 	];
 
 	/**
@@ -118,6 +133,8 @@ class SetOption implements AbilitiesInterface {
 		'dns_prefetch',
 		'preload_excluded_uri',
 		'cdn_reject_pages',
+		'delay_js_exclusions_selected',
+		'delay_js_exclusions_selected_exclusions',
 	];
 
 	/**
@@ -143,7 +160,14 @@ class SetOption implements AbilitiesInterface {
 			'wp-rocket/set-option',
 			[
 				'label'               => __( 'Set a WP Rocket option', 'rocket' ),
-				'description'         => _x( 'Change a single WP Rocket configuration option. Use this when the user wants to enable, disable, or update a specific feature. For array/textarea options (exclusion lists, CDN URLs, etc.) use update_mode: "update" to append entries or "replace" to overwrite the full list. Call get-options first if you are unsure of the current value. Always validate with the user before calling this tool.', 'Ability description', 'rocket' ),
+				'description'         => _x(
+					'Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.
+Use this when the user wants to enable, disable, or update a specific setting. For array-type options, always call get-options first.
+Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.
+A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-options',
 				'input_schema'        => [
 					'type'       => 'object',
@@ -318,6 +342,17 @@ class SetOption implements AbilitiesInterface {
 			}
 			// Return current value if invalid.
 			return $previous_value;
+		}
+
+		// String options (critical_css): strip tags and style elements.
+		if ( in_array( $option_name, self::STRING_OPTIONS, true ) ) {
+			if ( empty( $option_value ) ) {
+				return '';
+			}
+			return wp_strip_all_tags(
+				str_replace( [ '<style>', '</style>' ], '', $option_value ),
+				true
+			);
 		}
 
 		// Textarea field options: use rocket_sanitize_textarea_field.

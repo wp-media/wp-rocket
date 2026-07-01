@@ -48,7 +48,16 @@ class GetInsightsScore implements AbilitiesInterface {
 			'wp-rocket/get-insights-scores',
 			[
 				'label'               => __( 'Get Rocket Insights Score', 'rocket' ),
-				'description'         => _x( 'Call when user asks for a performance overview, global score, or all monitored pages. Not for a single page: use wp-rocket/get-page-insights-score If the test is still in progress, notify the user and avoid conclusions from stale scores. ', 'Ability description', 'rocket' ),
+				'description'         => _x(
+					'Returns a site-wide Rocket Insights summary with global_score, pages_monitored, is_running, and per-page results. Use include_metrics: true unless the user explicitly asks only for the global score.
+Do not open or read GTmetrix report_url links. You may show them as complementary report links.
+Use this when the user asks for a global score, site-wide overview, or all monitored pages. Do not use it for a specific page; use get-page-insights-score instead.
+If is_running is true or any result is not completed, tell the user tests are still in progress and only show completed results. Recheck every minute until remaining results are available. Do not show status when all results are completed. Do not show is_running unless at least one page result has is_running: true.
+Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.
+When showing scores or metrics, use only the approved performance colors and thresholds.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'anyOf' => [

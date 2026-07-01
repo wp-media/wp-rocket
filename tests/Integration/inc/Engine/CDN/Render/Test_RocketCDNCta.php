@@ -41,9 +41,9 @@ class Test_RocketCDNCta extends BaseTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$container         = apply_filters( 'rocket_container', null );
-		$this->controller  = $container->get( 'cdn_render_controller' );
-		$this->query       = $container->get( 'rocketcdn_query' );
+		$container             = apply_filters( 'rocket_container', null );
+		$this->controller      = $container->get( 'cdn_render_controller' );
+		$this->query           = $container->get( 'rocketcdn_query' );
 
 		self::truncateRocketCDNTable();
 		delete_transient( 'wp_rocket_customer_data' );

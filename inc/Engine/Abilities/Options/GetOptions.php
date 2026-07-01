@@ -57,6 +57,11 @@ class GetOptions implements AbilitiesInterface {
 				'description' => 'Enable WebP caching.',
 				'enum'        => [ 0, 1 ],
 			],
+			'do_caching_mobile_files'                   => [
+				'type'        => 'integer',
+				'description' => 'Create separate cache files for mobile.',
+				'enum'        => [ 0, 1 ],
+			],
 			'cache_reject_uri'                          => [
 				'type'        => 'array',
 				'items'       => [ 'type' => 'string' ],
@@ -108,6 +113,20 @@ class GetOptions implements AbilitiesInterface {
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'CSS files to exclude from minification.',
 			],
+			'async_css'                                 => [
+				'type'        => 'integer',
+				'description' => 'Enable asynchronous CSS loading.',
+				'enum'        => [ 0, 1 ],
+			],
+			'async_css_mobile'                          => [
+				'type'        => 'integer',
+				'description' => 'Enable asynchronous CSS loading on mobile.',
+				'enum'        => [ 0, 1 ],
+			],
+			'critical_css'                              => [
+				'type'        => 'string',
+				'description' => 'Fallback critical CSS content.',
+			],
 			'remove_unused_css'                         => [
 				'type'        => 'integer',
 				'description' => 'Enable Remove Unused CSS (RUCSS).',
@@ -118,11 +137,21 @@ class GetOptions implements AbilitiesInterface {
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'CSS selectors to always keep.',
 			],
+			'optimize_css_delivery'                     => [
+				'type'        => 'integer',
+				'description' => 'Enable CSS delivery optimization.',
+				'enum'        => [ 0, 1 ],
+			],
 
 			// File optimization - JS.
 			'minify_js'                                 => [
 				'type'        => 'integer',
 				'description' => 'Enable JavaScript minification.',
+				'enum'        => [ 0, 1 ],
+			],
+			'minify_concatenate_js'                     => [
+				'type'        => 'integer',
+				'description' => 'Enable JavaScript concatenation.',
 				'enum'        => [ 0, 1 ],
 			],
 			'exclude_js'                                => [
@@ -369,6 +398,13 @@ class GetOptions implements AbilitiesInterface {
 				'enum'        => [ 0, 1 ],
 			],
 
+			// Analytics.
+			'analytics_enabled'                         => [
+				'type'        => 'integer',
+				'description' => 'Enable anonymous analytics.',
+				'enum'        => [ 0, 1 ],
+			],
+
 			// Misc.
 			'emoji'                                     => [
 				'type'        => 'integer',
@@ -383,7 +419,14 @@ class GetOptions implements AbilitiesInterface {
 			'wp-rocket/get-options',
 			[
 				'label'               => __( 'Get WP Rocket options', 'rocket' ),
-				'description'         => _x( 'Call when user asks what is currently enabled or excluded. Always call before wp-rocket/set-option: for array options like exclusion lists, retrieve the full existing array before appending or removing a value. Do not expose internal, credential, or read-only keys to the user.', 'Ability description', 'rocket' ),
+				'description'         => _x(
+					'Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.
+Use this when the user asks what is enabled, disabled, or excluded. Do not use it to change settings; use set-option instead.
+Always call this before set-option when changing an array-type option, to avoid overwriting existing values. Do not show internal, credential, or read-only keys to the user.
+Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-options',
 				'output_schema'       => [
 					'type'       => 'object',
