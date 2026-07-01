@@ -33,7 +33,7 @@ class McpObservabilityHandler implements McpObservabilityHandlerInterface {
 	 * @param float|null $duration_ms Optional request duration in milliseconds.
 	 * @return void
 	 */
-	public function record_event( string $event, array $tags = array(), ?float $duration_ms = null ): void {
+	public function record_event( string $event, array $tags = [], ?float $duration_ms = null ): void {
 		$formatted_event = self::format_metric_name( $event );
 		$merged_tags     = self::merge_tags( $tags );
 
@@ -42,7 +42,7 @@ class McpObservabilityHandler implements McpObservabilityHandlerInterface {
 		}
 
 		// Log failures unconditionally; debug-only for successful/routine events.
-		$is_error  = isset( $merged_tags['status'] ) && 'error' === $merged_tags['status'];
+		$is_error   = isset( $merged_tags['status'] ) && 'error' === $merged_tags['status'];
 		$debug_only = ! $is_error;
 
 		McpLogger::log( 'OBSERVABILITY', $formatted_event, $merged_tags, $debug_only );

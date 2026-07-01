@@ -13,6 +13,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	private $server;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param Server $server MCP server instance.
+	 */
 	public function __construct( Server $server ) {
 		$this->server = $server;
 	}
