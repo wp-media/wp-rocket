@@ -117,7 +117,7 @@ Path: `.ai/issues/<N>/workflow-log.html`
 
 - **Create** the log at startup with just the header and an empty event list.
 - **Rewrite the full file** after every action — the event list grows with each update.
-- See `.claude/skills/orchestrator/html-log-format.md` for the full HTML structure and event patterns. Load it on demand (not at session start) to keep context lean.
+- See `.claude/skills/orchestrator/references/html-log-format.md` for the full HTML structure and event patterns. Load it on demand (not at session start) to keep context lean.
 
 Maintain in your context tracking:
 - Which agents have been invoked and their return JSON
@@ -847,7 +847,7 @@ verifying that downstream agents comply:
 
 ## HTML log format
 
-See `.claude/skills/orchestrator/html-log-format.md` for the complete HTML structure,
+See `.claude/skills/orchestrator/references/html-log-format.md` for the complete HTML structure,
 CSS, event type patterns, and per-agent detail panel guidelines. Load it on demand when
 you need to write or update a log event — not at session start.
 

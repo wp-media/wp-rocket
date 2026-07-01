@@ -3,7 +3,7 @@
 > Read this file only when you need to write or update a log event.
 > Do not load it at session start — load it on demand to keep orchestrator context lean.
 
-Generate `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`. Rewrite the
+Generate `.ai/issues/<N>/workflow-log.html`. Rewrite the
 full file on each update. The event list only grows — never remove past events.
 
 ## Event types
@@ -133,7 +133,7 @@ full file on each update. The event list only grows — never remove past events
   <!-- Events appended here as the pipeline runs — never pre-populated -->
 </div>
 
-<footer>Last updated: TIMESTAMP &nbsp;·&nbsp; <code>.TemporaryItems/Issues/wp-rocket/issue-N-workflow-log.html</code></footer>
+<footer>Last updated: TIMESTAMP &nbsp;·&nbsp; <code>.ai/issues/N/workflow-log.html</code></footer>
 
 <script>
 document.querySelectorAll('.event').forEach(function(e) {
