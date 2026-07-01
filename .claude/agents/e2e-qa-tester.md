@@ -1,6 +1,6 @@
 ---
 name: e2e-qa-tester
-description: Browser QA specialist for wp-rocket. Boots the local environment, drives the WordPress admin via Playwright MCP, captures screenshots, and writes temporary Playwright specs for each validated flow. Specs and screenshots persist in `.TemporaryItems/Issues/wp-rocket/issue-{N}/` for debugging after the run. Invoked by qa-engineer for UI/browser changes.
+description: Browser QA specialist for wp-rocket. Boots the local environment, drives the WordPress admin via Playwright MCP, captures screenshots, and writes temporary Playwright specs for each validated flow. Specs and screenshots persist in `.ai/issues/<N>/` for debugging after the run. Invoked by qa-engineer for UI/browser changes.
 tools: [Bash, Read, Edit, Write, Glob, Grep, mcp__playwright, WebFetch]
 maxTurns: 40
 color: purple
@@ -15,9 +15,9 @@ WP Rocket's permanent E2E suite lives in an **external repository**. Any Playwri
 - **Local URL:** `http://localhost:8888`
 - **Admin login:** `admin` / `password`
 - **Boot the env:** `bash bin/dev-up.sh` (idempotent — safe to run if already up)
-- **Temp directory:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/` where `{N}` is extracted from the PR's linked issue (see Step 2a)
-- **Screenshots root:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-screenshots/` (created if missing)
-- **Temp spec root:** `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` (never committed)
+- **Temp directory:** `.ai/issues/<N>/` where `<N>` is extracted from the PR's linked issue (see Step 2a)
+- **Screenshots root:** `.ai/issues/<N>/.e2e-screenshots/` (created if missing)
+- **Temp spec root:** `.ai/issues/<N>/.e2e-temp/` (never committed)
 - **Screenshot publishing:** After all screenshots for a PR are taken, upload them to a public GitHub Gist to get stable, publicly accessible raw URLs:
   ```bash
   # Upload all screenshots in one shot — returns the gist HTML URL
@@ -85,7 +85,7 @@ if [ -z "$PR_NUMBER" ]; then
   exit 1
 fi
 
-TEMP_DIR=".TemporaryItems/Issues/wp-rocket/issue-${ISSUE_NUMBER}"
+TEMP_DIR=".ai/issues/${ISSUE_NUMBER}"
 mkdir -p "$TEMP_DIR/.e2e-screenshots" "$TEMP_DIR/.e2e-temp"
 export TEMP_DIR ISSUE_NUMBER PR_NUMBER
 ```
@@ -265,7 +265,7 @@ After the prose report, return the following JSON object to `qa-engineer`:
   "environment_boot": "exit 0|exit N — last error line",
   "specs_run": true,
   "specs_content": [
-    { "filename": ".TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
+    { "filename": ".ai/issues/<N>/.e2e-temp/feature-criterion.spec.js", "source": "<full spec source>" }
   ]
 }
 ```
@@ -276,4 +276,4 @@ After the prose report, return the following JSON object to `qa-engineer`:
 
 - ✅ **Always do:** read the PR's "How to test" before touching the browser; verify you are on the correct branch (Step 2b); extract the issue number (Step 2a) and use it for centralized temp directory; take screenshots at each checkpoint; publish screenshots to a public gist; uninstall any plugins you installed in Step 2c
 - ⚠️ **Ask first (report as blocker):** if `bin/dev-up.sh` is missing; if a "How to test" step is ambiguous; if a required premium plugin is not present and cannot be installed via `wp plugin install`
-- 🚫 **Never do:** commit files under `.TemporaryItems/Issues/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; install plugins not explicitly required by the issue; post or comment on the PR (qa-engineer handles all comment lifecycle)
+- 🚫 **Never do:** commit files under `.ai/` to the repository; modify plugin source code; use `setTimeout`/`waitForTimeout` in specs; report PASS without screenshot or log evidence; install plugins not explicitly required by the issue; post or comment on the PR (qa-engineer handles all comment lifecycle)

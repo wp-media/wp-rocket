@@ -47,7 +47,7 @@ The following steps MUST be completed before returning:
 
 ### Step 1 — Read the issue
 
-1. Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
+1. Read the issue file at `.ai/issues/<N>/issue.md`.
    If a parent epic file exists (noted in the issue), read it too for context.
 
 Extract:
@@ -103,7 +103,7 @@ List them. The implementation must handle them.
 
 ### Step 4 — Write the spec
 
-Write the implementation spec to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`.
+Write the implementation spec to `.ai/issues/<N>/spec.md`.
 
 ```markdown
 ## Implementation Spec — Issue #<N>: <title>
@@ -231,7 +231,7 @@ EOF
 
 Return two things to the orchestrator:
 
-1. **The spec file path** — the `.md` file you wrote in Step 4 (`<N>-spec.md`). The orchestrator passes this path to the implementation agents alongside the dispatch plan so they can read the full spec inline.
+1. **The spec file path** — the `.md` file you wrote in Step 4 (`.ai/issues/<N>/spec.md`). The orchestrator passes this path to the implementation agents alongside the dispatch plan so they can read the full spec inline.
 2. **The JSON object below** — structured routing fields. Fill every field accurately; the orchestrator routes mechanically on them.
 
 ```json

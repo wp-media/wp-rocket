@@ -76,7 +76,7 @@ Run each check in order. Report **PASS**, **WARN**, or **FAIL** with specific ev
 ### Check 1 — Manual validation confirmed
 
 Look at the PR/MR description:
-- In Layer 1: read the local draft at `.TemporaryItems/Issues/wp-rocket/pull/<N>.md`
+- In Layer 1: read the local draft at `.ai/issues/<N>/pull.md`
 - In Layer 2: fetch from GitHub: `gh pr view <PR_NUMBER> --json body -q .body`
 
 Look at the "What was tested" section. It must contain **concrete scenarios** — not "N/A", not "tested locally".
@@ -142,7 +142,7 @@ cat .claude/skills/issue-workflow/refs/pr-template.md
 ```
 
 Then fetch the PR body:
-- Layer 1: read `.TemporaryItems/Issues/wp-rocket/pull/<N>.md`
+- Layer 1: read `.ai/issues/<N>/pull.md`
 - Layer 2: `gh pr view <PR_NUMBER> --json body -q .body`
 
 Check that all required sections from the template are present and non-empty:

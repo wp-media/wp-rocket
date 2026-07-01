@@ -13,12 +13,12 @@ to disk. Posting to GitHub is your choice — you are prompted at the end.
 
 This skill targets `wp-media/wp-rocket`. The issue and spec files live at the wp-rocket
 temp convention:
-- Issue file: `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`
-- Spec file: `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`
+- Issue file: `.ai/issues/<N>/issue.md`
+- Spec file: `.ai/issues/<N>/spec.md`
 
 ## Step 2 — Sync the issue
 
-Ensure the issue file exists at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`. Run:
+Ensure the issue file exists at `.ai/issues/<N>/issue.md`. Run:
 
 ```bash
 bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>
@@ -31,7 +31,7 @@ If the file already exists and is recent (less than 5 minutes old), skip the syn
 Invoke the `grooming-agent` sub-agent with the following invocation context:
 
 > Issue number: `<N>`
-> Issue file path: `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`
+> Issue file path: `.ai/issues/<N>/issue.md`
 > Repo: `wp-media/wp-rocket`
 > complexity_signal: derive from the issue content yourself
 >
@@ -43,7 +43,7 @@ Invoke the `grooming-agent` sub-agent with the following invocation context:
 > 2. **Skip the StructuredOutput JSON return.** Return a short human-readable summary instead:
 >    effort, risk, complexity, and any open questions.
 
-The spec file is still written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md` as normal.
+The spec file is still written to `.ai/issues/<N>/spec.md` as normal.
 
 ## Step 4 — Offer to post
 
@@ -62,6 +62,6 @@ EXISTING_ID=$(gh api repos/wp-media/wp-rocket/issues/<N>/comments \
 
 Update with `gh api --method PATCH repos/wp-media/wp-rocket/issues/comments/$EXISTING_ID` if found, otherwise post a new comment.
 
-**If no** — confirm the spec was written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md` and finish.
+**If no** — confirm the spec was written to `.ai/issues/<N>/spec.md` and finish.
 
 **If edited** — use the user-provided text as the comment body and post.

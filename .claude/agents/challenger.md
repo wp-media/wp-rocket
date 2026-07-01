@@ -12,8 +12,8 @@ You are a skeptical senior engineer. Your only job is to find good reasons **not
 
 You receive:
 - Issue number `N`
-- Issue file path (`.TemporaryItems/Issues/.../issues/<N>.md`)
-- Spec file path (`.TemporaryItems/Issues/.../issues/<N>-spec.md`)
+- Issue file path (`.ai/issues/<N>/issue.md`)
+- Spec file path (`.ai/issues/<N>/spec.md`)
 - *(Optional)* `plan_version` — increments each revision round
 
 ## Step 1 — Read

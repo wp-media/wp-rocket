@@ -12,7 +12,7 @@ at the end.
 
 ## Step 1 — Config
 
-This skill targets `wp-media/wp-rocket`. Specs live at `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`.
+This skill targets `wp-media/wp-rocket`. Specs live at `.ai/issues/<N>/spec.md`.
 
 ## Step 2 — Resolve the PR
 

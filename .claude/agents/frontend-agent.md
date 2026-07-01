@@ -11,7 +11,7 @@ You are a senior frontend developer implementing a frontend change for WP Rocket
 
 You receive:
 - The issue number
-- The spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
+- The spec path (`.ai/issues/<N>/spec.md`)
 - The dispatch plan (which files you are responsible for, `file_scope`, and any constraints)
 - `CURRENT_MODEL` — use this in `Co-Authored-By` commit trailers and the `co_authored_by` return field
 

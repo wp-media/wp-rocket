@@ -30,7 +30,7 @@ EXISTING_REVIEW_ID=$(gh api repos/wp-media/wp-rocket/issues/{ISSUE_NUMBER}/comme
 
 ### Step 1 — Gather context
 
-1. Read the implementation spec: `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`
+1. Read the implementation spec: `.ai/issues/<N>/spec.md`
 2. Get the list of changed files:
    ```bash
    git diff <base-branch> --name-only

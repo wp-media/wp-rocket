@@ -113,7 +113,7 @@ user can see what mode you picked.
 
 ## Run log
 
-Path: `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`
+Path: `.ai/issues/<N>/workflow-log.html`
 
 - **Create** the log at startup with just the header and an empty event list.
 - **Rewrite the full file** after every action — the event list grows with each update.
@@ -283,7 +283,7 @@ fields — prose is for human readability only.
 
 ### Step 1 — Issue read *(always)*
 
-Read the issue file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md` (produced by
+Read the issue file at `.ai/issues/<N>/issue.md` (produced by
 `issue-workflow` or `issue-sync.sh`). Extract title and acceptance criteria:
 
 1. Look for `Acceptance Criteria`, `Definition of Done`, or `DoD` section
@@ -303,7 +303,7 @@ Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
 Invoke `grooming-agent`:
 > Inputs: issue `#N`, issue file path, base branch, `complexity_signal: "medium"|"complex"` (from user input, defaults to `"medium"`)
 
-Spec written to `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`. Agent also returns
+Spec written to `.ai/issues/<N>/spec.md`. Agent also returns
 JSON. Log an AGENT event with the grooming JSON summary.
 
 ---

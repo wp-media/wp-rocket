@@ -33,7 +33,7 @@ Use shell commands as the primary approach. The GitHub MCP (`mcp_github_*`) may 
 
 1. **Extract** the issue number from the user's message.
 
-2. **Fetch the issue** — run `bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>` (or use the MCP equivalent). Read the resulting file at `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`.
+2. **Fetch the issue** — run `bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>` (or use the MCP equivalent). Read the resulting file at `.ai/issues/<N>/issue.md`.
 
 3. **Check for parent epics** — if `Parent Epic (GitHub)` or `Parent Epics (Task List)` has entries, sync each parent with `issue-sync.sh <epic-N>` and read those files for context.
 
@@ -42,8 +42,8 @@ Use shell commands as the primary approach. The GitHub MCP (`mcp_github_*`) may 
 5. **Determine base branch** — default is `origin/develop` unless the user specified otherwise.
 
 6. **Invoke the `orchestrator` skill inline** (do not spawn it as a sub-agent — it runs in this conversation context so it can read the user's intent for escalation calibration):
-   > Inputs: issue number `N`, issue file `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`, base branch
+   > Inputs: issue number `N`, issue file `.ai/issues/<N>/issue.md`, base branch
 
 The orchestrator skill manages everything from here: calibration → grooming → spec review → dispatch → implementation → lead review → push & PR → CI → QA → finalize. It spawns the specialist agents (`grooming-agent`, `challenger`, `backend-agent`, `frontend-agent`, `release-agent`, `lead-reviewer`, `qa-engineer`, `ticket-writer`) as isolated sub-agents, but the orchestrator itself stays inline so it can surface decisions back to the user naturally.
 
-Monitor progress at `.TemporaryItems/Issues/wp-rocket/issue-<N>-workflow-log.html`.
+Monitor progress at `.ai/issues/<N>/workflow-log.html`.

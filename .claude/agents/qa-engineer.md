@@ -114,12 +114,12 @@ Delegate to the `e2e-qa-tester` agent. Provide:
 
 The `e2e-qa-tester` agent will:
 1. Walk through the UI flows using Playwright MCP
-2. Write temporary Playwright specs to `.TemporaryItems/Issues/wp-rocket/issue-{N}/.e2e-temp/` for each acceptance criterion
+2. Write temporary Playwright specs to `.ai/issues/<N>/.e2e-temp/` for each acceptance criterion
 3. Run those specs against the local environment
 4. Capture screenshots, publish them to a public GitHub Gist
 5. Return per-criterion results and permanent screenshot URLs
 
-Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and kept under `.TemporaryItems/` for debugging (never committed to this repository).
+Note: WP Rocket's permanent E2E suite lives in an external repository. All test files written by `e2e-qa-tester` are temporary — they are used for QA validation only and kept under `.ai/issues/<N>/` for debugging (never committed to this repository).
 
 Only fall back to Strategy C if `bin/dev-up.sh` itself fails (non-zero exit) or `localhost:8888` is still unreachable after the boot script finishes. Document the exact failure.
 

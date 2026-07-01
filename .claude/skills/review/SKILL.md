@@ -12,7 +12,7 @@ you are prompted at the end.
 
 ## Step 1 — Config
 
-This skill targets `wp-media/wp-rocket`. Specs live at `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`.
+This skill targets `wp-media/wp-rocket`. Specs live at `.ai/issues/<N>/spec.md`.
 
 ## Step 2 — Resolve the PR
 
@@ -36,7 +36,7 @@ issue URL).
 ## Step 3 — Locate the spec
 
 If a linked issue number was found, check for a spec at:
-`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`
+`.ai/issues/<N>/spec.md`
 
 If it exists, pass its path to the agent.
 If it does not exist, inform the user: "No grooming spec found — the review will check

@@ -27,7 +27,7 @@ unconditional and non-negotiable:
 - Branch name
 - Base branch (e.g. `origin/develop`)
 - Acceptance criteria list (for the PR body)
-- Spec path (`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`)
+- Spec path (`.ai/issues/<N>/spec.md`)
 - `CURRENT_MODEL` — the model name to use in `Co-Authored-By` trailers (e.g. `Claude Haiku 4.5`)
 
 ---
@@ -88,7 +88,7 @@ attempt force-push without explicit instruction.
 bash .claude/skills/issue-workflow/scripts/init-pr-draft.sh <N>
 ```
 
-This creates `.TemporaryItems/Issues/wp-rocket/pull/<N>.md` from the template.
+This creates `.ai/issues/<N>/pull.md` from the template.
 
 ---
 
@@ -137,7 +137,7 @@ Capture the PR URL from the command output — it is NOT the same as the issue n
 ```bash
 PR_URL=$(gh pr create \
   --title "Closes #<N>: <short descriptive title>" \
-  --body "$(cat .TemporaryItems/Issues/wp-rocket/pull/<N>.md)" \
+  --body "$(cat .ai/issues/<N>/pull.md)" \
   --base <base_branch> \
   --draft)
 PR_NUMBER=$(echo "$PR_URL" | grep -oE '[0-9]+$')

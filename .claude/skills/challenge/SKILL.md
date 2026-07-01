@@ -14,8 +14,8 @@ prompted at the end.
 ## Step 1 — Locate files
 
 This skill targets `wp-media/wp-rocket`. Use `$ARGUMENTS` as the issue number `N`. Verify both files exist:
-- Issue file: `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`
-- Spec file: `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`
+- Issue file: `.ai/issues/<N>/issue.md`
+- Spec file: `.ai/issues/<N>/spec.md`
 
 If the spec does not exist, tell the user: "No spec found for issue #N. Run `/groom <N>`
 first to produce one." Stop here.
@@ -29,8 +29,8 @@ bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>
 
 Invoke the `challenger` sub-agent with:
 - Issue number `N`
-- Issue file path: `.TemporaryItems/Issues/wp-rocket/issues/<N>.md`
-- Spec file path: `.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md`
+- Issue file path: `.ai/issues/<N>/issue.md`
+- Spec file path: `.ai/issues/<N>/spec.md`
 - `plan_version`: 1 (or detect from the spec's `Plan v<N>` header if present)
 - `CURRENT_MODEL`: "standalone"
 - `session_learnings`: read Section 13 of `AGENTS.md` if it exists, else pass empty string
@@ -57,4 +57,4 @@ EXISTING_ID=$(gh api repos/wp-media/wp-rocket/issues/<N>/comments \
 Update with `gh api --method PATCH repos/wp-media/wp-rocket/issues/comments/$EXISTING_ID` if found, otherwise post a new comment. Body always starts with `<!-- ai-pipeline:challenge -->`.
 
 **If no** — finish. Remind the user: if the verdict is NEEDS_REVISION, update the spec at
-`.TemporaryItems/Issues/wp-rocket/issues/<N>-spec.md` before running `/groom <N>` again or starting implementation.
+`.ai/issues/<N>/spec.md` before running `/groom <N>` again or starting implementation.

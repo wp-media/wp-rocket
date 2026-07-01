@@ -24,13 +24,19 @@ if [ ! -d "$ROOT_DIR" ]; then
   die "Unable to resolve repository root from ${SCRIPT_DIR}."
 fi
 
-# Template path and output location.
+# Template path and output location (per-issue subfolder under .ai/issues/<N>/).
 TEMPLATE="${ROOT_DIR}/.claude/skills/issue-workflow/refs/pr-template.md"
-OUT_DIR="${ROOT_DIR}/.TemporaryItems/Issues/wp-rocket/pull"
-OUT_FILE="${OUT_DIR}/${ISSUE_NUMBER}.md"
+OUT_DIR="${ROOT_DIR}/.ai/issues/${ISSUE_NUMBER}"
+OUT_FILE="${OUT_DIR}/pull.md"
 
 if [ ! -f "$TEMPLATE" ]; then
   die "Template not found: ${TEMPLATE}"
+fi
+
+# Idempotent — skip if pull.md already exists (avoids overwriting in-progress drafts).
+if [ -f "$OUT_FILE" ]; then
+  echo "$OUT_FILE"
+  exit 0
 fi
 
 # Ensure output directory exists and copy the template.

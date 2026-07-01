@@ -37,9 +37,9 @@ if [ ! -d "$ROOT_DIR" ]; then
   die "Unable to resolve repository root from ${SCRIPT_DIR}."
 fi
 
-# Output location for the issue snapshot.
-OUT_DIR="${ROOT_DIR}/.TemporaryItems/Issues/wp-rocket/issues"
-OUT_FILE="${OUT_DIR}/${ISSUE_NUMBER}.md"
+# Output location for the issue snapshot (per-issue subfolder under .ai/issues/<N>/).
+OUT_DIR="${ROOT_DIR}/.ai/issues/${ISSUE_NUMBER}"
+OUT_FILE="${OUT_DIR}/issue.md"
 
 # Related issue sync controls.
 SYNC_RELATED="${WPROCKET_SYNC_RELATED:-1}"

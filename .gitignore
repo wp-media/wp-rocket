@@ -8,6 +8,7 @@ vfs:/
 package-lock.json
 
 # Local issue sync cache
+/.ai
 /.TemporaryItems
 /.qa-screenshot
 /.e2e-temp
