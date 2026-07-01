@@ -81,14 +81,34 @@ class ClaudeClientVerifier {
 	 * @return array<string, array<string, mixed>>
 	 */
 	private function get_trusted_publishers(): array {
-		return array(
-			'claude' => array(
-				'client_ids' => array(
-					'https://claude.ai/oauth/claude-code-client-metadata',
-					'https://claude.ai/oauth/mcp-oauth-client-metadata',
-				),
-				'host'       => 'claude.ai',
-			),
+		/**
+		 * Filters the trusted-publisher allowlist for MCP OAuth client verification.
+		 *
+		 * Each entry is keyed by an arbitrary publisher slug and must provide:
+		 *  - client_ids (string[]): exact client_id URLs that are trusted for this publisher.
+		 *  - host (string): the hostname client_id URLs must resolve to (defense in depth,
+		 *    also used as the SSRF allowlist gate before any network fetch is made).
+		 *
+		 * This filter only ever runs server-side, with no request-derived input passed into it
+		 * or influencing its evaluation — it does not accept or process untrusted input. It can
+		 * only ADD trusted publishers; it does not bypass the exact client_id match in
+		 * matches_publisher() or the "verified" hard-reject in AuthorizeEndpoint::handle_request().
+		 *
+		 * @param array<string, array{client_ids: string[], host: string}> $trusted_publishers Trusted-publisher allowlist.
+		 * @return array<string, array{client_ids: string[], host: string}>
+		 */
+		return wpm_apply_filters_typed(
+			'array',
+			'rocket_mcp_trusted_publishers',
+			[
+				'claude' => [
+					'client_ids' => [
+						'https://claude.ai/oauth/claude-code-client-metadata',
+						'https://claude.ai/oauth/mcp-oauth-client-metadata',
+					],
+					'host'       => 'claude.ai',
+				],
+			]
 		);
 	}
 
