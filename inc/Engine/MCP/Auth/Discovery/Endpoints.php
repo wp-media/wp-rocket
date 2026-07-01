@@ -50,7 +50,7 @@ class Endpoints {
 	 * @return string[] Modified list.
 	 */
 	public function add_oauth_query_vars( array $vars ): array {
-		$vars[] = Endpoints::QUERY_VAR;
+		$vars[] = self::QUERY_VAR;
 
 		return $vars;
 	}
@@ -78,35 +78,35 @@ class Endpoints {
 		McpLogger::log(
 			'DISCOVERY',
 			'request received',
-			array(
+			[
 				'document'    => $discovery,
 				'remote_addr' => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
 				'user_agent'  => isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
-			)
+			]
 		);
 
 		if ( 'protected-resource' === $discovery ) {
-			$body = array(
+			$body = [
 				'resource'                 => get_rest_url( null, 'mcp/mcp-oauth-server' ),
-				'authorization_servers'    => array( $base_url ),
-				'bearer_methods_supported' => array( 'header' ),
-				'scopes_supported'         => array( 'mcp' ),
-			);
+				'authorization_servers'    => [ $base_url ],
+				'bearer_methods_supported' => [ 'header' ],
+				'scopes_supported'         => [ 'mcp' ],
+			];
 			McpLogger::log( 'DISCOVERY', 'serving protected-resource document', $body );
 			wp_send_json( $body );
 		} elseif ( 'authorization-server' === $discovery ) {
-			$body = array(
+			$body = [
 				'issuer'                                => $base_url,
 				'authorization_endpoint'                => $base_url . '/oauth/authorize',
 				'token_endpoint'                        => $base_url . '/oauth/token',
 				'revocation_endpoint'                   => $base_url . '/oauth/revoke',
-				'response_types_supported'              => array( 'code' ),
-				'grant_types_supported'                 => array( 'authorization_code', 'refresh_token' ),
-				'code_challenge_methods_supported'      => array( 'S256' ),
-				'scopes_supported'                      => array( 'mcp' ),
-				'token_endpoint_auth_methods_supported' => array( 'none' ),
+				'response_types_supported'              => [ 'code' ],
+				'grant_types_supported'                 => [ 'authorization_code', 'refresh_token' ],
+				'code_challenge_methods_supported'      => [ 'S256' ],
+				'scopes_supported'                      => [ 'mcp' ],
+				'token_endpoint_auth_methods_supported' => [ 'none' ],
 				'client_id_metadata_document_supported' => true,
-			);
+			];
 			McpLogger::log( 'DISCOVERY', 'serving authorization-server document', $body );
 			wp_send_json( $body );
 		}

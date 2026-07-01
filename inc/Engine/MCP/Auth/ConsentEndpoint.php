@@ -31,13 +31,13 @@ class ConsentEndpoint {
 		$request_method = isset( $_SERVER['REQUEST_METHOD'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) : '';
 
 		if ( 'POST' !== $request_method ) {
-			McpLogger::log( 'CONSENT', 'rejected: wrong method', array( 'method' => $request_method ) );
-			wp_die( esc_html__( 'Method not allowed.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 405 ) );
+			McpLogger::log( 'CONSENT', 'rejected: wrong method', [ 'method' => $request_method ] );
+			wp_die( esc_html__( 'Method not allowed.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 405 ] );
 		}
 
 		if ( ! is_user_logged_in() ) {
 			McpLogger::log( 'CONSENT', 'rejected: user not logged in' );
-			wp_die( esc_html__( 'You must be logged in to authorise an MCP session.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 401 ) );
+			wp_die( esc_html__( 'You must be logged in to authorise an MCP session.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 401 ] );
 		}
 
 		$state  = sanitize_text_field( wp_unslash( $_POST['state'] ?? '' ) );
@@ -45,7 +45,7 @@ class ConsentEndpoint {
 
 		if ( '' === $state ) {
 			McpLogger::log( 'CONSENT', 'rejected: missing state' );
-			wp_die( esc_html__( 'Missing state parameter.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'Missing state parameter.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		// Nonce verification (CSRF protection) — must happen before consuming the transient.
@@ -55,16 +55,16 @@ class ConsentEndpoint {
 		$state_data = get_transient( $state_key );
 
 		if ( false === $state_data || ! is_array( $state_data ) ) {
-			McpLogger::log( 'CONSENT', 'rejected: state transient not found or expired', array( 'state' => $state ) );
-			wp_die( esc_html__( 'Your session has expired. Please restart the authorization flow.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			McpLogger::log( 'CONSENT', 'rejected: state transient not found or expired', [ 'state' => $state ] );
+			wp_die( esc_html__( 'Your session has expired. Please restart the authorization flow.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		// Atomically consume the state — one-time use only. delete_transient()
 		// returns true for a single caller when requests race, so a double
 		// submission cannot mint two auth codes from one consent.
 		if ( ! delete_transient( $state_key ) ) {
-			McpLogger::log( 'CONSENT', 'rejected: state already consumed (concurrent submission)', array( 'state' => $state ) );
-			wp_die( esc_html__( 'Your session has expired. Please restart the authorization flow.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			McpLogger::log( 'CONSENT', 'rejected: state already consumed (concurrent submission)', [ 'state' => $state ] );
+			wp_die( esc_html__( 'Your session has expired. Please restart the authorization flow.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		$redirect_uri = (string) ( $state_data['redirect_uri'] ?? '' );
@@ -74,20 +74,20 @@ class ConsentEndpoint {
 			McpLogger::log(
 				'CONSENT',
 				'user denied access',
-				array(
+				[
 					'user_id'      => $user_id,
 					'client_id'    => $state_data['client_id'] ?? '',
 					'mcp_action'   => $action,
 					'redirect_uri' => $redirect_uri,
-				)
+				]
 			);
 
-			wp_redirect(
+			wp_redirect( // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirecting to the client's registered redirect_uri sourced from the server-side state transient, not user input.
 				add_query_arg(
-					array(
+					[
 						'error' => 'access_denied',
 						'state' => $state,
-					),
+					],
 					$redirect_uri
 				)
 			);
@@ -99,33 +99,33 @@ class ConsentEndpoint {
 
 		set_transient(
 			'mcp_oauth_code_' . $auth_code,
-			array(
+			[
 				'user_id'        => $user_id,
 				'client_id'      => $state_data['client_id'] ?? '',
 				'client_name'    => $state_data['client_name'] ?? '',
 				'code_challenge' => $state_data['code_challenge'] ?? '',
 				'redirect_uri'   => $redirect_uri,
-			),
+			],
 			self::CODE_TTL
 		);
 
 		McpLogger::log(
 			'CONSENT',
 			'user granted access, auth code issued',
-			array(
+			[
 				'user_id'      => $user_id,
 				'client_id'    => $state_data['client_id'] ?? '',
 				'redirect_uri' => $redirect_uri,
 				'code_ttl_s'   => self::CODE_TTL,
-			)
+			]
 		);
 
-		wp_redirect(
+		wp_redirect( // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirecting to the client's registered redirect_uri sourced from the server-side state transient, not user input.
 			add_query_arg(
-				array(
+				[
 					'code'  => $auth_code,
 					'state' => $state,
-				),
+				],
 				$redirect_uri
 			)
 		);

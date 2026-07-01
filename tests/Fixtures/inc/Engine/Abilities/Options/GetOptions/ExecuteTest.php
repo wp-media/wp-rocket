@@ -17,7 +17,7 @@ return [
 				'minify_css_key'          => 'css-key-123',
 				'minify_js_key'           => 'js-key-456',
 				'defer_all_js_safe'       => 1,
-				'preload_fonts'           => 1,
+				'preload_fonts'           => [ 'https://example.com/font.woff2' ],
 				'dns_prefetch'            => [ 'example.com' ],
 				'cloudflare_email'        => 'admin@example.com',
 				'cloudflare_api_key'      => 'cf-api-key-secret',
@@ -30,7 +30,12 @@ return [
 				'license'                 => 'license-data',
 			],
 		],
-		'expected' => [],
+		'expected' => [
+			'cache_mobile'            => 1,
+			'do_caching_mobile_files' => 1,
+			'preload_fonts'           => [ 'https://example.com/font.woff2' ],
+			'dns_prefetch'            => [ 'example.com' ],
+		],
 	],
 	'testShouldReturnAllOptionsWhenNoDenylistKeysPresent' => [
 		'config'   => [
@@ -95,7 +100,6 @@ return [
 				'exclude_js'                 => [ 'analytics.js' ],
 				'cdn_cnames'                 => [ 'cdn1.example.com', 'cdn2.example.com' ],
 				'remove_unused_css_safelist' => [ '.keep-this', '#important' ],
-				// Denylist - should be filtered.
 				'dns_prefetch'               => [ 'prefetch.example.com' ],
 			],
 		],
@@ -106,6 +110,7 @@ return [
 			'exclude_js'                 => [ 'analytics.js' ],
 			'cdn_cnames'                 => [ 'cdn1.example.com', 'cdn2.example.com' ],
 			'remove_unused_css_safelist' => [ '.keep-this', '#important' ],
+			'dns_prefetch'               => [ 'prefetch.example.com' ],
 		],
 	],
 	'testShouldPreserveOptionValuesOfDifferentTypes' => [

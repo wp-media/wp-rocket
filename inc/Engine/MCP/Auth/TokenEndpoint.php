@@ -49,18 +49,18 @@ class TokenEndpoint {
 		McpLogger::log(
 			'TOKEN',
 			'token request received',
-			array(
+			[
 				'method'       => $request_method,
 				'content_type' => $content_type,
 				'remote_addr'  => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
 				'user_agent'   => isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '',
 				'headers'      => McpLogger::safe_request_headers(),
 				'body'         => McpLogger::safe_request_body(),
-			)
+			]
 		);
 
 		if ( 'POST' !== $request_method ) {
-			McpLogger::log( 'TOKEN', 'rejected: wrong method', array( 'method' => $request_method ) );
+			McpLogger::log( 'TOKEN', 'rejected: wrong method', [ 'method' => $request_method ] );
 			$this->send_error( 405, 'invalid_request', 'Method not allowed.' );
 			return;
 		}
@@ -69,14 +69,14 @@ class TokenEndpoint {
 
 		$grant_type = sanitize_text_field( $body['grant_type'] ?? '' );
 
-		McpLogger::log( 'TOKEN', 'grant_type received', array( 'grant_type' => $grant_type ) );
+		McpLogger::log( 'TOKEN', 'grant_type received', [ 'grant_type' => $grant_type ] );
 
 		if ( 'authorization_code' === $grant_type ) {
 			$this->handle_authorization_code( $body );
 		} elseif ( 'refresh_token' === $grant_type ) {
 			$this->handle_refresh_token( $body );
 		} else {
-			McpLogger::log( 'TOKEN', 'rejected: unsupported grant_type', array( 'grant_type' => $grant_type ) );
+			McpLogger::log( 'TOKEN', 'rejected: unsupported grant_type', [ 'grant_type' => $grant_type ] );
 			$this->send_error( 400, 'unsupported_grant_type' );
 		}
 	}
@@ -95,11 +95,11 @@ class TokenEndpoint {
 		McpLogger::log(
 			'TOKEN',
 			'authorization_code exchange: params',
-			array(
+			[
 				'has_code'          => '' !== $code ? 'yes' : 'no',
 				'has_code_verifier' => '' !== $code_verifier ? 'yes' : 'no',
 				'redirect_uri'      => $redirect_uri,
-			)
+			]
 		);
 
 		if ( '' === $code || '' === $code_verifier ) {
@@ -145,10 +145,10 @@ class TokenEndpoint {
 			McpLogger::log(
 				'TOKEN',
 				'rejected: redirect_uri missing or does not match authorization request',
-				array(
+				[
 					'provided' => $redirect_uri,
 					'stored'   => $code_data['redirect_uri'],
-				)
+				]
 			);
 			$this->send_error( 400, 'invalid_grant', 'redirect_uri is required and must match the authorization request.' );
 			return;
@@ -168,7 +168,7 @@ class TokenEndpoint {
 			$client_name = 'MCP Client';
 		}
 
-		McpLogger::log( 'TOKEN', 'PKCE verified — creating Application Password', array( 'user_id' => $user_id ) );
+		McpLogger::log( 'TOKEN', 'PKCE verified — creating Application Password', [ 'user_id' => $user_id ] );
 
 		// Bound the number of sessions this client can stockpile before adding one more.
 		$this->prune_sessions( $user_id, $client_id );
@@ -176,21 +176,21 @@ class TokenEndpoint {
 		// Create a WordPress Application Password (raw password is discarded).
 		$result = \WP_Application_Passwords::create_new_application_password(
 			$user_id,
-			array(
+			[
 				'name'   => $client_name,
 				'app_id' => $client_id,
-			),
+			],
 		);
 
 		if ( is_wp_error( $result ) ) {
 			McpLogger::log(
 				'TOKEN',
 				'server_error: Application Password creation failed',
-				array(
+				[
 					'wp_error_code'    => $result->get_error_code(),
 					'wp_error_message' => $result->get_error_message(),
 					'user_id'          => $user_id,
-				)
+				]
 			);
 			$this->send_error( 500, 'server_error', 'Could not create MCP session.' );
 			return;
@@ -202,10 +202,10 @@ class TokenEndpoint {
 		McpLogger::log(
 			'TOKEN',
 			'Application Password created — issuing token pair',
-			array(
+			[
 				'user_id'       => $user_id,
 				'app_pass_uuid' => $app_pass_uuid,
-			)
+			]
 		);
 
 		$this->issue_token_pair( $user_id, $app_pass_uuid, $client_id );
@@ -220,7 +220,7 @@ class TokenEndpoint {
 	private function handle_refresh_token( array $body ): void {
 		$refresh_token = sanitize_text_field( $body['refresh_token'] ?? '' );
 
-		McpLogger::log( 'TOKEN', 'refresh_token grant: validating', array( 'has_refresh_token' => '' !== $refresh_token ? 'yes' : 'no' ) );
+		McpLogger::log( 'TOKEN', 'refresh_token grant: validating', [ 'has_refresh_token' => '' !== $refresh_token ? 'yes' : 'no' ] );
 
 		if ( '' === $refresh_token ) {
 			McpLogger::log( 'TOKEN', 'rejected: refresh_token missing' );
@@ -235,10 +235,10 @@ class TokenEndpoint {
 			McpLogger::log(
 				'TOKEN',
 				'rejected: refresh token decode failed or wrong type',
-				array(
+				[
 					'claims_null' => null === $claims ? 'yes' : 'no',
 					'type'        => null !== $claims ? ( $claims['type'] ?? '(missing)' ) : 'n/a',
-				)
+				]
 			);
 			$this->send_error( 401, 'invalid_token', 'Refresh token is invalid or expired.' );
 			return;
@@ -247,14 +247,14 @@ class TokenEndpoint {
 		// Verify the token was issued by this site. A staging clone sharing the same
 		// JWT secret would otherwise allow cross-site token replay.
 		$token_iss = (string) ( $claims['iss'] ?? '' );
-		if ( $token_iss !== home_url() ) {
+		if ( home_url() !== $token_iss ) {
 			McpLogger::log(
 				'TOKEN',
 				'rejected: refresh token issuer mismatch',
-				array(
+				[
 					'token_iss'    => $token_iss,
 					'expected_iss' => home_url(),
-				)
+				]
 			);
 			$this->send_error( 401, 'invalid_token', 'Refresh token was not issued by this server.' );
 			return;
@@ -264,7 +264,14 @@ class TokenEndpoint {
 		$app_pass_uuid = (string) ( $claims['app_pass_id'] ?? '' );
 		$client_id     = (string) ( $claims['client_id'] ?? '' );
 
-		McpLogger::log( 'TOKEN', 'refresh token decoded — checking revocation', array( 'user_id' => $user_id, 'app_pass_uuid' => $app_pass_uuid ) );
+		McpLogger::log(
+			'TOKEN',
+			'refresh token decoded — checking revocation',
+			[
+				'user_id'       => $user_id,
+				'app_pass_uuid' => $app_pass_uuid,
+			]
+			);
 
 		// Revocation check: if the Application Password was deleted the session is gone.
 		$app_pass = \WP_Application_Passwords::get_user_application_password( $user_id, $app_pass_uuid );
@@ -272,7 +279,14 @@ class TokenEndpoint {
 		if ( ! is_array( $app_pass ) ) {
 			// Session is gone; drop the now-orphaned rotation marker too.
 			delete_user_meta( $user_id, self::REFRESH_JTI_META_PREFIX . $app_pass_uuid );
-			McpLogger::log( 'TOKEN', 'rejected: Application Password revoked or not found', array( 'user_id' => $user_id, 'app_pass_uuid' => $app_pass_uuid ) );
+			McpLogger::log(
+				'TOKEN',
+				'rejected: Application Password revoked or not found',
+				[
+					'user_id'       => $user_id,
+					'app_pass_uuid' => $app_pass_uuid,
+				]
+				);
 			$this->send_error( 401, 'invalid_token', 'MCP session has been revoked.' );
 			return;
 		}
@@ -290,12 +304,12 @@ class TokenEndpoint {
 			McpLogger::log(
 				'TOKEN',
 				'SECURITY: refresh token reuse detected — revoking session',
-				array(
+				[
 					'user_id'       => $user_id,
 					'app_pass_uuid' => $app_pass_uuid,
 					'has_presented' => '' !== $presented_jti ? 'yes' : 'no',
 					'has_current'   => '' !== $current_jti ? 'yes' : 'no',
-				)
+				]
 			);
 			// Deleting the Application Password fires wp_delete_application_password,
 			// which purges the rotation marker via purge_refresh_jti_meta().
@@ -304,7 +318,14 @@ class TokenEndpoint {
 			return;
 		}
 
-		McpLogger::log( 'TOKEN', 'refresh token valid — issuing new token pair', array( 'user_id' => $user_id, 'app_pass_uuid' => $app_pass_uuid ) );
+		McpLogger::log(
+			'TOKEN',
+			'refresh token valid — issuing new token pair',
+			[
+				'user_id'       => $user_id,
+				'app_pass_uuid' => $app_pass_uuid,
+			]
+			);
 
 		// Issue a new access token and rotate the refresh token: issue_token_pair()
 		// mints a fresh jti and overwrites the stored marker, invalidating the
@@ -321,12 +342,12 @@ class TokenEndpoint {
 	 * @return void
 	 */
 	private function issue_token_pair( int $user_id, string $app_pass_uuid, string $client_id = '' ): void {
-		$secret   = SecretManager::get_secret();
+		$secret = SecretManager::get_secret();
 		// iss is home_url() (the Site Address), matching the base get_rest_url()
 		// uses for aud and where the OAuth/.well-known routes are actually served.
-		$issuer   = home_url();
-		$now      = time();
-		$aud      = get_rest_url( null, 'mcp/mcp-oauth-server' );
+		$issuer = home_url();
+		$now    = time();
+		$aud    = get_rest_url( null, 'mcp/mcp-oauth-server' );
 
 		// Mint a fresh refresh-token id and persist it as the only one accepted
 		// for this session. This overwrites any prior marker, so the previously
@@ -334,7 +355,7 @@ class TokenEndpoint {
 		$refresh_jti = bin2hex( random_bytes( 16 ) );
 		update_user_meta( $user_id, self::REFRESH_JTI_META_PREFIX . $app_pass_uuid, $refresh_jti );
 
-		$access_payload = array(
+		$access_payload = [
 			'iss'         => $issuer,
 			'aud'         => $aud,
 			'sub'         => (string) $user_id,
@@ -343,9 +364,9 @@ class TokenEndpoint {
 			'scope'       => 'mcp',
 			'iat'         => $now,
 			'exp'         => $now + HOUR_IN_SECONDS,
-		);
+		];
 
-		$refresh_payload = array(
+		$refresh_payload = [
 			'iss'         => $issuer,
 			'sub'         => (string) $user_id,
 			'app_pass_id' => $app_pass_uuid,
@@ -354,7 +375,7 @@ class TokenEndpoint {
 			'jti'         => $refresh_jti,
 			'iat'         => $now,
 			'exp'         => $now + ( 30 * DAY_IN_SECONDS ),
-		);
+		];
 
 		$access_token  = JWT::encode( $access_payload, $secret );
 		$refresh_token = JWT::encode( $refresh_payload, $secret );
@@ -362,24 +383,24 @@ class TokenEndpoint {
 		McpLogger::log(
 			'TOKEN',
 			'token pair issued',
-			array(
+			[
 				'user_id'          => $user_id,
 				'app_pass_uuid'    => $app_pass_uuid,
 				'access_exp'       => $access_payload['exp'],
 				'refresh_exp'      => $refresh_payload['exp'],
 				'access_token_len' => strlen( $access_token ),
-			)
+			]
 		);
 
 		nocache_headers();
 		wp_send_json(
-			array(
+			[
 				'access_token'  => $access_token,
 				'token_type'    => 'Bearer',
 				'expires_in'    => HOUR_IN_SECONDS,
 				'refresh_token' => $refresh_token,
 				'scope'         => 'mcp',
-			)
+			]
 		);
 	}
 
@@ -404,16 +425,13 @@ class TokenEndpoint {
 		}
 
 		$passwords = \WP_Application_Passwords::get_user_application_passwords( $user_id );
-		if ( ! is_array( $passwords ) ) {
-			return;
-		}
 
 		// Keep only this feature's Application Passwords for this client.
 		$ours = array_values(
 			array_filter(
 				$passwords,
 				static function ( $item ) use ( $client_id ) {
-					return is_array( $item ) && ( $item['app_id'] ?? '' ) === $client_id;
+					return $item['app_id'] === $client_id;
 				}
 			)
 		);
@@ -427,7 +445,7 @@ class TokenEndpoint {
 		usort(
 			$ours,
 			static function ( $a, $b ) {
-				return ( (int) ( $a['created'] ?? 0 ) ) <=> ( (int) ( $b['created'] ?? 0 ) );
+				return $a['created'] <=> $b['created'];
 			}
 		);
 
@@ -446,11 +464,11 @@ class TokenEndpoint {
 			McpLogger::log(
 				'TOKEN',
 				'evicted oldest MCP session to enforce per-client cap',
-				array(
+				[
 					'user_id'       => $user_id,
 					'client_id'     => $client_id,
 					'app_pass_uuid' => $uuid,
-				)
+				]
 			);
 		}
 	}
@@ -488,7 +506,7 @@ class TokenEndpoint {
 	private function send_error( int $status, string $error, string $description = '' ): void {
 		status_header( $status );
 		nocache_headers();
-		$body = array( 'error' => $error );
+		$body = [ 'error' => $error ];
 		if ( '' !== $description ) {
 			$body['error_description'] = $description;
 		}

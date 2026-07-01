@@ -195,4 +195,97 @@ return [
 			'new_value'      => [ 'woocommerce', 'elementor' ],
 		],
 	],
+
+	'testShouldMergeArrayOptionInUpdateModeByDefault' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cdn_cnames',
+				'option_value' => [ 'cdn2.example.com' ],
+			],
+			'previous_value' => [ 'cdn1.example.com' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ 'cdn1.example.com' ],
+			'new_value'      => [ 'cdn1.example.com', 'cdn2.example.com' ],
+		],
+	],
+
+	'testShouldMergeArrayOptionWhenUpdateModeIsExplicit' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cdn_cnames',
+				'option_value' => [ 'cdn2.example.com' ],
+				'update_mode'  => 'update',
+			],
+			'previous_value' => [ 'cdn1.example.com' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ 'cdn1.example.com' ],
+			'new_value'      => [ 'cdn1.example.com', 'cdn2.example.com' ],
+		],
+	],
+
+	'testShouldReplaceArrayOptionWhenReplaceModeRequested' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cdn_cnames',
+				'option_value' => [ 'cdn2.example.com' ],
+				'update_mode'  => 'replace',
+			],
+			'previous_value' => [ 'cdn1.example.com' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ 'cdn1.example.com' ],
+			'new_value'      => [ 'cdn2.example.com' ],
+		],
+	],
+
+	'testShouldDeduplicateWhenMergingArrayOption' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cdn_cnames',
+				'option_value' => [ 'cdn1.example.com', 'cdn2.example.com' ],
+			],
+			'previous_value' => [ 'cdn1.example.com' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ 'cdn1.example.com' ],
+			'new_value'      => [ 'cdn1.example.com', 'cdn2.example.com' ],
+		],
+	],
+
+	'testShouldMergeTextareaOptionInUpdateModeByDefault' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cache_reject_uri',
+				'option_value' => [ '/new-page/' ],
+			],
+			'previous_value' => [ '/existing-page/' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ '/existing-page/' ],
+			'new_value'      => [ '/existing-page/', '/new-page/' ],
+		],
+	],
+
+	'testShouldReplaceTextareaOptionWhenReplaceModeRequested' => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cache_reject_uri',
+				'option_value' => [ '/new-page/' ],
+				'update_mode'  => 'replace',
+			],
+			'previous_value' => [ '/existing-page/' ],
+		],
+		'expected' => [
+			'success'        => true,
+			'previous_value' => [ '/existing-page/' ],
+			'new_value'      => [ '/new-page/' ],
+		],
+	],
 ];

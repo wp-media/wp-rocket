@@ -4,6 +4,7 @@
  * - ID
  * - expected
  */
+
 return [
 	[
 		'en_US',
@@ -19,6 +20,38 @@ return [
 		[
 			'id'  => '56cb9ba990336008e9e9e3d9',
 			'url' => 'https://fr.docs.wp-rocket.me/article/333-cache-utilisateurs-connectes/?utm_source=wp_plugin&utm_medium=wp_rocket',
+		],
+	],
+	[
+		'en_US',
+		'exclude_cdn',
+		[
+			'id'  => '54c7fa3de4b0512429885b5c',
+			'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn#exclude-files-from-your-cdn',
+		],
+	],
+	[
+		'fr_FR',
+		'exclude_cdn',
+		[
+			'id'  => '5696830b9033603f7da308ac',
+			'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclure-des-fichiers-du-cdn',
+		],
+	],
+	[
+		'en_US',
+		'exclude_cdn_rocketcdn',
+		[
+			'id'  => '5e4c84bd04286364bc958833',
+			'url' => 'https://docs.wp-rocket.me/article/1307-rocketcd/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
+		],
+	],
+	[
+		'fr_FR',
+		'exclude_cdn_rocketcdn',
+		[
+			'id'  => '5f351e42042863444aa04652',
+			'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
 		],
 	],
 	[

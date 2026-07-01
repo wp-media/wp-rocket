@@ -572,19 +572,12 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html().
-		'<strong>%s</strong></p>',
-		__( 'Thank you!', 'rocket' )
+		/* translators: %1$s = opening strong tag; %2$s = plugin name; %3$s = closing strong tag */
+		esc_html__( '%1$sThank you! The data you share helps us improve %2$s.%3$s', 'rocket' ),
+		'<strong>',
+		rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
+		'</strong>',
 	);
-
-	$thankyou_message .= sprintf(
-		'<p>%1$s</p><div>%2$s</div>',
-		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
-		rocket_data_collection_preview_table()
-	);
-
-	// Closing </p> provided by rocket_notice_html().
-	$thankyou_message .= '<p>';
 
 	rocket_notice_html(
 		[
@@ -733,6 +726,34 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'rocket_insights_page':
 			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+			break;
+		case 'rocketcdn_upgrade_page':
+			$dismiss_key    = 'rocket_update_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Add your pages now', 'rocket' )
+				. '</a>';
+			break;
+		case 'rocketcdn_install_page':
+			$dismiss_key    = 'rocketcdn_install_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_promotion#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Start with my homepage', 'rocket' )
+				. '</a>';
 			break;
 	}
 	/**
