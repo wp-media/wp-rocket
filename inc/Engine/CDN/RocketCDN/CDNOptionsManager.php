@@ -40,18 +40,18 @@ class CDNOptionsManager {
 	 *
 	 * @since 3.5
 	 *
-	 * @param string $cdn_url CDN URL.
+	 * @param bool $clear_cache Clear website whole cache.
 	 * @return void
 	 */
-	public function enable( $cdn_url ) {
+	public function enable( bool $clear_cache = true ) {
 		$this->options->set( 'cdn', 1 );
-		$this->options->set( 'cdn_cnames', [ $cdn_url ] );
-		$this->options->set( 'cdn_zone', [ 'all' ] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		delete_transient( 'rocketcdn_status' );
-		rocket_clean_domain();
+		if ( $clear_cache ) {
+			rocket_clean_domain();
+		}
 	}
 
 	/**
@@ -75,8 +75,6 @@ class CDNOptionsManager {
 	 */
 	public function disable() {
 		$this->options->set( 'cdn', 0 );
-		$this->options->set( 'cdn_cnames', [] );
-		$this->options->set( 'cdn_zone', [] );
 
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
@@ -92,5 +90,24 @@ class CDNOptionsManager {
 	 */
 	public function get_cdn_cnames() {
 		return $this->options->get( 'cdn_cnames', [] );
+	}
+
+	/**
+	 * Check if there is saved user token.
+	 *
+	 * @return bool
+	 */
+	public function has_token(): bool {
+		return ! empty( get_option( 'rocketcdn_user_token' ) );
+	}
+
+	/**
+	 * Flush subscription cache.
+	 *
+	 * @return void
+	 */
+	public function flush_subscription_cache() {
+		delete_transient( 'rocketcdn_status' );
+		delete_transient( 'rocket_cdn_website_search' );
 	}
 }

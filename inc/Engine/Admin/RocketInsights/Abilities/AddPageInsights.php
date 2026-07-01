@@ -10,16 +10,18 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Database\Queries\RocketInsights as Query,
 	Managers\Plan
 };
-use WP_Rocket\Engine\Admin\RocketInsights\PageHandlerTrait;
+use WP_Rocket\Engine\Common\Page\PageHandlerTrait;
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
 	JobManager\Queue\Queue,
 	Utils
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\Logger;
 
 class AddPageInsights implements AbilitiesInterface {
 	use PageHandlerTrait;
+	use TrackingTrait;
 
 	/**
 	 * Context instance providing necessary dependencies and configuration.
@@ -86,11 +88,22 @@ class AddPageInsights implements AbilitiesInterface {
 	 * Registers the ability to add page insights.
 	 */
 	public function register(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
 		wp_register_ability(
 			'wp-rocket/add-page-insights',
 			[
 				'label'               => __( 'Add Page Insights', 'rocket' ),
-				'description'         => __( 'Add a page to be monitored by Rocket Insights.', 'rocket' ),
+				'description'         => _x(
+					'Adds a URL to Rocket Insights monitoring. Requires a valid URI.
+Use this when the user wants to monitor a new page. Do not use it when the page is already monitored; use retest-page-insights instead.
+Confirm the exact URL with the user before calling. This action is non-idempotent, so calling it twice for the same URL may return an error.
+On success, tell the user the first score may take a few minutes and offer to trigger an immediate test with retest-page-insights Recheck every minute in the background and poll results with get-page-insights-score.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'type'       => 'object',
@@ -122,6 +135,11 @@ class AddPageInsights implements AbilitiesInterface {
 						'public' => true,
 					],
 					'show_in_rest' => true,
+					'annotations'  => [
+						'readonly'    => false,
+						'destructive' => false,
+						'idempotent'  => false,
+					],
 				],
 			]
 		);
@@ -144,6 +162,7 @@ class AddPageInsights implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/add-page-insights' ] );
 		$payload = $this->get_url_validation_payload( $input['url'] );
 
 		if ( $payload['error'] ) {
@@ -329,7 +348,7 @@ class AddPageInsights implements AbilitiesInterface {
 			return false;
 		}
 
-		Logger::error(
+		Logger::info(
 			'Rocket Insights: Synchronous Submission successful, Now scheduling single job to run in 30 seconds.',
 			[
 				'url' => $url,

@@ -1,1 +1,1 @@
-../../.aiassistant/skills/wordpress-compliance/SKILL.md
+../skills/wordpress-compliance/SKILL.md

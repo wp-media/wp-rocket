@@ -241,6 +241,16 @@
   background-position: center center;
 }
 
+.wpr-icon-orange-loader:before {
+  display: block;
+  content: "";
+  background: url("../img/orange-loading.svg") no-repeat center center;
+  background-size: contain;
+  width: 22.857px;
+  height: 24px;
+  aspect-ratio: 20/21;
+}
+
 .wp-list-table th.column-rocket_insights,
 .wp-list-table td.column-rocket_insights {
   width: 150px;
@@ -568,7 +578,7 @@
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled,
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions a.wpr-ri-action--disabled {
-  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
+  color: #8796a9 !important;
   cursor: not-allowed;
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled:focus,

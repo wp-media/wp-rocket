@@ -6,7 +6,7 @@ $(document).ready(function(){
          */
         var $help = $('.wpr-infoAction--help');
         $help.on('click', function(e){
-            var ids = $(this).data('beacon-id');
+            var ids = $(this).attr('data-beacon-id');
             var button = $(this).data('wpr_track_button') || 'Beacon Help';
             var context = $(this).data('wpr_track_context') || 'Settings';
 

@@ -12,7 +12,15 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
 
-if ( class_exists( McpAdapter::class ) ) {
+$rocket_can_boot_mcp_adapter =
+	class_exists( McpAdapter::class )
+	&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+	&& function_exists( 'wp_register_ability' )
+	&& function_exists( 'wp_get_ability' )
+	&& function_exists( 'wp_get_abilities' )
+	&& function_exists( 'wp_register_ability_category' );
+
+if ( $rocket_can_boot_mcp_adapter ) {
 	McpAdapter::instance();
 }
 

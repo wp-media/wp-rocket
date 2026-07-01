@@ -27,26 +27,59 @@ class RESTSubscriber implements Subscriber_Interface {
 	private $options;
 
 	/**
+	 * Rest controller instance.
+	 *
+	 * @var Rest
+	 */
+	private $rest;
+
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
 	 * Constructor
 	 *
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data      $options     WP Rocket Options instance.
+	 * @param CDNOptionsManager      $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data           $options     WP Rocket Options instance.
+	 * @param Rest                   $rest        Rest controller instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options ) {
-		$this->cdn_options = $cdn_options;
-		$this->options     = $options;
+	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options, Rest $rest, SubscriptionController $subscription_controller ) {
+		$this->cdn_options             = $cdn_options;
+		$this->options                 = $options;
+		$this->rest                    = $rest;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => [
+			'rest_api_init'                        => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
+				[ 'register_routes' ],
 			],
+			'rocket_cdnfree_website_create_status' => 'check_status',
 		];
+	}
+
+	/**
+	 * Registers RocketCDN pages and state REST routes.
+	 *
+	 * @since 3.22
+	 *
+	 * @return void
+	 */
+	public function register_routes(): void {
+		$this->rest->register_routes();
 	}
 
 	/**
@@ -72,6 +105,7 @@ class RESTSubscriber implements Subscriber_Interface {
 						'required'          => true,
 						'validate_callback' => [ $this, 'validate_key' ],
 					],
+					// RocketCDN CNAME is no longer required as it's now changed on the filter level not in the settings option.
 					'url'   => [
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
@@ -128,9 +162,7 @@ class RESTSubscriber implements Subscriber_Interface {
 	 * @return \WP_REST_Response|\WP_Error
 	 */
 	public function enable( \WP_REST_Request $request ) {
-		$params = $request->get_body_params();
-
-		$this->cdn_options->enable( $params['url'] );
+		$this->cdn_options->enable();
 
 		$response = [
 			'code'    => 'success',
@@ -190,5 +222,18 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public function validate_key( $param ) {
 		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
+	}
+
+	/**
+	 * Check subscription creation status.
+	 *
+	 * @param string $task_id Task ID to check.
+	 * @return void
+	 */
+	public function check_status( string $task_id ) {
+		if ( empty( $task_id ) ) {
+			return;
+		}
+		$this->subscription_controller->check_status( $task_id );
 	}
 }
