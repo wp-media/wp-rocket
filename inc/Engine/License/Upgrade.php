@@ -131,6 +131,7 @@ class Upgrade extends Abstract_Render {
 
 		$promo          = $this->pricing->get_promo_data();
 		$promo_name     = isset( $promo->name ) ? $promo->name : '';
+		$promo_name     = $this->translate_promo_name( $promo_name );
 		$promo_discount = isset( $promo->discount_percent ) ? $promo->discount_percent : 0;
 
 		$data = [
@@ -265,6 +266,24 @@ class Upgrade extends Abstract_Render {
 			'</strong>',
 			implode( ' ' . esc_html__( 'or', 'rocket' ) . ' ', $license_types ),
 		);
+	}
+
+	/**
+	 * Translates the promotion name if a translation exists.
+	 *
+	 * @param string $promo_name Promotion name from API.
+	 * @return string Translated promotion name.
+	 */
+	private function translate_promo_name( $promo_name ) {
+		if ( empty( $promo_name ) ) {
+			return $promo_name;
+		}
+
+		$translations = [
+			'Anniversary' => __( 'Anniversary', 'rocket' ),
+		];
+
+		return $translations[ $promo_name ] ?? $promo_name;
 	}
 
 	/**

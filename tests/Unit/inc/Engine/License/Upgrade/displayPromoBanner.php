@@ -99,6 +99,9 @@ class DisplayPromoBanner extends TestCase {
 			Functions\when( 'esc_html__' )
 				->justReturn( $config['message'] );
 
+			Functions\when( '__' )
+				->returnArg();
+
 			$this->pricing->shouldReceive( 'get_promo_end' )
 				->atMost()
 				->once()

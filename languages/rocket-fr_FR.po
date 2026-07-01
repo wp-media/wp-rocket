@@ -3764,8 +3764,8 @@ msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to %6$s!%5$s"
 msgstr ""
-"Profitez de %1$s pour accélérez encore plus de sites web : %2$s bénéficiez "
-"de %3$s%4$s de réduction sur %5$s pour %3$s mettre à niveau de votre licence"
+"Profitez de %1$s pour accélérer encore plus de sites web : %2$s bénéficiez "
+"de %3$s%4$s de réduction%5$s pour %3$smettre à niveau votre licence"
 " vers %6$s ! %5$s"
 
 #: inc/Engine/License/Upgrade.php:266
@@ -3787,10 +3787,15 @@ msgid "%s off"
 msgstr "- %s"
 
 #. translators: %s = promotion name.
+#: inc/Engine/License/Upgrade.php:134
 #: inc/Engine/License/views/promo-banner.php:23
 #, php-format
 msgid "%s promotion is live!"
 msgstr "La promo %s est en ligne !"
+
+#: inc/Engine/License/Upgrade.php:133
+msgid "Anniversary"
+msgstr "Anniversaire"
 
 #: inc/Engine/License/views/promo-banner.php:29
 msgid "Hurry Up! Deal ends in:"
@@ -3809,7 +3814,7 @@ msgstr "secondes"
 #: inc/Engine/License/views/promo-banner.php:36
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "Upgrade now"
-msgstr "Mettez à niveau maintenant"
+msgstr "Mettre à niveau maintenant"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:14
 msgid "The Optimize CSS Delivery feature is disabled."
