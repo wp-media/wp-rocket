@@ -605,6 +605,34 @@ done
 
 Only run this block when `lead-reviewer` previously returned `inline_comments_posted: true` and there are unresolved threads. Skip silently if the GraphQL query returns zero unresolved threads.
 
+**Resolve addressed review threads (required after every fix push):**
+After re-pushing the fix commit, resolve all open review threads so the PR shows a clean status before lead-reviewer re-runs. Get the fix SHA, fetch every unresolved thread via GraphQL, post a "Fixed in <sha>" reply on each, then mark it resolved:
+
+```bash
+FIX_SHA=$(git rev-parse --short HEAD)
+PR_N=<PR number>
+OWNER=wp-media
+REPO_NAME=wp-rocket
+
+gh api graphql -f query="
+query {
+  repository(owner: \"$OWNER\", name: \"$REPO_NAME\") {
+    pullRequest(number: $PR_N) {
+      reviewThreads(first: 50) {
+        nodes { id isResolved comments(first: 1) { nodes { databaseId } } }
+      }
+    }
+  }
+}" --jq '.data.repository.pullRequest.reviewThreads.nodes[] | select(.isResolved == false) | [.id, (.comments.nodes[0].databaseId | tostring)] | @tsv' \
+| while IFS=$'\t' read THREAD_ID COMMENT_DB_ID; do
+  gh api repos/wp-media/wp-rocket/pulls/$PR_N/comments \
+    --method POST -f body="Fixed in $FIX_SHA." -F "in_reply_to=$COMMENT_DB_ID" --silent
+  gh api graphql -f query="mutation { resolveReviewThread(input: { threadId: \"$THREAD_ID\" }) { thread { isResolved } } }" --silent
+done
+```
+
+Only run this block when `lead-reviewer` previously returned `inline_comments_posted: true` and there are unresolved threads. Skip silently if the GraphQL query returns zero unresolved threads.
+
 Log AGENT event with verdict, loop count, and any NTH items accumulated.
 
 ---
@@ -686,8 +714,12 @@ If the list is non-empty:
 
 ### Step 11 — Finalize
 
-1. Update PR body: replace "What was tested" with the full QA report
-2. Move PR out of draft — this step is **mandatory and must be verified**:
+1. **Collect all NTH ticket URLs** — gather every URL returned by `ticket-writer` throughout
+   the run (from grooming, challenger, lead review, and QA dispatches). Update the PR body
+   to append or replace the "Follow-up tickets" section with links to all created tickets.
+   If no NTH tickets were created, write "None".
+2. Update PR body: replace "What was tested" with the full QA report
+3. Move PR out of draft — this step is **mandatory and must be verified**:
    ```bash
    gh pr ready <PR#>
    # Verify isDraft == false
@@ -711,8 +743,8 @@ If the list is non-empty:
      || gh label create "Ready for review" --repo wp-media/wp-rocket --color "0e8a16" --description "Ready for human review" 2>/dev/null || true
    gh issue edit $ISSUE_N --add-label "Ready for review" 2>/dev/null || true
    ```
-3. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
-4. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
+4. Post final summary to the GitHub issue as a comment. The table is the entire body — no prose before or after it. Lead Review and QA details live on the PR; the issue comment must not repeat them.
+5. Log final ROUTING DECISION event: "Pipeline complete — READY FOR REVIEW"
 
 Final summary template:
 ```markdown
