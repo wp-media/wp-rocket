@@ -107,14 +107,14 @@
 		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
 
 		if ( isVisible && atLimit ) {
-			// Show collapsed for now; expand after a 15-second delay.
-			cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
-			cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
+			// Show "Nice work!" text immediately; keep banner collapsed for 15s then expand.
+			cta.classList.add( 'wpr-rocketcdn-cta--collapsed', 'wpr-rocketcdn-cta---max-limit' );
+			cta.classList.remove( 'wpr-rocketcdn-cta--expanded' );
 
 			autoExpandTimer = setTimeout( () => {
 				autoExpandTimer = null;
 				cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
-				cta.classList.add( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
+				cta.classList.add( 'wpr-rocketcdn-cta--expanded' );
 				document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 			}, 15000 );
 		} else {
