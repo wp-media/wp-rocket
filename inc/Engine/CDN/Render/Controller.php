@@ -714,7 +714,7 @@ class Controller extends Abstract_Render {
 	 * @return array Row data for the table-list-row partial.
 	 */
 	private function build_page_row( object $page ): array {
-		$disable_class = $this->is_subscription_loading() ? 'wpr-cdn-disabled' : '';
+		$disable_class = $this->should_disable_element_for_rocketcdn() ? 'wpr-cdn-disabled' : '';
 		$delete_button = '<button type="button" class="wpr-table-list__delete ' . esc_attr( $disable_class ) . '" data-id="' . esc_attr( $page->id ) . '" aria-label="' . esc_attr__( 'Remove page', 'rocket' ) . '">'
 			. '<span class="wpr-icon-trash"></span>'
 			. '</button>';
