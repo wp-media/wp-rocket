@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
+use WP_Rocket\Engine\MCP\Auth\ServiceProvider as McpAuthServiceProvider;
 use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
@@ -57,6 +58,14 @@ class Activation {
 		$container->get( 'logger' );
 		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
 		$event_manager->add_subscriber( $container->get( 'performance_hints_warmup_subscriber' ) );
+
+		$container->addServiceProvider( new McpAuthServiceProvider() );
+		// Discovery subscriber must be added before the auth subscriber: on 'rocket_activation',
+		// Auth\Subscriber::on_activation() flushes rewrite rules immediately, so the .well-known
+		// discovery rules must already be registered in memory before that flush runs, or they
+		// silently never make it into the DB.
+		$event_manager->add_subscriber( $container->get( 'mcp_auth_discovery_subscriber' ) );
+		$event_manager->add_subscriber( $container->get( 'mcp_auth_subscriber' ) );
 
 		$host_type = HostResolver::get_host_service();
 
