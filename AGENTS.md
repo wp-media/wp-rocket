@@ -355,7 +355,7 @@ The `qa-engineer` sub-agent validates PRs automatically after step 19 of the iss
 It reads the PR spec, selects a validation strategy (API / Browser / Analysis), and produces
 a structured test report.
 
-Agent definition: `.aiassistant/agents/qa-engineer.md`.
+Agent definition: `.claude/agents/qa-engineer.md`.
 
 The local WordPress environment at `http://localhost:8888` (admin / password) is used for
 browser validation via Playwright MCP. No containerised environment is required.
@@ -364,7 +364,7 @@ browser validation via Playwright MCP. No containerised environment is required.
 
 # 10. Skills Activation
 
-The repository defines AI Skills under `/.aiassistant/skills`.
+The repository defines AI Skills under `/.claude/skills`.
 
 Agents MUST activate the relevant skill depending on the task:
 
@@ -375,7 +375,7 @@ Agents MUST activate the relevant skill depending on the task:
 
 ## 10.1 Knowledge Graph
 
-A pre-built dependency graph is available at `.aiassistant/graph/dependency-graph.json`.
+A pre-built dependency graph is available at `.claude/graph/dependency-graph.json`.
 
 Before exploring the codebase structure (finding a class, tracing dependencies, checking
 namespace boundaries), **read this file first**. It contains:
@@ -399,7 +399,7 @@ assume this repository.
 
 The repository may define task-specific implementation specs under:
 
-`.aiassistant/specs/`
+`.claude/specs/`
 
 Specs provide detailed guidance for recurring technical problems
 (e.g. PHPCS warnings, architecture migrations, WordPress compliance patterns).
