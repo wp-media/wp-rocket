@@ -69,7 +69,7 @@ WP Rocket has no `docs/` directory or `README.md` that serves as public API docu
 
 Read the repo's PR template:
 ```bash
-cat .claude/skills/issue-workflow/references/pr-template.md
+cat .claude/skills/orchestrator/references/pr-template.md
 ```
 
 Then fetch the PR body:

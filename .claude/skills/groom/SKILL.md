@@ -21,7 +21,7 @@ temp convention:
 Ensure the issue file exists at `.ai/issues/<N>/issue.md`. Run:
 
 ```bash
-bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>
+bash .claude/skills/orchestrator/scripts/issue-sync.sh <N>
 ```
 
 If the file already exists and is recent (less than 5 minutes old), skip the sync.

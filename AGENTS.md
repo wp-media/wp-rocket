@@ -283,7 +283,7 @@ AI must NOT:
 
 By default, AI may only **suggest** commit messages and must not run `git commit` or `git push`.
 
-**Exception — Issue Workflow:** When operating under the issue-workflow skill (triggered by `/task <number>`, `issue <number>`, or `#<number>`), the agent MAY:
+**Exception — Issue Workflow:** When operating under the orchestrator skill (triggered by `/task <number>`, `issue <number>`, or `#<number>`), the agent MAY:
 
 1. Run atomic `git commit` calls — one commit per logical, self-contained change set.
 2. Run `git push` exactly once after all commits are ready, to publish the branch.

@@ -25,7 +25,7 @@ if [ ! -d "$ROOT_DIR" ]; then
 fi
 
 # Template path and output location (per-issue subfolder under .ai/issues/<N>/).
-TEMPLATE="${ROOT_DIR}/.claude/skills/issue-workflow/references/pr-template.md"
+TEMPLATE="${ROOT_DIR}/.claude/skills/orchestrator/references/pr-template.md"
 OUT_DIR="${ROOT_DIR}/.ai/issues/${ISSUE_NUMBER}"
 OUT_FILE="${OUT_DIR}/pull.md"
 

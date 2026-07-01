@@ -22,7 +22,7 @@ first to produce one." Stop here.
 
 If only the issue file is missing, sync it:
 ```bash
-bash .claude/skills/issue-workflow/scripts/issue-sync.sh <N>
+bash .claude/skills/orchestrator/scripts/issue-sync.sh <N>
 ```
 
 ## Step 2 — Invoke the challenger agent

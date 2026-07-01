@@ -2,11 +2,12 @@
 name: orchestrator
 description: >
   User-facing entry point for the wp-rocket issue workflow. Invoke directly to start a
-  delivery run from a GitHub issue number, URL, or raw description. Runs inline in your
-  conversation context; spawns specialist agents (ticket-writer, grooming-agent,
+  delivery run from a GitHub issue number (`#42`, `issue 42`, `/task 42`), a GitHub issue
+  URL, or a raw description. Runs inline in your conversation context; fetches and syncs
+  the issue itself; spawns specialist agents (ticket-writer, grooming-agent,
   challenger, backend-agent, frontend-agent, release-agent, lead-reviewer,
   qa-engineer) as isolated sub-agents; invokes supporting skills (knowledge-graph, dod,
-  docs, issue-workflow) inline. Routes based on structured JSON outputs from each
+  docs) inline. Routes based on structured JSON outputs from each
   agent, manages loop counters, handles escalations, and maintains a live HTML run log.
 ---
 
@@ -23,12 +24,12 @@ never execute commands beyond what is needed for routing.
 
 Accept any of the following as a starting point:
 - A GitHub issue number on `wp-media/wp-rocket` (`#42`, `issue 42`, `/task 42`) — the most
-  common entry path, handled via the `issue-workflow` skill which fetches the issue then
-  hands off to this orchestrator
+  common entry path. Fetch and sync it yourself in Step 1 (below) — there is no separate
+  intake skill.
 - A GitHub issue URL
 - Raw input (prose, Slack thread, paste) — in this case invoke the `ticket-writer` agent
   first to formalize the issue
-- `base_branch` — defaults to `origin/develop`
+- `base_branch` — defaults to `origin/develop` unless the user specified otherwise
 - `complexity_signal` (optional): `"medium"` (default) or `"complex"`. User's assessment of the issue's depth. Pass it through to `grooming-agent`. If omitted, default to `"medium"`.
 
 At startup, read `AGENTS.md` section 13 (Session Learnings) and extract relevant learnings
@@ -281,17 +282,31 @@ fields — prose is for human readability only.
 
 ## Pipeline
 
-### Step 1 — Issue read *(always)*
+### Step 1 — Issue intake *(always)*
 
-Read the issue file at `.ai/issues/<N>/issue.md` (produced by
-`issue-workflow` or `issue-sync.sh`). Extract title and acceptance criteria:
+If the entry was a GitHub issue number or URL, fetch and sync it yourself — there is no
+separate intake skill:
+
+1. **Fetch the issue** if `.ai/issues/<N>/issue.md` doesn't already exist (or is stale):
+   - Shell (primary): `bash .claude/skills/orchestrator/scripts/issue-sync.sh <N>`
+   - GitHub MCP (if connected): `mcp_github_github_issue_read` — shell is always the safe
+     fallback and is preferred for reliability
+2. **Check for parent epics** — if `Parent Epic (GitHub)` or `Parent Epics (Task List)` has
+   entries in the issue file, sync each parent with `issue-sync.sh <epic-N>` and read those
+   files for context.
+3. **Check if this is an Epic** — if the issue has label `epics`, Issue Type `EPIC`, or
+   lists sub-issues, ask the user: "Work the epic as a whole, or a specific sub-issue?" If a
+   sub-issue is chosen, sync it and proceed with the epic context in mind.
+4. **Determine base branch** — default `origin/develop` unless the user specified otherwise.
+
+If the entry was raw input rather than an issue number, invoke `ticket-writer` in `create`
+mode first to formalize the issue, then read the resulting file instead of syncing one.
+
+Read the issue file at `.ai/issues/<N>/issue.md`. Extract title and acceptance criteria:
 
 1. Look for `Acceptance Criteria`, `Definition of Done`, or `DoD` section
 2. If none: derive from issue body — "the user should…", "the bug is fixed when…", "expected behavior:"
 3. Store as a numbered list — pass explicitly to `lead-reviewer` and `qa-engineer`
-
-If the entry was raw input rather than an issue number, invoke `ticket-writer` in `create`
-mode first to formalize the issue, then read the resulting file.
 
 Create the initial HTML log (empty event list). Log a ROUTING DECISION event:
 "Pipeline started — reading issue #N. Calibration: <mode>."
@@ -420,7 +435,7 @@ ACCUMULATE event for each item added.
 ### Step 4 — Branch creation
 
 ```bash
-bash .claude/skills/issue-workflow/scripts/make-issue-branch.sh <N> "<title>" <prefix> <base_branch>
+bash .claude/skills/orchestrator/scripts/make-issue-branch.sh <N> "<title>" <prefix> <base_branch>
 ```
 
 Log AGENT event.
