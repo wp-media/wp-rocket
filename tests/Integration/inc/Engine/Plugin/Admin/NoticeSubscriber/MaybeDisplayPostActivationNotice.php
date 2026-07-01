@@ -34,6 +34,14 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 		}
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_post_activation_notice', 10 );
+
+		// Add a hook to capture when rocket_display_major_release_notice is fired
+		add_action(
+			'rocket_display_major_release_notice',
+			[ apply_filters( 'rocket_container', null )->get( 'rocketcdn_notices_subscriber' ), 'maybe_display_major_release_notice' ],
+			10,
+			1
+		);
 	}
 
 	public function tear_down() {
@@ -42,6 +50,13 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
 		set_current_screen( 'front' );
 		$this->restoreWpHook( 'admin_notices' );
+
+		// Remove our test hook.
+		remove_action(
+			'rocket_display_major_release_notice',
+			[ apply_filters( 'rocket_container', null )->get( 'rocketcdn_notices_subscriber' ), 'maybe_display_major_release_notice' ],
+			10
+		);
 
 		parent::tear_down();
 	}
