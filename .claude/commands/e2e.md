@@ -1,1 +1,0 @@
-../skills/e2e/SKILL.md

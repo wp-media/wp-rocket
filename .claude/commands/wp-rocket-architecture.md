@@ -1,1 +1,0 @@
-../skills/wp-rocket-architecture/SKILL.md
