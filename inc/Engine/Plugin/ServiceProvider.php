@@ -86,7 +86,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					),
 				]
 			);
-		$this->getContainer()->addShared( 'plugin_notice_subscriber', NoticeSubscriber::class )
-			->addArgument( 'ri_controller' );
+		$this->getContainer()->addShared( 'plugin_notice_subscriber', NoticeSubscriber::class );
 	}
 }

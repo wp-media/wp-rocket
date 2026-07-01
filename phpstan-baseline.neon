@@ -2,7 +2,7 @@ parameters:
 	ignoreErrors:
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
+			count: 1
 			path: inc/Engine/Plugin/Admin/NoticeSubscriber.php
 
 
@@ -178,7 +178,7 @@ parameters:
 
 		-
 			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 3
+			count: 4
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
 		-
