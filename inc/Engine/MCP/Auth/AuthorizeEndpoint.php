@@ -43,17 +43,19 @@ class AuthorizeEndpoint {
 	 * @return void
 	 */
 	public function handle_request(): void {
+		// phpcs:disable WordPress.Security.NonceVerification.Recommended -- OAuth 2.1 authorization request from an external client; CSRF protection is provided by the state parameter and PKCE, not a WP nonce.
 		$client_id             = esc_url_raw( wp_unslash( $_GET['client_id'] ?? '' ) );
 		$redirect_uri          = esc_url_raw( wp_unslash( $_GET['redirect_uri'] ?? '' ) );
 		$response_type         = sanitize_text_field( wp_unslash( $_GET['response_type'] ?? '' ) );
 		$code_challenge        = sanitize_text_field( wp_unslash( $_GET['code_challenge'] ?? '' ) );
 		$code_challenge_method = sanitize_text_field( wp_unslash( $_GET['code_challenge_method'] ?? '' ) );
 		$state                 = sanitize_text_field( wp_unslash( $_GET['state'] ?? '' ) );
+		// phpcs:enable WordPress.Security.NonceVerification.Recommended
 
 		McpLogger::log(
 			'AUTHORIZE',
 			'authorization request received',
-			array(
+			[
 				'response_type'         => $response_type,
 				'client_id'             => $client_id,
 				'redirect_uri'          => $redirect_uri,
@@ -61,7 +63,7 @@ class AuthorizeEndpoint {
 				'has_code_challenge'    => '' !== $code_challenge ? 'yes' : 'no',
 				'has_state'             => '' !== $state ? 'yes' : 'no',
 				'remote_addr'           => isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '',
-			)
+			]
 		);
 
 		// Validate the client and redirect_uri BEFORE using redirect_uri in any redirect.
@@ -70,41 +72,41 @@ class AuthorizeEndpoint {
 
 		if ( '' === $client_id ) {
 			McpLogger::log( 'AUTHORIZE', 'rejected: missing client_id' );
-			wp_die( esc_html__( 'client_id is required.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'client_id is required.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		$client = $this->resolver->resolve( $client_id );
 		if ( null === $client ) {
-			McpLogger::log( 'AUTHORIZE', 'rejected: client_id could not be resolved via CIMD', array( 'client_id' => $client_id ) );
-			wp_die( esc_html__( 'Unknown OAuth client.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			McpLogger::log( 'AUTHORIZE', 'rejected: client_id could not be resolved via CIMD', [ 'client_id' => $client_id ] );
+			wp_die( esc_html__( 'Unknown OAuth client.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		if ( empty( $client['verified'] ) ) {
-			McpLogger::log( 'AUTHORIZE', 'rejected: client not a verified publisher', array( 'client_id' => $client_id ) );
-			wp_die( esc_html__( 'This OAuth client is not a verified publisher.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			McpLogger::log( 'AUTHORIZE', 'rejected: client not a verified publisher', [ 'client_id' => $client_id ] );
+			wp_die( esc_html__( 'This OAuth client is not a verified publisher.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		if ( '' === $redirect_uri ) {
 			McpLogger::log( 'AUTHORIZE', 'rejected: missing redirect_uri' );
-			wp_die( esc_html__( 'redirect_uri is required.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'redirect_uri is required.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		if ( ! $this->redirect_uri_matches( $redirect_uri, $client['redirect_uris'] ) ) {
 			McpLogger::log(
 				'AUTHORIZE',
 				'rejected: redirect_uri mismatch',
-				array(
+				[
 					'provided'   => $redirect_uri,
 					'registered' => $client['redirect_uris'],
-				)
+				]
 			);
-			wp_die( esc_html__( 'redirect_uri does not match registered value.', 'wp-rocket' ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+			wp_die( esc_html__( 'redirect_uri does not match registered value.', 'rocket' ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 		}
 
 		// redirect_uri is now validated — remaining errors may safely redirect to it.
 
 		if ( 'code' !== $response_type ) {
-			McpLogger::log( 'AUTHORIZE', 'rejected: unsupported response_type', array( 'response_type' => $response_type ) );
+			McpLogger::log( 'AUTHORIZE', 'rejected: unsupported response_type', [ 'response_type' => $response_type ] );
 			$this->send_error( $redirect_uri, 'unsupported_response_type', $state );
 			return;
 		}
@@ -113,10 +115,10 @@ class AuthorizeEndpoint {
 			McpLogger::log(
 				'AUTHORIZE',
 				'rejected: missing or invalid PKCE params',
-				array(
+				[
 					'has_code_challenge'    => '' !== $code_challenge ? 'yes' : 'no',
 					'code_challenge_method' => $code_challenge_method,
-				)
+				]
 			);
 			$this->send_error( $redirect_uri, 'invalid_request', $state );
 			return;
@@ -135,17 +137,18 @@ class AuthorizeEndpoint {
 		// consent screen can be rendered after login without a second CIMD fetch.
 		set_transient(
 			'mcp_oauth_state_' . $state,
-			array(
+			[
 				'client_id'             => $client_id,
 				'client_name'           => (string) ( $client['client_name'] ?? '' ),
 				'client_uri'            => (string) ( $client['client_uri'] ?? '' ),
-				'verified'              => ! empty( $client['verified'] ),
+				// Already guaranteed truthy - the 'client not a verified publisher' guard above exits otherwise.
+				'verified'              => true,
 				'publisher'             => (string) ( $client['publisher'] ?? '' ),
 				'redirect_uri'          => $redirect_uri,
 				'code_challenge'        => $code_challenge,
 				'code_challenge_method' => $code_challenge_method,
 				'state'                 => $state,
-			),
+			],
 			self::STATE_TTL
 		);
 
@@ -157,10 +160,10 @@ class AuthorizeEndpoint {
 		McpLogger::log(
 			'AUTHORIZE',
 			'redirecting to login',
-			array(
+			[
 				'state'        => $state,
 				'callback_url' => $callback_url,
-			)
+			]
 		);
 
 		wp_redirect( $login_url ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect
@@ -224,7 +227,7 @@ class AuthorizeEndpoint {
 		$scheme = (string) ( $parts['scheme'] ?? '' );
 		$host   = (string) ( $parts['host'] ?? '' );
 
-		return 'http' === $scheme && in_array( $host, array( '127.0.0.1', 'localhost', '::1' ), true );
+		return 'http' === $scheme && in_array( $host, [ '127.0.0.1', 'localhost', '::1' ], true );
 	}
 
 	/**
@@ -237,14 +240,14 @@ class AuthorizeEndpoint {
 	 */
 	private function send_error( string $redirect_uri, string $error, string $state ): void {
 		if ( '' !== $redirect_uri ) {
-			$params = array( 'error' => $error );
+			$params = [ 'error' => $error ];
 			if ( '' !== $state ) {
 				$params['state'] = $state;
 			}
-			wp_redirect( add_query_arg( $params, $redirect_uri ) );
+			wp_redirect( add_query_arg( $params, $redirect_uri ) ); // phpcs:ignore WordPress.Security.SafeRedirect.wp_redirect_wp_redirect -- redirecting to the client's own registered redirect_uri, already validated against the CIMD allowlist; not a same-site redirect.
 			exit;
 		}
 
-		wp_die( esc_html( $error ), esc_html__( 'OAuth Error', 'wp-rocket' ), array( 'response' => 400 ) );
+		wp_die( esc_html( $error ), esc_html__( 'OAuth Error', 'rocket' ), [ 'response' => 400 ] );
 	}
 }

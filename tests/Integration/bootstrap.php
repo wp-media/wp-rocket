@@ -22,6 +22,7 @@ tests_add_filter(
 		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_false' );
 		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_false' );
 		add_filter( 'mcp_adapter_create_default_server', '__return_false' );
+		add_filter( 'rocket_enable_abilities', '__return_true' );
 
 		if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
@@ -284,6 +285,20 @@ tests_add_filter(
 				switch_theme( $theme_slug );
 			}
 		}
+
+		// Mock CDN CNAME validation HEAD requests so they return 200 without real HTTP calls in CI.
+		add_filter( 'pre_http_request', function ( $preempt, $args, $url ) {
+			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] && false !== strpos( $url, '/style.css' ) ) {
+				return [
+					'headers'  => [],
+					'body'     => '',
+					'response' => [ 'code' => 200, 'message' => 'OK' ],
+					'cookies'  => [],
+					'filename' => '',
+				];
+			}
+			return $preempt;
+		}, 10, 3 );
 
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';

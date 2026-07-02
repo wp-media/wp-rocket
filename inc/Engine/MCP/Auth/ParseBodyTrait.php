@@ -30,7 +30,7 @@ trait ParseBodyTrait {
 		if ( false !== strpos( $content_type, 'application/json' ) ) {
 			$raw  = substr( (string) file_get_contents( 'php://input' ), 0, 32768 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			$body = json_decode( '' !== $raw ? $raw : '{}', true );
-			return is_array( $body ) ? $body : array();
+			return is_array( $body ) ? $body : [];
 		}
 
 		// Form-encoded (application/x-www-form-urlencoded).

@@ -51,7 +51,7 @@ class ExecuteTest extends TestCase {
 		$option_name    = $input['option_name'];
 		$previous_value = $config['previous_value'];
 
-		Functions\when( 'rocket_sanitize_textarea_field' )->returnArg();
+		Functions\when( 'rocket_sanitize_textarea_field' )->returnArg( 2 );
 		Functions\when( 'sanitize_text_field' )->returnArg();
 		Functions\when( 'wp_strip_all_tags' )->alias( function ( $string, $remove_breaks ) {
 			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );

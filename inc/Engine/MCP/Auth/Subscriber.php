@@ -61,11 +61,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param AuthorizeEndpoint  $authorize_endpoint  Authorization endpoint.
-	 * @param AuthorizeCallback  $authorize_callback  Authorization callback.
-	 * @param TokenEndpoint      $token_endpoint      Token endpoint.
-	 * @param ConsentEndpoint    $consent_endpoint    Consent endpoint.
-	 * @param RevokeEndpoint     $revoke_endpoint     Revocation endpoint.
+	 * @param AuthorizeEndpoint $authorize_endpoint  Authorization endpoint.
+	 * @param AuthorizeCallback $authorize_callback  Authorization callback.
+	 * @param TokenEndpoint     $token_endpoint      Token endpoint.
+	 * @param ConsentEndpoint   $consent_endpoint    Consent endpoint.
+	 * @param RevokeEndpoint    $revoke_endpoint     Revocation endpoint.
 	 */
 	public function __construct(
 		AuthorizeEndpoint $authorize_endpoint,
@@ -87,14 +87,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array<string, string|array>
 	 */
 	public static function get_subscribed_events(): array {
-		return array(
-			'init'                            => 'register_oauth_rewrite_rules',
-			'query_vars'                      => 'add_oauth_query_vars',
-			'template_redirect'               => 'handle_oauth_request',
-			'wp_delete_application_password'  => array( 'purge_refresh_jti_meta', 10, 2 ),
-			'rocket_activation'               => 'on_activation',
-			'rocket_deactivation'             => 'on_deactivation',
-		);
+		return [
+			'init'                           => 'register_oauth_rewrite_rules',
+			'query_vars'                     => 'add_oauth_query_vars',
+			'template_redirect'              => 'handle_oauth_request',
+			'wp_delete_application_password' => [ 'purge_refresh_jti_meta', 10, 2 ],
+			'rocket_activation'              => 'on_activation',
+			'rocket_deactivation'            => 'on_deactivation',
+		];
 	}
 
 	/**
@@ -155,7 +155,7 @@ class Subscriber implements Subscriber_Interface {
 				break;
 			default:
 				status_header( 404 );
-				wp_die( esc_html__( 'Unknown OAuth endpoint.', 'wp-rocket' ), '', array( 'response' => 404 ) );
+				wp_die( esc_html__( 'Unknown OAuth endpoint.', 'rocket' ), '', [ 'response' => 404 ] );
 		}
 	}
 

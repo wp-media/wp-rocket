@@ -2,7 +2,19 @@ class RocketMixpanel {
 
 	trackedTabs = [
 		'dashboard',
-		'rocket_insights'
+		'rocket_insights',
+		'page_cdn',
+		'file_optimization',
+		'media',
+		'preload',
+		'advanced_cache',
+		'database',
+		'heartbeat',
+		'addons',
+		'imagify',
+		'tutorials',
+		'plugins',
+		'tools'
 	];
 
 	constructor( config ) {

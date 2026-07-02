@@ -6,8 +6,11 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetInsightsScore implements AbilitiesInterface {
+	use TrackingTrait;
+
 	/**
 	 * Rocket Insights Query instance.
 	 *
@@ -37,11 +40,24 @@ class GetInsightsScore implements AbilitiesInterface {
 	 * Registers the ability to get insights scores.
 	 */
 	public function register(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
 		wp_register_ability(
 			'wp-rocket/get-insights-scores',
 			[
 				'label'               => __( 'Get Rocket Insights Score', 'rocket' ),
-				'description'         => __( 'Gets detailed insights data for all pages monitored by Rocket Insights, and the global score.', 'rocket' ),
+				'description'         => _x(
+					'Returns a site-wide Rocket Insights summary with global_score, pages_monitored, is_running, and per-page results. Use include_metrics: true unless the user explicitly asks only for the global score.
+Do not open or read GTmetrix report_url links. You may show them as complementary report links.
+Use this when the user asks for a global score, site-wide overview, or all monitored pages. Do not use it for a specific page; use get-page-insights-score instead.
+If is_running is true or any result is not completed, tell the user tests are still in progress and only show completed results. Recheck every minute until remaining results are available. Do not show status when all results are completed. Do not show is_running unless at least one page result has is_running: true.
+Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.
+When showing scores or metrics, use only the approved performance colors and thresholds.',
+					'Ability description',
+					'rocket'
+					),
 				'category'            => 'wp-rocket-insights',
 				'input_schema'        => [
 					'anyOf' => [
@@ -131,6 +147,11 @@ class GetInsightsScore implements AbilitiesInterface {
 						'public' => true,
 					],
 					'show_in_rest' => true,
+					'annotations'  => [
+						'readonly'    => true,
+						'destructive' => false,
+						'idempotent'  => true,
+					],
 				],
 			]
 		);
@@ -153,6 +174,7 @@ class GetInsightsScore implements AbilitiesInterface {
 	 * @return array
 	 */
 	public function execute( $input = null ) {
+		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-insights-scores' ] );
 		$global_score = $this->global_score->get_global_score_data();
 		$results      = [];
 

@@ -23,26 +23,26 @@ class ClaudeClientVerifier {
 	 * @return array{verified: bool, publisher: string} Verification result.
 	 */
 	public function verify( string $client_id, array $doc ): array {
-		$unverified = array(
+		$unverified = [
 			'verified'  => false,
 			'publisher' => '',
-		);
+		];
 
 		foreach ( $this->get_trusted_publishers() as $publisher => $config ) {
 			if ( $this->matches_publisher( $client_id, $doc, (array) $config ) ) {
 				McpLogger::log(
 					'CIMD',
 					'client verified against trusted publisher',
-					array(
+					[
 						'client_id' => $client_id,
 						'publisher' => $publisher,
-					)
+					]
 				);
 
-				return array(
+				return [
 					'verified'  => true,
 					'publisher' => (string) $publisher,
-				);
+				];
 			}
 		}
 
@@ -67,7 +67,7 @@ class ClaudeClientVerifier {
 		}
 
 		foreach ( $this->get_trusted_publishers() as $config ) {
-			if ( $host === (string) ( ( (array) $config )['host'] ?? '' ) ) {
+			if ( (string) ( ( (array) $config )['host'] ?? '' ) === $host ) {
 				return true;
 			}
 		}
@@ -81,15 +81,15 @@ class ClaudeClientVerifier {
 	 * @return array<string, array<string, mixed>>
 	 */
 	private function get_trusted_publishers(): array {
-		return array(
-			'claude' => array(
-				'client_ids' => array(
+		return [
+			'claude' => [
+				'client_ids' => [
 					'https://claude.ai/oauth/claude-code-client-metadata',
 					'https://claude.ai/oauth/mcp-oauth-client-metadata',
-				),
+				],
 				'host'       => 'claude.ai',
-			),
-		);
+			],
+		];
 	}
 
 	/**
@@ -101,7 +101,7 @@ class ClaudeClientVerifier {
 	 * @return bool
 	 */
 	private function matches_publisher( string $client_id, array $doc, array $config ): bool {
-		$client_ids = (array) ( $config['client_ids'] ?? array() );
+		$client_ids = (array) ( $config['client_ids'] ?? [] );
 
 		// 1. Exact, known-good client_id URL (primary trust anchor).
 		if ( ! in_array( $client_id, $client_ids, true ) ) {
@@ -110,7 +110,7 @@ class ClaudeClientVerifier {
 
 		// 2. URL host must match the publisher host (defense in depth).
 		$host = (string) wp_parse_url( $client_id, PHP_URL_HOST );
-		if ( '' === $host || $host !== (string) ( $config['host'] ?? '' ) ) {
+		if ( '' === $host || (string) ( $config['host'] ?? '' ) !== $host ) {
 			return false;
 		}
 
