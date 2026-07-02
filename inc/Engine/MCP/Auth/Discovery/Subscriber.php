@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\MCP\Auth\Discovery;
 
+use WP_Rocket\Engine\MCP\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -14,12 +15,21 @@ class Subscriber implements Subscriber_Interface {
 	private $endpoints;
 
 	/**
+	 * OAuth server context.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Subscriber constructor.
 	 *
 	 * @param Endpoints $endpoints The discovery endpoints handler.
+	 * @param Context   $context   OAuth server context.
 	 */
-	public function __construct( Endpoints $endpoints ) {
+	public function __construct( Endpoints $endpoints, Context $context ) {
 		$this->endpoints = $endpoints;
+		$this->context   = $context;
 	}
 
 	/**
@@ -55,6 +65,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function add_rewrite_rules(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		$this->endpoints->add_rewrite_rules();
 	}
 
@@ -64,6 +78,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_request(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		$this->endpoints->handle_request();
 	}
 }
