@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\License\API\UserClient;
@@ -30,6 +31,11 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	private $user_client;
 
 	/**
+	 * @var Mockery\MockInterface|Context
+	 */
+	private $context;
+
+	/**
 	 * @var Mockery\MockInterface|AdminPageSubscriber
 	 */
 	private $subscriber;
@@ -41,10 +47,11 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 
 		$this->api_client  = Mockery::mock( APIClient::class );
 		$this->user_client = Mockery::mock( UserClient::class );
+		$this->context     = Mockery::mock( Context::class );
 
 		$this->subscriber = Mockery::mock(
 			AdminPageSubscriber::class . '[generate]',
-			[ $this->api_client, $this->user_client, '' ]
+			[ $this->api_client, $this->user_client, '', $this->context ]
 		);
 	}
 
