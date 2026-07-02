@@ -100,9 +100,6 @@ class Context {
 	/**
 	 * Returns true when the user has any RocketCDN plan (free or paid, regardless of running state).
 	 *
-	 * Unlike get_driver(), this does not return false for paused or inactive subscriptions —
-	 * it checks plan_type only, so it stays true while a Pro subscription is paused.
-	 *
 	 * @return bool
 	 */
 	public function has_rocketcdn_plan(): bool {
