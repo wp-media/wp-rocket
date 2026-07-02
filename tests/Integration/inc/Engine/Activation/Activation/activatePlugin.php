@@ -52,6 +52,15 @@ class Test_ActivatePlugin extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Changing the permalink structure fires 'permalink_structure_changed', which
+		// PerformanceHints subscribers listen to and use to truncate their tables.
+		// Install them so that hook doesn't hit missing-table DB errors during the test.
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
 		// Replicates the isolated container + event manager built inside
 		// Activation::activate_plugin() for the MCP Auth wiring specifically,
 		// without invoking the full method (which performs real HTTP/filesystem
@@ -73,6 +82,12 @@ class Test_ActivatePlugin extends TestCase {
 		$this->event_manager->remove_subscriber( $this->discovery_subscriber );
 		$this->event_manager->remove_subscriber( $this->auth_subscriber );
 
+		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		parent::tear_down();
 	}
 
@@ -93,61 +108,48 @@ class Test_ActivatePlugin extends TestCase {
 	}
 
 	/**
-	 * The discovery subscriber must be registered before the auth subscriber.
+	 * The discovery subscriber must run before the auth subscriber on rocket_activation.
 	 *
 	 * @return void
 	 */
 	public function testShouldRegisterDiscoverySubscriberBeforeAuthSubscriberOnRocketActivation() {
-		// Mirrors the exact registration order added in Activation::activate_plugin():
-		// discovery subscriber first, auth subscriber second.
 		$this->event_manager->add_subscriber( $this->discovery_subscriber );
 		$this->event_manager->add_subscriber( $this->auth_subscriber );
 
+		// Ordering is enforced by explicit hook priority (not add order): the discovery
+		// subscriber's rewrite rules must be in memory before the auth subscriber flushes them.
 		$this->assertSame(
-			10,
+			5,
 			has_action( 'rocket_activation', [ $this->discovery_subscriber, 'add_rewrite_rules' ] )
 		);
 		$this->assertSame(
-			10,
+			20,
 			has_action( 'rocket_activation', [ $this->auth_subscriber, 'on_activation' ] )
-		);
-
-		// WordPress fires same-priority callbacks in add order, so the discovery
-		// rewrite rules must be registered (add_action call order) strictly before
-		// the auth subscriber's callback, which flushes rewrite rules immediately.
-		global $wp_filter;
-
-		$callbacks    = array_keys( $wp_filter['rocket_activation']->callbacks[10] );
-		$discovery_at = array_search(
-			$this->get_hook_id( $this->discovery_subscriber, 'add_rewrite_rules' ),
-			$callbacks,
-			true
-		);
-		$auth_at      = array_search(
-			$this->get_hook_id( $this->auth_subscriber, 'on_activation' ),
-			$callbacks,
-			true
-		);
-
-		$this->assertNotFalse( $discovery_at );
-		$this->assertNotFalse( $auth_at );
-		$this->assertLessThan(
-			$auth_at,
-			$discovery_at,
-			'The discovery subscriber must be registered on rocket_activation before the auth subscriber, otherwise the .well-known rewrite rules are not in memory yet when the auth subscriber flushes rewrite rules.'
 		);
 	}
 
 	/**
-	 * Build the WordPress hook id for a [ $subscriber, $method ] callback the
-	 * same way WP_Hook does internally, so we can locate it in $wp_filter's
-	 * callback list regardless of internal spl_object_hash formatting.
+	 * After rocket_activation fires, the resulting flush must persist both the
+	 * .well-known discovery rules and the /oauth/* rules to the rewrite_rules
+	 * option — not just fire the hooks in the right order.
 	 *
-	 * @param object $subscriber Subscriber instance.
-	 * @param string $method     Method name.
-	 * @return string
+	 * @return void
 	 */
-	private function get_hook_id( $subscriber, string $method ): string {
-		return spl_object_hash( $subscriber ) . $method;
+	public function testShouldPersistDiscoveryAndOauthRewriteRulesAfterActivationFlush() {
+		$this->set_permalink_structure( '/%postname%/' );
+
+		$this->event_manager->add_subscriber( $this->discovery_subscriber );
+		$this->event_manager->add_subscriber( $this->auth_subscriber );
+
+		do_action( 'rocket_activation' );
+
+		global $wp_rewrite;
+		$rewrite_rules = $wp_rewrite->wp_rewrite_rules();
+
+		$this->assertIsArray( $rewrite_rules );
+		$this->assertArrayHasKey( '^\\.well-known/oauth-protected-resource$', $rewrite_rules );
+		$this->assertArrayHasKey( '^\\.well-known/oauth-authorization-server$', $rewrite_rules );
+		$this->assertArrayHasKey( '^oauth/authorize$', $rewrite_rules );
+		$this->assertArrayHasKey( '^oauth/token$', $rewrite_rules );
 	}
 }

@@ -314,5 +314,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
 		delete_transient( 'wp_rocket_pricing' );
 	}
+
+	if ( version_compare( $actual_version, '3.23', '<' ) ) {
+		flush_rewrite_rules();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
