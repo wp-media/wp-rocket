@@ -92,7 +92,7 @@ class Subscriber implements Subscriber_Interface {
 			'query_vars'                     => 'add_oauth_query_vars',
 			'template_redirect'              => 'handle_oauth_request',
 			'wp_delete_application_password' => [ 'purge_refresh_jti_meta', 10, 2 ],
-			'rocket_activation'              => 'on_activation',
+			'rocket_activation'              => [ 'on_activation', 20 ],
 			'rocket_deactivation'            => 'on_deactivation',
 		];
 	}

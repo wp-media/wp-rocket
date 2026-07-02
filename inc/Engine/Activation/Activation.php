@@ -60,10 +60,8 @@ class Activation {
 		$event_manager->add_subscriber( $container->get( 'performance_hints_warmup_subscriber' ) );
 
 		$container->addServiceProvider( new McpAuthServiceProvider() );
-		// Discovery subscriber must be added before the auth subscriber: on 'rocket_activation',
-		// Auth\Subscriber::on_activation() flushes rewrite rules immediately, so the .well-known
-		// discovery rules must already be registered in memory before that flush runs, or they
-		// silently never make it into the DB.
+		// Discovery subscriber runs at priority 5 on 'rocket_activation', before Auth\Subscriber::on_activation()
+		// (priority 20) flushes rewrite rules, so the .well-known rules are registered before the flush.
 		$event_manager->add_subscriber( $container->get( 'mcp_auth_discovery_subscriber' ) );
 		$event_manager->add_subscriber( $container->get( 'mcp_auth_subscriber' ) );
 
