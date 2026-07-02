@@ -61,6 +61,19 @@
 	}
 
 	/**
+	 * Shows or hides the limit-reached tooltip on the ADD PAGE button.
+	 *
+	 * @param {boolean} limitReached Whether the free-tier page limit has been reached.
+	 * @returns {void}
+	 */
+	function updateTooltipState( limitReached ) {
+		const tooltip = document.querySelector( '.wpr-cdn-add-page__button-wrapper .wpr-tooltip' );
+		if ( tooltip ) {
+			tooltip.classList.toggle( 'wpr-isHidden', ! limitReached );
+		}
+	}
+
+	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
 	 *
 	 * @param {number} count Current number of free-tier pages.
@@ -207,6 +220,28 @@
 			} );
 		}
 
+		/**
+		 * Updates the "Need Help?" link href for the CDN Exclusions section
+		 * to point to the correct docs article for the active driver.
+		 *
+		 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+		 */
+		function updateExcludeCdnHelpUrl( driver ) {
+			const link = document.querySelector( '.exclude-cdn-help-js' );
+			if ( ! link ) {
+				return;
+			}
+			const isRocketCdn = 'rocketcdn' === driver;
+			const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
+			const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
+			if ( url ) {
+				link.href = url;
+			}
+			if ( id ) {
+				link.dataset.beaconId = id;
+			}
+		}
+
 		tabs.forEach( ( tab ) => {
 			tab.addEventListener( 'click', () => {
 				const driver = tab.getAttribute( 'data-cdn-driver' );
@@ -224,6 +259,7 @@
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
+				updateExcludeCdnHelpUrl( driver );
 				notifyCdnStateChange();
 
 				// Initial value of the hidden input is set on page load by PHP based on the active driver.
@@ -262,6 +298,7 @@
 		// Set initial label from the active tab.
 		if ( activeTab ) {
 			updateDriverLabel( activeTab );
+			updateExcludeCdnHelpUrl( activeDriver );
 		}
 	}
 
@@ -282,11 +319,21 @@
 			button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
 			button.disabled = true;
 
+			const statusDot = document.querySelector( '.rocketcdn .wpr-cdn-indicator__dot' );
+			if ( statusDot ) {
+				statusDot.className = 'wpr-icon-orange-loader';
+			}
+
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/pause',
 				method: 'POST',
 				data: { paused: isPaused ? 0 : 1 },
 			} ).then( () => {
+				// Remove the loader.
+				if ( statusDot ) {
+					statusDot.className = 'wpr-cdn-indicator__dot';
+				}
+
 				button.disabled = false;
 
 				// Simulate real click to prepare checkbox state for form submission.
@@ -331,6 +378,11 @@
 				button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
 				button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
 				button.disabled = false;
+
+				// Remove the loader.
+				if ( statusDot ) {
+					statusDot.className = 'wpr-cdn-indicator__dot';
+				}
 			} );
 		} );
 	}
@@ -394,6 +446,10 @@
 				updateStatusIndicatorComponent( response.status_indicator_html );
 			} ).catch( () => {
 				button.disabled = false;
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 			} );
 		} );
 	}
@@ -475,6 +531,15 @@
 				if ( response.limit === response.count ) {
 					// Disable input and button when page limit is reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.add( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.add( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = true;
+					}
+					updateTooltipState( true );
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
@@ -488,6 +553,10 @@
 			} ).catch( () => {
 				input.disabled = false;
 				button.disabled = false;
+
+				if ( builtIn ) {
+					builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+				}
 			} );
 		}
 
@@ -565,6 +634,15 @@
 				if ( response.limit > response.count ) {
 					// Re-enable input and button when page limit is not reached.
 					document.querySelector( '.wpr-cdn-built-in' ).classList.remove( 'wpr-cdn-built-in--disabled' );
+					const addPageWrapper = document.querySelector( '.wpr-cdn-add-page__button-wrapper' );
+					if ( addPageWrapper ) {
+						addPageWrapper.classList.remove( 'wpr-btn-with-tool-tip' );
+					}
+					const addPageBtn = document.querySelector( '.wpr-cdn-add-page__button' );
+					if ( addPageBtn ) {
+						addPageBtn.disabled = false;
+					}
+					updateTooltipState( false );
 
 					// Track auto-collapse when deletion drops count just below the limit.
 					if ( response.count === response.limit - 1 ) {

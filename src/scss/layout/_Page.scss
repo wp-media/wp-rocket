@@ -103,6 +103,14 @@
             padding-bottom: 0;
         }
 
+		.wpr-dashboard-plans {
+
+			&>div {
+				margin-bottom: 10px;
+				text-align: left;
+			}
+		}
+
         .wpr-infoAccount{
             font-weight: bold;
             margin-left: $space;
@@ -133,6 +141,15 @@
                      background: $cGreen;
                      top: -1px;
                  }
+				 &.wpr-no-icon{
+					 &:before{
+						 content: '';
+						 background: none;
+						 width: 0;
+						 height: 0;
+						 margin-right: 0;
+					 }
+				 }
              }
 
             &.wpr-isInvalid{

@@ -3,9 +3,12 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
-use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\CDN\{
+	CNAMEValidator,
+	Drivers\DriverInterface,
+	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
+	RocketCDN\SubscriptionController
+};
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
@@ -68,15 +71,23 @@ class Subscriber implements Subscriber_Interface {
 	private $query;
 
 	/**
+	 * CNAME Validator instance.
+	 *
+	 * @var CNAMEValidator|null
+	 */
+	private $cname_validator;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data           $options WP Rocket Options_Data instance.
-	 * @param CDN                    $cdn     CDN instance.
-	 * @param Options                $options_api     Options instance.
+	 * @param Options_Data           $options                 WP Rocket Options_Data instance.
+	 * @param CDN                    $cdn                     CDN instance.
+	 * @param Options                $options_api             Options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
-	 * @param Cache                  $cache   Cache instance.
-	 * @param RocketCDNQuery         $query RocketCDN pages query.
-	 * @param DriverInterface|null   $driver   CDN Driver instance, optional.
+	 * @param Cache                  $cache                   Cache instance.
+	 * @param RocketCDNQuery         $query                   RocketCDN pages query.
+	 * @param DriverInterface|null   $driver                  CDN Driver instance, optional.
+	 * @param CNAMEValidator|null    $cname_validator         CNAME Validator instance, optional.
 	 */
 	public function __construct(
 		Options_Data $options,
@@ -85,7 +96,8 @@ class Subscriber implements Subscriber_Interface {
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
-		?DriverInterface $driver = null
+		?DriverInterface $driver = null,
+		?CNAMEValidator $cname_validator = null
 	) {
 		$this->options                 = $options;
 		$this->cdn                     = $cdn;
@@ -94,6 +106,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
+		$this->cname_validator         = $cname_validator;
 	}
 
 	/**
@@ -124,7 +137,10 @@ class Subscriber implements Subscriber_Interface {
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
-			'update_option_wp_rocket_settings'         => [ 'maybe_clear_cache', 10, 2 ],
+			'update_option_wp_rocket_settings'         => [
+				[ 'maybe_clear_cache', 10, 2 ],
+				[ 'maybe_clear_cname_cache', 10, 2 ],
+			],
 			'get_rocket_option_cdn'                    => 'apply_pause_on_rocketcdn_only',
 		];
 	}
@@ -478,17 +494,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
 		// Bail early.
-		if ( version_compare( $old_version, '3.22.0', '>=' ) ) {
+		if ( version_compare( $old_version, '3.22', '>=' ) ) {
 			return;
 		}
 
 		$has_active_subscription = $this->subscription_controller->has_active_subscription();
 		$cdn_type                = 'rocketcdn';
-		// Check if a CNAME is saved and no RocketCDN subscription, then default to byocdn.
+		// Check if a CNAME is saved, cdn is enabled, and no RocketCDN subscription, then default to byocdn.
 		if (
 			! $has_active_subscription
 			&&
-			! empty( $this->options->get( 'cdn_cnames', [] ) )
+			! empty( $this->options->get( 'cdn_cnames', [] ) ) && $this->is_cdn_enabled()
 		) {
 			$cdn_type = 'byocdn';
 		}
@@ -577,6 +593,30 @@ class Subscriber implements Subscriber_Interface {
 
 		// CDN type is changed, Clear whole cache.
 		$this->cache->clear_all_cache();
+	}
+
+	/**
+	 * Clears CNAME validation transients when CDN settings are saved.
+	 *
+	 * Runs on both old and new CNAME lists so no stale cache entry survives a
+	 * settings update regardless of whether CNAMEs were added or removed.
+	 *
+	 * @since 3.22.0.3
+	 *
+	 * @param mixed $old_value Previous option value.
+	 * @param mixed $value     New option value.
+	 * @return void
+	 */
+	public function maybe_clear_cname_cache( $old_value, $value ): void {
+		if ( null === $this->cname_validator ) {
+			return;
+		}
+
+		$old_cnames = is_array( $old_value ) && ! empty( $old_value['cdn_cnames'] ) ? (array) $old_value['cdn_cnames'] : [];
+		$new_cnames = is_array( $value ) && ! empty( $value['cdn_cnames'] ) ? (array) $value['cdn_cnames'] : [];
+		$all_cnames = array_filter( array_unique( array_merge( $old_cnames, $new_cnames ) ), 'is_string' );
+
+		$this->cname_validator->clear_validation_cache( $all_cnames );
 	}
 
 	/**

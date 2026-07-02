@@ -1,1 +1,1 @@
-../../.aiassistant/skills/issue-workflow/SKILL.md
+../skills/issue-workflow/SKILL.md

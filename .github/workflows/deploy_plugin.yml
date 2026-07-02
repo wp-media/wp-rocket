@@ -15,7 +15,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.3'
+          php-version: '7.4'
           tools: composer:v2
 
       - name: Get composer cache directory
@@ -52,13 +52,16 @@ jobs:
         working-directory: /tmp/wp-rocket
 
       - name: Zip Folder
-        run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          zip -r __wp-rocket_${VERSION#v}.zip wp-rocket
         working-directory: /tmp
 
       - name: Upload Zip
         run: |
+          VERSION=${{ github.event.release.tag_name }}
           curl -v -X POST \
             -H "Content-Type: multipart/form-data" \
-            -F "file=@/tmp/__wp-rocket_${GITHUB_REF##*v}.zip;type=application/zip" \
+            -F "file=@/tmp/__wp-rocket_${VERSION#v}.zip;type=application/zip" \
             -H "Authorization: Bearer ${{ secrets.UPLOAD_ZIP_TOKEN }}" \
             ${{ secrets.UPLOAD_ZIP_URL }}

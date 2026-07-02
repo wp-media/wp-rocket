@@ -116,7 +116,7 @@ class Context {
 	 * @return string
 	 */
 	private function rocketcdn_resolver(): string {
-		if ( ! $this->subscription_controller->has_active_subscription() ) {
+		if ( ! $this->subscription_controller->has_active_subscription() && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
 			return self::ROCKETCDN_TYPE;
 		}
 

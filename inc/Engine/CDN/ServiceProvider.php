@@ -28,6 +28,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'cdn',
+		'cdn_cname_validator',
 		'cdn_context',
 		'cdn_subscriber',
 		'cdn_admin_subscriber',
@@ -60,8 +61,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'cache_controller', Cache::class )
 			->addArgument( 'rocketcdn_query' );
+		$this->getContainer()->addShared( 'cdn_cname_validator', CNAMEValidator::class );
 		$this->getContainer()->addShared( 'cdn', CDN::class )
-			->addArgument( 'options' );
+			->addArguments(
+				[
+					'options',
+					'cdn_cname_validator',
+					'cdn_context',
+				]
+				);
 		$this->getContainer()->addShared( 'cdn_context', Context::class )
 			->addArguments(
 				[
@@ -113,6 +121,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cache_controller',
 					'rocketcdn_query',
 					'cdn_driver',
+					'cdn_cname_validator',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
@@ -128,6 +137,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_query',
 					'rocketcdn_subscription_controller',
 					'user',
+					'cache_controller',
 				]
 			);
 

@@ -51,6 +51,11 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
 			'pre_get_rocket_option_cdn'               => 'maybe_pause_cdn_for_inactive_subscription',
 			'rocket_cdn_free_before_status_indicator' => [ 'render_expired_wpr_licence_notice', 9 ],
+			'rocket_rocketcdn_status_indicator_texts' => [
+				[ 'get_free_status_indicator_texts', 10, 4 ],
+				[ 'get_paid_status_indicator_texts', 10, 4 ],
+			],
+			'admin_init'                              => 'maybe_auto_create_rocketcdn_free_subscription',
 		];
 	}
 
@@ -211,5 +216,44 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function render_expired_wpr_licence_notice(): void {
 		$this->controller->render_expired_wpr_licence_notice();
+	}
+
+	/**
+	 * Filters status indicator texts for the free RocketCDN tier.
+	 *
+	 * @param array $texts                   Text strings for the status indicator.
+	 * @param int   $pages_count             Number of pages using RocketCDN.
+	 * @param bool  $is_subscription_loading Whether the subscription is loading.
+	 * @param bool  $free                    Whether this is for the free version.
+	 *
+	 * @return array
+	 */
+	public function get_free_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
+		return $this->controller->get_free_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
+	}
+
+	/**
+	 * Filters status indicator texts for the paid RocketCDN tier.
+	 *
+	 * @param array $texts                   Text strings for the status indicator.
+	 * @param int   $pages_count             Number of pages using RocketCDN.
+	 * @param bool  $is_subscription_loading Whether the subscription is loading.
+	 * @param bool  $free                    Whether this is for the free version.
+	 *
+	 * @return array
+	 */
+	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
+		return $this->controller->get_paid_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
+	}
+
+	/**
+	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return void
+	 */
+	public function maybe_auto_create_rocketcdn_free_subscription(): void {
+		$this->controller->maybe_auto_create_rocketcdn_free_subscription();
 	}
 }

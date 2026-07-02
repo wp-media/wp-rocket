@@ -11,6 +11,8 @@ package-lock.json
 /.TemporaryItems
 /.qa-screenshot
 /.e2e-temp
+.pipeline-logs/
+.playwright-mcp/
 
 # Claude Code user-local settings
 .claude/settings.local.json
