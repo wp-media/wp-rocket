@@ -5,7 +5,15 @@ namespace WP_Rocket\Engine\Admin\RocketInsights;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Admin\RocketInsights\{Database\Tables\RocketInsights as RITable,
+use WP_Rocket\Engine\Admin\RocketInsights\{
+	Abilities\GetInsightsScore,
+	Abilities\AddPageInsights,
+	Abilities\RetestPageInsights,
+	Abilities\RemovePageInsights,
+	Abilities\GetRecommendations,
+	Abilities\GetPageInsightsScore,
+	Abilities\Subscriber as AbilitiesSubscriber,
+	Database\Tables\RocketInsights as RITable,
 	Database\Queries\RocketInsights as RIQuery,
 	APIHandler\APIClient as RIAPIClient,
 	Context\Context,
@@ -68,6 +76,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_recommendations_rest',
 		'ri_recommendations_subscriber',
 		'ri_recommendations_settings_subscriber',
+		'ri_get_insights_scores_ability',
+		'ri_add_page_insights_ability',
+		'ri_retest_page_insights_ability',
+		'ri_remove_page_insights_ability',
+		'ri_get_recommendations_ability',
+		'ri_get_page_insights_score_ability',
+		'ri_abilities_subscriber',
 	];
 
 	/**
@@ -285,6 +300,68 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_recommendations_render',
 					'ri_context',
 					'ri_recommendations_data_manager',
+				]
+			);
+
+		$this->getContainer()->add( 'ri_get_insights_scores_ability', GetInsightsScore::class )
+			->addArguments(
+				[
+					'ri_query',
+					'ri_global_score',
+				]
+			);
+
+		$this->getContainer()->add( 'ri_add_page_insights_ability', AddPageInsights::class )
+			->addArguments(
+				[
+					'ri_context',
+					'ri_manager',
+					'job_processor',
+					'job_manager_queue',
+					'ri_query',
+					'ri_plan',
+				]
+			);
+
+		$this->getContainer()->add( 'ri_retest_page_insights_ability', RetestPageInsights::class )
+			->addArguments(
+				[
+					'ri_context',
+					'ri_manager',
+					'job_processor',
+					'job_manager_queue',
+				]
+			);
+
+		$this->getContainer()->add( 'ri_remove_page_insights_ability', RemovePageInsights::class )
+			->addArguments(
+				[
+					'ri_context',
+					'ri_query',
+				]
+			);
+
+		$this->getContainer()->add( 'ri_get_recommendations_ability', GetRecommendations::class )
+			->addArgument( 'ri_recommendations_data_manager' );
+
+		$this->getContainer()->add( 'ri_get_page_insights_score_ability', GetPageInsightsScore::class )
+			->addArguments(
+				[
+					'ri_query',
+					'ri_plan',
+				]
+			);
+
+		$this->getContainer()->addShared( 'ri_abilities_subscriber', AbilitiesSubscriber::class )
+			->addArguments(
+				[
+					'ri_get_insights_scores_ability',
+					'ri_add_page_insights_ability',
+					'ri_retest_page_insights_ability',
+					'ri_remove_page_insights_ability',
+					'ri_get_recommendations_ability',
+					'ri_get_page_insights_score_ability',
+					'abilities_context',
 				]
 			);
 
