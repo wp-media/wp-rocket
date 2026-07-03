@@ -150,10 +150,28 @@ class NoticeSubscriber implements Subscriber_Interface {
 		/**
 		 * Fires to display activation notice.
 		 *
-		 * @param string $message Default activation notce.
+		 * @param string $message Default activation notice.
 		 * @param string $dismiss_key Dismiss key.
 		 */
 		do_action( 'rocket_display_activation_notice', $message, self::ACTIVATION_NOTICE_KEY );
+
+		/**
+		 * Filters whether to display the default activation notice.
+		 *
+		 * Return false to suppress the default notice.
+		 *
+		 * @param bool $display Whether to display the default notice.
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_display_default_notice', true ) ) {
+			return;
+		}
+
+		rocket_notice_html(
+			[
+				'status'  => 'success',
+				'message' => $message,
+			]
+		);
 	}
 
 	/**

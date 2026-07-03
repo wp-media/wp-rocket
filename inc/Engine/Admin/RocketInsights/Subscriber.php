@@ -178,6 +178,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
 			'rocket_insights_add_homepage_notice'         => 'notice_add_homepage',
 			'rocket_display_activation_notice'            => [ 'maybe_display_activation_notice', 10, 2 ],
+			'rocket_display_default_notice'               => 'maybe_display_default_notice',
 			'rocket_deactivation'                         => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
@@ -420,6 +421,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Filters whether to display the default activation notice.
+	 *
+	 * Returns false when Rocket Insights is enabled and will render its own notice.
+	 *
+	 * @param bool $display Whether to display the default notice.
+	 *
+	 * @return bool
+	 */
+	public function maybe_display_default_notice( bool $display ): bool {
+		return $display && ! $this->context->is_allowed();
+	}
+
+	/**
 	 * Renders the new-user activation notice.
 	 *
 	 * @param string $message Default notice message.
@@ -428,20 +442,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_display_activation_notice( string $message, string $dismiss_key ): void {
-		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
-		$rocket_insights_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
-
-		if ( ! $rocket_insights_enabled ) {
-			rocket_notice_html(
-				[
-					'status'  => 'success',
-					'message' => $message,
-				]
-			);
-
-			return;
-		}
-
 		$message = sprintf(
 			// translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing strong, %4$s = opening link tag, %5$s = closing link.
 			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
