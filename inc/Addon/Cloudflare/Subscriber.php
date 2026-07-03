@@ -66,6 +66,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cron_deactivate_cloudflare_devmode' => 'deactivate_devmode',
 			'rocket_after_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
+			'after_rocket_clean_home'                   => 'auto_purge',
+			'after_rocket_clean_files'                  => 'auto_purge',
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
 			'update_option_' . $slug                    => [
