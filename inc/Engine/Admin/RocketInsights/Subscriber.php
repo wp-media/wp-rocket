@@ -442,6 +442,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_display_activation_notice( string $message, string $dismiss_key ): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
 		$message = sprintf(
 			// translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing strong, %4$s = opening link tag, %5$s = closing link.
 			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),

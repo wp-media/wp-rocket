@@ -161,6 +161,44 @@ return [
 	],
 
 	// -------------------------------------------------------------------------
+	// Activation notice — Rocket Insights disabled (default notice, no buttons)
+	// -------------------------------------------------------------------------
+
+	'shouldDisplayDefaultActivationNoticeWhenRIDisabled'     => [
+		'config'   => [
+			'rocket_insights_enabled' => false,
+			'role'                    => 'administrator',
+			'screen'                  => 'dashboard',
+		],
+		'expected' => [
+			'display' => true,
+			'html'    => 'is good to go',
+		],
+	],
+	'shouldNotDisplayStartWithMyHomepageButtonWhenRIDisabled' => [
+		'config'   => [
+			'rocket_insights_enabled' => false,
+			'role'                    => 'administrator',
+			'screen'                  => 'dashboard',
+		],
+		'expected' => [
+			'display' => false,
+			'html'    => 'Start with my homepage',
+		],
+	],
+	'shouldNotDisplayDismissButtonWhenRIDisabled'             => [
+		'config'   => [
+			'rocket_insights_enabled' => false,
+			'role'                    => 'administrator',
+			'screen'                  => 'dashboard',
+		],
+		'expected' => [
+			'display' => false,
+			'html'    => 'Dismiss',
+		],
+	],
+
+	// -------------------------------------------------------------------------
 	// No notice — existing user whose previous version is beyond the major release series
 	// -------------------------------------------------------------------------
 

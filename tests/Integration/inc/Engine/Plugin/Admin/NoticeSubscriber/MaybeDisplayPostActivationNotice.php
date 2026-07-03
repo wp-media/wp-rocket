@@ -15,6 +15,15 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
+	/**
+	 * Closure used as the home_url filter to simulate a live site.
+	 *
+	 * Stored so the same reference can be passed to remove_filter().
+	 *
+	 * @var callable
+	 */
+	private $home_url_filter;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -33,9 +42,15 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
 
+		// Simulate a live site so Context::is_allowed() returns true and the RI notice is rendered.
+		$this->home_url_filter = function () {
+			return 'https://example.com';
+		};
+		add_filter( 'home_url', $this->home_url_filter );
+
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_post_activation_notice', 10 );
 
-		// Add a hook to capture when rocket_display_major_release_notice is fired
+		// rocketcdn_notices_subscriber is only initialized in admin context; register its callback manually.
 		add_action(
 			'rocket_display_major_release_notice',
 			[ apply_filters( 'rocket_container', null )->get( 'rocketcdn_notices_subscriber' ), 'maybe_display_major_release_notice' ],
@@ -45,13 +60,14 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'home_url', $this->home_url_filter );
+
 		delete_option( 'rocketcdn_user_token' );
 		delete_user_meta( self::$admin_user_id, 'rocket_boxes' );
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
 		set_current_screen( 'front' );
 		$this->restoreWpHook( 'admin_notices' );
 
-		// Remove our test hook.
 		remove_action(
 			'rocket_display_major_release_notice',
 			[ apply_filters( 'rocket_container', null )->get( 'rocketcdn_notices_subscriber' ), 'maybe_display_major_release_notice' ],
@@ -65,6 +81,11 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
+		// When the fixture disables RI, remove the live-site filter so Context::is_allowed() returns false.
+		if ( isset( $config['rocket_insights_enabled'] ) && ! $config['rocket_insights_enabled'] ) {
+			remove_filter( 'home_url', $this->home_url_filter );
+		}
+
 		$user_id = 'administrator' === $config['role'] ? self::$admin_user_id : self::$editor_user_id;
 
 		if ( array_key_exists( 'previous_version', $config ) ) {
