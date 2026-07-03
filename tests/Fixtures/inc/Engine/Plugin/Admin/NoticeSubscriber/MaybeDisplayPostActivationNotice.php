@@ -194,7 +194,7 @@ return [
 		],
 		'expected' => [
 			'display' => false,
-			'html'    => 'Dismiss',
+			'html'    => 'rocket-dismiss',
 		],
 	],
 

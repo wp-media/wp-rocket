@@ -15,15 +15,6 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
-	/**
-	 * Closure used as the home_url filter to simulate a live site.
-	 *
-	 * Stored so the same reference can be passed to remove_filter().
-	 *
-	 * @var callable
-	 */
-	private $home_url_filter;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -42,12 +33,6 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
 
-		// Simulate a live site so Context::is_allowed() returns true and the RI notice is rendered.
-		$this->home_url_filter = function () {
-			return 'https://example.com';
-		};
-		add_filter( 'home_url', $this->home_url_filter );
-
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_post_activation_notice', 10 );
 
 		// rocketcdn_notices_subscriber is only initialized in admin context; register its callback manually.
@@ -60,7 +45,7 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'home_url', $this->home_url_filter );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false', 20 );
 
 		delete_option( 'rocketcdn_user_token' );
 		delete_user_meta( self::$admin_user_id, 'rocket_boxes' );
@@ -81,9 +66,8 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
-		// When the fixture disables RI, remove the live-site filter so Context::is_allowed() returns false.
 		if ( isset( $config['rocket_insights_enabled'] ) && ! $config['rocket_insights_enabled'] ) {
-			remove_filter( 'home_url', $this->home_url_filter );
+			add_filter( 'rocket_rocket_insights_enabled', '__return_false', 20 );
 		}
 
 		$user_id = 'administrator' === $config['role'] ? self::$admin_user_id : self::$editor_user_id;
