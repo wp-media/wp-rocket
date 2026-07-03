@@ -3416,9 +3416,9 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:627
 msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
+"RocketCDN is currently paused because your WP Rocket licence has expired."
 msgstr ""
-"RocketCDN est actuellement en pause car votre licence WPRocket a expiré."
+"RocketCDN est actuellement en pause car votre licence WP Rocket a expiré."
 
 #: inc/Engine/CDN/Render/Controller.php:652
 msgid "Serving files from 100+ edge locations"
@@ -5941,8 +5941,8 @@ msgid "RESUME CDN"
 msgstr "REPRENDRE LE CDN"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
-msgid "Your WPRocket license has expired"
-msgstr "Votre licence WPRocket a expiré"
+msgid "Your WP Rocket license has expired"
+msgstr "Votre licence WP Rocket a expiré"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
 msgid "Please renew it to keep using RocketCDN."

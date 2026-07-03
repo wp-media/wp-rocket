@@ -20,7 +20,7 @@
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description wpr-notice-70">
 			<h3 class="wpr-cdn-expired__notice-title">
-				<?php esc_html_e( 'Your WPRocket license has expired', 'rocket' ); ?>
+				<?php esc_html_e( 'Your WP Rocket license has expired', 'rocket' ); ?>
 			</h3>
 			<p><?php esc_html_e( 'Please renew it to keep using RocketCDN.', 'rocket' ); ?></p>
 		</div>

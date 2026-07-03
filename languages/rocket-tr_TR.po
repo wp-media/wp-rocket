@@ -3347,9 +3347,9 @@ msgstr "Dosyalar 10 uç konumdan sunuluyor. 3 sayfaya kadar kapsar."
 
 #: inc/Engine/CDN/Render/Controller.php:627
 msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
+"RocketCDN is currently paused because your WP Rocket licence has expired."
 msgstr ""
-"WPRocket lisansınızın süresi dolduğundan RocketCDN şu anda duraklatıldı."
+"WP Rocket lisansınızın süresi dolduğundan RocketCDN şu anda duraklatıldı."
 
 #: inc/Engine/CDN/Render/Controller.php:652
 msgid "Serving files from 100+ edge locations"
@@ -5847,8 +5847,8 @@ msgid "RESUME CDN"
 msgstr "CDN’yi SÜRDÜR"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
-msgid "Your WPRocket license has expired"
-msgstr "WPRocket lisansınızın süresi doldu"
+msgid "Your WP Rocket license has expired"
+msgstr "WP Rocket lisansınızın süresi doldu"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
 msgid "Please renew it to keep using RocketCDN."
