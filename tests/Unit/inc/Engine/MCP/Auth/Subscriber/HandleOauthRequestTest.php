@@ -95,14 +95,19 @@ class HandleOauthRequestTest extends TestCase {
 	}
 
 	/**
-	 * Test no endpoint handler receives dispatch when the OAuth server is disabled.
+	 * Test nothing happens when no route matched, regardless of enabled state.
 	 *
 	 * @return void
 	 */
 	public function testShouldNotDispatchWhenDisabled(): void {
-		$this->context->shouldReceive( 'is_enabled' )->once()->andReturn( false );
+		$this->context->shouldNotReceive( 'is_enabled' );
 
-		Functions\expect( 'get_query_var' )->never();
+		Functions\expect( 'get_query_var' )
+			->once()
+			->with( Subscriber::OAUTH_QUERY_VAR, '' )
+			->andReturn( '' );
+
+		Functions\expect( 'status_header' )->never();
 
 		$this->authorize_endpoint->shouldNotReceive( 'handle_request' );
 		$this->authorize_callback->shouldNotReceive( 'handle_request' );
@@ -111,6 +116,38 @@ class HandleOauthRequestTest extends TestCase {
 		$this->revoke_endpoint->shouldNotReceive( 'handle_request' );
 
 		$this->subscriber->handle_oauth_request();
+	}
+
+	/**
+	 * Test a clean 404 is forced when a stale rewrite rule routes a request
+	 * here while the OAuth server is disabled.
+	 *
+	 * @return void
+	 */
+	public function testShouldForce404WhenDisabledButRouteMatchedByStaleRewriteRule(): void {
+		global $wp_query;
+
+		$this->context->shouldReceive( 'is_enabled' )->once()->andReturn( false );
+
+		Functions\expect( 'get_query_var' )
+			->once()
+			->with( Subscriber::OAUTH_QUERY_VAR, '' )
+			->andReturn( 'authorize' );
+
+		$wp_query = Mockery::mock(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		$wp_query->shouldReceive( 'set_404' )->once();
+
+		Functions\expect( 'status_header' )->once()->with( 404 );
+
+		$this->authorize_endpoint->shouldNotReceive( 'handle_request' );
+		$this->authorize_callback->shouldNotReceive( 'handle_request' );
+		$this->token_endpoint->shouldNotReceive( 'handle_request' );
+		$this->consent_endpoint->shouldNotReceive( 'handle_request' );
+		$this->revoke_endpoint->shouldNotReceive( 'handle_request' );
+
+		$this->subscriber->handle_oauth_request();
+
+		$wp_query = null; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
 	}
 
 	/**

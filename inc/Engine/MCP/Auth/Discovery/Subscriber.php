@@ -78,10 +78,33 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_request(): void {
+		$discovery = (string) get_query_var( Endpoints::QUERY_VAR, '' );
+
+		if ( '' === $discovery ) {
+			return;
+		}
+
 		if ( ! $this->context->is_enabled() ) {
+			$this->force_404();
 			return;
 		}
 
 		$this->endpoints->handle_request();
+	}
+
+	/**
+	 * Force a clean 404 response.
+	 *
+	 * Used when a stale rewrite rule still routes a request to this endpoint
+	 * after the OAuth server has been disabled, before rewrite rules have
+	 * been flushed. Without this, WordPress's main query would fall through
+	 * to the homepage instead of returning a 404.
+	 *
+	 * @return void
+	 */
+	private function force_404(): void {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
 	}
 }

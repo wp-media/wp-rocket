@@ -146,13 +146,14 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_oauth_request(): void {
-		if ( ! $this->context->is_enabled() ) {
-			return;
-		}
-
 		$endpoint = (string) get_query_var( self::OAUTH_QUERY_VAR, '' );
 
 		if ( '' === $endpoint ) {
+			return;
+		}
+
+		if ( ! $this->context->is_enabled() ) {
+			$this->force_404();
 			return;
 		}
 
@@ -176,6 +177,22 @@ class Subscriber implements Subscriber_Interface {
 				status_header( 404 );
 				wp_die( esc_html__( 'Unknown OAuth endpoint.', 'rocket' ), '', [ 'response' => 404 ] );
 		}
+	}
+
+	/**
+	 * Force a clean 404 response.
+	 *
+	 * Used when a stale rewrite rule still routes a request to this endpoint
+	 * after the OAuth server has been disabled, before rewrite rules have
+	 * been flushed. Without this, WordPress's main query would fall through
+	 * to the homepage instead of returning a 404.
+	 *
+	 * @return void
+	 */
+	private function force_404(): void {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
 	}
 
 	/**
