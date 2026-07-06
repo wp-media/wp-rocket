@@ -38,6 +38,6 @@ class ServiceProvider extends AbstractServiceProvider {
 	public function register(): void {
 		$this->getContainer()->add( 'mcp_transport_server', Server::class );
 		$this->getContainer()->addShared( 'mcp_transport_subscriber', Subscriber::class )
-			->addArgument( 'mcp_transport_server' );
+			->addArguments( [ 'mcp_transport_server', 'mcp_context' ] );
 	}
 }

@@ -12,6 +12,7 @@ namespace WP_Rocket\Engine\MCP\Auth;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\MCP\Auth\Discovery\Endpoints as DiscoveryEndpoints;
 use WP_Rocket\Engine\MCP\Auth\Discovery\Subscriber as DiscoverySubscriber;
+use WP_Rocket\Engine\MCP\Context;
 
 /**
  * Service provider for the MCP Auth module.
@@ -35,6 +36,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'mcp_auth_discovery_subscriber',
 		'mcp_auth_rewrite',
 		'mcp_auth_subscriber',
+		'mcp_context',
 	];
 
 	/**
@@ -53,9 +55,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->addShared( 'mcp_context', Context::class );
+
 		$this->getContainer()->addShared( 'mcp_auth_discovery_endpoints', DiscoveryEndpoints::class );
 		$this->getContainer()->addShared( 'mcp_auth_discovery_subscriber', DiscoverySubscriber::class )
-			->addArgument( 'mcp_auth_discovery_endpoints' );
+			->addArguments( [ 'mcp_auth_discovery_endpoints', 'mcp_context' ] );
 
 		$this->getContainer()->addShared( 'mcp_auth_claude_verifier', ClaudeClientVerifier::class );
 		$this->getContainer()->addShared( 'mcp_auth_cimd_resolver', CimdResolver::class )
@@ -76,6 +80,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'mcp_auth_token_endpoint',
 					'mcp_auth_consent_endpoint',
 					'mcp_auth_revoke_endpoint',
+					'mcp_context',
 				]
 				);
 	}
