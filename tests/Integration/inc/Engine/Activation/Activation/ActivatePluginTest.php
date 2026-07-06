@@ -21,7 +21,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Activation
  * @group MCP
  */
-class Test_ActivatePlugin extends TestCase {
+class ActivatePluginTest extends TestCase {
 
 	/**
 	 * Event manager under test.
