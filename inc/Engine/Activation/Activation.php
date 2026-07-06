@@ -7,7 +7,6 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
-use WP_Rocket\Engine\MCP\Auth\ServiceProvider as McpAuthServiceProvider;
 use WP_Rocket\Engine\Preload\Activation\ServiceProvider as PreloadActivationServiceProvider;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
@@ -35,6 +34,9 @@ class Activation {
 		'action_scheduler_check',
 		'preload_activation',
 		'performance_hints_activation',
+		'mcp_auth_discovery_endpoints',
+		'mcp_auth_rewrite',
+		'mcp_secret_manager',
 	];
 
 	/**
@@ -58,12 +60,6 @@ class Activation {
 		$container->get( 'logger' );
 		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
 		$event_manager->add_subscriber( $container->get( 'performance_hints_warmup_subscriber' ) );
-
-		$container->addServiceProvider( new McpAuthServiceProvider() );
-		// Discovery subscriber runs at priority 5 on 'rocket_activation', before Auth\Subscriber::on_activation()
-		// (priority 20) flushes rewrite rules, so the .well-known rules are registered before the flush.
-		$event_manager->add_subscriber( $container->get( 'mcp_auth_discovery_subscriber' ) );
-		$event_manager->add_subscriber( $container->get( 'mcp_auth_subscriber' ) );
 
 		$host_type = HostResolver::get_host_service();
 
@@ -100,6 +96,10 @@ class Activation {
 		 * @since  3.1.5
 		 */
 		do_action( 'rocket_activation' );
+
+		// Flush once, after every activator has registered its rewrite rules
+		// (e.g. MCP Auth discovery and OAuth endpoints).
+		flush_rewrite_rules();
 
 		if ( rocket_valid_key() ) {
 			// Add All WP Rocket rules of the .htaccess file.

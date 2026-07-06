@@ -3,20 +3,22 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Activation\Activation;
 
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\Engine\MCP\Auth\ServiceProvider as McpAuthServiceProvider;
-use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Engine\Activation\ServiceProvider as ActivationServiceProvider;
+use WP_Rocket\Engine\MCP\Auth\Discovery\Endpoints;
+use WP_Rocket\Engine\MCP\Auth\Rewrite;
+use WP_Rocket\Engine\MCP\Auth\SecretManager;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering the MCP OAuth subscriber wiring added to
+ * Test class covering the MCP OAuth activation wiring in
  * \WP_Rocket\Engine\Activation\Activation::activate_plugin().
  *
- * Regression test for #8558: on first plugin activation, the isolated
- * container built by Activation::activate_plugin() must register both
- * `mcp_auth_discovery_subscriber` and `mcp_auth_subscriber` on
- * `rocket_activation`, with the discovery subscriber added first so its
- * rewrite rules exist in memory before the auth subscriber flushes them.
+ * Regression test for #8558: on first plugin activation, both the MCP Auth
+ * discovery rewrite rules and the OAuth rewrite rules must be registered
+ * (via ActivationInterface, dispatched by the container inflector) before
+ * Activation::activate_plugin()'s single trailing flush_rewrite_rules().
  *
  * @group Activation
  * @group MCP
@@ -24,25 +26,32 @@ use WP_Rocket\Tests\Integration\TestCase;
 class ActivatePluginTest extends TestCase {
 
 	/**
-	 * Event manager under test.
+	 * Isolated container replicating the Activation::activate_plugin() setup.
 	 *
-	 * @var Event_Manager
+	 * @var Container
 	 */
-	private $event_manager;
+	private $container;
 
 	/**
-	 * Discovery subscriber resolved from the container.
+	 * Discovery endpoints resolved from the container.
 	 *
-	 * @var mixed
+	 * @var Endpoints
 	 */
-	private $discovery_subscriber;
+	private $discovery_endpoints;
 
 	/**
-	 * Auth subscriber resolved from the container.
+	 * OAuth rewrite registration resolved from the container.
 	 *
-	 * @var mixed
+	 * @var Rewrite
 	 */
-	private $auth_subscriber;
+	private $rewrite;
+
+	/**
+	 * Secret manager resolved from the container.
+	 *
+	 * @var SecretManager
+	 */
+	private $secret_manager;
 
 	/**
 	 * Set up the isolated container the same way Activation::activate_plugin() does.
@@ -61,26 +70,29 @@ class ActivatePluginTest extends TestCase {
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
 
-		// Replicates the isolated container + event manager built inside
-		// Activation::activate_plugin() for the MCP Auth wiring specifically,
-		// without invoking the full method (which performs real HTTP/filesystem
-		// side effects unrelated to this fix).
-		$container = new Container();
-		$container->addServiceProvider( new McpAuthServiceProvider() );
+		// Replicates the isolated container built inside Activation::activate_plugin():
+		// registering the Activation ServiceProvider both provides the MCP Auth
+		// activation services and boots the ActivationInterface inflector, without
+		// invoking the full method (which performs real HTTP/filesystem side effects
+		// unrelated to this fix).
+		$this->container = new Container();
+		$this->container->add( 'template_path', new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views' ) );
+		$this->container->addServiceProvider( new ActivationServiceProvider() );
 
-		$this->event_manager        = new Event_Manager();
-		$this->discovery_subscriber = $container->get( 'mcp_auth_discovery_subscriber' );
-		$this->auth_subscriber      = $container->get( 'mcp_auth_subscriber' );
+		$this->discovery_endpoints = $this->container->get( 'mcp_auth_discovery_endpoints' );
+		$this->rewrite             = $this->container->get( 'mcp_auth_rewrite' );
+		$this->secret_manager      = $this->container->get( 'mcp_secret_manager' );
 	}
 
 	/**
-	 * Remove subscribers registered during the test.
+	 * Remove hooks registered during the test.
 	 *
 	 * @return void
 	 */
 	public function tear_down() {
-		$this->event_manager->remove_subscriber( $this->discovery_subscriber );
-		$this->event_manager->remove_subscriber( $this->auth_subscriber );
+		remove_action( 'rocket_activation', [ $this->discovery_endpoints, 'add_rewrite_rules' ] );
+		remove_action( 'rocket_activation', [ $this->rewrite, 'register_oauth_rewrite_rules' ] );
+		remove_action( 'rocket_activation', [ SecretManager::class, 'ensure_secret' ] );
 
 		self::uninstallPreloadCacheTable();
 		self::uninstallAtfTable();
@@ -92,56 +104,48 @@ class ActivatePluginTest extends TestCase {
 	}
 
 	/**
-	 * The container must resolve both MCP Auth subscribers without error.
+	 * The container must resolve all three MCP Auth activation services without error.
 	 *
 	 * @return void
 	 */
-	public function testContainerResolvesBothMcpAuthSubscribersWithoutError() {
-		$this->assertInstanceOf(
-			'WP_Rocket\Engine\MCP\Auth\Discovery\Subscriber',
-			$this->discovery_subscriber
+	public function testContainerResolvesMcpAuthActivationServicesWithoutError() {
+		$this->assertInstanceOf( Endpoints::class, $this->discovery_endpoints );
+		$this->assertInstanceOf( Rewrite::class, $this->rewrite );
+		$this->assertInstanceOf( SecretManager::class, $this->secret_manager );
+	}
+
+	/**
+	 * Resolving the services from the container must dispatch their activate()
+	 * method via the ActivationInterface inflector, registering their callbacks
+	 * on rocket_activation.
+	 *
+	 * @return void
+	 */
+	public function testShouldRegisterMcpAuthRewriteRulesOnRocketActivation() {
+		$this->assertNotFalse(
+			has_action( 'rocket_activation', [ $this->discovery_endpoints, 'add_rewrite_rules' ] )
 		);
-		$this->assertInstanceOf(
-			'WP_Rocket\Engine\MCP\Auth\Subscriber',
-			$this->auth_subscriber
+		$this->assertNotFalse(
+			has_action( 'rocket_activation', [ $this->rewrite, 'register_oauth_rewrite_rules' ] )
+		);
+		$this->assertNotFalse(
+			has_action( 'rocket_activation', [ SecretManager::class, 'ensure_secret' ] )
 		);
 	}
 
 	/**
-	 * The discovery subscriber must run before the auth subscriber on rocket_activation.
-	 *
-	 * @return void
-	 */
-	public function testShouldRegisterDiscoverySubscriberBeforeAuthSubscriberOnRocketActivation() {
-		$this->event_manager->add_subscriber( $this->discovery_subscriber );
-		$this->event_manager->add_subscriber( $this->auth_subscriber );
-
-		// Ordering is enforced by explicit hook priority (not add order): the discovery
-		// subscriber's rewrite rules must be in memory before the auth subscriber flushes them.
-		$this->assertSame(
-			5,
-			has_action( 'rocket_activation', [ $this->discovery_subscriber, 'add_rewrite_rules' ] )
-		);
-		$this->assertSame(
-			20,
-			has_action( 'rocket_activation', [ $this->auth_subscriber, 'on_activation' ] )
-		);
-	}
-
-	/**
-	 * After rocket_activation fires, the resulting flush must persist both the
-	 * .well-known discovery rules and the /oauth/* rules to the rewrite_rules
-	 * option — not just fire the hooks in the right order.
+	 * After rocket_activation fires and Activation::activate_plugin()'s trailing
+	 * flush runs, the resulting flush must persist both the .well-known discovery
+	 * rules and the /oauth/* rules to the rewrite_rules option — not just fire the
+	 * hooks in the right order.
 	 *
 	 * @return void
 	 */
 	public function testShouldPersistDiscoveryAndOauthRewriteRulesAfterActivationFlush() {
 		$this->set_permalink_structure( '/%postname%/' );
 
-		$this->event_manager->add_subscriber( $this->discovery_subscriber );
-		$this->event_manager->add_subscriber( $this->auth_subscriber );
-
 		do_action( 'rocket_activation' );
+		flush_rewrite_rules();
 
 		global $wp_rewrite;
 		$rewrite_rules = $wp_rewrite->wp_rewrite_rules();

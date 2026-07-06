@@ -31,7 +31,6 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'template_redirect' => 'handle_request',
 			'query_vars'        => 'add_oauth_query_vars',
-			'rocket_activation' => [ 'add_rewrite_rules', 5 ],
 			'init'              => 'add_rewrite_rules',
 		];
 	}
