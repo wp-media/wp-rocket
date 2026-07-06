@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\MCP\Transport;
 use WP\MCP\Abilities\DiscoverAbilitiesAbility;
 use WP\MCP\Abilities\ExecuteAbilityAbility;
 use WP\MCP\Abilities\GetAbilityInfoAbility;
+use WP_Rocket\Engine\MCP\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
@@ -17,12 +18,21 @@ class Subscriber implements Subscriber_Interface {
 	private $server;
 
 	/**
+	 * OAuth server context.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Server $server MCP server instance.
+	 * @param Server  $server  MCP server instance.
+	 * @param Context $context OAuth server context.
 	 */
-	public function __construct( Server $server ) {
-		$this->server = $server;
+	public function __construct( Server $server, Context $context ) {
+		$this->server  = $server;
+		$this->context = $context;
 	}
 
 	/**
@@ -47,6 +57,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_server(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		$this->server->register_server();
 	}
 

@@ -11,6 +11,7 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Engine\MCP\Auth;
 
+use WP_Rocket\Engine\MCP\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -59,6 +60,13 @@ class Subscriber implements Subscriber_Interface {
 	private RevokeEndpoint $revoke_endpoint;
 
 	/**
+	 * OAuth server context.
+	 *
+	 * @var Context
+	 */
+	private Context $context;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param AuthorizeEndpoint $authorize_endpoint  Authorization endpoint.
@@ -66,19 +74,22 @@ class Subscriber implements Subscriber_Interface {
 	 * @param TokenEndpoint     $token_endpoint      Token endpoint.
 	 * @param ConsentEndpoint   $consent_endpoint    Consent endpoint.
 	 * @param RevokeEndpoint    $revoke_endpoint     Revocation endpoint.
+	 * @param Context           $context             OAuth server context.
 	 */
 	public function __construct(
 		AuthorizeEndpoint $authorize_endpoint,
 		AuthorizeCallback $authorize_callback,
 		TokenEndpoint $token_endpoint,
 		ConsentEndpoint $consent_endpoint,
-		RevokeEndpoint $revoke_endpoint
+		RevokeEndpoint $revoke_endpoint,
+		Context $context
 	) {
 		$this->authorize_endpoint = $authorize_endpoint;
 		$this->authorize_callback = $authorize_callback;
 		$this->token_endpoint     = $token_endpoint;
 		$this->consent_endpoint   = $consent_endpoint;
 		$this->revoke_endpoint    = $revoke_endpoint;
+		$this->context            = $context;
 	}
 
 	/**
@@ -106,6 +117,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_oauth_rewrite_rules(): void {
+		if ( ! $this->context->is_enabled() ) {
+			return;
+		}
+
 		add_rewrite_rule( '^oauth/authorize$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize', 'top' );
 		add_rewrite_rule( '^oauth/authorize-callback$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize-callback', 'top' );
 		add_rewrite_rule( '^oauth/token$', 'index.php?' . self::OAUTH_QUERY_VAR . '=token', 'top' );
@@ -137,6 +152,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->context->is_enabled() ) {
+			$this->force_404();
+			return;
+		}
+
 		switch ( $endpoint ) {
 			case 'authorize':
 				$this->authorize_endpoint->handle_request();
@@ -157,6 +177,22 @@ class Subscriber implements Subscriber_Interface {
 				status_header( 404 );
 				wp_die( esc_html__( 'Unknown OAuth endpoint.', 'rocket' ), '', [ 'response' => 404 ] );
 		}
+	}
+
+	/**
+	 * Force a clean 404 response.
+	 *
+	 * Used when a stale rewrite rule still routes a request to this endpoint
+	 * after the OAuth server has been disabled, before rewrite rules have
+	 * been flushed. Without this, WordPress's main query would fall through
+	 * to the homepage instead of returning a 404.
+	 *
+	 * @return void
+	 */
+	private function force_404(): void {
+		global $wp_query;
+		$wp_query->set_404();
+		status_header( 404 );
 	}
 
 	/**
