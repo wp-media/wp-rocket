@@ -1,6 +1,9 @@
 name: Abilities Catalog PoC
 
 on:
+  push:
+    branches:
+      - feature/abilities-catalog-poc
   pull_request:
     branches:
       - feature/abilities-catalog-poc
