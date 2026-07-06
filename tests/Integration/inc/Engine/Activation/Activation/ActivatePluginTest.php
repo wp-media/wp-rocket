@@ -35,21 +35,21 @@ class ActivatePluginTest extends TestCase {
 	/**
 	 * Discovery endpoints resolved from the container.
 	 *
-	 * @var Endpoints
+	 * @var mixed
 	 */
 	private $discovery_endpoints;
 
 	/**
 	 * OAuth rewrite registration resolved from the container.
 	 *
-	 * @var Rewrite
+	 * @var mixed
 	 */
 	private $rewrite;
 
 	/**
 	 * Secret manager resolved from the container.
 	 *
-	 * @var SecretManager
+	 * @var mixed
 	 */
 	private $secret_manager;
 
