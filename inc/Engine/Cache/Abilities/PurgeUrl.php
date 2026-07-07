@@ -27,7 +27,7 @@ Use this when the user wants to force fresh content for specific pages without p
 Confirmation of the exact url or list of urls is required before calling. 
 First show the url to be cleared in a list style. Then ask: `Confirm you want to clear cache for this url?` if more than one url, use `these` and wait for a clear yes or no. 
 Only call this ability after the user gives an affirmative answer in the same turn.
-On success (success is true and error is empty), tell the user the page cache has been cleared and the next visit will regenerate it. If success is false, tell the user the cache could not be purged for the URL(s) listed in error, and that the likely reason is either no cache existed for that URL or a file permission issue prevented deletion; list all affected URLs if there is more than one.',
+On success (success is true and error is empty), tell the user the page cache has been cleared and the next visit will regenerate it. If success is false, error is an object keyed by URL, where each value is the specific reason that URL failed (e.g. an invalid URL format, a URL that does not belong to this site, or no cache found for that URL). Tell the user exactly which URLs failed and the reason for each one; do not group them under a single generic message.',
 					'Ability description',
 					'rocket'
 					),
@@ -63,11 +63,11 @@ On success (success is true and error is empty), tell the user the page cache ha
 							'description' => __( 'Indicates whether the url cache was succesfully purged', 'rocket' ),
 						],
 						'error'   => [
-							'type'        => 'array',
-							'items'       => [
+							'type'                 => 'object',
+							'additionalProperties' => [
 								'type' => 'string',
 							],
-							'description' => __( 'URLs whose cache could not be purged successfully.', 'rocket' ),
+							'description'          => __( 'Object keyed by URL for each URL whose cache could not be purged, with the reason as the value.', 'rocket' ),
 						],
 					],
 				],
@@ -114,10 +114,41 @@ On success (success is true and error is empty), tell the user the page cache ha
 		);
 
 		$urls = $input['url'];
-		$urls = is_array( $urls ) ? array_unique( $urls ) : $urls;
+		$urls = is_array( $urls ) ? array_unique( $urls ) : [ $urls ];
 
-		$result = rocket_clean_files( $urls );
-		$error  = array_keys( array_filter( $result, fn( $cleared ) => ! $cleared ) );
+		$valid_urls = [];
+		$error      = [];
+		$site_host  = wp_parse_url( home_url(), PHP_URL_HOST );
+
+		foreach ( $urls as $url ) {
+			// Check if url format is valid.
+			if ( false === filter_var( $url, FILTER_VALIDATE_URL ) ) {
+				$error[ $url ] = __( 'URL format is invalid.', 'rocket' );
+				continue;
+			}
+
+			// Check if url belongs to site.
+			if ( wp_parse_url( $url, PHP_URL_HOST ) !== $site_host ) {
+				$error[ $url ] = __( 'URL does not belong to this site.', 'rocket' );
+				continue;
+			}
+
+			// Check if url is from admin.
+			if ( strpos( $url, admin_url() ) === 0 ) {
+				$error[ $url ] = __( 'URL is an admin page.', 'rocket' );
+				continue;
+			}
+
+			$valid_urls[] = $url;
+		}
+
+		$cleaned_urls = ! empty( $valid_urls ) ? rocket_clean_files( $valid_urls ) : [];
+
+		foreach ( $cleaned_urls as $url => $cleared ) {
+			if ( ! $cleared ) {
+				$error[ $url ] = __( 'No cache found for this URL, or a file permission issue prevented cache clearing.', 'rocket' );
+			}
+		}
 
 		return [
 			'success' => empty( $error ),
