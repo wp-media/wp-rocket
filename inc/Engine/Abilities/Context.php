@@ -13,9 +13,9 @@ class Context {
 		/**
 		 * Filters whether WP Rocket abilities are enabled for MCP.
 		 *
-		 * @param bool $enabled Whether abilities are enabled. Default false.
+		 * @param bool $enabled Whether abilities are enabled. Default true.
 		 * @return bool
 		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_enable_abilities', false );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_enable_abilities', true );
 	}
 }
