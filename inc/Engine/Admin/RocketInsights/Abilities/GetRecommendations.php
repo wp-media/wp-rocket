@@ -88,9 +88,7 @@ For each recommendation, mcp_actionable: true means it can be applied with set-o
 					'rocket'
 					),
 				'category'            => 'wp-rocket-insights',
-				'input_schema'        => [
-					'type' => 'null',
-				],
+				'input_schema'        => [],
 				'output_schema'       => [
 					'type'       => 'object',
 					'properties' => [

@@ -10,6 +10,13 @@ class SetOption implements AbilitiesInterface {
 	use TrackingTrait;
 
 	/**
+	 * Allowed options instance.
+	 *
+	 * @var AllowedOptions
+	 */
+	private $allowed_options;
+
+	/**
 	 * Options that accept boolean values (0 or 1).
 	 */
 	private const BOOLEAN_OPTIONS = [
@@ -18,6 +25,7 @@ class SetOption implements AbilitiesInterface {
 		'cache_logged_user',
 		// File optimization - CSS.
 		'minify_css',
+		'minify_google_fonts',
 		'async_css',
 		'async_css_mobile',
 		'remove_unused_css',
@@ -58,11 +66,15 @@ class SetOption implements AbilitiesInterface {
 		'cloudflare_auto_settings',
 		// Heartbeat.
 		'control_heartbeat',
+		// Performance monitoring.
+		'performance_monitoring',
 		// Add-ons.
 		'varnish_auto_purge',
 		'sucury_waf_cache_sync',
 		// Analytics.
 		'analytics_enabled',
+		// Misc.
+		'emoji',
 	];
 
 	/**
@@ -70,6 +82,7 @@ class SetOption implements AbilitiesInterface {
 	 */
 	private const INTEGER_OPTIONS = [
 		'purge_cron_interval',
+		'performance_monitoring_schedule_frequency',
 	];
 
 	/**
@@ -115,9 +128,22 @@ class SetOption implements AbilitiesInterface {
 	private const ARRAY_OPTIONS = [
 		'cdn_cnames',
 		'cdn_zone',
+		'preload_fonts',
+		'dns_prefetch',
+		'preload_excluded_uri',
+		'cdn_reject_pages',
 		'delay_js_exclusions_selected',
 		'delay_js_exclusions_selected_exclusions',
 	];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AllowedOptions $allowed_options Allowed options instance.
+	 */
+	public function __construct( AllowedOptions $allowed_options ) {
+		$this->allowed_options = $allowed_options;
+	}
 
 	/**
 	 * Registers the set option ability.
@@ -148,6 +174,7 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 						'option_name'  => [
 							'type'        => 'string',
 							'description' => __( 'The name of the WP Rocket option to set', 'rocket' ),
+							'enum'        => $this->allowed_options->get(),
 						],
 						'option_value' => [
 							'anyOf'       => [
@@ -276,14 +303,7 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 	 * @return array List of allowed option names.
 	 */
 	private function get_allowed_options(): array {
-		return array_merge(
-			self::BOOLEAN_OPTIONS,
-			self::INTEGER_OPTIONS,
-			array_keys( self::ENUM_OPTIONS ),
-			self::STRING_OPTIONS,
-			self::TEXTAREA_FIELD_OPTIONS,
-			self::ARRAY_OPTIONS
-		);
+		return $this->allowed_options->get();
 	}
 
 	/**
