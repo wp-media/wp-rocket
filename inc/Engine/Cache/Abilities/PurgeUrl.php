@@ -27,7 +27,7 @@ Use this when the user wants to force fresh content for specific pages without p
 Confirmation of the exact url or list of urls is required before calling. 
 First show the url to be cleared in a list style. Then ask: `Confirm you want to clear cache for this url?` if more than one url, use `these` and wait for a clear yes or no. 
 Only call this ability after the user gives an affirmative answer in the same turn.
-On success, tell the user the page cache has been cleared and the next visit will regenerate it. If a URL was not cached, tell the user that URL was not cached and no action was needed for it.',
+On success (success is true and error is empty), tell the user the page cache has been cleared and the next visit will regenerate it. If success is false, tell the user the cache could not be purged for the URL(s) listed in error, and that the likely reason is either no cache existed for that URL or a file permission issue prevented deletion; list all affected URLs if there is more than one.',
 					'Ability description',
 					'rocket'
 					),
@@ -63,8 +63,11 @@ On success, tell the user the page cache has been cleared and the next visit wil
 							'description' => __( 'Indicates whether the url cache was succesfully purged', 'rocket' ),
 						],
 						'error'   => [
-							'type'        => 'string',
-							'description' => __( 'Error message if the url cache could not be purged', 'rocket' ),
+							'type'        => 'array',
+							'items'       => [
+								'type' => 'string',
+							],
+							'description' => __( 'URLs whose cache could not be purged successfully.', 'rocket' ),
 						],
 					],
 				],
@@ -107,11 +110,12 @@ On success, tell the user the page cache has been cleared and the next visit wil
 		$urls = $input['url'];
 		$urls = is_array( $urls ) ? array_unique( $urls ) : $urls;
 
-		rocket_clean_files( $urls );
+		$result = rocket_clean_files( $urls );
+		$error  = array_keys( array_filter( $result, fn( $cleared ) => ! $cleared ) );
 
 		return [
-			'success' => true,
-			'error'   => '',
+			'success' => empty( $error ),
+			'error'   => $error,
 		];
 	}
 }
