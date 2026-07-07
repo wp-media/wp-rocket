@@ -20,6 +20,6 @@ class Context {
 		 *
 		 * @param bool $enabled Whether the MCP OAuth server is enabled. Default true.
 		 */
-		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', true );
+		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', false );
 	}
 }
