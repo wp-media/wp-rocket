@@ -79,11 +79,30 @@ class OauthRewriteRulesTest extends TestCase {
 	}
 
 	/**
-	 * Test the OAuth rewrite rules are present by default (filter unset).
+	 * Test the OAuth rewrite rules are absent by default (filter unset).
 	 *
 	 * @return void
 	 */
-	public function testShouldRegisterRewriteRulesByDefault(): void {
+	public function testShouldNotRegisterRewriteRulesByDefault(): void {
+		$this->subscriber->register_oauth_rewrite_rules();
+
+		global $wp_rewrite;
+
+		$this->assertArrayNotHasKey( '^oauth/authorize$', $wp_rewrite->extra_rules_top );
+		$this->assertArrayNotHasKey( '^oauth/authorize-callback$', $wp_rewrite->extra_rules_top );
+		$this->assertArrayNotHasKey( '^oauth/token$', $wp_rewrite->extra_rules_top );
+		$this->assertArrayNotHasKey( '^oauth/consent$', $wp_rewrite->extra_rules_top );
+		$this->assertArrayNotHasKey( '^oauth/revoke$', $wp_rewrite->extra_rules_top );
+	}
+
+	/**
+	 * Test the OAuth rewrite rules are present when the filter enables the server.
+	 *
+	 * @return void
+	 */
+	public function testShouldRegisterRewriteRulesWhenEnabled(): void {
+		add_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
+
 		$this->subscriber->register_oauth_rewrite_rules();
 
 		global $wp_rewrite;
