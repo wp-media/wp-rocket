@@ -427,6 +427,7 @@ class Plugin {
 			'optimole_subscriber',
 			'abilities_subscriber',
 			'ri_abilities_subscriber',
+			'cache_abilities_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
