@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Abilities\Options\SetOption;
 
+use WP_Rocket\Engine\Abilities\Options\AllowedOptions;
 use WP_Rocket\Engine\Abilities\Options\SetOption;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -32,7 +33,7 @@ class CacheClearingTest extends TestCase {
 				break;
 
 			case 'set_option_execute':
-				$result = ( new SetOption() )->execute(
+				$result = ( new SetOption( new AllowedOptions() ) )->execute(
 					[
 						'option_name'  => $config['option_name'],
 						'option_value' => $config['option_value'],
