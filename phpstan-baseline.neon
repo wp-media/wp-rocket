@@ -311,16 +311,6 @@ parameters:
 			path: inc/Engine/License/Renewal.php
 
 		-
-			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 2
-			path: inc/Engine/MCP/Auth/SecretManager.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
-			path: inc/Engine/MCP/Auth/SecretManager.php
-
-		-
 			message: "#^Usage of apply_filters\\(\\) is discouraged\\. Use wpm_apply_filters_typed\\(\\) instead\\.$#"
 			count: 2
 			path: inc/Engine/Media/AboveTheFold/AJAX/Controller.php
