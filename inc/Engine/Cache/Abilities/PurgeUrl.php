@@ -105,7 +105,13 @@ On success (success is true and error is empty), tell the user the page cache ha
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/purge-url-cache' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/purge-url-cache',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 
 		$urls = $input['url'];
 		$urls = is_array( $urls ) ? array_unique( $urls ) : $urls;
