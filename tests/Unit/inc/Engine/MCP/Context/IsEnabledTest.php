@@ -30,7 +30,7 @@ class IsEnabledTest extends TestCase {
 
 		Filters\expectApplied( 'rocket_mcp_oauth_server_enabled' )
 			->once()
-			->with( true )
+			->with( false )
 			->andReturn( $config['filter_value'] );
 
 		$context = new Context();

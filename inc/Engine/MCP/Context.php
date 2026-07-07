@@ -18,7 +18,7 @@ class Context {
 		 * respond to any /oauth/* endpoint or /.well-known discovery request,
 		 * and does not register the MCP OAuth transport server.
 		 *
-		 * @param bool $enabled Whether the MCP OAuth server is enabled. Default true.
+		 * @param bool $enabled Whether the MCP OAuth server is enabled. Default false.
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_mcp_oauth_server_enabled', false );
 	}

@@ -13,10 +13,10 @@ return [
 		],
 		'expected' => false,
 	],
-	'testShouldReturnTrueWhenFilterIsTruthyNonBool' => [
+	'testShouldReturnFalseWhenFilterIsTruthyNonBool' => [
 		'config'   => [
 			'filter_value' => 'yes',
 		],
-		'expected' => true,
+		'expected' => false,
 	],
 ];
