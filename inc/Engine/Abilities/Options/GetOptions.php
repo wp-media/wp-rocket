@@ -437,7 +437,10 @@ Unless the user asks for another format, present settings as a grouped dashboard
 	 * @return array
 	 */
 	public function execute(): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-options' ] );
+		$this->track_event( 'MCP Ability Executed', [
+			'ability' => 'wp-rocket/get-options',
+			'context' => 'wp_plugin_mcp',
+		] );
 		$denylist = [
 			'secret_cache_key',
 			'cache_ssl',
