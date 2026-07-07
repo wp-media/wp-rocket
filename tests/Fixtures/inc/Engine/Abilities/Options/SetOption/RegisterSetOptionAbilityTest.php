@@ -2,14 +2,13 @@
 
 return [
 	'settings'  => [
-		'cache_webp'        => 0,
-		'minify_css'        => 1,
-		'purge_cron_unit'   => 'MINUTE_IN_SECONDS',
-		'critical_css'      => '',
-		'cdn_cnames'        => [],
+		'cache_webp'      => 0,
+		'minify_css'      => 1,
+		'purge_cron_unit' => 'MINUTE_IN_SECONDS',
+		'cdn_cnames'      => [],
 	],
 	'test_data' => [
-		'testShouldReturnErrorWhenUserLacksPermission' => [
+		'testShouldReturnErrorWhenUserLacksPermission'    => [
 			'config'   => [
 				'has_permission' => false,
 				'input'          => [
@@ -22,7 +21,7 @@ return [
 			],
 		],
 
-		'testShouldReturnErrorForMissingParameters' => [
+		'testShouldReturnErrorForMissingParameters'       => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => null,
@@ -32,7 +31,7 @@ return [
 			],
 		],
 
-		'testShouldReturnErrorForInvalidOptionName' => [
+		'testShouldReturnErrorForInvalidOptionName'       => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
@@ -41,9 +40,7 @@ return [
 				],
 			],
 			'expected' => [
-				'is_error' => false,
-				'success'  => false,
-				'error'    => 'Invalid option name: invalid_option_name. This option cannot be set via the ability.',
+				'is_error' => true,
 			],
 		],
 
@@ -63,7 +60,7 @@ return [
 			],
 		],
 
-		'testShouldSetEnumOptionWhenValid' => [
+		'testShouldSetEnumOptionWhenValid'                => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
@@ -79,23 +76,20 @@ return [
 			],
 		],
 
-		'testShouldSanitizeCriticalCssOption' => [
+		'testShouldRejectCriticalCssAsBlockedOption'      => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
 					'option_name'  => 'critical_css',
-					'option_value' => '<style>body{margin:0}</style>',
+					'option_value' => 'body{color:red}',
 				],
 			],
 			'expected' => [
-				'is_error'       => false,
-				'success'        => true,
-				'previous_value' => '',
-				'new_value'      => 'body{margin:0}',
+				'is_error' => true,
 			],
 		],
 
-		'testShouldSetArrayOptionWhenValid' => [
+		'testShouldSetArrayOptionWhenValid'               => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
@@ -111,7 +105,7 @@ return [
 			],
 		],
 
-		'testShouldReturnEmptyArrayForNonArrayInput' => [
+		'testShouldReturnEmptyArrayForNonArrayInput'      => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
@@ -127,7 +121,7 @@ return [
 			],
 		],
 
-		'testShouldMergeArrayOptionByDefault' => [
+		'testShouldMergeArrayOptionByDefault'             => [
 			'config'   => [
 				'has_permission' => true,
 				'input'          => [
