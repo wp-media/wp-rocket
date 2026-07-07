@@ -98,10 +98,10 @@ function rocket_init() {
 			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
 		}
 	}
+	require WP_ROCKET_ADMIN_PATH . 'options.php';
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
-		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
