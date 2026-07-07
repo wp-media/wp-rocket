@@ -145,10 +145,13 @@ If the user wants results, wait and check every minute with get-page-insights-sc
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [
-			'ability' => 'wp-rocket/retest-page-insights',
-			'context' => 'wp_plugin_mcp',
-		] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/retest-page-insights',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 		// Guard: local environments do not support performance monitoring.
 		if ( 'local' === wp_get_environment_type() ) {
 			return [
