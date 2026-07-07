@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Abilities\Options;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
@@ -255,16 +256,66 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 			];
 		}
 
-		$previous_value  = get_rocket_option( $option_name );
-		$sanitized_value = $this->sanitize_value( $option_name, $option_value, $update_mode, $previous_value );
+		$previous_options = ( new Options( 'wp_rocket_' ) )->get( 'settings', [] );
+		$previous_options = is_array( $previous_options ) ? $previous_options : [];
+		$previous_value   = get_rocket_option( $option_name );
+		$sanitized_value  = $this->sanitize_value( $option_name, $option_value, $update_mode, $previous_value );
 
 		update_rocket_option( $option_name, $sanitized_value );
+
+		$new_options                 = $previous_options;
+		$new_options[ $option_name ] = $sanitized_value;
+
+		$this->clear_cache_after_change( $previous_options, $new_options );
 
 		return [
 			'success'        => true,
 			'previous_value' => $previous_value,
 			'new_value'      => $sanitized_value,
 		];
+	}
+
+	/**
+	 * Add cache clearing for MCP.
+	 *
+	 * @param array $previous_options Full WP Rocket options array before the change.
+	 * @param array $new_options      Full WP Rocket options array after the change.
+	 * @return void
+	 */
+	private function clear_cache_after_change( array $previous_options, array $new_options ): void {
+		if (
+			( array_key_exists( 'minify_js', $previous_options ) && array_key_exists( 'minify_js', $new_options ) && $previous_options['minify_js'] !== $new_options['minify_js'] )
+			||
+			( array_key_exists( 'exclude_js', $previous_options ) && array_key_exists( 'exclude_js', $new_options ) && $previous_options['exclude_js'] !== $new_options['exclude_js'] )
+			||
+			( array_key_exists( 'cdn', $previous_options ) && array_key_exists( 'cdn', $new_options ) && $previous_options['cdn'] !== $new_options['cdn'] )
+			||
+			( array_key_exists( 'cdn_cnames', $previous_options ) && array_key_exists( 'cdn_cnames', $new_options ) && $previous_options['cdn_cnames'] !== $new_options['cdn_cnames'] )
+		) {
+			rocket_clean_minify( 'js' );
+		}
+
+		if (
+			( isset( $previous_options['do_caching_mobile_files'] ) && ! isset( $new_options['do_caching_mobile_files'] ) )
+			||
+			( ! isset( $previous_options['do_caching_mobile_files'] ) && isset( $new_options['do_caching_mobile_files'] ) )
+			||
+			( isset( $previous_options['do_caching_mobile_files'], $new_options['do_caching_mobile_files'] ) && $previous_options['do_caching_mobile_files'] !== $new_options['do_caching_mobile_files'] )
+			||
+			( ( $previous_options['cache_mobile'] ?? null ) !== ( $new_options['cache_mobile'] ?? null ) )
+		) {
+			rocket_generate_advanced_cache_file();
+		}
+
+		flush_rocket_htaccess( ! rocket_valid_key() );
+		rocket_generate_config_file();
+
+		if ( rocket_create_options_hash( $new_options ) !== rocket_create_options_hash( $previous_options ) ) {
+			rocket_clean_domain();
+
+			/** This action is documented in inc/admin/options.php */
+			do_action( 'rocket_options_changed', $new_options );
+		}
 	}
 
 	/**
