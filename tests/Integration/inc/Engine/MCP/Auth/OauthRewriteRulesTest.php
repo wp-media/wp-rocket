@@ -8,6 +8,7 @@ use WP_Rocket\Engine\MCP\Auth\AuthorizeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\CimdResolver;
 use WP_Rocket\Engine\MCP\Auth\ClaudeClientVerifier;
 use WP_Rocket\Engine\MCP\Auth\ConsentEndpoint;
+use WP_Rocket\Engine\MCP\Auth\Rewrite;
 use WP_Rocket\Engine\MCP\Auth\RevokeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\Subscriber;
 use WP_Rocket\Engine\MCP\Auth\TokenEndpoint;
@@ -50,6 +51,7 @@ class OauthRewriteRulesTest extends TestCase {
 		$context  = new Context();
 
 		$this->subscriber = new Subscriber(
+			new Rewrite(),
 			new AuthorizeEndpoint( $resolver ),
 			new AuthorizeCallback(),
 			new TokenEndpoint(),

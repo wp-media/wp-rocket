@@ -14,13 +14,23 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\MCP\Auth\Discovery;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\MCP\Auth\McpLogger;
 
-class Endpoints {
+class Endpoints implements ActivationInterface {
 	/**
 	 * Query var name used to route discovery requests.
 	 */
 	const QUERY_VAR = 'mcp_oauth_discovery';
+
+	/**
+	 * Registers this class's activation callback.
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ $this, 'add_rewrite_rules' ] );
+	}
 
 	/**
 	 * Register rewrite rules for the .well-known paths.

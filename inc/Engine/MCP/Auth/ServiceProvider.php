@@ -34,6 +34,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'mcp_auth_revoke_endpoint',
 		'mcp_auth_discovery_endpoints',
 		'mcp_auth_discovery_subscriber',
+		'mcp_auth_rewrite',
 		'mcp_auth_subscriber',
 		'mcp_context',
 	];
@@ -69,9 +70,11 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'mcp_auth_token_endpoint', TokenEndpoint::class );
 		$this->getContainer()->addShared( 'mcp_auth_consent_endpoint', ConsentEndpoint::class );
 		$this->getContainer()->addShared( 'mcp_auth_revoke_endpoint', RevokeEndpoint::class );
+		$this->getContainer()->addShared( 'mcp_auth_rewrite', Rewrite::class );
 		$this->getContainer()->addShared( 'mcp_auth_subscriber', Subscriber::class )
 			->addArguments(
 				[
+					'mcp_auth_rewrite',
 					'mcp_auth_authorize_endpoint',
 					'mcp_auth_authorize_callback',
 					'mcp_auth_token_endpoint',

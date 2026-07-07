@@ -2,9 +2,10 @@
 /**
  * MCP Auth Subscriber.
  *
- * Wires the OAuth 2.1 endpoint routing, rewrite rules, and plugin lifecycle
- * hooks via the WP Rocket event manager instead of directly calling
- * add_action / add_filter.
+ * Wires the OAuth 2.1 endpoint routing via the WP Rocket event manager
+ * instead of directly calling add_action / add_filter. Plugin lifecycle
+ * (activation) is handled separately by Rewrite and SecretManager, which
+ * implement ActivationInterface.
  */
 
 declare( strict_types=1 );
@@ -15,14 +16,16 @@ use WP_Rocket\Engine\MCP\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Registers OAuth endpoint routing, activation, and deactivation callbacks.
+ * Registers OAuth endpoint routing callbacks.
  */
 class Subscriber implements Subscriber_Interface {
 
 	/**
-	 * WordPress query var used to route OAuth endpoint requests.
+	 * OAuth rewrite rules and query var registration.
+	 *
+	 * @var Rewrite
 	 */
-	const OAUTH_QUERY_VAR = 'mcp_oauth_endpoint'; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound
+	private Rewrite $rewrite;
 
 	/**
 	 * Authorize endpoint handler.
@@ -69,6 +72,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
+	 * @param Rewrite           $rewrite             OAuth rewrite rules and query var registration.
 	 * @param AuthorizeEndpoint $authorize_endpoint  Authorization endpoint.
 	 * @param AuthorizeCallback $authorize_callback  Authorization callback.
 	 * @param TokenEndpoint     $token_endpoint      Token endpoint.
@@ -77,6 +81,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Context           $context             OAuth server context.
 	 */
 	public function __construct(
+		Rewrite $rewrite,
 		AuthorizeEndpoint $authorize_endpoint,
 		AuthorizeCallback $authorize_callback,
 		TokenEndpoint $token_endpoint,
@@ -84,6 +89,7 @@ class Subscriber implements Subscriber_Interface {
 		RevokeEndpoint $revoke_endpoint,
 		Context $context
 	) {
+		$this->rewrite            = $rewrite;
 		$this->authorize_endpoint = $authorize_endpoint;
 		$this->authorize_callback = $authorize_callback;
 		$this->token_endpoint     = $token_endpoint;
@@ -103,16 +109,14 @@ class Subscriber implements Subscriber_Interface {
 			'query_vars'                     => 'add_oauth_query_vars',
 			'template_redirect'              => 'handle_oauth_request',
 			'wp_delete_application_password' => [ 'purge_refresh_jti_meta', 10, 2 ],
-			'rocket_activation'              => 'on_activation',
-			'rocket_deactivation'            => 'on_deactivation',
 		];
 	}
 
 	/**
-	 * Register WordPress rewrite rules for all four OAuth endpoints.
+	 * Register WordPress rewrite rules for all five OAuth endpoints.
 	 *
-	 * Called both on the 'init' action (normal page load) and during plugin
-	 * activation to ensure rules are present before flush_rewrite_rules().
+	 * Called on the 'init' action (normal page load). Activation registers
+	 * the same rules independently via Rewrite::activate().
 	 *
 	 * @return void
 	 */
@@ -121,11 +125,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		add_rewrite_rule( '^oauth/authorize$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize', 'top' );
-		add_rewrite_rule( '^oauth/authorize-callback$', 'index.php?' . self::OAUTH_QUERY_VAR . '=authorize-callback', 'top' );
-		add_rewrite_rule( '^oauth/token$', 'index.php?' . self::OAUTH_QUERY_VAR . '=token', 'top' );
-		add_rewrite_rule( '^oauth/consent$', 'index.php?' . self::OAUTH_QUERY_VAR . '=consent', 'top' );
-		add_rewrite_rule( '^oauth/revoke$', 'index.php?' . self::OAUTH_QUERY_VAR . '=revoke', 'top' );
+		$this->rewrite->register_oauth_rewrite_rules();
 	}
 
 	/**
@@ -135,9 +135,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string[] Modified list.
 	 */
 	public function add_oauth_query_vars( array $vars ): array {
-		$vars[] = self::OAUTH_QUERY_VAR;
-
-		return $vars;
+		return $this->rewrite->add_oauth_query_vars( $vars );
 	}
 
 	/**
@@ -146,7 +144,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function handle_oauth_request(): void {
-		$endpoint = (string) get_query_var( self::OAUTH_QUERY_VAR, '' );
+		$endpoint = (string) get_query_var( Rewrite::OAUTH_QUERY_VAR, '' );
 
 		if ( '' === $endpoint ) {
 			return;
@@ -205,28 +203,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function purge_refresh_jti_meta( $user_id, $item ): void {
 		$this->token_endpoint->purge_refresh_jti_meta( (int) $user_id, (array) $item );
-	}
-
-	/**
-	 * Called during plugin activation to initialise the OAuth layer.
-	 *
-	 * Ensures the JWT signing secret exists, registers all rewrite rules,
-	 * and flushes them so OAuth endpoints are immediately reachable.
-	 *
-	 * @return void
-	 */
-	public function on_activation(): void {
-		SecretManager::ensure_secret();
-		$this->register_oauth_rewrite_rules();
-		flush_rewrite_rules();
-	}
-
-	/**
-	 * Called during plugin deactivation to remove the OAuth rewrite rules.
-	 *
-	 * @return void
-	 */
-	public function on_deactivation(): void {
-		flush_rewrite_rules();
 	}
 }

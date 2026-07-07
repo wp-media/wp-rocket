@@ -8,6 +8,7 @@ use Mockery;
 use WP_Rocket\Engine\MCP\Auth\AuthorizeCallback;
 use WP_Rocket\Engine\MCP\Auth\AuthorizeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\ConsentEndpoint;
+use WP_Rocket\Engine\MCP\Auth\Rewrite;
 use WP_Rocket\Engine\MCP\Auth\RevokeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\Subscriber;
 use WP_Rocket\Engine\MCP\Auth\TokenEndpoint;
@@ -85,6 +86,7 @@ class HandleOauthRequestTest extends TestCase {
 		$this->revoke_endpoint    = Mockery::mock( RevokeEndpoint::class );
 
 		$this->subscriber = new Subscriber(
+			new Rewrite(),
 			$this->authorize_endpoint,
 			$this->authorize_callback,
 			$this->token_endpoint,
@@ -104,7 +106,7 @@ class HandleOauthRequestTest extends TestCase {
 
 		Functions\expect( 'get_query_var' )
 			->once()
-			->with( Subscriber::OAUTH_QUERY_VAR, '' )
+			->with( Rewrite::OAUTH_QUERY_VAR, '' )
 			->andReturn( '' );
 
 		Functions\expect( 'status_header' )->never();
@@ -131,7 +133,7 @@ class HandleOauthRequestTest extends TestCase {
 
 		Functions\expect( 'get_query_var' )
 			->once()
-			->with( Subscriber::OAUTH_QUERY_VAR, '' )
+			->with( Rewrite::OAUTH_QUERY_VAR, '' )
 			->andReturn( 'authorize' );
 
 		$wp_query = Mockery::mock(); // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
@@ -165,7 +167,7 @@ class HandleOauthRequestTest extends TestCase {
 
 		Functions\expect( 'get_query_var' )
 			->once()
-			->with( Subscriber::OAUTH_QUERY_VAR, '' )
+			->with( Rewrite::OAUTH_QUERY_VAR, '' )
 			->andReturn( $config['endpoint'] );
 
 		$this->{$config['mock']}->shouldReceive( 'handle_request' )->once();

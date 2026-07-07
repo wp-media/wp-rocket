@@ -8,6 +8,7 @@ use Mockery;
 use WP_Rocket\Engine\MCP\Auth\AuthorizeCallback;
 use WP_Rocket\Engine\MCP\Auth\AuthorizeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\ConsentEndpoint;
+use WP_Rocket\Engine\MCP\Auth\Rewrite;
 use WP_Rocket\Engine\MCP\Auth\RevokeEndpoint;
 use WP_Rocket\Engine\MCP\Auth\Subscriber;
 use WP_Rocket\Engine\MCP\Auth\TokenEndpoint;
@@ -45,6 +46,7 @@ class RegisterOauthRewriteRulesTest extends TestCase {
 		$this->context = Mockery::mock( Context::class );
 
 		$this->subscriber = new Subscriber(
+			new Rewrite(),
 			Mockery::mock( AuthorizeEndpoint::class ),
 			Mockery::mock( AuthorizeCallback::class ),
 			Mockery::mock( TokenEndpoint::class ),

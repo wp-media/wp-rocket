@@ -11,15 +11,26 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\MCP\Auth;
 
+use WP_Rocket\Engine\Activation\ActivationInterface;
+
 /**
  * Secret Manager.
  */
-class SecretManager {
+class SecretManager implements ActivationInterface {
 
 	/**
 	 * WordPress option key where the JWT signing secret is stored.
 	 */
 	const OPTION_KEY = 'mcp_jwt_secret';
+
+	/**
+	 * Registers this class's activation callback.
+	 *
+	 * @return void
+	 */
+	public function activate() {
+		add_action( 'rocket_activation', [ self::class, 'ensure_secret' ] );
+	}
 
 	/**
 	 * Return the current site JWT signing secret, generating one if absent.
