@@ -34,6 +34,9 @@ class Activation {
 		'action_scheduler_check',
 		'preload_activation',
 		'performance_hints_activation',
+		'mcp_auth_discovery_endpoints',
+		'mcp_auth_rewrite',
+		'mcp_secret_manager',
 	];
 
 	/**
@@ -93,6 +96,10 @@ class Activation {
 		 * @since  3.1.5
 		 */
 		do_action( 'rocket_activation' );
+
+		// Flush once, after every activator has registered its rewrite rules
+		// (e.g. MCP Auth discovery and OAuth endpoints).
+		flush_rewrite_rules();
 
 		if ( rocket_valid_key() ) {
 			// Add All WP Rocket rules of the .htaccess file.

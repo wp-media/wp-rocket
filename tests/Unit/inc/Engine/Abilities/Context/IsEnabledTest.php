@@ -26,7 +26,7 @@ class IsEnabledTest extends TestCase {
 	public function testShouldReturnExpected( array $config, bool $expected ): void {
 		Filters\expectApplied( 'rocket_enable_abilities' )
 			->once()
-			->with( false )
+			->with( true )
 			->andReturn( $config['filter_value'] );
 
 		$context = new Context();
