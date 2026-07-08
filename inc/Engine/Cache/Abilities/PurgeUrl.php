@@ -22,12 +22,7 @@ class PurgeUrl implements AbilitiesInterface {
 			[
 				'label'               => __( 'Purge URL cache', 'rocket' ),
 				'description'         => _x(
-					'Clears the WP Rocket cache for one or more URLs. Each URL must be a valid URI.
-Use this when the user wants to force fresh content for specific pages without purging the entire cache. 
-Confirmation of the exact url or list of urls is required before calling. 
-First show the url to be cleared in a list style. Then ask: `Confirm you want to clear cache for this url?` if more than one url, use `these` and wait for a clear yes or no. 
-Only call this ability after the user gives an affirmative answer in the same turn.
-On success (success is true and error is empty), tell the user the page cache has been cleared and the next visit will regenerate it. If success is false, error is an object keyed by URL, where each value is the specific reason that URL failed (e.g. an invalid URL format, a URL that does not belong to this site, or no cache found for that URL). Tell the user exactly which URLs failed and the reason for each one; do not group them under a single generic message.',
+					'Clears WP Rocket cache for specific URL(s), not a full purge. Before calling: list the URL(s), ask "Confirm you want to clear cache for this url?" (use "these" if plural), and wait for a yes in the same turn. On success (success: true, error empty): say the cache was cleared and will regenerate on next visit. On failure: error is an object of url => reason; report each failed URL with its own reason, not a generic message.',
 					'Ability description',
 					'rocket'
 					),
