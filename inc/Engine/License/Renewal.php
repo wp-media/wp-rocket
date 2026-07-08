@@ -187,7 +187,8 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
-		$price = Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() );
+		$price = Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() )
+			. ' <span class="renewal-tax__info">' . esc_html__( '(excl. taxes)', 'rocket' ) . '</span>';
 
 		$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
