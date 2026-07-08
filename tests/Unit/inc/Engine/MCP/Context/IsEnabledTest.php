@@ -1,16 +1,17 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Abilities\Context;
+namespace WP_Rocket\Tests\Unit\inc\Engine\MCP\Context;
 
 use Brain\Monkey\Filters;
-use WP_Rocket\Engine\Abilities\Context;
+use Brain\Monkey\Functions;
+use WP_Rocket\Engine\MCP\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Tests for WP_Rocket\Engine\Abilities\Context::is_enabled()
+ * Tests for WP_Rocket\Engine\MCP\Context::is_enabled()
  *
- * @group Abilities
+ * @group MCP
  */
 class IsEnabledTest extends TestCase {
 	/**
@@ -24,9 +25,12 @@ class IsEnabledTest extends TestCase {
 	 * @return void
 	 */
 	public function testShouldReturnExpected( array $config, bool $expected ): void {
-		Filters\expectApplied( 'rocket_enable_abilities' )
+		Functions\when( '_doing_it_wrong' )->justReturn( null );
+		Functions\when( 'esc_attr' )->returnArg();
+
+		Filters\expectApplied( 'rocket_mcp_oauth_server_enabled' )
 			->once()
-			->with( true )
+			->with( false )
 			->andReturn( $config['filter_value'] );
 
 		$context = new Context();
