@@ -188,7 +188,7 @@ class Renewal extends Abstract_Render {
 	 */
 	private function get_banner_data() {
 		$price = Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() )
-			. ' <span class="renewal-tax__info">' . esc_html__( '(excl. taxes)', 'rocket' ) . '</span>';
+			. '! <span class="renewal-tax__info">' . esc_html__( '(excl. taxes)', 'rocket' ) . '</span>';
 
 		$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
@@ -201,7 +201,7 @@ class Renewal extends Abstract_Render {
 		if ( $this->is_grandfather() ) {
 			$message = sprintf(
 			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
-				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!', 'rocket' ),
+				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s', 'rocket' ),
 				'<strong>',
 				esc_html( $this->get_discount_percent() . '%' ),
 				'</strong>',
