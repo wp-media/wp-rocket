@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22.1-beta\n"
+"Project-Id-Version: WP Rocket 3.23-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-02T08:49:36+00:00\n"
+"POT-Creation-Date: 2026-07-08T14:05:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -1159,11 +1159,11 @@ msgstr ""
 msgid "weekly"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/GetOptions.php:42
+#: inc/Engine/Abilities/Options/GetOptions.php:421
 msgid "Get WP Rocket options"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/GetOptions.php:43
+#: inc/Engine/Abilities/Options/GetOptions.php:422
 msgctxt "Ability description"
 msgid ""
 "Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
@@ -1172,11 +1172,11 @@ msgid ""
 "Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors."
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:135
+#: inc/Engine/Abilities/Options/SetOption.php:161
 msgid "Set a WP Rocket option"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:136
+#: inc/Engine/Abilities/Options/SetOption.php:162
 msgctxt "Ability description"
 msgid ""
 "Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.\n"
@@ -1185,36 +1185,36 @@ msgid ""
 "A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn."
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:150
+#: inc/Engine/Abilities/Options/SetOption.php:176
 msgid "The name of the WP Rocket option to set"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:162
+#: inc/Engine/Abilities/Options/SetOption.php:189
 msgid "The value to set for the specified WP Rocket option"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:167
+#: inc/Engine/Abilities/Options/SetOption.php:194
 msgid "For array and textarea options: \"update\" (default) adds new entries to the existing list; \"replace\" overwrites the entire list."
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:177
+#: inc/Engine/Abilities/Options/SetOption.php:204
 msgid "Indicates whether the option was successfully set"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:181
+#: inc/Engine/Abilities/Options/SetOption.php:208
 msgid "Error message if the option could not be set"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:193
+#: inc/Engine/Abilities/Options/SetOption.php:220
 msgid "The previous value of the option before it was updated"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/SetOption.php:205
+#: inc/Engine/Abilities/Options/SetOption.php:232
 msgid "The new value of the option after it was updated"
 msgstr ""
 
 #. translators: %s: option name
-#: inc/Engine/Abilities/Options/SetOption.php:252
+#: inc/Engine/Abilities/Options/SetOption.php:285
 #, php-format
 msgid "Invalid option name: %s. This option cannot be set via the ability."
 msgstr ""
@@ -1309,7 +1309,7 @@ msgstr ""
 msgid "Error message if the page could not be added"
 msgstr ""
 
-#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:178
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:184
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
 #: inc/Engine/CDN/RocketCDN/Rest.php:264
@@ -3312,32 +3312,36 @@ msgstr ""
 msgid "Your %1$s%2$s license is about to expire%3$s: you will soon lose access to product updates and support."
 msgstr ""
 
+#: inc/Engine/License/Renewal.php:191
+msgid "(excl. taxes)"
+msgstr ""
+
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:194
+#: inc/Engine/License/Renewal.php:195
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr ""
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
-#: inc/Engine/License/Renewal.php:203
+#: inc/Engine/License/Renewal.php:204
 #, php-format
-msgid "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s!"
+msgid "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s"
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:527
+#: inc/Engine/License/Renewal.php:528
 #, php-format
 msgid "You need a valid license to continue using this feature. %1$sRenew now%2$s before losing access."
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:548
+#: inc/Engine/License/Renewal.php:549
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:576
+#: inc/Engine/License/Renewal.php:577
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -3470,19 +3474,23 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: inc/Engine/License/views/upgrade-item.php:49
-#: inc/Engine/License/views/upgrade-item.php:64
+#: inc/Engine/License/views/upgrade-item.php:41
+msgid "excl. taxes"
+msgstr ""
+
+#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:65
 msgid "Websites"
 msgstr ""
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:72
+#: inc/Engine/License/views/upgrade-item.php:73
 #, php-format
 msgid "%s websites"
 msgstr ""
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:80
+#: inc/Engine/License/views/upgrade-item.php:81
 #, php-format
 msgid "Upgrade to %s"
 msgstr ""
@@ -3505,6 +3513,106 @@ msgstr ""
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "You can use WP Rocket on more websites by upgrading your license (you will only pay the price difference between your current and new licenses)."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
+msgid "You must be logged in to authorise an MCP session."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:251
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
+msgid "OAuth Error"
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
+msgid "Missing state parameter."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
+msgid "Invalid or expired state. Please restart the authorization flow."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:127
+msgid "Authorize Access"
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:221
+msgid "Authorize access to your site?"
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:233
+msgid "ID:"
+msgstr ""
+
+#. translators: %s: publisher name
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:241
+#, php-format
+msgid "Verified publisher: %s"
+msgstr ""
+
+#. translators: 1: client name, 2: site name
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:251
+#, php-format
+msgid "%1$s is requesting access to the WP Rocket MCP tools on %2$s on your behalf."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:263
+msgid "Allow"
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:266
+msgid "Deny"
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
+msgid "client_id is required."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
+msgid "Unknown OAuth client."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
+msgid "This OAuth client is not a verified publisher."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
+msgid "redirect_uri is required."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
+msgid "redirect_uri does not match registered value."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
+msgid "Method not allowed."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
+msgid "Your session has expired. Please restart the authorization flow."
+msgstr ""
+
+#: inc/Engine/MCP/Auth/Subscriber.php:176
+msgid "Unknown OAuth endpoint."
+msgstr ""
+
+#: inc/Engine/MCP/Transport/OAuthHttpTransport.php:283
+msgid "MCP authentication required."
 msgstr ""
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
