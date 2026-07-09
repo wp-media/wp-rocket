@@ -146,7 +146,13 @@ Do not open or read GTmetrix report_url links. You may show them as complementar
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-page-insights-score' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/get-page-insights-score',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 		$url  = rocket_add_url_protocol( $input['url'] );
 		$url  = untrailingslashit( $url );
 		$rows = $this->query->get_rows_by_url( $url );
