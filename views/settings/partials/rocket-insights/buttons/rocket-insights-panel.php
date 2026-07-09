@@ -12,7 +12,7 @@ $rocket_insights_add_page_button_args = [
 		'id'          => 'add_page_speed_radar',
 		'data-source' => 'add-on page',
 	],
-	'icon' => [
+	'icon'       => [
 		'data' => '<span class="wpr-icon-plus"></span>',
 	],
 ];
