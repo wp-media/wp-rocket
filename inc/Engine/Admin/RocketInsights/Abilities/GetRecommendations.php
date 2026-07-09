@@ -146,7 +146,13 @@ For each recommendation, mcp_actionable: true means it can be applied with set-o
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-recommendations' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/get-recommendations',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 		$data = $this->data_manager->get_recommendations();
 
 		if ( false === $data ) {
