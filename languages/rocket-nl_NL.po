@@ -3257,7 +3257,7 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:627
 msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
+"RocketCDN is currently paused because your WP Rocket licence has expired."
 msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:652
@@ -5673,7 +5673,7 @@ msgid "RESUME CDN"
 msgstr ""
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
-msgid "Your WPRocket license has expired"
+msgid "Your WP Rocket license has expired"
 msgstr ""
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25

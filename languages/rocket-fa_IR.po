@@ -3277,9 +3277,9 @@ msgstr "ارائه فایل‌ها از 10 مکان حاشیه‌ای. پوشش 
 
 #: inc/Engine/CDN/Render/Controller.php:627
 msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
+"RocketCDN is currently paused because your WP Rocket licence has expired."
 msgstr ""
-"RocketCDN در حال حاضر متوقف شده است زیرا مجوز WPRocket شما منقضی شده است."
+"RocketCDN در حال حاضر متوقف شده است زیرا مجوز WP Rocket شما منقضی شده است."
 
 #: inc/Engine/CDN/Render/Controller.php:652
 msgid "Serving files from 100+ edge locations"
@@ -5696,7 +5696,7 @@ msgid "RESUME CDN"
 msgstr "ادامه CDN"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
-msgid "Your WPRocket license has expired"
+msgid "Your WP Rocket license has expired"
 msgstr "لایسنس شما منقضی شده است"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
