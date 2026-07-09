@@ -1489,6 +1489,18 @@ div.wpr-upgrade-prices.wpr-with-euro.wpr-with-promo {
   padding-left: 25%;
 }
 
+span.price-tax__info {
+  font-size: 13px;
+  color: #464F59;
+  margin-bottom: 13px;
+}
+
+span.renewal-tax__info {
+  color: #464F59;
+  font-size: 14px;
+  font-weight: 400;
+}
+
 .wpr-upgrade-price-symbol {
   font-size: 1.875rem;
   line-height: 1;
