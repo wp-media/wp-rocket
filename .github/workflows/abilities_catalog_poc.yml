@@ -56,4 +56,13 @@ jobs:
       run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Dump abilities catalog as JSON
+      env:
+        ABILITIES_CATALOG_OUTPUT_PATH: ${{ github.workspace }}/wp-rocket-abilities-catalog.json
       run: composer run-script test-integration-abilities-catalog
+
+    - name: Upload abilities catalog artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wp-rocket-abilities-catalog
+        path: wp-rocket-abilities-catalog.json
+        retention-days: 14

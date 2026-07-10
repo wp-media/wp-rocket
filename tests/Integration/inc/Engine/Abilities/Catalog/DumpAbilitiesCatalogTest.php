@@ -73,5 +73,10 @@ class DumpAbilitiesCatalogTest extends TestCase {
 		$json = wp_json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
 
 		fwrite( STDERR, "\n" . self::START_MARKER . "\n" . $json . "\n" . self::END_MARKER . "\n" );
+
+		// Also write to a file the CI workflow uploads as a downloadable artifact —
+		// avoids scraping the JSON out of the raw Action log by hand.
+		$outputPath = getenv( 'ABILITIES_CATALOG_OUTPUT_PATH' ) ?: sys_get_temp_dir() . '/wp-rocket-abilities-catalog.json';
+		file_put_contents( $outputPath, $json );
 	}
 }
