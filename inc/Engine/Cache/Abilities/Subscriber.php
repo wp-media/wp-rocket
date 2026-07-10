@@ -8,11 +8,11 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
-	 * PurgeUrl ability instance.
+	 * ClearUrlCache ability instance.
 	 *
-	 * @var PurgeUrl
+	 * @var ClearUrlCache
 	 */
-	private $purge_url;
+	private $clear_url_cache;
 
 	/**
 	 * Abilities context instance.
@@ -24,11 +24,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param PurgeUrl         $purge_url               The ability to purge url cache.
+	 * @param ClearUrlCache    $clear_url_cache               The ability to clear url cache.
 	 * @param AbilitiesContext $abilities_context       The abilities context instance.
 	 */
-	public function __construct( PurgeUrl $purge_url, AbilitiesContext $abilities_context ) {
-		$this->purge_url         = $purge_url;
+	public function __construct( ClearUrlCache $clear_url_cache, AbilitiesContext $abilities_context ) {
+		$this->clear_url_cache   = $clear_url_cache;
 		$this->abilities_context = $abilities_context;
 	}
 
@@ -39,20 +39,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_abilities_api_init'            => 'register_purge_url_ability',
+			'wp_abilities_api_init'            => 'register_clear_url_cache_ability',
 			'wp_abilities_api_categories_init' => 'register_cache_category',
 		];
 	}
 
 	/**
-	 * Registers the ability to purge url cache.
+	 * Registers the ability to clear url cache.
 	 */
-	public function register_purge_url_ability() {
+	public function register_clear_url_cache_ability() {
 		if ( ! $this->abilities_context->is_enabled() ) {
 			return;
 		}
 
-		$this->purge_url->register();
+		$this->clear_url_cache->register();
 	}
 
 	/**

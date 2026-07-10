@@ -6,7 +6,7 @@ namespace WP_Rocket\Engine\Cache\Abilities;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
-class PurgeUrl implements AbilitiesInterface {
+class ClearUrlCache implements AbilitiesInterface {
 	use TrackingTrait;
 
 	/**
@@ -18,9 +18,9 @@ class PurgeUrl implements AbilitiesInterface {
 		}
 
 		wp_register_ability(
-			'wp-rocket/purge-url-cache',
+			'wp-rocket/clear-url-cache',
 			[
-				'label'               => __( 'Purge URL cache', 'rocket' ),
+				'label'               => __( 'Clear URL cache', 'rocket' ),
 				'description'         => _x(
 					'Clears WP Rocket cache for specific URL(s), not a full purge. Before calling: list the URL(s), ask "Confirm you want to clear cache for this url?" (use "these" if plural), and wait for a yes in the same turn. On success (success: true, error empty): say the cache was cleared and will regenerate on next visit. On failure: error is an object of url => reason; report each failed URL with its own reason, not a generic message.',
 					'Ability description',
@@ -103,7 +103,7 @@ class PurgeUrl implements AbilitiesInterface {
 		$this->track_event(
 			'MCP Ability Executed',
 			[
-				'ability' => 'wp-rocket/purge-url-cache',
+				'ability' => 'wp-rocket/clear-url-cache',
 				'context' => 'wp_plugin_mcp',
 			]
 		);

@@ -1,19 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\Abilities\PurgeUrl;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\Abilities\ClearUrlCache;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * Test class covering wp-rocket/purge-url-cache ability registreation & execution.
+ * Test class covering wp-rocket/clear-url-cache ability registration & execution.
  *
  * @group Abilities
  * @group Cache
  * @group AdminOnly
  */
-class Test_RegisterPurgeUrlAbility extends FilesystemTestCase {
-	protected $path_to_test_data = '/inc/Engine/Cache/Abilities/PurgeUrl/RegisterPurgeUrlAbility.php';
+class Test_RegisterClearUrlCacheAbility extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/Engine/Cache/Abilities/ClearUrlCache/RegisterClearUrlCacheAbility.php';
 
 	/**
 	 * Minimum WordPress version required for the Abilities API.
@@ -23,7 +23,7 @@ class Test_RegisterPurgeUrlAbility extends FilesystemTestCase {
 	/**
 	 * Ability ID.
 	 */
-	private const ABILITY_ID = 'wp-rocket/purge-url-cache';
+	private const ABILITY_ID = 'wp-rocket/clear-url-cache';
 
 	public function set_up() {
 		global $wp_version;
