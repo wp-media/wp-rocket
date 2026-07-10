@@ -93,6 +93,10 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! function_exists( 'wp_register_ability_category' ) ) {
+			return;
+		}
+
 		wp_register_ability_category(
 			'mcp-adapter',
 			[
@@ -118,6 +122,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function ensure_shared_abilities_registered(): void {
 		if ( ! $this->must_register_shared_abilities_ourselves() ) {
+			return;
+		}
+
+		if (
+			! class_exists( DiscoverAbilitiesAbility::class )
+			|| ! class_exists( GetAbilityInfoAbility::class )
+			|| ! class_exists( ExecuteAbilityAbility::class )
+		) {
 			return;
 		}
 
