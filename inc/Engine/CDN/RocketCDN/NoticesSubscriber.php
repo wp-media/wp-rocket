@@ -136,6 +136,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		if ( $this->is_reseller_account() ) {
+			return;
+		}
+
 		if ( ! rocket_is_live_site() ) {
 			return;
 		}
@@ -291,6 +295,16 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function is_white_label_account() {
 		return (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+	}
+
+	/**
+	 * Checks if the current license is a reseller account.
+	 *
+	 * @return bool
+	 */
+	private function is_reseller_account(): bool {
+		$user_data = $this->user_client->get_user_data();
+		return false !== $user_data && ! empty( $user_data->is_reseller );
 	}
 
 	/**
