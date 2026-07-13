@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_GetByUrl extends TestCase {
 
 	/**
-	 * @var RocketCDN
+	 * @var RocketCDN|\PHPUnit\Framework\MockObject\MockObject
 	 */
 	private $query;
 
