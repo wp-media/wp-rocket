@@ -42,6 +42,48 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 		Functions\expect( 'delete_transient' )
 			->once()->with( 'wp_rocket_pricing' );
+		Functions\expect( 'flush_rewrite_rules' )
+			->once();
 		rocket_new_upgrade( '3.7', '3.4.4' );
+	}
+
+	public function testShouldFlushRewriteRulesWhenUpdatingFromBeforeMcpOauth() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_advanced_cache_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_cache_busting' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_minify' )->justReturn( null );
+		Functions\when( 'rocket_get_constant' )->justReturn( 'wp_rocket_settings' );
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'update_option' )->justReturn( true );
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
+		Functions\when( 'delete_transient' )->justReturn( true );
+
+		Functions\expect( 'flush_rewrite_rules' )
+			->once();
+
+		rocket_new_upgrade( '3.23', '3.22.1' );
+	}
+
+	public function testShouldNotFlushRewriteRulesWhenAlreadyUpdatedPastMcpOauth() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_advanced_cache_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_cache_busting' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_minify' )->justReturn( null );
+		Functions\when( 'rocket_get_constant' )->justReturn( 'wp_rocket_settings' );
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'update_option' )->justReturn( true );
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
+		Functions\when( 'delete_transient' )->justReturn( true );
+
+		Functions\expect( 'flush_rewrite_rules' )
+			->never();
+
+		rocket_new_upgrade( '3.24', '3.23' );
 	}
 }
