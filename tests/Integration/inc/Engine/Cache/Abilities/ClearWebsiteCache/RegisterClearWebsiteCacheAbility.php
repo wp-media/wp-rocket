@@ -46,14 +46,7 @@ class Test_RegisterClearWebsiteCacheAbility extends FilesystemTestCase {
 	}
 
 	/**
-	 * Test ability execution with various scenarios.
-	 *
 	 * @dataProvider providerTestData
-	 *
-	 * @param array $config   Test configuration.
-	 * @param array $expected Expected result.
-	 *
-	 * @return void
 	 */
 	public function testShouldReturnExpected( array $config, array $expected ): void {
 		$this->set_up_user( $config['has_permission'] );
