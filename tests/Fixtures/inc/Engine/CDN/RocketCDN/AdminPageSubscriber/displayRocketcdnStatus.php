@@ -23,6 +23,27 @@ return [
 		],
 	],
 
+	'testShouldReturnEarlyWhenResellerAccount' => [
+		'rocketcdn_status' => [
+			'is_active'                     => false,
+			'subscription_status'           => 'cancelled',
+			'subscription_next_date_update' => '2020-01-01',
+			'plan_type'                     => 'free',
+		],
+		'expected'         => [
+			'unit'        => [],
+			'integration' => '',
+		],
+
+		'config' => [
+			'is_reseller' => true,
+			'is_live_site' => false,
+			'home_url'    => 'http://localhost',
+			'get_option'  => '',
+			'date_i18n'   => '',
+		],
+	],
+
 	'testShouldDisplayNothingWhenNotLiveSite' => [
 		'rocketcdn_status' => [
 			'is_active'                     => false,
