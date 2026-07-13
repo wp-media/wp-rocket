@@ -49,7 +49,7 @@ class Test_Backup extends TestCase {
 			$existing = $config['existing_files'] ?? [];
 			Functions\expect( 'glob' )
 				->once()
-				->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_' . $new_version . '_*.json' )
+				->with( self::CONFIG_PATH . 'wp_rocket_settings_backup_' . $old_version . '_*.json' )
 				->andReturn( $existing );
 			$backup_exists = ! empty( $existing );
 		}

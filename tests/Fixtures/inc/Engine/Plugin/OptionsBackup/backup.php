@@ -31,7 +31,7 @@ return [
 		'config' => [
 			'new_version'    => '3.22.1',
 			'old_version'    => '3.22.0',
-			'existing_files' => [ '/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-01-10-00-00.json' ],
+			'existing_files' => [ '/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-01-10-00-00.json' ],
 			'options'        => false,
 		],
 		'expected' => [
@@ -75,7 +75,7 @@ return [
 			'options'        => [ 'version' => '3.22.0', 'minify_css' => 1 ],
 			'write_result'   => true,
 			'all_backups'    => [
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-00.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json',
 			],
 		],
 		'expected' => [
@@ -92,21 +92,21 @@ return [
 			'options'        => [ 'version' => '3.22.3', 'minify_css' => 1 ],
 			'write_result'   => true,
 			'all_backups'    => [
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json',
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json',
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json',
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-01.json',
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-04.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-03.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-02.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-01.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.21.9_2026-06-29-10-00-00.json',
 			],
 			'mtimes'        => [
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.4_2026-06-29-10-00-04.json' => 1751189204,
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-03.json' => 1751189203,
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-02.json' => 1751189202,
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-01.json' => 1751189201,
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json' => 1751189200,
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.3_2026-06-29-10-00-04.json' => 1751189204,
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.2_2026-06-29-10-00-03.json' => 1751189203,
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.1_2026-06-29-10-00-02.json' => 1751189202,
+				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-01.json' => 1751189201,
+				'/wp-rocket-config/wp_rocket_settings_backup_3.21.9_2026-06-29-10-00-00.json' => 1751189200,
 			],
 			'files_to_delete' => [
-				'/wp-rocket-config/wp_rocket_settings_backup_3.22.0_2026-06-29-10-00-00.json',
+				'/wp-rocket-config/wp_rocket_settings_backup_3.21.9_2026-06-29-10-00-00.json',
 			],
 		],
 		'expected' => [
