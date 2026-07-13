@@ -22,7 +22,7 @@ class ClearWebsiteCache implements AbilitiesInterface {
 			[
 				'label'               => __( 'Clear website cache', 'rocket' ),
 				'description'         => _x(
-					'Clears the entire WP Rocket cache for the whole website, not a single URL. Before calling: ask "Confirm you want to clear the full website cache?" and wait for a yes in the same turn. On success (success: true, error empty): say the cache was cleared and will regenerate as pages are visited. On failure (success: false): report the error message.',
+					'Clears the entire WP Rocket cache for the whole website. Before calling: ask "Confirm you want to clear the full website cache?" and wait for a yes in the same turn. On success (success: true, error empty): say the cache was cleared and will regenerate as pages are visited. On failure (success: false): report the error message.',
 					'Ability description',
 					'rocket'
 					),
