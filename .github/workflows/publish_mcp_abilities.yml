@@ -1,12 +1,9 @@
-name: Abilities Catalog PoC
+name: Publish MCP Abilities to ARD Service
 
 on:
-  push:
-    branches:
-      - feature/abilities-catalog-poc
-  pull_request:
-    branches:
-      - feature/abilities-catalog-poc
+  release:
+    types:
+      - published
 
 jobs:
   dump-abilities:
@@ -68,6 +65,9 @@ jobs:
         retention-days: 14
 
     - name: Upload abilities catalog to ard-service
+      # Best-effort: never blocks or fails the release if ard-service is
+      # unreachable or the upload otherwise fails.
+      continue-on-error: true
       env:
         ARD_SERVICE_API_TOKEN: ${{ secrets.ARD_SERVICE_API_TOKEN }}
       run: |
