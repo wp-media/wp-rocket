@@ -429,11 +429,6 @@ class Plugin {
 			'tracking_subscriber',
 			'logger_subscriber',
 			'optimole_subscriber',
-			'abilities_subscriber',
-			'ri_abilities_subscriber',
-			'mcp_auth_subscriber',
-			'mcp_auth_discovery_subscriber',
-			'mcp_transport_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
@@ -462,6 +457,28 @@ class Plugin {
 			}
 		}
 
-		return $common_subscribers;
+		return array_merge( $common_subscribers, $this->init_abilities_subscribers() );
+	}
+
+	/**
+	 * Registers ability service providers and returns the list of ability subscriber service IDs.
+	 *
+	 * @return string[]
+	 */
+	private function init_abilities_subscribers(): array {
+		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
+		$this->container->addServiceProvider( new McpAuthServiceProvider() );
+		$this->container->addServiceProvider( new McpTransportServiceProvider() );
+
+		$subscribers = [
+			'abilities_subscriber',
+			'ri_abilities_subscriber',
+			'mcp_auth_subscriber',
+			'mcp_auth_discovery_subscriber',
+			'mcp_transport_subscriber',
+			'cache_abilities_subscriber',
+		];
+
+		return $subscribers;
 	}
 }
