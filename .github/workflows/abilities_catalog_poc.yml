@@ -66,3 +66,13 @@ jobs:
         name: wp-rocket-abilities-catalog
         path: wp-rocket-abilities-catalog.json
         retention-days: 14
+
+    - name: Upload abilities catalog to ard-service
+      env:
+        ARD_SERVICE_API_TOKEN: ${{ secrets.ARD_SERVICE_API_TOKEN }}
+      run: |
+        curl --fail -sS -X POST \
+          https://ard-service-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one/api/v1/upload/wp-rocket/manifest \
+          -H "Content-Type: application/json" \
+          -H "x-api-key: ${ARD_SERVICE_API_TOKEN}" \
+          --data @wp-rocket-abilities-catalog.json
