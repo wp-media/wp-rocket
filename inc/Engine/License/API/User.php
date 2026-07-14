@@ -548,6 +548,21 @@ class User {
 	}
 
 	/**
+	 * Checks if the current website is a reseller account whose license was specifically banned.
+	 *
+	 * This is the single source of truth for "reseller-banned" state, combining reseller
+	 * scoping with the specific `BANNED_WEBSITE` ban reason so it is not confused with
+	 * other revocation causes (non-payment, fraud, chargeback, etc.).
+	 *
+	 * @return bool
+	 */
+	public function is_reseller_license_banned(): bool {
+		return $this->is_reseller_account()
+			&& $this->is_revoked()
+			&& 'BANNED_WEBSITE' === $this->ban_reason();
+	}
+
+	/**
 	 * Checks if plugin updates are available.
 	 *
 	 * @return bool

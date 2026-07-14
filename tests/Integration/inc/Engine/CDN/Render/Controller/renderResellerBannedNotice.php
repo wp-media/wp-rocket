@@ -8,12 +8,12 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Render\Controller::render_expired_wpr_licence_notice
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::render_reseller_banned_notice
  * @group  CDN
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_RenderExpiredWprLicenceNotice extends TestCase {
+class Test_RenderResellerBannedNotice extends TestCase {
 
 	/**
 	 * CDN type override for the filter. null = no override (falls through to Options_Data cached value).
@@ -80,11 +80,11 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 		$this->set_user_license( $config );
 
 		ob_start();
-		$this->controller->render_expired_wpr_licence_notice();
+		$this->controller->render_reseller_banned_notice();
 		$output = ob_get_clean();
 
 		if ( $expected ) {
-			$this->assertStringContainsString( 'wpr-cdn-expired__notice', $output );
+			$this->assertStringContainsString( 'wpr-cdn-banned__notice', $output );
 		} else {
 			$this->assertEmpty( $output );
 		}

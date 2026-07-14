@@ -65,4 +65,63 @@ return [
 		],
 		'expected' => false,
 	],
+
+	// Reseller + banned (BANNED_WEBSITE) → expired notice must NOT render (replaced by the banned notice instead).
+	'testNoExpiredNoticeForResellerBannedLicense'              => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => false,
+	],
+
+	// Reseller + expired-only (not revoked) → regression: still shows the expired notice.
+	'testExpiredNoticeStillShownForResellerExpiredOnly'        => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => true,
+			'license_revoked'     => false,
+			'is_reseller'         => true,
+		],
+		'expected' => true,
+	],
+
+	// Non-reseller + revoked → regression: still shows the expired notice.
+	'testExpiredNoticeStillShownForNonResellerRevoked'         => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => false,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => true,
+	],
+
+	// Reseller + revoked with unrecognized ban reason → documents accepted-limitation fallback: still shows expired notice.
+	'testExpiredNoticeStillShownForResellerRevokedUnrecognizedReason' => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'NON_PAYMENT',
+		],
+		'expected' => true,
+	],
 ];

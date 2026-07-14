@@ -133,6 +133,10 @@ class Revoked extends Abstract_Render {
 			return false;
 		}
 
+		if ( $this->user->is_reseller_license_banned() ) {
+			return false;
+		}
+
 		if ( ! $this->user->is_revoked() ) {
 			return false;
 		}

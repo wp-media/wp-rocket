@@ -50,7 +50,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_display_rocketcdn_cta'            => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
 			'pre_get_rocket_option_cdn'               => 'maybe_pause_cdn_for_inactive_subscription',
-			'rocket_cdn_free_before_status_indicator' => [ 'render_expired_wpr_licence_notice', 9 ],
+			'rocket_cdn_free_before_status_indicator' => [
+				[ 'render_expired_wpr_licence_notice', 9 ],
+				[ 'render_reseller_banned_notice', 9 ],
+			],
 			'rocket_rocketcdn_status_indicator_texts' => [
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
@@ -216,6 +219,17 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function render_expired_wpr_licence_notice(): void {
 		$this->controller->render_expired_wpr_licence_notice();
+	}
+
+	/**
+	 * Renders the reseller-banned notice.
+	 *
+	 * @since 3.23
+	 *
+	 * @return void
+	 */
+	public function render_reseller_banned_notice(): void {
+		$this->controller->render_reseller_banned_notice();
 	}
 
 	/**
