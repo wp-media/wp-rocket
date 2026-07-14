@@ -79,6 +79,7 @@ class Test_DisplayResellerLimitBanner extends TestCase {
 					$this->assertSame( $expected['template'], $template );
 					$this->assertArrayHasKey( 'heading', $data );
 					$this->assertArrayHasKey( 'description', $data );
+					$this->assertArrayHasKey( 'is_hidden', $data );
 					// esc_html__() encodes apostrophes as &#039; in test stubs; strip for comparison.
 					$this->assertStringContainsString(
 						str_replace( "'", '', $expected['heading'] ),
@@ -88,6 +89,7 @@ class Test_DisplayResellerLimitBanner extends TestCase {
 						str_replace( "'", '', $expected['description'] ),
 						str_replace( '&#039;', '', $data['description'] )
 					);
+					$this->assertSame( $expected['is_hidden'], $data['is_hidden'] );
 					return '';
 				} );
 		}

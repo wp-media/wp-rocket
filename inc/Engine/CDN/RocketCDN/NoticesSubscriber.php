@@ -257,6 +257,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * upgrade CTA at priority 10. Reseller accounts are never shown the upgrade CTA, so
 	 * this banner is the only one displayed for them when the limit is reached.
 	 *
+	 * The banner is always rendered in the DOM for resellers (so JS can reveal it instantly
+	 * when a page is added and the limit is reached), but carries wpr-isHidden when the
+	 * limit has not yet been reached.
+	 *
 	 * @since 3.22
 	 *
 	 * @param array $cta_data CTA data including limit_reached flag.
@@ -268,15 +272,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		if ( empty( $cta_data['limit_reached'] ) ) {
-			return;
-		}
-
 		echo $this->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 			'cta-reseller-limit',
 			[
 				'heading'     => esc_html__( 'Nice work! You\'re using RocketCDN on all available pages.', 'rocket' ),
 				'description' => esc_html__( 'RocketCDN covers up to 3 pages, and you\'re all set.', 'rocket' ),
+				'is_hidden'   => empty( $cta_data['limit_reached'] ),
 			]
 		);
 	}

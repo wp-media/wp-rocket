@@ -82,18 +82,25 @@
 	 */
 	function updateRocketCtaState( count, limit ) {
 		const cta = document.getElementById( 'wpr-rocketcdn-cta' );
+		const resellerBanner = document.getElementById( 'wpr-rocketcdn-reseller-limit-cta' );
 
-		if ( ! cta ) {
+		if ( ! cta && ! resellerBanner ) {
 			return;
 		}
 
 		const isVisible = count > 0;
 		const isExpanded = count >= limit;
 
-		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+		if ( cta ) {
+			cta.classList.toggle( 'wpr-isHidden', ! isVisible );
+			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
+			cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
+			cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+		}
+
+		if ( resellerBanner ) {
+			resellerBanner.classList.toggle( 'wpr-isHidden', ! isExpanded );
+		}
 	}
 
 	/**

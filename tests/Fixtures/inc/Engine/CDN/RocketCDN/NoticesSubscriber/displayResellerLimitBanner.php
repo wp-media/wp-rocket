@@ -12,14 +12,19 @@ return [
 		'expected' => null,
 	],
 
-	'testShouldReturnEarlyWhenLimitNotReached' => [
+	'testShouldRenderHiddenBannerWhenLimitNotReached' => [
 		'config'   => [
 			'is_reseller' => true,
 			'cta_data'    => [
 				'limit_reached' => false,
 			],
 		],
-		'expected' => null,
+		'expected' => [
+			'template'    => 'cta-reseller-limit',
+			'heading'     => 'Nice work! You\'re using RocketCDN on all available pages.',
+			'description' => 'RocketCDN covers up to 3 pages, and you\'re all set.',
+			'is_hidden'   => true,
+		],
 	],
 
 	'testShouldRenderBannerWhenResellerAndLimitReached' => [
@@ -33,6 +38,7 @@ return [
 			'template'    => 'cta-reseller-limit',
 			'heading'     => 'Nice work! You\'re using RocketCDN on all available pages.',
 			'description' => 'RocketCDN covers up to 3 pages, and you\'re all set.',
+			'is_hidden'   => false,
 		],
 	],
 
