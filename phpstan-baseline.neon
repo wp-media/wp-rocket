@@ -1213,11 +1213,6 @@ parameters:
 		-
 			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 1
-			path: tests/Integration/inc/Addon/Cloudflare/Subscriber/autoPurge.php
-
-		-
-			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
-			count: 1
 			path: tests/Integration/inc/admin/rocketAfterSaveOptions.php
 
 		-
