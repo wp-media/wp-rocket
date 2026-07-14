@@ -50,7 +50,7 @@ return [
 			'cap'                => false,
 			'hook'               => 'after_rocket_clean_files',
 			'args'               => [
-				[ 'http://example.org/wp-content/cache/style.css' ],
+				[ 'https://example.org/hello-world/' ],
 			],
 			'page_rule_response' => $page_rule_response,
 			'purge_response'     => $purge_response,
@@ -62,7 +62,7 @@ return [
 			'cap'                => true,
 			'hook'               => 'after_rocket_clean_files',
 			'args'               => [
-				[ 'http://example.org/wp-content/cache/style.css' ],
+				[ 'https://example.org/hello-world/' ],
 			],
 			'page_rule_response' => $no_page_rule_response,
 			'purge_response'     => $purge_response,
@@ -88,16 +88,16 @@ return [
 			'hook'               => 'after_rocket_clean_files',
 			'args'               => [
 				[
-					'http://example.org/wp-content/cache/style.css',
-					'http://example.org/wp-content/cache/script.js',
+					'https://example.org/hello-world/',
+					'https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius',
 				],
 			],
 			'page_rule_response' => $page_rule_response,
 			'purge_response'     => $purge_response,
 		],
 		'expected' => [
-			'http://example.org/wp-content/cache/style.css',
-			'http://example.org/wp-content/cache/script.js',
+			'https://example.org/hello-world/',
+            'https://example.org/2022/11/15/sed-laboriosam-quibusdam-aliquam-et-eius',
 		],
 	],
 ];
