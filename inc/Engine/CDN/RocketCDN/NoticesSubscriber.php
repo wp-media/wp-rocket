@@ -262,14 +262,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		echo $this->generate( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-			'cta-reseller-limit',
-			[
-				'heading'     => esc_html__( 'Nice work!  You\'re using RocketCDN on 3 key pages.', 'rocket' ),
-				'description' => esc_html__( 'This is currently the free limit we set for our users. Thank you for using RocketCDN', 'rocket' ),
-				'is_hidden'   => empty( $cta_data['limit_reached'] ),
-			]
-		);
+		$banner_data = [
+			'heading'     => esc_html__( 'Nice work!  You\'re using RocketCDN on 3 key pages.', 'rocket' ),
+			'description' => esc_html__( 'This is currently the free limit we set for our users. Thank you for using RocketCDN', 'rocket' ),
+			'is_hidden'   => empty( $cta_data['limit_reached'] ),
+		];
+
+		echo $this->generate( 'cta-reseller-limit', $banner_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
