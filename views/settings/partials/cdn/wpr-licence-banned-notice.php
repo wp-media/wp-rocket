@@ -9,6 +9,7 @@
  *
  * @since 3.23.1
  */
+
 ?>
 
 <div class="wpr-notice wpr-ri-notice wpr-cdn-expired__notice wpr-cdn-banned__notice" id="wpr-cdn-banned-banner">
