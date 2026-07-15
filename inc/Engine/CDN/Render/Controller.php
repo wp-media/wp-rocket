@@ -549,7 +549,7 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the reseller-banned notice.
 	 *
-	 * @since 3.23
+	 * @since 3.24
 	 *
 	 * @return void
 	 */

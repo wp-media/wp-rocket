@@ -554,6 +554,8 @@ class User {
 	 * scoping with the specific `BANNED_WEBSITE` ban reason so it is not confused with
 	 * other revocation causes (non-payment, fraud, chargeback, etc.).
 	 *
+	 * @since 3.24
+	 *
 	 * @return bool
 	 */
 	public function is_reseller_license_banned(): bool {
