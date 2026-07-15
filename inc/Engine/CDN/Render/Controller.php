@@ -549,7 +549,7 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the reseller-banned notice.
 	 *
-	 * @since 3.24
+	 * @since 3.23.1
 	 *
 	 * @return void
 	 */
@@ -638,15 +638,12 @@ class Controller extends Abstract_Render {
 		}
 
 		if ( $this->subscription_controller->is_license_invalid() ) {
-			$texts['class'] .= ' wpr-cdn-status--expired';
+			$texts['class']         .= ' wpr-cdn-status--expired';
+			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+		}
 
-			if ( $this->user->is_reseller_license_banned() ) {
-				// ASSUMPTION — final copy not provided by design (issue explicitly flags "COPY IS NOT UPDATED IN THE VISUALIZATION"). Confirm with design/PM before release. Reseller-neutral wording per the documented limitation on User::is_reseller_license_banned().
-				$texts['paused_status_text'] = __( 'RocketCDN is disabled', 'rocket' );
-				$texts['paused_details']     = __( 'RocketCDN has been disabled for this account. Please contact your license provider for assistance.', 'rocket' );
-			} else {
-				$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
-			}
+		if ( $this->user->is_reseller_license_banned() ) {
+			$texts['paused_details'] = '';
 		}
 
 		return $texts;
