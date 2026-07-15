@@ -7,23 +7,17 @@
  * notice, this partial has no renewal CTA — a reseller customer cannot
  * self-resolve a ban.
  *
- * ASSUMPTION: final copy has not been provided by design (the issue explicitly
- * flags "COPY IS NOT UPDATED IN THE VISUALIZATION"). The strings below are
- * reseller-neutral placeholders pending design/PM sign-off — see spec's Open
- * Questions section.
- *
- * @since 3.23
+ * @since 3.23.1
  */
-
 ?>
 
 <div class="wpr-notice wpr-ri-notice wpr-cdn-expired__notice wpr-cdn-banned__notice" id="wpr-cdn-banned-banner">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-description wpr-notice-70">
 			<h3 class="wpr-cdn-expired__notice-title">
-				<?php esc_html_e( 'RocketCDN has been disabled', 'rocket' ); ?>
+				<?php esc_html_e( 'Your access to RocketCDN has been paused.', 'rocket' ); ?>
 			</h3>
-			<p><?php esc_html_e( 'RocketCDN has been disabled for this account. Please contact your license provider for assistance.', 'rocket' ); ?></p>
+			<p><?php esc_html_e( 'Your hosting provider has paused this license. Please contact their support team for assistance.', 'rocket' ); ?></p>
 		</div>
 	</div>
 </div>
