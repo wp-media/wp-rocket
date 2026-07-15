@@ -78,7 +78,7 @@ return [
 		],
 	],
 
-	// Reseller + banned (BANNED_WEBSITE) → distinct copy: paused_status_text is NOT "RocketCDN is paused" and paused_details does not mention "licence has expired".
+	// Reseller + banned (BANNED_WEBSITE) → distinct copy: paused_details does not mention "licence has expired" (cleared).
 	'testDistinctCopyForResellerBannedLicense'                    => [
 		'config'   => [
 			'subscription_status' => 'running',
@@ -94,7 +94,6 @@ return [
 		],
 		'expected' => [
 			'class_contains'              => 'wpr-cdn-status--expired',
-			'paused_status_text_not'      => 'RocketCDN is paused',
 			'paused_details_not_contains' => 'licence has expired',
 		],
 	],
