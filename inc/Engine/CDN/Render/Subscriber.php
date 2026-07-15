@@ -224,7 +224,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Renders the reseller-banned notice.
 	 *
-	 * @since 3.24
+	 * @since 3.23.1
 	 *
 	 * @return void
 	 */
