@@ -21,8 +21,8 @@ return [
 		],
 		'expected' => [
 			'template'    => 'cta-reseller-limit',
-			'heading'     => 'Nice work! You\'re using RocketCDN on all available pages.',
-			'description' => 'RocketCDN covers up to 3 pages, and you\'re all set.',
+			'heading'     => 'Nice work!  You\'re using RocketCDN on 3 key pages.',
+			'description' => 'This is currently the free limit we set for our users. Thank you for using RocketCDN',
 			'is_hidden'   => true,
 		],
 	],
@@ -36,8 +36,8 @@ return [
 		],
 		'expected' => [
 			'template'    => 'cta-reseller-limit',
-			'heading'     => 'Nice work! You\'re using RocketCDN on all available pages.',
-			'description' => 'RocketCDN covers up to 3 pages, and you\'re all set.',
+			'heading'     => 'Nice work!  You\'re using RocketCDN on 3 key pages.',
+			'description' => 'This is currently the free limit we set for our users. Thank you for using RocketCDN',
 			'is_hidden'   => false,
 		],
 	],
