@@ -554,7 +554,7 @@ class User {
 	 * scoping with the specific `BANNED_WEBSITE` ban reason so it is not confused with
 	 * other revocation causes (non-payment, fraud, chargeback, etc.).
 	 *
-	 * @since 3.24
+	 * @since 3.23.1
 	 *
 	 * @return bool
 	 */
