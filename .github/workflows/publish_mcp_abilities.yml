@@ -65,9 +65,14 @@ jobs:
         retention-days: 14
 
     - name: Upload abilities catalog to ard-service
-      # Best-effort: never blocks or fails the release if ard-service is
-      # unreachable or the upload otherwise fails.
-      continue-on-error: true
+      # No continue-on-error here: this workflow triggers on `release:
+      # published`, so the GitHub release has already happened by the time
+      # this step runs. A failure here can't block or delay the release —
+      # it can only fail to be noticed if swallowed. Letting this step fail
+      # for real surfaces it as a red workflow run (Actions tab, commit
+      # status, failure-notification emails), which is the whole point:
+      # this catalog going stale should be visible, even though it's not
+      # release-blocking.
       env:
         ARD_SERVICE_API_TOKEN: ${{ secrets.ARD_SERVICE_API_TOKEN }}
       run: |
