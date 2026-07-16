@@ -16,8 +16,8 @@ return [
 		'expected' => true,
 	],
 
-	// Paid tier reseller banned → no notice (free-tier only feature).
-	'testNoNoticeForResellerBannedPaidSubscription'      => [
+	// Paid tier reseller banned → notice still shown, plan tier no longer affects this check.
+	'testNoticeForResellerBannedPaidSubscription'        => [
 		'config'   => [
 			'cdn_type'            => 'rocketcdn',
 			'subscription_status' => 'running',
@@ -28,7 +28,7 @@ return [
 			'is_reseller'         => true,
 			'ban_reason'          => 'BANNED_WEBSITE',
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 
 	// Non-reseller revoked (even with BANNED_WEBSITE reason) → no banned notice, is_reseller_account() is false.
@@ -75,8 +75,8 @@ return [
 		'expected' => false,
 	],
 
-	// Reseller banned but no active subscription → no banned notice.
-	'testNoNoticeForResellerBannedNoActiveSubscription'  => [
+	// Reseller banned even without an active subscription → notice still shown, subscription state no longer affects this check.
+	'testNoticeForResellerBannedNoActiveSubscription'    => [
 		'config'   => [
 			'cdn_type'            => 'rocketcdn',
 			'subscription_status' => 'cancelled',
@@ -87,6 +87,6 @@ return [
 			'is_reseller'         => true,
 			'ban_reason'          => 'BANNED_WEBSITE',
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 ];
