@@ -119,5 +119,9 @@ class Deactivation {
 		 * @param int $sites_number Number of WP Rocket config files found.
 		 */
 		do_action( 'rocket_deactivation', $sites_number );
+
+		// Flush once, after every deactivator has had a chance to unregister
+		// its rewrite rules (e.g. MCP Auth OAuth endpoints).
+		flush_rewrite_rules();
 	}
 }
