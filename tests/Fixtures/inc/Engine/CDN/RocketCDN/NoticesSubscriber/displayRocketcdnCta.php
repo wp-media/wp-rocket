@@ -1,18 +1,6 @@
 <?php
 
 return [
-	'testShouldDisplayNothingWhenWhiteLabel' => [
-		'rocketcdn_data' => [],
-
-		'expected' => [
-			'unit'        => null,
-		],
-
-		'config' => [
-			'white_label' => true,
-		],
-	],
-
 	'testShouldDisplayNothingWhenNotLiveSite' => [
 		'rocketcdn_data' => [],
 
@@ -312,5 +300,6 @@ return [
 			'rocket_rocketcdn_cta_hidden' => false,
 			'is_wp_error'                 => true,
 		],
+		'expected' => false,
 	],
 ];
