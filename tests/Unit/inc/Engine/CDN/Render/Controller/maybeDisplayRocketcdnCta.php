@@ -74,66 +74,26 @@ class Test_MaybeDisplayRocketcdnCta extends TestCase {
 	}
 
 	/**
-	 * Tests that maybe_display_rocketcdn_cta() returns false for a reseller account.
+	 * Tests that maybe_display_rocketcdn_cta() returns the expected result.
+	 *
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Test configuration.
+	 * @param bool  $expected Expected return value.
 	 *
 	 * @return void
 	 */
-	public function testShouldReturnFalseForResellerAccount(): void {
-		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->once()
-			->andReturn( false );
+	public function testShouldReturnExpectedResult( array $config, bool $expected ): void {
+		if ( isset( $config['is_loading'] ) ) {
+			$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+				->andReturn( $config['is_loading'] );
+		}
 
-		$this->user->shouldReceive( 'is_reseller_account' )
-			->once()
-			->andReturn( true );
+		if ( isset( $config['is_reseller'] ) ) {
+			$this->user->shouldReceive( 'is_reseller_account' )
+				->andReturn( $config['is_reseller'] );
+		}
 
-		$result = $this->controller->maybe_display_rocketcdn_cta( true );
-
-		$this->assertFalse( $result );
-	}
-
-	/**
-	 * Tests that maybe_display_rocketcdn_cta() returns true for a non-reseller account.
-	 *
-	 * @return void
-	 */
-	public function testShouldReturnTrueForNonResellerAccount(): void {
-		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->once()
-			->andReturn( false );
-
-		$this->user->shouldReceive( 'is_reseller_account' )
-			->once()
-			->andReturn( false );
-
-		$result = $this->controller->maybe_display_rocketcdn_cta( true );
-
-		$this->assertTrue( $result );
-	}
-
-	/**
-	 * Tests that maybe_display_rocketcdn_cta() returns false when display is false regardless of reseller status.
-	 *
-	 * @return void
-	 */
-	public function testShouldReturnFalseWhenDisplayIsFalse(): void {
-		$result = $this->controller->maybe_display_rocketcdn_cta( false );
-
-		$this->assertFalse( $result );
-	}
-
-	/**
-	 * Tests that maybe_display_rocketcdn_cta() returns false when subscription is loading.
-	 *
-	 * @return void
-	 */
-	public function testShouldReturnFalseWhenSubscriptionLoading(): void {
-		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->once()
-			->andReturn( true );
-
-		$result = $this->controller->maybe_display_rocketcdn_cta( true );
-
-		$this->assertFalse( $result );
+		$this->assertSame( $expected, $this->controller->maybe_display_rocketcdn_cta( $config['display'] ) );
 	}
 }
