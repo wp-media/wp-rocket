@@ -5,7 +5,7 @@
  * Displayed when a reseller account has reached the 3-page RocketCDN Free limit.
  * No upgrade CTA is shown — reseller accounts are not eligible for paid plans.
  *
- * @since 3.22
+ * @since 3.23.1
  *
  * @param array $data {
  *     @type string $heading     Banner heading text.

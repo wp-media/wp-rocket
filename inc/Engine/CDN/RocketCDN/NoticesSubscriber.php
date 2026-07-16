@@ -263,8 +263,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		$banner_data = [
-			'heading'     => esc_html__( 'Nice work!  You\'re using RocketCDN on 3 key pages.', 'rocket' ),
-			'description' => esc_html__( 'This is currently the free limit we set for our users. Thank you for using RocketCDN', 'rocket' ),
+			'heading'     => esc_html__( 'Nice work!  You\'re using RocketCDN on all available pages.', 'rocket' ),
+			'description' => esc_html__( 'RocketCDN covers up to 3 pages, and you\'re all set.', 'rocket' ),
 			'is_hidden'   => empty( $cta_data['limit_reached'] ),
 		];
 
