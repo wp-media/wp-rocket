@@ -73,8 +73,16 @@
 		}
 	}
 
+	/** Pending banner auto-expand timer ID, or null when no timer is active. */
+	let autoExpandTimer = null;
+
 	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
+	 *
+	 * When the page count reaches the limit, expansion is deferred by 15 seconds so the
+	 * user has time to react before the upsell banner opens. Any in-flight timer is
+	 * cancelled whenever this function is called (e.g. on page deletion), ensuring stale
+	 * expands never fire after the state has changed.
 	 *
 	 * @param {number} count Current number of free-tier pages.
 	 * @param {number} limit Free-tier page limit.
@@ -87,14 +95,46 @@
 			return;
 		}
 
+		// Cancel any pending expand — state has changed.
+		if ( autoExpandTimer !== null ) {
+			clearTimeout( autoExpandTimer );
+			autoExpandTimer = null;
+		}
+
 		const isVisible = count > 0;
-		const isExpanded = count >= limit;
+		const atLimit  = count >= limit;
 
 		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+
+		if ( isVisible && atLimit ) {
+			// Always show "Nice work!" text immediately.
+			cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
+
+			if ( ! cta.classList.contains( 'wpr-rocketcdn-cta--expanded' ) ) {
+				// Banner is collapsed — keep it collapsed for 15s then expand.
+				cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
+				cta.classList.remove( 'wpr-rocketcdn-cta--expanded' );
+
+				autoExpandTimer = setTimeout( () => {
+					autoExpandTimer = null;
+					cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
+					cta.classList.add( 'wpr-rocketcdn-cta--expanded' );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+				}, 15000 );
+			}
+		} else {
+			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible );
+			cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
+		}
 	}
+
+	// Cancel any pending banner expand when the user navigates away from the CDN tab.
+	document.addEventListener( 'rocketJsAfterPageNavigation', ( e ) => {
+		if ( e.detail.pageId !== 'page_cdn' && autoExpandTimer !== null ) {
+			clearTimeout( autoExpandTimer );
+			autoExpandTimer = null;
+		}
+	} );
 
 	/**
 	 * Listens for custom 'rocketJsAfterPageNavigation' event to update the state of the submit button
@@ -540,7 +580,6 @@
 						addPageBtn.disabled = true;
 					}
 					updateTooltipState( true );
-					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
 				// Set subscription loading state when first page is added.
