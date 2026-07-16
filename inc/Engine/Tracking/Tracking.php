@@ -61,13 +61,26 @@ class Tracking extends Abstract_Render {
 
 		$this->mixpanel->identify( $consumer_email );
 
-		if ( $this->optin->can_track() ) {
-			$this->mixpanel->set_user_property(
-				$this->mixpanel->hash( $consumer_email ),
-				'is_reseller',
-				$this->user->is_reseller_account()
-			);
+		$this->sync_is_reseller_property( $consumer_email );
+	}
+
+	/**
+	 * Sync the is_reseller property with Mixpanel when tracking is allowed.
+	 *
+	 * @param string $consumer_email Consumer email.
+	 *
+	 * @return void
+	 */
+	private function sync_is_reseller_property( string $consumer_email ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
 		}
+
+		$this->mixpanel->set_user_property(
+			$this->mixpanel->hash( $consumer_email ),
+			'is_reseller',
+			$this->user->is_reseller_account()
+		);
 	}
 
 	/**

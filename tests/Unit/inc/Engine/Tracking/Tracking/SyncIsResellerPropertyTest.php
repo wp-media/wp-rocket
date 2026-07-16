@@ -12,10 +12,10 @@ use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Tracking\Tracking::__construct
+ * @covers \WP_Rocket\Engine\Tracking\Tracking::sync_is_reseller_property
  * @group  Tracking
  */
-class ConstructSyncsIsResellerPropertyTest extends TestCase {
+class SyncIsResellerPropertyTest extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 *
