@@ -34,9 +34,6 @@ class Activation {
 		'action_scheduler_check',
 		'preload_activation',
 		'performance_hints_activation',
-		'mcp_auth_discovery_endpoints',
-		'mcp_auth_rewrite',
-		'mcp_secret_manager',
 	];
 
 	/**
@@ -97,8 +94,10 @@ class Activation {
 		 */
 		do_action( 'rocket_activation' );
 
-		// Flush once, after every activator has registered its rewrite rules
-		// (e.g. MCP Auth discovery and OAuth endpoints).
+		// Flush once, after every activator has registered its rewrite rules.
+		// Note: the MCP OAuth endpoints are no longer flushed here — the
+		// wp-media/mcp-oauth library registers and lazily flushes its own
+		// rewrite rules on the 'init' hook of the first front-end request.
 		flush_rewrite_rules();
 
 		if ( rocket_valid_key() ) {

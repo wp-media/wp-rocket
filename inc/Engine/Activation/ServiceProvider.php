@@ -10,9 +10,6 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Engine\Capabilities\Manager;
 use WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck;
-use WP_Rocket\Engine\MCP\Auth\Discovery\Endpoints as McpAuthDiscoveryEndpoints;
-use WP_Rocket\Engine\MCP\Auth\Rewrite as McpAuthRewrite;
-use WP_Rocket\Engine\MCP\Auth\SecretManager as McpAuthSecretManager;
 
 /**
  * Service Provider for the activation process.
@@ -28,9 +25,6 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'capabilities_manager',
 		'wp_cache',
 		'action_scheduler_check',
-		'mcp_auth_discovery_endpoints',
-		'mcp_auth_rewrite',
-		'mcp_secret_manager',
 	];
 
 	/**
@@ -72,8 +66,5 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$this->getContainer()->add( 'wp_cache', WPCache::class )
 			->addArgument( $filesystem );
 		$this->getContainer()->add( 'action_scheduler_check', ActionSchedulerCheck::class );
-		$this->getContainer()->add( 'mcp_auth_discovery_endpoints', McpAuthDiscoveryEndpoints::class );
-		$this->getContainer()->add( 'mcp_auth_rewrite', McpAuthRewrite::class );
-		$this->getContainer()->add( 'mcp_secret_manager', McpAuthSecretManager::class );
 	}
 }

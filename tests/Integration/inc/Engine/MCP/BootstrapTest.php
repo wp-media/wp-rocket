@@ -1,0 +1,133 @@
+<?php
+declare( strict_types=1 );
+
+namespace WP_Rocket\Tests\Integration\inc\Engine\MCP;
+
+use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\MCP\OAuth\Auth\SecretManager;
+use WPMedia\MCP\OAuth\Bootstrap;
+
+/**
+ * Test class covering the boot of the wp-media/mcp-oauth library from inc/main.php.
+ *
+ * The OAuth flow now lives entirely in the library; WP Rocket only boots it via
+ * \WPMedia\MCP\OAuth\Bootstrap::instance() (called from inc/main.php at plugin
+ * load) and manages the two deprecated filters. This test asserts:
+ *   - the library is wired to WordPress on boot (its 'init' hooks are registered);
+ *   - the OAuth endpoints route when the server is enabled via the new filter;
+ *   - they return a 404 (no rewrite rule) when the server is disabled;
+ *   - the legacy 'rocket_mcp_oauth_server_enabled' filter still enables the
+ *     server through the library's back-compat bridge.
+ *
+ * @group MCP
+ */
+class BootstrapTest extends TestCase {
+
+	/**
+	 * Install the tables the permalink_structure_changed hook touches, so
+	 * flushing rewrite rules does not hit missing-table DB errors.
+	 *
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+	}
+
+	/**
+	 * Clean up hooks and the library's lazy-flush flag set during the test.
+	 *
+	 * @return void
+	 */
+	public function tear_down() {
+		remove_filter( 'wpmedia_mcp_oauth_server_enabled', '__return_true' );
+		remove_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
+		Bootstrap::schedule_rewrite_flush();
+
+		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down();
+	}
+
+	/**
+	 * The library must be booted and wired to WordPress once the plugin has loaded:
+	 * its 'init' hooks (secret creation at priority 5, lazy rewrite flush at
+	 * priority 20) are bound by Bootstrap::instance().
+	 *
+	 * @return void
+	 */
+	public function testShouldBootAndWireTheLibrary() {
+		$bootstrap = Bootstrap::instance();
+
+		$this->assertSame(
+			5,
+			has_action( 'init', [ SecretManager::class, 'ensure_secret' ] )
+		);
+		$this->assertSame(
+			20,
+			has_action( 'init', [ $bootstrap, 'maybe_flush_rewrite_rules' ] )
+		);
+	}
+
+	/**
+	 * With the server enabled via the new filter, the OAuth authorize endpoint's
+	 * rewrite rule must be registered on the first request.
+	 *
+	 * @return void
+	 */
+	public function testShouldRouteOauthEndpointWhenEnabled() {
+		add_filter( 'wpmedia_mcp_oauth_server_enabled', '__return_true' );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		Bootstrap::schedule_rewrite_flush();
+
+		do_action( 'init' );
+
+		global $wp_rewrite;
+		$this->assertArrayHasKey( '^oauth/authorize$', $wp_rewrite->wp_rewrite_rules() );
+	}
+
+	/**
+	 * With the server disabled (the default), the OAuth authorize endpoint must not
+	 * be registered — a request to it resolves to a WordPress 404.
+	 *
+	 * @return void
+	 */
+	public function testShouldReturn404WhenDisabled() {
+		$this->set_permalink_structure( '/%postname%/' );
+		Bootstrap::schedule_rewrite_flush();
+
+		do_action( 'init' );
+
+		global $wp_rewrite;
+		$this->assertArrayNotHasKey( '^oauth/authorize$', $wp_rewrite->wp_rewrite_rules() );
+	}
+
+	/**
+	 * A site still using the legacy 'rocket_mcp_oauth_server_enabled' filter must
+	 * keep the OAuth server enabled: the library reads the legacy name on top of
+	 * the new one, so its value continues to win.
+	 *
+	 * @return void
+	 */
+	public function testShouldEnableServerThroughLegacyFilter() {
+		add_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
+
+		$this->set_permalink_structure( '/%postname%/' );
+		Bootstrap::schedule_rewrite_flush();
+
+		do_action( 'init' );
+
+		global $wp_rewrite;
+		$this->assertArrayHasKey( '^oauth/authorize$', $wp_rewrite->wp_rewrite_rules() );
+	}
+}

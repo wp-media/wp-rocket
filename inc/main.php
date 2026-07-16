@@ -24,6 +24,16 @@ if ( $rocket_can_boot_mcp_adapter ) {
 	McpAdapter::instance();
 }
 
+// Boot the MCP OAuth flow, now provided entirely by the wp-media/mcp-oauth library.
+// The library wires its own WordPress hooks via this singleton; the class_exists guard
+// keeps the plugin safe if the package is ever missing at runtime.
+if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
+	\WPMedia\MCP\OAuth\Bootstrap::instance();
+}
+
+// Emit deprecation notices for the legacy MCP OAuth filters (the only custom MCP code left).
+\WP_Rocket\Engine\MCP\Compat\DeprecatedFilters::init();
+
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
 Cloudflare::fix_cf_flexible_ssl();
