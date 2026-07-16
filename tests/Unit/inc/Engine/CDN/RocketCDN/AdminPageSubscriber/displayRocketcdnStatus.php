@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -30,6 +31,11 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 	private $user_client;
 
 	/**
+	 * @var Mockery\MockInterface|User
+	 */
+	private $user;
+
+	/**
 	 * @var Mockery\MockInterface|AdminPageSubscriber
 	 */
 	private $subscriber;
@@ -41,10 +47,12 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 
 		$this->api_client  = Mockery::mock( APIClient::class );
 		$this->user_client = Mockery::mock( UserClient::class );
+		$this->user        = Mockery::mock( User::class );
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false )->byDefault();
 
 		$this->subscriber = Mockery::mock(
 			AdminPageSubscriber::class . '[generate]',
-			[ $this->api_client, $this->user_client, '' ]
+			[ $this->api_client, $this->user_client, $this->user, '' ]
 		);
 	}
 
@@ -58,6 +66,13 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		$this->white_label = $config['white_label'] ?? false;
 
 		if ( $this->white_label ) {
+			$this->subscriber->shouldNotReceive( 'generate' );
+			$this->subscriber->display_rocketcdn_status();
+			return;
+		}
+
+		if ( $config['is_reseller'] ?? false ) {
+			$this->user->shouldReceive( 'is_reseller_account' )->andReturn( true );
 			$this->subscriber->shouldNotReceive( 'generate' );
 			$this->subscriber->display_rocketcdn_status();
 			return;
