@@ -87,9 +87,14 @@ abstract class Abstract_Render implements Render_Interface {
 			'parameter'  => '',
 			'attributes' => '',
 			'tooltip'    => '',
+			'icon'       => [
+				'data'   => '',
+				'before' => true,
+			],
 		];
 
-		$args = wp_parse_args( $args, $default );
+		$args         = wp_parse_args( $args, $default );
+		$args['icon'] = wp_parse_args( $args['icon'], $default['icon'] );
 
 		if ( ! empty( $args['attributes'] ) ) {
 			$attributes = '';
