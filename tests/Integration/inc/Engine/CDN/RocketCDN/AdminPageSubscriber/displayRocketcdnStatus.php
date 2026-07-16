@@ -48,6 +48,10 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		$this->home_url    = $config['home_url'];
 		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
 
+		$container = apply_filters( 'rocket_container', null );
+		$user      = $container->get( 'user' );
+		$user->set_user( (object) [ 'is_reseller' => $config['is_reseller'] ?? false ] );
+
 		ob_start();
 		do_action( 'rocket_dashboard_after_account_data' );
 		$actual = ob_get_clean();
