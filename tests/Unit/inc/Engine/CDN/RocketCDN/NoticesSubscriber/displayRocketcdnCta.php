@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -54,6 +55,11 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	private $subscription_controller;
 
 	/**
+	 * @var Mockery\MockInterface|User
+	 */
+	private $user;
+
+	/**
 	 * @var Mockery\MockInterface|NoticesSubscriber
 	 */
 	private $subscriber;
@@ -69,6 +75,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		$this->tracking                = Mockery::mock( Tracking::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+		$this->user                    = Mockery::mock( User::class );
 
 		$this->subscriber = Mockery::mock(
 			NoticesSubscriber::class . '[generate]',
@@ -80,59 +87,39 @@ class Test_DisplayRocketcdnCta extends TestCase {
 				'',
 				$this->options,
 				$this->subscription_controller,
+				$this->user,
 			]
 		);
 	}
 
 	/**
-	 * Tests that display_rocketcdn_cta() returns early without rendering when the account is a reseller.
+	 * Tests that display_rocketcdn_cta() handles early-exit conditions correctly.
 	 *
-	 * The base TestCase stubs rocket_get_constant() to return false for WP_ROCKET_WHITE_LABEL_ACCOUNT,
-	 * so the white-label guard is skipped and the reseller guard fires next.
+	 * @dataProvider configTestData
 	 *
-	 * @return void
-	 */
-	public function testShouldNotGenerateWhenResellerAccount(): void {
-		Functions\expect( 'apply_filters' )
-			->with( 'rocket_display_rocketcdn_cta', true )
-			->andReturn( true );
-
-		$user_data              = new \stdClass();
-		$user_data->is_reseller = true;
-
-		$this->user_client->shouldReceive( 'get_user_data' )
-			->once()
-			->andReturn( $user_data );
-
-		// generate() must not be called when the account is a reseller.
-		$this->subscriber->shouldNotReceive( 'generate' );
-
-		$this->subscriber->display_rocketcdn_cta( $this->buildCtaData() );
-	}
-
-	/**
-	 * Tests that display_rocketcdn_cta() does not short-circuit on the reseller check
-	 * when the account is not a reseller (execution continues to the live-site check).
+	 * @param array $config   Test configuration.
+	 * @param bool  $expected True if generate() should be called, false otherwise.
 	 *
 	 * @return void
 	 */
-	public function testShouldProceedWhenNotResellerAccount(): void {
+	public function testShouldHandleDisplayConditions( array $config, bool $expected ): void {
 		Functions\expect( 'apply_filters' )
 			->with( 'rocket_display_rocketcdn_cta', true )
-			->andReturn( true );
+			->andReturn( $config['filter_result'] );
 
-		$user_data              = new \stdClass();
-		$user_data->is_reseller = false;
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( $config['is_reseller'] );
 
-		$this->user_client->shouldReceive( 'get_user_data' )
-			->andReturn( $user_data );
+		if ( isset( $config['is_live_site'] ) ) {
+			Functions\expect( 'rocket_is_live_site' )
+				->andReturn( $config['is_live_site'] );
+		}
 
-		// Next guard: rocket_is_live_site() — return false so the method exits early there.
-		Functions\expect( 'rocket_is_live_site' )
-			->andReturn( false );
-
-		// generate() should not be called because rocket_is_live_site() returns false.
-		$this->subscriber->shouldNotReceive( 'generate' );
+		if ( $expected ) {
+			$this->subscriber->shouldReceive( 'generate' );
+		} else {
+			$this->subscriber->shouldNotReceive( 'generate' );
+		}
 
 		$this->subscriber->display_rocketcdn_cta( $this->buildCtaData() );
 	}
