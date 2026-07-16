@@ -88,6 +88,12 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 		} else {
 			$this->assertEmpty( $output );
 		}
+
+		if ( $expected && ! empty( $config['is_reseller'] ) ) {
+			$this->assertStringNotContainsString( 'wpr-notice-close', $output );
+		} elseif ( $expected ) {
+			$this->assertStringContainsString( 'wpr-notice-close', $output );
+		}
 	}
 
 	/**
@@ -123,6 +129,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 			: time() + YEAR_IN_SECONDS;
 		$user_data->licence            = $licence;
 		$user_data->renewal_url        = 'https://wp-rocket.me/account/';
+		$user_data->is_reseller        = ! empty( $config['is_reseller'] );
 
 		$this->user->set_user( $user_data );
 	}
