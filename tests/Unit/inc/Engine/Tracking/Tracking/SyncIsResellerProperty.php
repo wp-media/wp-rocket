@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @covers \WP_Rocket\Engine\Tracking\Tracking::sync_is_reseller_property
  * @group  Tracking
  */
-class SyncIsResellerPropertyTest extends TestCase {
+class Test_SyncIsResellerProperty extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 *
