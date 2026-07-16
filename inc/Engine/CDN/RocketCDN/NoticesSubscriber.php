@@ -88,7 +88,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$template_path,
 		Options_Data $options,
 		SubscriptionController $subscription_controller,
-		User $user,
+		User $user
 	) {
 		parent::__construct( $template_path );
 
