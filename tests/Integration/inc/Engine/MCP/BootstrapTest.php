@@ -3,7 +3,9 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\MCP;
 
+use WP_Rocket\Engine\MCP\Compat\DeprecatedFilters;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\MCP\OAuth\Auth\ClaudeClientVerifier;
 use WPMedia\MCP\OAuth\Auth\SecretManager;
 use WPMedia\MCP\OAuth\Bootstrap;
 
@@ -17,7 +19,10 @@ use WPMedia\MCP\OAuth\Bootstrap;
  *   - the OAuth endpoints route when the server is enabled via the new filter;
  *   - they return a 404 (no rewrite rule) when the server is disabled;
  *   - the legacy 'rocket_mcp_oauth_server_enabled' filter still enables the
- *     server through the library's back-compat bridge.
+ *     server through the library's back-compat bridge;
+ *   - the legacy 'rocket_mcp_trusted_publishers' filter *value* still reaches
+ *     the CIMD trust check (ClaudeClientVerifier) through the library's
+ *     back-compat bridge.
  *
  * @group MCP
  */
@@ -47,6 +52,7 @@ class BootstrapTest extends TestCase {
 	public function tear_down() {
 		remove_filter( 'wpmedia_mcp_oauth_server_enabled', '__return_true' );
 		remove_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
+		remove_all_filters( 'rocket_mcp_trusted_publishers' );
 		Bootstrap::schedule_rewrite_flush();
 
 		// Reset rewrite state so the ^oauth/authorize rule an enabled test
@@ -144,5 +150,61 @@ class BootstrapTest extends TestCase {
 
 		global $wp_rewrite;
 		$this->assertArrayHasKey( '^oauth/authorize$', $wp_rewrite->wp_rewrite_rules() );
+	}
+
+	/**
+	 * A site still using the legacy 'rocket_mcp_trusted_publishers' filter must
+	 * keep its custom publishers honored by the CIMD trust check: the library's
+	 * ClaudeClientVerifier applies the legacy filter name on top of the new
+	 * 'wpmedia_mcp_oauth_trusted_publishers' one, so the legacy *value* still
+	 * reaches verification through the back-compat bridge.
+	 *
+	 * The assertion depends on the legacy filter: the injected client_id/host is
+	 * absent from the library's default allowlist (only 'claude'), so removing
+	 * the filter makes verify()/is_trusted_host() return false and this test fail.
+	 *
+	 * @return void
+	 */
+	public function testShouldReachVerifierThroughLegacyTrustedPublishersFilter() {
+		// Registering the legacy filter must emit the deprecation notice the shim
+		// fires on 'init'; declare it as expected so the strict WP test framework
+		// does not flag it as an unexpected deprecation.
+		$this->setExpectedDeprecated( 'rocket_mcp_trusted_publishers' );
+
+		$legacy_host      = 'legacy-publisher.example';
+		$legacy_client_id = 'https://legacy-publisher.example/oauth/client-metadata';
+
+		add_filter(
+			'rocket_mcp_trusted_publishers',
+			function ( $publishers ) use ( $legacy_host, $legacy_client_id ) {
+				$publishers['legacy_test_publisher'] = [
+					'client_ids' => [ $legacy_client_id ],
+					'host'       => $legacy_host,
+				];
+
+				return $publishers;
+			}
+		);
+
+		// Run the WP Rocket deprecation shim (normally hooked at 'init' priority 1)
+		// so it emits the _deprecated_hook notice for the legacy filter that now
+		// has a callback registered.
+		( new DeprecatedFilters() )->maybe_notify_deprecated_filters();
+
+		$verifier = new ClaudeClientVerifier();
+
+		// The client_id is a valid public client only because the legacy filter
+		// added its publisher config; the library default allowlist does not
+		// contain it.
+		$result = $verifier->verify(
+			$legacy_client_id,
+			[ 'token_endpoint_auth_method' => 'none' ]
+		);
+
+		$this->assertTrue( $result['verified'] );
+		$this->assertSame( 'legacy_test_publisher', $result['publisher'] );
+
+		// The SSRF host gate must also honor the legacy publisher's host.
+		$this->assertTrue( $verifier->is_trusted_host( $legacy_client_id ) );
 	}
 }
