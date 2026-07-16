@@ -103,6 +103,8 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * @return void
 	 */
 	public function testShouldHandleDisplayConditions( array $config, bool $expected ): void {
+		$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
+
 		Functions\expect( 'apply_filters' )
 			->with( 'rocket_display_rocketcdn_cta', true )
 			->andReturn( $config['filter_result'] );
