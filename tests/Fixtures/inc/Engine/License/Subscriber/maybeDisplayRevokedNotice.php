@@ -78,8 +78,8 @@ return [
         'expected' => '<div class="notice notice-error ">
 		<p><strong>WP Rocket</strong>: Your license has been revoked and your site is no longer optimized for speed. <a href="https://wp-rocket.me/order/?add-to-cart=191&coupon_code=back2rocket" target="_blank" rel="noopener noreferrer">Get WP Rocket at 20% off</a></p>			</div>',
     ],
-    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → notice suppressed (Problem B fix, narrowed).
-    'testShouldNotDisplayNoticeForResellerBannedAccount' => [
+    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → notice still shown, same as non-reseller revoked.
+    'testShouldDisplayNoticeForResellerBannedAccount' => [
         'config' => [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
@@ -94,7 +94,8 @@ return [
             'current_user_can' => true,
             'current_screen' => 'settings_page_wp-crontrol-schedules',
         ],
-        'expected' => '',
+        'expected' => '<div class="notice notice-error ">
+		<p><strong>WP Rocket</strong>: Your license has been revoked and your site is no longer optimized for speed. <a href="https://wp-rocket.me/order/?add-to-cart=191&coupon_code=back2rocket" target="_blank" rel="noopener noreferrer">Get WP Rocket at 20% off</a></p>			</div>',
     ],
     // Reseller account, revoked for a non-banned reason → regression guard: notice still shown, same as non-reseller revoked.
     'testShouldDisplayNoticeForResellerRevokedOtherReason' => [

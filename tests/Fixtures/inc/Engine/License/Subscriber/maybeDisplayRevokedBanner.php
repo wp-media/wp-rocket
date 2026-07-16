@@ -89,8 +89,8 @@ return [
 	</div>
 </section>',
     ],
-    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → banner suppressed (Problem B fix, narrowed).
-    'testShouldNotDisplayBannerForResellerBannedAccount' => [
+    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → banner still shown, same as non-reseller revoked.
+    'testShouldDisplayBannerForResellerBannedAccount' => [
         'config' => [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
@@ -105,7 +105,19 @@ return [
             'current_user_can' => true,
             'current_screen' => 'settings_page_wprocket',
         ],
-        'expected' => '',
+        'expected' => '<section class="rocket-renewal-expired-banner revoked-website-banner" id="rocket-renewal-banner">
+	<div class="banner-copy">
+		<h3 class="rocket-expired-title">Your WP Rocket license has been revoked!</h3>
+		<div class="rocket-renewal-expired-banner-container">
+			<div class="rocket-expired-message">
+								<p>As your license is no longer active, you lost access to WP Rocket&#039;s powerful features to <strong>boost speed</strong> and deliver a <strong>top-notch user experience</strong>.</p>
+							</div>
+		</div>
+	</div>
+	<div class="rocket-expired-cta-container">
+		<a href="https://wp-rocket.me/order/?add-to-cart=191&#038;coupon_code=back2rocket" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">GET WP ROCKET AT 20% OFF</a>
+	</div>
+</section>',
     ],
     // Reseller account, revoked for a non-banned reason → regression guard: banner still shown, same as non-reseller revoked.
     'testShouldDisplayBannerForResellerRevokedOtherReason' => [

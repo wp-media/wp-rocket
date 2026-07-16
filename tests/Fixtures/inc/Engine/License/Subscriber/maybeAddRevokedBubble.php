@@ -58,8 +58,8 @@ return [
         ],
         'expected' => 'WP Rocket <span class="rocket-revoked-bubble"></span>',
     ],
-    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → bubble suppressed (Problem B fix, narrowed).
-    'testShouldNotAddBubbleForResellerBannedAccount' => [
+    // Reseller account, revoked, ban_reason = BANNED_WEBSITE → bubble still added, same as non-reseller revoked.
+    'testShouldAddBubbleForResellerBannedAccount' => [
         'config' => [
             'user' => json_decode( json_encode( [
 				'licence_account'    => 1,
@@ -73,7 +73,7 @@ return [
 			] ) ),
             'current_user_can' => true,
         ],
-        'expected' => 'WP Rocket',
+        'expected' => 'WP Rocket <span class="rocket-revoked-bubble"></span>',
     ],
     // Reseller account, revoked for a non-banned reason → regression guard: bubble still added, same as non-reseller revoked.
     'testShouldAddBubbleForResellerRevokedOtherReason' => [
