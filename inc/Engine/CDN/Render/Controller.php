@@ -554,7 +554,7 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_reseller_banned_notice(): void {
-		if ( ! $this->should_display_reseller_banned_notice() ) {
+		if ( ! $this->user->is_reseller_license_banned() ) {
 			return;
 		}
 
@@ -798,17 +798,6 @@ class Controller extends Abstract_Render {
 				$this->subscription_controller->is_free() &&
 				$this->subscription_controller->is_license_invalid() &&
 				! $this->user->is_reseller_license_banned();
-	}
-
-	/**
-	 * Checks if the reseller-banned notice should be displayed.
-	 *
-	 * @return bool True when the subscription is active, on the free tier, and the license is reseller-banned.
-	 */
-	private function should_display_reseller_banned_notice(): bool {
-		return $this->subscription_controller->has_active_subscription() &&
-				$this->subscription_controller->is_free() &&
-				$this->user->is_reseller_license_banned();
 	}
 
 	/**
