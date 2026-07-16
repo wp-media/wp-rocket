@@ -92,6 +92,12 @@ class ActivatePluginTest extends TestCase {
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
 
+		// The silent-update path can reach RocketInsights' wp_rocket_upgrade
+		// handler, which queries the performance-monitoring table. Install it so
+		// firing the upgrade does not emit a missing-table DB error (which would
+		// mark the test risky under beStrictAboutOutputDuringTests).
+		self::installPerformanceMonitoringTable();
+
 		add_filter( 'wpmedia_mcp_oauth_server_enabled', '__return_true' );
 	}
 
@@ -116,6 +122,7 @@ class ActivatePluginTest extends TestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+		self::uninstallPerformanceMonitoringTable();
 
 		parent::tear_down();
 	}
@@ -187,6 +194,7 @@ class ActivatePluginTest extends TestCase {
 		self::installLrcTable();
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
+		self::installPerformanceMonitoringTable();
 
 		// A brand-new subsite has never flushed (the flag is a per-site option).
 		$this->set_permalink_structure( '/%postname%/' );

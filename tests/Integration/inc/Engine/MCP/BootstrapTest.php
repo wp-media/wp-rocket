@@ -49,6 +49,16 @@ class BootstrapTest extends TestCase {
 		remove_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
 		Bootstrap::schedule_rewrite_flush();
 
+		// Reset rewrite state so the ^oauth/authorize rule an enabled test
+		// registers and flushes (into the in-memory $wp_rewrite->extra_rules_top
+		// and the persisted 'rewrite_rules' option) cannot leak into a later
+		// disabled test. WP_Rewrite::init() does not clear these, so reset them
+		// explicitly.
+		global $wp_rewrite;
+		$wp_rewrite->extra_rules_top = [];
+		$wp_rewrite->rules           = [];
+		delete_option( 'rewrite_rules' ); // @phpstan-ignore custom.rules.discourageOptionUsage
+
 		self::uninstallPreloadCacheTable();
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
@@ -120,6 +130,11 @@ class BootstrapTest extends TestCase {
 	 * @return void
 	 */
 	public function testShouldEnableServerThroughLegacyFilter() {
+		// Using the legacy filter must emit the deprecation notice the shim fires
+		// on 'init'; declare it as expected so the strict WP test framework does
+		// not flag it as an unexpected deprecation.
+		$this->setExpectedDeprecated( 'rocket_mcp_oauth_server_enabled' );
+
 		add_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
 
 		$this->set_permalink_structure( '/%postname%/' );
