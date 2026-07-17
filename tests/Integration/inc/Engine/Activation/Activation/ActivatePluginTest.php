@@ -86,6 +86,17 @@ class ActivatePluginTest extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		if (
+			! class_exists( \WP\MCP\Core\McpAdapter::class )
+			|| ! version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+			|| ! function_exists( 'wp_register_ability' )
+			|| ! function_exists( 'wp_get_ability' )
+			|| ! function_exists( 'wp_get_abilities' )
+			|| ! function_exists( 'wp_register_ability_category' )
+		) {
+			$this->markTestSkipped( 'MCP OAuth boots only with the MCP adapter + WP 6.9 Abilities API (see inc/main.php $rocket_can_boot_mcp_adapter).' );
+		}
+
 		self::installPreloadCacheTable();
 		self::installAtfTable();
 		self::installLrcTable();
