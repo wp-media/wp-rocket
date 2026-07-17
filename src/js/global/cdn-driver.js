@@ -113,7 +113,7 @@
 		}
 
 		if ( resellerBanner ) {
-			resellerBanner.classList.toggle( 'wpr-isHidden', ! isExpanded );
+			resellerBanner.classList.toggle( 'wpr-isHidden', ! atLimit );
 		}
 
 		if ( isVisible && atLimit ) {
