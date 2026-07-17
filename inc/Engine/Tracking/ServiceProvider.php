@@ -59,6 +59,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'mixpanel_optin',
 					'mixpanel_tracking',
+					'user',
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/sections/' ),
 				]
 			);
