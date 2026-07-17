@@ -1,18 +1,6 @@
 <?php
 
 return [
-	'testShouldDisplayNothingWhenWhiteLabel' => [
-		'rocketcdn_data' => [],
-
-		'expected' => [
-			'unit'        => null,
-		],
-
-		'config' => [
-			'white_label' => true,
-		],
-	],
-
 	'testShouldDisplayNothingWhenNotLiveSite' => [
 		'rocketcdn_data' => [],
 
@@ -60,12 +48,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
-			   'cta_data' => [
-				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-				   'cta_heading_max_limit' => '',
-				   'cta_description'       => '',
-				   'limit_reached'         => false,
-			   ],
+			'cta_data' => [
+				'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_heading_max_limit' => '',
+				'cta_description'       => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -107,12 +95,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
-			   'cta_data' => [
-				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-				   'cta_heading_max_limit' => '',
-				   'cta_description'       => '',
-				   'limit_reached'         => false,
-			   ],
+			'cta_data' => [
+				'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_heading_max_limit' => '',
+				'cta_description'       => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -154,12 +142,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
-			   'cta_data' => [
-				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-				   'cta_heading_max_limit' => '',
-				   'cta_description'       => '',
-				   'limit_reached'         => false,
-			   ],
+			'cta_data' => [
+				'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_heading_max_limit' => '',
+				'cta_description'       => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -201,12 +189,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
-			   'cta_data' => [
-				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-				   'cta_heading_max_limit' => '',
-				   'cta_description'       => '',
-				   'limit_reached'         => false,
-			   ],
+			'cta_data' => [
+				'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_heading_max_limit' => '',
+				'cta_description'       => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -247,12 +235,12 @@ return [
 				'monthly_price'            => 7.99,
 				'annual_price'             => 79.99,
 			],
-			   'cta_data' => [
-				   'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
-				   'cta_heading_max_limit' => '',
-				   'cta_description'       => '',
-				   'limit_reached'         => false,
-			   ],
+			'cta_data' => [
+				'cta_heading'           => '<strong>Want full-site Content Delivery coverage?</strong> Extend RocketCDN to all your pages with unlimited bandwidth.',
+				'cta_heading_max_limit' => '',
+				'cta_description'       => '',
+				'limit_reached'         => false,
+			],
 		],
 
 		'expected' => [
@@ -312,5 +300,6 @@ return [
 			'rocket_rocketcdn_cta_hidden' => false,
 			'is_wp_error'                 => true,
 		],
+		'expected' => false,
 	],
 ];

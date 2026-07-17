@@ -122,6 +122,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( __DIR__ . '/views' ),
 					'options',
 					'rocketcdn_subscription_controller',
+					'user',
 				]
 			);
 

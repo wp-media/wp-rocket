@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Utils;
@@ -10,6 +9,7 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
+use WP_Rocket\Engine\License\API\User;
 
 /**
  * Subscriber for the RocketCDN notices on WP Rocket settings page
@@ -62,6 +62,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $subscription_controller;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient              $api_client    RocketCDN API Client instance.
@@ -71,6 +78,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @param string                 $template_path Path to the templates.
 	 * @param Options_Data           $options WP Rocket options instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param User                   $user          User instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -79,7 +87,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		Tracking $tracking,
 		$template_path,
 		Options_Data $options,
-		SubscriptionController $subscription_controller
+		SubscriptionController $subscription_controller,
+		User $user
 	) {
 		parent::__construct( $template_path );
 
@@ -89,6 +98,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$this->tracking                = $tracking;
 			$this->options             = $options;
 		$this->subscription_controller = $subscription_controller;
+		$this->user                    = $user;
 	}
 
 	/**
@@ -133,6 +143,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return;
 		}
 
