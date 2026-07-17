@@ -47,7 +47,7 @@
 		"voku/simple_html_dom": "^4.8",
 		"wordpress/mcp-adapter": "^0.5",
 		"wp-media/apply-filters-typed": "^1.0",
-		"wp-media/mcp-oauth": "^1.0",
+		"wp-media/mcp-oauth": "^1.0.1",
 		"wp-media/plugin-family": "1.0.8",
 		"wp-media/wp-mixpanel": "^1.0"
 	},

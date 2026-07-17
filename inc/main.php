@@ -31,9 +31,6 @@ if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
 	\WPMedia\MCP\OAuth\Bootstrap::instance();
 }
 
-// Emit deprecation notices for the legacy MCP OAuth filters (the only custom MCP code left).
-\WP_Rocket\Engine\MCP\Compat\DeprecatedFilters::init();
-
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
 Cloudflare::fix_cf_flexible_ssl();

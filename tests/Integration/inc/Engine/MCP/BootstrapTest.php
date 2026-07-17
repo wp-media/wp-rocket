@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\MCP;
 
-use WP_Rocket\Engine\MCP\Compat\DeprecatedFilters;
 use WP_Rocket\Tests\Integration\TestCase;
 use WPMedia\MCP\OAuth\Auth\ClaudeClientVerifier;
 use WPMedia\MCP\OAuth\Auth\SecretManager;
@@ -14,7 +13,9 @@ use WPMedia\MCP\OAuth\Bootstrap;
  *
  * The OAuth flow now lives entirely in the library; WP Rocket only boots it via
  * \WPMedia\MCP\OAuth\Bootstrap::instance() (called from inc/main.php at plugin
- * load) and manages the two deprecated filters. This test asserts:
+ * load). The library also owns the deprecation of the legacy `rocket_*` filters,
+ * emitting it through apply_filters_deprecated() as it reads them. This test
+ * asserts:
  *   - the library is wired to WordPress on boot (its 'init' hooks are registered);
  *   - the OAuth endpoints route when the server is enabled via the new filter;
  *   - they return a 404 (no rewrite rule) when the server is disabled;
@@ -136,9 +137,9 @@ class BootstrapTest extends TestCase {
 	 * @return void
 	 */
 	public function testShouldEnableServerThroughLegacyFilter() {
-		// Using the legacy filter must emit the deprecation notice the shim fires
-		// on 'init'; declare it as expected so the strict WP test framework does
-		// not flag it as an unexpected deprecation.
+		// Reading the legacy filter makes the library emit the deprecation notice
+		// via apply_filters_deprecated(); declare it as expected so the strict WP
+		// test framework does not flag it as an unexpected deprecation.
 		$this->setExpectedDeprecated( 'rocket_mcp_oauth_server_enabled' );
 
 		add_filter( 'rocket_mcp_oauth_server_enabled', '__return_true' );
@@ -166,9 +167,10 @@ class BootstrapTest extends TestCase {
 	 * @return void
 	 */
 	public function testShouldReachVerifierThroughLegacyTrustedPublishersFilter() {
-		// Registering the legacy filter must emit the deprecation notice the shim
-		// fires on 'init'; declare it as expected so the strict WP test framework
-		// does not flag it as an unexpected deprecation.
+		// Reading the legacy filter makes the library emit the deprecation notice
+		// via apply_filters_deprecated() as ClaudeClientVerifier resolves its
+		// trusted-publisher allowlist; declare it as expected so the strict WP
+		// test framework does not flag it as an unexpected deprecation.
 		$this->setExpectedDeprecated( 'rocket_mcp_trusted_publishers' );
 
 		$legacy_host      = 'legacy-publisher.example';
@@ -185,11 +187,6 @@ class BootstrapTest extends TestCase {
 				return $publishers;
 			}
 		);
-
-		// Run the WP Rocket deprecation shim (normally hooked at 'init' priority 1)
-		// so it emits the _deprecated_hook notice for the legacy filter that now
-		// has a callback registered.
-		( new DeprecatedFilters() )->maybe_notify_deprecated_filters();
 
 		$verifier = new ClaudeClientVerifier();
 
