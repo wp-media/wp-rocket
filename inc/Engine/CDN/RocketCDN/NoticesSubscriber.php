@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Utils;
@@ -147,6 +146,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return;
 		}
 
