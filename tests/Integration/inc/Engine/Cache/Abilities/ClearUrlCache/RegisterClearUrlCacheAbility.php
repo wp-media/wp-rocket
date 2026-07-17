@@ -43,6 +43,9 @@ class Test_RegisterClearUrlCacheAbility extends FilesystemTestCase {
 
 		$this->set_up_user( $config['has_permission'] );
 
+		$clean_home_calls_before  = did_action( 'before_rocket_clean_home' );
+		$clean_files_calls_before = did_action( 'before_rocket_clean_files' );
+
 		$ability = wp_get_ability( self::ABILITY_ID );
 
 		$this->assertNotNull( $ability, 'Ability should be registered.' );
@@ -60,6 +63,22 @@ class Test_RegisterClearUrlCacheAbility extends FilesystemTestCase {
 
 		$this->checkEntriesDeleted( $expected['cleaned'] ?? [] );
 		$this->checkShouldNotDeleteEntries();
+
+		if ( isset( $expected['clean_home_calls'] ) ) {
+			$this->assertSame(
+				$expected['clean_home_calls'],
+				did_action( 'before_rocket_clean_home' ) - $clean_home_calls_before,
+				'rocket_clean_home() call count should match expectation.'
+			);
+		}
+
+		if ( isset( $expected['clean_files_calls'] ) ) {
+			$this->assertSame(
+				$expected['clean_files_calls'],
+				did_action( 'before_rocket_clean_files' ) - $clean_files_calls_before,
+				'rocket_clean_files() call count should match expectation.'
+			);
+		}
 	}
 
 	/**

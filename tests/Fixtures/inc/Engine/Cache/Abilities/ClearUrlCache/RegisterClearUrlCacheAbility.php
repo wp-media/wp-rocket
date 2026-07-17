@@ -258,5 +258,46 @@ return [
 				],
 			],
 		],
+
+		'testShouldRouteHomeUrlToCleanHomeOnly'              => [
+			'config'   => [
+				'has_permission' => true,
+				'input'          => [
+					'url' => 'http://example.org/',
+				],
+			],
+			'expected' => [
+				'is_error'           => false,
+				'success'            => true,
+				'error'              => [],
+				// Home url must go through rocket_clean_home(), never through rocket_clean_files().
+				'clean_home_calls'   => 1,
+				'clean_files_calls'  => 0,
+			],
+		],
+
+		'testShouldRouteHomeUrlSeparatelyFromOtherRequestedUrl' => [
+			'config'   => [
+				'has_permission' => true,
+				'input'          => [
+					'url' => [
+						'http://example.org/',
+						'http://example.org/lorem-ipsum/',
+					],
+				],
+			],
+			'expected' => [
+				'is_error'          => false,
+				'success'           => true,
+				'error'             => [],
+				// Home url is routed to rocket_clean_home(), the other url is still cleared via rocket_clean_files().
+				'clean_home_calls'  => 1,
+				'clean_files_calls' => 1,
+				'cleaned'           => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'                => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/' => null,
+				],
+			],
+		],
 	],
 ];
