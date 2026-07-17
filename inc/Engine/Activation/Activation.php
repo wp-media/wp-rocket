@@ -95,9 +95,6 @@ class Activation {
 		do_action( 'rocket_activation' );
 
 		// Flush once, after every activator has registered its rewrite rules.
-		// Note: the MCP OAuth endpoints are no longer flushed here — the
-		// wp-media/mcp-oauth library registers and lazily flushes its own
-		// rewrite rules on the 'init' hook of the first front-end request.
 		flush_rewrite_rules();
 
 		if ( rocket_valid_key() ) {

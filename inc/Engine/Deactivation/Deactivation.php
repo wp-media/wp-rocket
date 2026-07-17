@@ -121,9 +121,7 @@ class Deactivation {
 		do_action( 'rocket_deactivation', $sites_number );
 
 		// Flush once, after every deactivator has had a chance to unregister
-		// its rewrite rules. Note: the MCP OAuth rewrite rules are owned by the
-		// wp-media/mcp-oauth library, which stops registering them on the next
-		// 'init' once the plugin is inactive; this flush clears the stale rules.
+		// its rewrite rules.
 		flush_rewrite_rules();
 	}
 }
