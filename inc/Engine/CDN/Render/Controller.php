@@ -689,6 +689,11 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_auto_create_rocketcdn_free_subscription() {
+		// Bail out if there is an active subscription.
+		if ( $this->subscription_controller->has_active_subscription() ) {
+			return;
+		}
+
 		// Bail out if the subscription is paid and is still within the cancellation grace period — too early to auto-resume.
 		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return;
