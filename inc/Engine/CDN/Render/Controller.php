@@ -689,11 +689,6 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_auto_create_rocketcdn_free_subscription() {
-		// Bail out if customer is outside the grace period to avoid unnecessary subscription creation on new accounts.
-		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
-			return;
-		}
-
 		// Bail out if the subscription is paid and is still within the cancellation grace period — too early to auto-resume.
 		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return;
