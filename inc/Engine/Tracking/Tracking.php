@@ -7,6 +7,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\License\API\User;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -33,21 +34,53 @@ class Tracking extends Abstract_Render {
 	private $mixpanel;
 
 	/**
+	 * License User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data     $options Options Data instance.
 	 * @param Optin            $optin Optin instance.
 	 * @param MixpanelTracking $mixpanel Mixpanel Tracking instance.
+	 * @param User             $user License User instance.
 	 * @param string           $template_path Path to the template files.
 	 */
-	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, $template_path ) {
+	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->options  = $options;
 		$this->optin    = $optin;
 		$this->mixpanel = $mixpanel;
+		$this->user     = $user;
 
-		$this->mixpanel->identify( $this->options->get( 'consumer_email', '' ) );
+		$consumer_email = $this->options->get( 'consumer_email', '' );
+
+		$this->mixpanel->identify( $consumer_email );
+
+		$this->sync_is_reseller_property( $consumer_email );
+	}
+
+	/**
+	 * Sync the is_reseller property with Mixpanel when tracking is allowed.
+	 *
+	 * @param string $consumer_email Consumer email.
+	 *
+	 * @return void
+	 */
+	private function sync_is_reseller_property( string $consumer_email ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->mixpanel->set_user_property(
+			$this->mixpanel->hash( $consumer_email ),
+			'is_reseller',
+			$this->user->is_reseller_account()
+		);
 	}
 
 	/**

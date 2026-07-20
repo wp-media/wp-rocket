@@ -90,8 +90,9 @@
 	 */
 	function updateRocketCtaState( count, limit ) {
 		const cta = document.getElementById( 'wpr-rocketcdn-cta' );
+		const resellerBanner = document.getElementById( 'wpr-rocketcdn-reseller-limit-cta' );
 
-		if ( ! cta ) {
+		if ( ! cta && ! resellerBanner ) {
 			return;
 		}
 
@@ -104,27 +105,38 @@
 		const isVisible = count > 0;
 		const atLimit  = count >= limit;
 
-		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
+		if ( cta ) {
+			cta.classList.toggle( 'wpr-isHidden', ! isVisible );
+			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
+			cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
+			cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+		}
 
-		if ( isVisible && atLimit ) {
-			// Always show "Nice work!" text immediately.
-			cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
+		if ( resellerBanner ) {
+			resellerBanner.classList.toggle( 'wpr-isHidden', ! atLimit );
+		}
 
-			if ( ! cta.classList.contains( 'wpr-rocketcdn-cta--expanded' ) ) {
-				// Banner is collapsed — keep it collapsed for 15s then expand.
-				cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
-				cta.classList.remove( 'wpr-rocketcdn-cta--expanded' );
+		if ( cta ) {
+			if ( isVisible && atLimit ) {
+				// Always show "Nice work!" text immediately.
+				cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
 
-				autoExpandTimer = setTimeout( () => {
-					autoExpandTimer = null;
-					cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
-					cta.classList.add( 'wpr-rocketcdn-cta--expanded' );
-					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
-				}, 15000 );
+				if ( ! cta.classList.contains( 'wpr-rocketcdn-cta--expanded' ) ) {
+					// Banner is collapsed — keep it collapsed for 15s then expand.
+					cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
+					cta.classList.remove( 'wpr-rocketcdn-cta--expanded' );
+
+					autoExpandTimer = setTimeout( () => {
+						autoExpandTimer = null;
+						cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
+						cta.classList.add( 'wpr-rocketcdn-cta--expanded' );
+						document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+					}, 15000 );
+				}
+			} else {
+				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible );
+				cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
 			}
-		} else {
-			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible );
-			cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
 		}
 	}
 
