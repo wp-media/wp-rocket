@@ -776,6 +776,8 @@ class Controller extends Abstract_Render {
 	 * @return bool True when the expired licence notice should be displayed.
 	 */
 	private function should_display_licence_expired_notice(): bool {
+		fwrite( STDERR, 'DEBUG cdn_type=' . $this->context->get_cdn_type() . ' is_rocketcdn=' . var_export( $this->context->is_rocketcdn(), true ) . ' is_free=' . var_export( $this->subscription_controller->is_free(), true ) . ' is_license_invalid=' . var_export( $this->subscription_controller->is_license_invalid(), true ) . "\n" );
+
 		return $this->context->is_rocketcdn() &&
 				$this->subscription_controller->is_free() &&
 				$this->subscription_controller->is_license_invalid();
