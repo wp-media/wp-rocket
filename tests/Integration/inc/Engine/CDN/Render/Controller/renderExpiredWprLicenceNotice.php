@@ -34,7 +34,8 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
+		$added = add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
+		fwrite( STDERR, 'DEBUG add_filter_result=' . var_export( $added, true ) . ' has_filter=' . var_export( has_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] ), true ) . "\n" );
 	}
 
 	public static function tear_down_after_class() {
@@ -49,6 +50,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 * @return string|null
 	 */
 	public static function cdn_type_cb(): ?string {
+		fwrite( STDERR, 'DEBUG cdn_type_cb_called override=' . var_export( self::$cdn_type_override, true ) . "\n" );
 		return self::$cdn_type_override;
 	}
 
