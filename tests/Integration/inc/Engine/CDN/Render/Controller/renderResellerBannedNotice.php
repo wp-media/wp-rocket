@@ -8,12 +8,19 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::render_reseller_banned_notice
  * @group  CDN
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
+class Test_RenderResellerBannedNotice extends TestCase {
+
+	/**
+	 * CDN type override for the filter. null = no override (falls through to Options_Data cached value).
+	 *
+	 * @var string|null
+	 */
+	private static $cdn_type_override = null;
 
 	/**
 	 * @var Controller
@@ -25,12 +32,25 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 	 */
 	private $user;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
+	}
+
+	public static function tear_down_after_class() {
+		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
+		self::$cdn_type_override = null;
+		parent::tear_down_after_class();
+	}
+
 	/**
-	 * Per-test cdn_type filter closure, removed in tear_down().
+	 * Static filter callback. Returns null when no override is active so Options_Data falls through.
 	 *
-	 * @var callable|null
+	 * @return string|null
 	 */
-	private $cdn_type_filter_callback = null;
+	public static function cdn_type_cb(): ?string {
+		return self::$cdn_type_override;
+	}
 
 	public function set_up() {
 		parent::set_up();
@@ -40,17 +60,12 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 		$this->user       = $container->get( 'user' );
 
 		delete_transient( 'rocketcdn_status' );
-		delete_option( 'rocket_rocketcdn_forced_pause_state' );
 	}
 
 	public function tear_down() {
-		if ( null !== $this->cdn_type_filter_callback ) {
-			remove_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
-			$this->cdn_type_filter_callback = null;
-		}
+		self::$cdn_type_override = null;
 
 		delete_transient( 'rocketcdn_status' );
-		delete_option( 'rocket_rocketcdn_forced_pause_state' );
 
 		parent::tear_down();
 	}
@@ -58,19 +73,21 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( array $config, $expected ): void {
-		$cdn_type                       = $config['cdn_type'];
-		$this->cdn_type_filter_callback = static function () use ( $cdn_type ) {
-			return $cdn_type;
-		};
-		add_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
+	public function testShouldDoAsExpected( array $config, bool $expected ): void {
+		self::$cdn_type_override = 'byocdn' === $config['cdn_type'] ? 'byocdn' : null;
 
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
 
-		$result = $this->controller->maybe_pause_cdn_for_inactive_subscription( $config['cdn_option'] );
+		ob_start();
+		$this->controller->render_reseller_banned_notice();
+		$output = ob_get_clean();
 
-		$this->assertSame( $expected, $result );
+		if ( $expected ) {
+			$this->assertStringContainsString( 'wpr-cdn-banned__notice', $output );
+		} else {
+			$this->assertEmpty( $output );
+		}
 	}
 
 	/**
@@ -81,18 +98,16 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 			return;
 		}
 
-		$data = [
-			'subscription_status' => $config['subscription_status'],
-			'plan_type'           => $config['plan_type'] ?? 'free',
-			'status_code'         => 200,
-			'cdn_url'             => $config['cdn_url'] ?? '',
-		];
-
-		if ( isset( $config['website_status'] ) ) {
-			$data['website_status'] = $config['website_status'];
-		}
-
-		set_transient( 'rocketcdn_status', $data, HOUR_IN_SECONDS );
+		set_transient(
+			'rocketcdn_status',
+			[
+				'subscription_status' => $config['subscription_status'],
+				'plan_type'           => $config['plan_type'] ?? 'free',
+				'status_code'         => 200,
+				'cdn_url'             => $config['cdn_url'] ?? '',
+			],
+			HOUR_IN_SECONDS
+		);
 	}
 
 	/**
@@ -108,8 +123,10 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 			? time() - DAY_IN_SECONDS
 			: time() + YEAR_IN_SECONDS;
 		$user_data->licence            = $licence;
+		$user_data->renewal_url        = 'https://wp-rocket.me/account/';
 		$user_data->is_reseller        = ! empty( $config['is_reseller'] );
 
 		$this->user->set_user( $user_data );
 	}
+
 }
