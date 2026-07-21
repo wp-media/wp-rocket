@@ -777,7 +777,7 @@ class Controller extends Abstract_Render {
 	 */
 	private function should_display_licence_expired_notice(): bool {
 		$is_rocketcdn      = $this->context->is_rocketcdn();
-		$direct_filter_raw = apply_filters( 'pre_get_rocket_option_cdn_type', 'FILTER_NOT_APPLIED', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+		$direct_filter_raw = wpm_apply_filters_typed( 'string|null', 'pre_get_rocket_option_cdn_type', null, '' );
 		fwrite( STDERR, 'DEBUG is_rocketcdn=' . var_export( $is_rocketcdn, true ) . ' direct_filter_raw=' . var_export( $direct_filter_raw, true ) . "\n" );
 
 		return $is_rocketcdn &&
