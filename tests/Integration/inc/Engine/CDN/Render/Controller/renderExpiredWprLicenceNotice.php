@@ -75,6 +75,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 */
 	public function testShouldDoAsExpected( array $config, bool $expected ): void {
 		self::$cdn_type_override = 'byocdn' === $config['cdn_type'] ? 'byocdn' : null;
+		fwrite( STDERR, 'DEBUG TEST config_cdn_type=' . var_export( $config['cdn_type'], true ) . ' override=' . var_export( self::$cdn_type_override, true ) . "\n" );
 
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
