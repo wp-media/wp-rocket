@@ -548,6 +548,21 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Renders the reseller-banned notice.
+	 *
+	 * @since 3.23.1
+	 *
+	 * @return void
+	 */
+	public function render_reseller_banned_notice(): void {
+		if ( ! $this->user->is_reseller_license_banned() ) {
+			return;
+		}
+
+		echo $this->generate( 'partials/cdn/wpr-licence-banned-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Filter the CDN option to pause CDN for users with inactive subscriptions.
 	 *
 	 * If the user has an inactive subscription, this will force the CDN option to be false,
@@ -628,6 +643,10 @@ class Controller extends Abstract_Render {
 			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
 
+		if ( $this->user->is_reseller_license_banned() ) {
+			$texts['paused_details'] = '';
+		}
+
 		return $texts;
 	}
 
@@ -670,8 +689,8 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_auto_create_rocketcdn_free_subscription() {
-		// Bail out if customer is outside the grace period to avoid unnecessary subscription creation on new accounts.
-		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+		// Bail out if there is an active subscription.
+		if ( $this->subscription_controller->has_active_subscription() ) {
 			return;
 		}
 
@@ -778,7 +797,8 @@ class Controller extends Abstract_Render {
 	private function should_display_licence_expired_notice(): bool {
 		return $this->subscription_controller->has_active_subscription() &&
 				$this->subscription_controller->is_free() &&
-				$this->subscription_controller->is_license_invalid();
+				$this->subscription_controller->is_license_invalid() &&
+				! $this->user->is_reseller_license_banned();
 	}
 
 	/**
