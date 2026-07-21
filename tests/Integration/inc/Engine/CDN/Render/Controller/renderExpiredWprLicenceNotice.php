@@ -32,30 +32,22 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 */
 	private $user;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		$added = add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
-		fwrite( STDERR, 'DEBUG add_filter_result=' . var_export( $added, true ) . ' has_filter=' . var_export( has_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] ), true ) . "\n" );
-	}
-
-	public static function tear_down_after_class() {
-		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
-		self::$cdn_type_override = null;
-		parent::tear_down_after_class();
-	}
-
 	/**
 	 * Static filter callback. Returns null when no override is active so Options_Data falls through.
 	 *
 	 * @return string|null
 	 */
 	public static function cdn_type_cb(): ?string {
-		fwrite( STDERR, 'DEBUG cdn_type_cb_called override=' . var_export( self::$cdn_type_override, true ) . "\n" );
 		return self::$cdn_type_override;
 	}
 
 	public function set_up() {
 		parent::set_up();
+
+		// Registered per-test (not in set_up_before_class()) because WP core's test suite
+		// backs up hooks in setUp() and restores them in tearDown(): a filter added once at
+		// the class level survives only until the first test's tearDown() wipes it out.
+		add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
 
 		$container        = apply_filters( 'rocket_container', null );
 		$this->controller = $container->get( 'cdn_render_controller' );
@@ -65,6 +57,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
 		self::$cdn_type_override = null;
 
 		delete_transient( 'rocketcdn_status' );
@@ -77,7 +70,6 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 */
 	public function testShouldDoAsExpected( array $config, bool $expected ): void {
 		self::$cdn_type_override = 'byocdn' === $config['cdn_type'] ? 'byocdn' : null;
-		fwrite( STDERR, 'DEBUG TEST config_cdn_type=' . var_export( $config['cdn_type'], true ) . ' override=' . var_export( self::$cdn_type_override, true ) . "\n" );
 
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
