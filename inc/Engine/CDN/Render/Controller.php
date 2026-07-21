@@ -211,7 +211,7 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
-				'is_visible'            => $this->page_count > 0,
+				'is_visible'            => $this->page_count > 0 && ! $this->user->is_reseller_account(),
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
@@ -541,6 +541,7 @@ class Controller extends Abstract_Render {
 
 		$data = [
 			'renewal_url' => $this->user->get_renewal_url(),
+			'is_reseller' => $this->user->is_reseller_account(),
 		];
 
 		echo $this->generate( 'partials/cdn/wpr-licence-expired-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.

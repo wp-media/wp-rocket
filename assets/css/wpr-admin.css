@@ -4028,26 +4028,34 @@ div.wpr-tutorial-item {
 .wpr-ri-add-section {
   margin: 16px 0;
   display: flex;
+  gap: 8px;
 }
 .wpr-ri-add-section .wpr-speed-radar-input {
   display: flex;
   width: 80%;
-  margin-right: 16px;
-  border: 2px solid #C2CAD4;
+  border-radius: 4px;
+  border: 1px solid #E2E5E9;
+  padding: 6px 8px 6px 16px;
+  height: 50px;
 }
 .wpr-ri-add-section .wpr-button {
   display: flex;
   text-align: center;
   justify-content: center;
-  padding: 8px;
+  padding: 16px;
   width: 20%;
+  height: 50px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  background: #2D1656;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
 .wpr-ri-add-url-button {
-  font-family: "Segoe UI ", Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 600;
   line-height: normal;
   text-transform: uppercase;
 }
