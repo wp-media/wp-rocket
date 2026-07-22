@@ -14,6 +14,21 @@ return [
 		'expected' => true,
 	],
 
+	// Issue #8643: Free CDN + WPR expired + subscription cancelled/deleted at RocketCDN
+	// (e.g. cron deleted the free subscription during the grace period, or the website
+	// was fully deleted at RocketCDN) → notice must still be rendered.
+	'testRendersNoticeForFreeSubscriptionCancelledWithExpiredLicense' => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'cancelled',
+			'plan_type'           => 'free',
+			'cdn_url'             => '',
+			'license_expired'     => true,
+			'license_revoked'     => false,
+		],
+		'expected' => true,
+	],
+
 	// TC-3.6: Free CDN + site banned → notice is rendered.
 	'testRendersNoticeForFreeSubscriptionWithRevokedLicense' => [
 		'config'   => [

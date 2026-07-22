@@ -790,12 +790,12 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Checks if the current subscription is active and the license is valid.
+	 * Checks if the WP Rocket license is expired for a free RocketCDN subscriber.
 	 *
-	 * @return bool True when the subscription can be used.
+	 * @return bool True when the expired licence notice should be displayed.
 	 */
 	private function should_display_licence_expired_notice(): bool {
-		return $this->subscription_controller->has_active_subscription() &&
+		return $this->context->is_rocketcdn() &&
 				$this->subscription_controller->is_free() &&
 				$this->subscription_controller->is_license_invalid() &&
 				! $this->user->is_reseller_license_banned();
