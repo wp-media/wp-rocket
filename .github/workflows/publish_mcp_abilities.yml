@@ -4,9 +4,6 @@ on:
   release:
     types:
       - published
-  push:
-    branches:
-      - feature/wp-cli-abilities-catalog
 
 jobs:
   dump-abilities:
