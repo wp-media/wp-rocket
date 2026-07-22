@@ -431,6 +431,7 @@ class Plugin {
 			'logger_subscriber',
 			'optimole_subscriber',
 			'abilities_subscriber',
+			'abilities_cli_subscriber',
 			'ri_abilities_subscriber',
 			'mcp_auth_subscriber',
 			'mcp_auth_discovery_subscriber',
