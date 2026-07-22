@@ -102,14 +102,11 @@
 			autoExpandTimer = null;
 		}
 
-		const isVisible = count > 0;
 		const atLimit  = count >= limit;
+		const isVisible = atLimit;
 
 		if ( cta ) {
 			cta.classList.toggle( 'wpr-isHidden', ! isVisible );
-			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
-			cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
-			cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
 		}
 
 		if ( resellerBanner ) {
@@ -701,10 +698,8 @@
 					}
 				}
 
-				if ( 0 === response.count ) {
-					// Update status inidicator component
-					updateStatusIndicatorComponent( response.status_indicator_html );
-				}
+				// Update status indicator component.
+				updateStatusIndicatorComponent( response.status_indicator_html );
 
 			} ).catch( () => {
 				button.disabled = false;
