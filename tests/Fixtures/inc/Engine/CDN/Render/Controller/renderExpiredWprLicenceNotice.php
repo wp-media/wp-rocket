@@ -14,6 +14,21 @@ return [
 		'expected' => true,
 	],
 
+	// Issue #8643: Free CDN + WPR expired + subscription cancelled/deleted at RocketCDN
+	// (e.g. cron deleted the free subscription during the grace period, or the website
+	// was fully deleted at RocketCDN) → notice must still be rendered.
+	'testRendersNoticeForFreeSubscriptionCancelledWithExpiredLicense' => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'cancelled',
+			'plan_type'           => 'free',
+			'cdn_url'             => '',
+			'license_expired'     => true,
+			'license_revoked'     => false,
+		],
+		'expected' => true,
+	],
+
 	// TC-3.6: Free CDN + site banned → notice is rendered.
 	'testRendersNoticeForFreeSubscriptionWithRevokedLicense' => [
 		'config'   => [
@@ -66,8 +81,23 @@ return [
 		'expected' => false,
 	],
 
-	// Reseller + Free CDN + WPR expired → notice is rendered but Renew Licence button is hidden.
-	'testHidesRenewButtonForResellerWithExpiredLicense' => [
+	// Reseller + banned (BANNED_WEBSITE) → expired notice must NOT render (replaced by the banned notice instead).
+	'testNoExpiredNoticeForResellerBannedLicense'              => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => false,
+	],
+
+	// Reseller + expired-only (not revoked) → regression: still shows the expired notice.
+	'testExpiredNoticeStillShownForResellerExpiredOnly'        => [
 		'config'   => [
 			'cdn_type'            => 'rocketcdn',
 			'subscription_status' => 'running',
@@ -80,8 +110,23 @@ return [
 		'expected' => true,
 	],
 
-	// Reseller + Free CDN + site banned → notice is rendered but Renew Licence button is hidden.
-	'testHidesRenewButtonForResellerWithRevokedLicense' => [
+	// Non-reseller + revoked → regression: still shows the expired notice.
+	'testExpiredNoticeStillShownForNonResellerRevoked'         => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => false,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => true,
+	],
+
+	// Reseller + revoked with unrecognized ban reason → documents accepted-limitation fallback: still shows expired notice.
+	'testExpiredNoticeStillShownForResellerRevokedUnrecognizedReason' => [
 		'config'   => [
 			'cdn_type'            => 'rocketcdn',
 			'subscription_status' => 'running',
@@ -90,6 +135,7 @@ return [
 			'license_expired'     => false,
 			'license_revoked'     => true,
 			'is_reseller'         => true,
+			'ban_reason'          => 'NON_PAYMENT',
 		],
 		'expected' => true,
 	],
