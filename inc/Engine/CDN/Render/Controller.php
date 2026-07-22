@@ -211,7 +211,7 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
-				'is_visible'            => $limit_reached && ! $this->user->is_reseller_account(),
+				'is_visible'            => $this->page_count > 0 && ! $this->user->is_reseller_account(),
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],

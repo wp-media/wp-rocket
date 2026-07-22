@@ -105,7 +105,7 @@
 		const atLimit  = count >= limit;
 
 		if ( cta ) {
-			cta.classList.toggle( 'wpr-isHidden', ! atLimit );
+			cta.classList.toggle( 'wpr-isHidden', count === 0 );
 		}
 
 		if ( resellerBanner ) {
@@ -130,7 +130,7 @@
 					}, 15000 );
 				}
 			} else {
-				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', atLimit );
+				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', count > 0 );
 				cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
 			}
 		}
