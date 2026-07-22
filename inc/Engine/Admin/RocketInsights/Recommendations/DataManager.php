@@ -77,6 +77,7 @@ class DataManager implements LoggerAwareInterface {
 
 		'plugin_rocketcdn'             => 'page_cdn',
 		'plugin_imagify'               => 'imagify',
+		'plugin_rocketcdn_free'        => 'page_cdn',
 	];
 
 	/**
