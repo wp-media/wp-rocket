@@ -103,10 +103,9 @@
 		}
 
 		const atLimit  = count >= limit;
-		const isVisible = atLimit;
 
 		if ( cta ) {
-			cta.classList.toggle( 'wpr-isHidden', ! isVisible );
+			cta.classList.toggle( 'wpr-isHidden', ! atLimit );
 		}
 
 		if ( resellerBanner ) {
@@ -114,7 +113,7 @@
 		}
 
 		if ( cta ) {
-			if ( isVisible && atLimit ) {
+			if ( atLimit ) {
 				// Always show "Nice work!" text immediately.
 				cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
 
@@ -131,7 +130,7 @@
 					}, 15000 );
 				}
 			} else {
-				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible );
+				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', atLimit );
 				cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
 			}
 		}
