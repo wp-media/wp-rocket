@@ -9,6 +9,7 @@
  *     Notice data.
  *
  *     @type string $renewal_url URL to the licence renewal page.
+ *     @type bool   $is_reseller Whether the account is a reseller account.
  * }
  *
  * @since 3.22
@@ -24,8 +25,10 @@
 			</h3>
 			<p><?php esc_html_e( 'Please renew it to keep using RocketCDN.', 'rocket' ); ?></p>
 		</div>
-		<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
-			<?php esc_html_e( 'Renew Licence', 'rocket' ); ?>
-		</a>
+		<?php if ( empty( $data['is_reseller'] ) ) : ?>
+			<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
+				<?php esc_html_e( 'Renew Licence', 'rocket' ); ?>
+			</a>
+		<?php endif; ?>
 	</div>
 </div>

@@ -13,7 +13,7 @@
 <p class="wpr-page-num-txt">Tracked Pages:<span>2</span></p>
 </div>
 <div class="wpr-global-score-widget-btn-wrapper">
-<a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button" data-source="dashboard">Add Pages </a>
+<a href="#rocket_insights" class="wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-plus wpr-button--no-min-width wpr-ri-add-url-button wpr-ri-global-score-add-url-button" data-source="dashboard"> Add Pages</a>
 </div>
 </div>
 </div>

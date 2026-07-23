@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
@@ -27,17 +28,26 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	private $user_client;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient  $api_client    RocketCDN API Client instance.
 	 * @param UserClient $user_client   UserClient instance.
+	 * @param User       $user          User instance.
 	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, $user_client, User $user, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
 		$this->user_client = $user_client;
+		$this->user        = $user;
 	}
 
 	/**
@@ -73,6 +83,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		}
 
 		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return;
 		}
 
@@ -145,6 +159,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function add_subscription_modal() {
 		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return;
 		}
 
