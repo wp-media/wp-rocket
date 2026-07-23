@@ -5969,7 +5969,7 @@ msgstr "REPRENDRE LE CDN"
 
 #: views/settings/partials/cdn/wpr-licence-banned-notice.php:19
 msgid "Your access to RocketCDN has been paused."
-msgstr "Votre accès à RocketCDN a mis en pause."
+msgstr "Votre accès à RocketCDN a été mis en pause."
 
 #: views/settings/partials/cdn/wpr-licence-banned-notice.php:21
 msgid ""
