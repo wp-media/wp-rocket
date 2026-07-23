@@ -5976,8 +5976,8 @@ msgid ""
 "Your hosting provider has paused this license. Please contact their support "
 "team for assistance."
 msgstr ""
-"Votre hébergeur a suspendu cette licence. Veuillez contacter son service "
-"d'assistance pour obtenir de l'aide."
+"Votre hébergeur a suspendu cette licence. Veuillez contacter son support "
+"pour obtenir de l'aide."
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
 msgid "Your WPRocket license has expired"
