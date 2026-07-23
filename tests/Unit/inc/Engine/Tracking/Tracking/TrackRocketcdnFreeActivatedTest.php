@@ -8,6 +8,7 @@ use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -20,6 +21,7 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 	private $optin;
 	private $mixpanel;
 	private $options;
+	private $user;
 	private $tracking;
 
 	protected function set_up(): void {
@@ -28,6 +30,7 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 		$this->optin    = Mockery::mock( Optin::class );
 		$this->mixpanel = Mockery::mock( MixpanelTracking::class );
 		$this->options  = Mockery::mock( Options_Data::class );
+		$this->user     = Mockery::mock( User::class );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email', '' )
@@ -35,11 +38,15 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 		$this->mixpanel->shouldReceive( 'identify' )
 			->once()
 			->with( '' );
+		$this->optin->shouldReceive( 'can_track' )
+			->once()
+			->andReturn( false );
 
 		$this->tracking = new Tracking(
 			$this->options,
 			$this->optin,
 			$this->mixpanel,
+			$this->user,
 			'path/to/templates'
 		);
 

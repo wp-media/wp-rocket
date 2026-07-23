@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22.1\n"
+"Project-Id-Version: WP Rocket 3.23.1-alpha\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-07-02T08:01:12+00:00\n"
+"POT-Creation-Date: 2026-07-23T08:41:48+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -1397,11 +1397,11 @@ msgstr ""
 msgid "weekly"
 msgstr "hebdomadaire"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:42
+#: inc/Engine/Abilities/Options/GetOptions.php:421
 msgid "Get WP Rocket options"
 msgstr "Options de WP Rocket"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:43
+#: inc/Engine/Abilities/Options/GetOptions.php:422
 msgctxt "Ability description"
 msgid ""
 "Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
@@ -1414,11 +1414,11 @@ msgstr ""
 "Appelez toujours cette fonction avant « set-option » lorsque vous modifiez une option de type tableau, afin d'éviter d'écraser les valeurs existantes. Ne montrez pas à l'utilisateur les clés internes, les identifiants ou les clés en lecture seule.\n"
 "À moins que l'utilisateur ne demande un autre format, présentez les réglages sous la forme d'un tableau de bord regroupé comprenant des fiches consacrées à la mise en cache, à l'optimisation des fichiers, aux médias, au CDN, à la base de données et au heartbeat. Chaque fiche doit afficher un badge indiquant le niveau du groupe, des lignes de réglages, des bulles d'état, des barres d'impact et des descriptions en langage clair, en utilisant les couleurs approuvées."
 
-#: inc/Engine/Abilities/Options/SetOption.php:135
+#: inc/Engine/Abilities/Options/SetOption.php:161
 msgid "Set a WP Rocket option"
 msgstr "Configurer une option de WP Rocket"
 
-#: inc/Engine/Abilities/Options/SetOption.php:136
+#: inc/Engine/Abilities/Options/SetOption.php:162
 msgctxt "Ability description"
 msgid ""
 "Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.\n"
@@ -1426,16 +1426,20 @@ msgid ""
 "Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.\n"
 "A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn."
 msgstr ""
+"Définit une option WP Rocket à l’aide de option_name et option_value. La valeur par défaut de update_mode est update, qui ajoute les éléments à la fin des tableaux ; utilisez replace pour écraser entièrement un tableau.\n"
+"Utilisez cette fonction lorsque l’utilisateur souhaite activer, désactiver ou mettre à jour un paramètre spécifique. Pour les options de type tableau, appelez toujours get-options au préalable.\n"
+"Une confirmation est requise avant l’appel. Affichez d’abord le nom du paramètre et la valeur actuelle, puis la nouvelle valeur. Demandez ensuite : « Confirmer cette modification ? » et attendez une réponse claire par « oui » ou « non ».\n"
+"Une demande de l’utilisateur telle que « l’activer » ou « le désactiver » ne constitue pas une confirmation suffisante. N’appelez cette fonctionnalité qu’après avoir obtenu une réponse affirmative de la part de l’utilisateur au cours du même échange."
 
-#: inc/Engine/Abilities/Options/SetOption.php:150
+#: inc/Engine/Abilities/Options/SetOption.php:176
 msgid "The name of the WP Rocket option to set"
 msgstr "Le nom de l'option de WP Rocket à configurer"
 
-#: inc/Engine/Abilities/Options/SetOption.php:162
+#: inc/Engine/Abilities/Options/SetOption.php:189
 msgid "The value to set for the specified WP Rocket option"
 msgstr "La valeur à définir pour l'option WP Rocket indiquée"
 
-#: inc/Engine/Abilities/Options/SetOption.php:167
+#: inc/Engine/Abilities/Options/SetOption.php:194
 msgid ""
 "For array and textarea options: \"update\" (default) adds new entries to the"
 " existing list; \"replace\" overwrites the entire list."
@@ -1444,24 +1448,24 @@ msgstr ""
 "(par défaut) ajoute de nouvelles entrées à la liste existante ; « replace » "
 "remplace l'intégralité de la liste."
 
-#: inc/Engine/Abilities/Options/SetOption.php:177
+#: inc/Engine/Abilities/Options/SetOption.php:204
 msgid "Indicates whether the option was successfully set"
 msgstr "Indique si l'option a bien été définie"
 
-#: inc/Engine/Abilities/Options/SetOption.php:181
+#: inc/Engine/Abilities/Options/SetOption.php:208
 msgid "Error message if the option could not be set"
 msgstr "Message d'erreur si l'option n'a pas pu être définie"
 
-#: inc/Engine/Abilities/Options/SetOption.php:193
+#: inc/Engine/Abilities/Options/SetOption.php:220
 msgid "The previous value of the option before it was updated"
 msgstr "La valeur précédente de l'option avant sa mise à jour"
 
-#: inc/Engine/Abilities/Options/SetOption.php:205
+#: inc/Engine/Abilities/Options/SetOption.php:232
 msgid "The new value of the option after it was updated"
 msgstr "La nouvelle valeur de l'option après sa mise à jour"
 
 #. translators: %s: option name
-#: inc/Engine/Abilities/Options/SetOption.php:252
+#: inc/Engine/Abilities/Options/SetOption.php:285
 #, php-format
 msgid "Invalid option name: %s. This option cannot be set via the ability."
 msgstr ""
@@ -1574,7 +1578,7 @@ msgstr "Indique si la page a bien été ajoutée"
 msgid "Error message if the page could not be added"
 msgstr "Message d'erreur si la page n'a pas pu être ajoutée"
 
-#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:178
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:184
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
 #: inc/Engine/CDN/RocketCDN/Rest.php:264
@@ -1595,6 +1599,12 @@ msgid ""
 "Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"Renvoie un résumé Rocket Insights à l'échelle du site comprenant le score global global_score, le nombre de pages surveillées pages_monitored, l'état d'exécution is_running et les résultats par page. Utilisez include_metrics: true, sauf si l'utilisateur demande explicitement uniquement le score global.\n"
+"N'ouvrez pas et ne lisez pas les liens report_url de GTmetrix. Vous pouvez les afficher en tant que liens vers des rapports complémentaires.\n"
+"Utilisez cette fonction lorsque l'utilisateur demande un score global, un aperçu à l'échelle du site ou toutes les pages surveillées. Ne l’utilisez pas pour une page spécifique ; utilisez plutôt get-page-insights-score.\n"
+"Si is_running est vrai ou si un résultat n’est pas encore finalisé, indiquez à l’utilisateur que les tests sont toujours en cours et n’affichez que les résultats finalisés. Vérifiez à nouveau toutes les minutes jusqu’à ce que les résultats restants soient disponibles. N’affichez pas de statut lorsque tous les résultats sont finalisés. N’affichez pas is_running à moins qu’au moins un résultat de page ne présente is_running : true.\n"
+"Commencez toujours par un verdict global en une ligne, tel que 'Score global : 84/100 – 3 pages en bon état, 2 nécessitent une attention particulière.' Présentez les résultats en utilisant le format le plus complet disponible : d’abord les graphiques, puis un tableau Markdown, puis un texte structuré.\n"
+"Lorsque vous affichez des scores ou des indicateurs, utilisez uniquement les couleurs et les seuils de performance approuvés."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:50
 msgid "Get Rocket Insights Score for a Page"
@@ -1609,6 +1619,11 @@ msgid ""
 "Always open with a one-line verdict, such as `Score: 94/100 - page is healthy.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "Do not open or read GTmetrix report_url links. You may show them as complementary report links. When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"Renvoie le dernier score Rocket Insights pour une URL spécifique. Nécessite un URI et renvoie le score, le statut, l’URL du rapport report_url et metric_data telles que LCP, FCP et TBT.\n"
+"Utilisez cette méthode lorsque l’utilisateur demande des informations sur les performances ou le score d’une page. Ne l’utilisez pas pour effectuer de nouveaux tests ; utilisez plutôt la méthode retest-page-insights. Ne l’utilisez pas pour toutes les pages ; utilisez plutôt la méthode get-insights-scores.\n"
+"Si exists est false, indiquez à l’utilisateur que l’URL n’est pas surveillée et proposez-lui de l’ajouter à l’aide de add-page-insights. Cette fonctionnalité est en lecture seule et ne déclenche pas de nouveau test.\n"
+"Commencez toujours par un verdict en une ligne, tel que `Score : 94/100 - la page est en bon état.` Présentez les résultats en utilisant le format le plus complet disponible : d’abord les graphiques, puis un tableau Markdown, puis un texte structuré.\n"
+"N’ouvrez pas et ne consultez pas les liens report_url de GTmetrix. Vous pouvez les afficher en tant que liens vers des rapports complémentaires. Lorsque vous affichez des scores ou des indicateurs, utilisez uniquement les couleurs et les seuils de performance approuvés."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:82
 msgid "Get Rocket Insights Recommendations"
@@ -1845,7 +1860,7 @@ msgid "No Subscription"
 msgstr "Pas d'abonnement"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr "Prochaine date de facturation"
 
@@ -2185,7 +2200,6 @@ msgstr ""
 "seul fichier, réduisant le nombre de requêtes HTTP. Ces réglages ne sont pas"
 " recommandés si votre site utilise HTTP/2. %1$sPlus d'infos%2$s"
 
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:710
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
@@ -2885,7 +2899,7 @@ msgid "Your CDN is active on your website"
 msgstr "Votre CDN est activé sur votre site web"
 
 #: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:838
+#: inc/Engine/CDN/Render/Controller.php:859
 msgid "RocketCDN is paused"
 msgstr "RocketCDN est en pause"
 
@@ -3408,27 +3422,27 @@ msgstr ""
 "expressions régulières  (.*) pour exclure plusieurs URLs pour un chemin "
 "donné."
 
-#: inc/Engine/CDN/Render/Controller.php:622
+#: inc/Engine/CDN/Render/Controller.php:638
 msgid "Serving files from 10 edge locations. Covering up to 3 pages."
 msgstr ""
 "Diffusion de fichiers depuis 10 sites périphériques. Couvrant jusqu'à 3 "
 "pages."
 
-#: inc/Engine/CDN/Render/Controller.php:627
+#: inc/Engine/CDN/Render/Controller.php:643
 msgid ""
 "RocketCDN is currently paused because your WPRocket licence has expired."
 msgstr ""
 "RocketCDN est actuellement en pause car votre licence WPRocket a expiré."
 
-#: inc/Engine/CDN/Render/Controller.php:652
+#: inc/Engine/CDN/Render/Controller.php:672
 msgid "Serving files from 100+ edge locations"
 msgstr "Diffusion de fichiers depuis 100+ emplacements"
 
-#: inc/Engine/CDN/Render/Controller.php:653
+#: inc/Engine/CDN/Render/Controller.php:673
 msgid "RocketCDN is active on your website"
 msgstr "RocketCDN est actif sur votre site web"
 
-#: inc/Engine/CDN/Render/Controller.php:657
+#: inc/Engine/CDN/Render/Controller.php:677
 msgid ""
 "RocketCDN is currently paused because your RocketCDN subscription was "
 "cancelled. Please wait up to two days before resuming."
@@ -3437,15 +3451,15 @@ msgstr ""
 "résilié. Veuillez patienter jusqu'à deux jours avant de pouvoir le "
 "réactiver."
 
-#: inc/Engine/CDN/Render/Controller.php:727
+#: inc/Engine/CDN/Render/Controller.php:747
 msgid "Remove page"
 msgstr "Supprimer la page"
 
-#: inc/Engine/CDN/Render/Controller.php:839
+#: inc/Engine/CDN/Render/Controller.php:860
 msgid "RocketCDN is active"
 msgstr "RocketCDN est actif"
 
-#: inc/Engine/CDN/Render/Controller.php:840
+#: inc/Engine/CDN/Render/Controller.php:861
 msgid ""
 "RocketCDN is currently paused. Click Resume CDN to re-enable content "
 "delivery."
@@ -3454,7 +3468,7 @@ msgstr ""
 "réactiver la diffusion de contenu."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:844
+#: inc/Engine/CDN/Render/Controller.php:865
 #, php-format
 msgid ""
 "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
@@ -3463,23 +3477,23 @@ msgstr ""
 "%1$sCommencez par votre page d'accueil et ajoutez jusqu'à deux autres pages "
 "clés. %2$sComprend un trafic illimité sur 10 sites périphériques."
 
-#: inc/Engine/CDN/Render/Controller.php:877
+#: inc/Engine/CDN/Render/Controller.php:898
 msgid "Creating your subscription..."
 msgstr "Création de votre accès..."
 
-#: inc/Engine/CDN/Render/Controller.php:878
+#: inc/Engine/CDN/Render/Controller.php:899
 msgid "Please wait, RocketCDN will be ready in about 30s."
 msgstr "Veuillez patienter, RocketCDN sera prêt dans environ 30 secondes."
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
 msgid "Plan"
 msgstr "Plan"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:102
 msgid "RocketCDN Pro"
 msgstr "RocketCDN Pro"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:115
 msgid "No RocketCDN Pro Subscription"
 msgstr "Pas d'abonnement à RocketCDN Pro"
 
@@ -3545,20 +3559,28 @@ msgid "RocketCDN cache purge successful."
 msgstr "Purge du cache de RocketCDN réussie."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:190
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:305
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sPlus d'infos%2$s"
 
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:269
+msgid "Nice work!  You're using RocketCDN on all available pages."
+msgstr "Bravo ! Vous utilisez RocketCDN sur toutes les pages disponibles."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:270
+msgid "RocketCDN covers up to 3 pages, and you're all set."
+msgstr "RocketCDN prend en charge jusqu'à 3 pages, et le tour est joué."
+
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "Nous avons mis à jour le CNAME de RocketCDN de %1$s vers %2$s."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:376
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3567,19 +3589,19 @@ msgstr ""
 "Le changement est déjà appliqué aux réglages du plugin. Si vous utilisiez le"
 " CNAME dans votre code, assurez-vous de le mettre à jour : %1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:385
 msgid "contact support"
 msgstr "contacter le support"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:433
 msgid "RocketCDN activation incomplete"
 msgstr "Activation de RocketCDN incomplète"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:434
 msgid "RocketCDN isn’t active on this website yet."
 msgstr "RocketCDN n'est pas encore actif sur ce site web."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:435
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
@@ -3587,12 +3609,12 @@ msgstr ""
 "Cliquez ci-dessous pour terminer l'activation. Vous serez redirigé vers la "
 "page de paiement pour confirmer votre abonnement."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:447
 msgid "Complete activation"
 msgstr "Activation complète"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:533
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
@@ -3600,7 +3622,7 @@ msgstr ""
 "clés%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:543
 #, php-format
 msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
@@ -3610,19 +3632,19 @@ msgstr ""
 "RocketCDN, pour accélérer votre page d'accueil et de deux autres pages, "
 "gratuitement.%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:554
 msgid "Dismiss"
 msgstr "Ignorer"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:568
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 "%1$sUtilisez RocketCDN gratuitement pour optimiser jusqu'à 3 pages 🚀%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:578
 #, php-format
 msgid ""
 "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 "
@@ -3632,7 +3654,7 @@ msgstr ""
 "RocketCDN gratuitement sur un maximum de 3 pages. Choisissez vos pages  et "
 "optimisez leurs performances partout dans le monde !%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:589
 msgid "Check it later"
 msgstr "Voir ça plus tard"
 
@@ -3862,7 +3884,6 @@ msgstr "%l pour utiliser cette fonction."
 msgid "Publish the %s"
 msgstr "Publié le %s"
 
-#. translators: %s = post type.
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "Activez Chargement Asynchrone du CSS dans les réglages de WP Rocket"
@@ -4165,17 +4186,17 @@ msgstr ""
 "Prix de lancement valable pendant les 12 premiers mois, après quoi les "
 "tarifs standard s’appliquent."
 
-#: inc/Engine/License/API/User.php:575
+#: inc/Engine/License/API/User.php:592
 msgid "There was an error updating the plugin."
 msgstr "Une erreur s'est produite lors de la mise à jour de l'extension."
 
 #. translators: %s: ban reason
-#: inc/Engine/License/API/User.php:583
+#: inc/Engine/License/API/User.php:600
 #, php-format
 msgid "because %s"
 msgstr "à cause de %s"
 
-#: inc/Engine/License/API/User.php:606
+#: inc/Engine/License/API/User.php:623
 msgid "your website is banned"
 msgstr "votre site web est banni."
 
@@ -4189,25 +4210,29 @@ msgstr ""
 "Votre %2$slicence %1$s est sur le point d'expirer%3$s : vous perdrez bientôt"
 " l'accès aux mises à jour et au support."
 
+#: inc/Engine/License/Renewal.php:191
+msgid "(excl. taxes)"
+msgstr "(hors taxes)"
+
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:194
+#: inc/Engine/License/Renewal.php:195
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Renouvelez avant qu'il ne soit trop tard, vous payerez %1$s%3$s%2$s."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:203
+#: inc/Engine/License/Renewal.php:204
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%1$s%4$s%3$s!"
+"%1$s%4$s%3$s"
 msgstr ""
-"Renouvelez maintenant et profitez d'une %1$sréduction de %2$s %3$savant "
-"qu'il ne soit trop tard, vous ne paierez que %1$s%4$s%3$s !"
+"Renouvelez avec un rabais de %1$s%2$s %3$s avant qu'il ne soit trop tard, "
+"vous ne paierez que %1$s%4$s%3$s"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:527
+#: inc/Engine/License/Renewal.php:528
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -4217,7 +4242,7 @@ msgstr ""
 "option. %1$sRenouveler maintenant%2$s avant de perdre l'accès."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:548
+#: inc/Engine/License/Renewal.php:549
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
@@ -4225,7 +4250,7 @@ msgstr ""
 "%1$sRenouveler maintenant%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:576
+#: inc/Engine/License/Renewal.php:577
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -4408,19 +4433,23 @@ msgstr "OBTENEZ WP ROCKET AVEC 20 % DE RÉDUCTION"
 msgid "Save"
 msgstr "Sauvegarder"
 
-#: inc/Engine/License/views/upgrade-item.php:49
-#: inc/Engine/License/views/upgrade-item.php:64
+#: inc/Engine/License/views/upgrade-item.php:41
+msgid "excl. taxes"
+msgstr "hors taxes"
+
+#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:65
 msgid "Websites"
 msgstr "Sites web"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:72
+#: inc/Engine/License/views/upgrade-item.php:73
 #, php-format
 msgid "%s websites"
 msgstr "%s sites"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:80
+#: inc/Engine/License/views/upgrade-item.php:81
 #, php-format
 msgid "Upgrade to %s"
 msgstr "Mettez à niveau vers %s"
@@ -5461,7 +5490,6 @@ msgstr "CNAME CDN"
 msgid "Purges RocketCDN cached resources for your website. %s"
 msgstr "Purge les ressources mises en cache par RocketCDN. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
@@ -5499,7 +5527,6 @@ msgstr "Cache de CloudFlare"
 msgid "Purges cached resources for your website. %s"
 msgstr "Purge les ressources mises en cache de votre site web. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -5940,15 +5967,27 @@ msgstr "METTRE EN PAUSE LE CDN"
 msgid "RESUME CDN"
 msgstr "REPRENDRE LE CDN"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:19
+msgid "Your access to RocketCDN has been paused."
+msgstr "Votre accès à RocketCDN a été mis en pause."
+
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:21
+msgid ""
+"Your hosting provider has paused this license. Please contact their support "
+"team for assistance."
+msgstr ""
+"Votre hébergeur a suspendu cette licence. Veuillez contacter son support "
+"pour obtenir de l'aide."
+
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
 msgid "Your WPRocket license has expired"
 msgstr "Votre licence WPRocket a expiré"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
 msgid "Please renew it to keep using RocketCDN."
 msgstr "Veuillez renouveler pour continuer à utiliser RocketCDN."
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:30
 msgid "Renew Licence"
 msgstr "Renouveler la licence"
 
@@ -6000,13 +6039,13 @@ msgid "Add Homepage"
 msgstr "Ajouter la page d'accueil"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:23
 msgid "You have reached your maximum page limit"
 msgstr "Vous avez atteint votre limite maximale de pages."
 
 #: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
-msgid "Add page +"
-msgstr "Ajouter une page +"
+msgid "Add page"
+msgstr "Ajouter une page"
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:14
 msgid "Rocket Insights Score"
