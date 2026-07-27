@@ -22,6 +22,10 @@ $rocket_can_boot_mcp_adapter =
 
 if ( $rocket_can_boot_mcp_adapter ) {
 	McpAdapter::instance();
+
+	if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
+		\WPMedia\MCP\OAuth\Bootstrap::instance();
+	}
 }
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
