@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23-beta\n"
+"Project-Id-Version: WP Rocket 3.23.1-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-07-09T08:16:03+00:00\n"
+"POT-Creation-Date: 2026-07-23T11:30:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -1529,7 +1529,7 @@ msgid "No Subscription"
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr ""
 
@@ -2269,7 +2269,7 @@ msgid "Your CDN is active on your website"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:838
+#: inc/Engine/CDN/Render/Controller.php:859
 msgid "RocketCDN is paused"
 msgstr ""
 
@@ -2665,61 +2665,61 @@ msgstr ""
 msgid "The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:622
+#: inc/Engine/CDN/Render/Controller.php:638
 msgid "Serving files from 10 edge locations. Covering up to 3 pages."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:627
+#: inc/Engine/CDN/Render/Controller.php:643
 msgid "RocketCDN is currently paused because your WPRocket licence has expired."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:652
+#: inc/Engine/CDN/Render/Controller.php:672
 msgid "Serving files from 100+ edge locations"
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:653
+#: inc/Engine/CDN/Render/Controller.php:673
 msgid "RocketCDN is active on your website"
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:657
+#: inc/Engine/CDN/Render/Controller.php:677
 msgid "RocketCDN is currently paused because your RocketCDN subscription was cancelled. Please wait up to two days before resuming."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:727
+#: inc/Engine/CDN/Render/Controller.php:747
 msgid "Remove page"
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:839
+#: inc/Engine/CDN/Render/Controller.php:860
 msgid "RocketCDN is active"
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:840
+#: inc/Engine/CDN/Render/Controller.php:861
 msgid "RocketCDN is currently paused. Click Resume CDN to re-enable content delivery."
 msgstr ""
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:844
+#: inc/Engine/CDN/Render/Controller.php:865
 #, php-format
 msgid "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:877
+#: inc/Engine/CDN/Render/Controller.php:898
 msgid "Creating your subscription..."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:878
+#: inc/Engine/CDN/Render/Controller.php:899
 msgid "Please wait, RocketCDN will be ready in about 30s."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
 msgid "Plan"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:102
 msgid "RocketCDN Pro"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:115
 msgid "No RocketCDN Pro Subscription"
 msgstr ""
 
@@ -2772,73 +2772,81 @@ msgid "RocketCDN cache purge successful."
 msgstr ""
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:190
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:305
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr ""
 
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:269
+msgid "Nice work!  You're using RocketCDN on all available pages."
+msgstr ""
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:270
+msgid "RocketCDN covers up to 3 pages, and you're all set."
+msgstr ""
+
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr ""
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:376
 #, php-format
 msgid "The change is already applied to the plugin settings. If you were using the CNAME in your code, make sure to update it to: %1$s."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:385
 msgid "contact support"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:433
 msgid "RocketCDN activation incomplete"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:434
 msgid "RocketCDN isn’t active on this website yet."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:435
 msgid "Click below to complete the activation. You’ll be redirected to checkout to confirm your subscription."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:447
 msgid "Complete activation"
 msgstr ""
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:533
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:543
 #, php-format
 msgid "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:554
 msgid "Dismiss"
 msgstr ""
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:568
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:578
 #, php-format
 msgid "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:589
 msgid "Check it later"
 msgstr ""
 
@@ -3292,17 +3300,17 @@ msgstr ""
 msgid "Launch price valid for the first 12 months, after which standard pricing applies."
 msgstr ""
 
-#: inc/Engine/License/API/User.php:575
+#: inc/Engine/License/API/User.php:592
 msgid "There was an error updating the plugin."
 msgstr ""
 
 #. translators: %s: ban reason
-#: inc/Engine/License/API/User.php:583
+#: inc/Engine/License/API/User.php:600
 #, php-format
 msgid "because %s"
 msgstr ""
 
-#: inc/Engine/License/API/User.php:606
+#: inc/Engine/License/API/User.php:623
 msgid "your website is banned"
 msgstr ""
 
@@ -3513,106 +3521,6 @@ msgstr ""
 
 #: inc/Engine/License/views/upgrade-section.php:11
 msgid "You can use WP Rocket on more websites by upgrading your license (you will only pay the price difference between your current and new licenses)."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
-msgid "You must be logged in to authorise an MCP session."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:251
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
-msgid "OAuth Error"
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
-msgid "Missing state parameter."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
-msgid "Invalid or expired state. Please restart the authorization flow."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:127
-msgid "Authorize Access"
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:221
-msgid "Authorize access to your site?"
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:233
-msgid "ID:"
-msgstr ""
-
-#. translators: %s: publisher name
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:241
-#, php-format
-msgid "Verified publisher: %s"
-msgstr ""
-
-#. translators: 1: client name, 2: site name
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:251
-#, php-format
-msgid "%1$s is requesting access to the WP Rocket MCP tools on %2$s on your behalf."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:263
-msgid "Allow"
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:266
-msgid "Deny"
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
-msgid "client_id is required."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
-msgid "Unknown OAuth client."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
-msgid "This OAuth client is not a verified publisher."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
-msgid "redirect_uri is required."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
-msgid "redirect_uri does not match registered value."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
-msgid "Method not allowed."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
-msgid "Your session has expired. Please restart the authorization flow."
-msgstr ""
-
-#: inc/Engine/MCP/Auth/Subscriber.php:176
-msgid "Unknown OAuth endpoint."
-msgstr ""
-
-#: inc/Engine/MCP/Transport/OAuthHttpTransport.php:283
-msgid "MCP authentication required."
 msgstr ""
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
@@ -4756,15 +4664,23 @@ msgstr ""
 msgid "RESUME CDN"
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:19
+msgid "Your access to RocketCDN has been paused."
+msgstr ""
+
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:21
+msgid "Your hosting provider has paused this license. Please contact their support team for assistance."
+msgstr ""
+
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
 msgid "Your WPRocket license has expired"
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
 msgid "Please renew it to keep using RocketCDN."
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:30
 msgid "Renew Licence"
 msgstr ""
 
@@ -4814,12 +4730,12 @@ msgid "Add Homepage"
 msgstr ""
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:23
 msgid "You have reached your maximum page limit"
 msgstr ""
 
 #: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
-msgid "Add page +"
+msgid "Add page"
 msgstr ""
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:14

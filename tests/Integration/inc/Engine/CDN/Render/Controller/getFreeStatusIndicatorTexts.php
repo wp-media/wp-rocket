@@ -74,6 +74,18 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 		} else {
 			$this->assertStringNotContainsString( 'wpr-cdn-status--expired', $result['class'] );
 		}
+
+		if ( isset( $expected['paused_status_text_not'] ) ) {
+			$this->assertNotSame( $expected['paused_status_text_not'], $result['paused_status_text'] );
+		}
+
+		if ( isset( $expected['paused_details_not_contains'] ) ) {
+			$this->assertStringNotContainsString( $expected['paused_details_not_contains'], $result['paused_details'] );
+		}
+
+		if ( isset( $expected['paused_details_contains'] ) ) {
+			$this->assertStringContainsString( $expected['paused_details_contains'], $result['paused_details'] );
+		}
 	}
 
 	/**
@@ -100,14 +112,16 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 	 * Configures the User instance with the given license state.
 	 */
 	private function set_user_license( array $config ): void {
-		$licence             = new \stdClass();
-		$licence->is_revoked = ! empty( $config['license_revoked'] );
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = ! empty( $config['license_revoked'] );
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
 
 		$user_data                     = new \stdClass();
 		$user_data->licence_expiration = ! empty( $config['license_expired'] )
 			? time() - DAY_IN_SECONDS
 			: time() + YEAR_IN_SECONDS;
 		$user_data->licence            = $licence;
+		$user_data->is_reseller        = ! empty( $config['is_reseller'] );
 
 		$this->user->set_user( $user_data );
 	}

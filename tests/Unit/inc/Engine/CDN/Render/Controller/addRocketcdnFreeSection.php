@@ -148,6 +148,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			->with( 'cdn' )
 			->andReturn( true );
 
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
 		$pages = array_fill(
 			0,
 			$config['page_count'],
