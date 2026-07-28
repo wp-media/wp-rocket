@@ -29,6 +29,22 @@ return [
 		'expected' => false,
 	],
 
+	// Explicit reseller-banned enforcement case (AC2 already covered by is_license_invalid(), made explicit for reseller scenario).
+	'testFreeSubscriptionWithResellerBannedLicenseForcePaused'             => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'cdn_option'          => 1,
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => false,
+	],
+
 	// TC-3.4: Free CDN + valid license → is_forced_paused() = false → cdn_option passes through.
 	'testFreeSubscriptionWithValidLicenseNotForcePaused'                   => [
 		'config'   => [

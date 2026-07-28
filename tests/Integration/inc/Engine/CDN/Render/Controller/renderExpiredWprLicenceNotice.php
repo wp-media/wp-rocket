@@ -32,17 +32,6 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 */
 	private $user;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
-	}
-
-	public static function tear_down_after_class() {
-		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
-		self::$cdn_type_override = null;
-		parent::tear_down_after_class();
-	}
-
 	/**
 	 * Static filter callback. Returns null when no override is active so Options_Data falls through.
 	 *
@@ -55,6 +44,11 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Registered per-test (not in set_up_before_class()) because WP core's test suite
+		// backs up hooks in setUp() and restores them in tearDown(): a filter added once at
+		// the class level survives only until the first test's tearDown() wipes it out.
+		add_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
+
 		$container        = apply_filters( 'rocket_container', null );
 		$this->controller = $container->get( 'cdn_render_controller' );
 		$this->user       = $container->get( 'user' );
@@ -63,6 +57,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cdn_type', [ static::class, 'cdn_type_cb' ] );
 		self::$cdn_type_override = null;
 
 		delete_transient( 'rocketcdn_status' );
@@ -87,6 +82,12 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 			$this->assertStringContainsString( 'wpr-cdn-expired__notice', $output );
 		} else {
 			$this->assertEmpty( $output );
+		}
+
+		if ( $expected && ! empty( $config['is_reseller'] ) ) {
+			$this->assertStringNotContainsString( 'wpr-notice-close', $output );
+		} elseif ( $expected ) {
+			$this->assertStringContainsString( 'wpr-notice-close', $output );
 		}
 	}
 
@@ -114,8 +115,9 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 	 * Configures the User instance with the given license state.
 	 */
 	private function set_user_license( array $config ): void {
-		$licence             = new \stdClass();
-		$licence->is_revoked = ! empty( $config['license_revoked'] );
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = ! empty( $config['license_revoked'] );
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
 
 		$user_data                     = new \stdClass();
 		$user_data->licence_expiration = ! empty( $config['license_expired'] )
@@ -123,6 +125,7 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 			: time() + YEAR_IN_SECONDS;
 		$user_data->licence            = $licence;
 		$user_data->renewal_url        = 'https://wp-rocket.me/account/';
+		$user_data->is_reseller        = ! empty( $config['is_reseller'] );
 
 		$this->user->set_user( $user_data );
 	}

@@ -347,6 +347,10 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return bool
 	 */
 	public function is_subscription_creation_loading(): bool {
+		if ( ! $this->options_manager->has_token() ) {
+			return false;
+		}
+
 		return false !== get_transient( $this->subscription_loading_transient );
 	}
 
