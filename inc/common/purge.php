@@ -131,11 +131,15 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 			$purge_urls[] = $author_url;
 		}
 
-		// Add all parents.
-		$parents = get_post_ancestors( $post_id );
-		if ( (bool) $parents ) {
-			foreach ( $parents as $parent_id ) {
-				$purge_urls[] = get_permalink( $parent_id );
+		$post_name = get_post_field( 'post_name', $post_id );
+		// If the slug has changed, add all children pages with the new slug.
+		if ( $post_name !== $post->post_name ) {
+			// Add all children.
+			$children = rocket_get_all_descendant( $post_id );
+			if ( (bool) $children ) {
+				foreach ( $children as $child_id ) {
+					$purge_urls[] = get_permalink( $child_id );
+				}
 			}
 		}
 
@@ -145,6 +149,37 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 		return array_flip( array_flip( $purge_urls ) );
 	}
 }
+
+/**
+ * Recursively retrieves all descendant post IDs for a given parent post ID.
+ *
+ * @param int $parent_id The ID of the parent post.
+ * @return int[] A flat array with all descendant post IDs (children, grandchildren, etc.).
+ */
+function rocket_get_all_descendant( $parent_id ) {
+	$post_type = get_post_type( $parent_id );
+
+	if ( ! $post_type ) {
+		return [];
+	}
+
+	// 'child_of' retrieves all descendants, not just direct children.
+	$all_descendants = get_pages(
+		[
+			'child_of'  => $parent_id,
+			'post_type' => $post_type,
+			'fields'    => 'ids',
+		]
+	);
+
+	if ( empty( $all_descendants ) ) {
+		return [];
+	}
+
+	// Convert the array of page objects to an array of IDs only.
+	return wp_list_pluck( $all_descendants, 'ID' );
+}
+
 
 /**
  * Update cache when a post is updated or commented
@@ -636,6 +671,20 @@ function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
 	if ( empty( $post_name ) ) {
 		return;
 	}
-	rocket_clean_files( get_the_permalink( $post_id ) );
+
+	$purge_urls   = [];
+	$purge_urls[] = get_the_permalink( $post_id );
+
+	// Clear cache for all child pages.
+	$children = rocket_get_all_descendant( $post_id );
+	if ( (bool) $children ) {
+		foreach ( $children as $child_id ) {
+			$purge_urls[] = get_the_permalink( $child_id );
+		}
+	}
+
+	rocket_clean_files( $purge_urls );
+
 }
 add_action( 'pre_post_update', 'rocket_clean_post_cache_on_slug_change', PHP_INT_MAX, 2 );
+

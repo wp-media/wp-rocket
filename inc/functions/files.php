@@ -530,6 +530,32 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
 	return get_rocket_parse_url( $new_permalink );
 }
 
+
+/**
+ * Count the number of path segments in a URL.
+ *
+ * Parses the given URL, extracts its path component, trims leading/trailing
+ * slashes, and counts the remaining segments separated by '/'.
+ *
+ * Examples:
+ * - "https://example.com/" => 0
+ * - "https://example.com/a/b/c" => 3
+ * - "/a/b/" => 2
+ *
+ * @param string $url The URL (absolute or relative) to analyze.
+ * @return int Number of segments in the URL path (0 if empty or no path).
+ */
+function rocket_count_path_segments( string $url ): int {
+	$path = wp_parse_url( $url, PHP_URL_PATH ) ?? '';
+	$path = trim( $path, '/' );              // "/" -> ""
+
+	if ( '' === $path ) {
+		return 0;
+	}
+
+	return count( explode( '/', $path ) );   // "a/b/c" -> 3
+}
+
 /**
  * Delete one or several cache files.
  *
@@ -574,7 +600,26 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	foreach ( $urls as $url_key => $url ) {
+	$sorted_urls = $urls;
+
+	// Sort: most segments first (deepest URLs first).
+	usort(
+		$sorted_urls,
+		static function ( $a, $b ) {
+			$da = rocket_count_path_segments( (string) $a );
+			$db = rocket_count_path_segments( (string) $b );
+
+			// First by depth (descending).
+			if ( $da !== $db ) {
+				return $db <=> $da;
+			}
+
+			// If depth is equal, alphabetically.
+			return strcmp( (string) $a, (string) $b );
+		}
+	);
+
+	foreach ( $sorted_urls as $url_key => $url ) {
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
@@ -592,15 +637,16 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		$parsed_url = get_rocket_parse_url( $url );
 
 		if ( ! empty( $parsed_url['host'] ) ) {
+
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.
 				$url_chunks = explode( '/', $parsed_url['path'] );
 				$matches    = preg_grep( '/%/', $url_chunks );
-
+				
 				if ( ! empty( $matches ) ) {
 					$parsed_url['path'] = rawurldecode( $parsed_url['path'] );
 				}
-
+				
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
 					$cb_encode_non_latin = function ( $non_latin ) {
@@ -609,7 +655,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
-
+				
 				$entry = $dir . $parsed_url['path'];
 
 				// For regex we use it for file names only, and it should include the * character.
@@ -633,13 +679,41 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					continue;
 				}
 
-				if ( $filesystem->is_dir( $entry ) ) {
-					rocket_rrmdir( $entry, [], $filesystem );
-				} else {
+				if ( ! $filesystem->is_dir( $entry ) ) {
 					$filesystem->delete( $entry );
+					continue;
+				}
+
+				// Check whether the directory contains subfolders (vs only files).
+				$has_subdirs = false;
+				try {
+					foreach ( new FilesystemIterator( $entry, FilesystemIterator::SKIP_DOTS ) as $child ) {
+						if ( $child->isDir() ) {
+							$has_subdirs = true;
+							break;
+						}
+					}
+				} catch ( Exception $e ) {
+					// If we can't inspect the directory, be conservative and only delete files.
+					$has_subdirs = true;
+				}
+
+				if ( ! $has_subdirs ) {
+					// Directory contains only files: remove it entirely.
+					rocket_rrmdir( $entry, [], $filesystem );
+					continue;
+				}
+
+				// Directory contains subfolders: delete only the files in the top-level.
+				foreach ( _rocket_get_dir_files_by_regex( $entry, '#.+#' ) as $child ) {
+					if ( $child->isFile() ) {
+						$filesystem->delete( $child->getPathname() );
+					}
 				}
 			}
+
 		}
+
 		if ( $run_actions ) {
 			/**
 			 * Fires after the cache file is deleted.
