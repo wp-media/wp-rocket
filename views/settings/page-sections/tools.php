@@ -41,7 +41,7 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
 			<div class="wpr-title3 wpr-tools-label wpr-icon-mcp"><?php esc_html_e( 'MCP SERVER', 'rocket' ); ?></div>
-			<div class="wpr-field-description"><?php esc_html_e( 'Connect your AI tool to WP Rocket using MCP', 'rocket' ); ?></div>
+			<div class="wpr-field-description"><?php esc_html_e( 'Connect your AI tool to WP Rocket', 'rocket' ); ?></div>
 		</div>
 		<div class="wpr-tools-col">
 			<?php
