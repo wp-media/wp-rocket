@@ -40,6 +40,13 @@ class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->white_label = $config['white_label'];
 
+		if ( $config['is_reseller'] ?? false ) {
+			$user_data             = new \stdClass();
+			$user_data->is_reseller = true;
+			$container             = apply_filters( 'rocket_container', null );
+			$container->get( 'user' )->set_user( $user_data );
+		}
+
 		if ( $config['has_customer_data'] ) {
 			set_transient( 'rocketcdn_customer_data', [ 'customer_id' => '123' ], HOUR_IN_SECONDS );
 		}

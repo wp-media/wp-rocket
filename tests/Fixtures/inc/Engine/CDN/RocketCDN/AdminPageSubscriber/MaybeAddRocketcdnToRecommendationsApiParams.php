@@ -2,12 +2,13 @@
 
 return [
 	'test_data' => [
-		'shouldReturnDefaultParamsWhenNoCustomerDataORSubscriptionNotRunningORWhiteLabelNotActive' => [
-			'config' => [
-				'has_customer_data'     => false,
-				'subscription_status'   => 'cancelled',
-				'white_label'           => false,
-				'params'                => [
+		'shouldReturnParamsUnchangedWhenNoCDNOptionAndNoWhiteLabelAndNoRocketcdnStandalone' => [
+			'config'   => [
+				'white_label'         => false,
+				'is_reseller'         => false,
+				'has_customer_data'   => false,
+				'subscription_status' => 'cancelled',
+				'params'              => [
 					'enabled_options' => [ 'plugin_example' ],
 				],
 			],
@@ -18,33 +19,31 @@ return [
 			],
 		],
 
-		'shouldAddRocketCdnToRecommendationsApiParamsWhenCDNOptionIsEnabled' => [
-			'config' => [
-				'has_customer_data'     => true,
-				'subscription_status'   => 'cancelled',
-				'white_label'           => false,
-				'params'                => [
-					'enabled_options' => [
-						'cdn',
-					],
-				],
-			],
-			'expected' => [
-				'params' => [
-					'enabled_options' => [
-						'cdn',
-						'plugin_rocketcdn',
-					],
-				],
-			],
-		],
-
-		'shouldReturnParamsUnchangedWhenSubscriptionIsRunningAndPaid' => [
-			'config' => [
+		'shouldAddPluginRocketcdnWhenSubscriptionIsRunningAndPaidAndNotReseller' => [
+			'config'   => [
+				'white_label'         => false,
+				'is_reseller'         => false,
 				'has_customer_data'   => true,
 				'subscription_status' => 'running',
 				'plan_type'           => 'paid',
+				'params'              => [
+					'enabled_options' => [ 'cdn' ],
+				],
+			],
+			'expected' => [
+				'params' => [
+					'enabled_options' => [ 'cdn', 'plugin_rocketcdn' ],
+				],
+			],
+		],
+
+		'shouldNotAddPluginRocketcdnWhenSubscriptionIsRunningAndPaidAndIsReseller' => [
+			'config'   => [
 				'white_label'         => false,
+				'is_reseller'         => true,
+				'has_customer_data'   => true,
+				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
 				'params'              => [
 					'enabled_options' => [ 'cdn' ],
 				],
@@ -56,12 +55,13 @@ return [
 			],
 		],
 
-		'shouldAddFreeOptionWhenSubscriptionIsRunningAndFree' => [
-			'config' => [
+		'shouldAddFreeOptionWhenSubscriptionIsRunningAndFreeAndNotReseller' => [
+			'config'   => [
+				'white_label'         => false,
+				'is_reseller'         => false,
 				'has_customer_data'   => true,
 				'subscription_status' => 'running',
 				'plan_type'           => 'free',
-				'white_label'         => false,
 				'params'              => [
 					'enabled_options' => [ 'cdn' ],
 				],
@@ -69,6 +69,42 @@ return [
 			'expected' => [
 				'params' => [
 					'enabled_options' => [ 'cdn', 'plugin_rocketcdn_free' ],
+				],
+			],
+		],
+
+		'shouldAddFreeOptionWhenSubscriptionIsRunningAndFreeAndIsReseller' => [
+			'config'   => [
+				'white_label'         => false,
+				'is_reseller'         => true,
+				'has_customer_data'   => true,
+				'subscription_status' => 'running',
+				'plan_type'           => 'free',
+				'params'              => [
+					'enabled_options' => [ 'cdn' ],
+				],
+			],
+			'expected' => [
+				'params' => [
+					'enabled_options' => [ 'cdn', 'plugin_rocketcdn_free' ],
+				],
+			],
+		],
+
+		'shouldReturnParamsUnchangedWhenSubscriptionIsNotRunning' => [
+			'config'   => [
+				'white_label'         => false,
+				'is_reseller'         => false,
+				'has_customer_data'   => true,
+				'subscription_status' => 'cancelled',
+				'plan_type'           => 'free',
+				'params'              => [
+					'enabled_options' => [ 'cdn' ],
+				],
+			],
+			'expected' => [
+				'params' => [
+					'enabled_options' => [ 'cdn' ],
 				],
 			],
 		],
