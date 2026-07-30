@@ -200,7 +200,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		$navigation['tools'] = [
 			'id'               => 'tools',
 			'title'            => __( 'Tools', 'rocket' ),
-			'menu_description' => __( 'Import, Export, Rollback', 'rocket' ),
+			'menu_description' => __( 'Export, import, rollback, and set up MCP', 'rocket' ),
 		];
 
 		return $navigation;
