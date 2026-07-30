@@ -243,7 +243,9 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		if ( 'running' === $subscription_data['subscription_status'] && 'paid' === $subscription_data['plan_type'] ) {
-			$params['enabled_options'][] = 'plugin_rocketcdn';
+			if ( ! $this->user->is_reseller_account() ) {
+				$params['enabled_options'][] = 'plugin_rocketcdn';
+			}
 
 			return $params;
 		}
