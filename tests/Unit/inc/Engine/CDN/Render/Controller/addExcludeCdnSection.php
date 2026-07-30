@@ -152,13 +152,12 @@ class Test_AddExcludeCdnSection extends TestCase {
 				->with( 'cdn' )
 				->andReturn( true );
 
-			// should_display_licence_expired_notice() path.
+			// has_active_subscription() is called directly in should_disable_element_for_rocketcdn.
 			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 				->andReturn( true );
 
-			// has_active_subscription() is also called directly in should_disable_element_for_rocketcdn.
-			// Since should_display_licence_expired_notice() returns false when has_active_subscription
-			// and is_free() / is_license_invalid() checks fail, we only need those when has_active_subscription = true.
+			// should_display_licence_expired_notice() path: is_free() returning false short-circuits
+			// before is_license_invalid() is ever called.
 			$this->subscription_controller->shouldReceive( 'is_free' )
 				->andReturn( false );
 		}
