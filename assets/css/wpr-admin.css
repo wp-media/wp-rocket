@@ -424,6 +424,15 @@ a:focus, button:focus {
   aspect-ratio: 20/21;
 }
 
+.wpr-icon-mcp:before {
+  display: block;
+  content: "";
+  background: url("../img/mcp.svg") no-repeat center center;
+  background-size: contain;
+  width: 45px;
+  height: 45px;
+}
+
 .wpr-title1 {
   font-size: 1.625rem;
   line-height: 1;
