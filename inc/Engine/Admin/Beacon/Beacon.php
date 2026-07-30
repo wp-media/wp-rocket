@@ -885,6 +885,12 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/1878-rocket-insights?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
+			'mcp_server'                 => [
+				'en' => [
+					'id'  => '1922',
+					'url' => 'https://docs.wp-rocket.me/article/1922-wp-rocket-mcp',
+				],
+			],
 		];
 
 		return isset( $suggest[ $doc_id ][ $this->get_user_locale() ] )
