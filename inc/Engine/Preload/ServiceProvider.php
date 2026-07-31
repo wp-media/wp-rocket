@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheHealth;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheStatus;
+use WP_Rocket\Engine\Preload\Abilities\PurgeCache;
+use WP_Rocket\Engine\Preload\Abilities\Subscriber as AbilitiesSubscriber;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
@@ -41,6 +45,10 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
 		'preload_activation',
+		'preload_check_cache_status_ability',
+		'preload_check_cache_health_ability',
+		'preload_purge_cache_ability',
+		'preload_abilities_subscriber',
 	];
 
 	/**
@@ -155,5 +163,31 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'preload_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'preload_settings' );
+
+		$this->getContainer()->add( 'preload_check_cache_status_ability', CheckCacheStatus::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->add( 'preload_check_cache_health_ability', CheckCacheHealth::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->add( 'preload_purge_cache_ability', PurgeCache::class )
+			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'preload_abilities_subscriber', AbilitiesSubscriber::class )
+			->addArguments(
+				[
+					'preload_check_cache_status_ability',
+					'preload_check_cache_health_ability',
+					'preload_purge_cache_ability',
+					'abilities_context',
+				]
+			);
 	}
 }
