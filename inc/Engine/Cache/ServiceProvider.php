@@ -119,7 +119,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'cache_abilities_clear_url_cache',
 					'cache_abilities_clear_website_cache',
-					'abilities_context'
+					'abilities_context',
 				]
 			);
 	}

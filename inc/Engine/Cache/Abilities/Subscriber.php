@@ -31,15 +31,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param ClearUrlCache    $clear_url_cache               The ability to clear url cache.
+	 * @param ClearUrlCache     $clear_url_cache               The ability to clear url cache.
 	 * @param ClearWebsiteCache $clear_website_cache The ability to clear website cache.
-	 * @param AbilitiesContext $abilities_context       The abilities context instance.
+	 * @param AbilitiesContext  $abilities_context       The abilities context instance.
 	 */
 	public function __construct( ClearUrlCache $clear_url_cache, ClearWebsiteCache $clear_website_cache, AbilitiesContext $abilities_context ) {
 		$this->clear_url_cache   = $clear_url_cache;
 		$this->abilities_context = $abilities_context;
 	}
-	
+
 
 	/**
 	 * Returns an array of events this subscriber wants to listen to.
