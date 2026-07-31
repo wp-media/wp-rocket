@@ -13,6 +13,7 @@ network:
     - defaults
     - github
 engine: claude
+model: claude-sonnet-5
 name: PR Release Documentation Generator
 strict: true
 timeout-minutes: 20
