@@ -18,6 +18,27 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Abilities
  */
 class ExecuteTest extends TestCase {
+
+	/**
+	 * Fully qualified name of `rocket_clean_post()` as resolved from PurgeCache's namespace.
+	 *
+	 * `rocket_clean_post()` is declared for real in inc/common/purge.php, which is not
+	 * preloaded by tests/Unit/bootstrap.php (unlike inc/functions/files.php, which already
+	 * declares rocket_clean_domain()/rocket_clean_files()/rocket_clean_home() for real).
+	 * Brain\Monkey only evals a throwaway global stub for a mocked function when that
+	 * function does not already exist anywhere; mocking the unqualified global name here
+	 * would therefore permanently declare a global `rocket_clean_post()` stub for the rest
+	 * of the test run, which then fatals ("Cannot redeclare") the moment any other test
+	 * lazily `require`s the real inc/common/purge.php. Mocking the namespace-qualified name
+	 * instead relies on PHP's standard unqualified-function-call fallback (current namespace
+	 * first, then global), so PurgeCache::clear_post_scope()'s unqualified call to
+	 * `rocket_clean_post()` resolves to this namespaced mock without ever touching, or
+	 * conflicting with, the real global function.
+	 *
+	 * @var string
+	 */
+	private const ROCKET_CLEAN_POST = 'WP_Rocket\Engine\Preload\Abilities\rocket_clean_post';
+
 	/**
 	 * Options_Data mock.
 	 *
@@ -57,7 +78,7 @@ class ExecuteTest extends TestCase {
 
 	public function testShouldRejectMissingScope(): void {
 		Functions\expect( 'rocket_clean_files' )->never();
-		Functions\expect( 'rocket_clean_post' )->never();
+		Functions\expect( self::ROCKET_CLEAN_POST )->never();
 		Functions\expect( 'rocket_clean_domain' )->never();
 
 		$result = $this->ability->execute( [] );
@@ -208,7 +229,7 @@ class ExecuteTest extends TestCase {
 
 	public function testShouldRejectPostScopeWhenPostNotFound(): void {
 		Functions\when( 'get_post' )->justReturn( null );
-		Functions\expect( 'rocket_clean_post' )->never();
+		Functions\expect( self::ROCKET_CLEAN_POST )->never();
 
 		$result = $this->ability->execute(
 			[
@@ -225,7 +246,7 @@ class ExecuteTest extends TestCase {
 		Functions\when( 'get_post' )->justReturn( $this->mockPost( 42 ) );
 		Functions\when( 'get_permalink' )->justReturn( 'https://example.com/my-post' );
 
-		Functions\expect( 'rocket_clean_post' )
+		Functions\expect( self::ROCKET_CLEAN_POST )
 			->once()
 			->with( 42 );
 
@@ -247,7 +268,7 @@ class ExecuteTest extends TestCase {
 	public function testShouldNotTriggerCloudflareForPostScopeWhenCloudflareDisabled(): void {
 		Functions\when( 'get_post' )->justReturn( $this->mockPost( 42 ) );
 		Functions\when( 'get_permalink' )->justReturn( 'https://example.com/my-post' );
-		Functions\expect( 'rocket_clean_post' )->once();
+		Functions\expect( self::ROCKET_CLEAN_POST )->once();
 
 		$this->options->shouldReceive( 'get' )->with( 'do_cloudflare', 0 )->andReturn( 0 );
 
