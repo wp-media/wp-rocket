@@ -57,36 +57,12 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_abilities_api_init'            => [
+			'wp_abilities_api_init' => [
 				[ 'register_check_cache_status_ability' ],
 				[ 'register_check_cache_health_ability' ],
 				[ 'register_purge_cache_ability' ],
 			],
-			'wp_abilities_api_categories_init' => 'register_cache_category',
 		];
-	}
-
-	/**
-	 * Registers the WP Rocket cache ability category.
-	 *
-	 * @return void
-	 */
-	public function register_cache_category(): void {
-		if ( ! $this->abilities_context->is_enabled() ) {
-			return;
-		}
-
-		if ( ! function_exists( 'wp_register_ability_category' ) ) {
-			return;
-		}
-
-		wp_register_ability_category(
-			'wp-rocket-cache',
-			[
-				'label'       => __( 'WP Rocket Cache', 'rocket' ),
-				'description' => __( 'Abilities related to checking Preload cache status and clearing the WP Rocket cache.', 'rocket' ),
-			]
-		);
 	}
 
 	/**

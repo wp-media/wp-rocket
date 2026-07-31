@@ -281,7 +281,7 @@ Confirm with the user before calling this for scope=domain, since it clears the 
 		$home = untrailingslashit( home_url() );
 		$url  = untrailingslashit( $url );
 
-		return 0 === strpos( $url, $home );
+		return $url === $home || 0 === strpos( $url, $home . '/' );
 	}
 
 	/**

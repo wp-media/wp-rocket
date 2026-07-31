@@ -112,6 +112,39 @@ class ExecuteTest extends TestCase {
 		$this->assertNotEmpty( $result['error'] );
 	}
 
+	public function testShouldRejectUrlWithHostThatIsStringPrefixOfHomeHost(): void {
+		Functions\expect( 'rocket_clean_files' )->never();
+
+		// "example.com" is a literal string-prefix of "example.com.attacker.net",
+		// but the two are entirely different domains and must not match.
+		$result = $this->ability->execute(
+			[
+				'scope' => 'url',
+				'url'   => 'https://example.com.attacker.net/page',
+			]
+		);
+
+		$this->assertFalse( $result['accepted'] );
+		$this->assertNotEmpty( $result['error'] );
+	}
+
+	public function testShouldRejectSiblingSubdirectorySiteWithNumericPrefixCollision(): void {
+		Functions\when( 'home_url' )->justReturn( 'https://example.com/site1' );
+		Functions\expect( 'rocket_clean_files' )->never();
+
+		// "/site1" is a literal string-prefix of "/site10", but they are different
+		// subsites on a subdirectory multisite install and must not match.
+		$result = $this->ability->execute(
+			[
+				'scope' => 'url',
+				'url'   => 'https://example.com/site10/page',
+			]
+		);
+
+		$this->assertFalse( $result['accepted'] );
+		$this->assertNotEmpty( $result['error'] );
+	}
+
 	public function testShouldClearSingleUrlInScope(): void {
 		Functions\expect( 'rocket_clean_files' )
 			->once()
