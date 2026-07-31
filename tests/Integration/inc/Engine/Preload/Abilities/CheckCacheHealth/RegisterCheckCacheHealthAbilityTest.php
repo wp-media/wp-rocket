@@ -18,6 +18,13 @@ class RegisterCheckCacheHealthAbilityTest extends TestCase {
 
 	private const ABILITY_ID = 'wp-rocket/get-cache-health';
 
+	/**
+	 * Value returned by the manual_preload pre_get_rocket_option filter override.
+	 *
+	 * @var int
+	 */
+	private $manual_preload = 0;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -41,6 +48,8 @@ class RegisterCheckCacheHealthAbilityTest extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_override' ] );
+
 		self::truncatePreloadCacheTable();
 
 		parent::tear_down();
@@ -125,25 +134,41 @@ class RegisterCheckCacheHealthAbilityTest extends TestCase {
 	}
 
 	/**
-	 * Enables the manual_preload option.
+	 * Enables the manual_preload option for the duration of the current test.
 	 *
-	 * Uses the shared SettingsTrait helper (already wired through TestCase) instead of a
-	 * raw get_option()/update_option() call, which the DiscourageWPOptionUsage PHPStan rule
-	 * flags for any file under tests/Integration/.
+	 * The ability's Options_Data dependency is built once by the DI container at plugin
+	 * bootstrap from a snapshot of the wp_rocket_settings option; it does not re-read
+	 * get_option() afterwards. Updating the option mid-test (e.g. via SettingsTrait's
+	 * mergeExistingSettingsAndUpdate()) therefore has no effect on
+	 * Options_Data::get( 'manual_preload' ) here. Overriding the
+	 * pre_get_rocket_option_manual_preload filter is the established pattern this codebase
+	 * uses instead — see tests/Integration/inc/Engine/Preload/Subscriber/*.php and
+	 * tests/Integration/inc/Engine/HealthCheck/HealthCheck/missedCron.php.
 	 *
 	 * @return void
 	 */
 	private function enable_manual_preload(): void {
-		$this->mergeExistingSettingsAndUpdate( [ 'manual_preload' => 1 ] );
+		$this->manual_preload = 1;
+		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_override' ] );
 	}
 
 	/**
-	 * Disables the manual_preload option.
+	 * Disables the manual_preload option for the duration of the current test.
 	 *
 	 * @return void
 	 */
 	private function disable_manual_preload(): void {
-		$this->mergeExistingSettingsAndUpdate( [ 'manual_preload' => 0 ] );
+		$this->manual_preload = 0;
+		add_filter( 'pre_get_rocket_option_manual_preload', [ $this, 'manual_preload_override' ] );
+	}
+
+	/**
+	 * Filter callback returning the overridden manual_preload value.
+	 *
+	 * @return int
+	 */
+	public function manual_preload_override() {
+		return $this->manual_preload;
 	}
 
 	/**
