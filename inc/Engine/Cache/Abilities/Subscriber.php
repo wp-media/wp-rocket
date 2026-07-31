@@ -36,8 +36,9 @@ class Subscriber implements Subscriber_Interface {
 	 * @param AbilitiesContext  $abilities_context       The abilities context instance.
 	 */
 	public function __construct( ClearUrlCache $clear_url_cache, ClearWebsiteCache $clear_website_cache, AbilitiesContext $abilities_context ) {
-		$this->clear_url_cache   = $clear_url_cache;
-		$this->abilities_context = $abilities_context;
+		$this->clear_url_cache     = $clear_url_cache;
+		$this->abilities_context   = $abilities_context;
+		$this->clear_website_cache = $clear_website_cache;
 	}
 
 
