@@ -9,7 +9,7 @@
  * then unresolvable, even though its files are present, which surfaces as a fatal
  * error while linking a bundled class.
  *
- * @since 3.24
+ * @since 3.23.2
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -25,7 +25,7 @@ defined( 'ABSPATH' ) || exit;
  * vendor/composer/autoload_psr4.php on purpose, since that file is precisely what
  * can be outdated in memory when this autoloader is needed.
  *
- * @since 3.24
+ * @since 3.23.2
  *
  * @return array<string,string> Namespace prefix as key, directory relative to the plugin root as value.
  */
@@ -39,7 +39,7 @@ function rocket_get_vendor_autoload_fallback_map(): array {
 /**
  * Converts a class name into the path of the file declaring it, relative to the plugin root.
  *
- * @since 3.24
+ * @since 3.23.2
  *
  * @param string $class_name Fully qualified class name.
  *
@@ -66,7 +66,7 @@ function rocket_get_vendor_class_relative_path( string $class_name ): string {
  * copy of a bundled dependency provided by another plugin is therefore never
  * overridden: that plugin's autoloader resolves the class before this one runs.
  *
- * @since 3.24
+ * @since 3.23.2
  *
  * @return void
  */
