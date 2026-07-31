@@ -37,7 +37,7 @@ return [
 			],
 		],
 
-		'shouldNotAddPluginRocketcdnWhenSubscriptionIsRunningAndPaidAndIsReseller' => [
+		'shouldAddPluginRocketcdnWhenSubscriptionIsRunningAndPaidAndIsReseller' => [
 			'config'   => [
 				'white_label'         => false,
 				'is_reseller'         => true,
@@ -50,7 +50,7 @@ return [
 			],
 			'expected' => [
 				'params' => [
-					'enabled_options' => [ 'cdn' ],
+					'enabled_options' => [ 'cdn', 'plugin_rocketcdn' ],
 				],
 			],
 		],
@@ -73,7 +73,7 @@ return [
 			],
 		],
 
-		'shouldAddFreeOptionWhenSubscriptionIsRunningAndFreeAndIsReseller' => [
+		'shouldNotAddFreeOptionWhenSubscriptionIsRunningAndFreeAndIsReseller' => [
 			'config'   => [
 				'white_label'         => false,
 				'is_reseller'         => true,
@@ -86,7 +86,7 @@ return [
 			],
 			'expected' => [
 				'params' => [
-					'enabled_options' => [ 'cdn', 'plugin_rocketcdn_free' ],
+					'enabled_options' => [ 'cdn' ],
 				],
 			],
 		],
