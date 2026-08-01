@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Fonts\Frontend\Subscriber;
 
-use WP_Rocket\Tests\HTTPCallTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -11,7 +10,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group HostFontsLocally
  */
 class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
-	use HttpCallTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFontsForOptimizations.php';
 
@@ -23,23 +21,28 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'rewrite_fonts', 18);
 		add_filter( 'pre_get_rocket_option_host_fonts_locally', [ $this, 'host_fonts_locally' ] );
 		add_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
-		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
-		add_filter('rocket_disable_meta_generator', '__return_true');
-		$this->setup_http();
-
+		add_filter( 'rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+		add_filter( 'pre_http_request', [ $this, 'http_callback' ], 10, 3 );
 	}
 
 	public function tear_down() {
-		remove_filter('pre_get_rocket_option_host_fonts_locally', [$this, 'host_fonts_locally']);
-		remove_filter('rocket_host_fonts_locally_inline_css', [$this, 'locally_inline_css']);
-		remove_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
-		remove_filter('rocket_disable_meta_generator', '__return_true');
+		remove_filter( 'pre_get_rocket_option_host_fonts_locally', [ $this, 'host_fonts_locally' ] );
+		remove_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
+		remove_filter( 'rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
+		remove_filter( 'pre_http_request', [ $this, 'http_callback' ], 10 );
 
-		$this->restoreWpHook('rocket_buffer');
-		$this->tear_down_http();
-
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
+	}
+
+	public function http_callback( $preempt, $args, $url ) {
+		if ( ! empty( $this->config['http'][ $url ] ) ) {
+			return $this->config['http'][ $url ];
+		}
+		return $preempt;
 	}
 
 	/**
@@ -50,7 +53,7 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 
 		$this->assertSame(
 			$expected['html'],
-			wpm_apply_filters_typed('string', 'rocket_buffer', $config['html'])
+			wpm_apply_filters_typed( 'string', 'rocket_buffer', $config['html'] )
 		);
 	}
 

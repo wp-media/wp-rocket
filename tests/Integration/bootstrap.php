@@ -286,19 +286,17 @@ tests_add_filter(
 			}
 		}
 
-		// Mock CDN CNAME validation HEAD requests so they return 200 without real HTTP calls in CI.
+		// Mock all external HTTP requests - per-test mocks at priority 10 win,
+		// anything else fails loud so leaks surface as test failures.
 		add_filter( 'pre_http_request', function ( $preempt, $args, $url ) {
-			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] && false !== strpos( $url, '/style.css' ) ) {
-				return [
-					'headers'  => [],
-					'body'     => '',
-					'response' => [ 'code' => 200, 'message' => 'OK' ],
-					'cookies'  => [],
-					'filename' => '',
-				];
+			if ( false !== $preempt ) {
+				return $preempt;
 			}
-			return $preempt;
-		}, 10, 3 );
+			return new \WP_Error(
+				'http_request_failed',
+				sprintf( 'Unexpected external HTTP request to %s - add a per-test mock or extend the global mock.', $url )
+			);
+		}, PHP_INT_MAX, 3 );
 
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
