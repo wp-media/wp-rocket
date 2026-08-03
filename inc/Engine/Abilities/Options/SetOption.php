@@ -270,7 +270,6 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/set-option',
-				'context' => 'wp_plugin_mcp',
 			]
 		);
 		$option_name  = $input['option_name'];

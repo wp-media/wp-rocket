@@ -77,7 +77,6 @@ class ClearWebsiteCache implements AbilitiesInterface {
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/clear-website-cache',
-				'context' => 'wp_plugin_mcp',
 			]
 		);
 

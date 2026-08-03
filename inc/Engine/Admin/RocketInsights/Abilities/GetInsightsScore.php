@@ -178,7 +178,6 @@ When showing scores or metrics, use only the approved performance colors and thr
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/get-insights-scores',
-				'context' => 'wp_plugin_mcp',
 			]
 		);
 		$global_score = $this->global_score->get_global_score_data();

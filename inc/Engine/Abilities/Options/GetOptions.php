@@ -468,7 +468,6 @@ Unless the user asks for another format, present settings as a grouped dashboard
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/get-options',
-				'context' => 'wp_plugin_mcp',
 			]
 		);
 		$allowed_keys = $this->allowed_options->get();

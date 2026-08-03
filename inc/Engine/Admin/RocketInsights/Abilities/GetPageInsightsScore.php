@@ -150,7 +150,6 @@ Do not open or read GTmetrix report_url links. You may show them as complementar
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/get-page-insights-score',
-				'context' => 'wp_plugin_mcp',
 			]
 		);
 		$url  = rocket_add_url_protocol( $input['url'] );

@@ -41,21 +41,30 @@ class Tracking extends Abstract_Render {
 	private $user;
 
 	/**
+	 * ChannelDetector instance.
+	 *
+	 * @var ChannelDetector
+	 */
+	private $channel_detector;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data     $options Options Data instance.
-	 * @param Optin            $optin Optin instance.
-	 * @param MixpanelTracking $mixpanel Mixpanel Tracking instance.
-	 * @param User             $user License User instance.
-	 * @param string           $template_path Path to the template files.
+	 * @param Options_Data     $options          Options Data instance.
+	 * @param Optin            $optin            Optin instance.
+	 * @param MixpanelTracking $mixpanel         Mixpanel Tracking instance.
+	 * @param User             $user             License User instance.
+	 * @param ChannelDetector  $channel_detector Channel Detector instance.
+	 * @param string           $template_path    Path to the template files.
 	 */
-	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, $template_path ) {
+	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, ChannelDetector $channel_detector, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->options  = $options;
-		$this->optin    = $optin;
-		$this->mixpanel = $mixpanel;
-		$this->user     = $user;
+		$this->options          = $options;
+		$this->optin            = $optin;
+		$this->mixpanel         = $mixpanel;
+		$this->user             = $user;
+		$this->channel_detector = $channel_detector;
 
 		$consumer_email = $this->options->get( 'consumer_email', '' );
 
@@ -405,9 +414,10 @@ class Tracking extends Abstract_Render {
 		$event_data = wp_parse_args(
 			$event_data,
 			[
-				'context' => 'wp_plugin',
+				'context'             => 'wp_plugin',
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
-			);
+		);
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}
