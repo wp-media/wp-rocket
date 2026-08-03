@@ -8,6 +8,13 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
+	 * ClearUrlCache ability instance.
+	 *
+	 * @var ClearUrlCache
+	 */
+	private $clear_url_cache;
+
+	/**
 	 * ClearWebsiteCache ability instance.
 	 *
 	 * @var ClearWebsiteCache
@@ -24,13 +31,16 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
+	 * @param ClearUrlCache     $clear_url_cache               The ability to clear url cache.
 	 * @param ClearWebsiteCache $clear_website_cache The ability to clear website cache.
-	 * @param AbilitiesContext  $abilities_context    The abilities context instance.
+	 * @param AbilitiesContext  $abilities_context       The abilities context instance.
 	 */
-	public function __construct( ClearWebsiteCache $clear_website_cache, AbilitiesContext $abilities_context ) {
-		$this->clear_website_cache = $clear_website_cache;
+	public function __construct( ClearUrlCache $clear_url_cache, ClearWebsiteCache $clear_website_cache, AbilitiesContext $abilities_context ) {
+		$this->clear_url_cache     = $clear_url_cache;
 		$this->abilities_context   = $abilities_context;
+		$this->clear_website_cache = $clear_website_cache;
 	}
+
 
 	/**
 	 * Returns an array of events this subscriber wants to listen to.
@@ -39,19 +49,20 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_abilities_api_init'            => 'register_clear_website_cache_ability',
+			'wp_abilities_api_init'            => 'register_clear_cache_ability',
 			'wp_abilities_api_categories_init' => 'register_cache_category',
 		];
 	}
 
 	/**
-	 * Registers the ability to clear website cache.
+	 * Registers the ability to clear website/url cache.
 	 */
-	public function register_clear_website_cache_ability() {
+	public function register_clear_cache_ability() {
 		if ( ! $this->abilities_context->is_enabled() ) {
 			return;
 		}
 
+		$this->clear_url_cache->register();
 		$this->clear_website_cache->register();
 	}
 
