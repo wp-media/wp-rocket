@@ -9,6 +9,7 @@ use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -22,6 +23,7 @@ class TrackRocketCdnPauseStatusTest extends TestCase {
 	private $mixpanel;
 	private $options;
 	private $user;
+	private $channel_detector;
 	private $tracking;
 
 	protected function set_up(): void {
@@ -42,11 +44,15 @@ class TrackRocketCdnPauseStatusTest extends TestCase {
 			->once()
 			->andReturn( false );
 
+		$this->channel_detector = Mockery::mock( ChannelDetector::class );
+		$this->channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
+
 		$this->tracking = new Tracking(
 			$this->options,
 			$this->optin,
 			$this->mixpanel,
 			$this->user,
+			$this->channel_detector,
 			'path/to/templates'
 		);
 
@@ -73,10 +79,11 @@ class TrackRocketCdnPauseStatusTest extends TestCase {
 				->with(
 					'Button Clicked',
 					[
-						'context' => 'wp_plugin',
-						'status'  => $config['status'],
-						'trigger' => $config['trigger'],
-						'button'  => 'rocket cdn pause',
+						'context'             => 'wp_plugin',
+						'interaction_channel' => ChannelDetector::CHANNEL_UI,
+						'status'              => $config['status'],
+						'trigger'             => $config['trigger'],
+						'button'              => 'rocket cdn pause',
 					]
 				);
 		}

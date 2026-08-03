@@ -14,11 +14,10 @@ use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Tracking\Tracking::track_rocketcdn_free_activated
+ * @covers \WP_Rocket\Engine\Tracking\Tracking::track_event
  * @group  Tracking
- * @group  RocketCDN
  */
-class TrackRocketcdnFreeActivatedTest extends TestCase {
+class trackEventTest extends TestCase {
 	private $optin;
 	private $mixpanel;
 	private $options;
@@ -29,10 +28,11 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 	protected function set_up(): void {
 		parent::set_up();
 
-		$this->optin    = Mockery::mock( Optin::class );
-		$this->mixpanel = Mockery::mock( MixpanelTracking::class );
-		$this->options  = Mockery::mock( Options_Data::class );
-		$this->user     = Mockery::mock( User::class );
+		$this->optin            = Mockery::mock( Optin::class );
+		$this->mixpanel         = Mockery::mock( MixpanelTracking::class );
+		$this->options          = Mockery::mock( Options_Data::class );
+		$this->user             = Mockery::mock( User::class );
+		$this->channel_detector = Mockery::mock( ChannelDetector::class );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email', '' )
@@ -43,9 +43,6 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 		$this->optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( false );
-
-		$this->channel_detector = Mockery::mock( ChannelDetector::class );
-		$this->channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
 
 		$this->tracking = new Tracking(
 			$this->options,
@@ -68,17 +65,22 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
 		$this->optin->shouldReceive( 'can_track' )
-			->times( $expected['can_track_count'] )
+			->once()
 			->andReturn( $config['can_track'] );
 
 		if ( ! $expected['track_called'] ) {
 			$this->mixpanel->shouldNotReceive( 'track' );
+			$this->channel_detector->shouldNotReceive( 'detect' );
 		} else {
+			$this->channel_detector->shouldReceive( 'detect' )
+				->once()
+				->andReturn( $config['detected_channel'] );
+
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
-				->with( 'RocketCDN Activated', [ 'context' => 'wp_plugin', 'interaction_channel' => ChannelDetector::CHANNEL_UI ] );
+				->with( $expected['event_name'], $expected['event_data'] );
 		}
 
-		$this->tracking->track_rocketcdn_free_activated();
+		$this->tracking->track_event( $config['event_name'], $config['event_data'] );
 	}
 }
