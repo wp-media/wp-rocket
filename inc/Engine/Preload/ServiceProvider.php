@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Preload;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 use WP_Rocket\Engine\Preload\Abilities\CheckCacheHealth;
 use WP_Rocket\Engine\Preload\Abilities\CheckCacheStatus;
-use WP_Rocket\Engine\Preload\Abilities\PurgeCache;
 use WP_Rocket\Engine\Preload\Abilities\Subscriber as AbilitiesSubscriber;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
@@ -47,7 +46,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_activation',
 		'preload_check_cache_status_ability',
 		'preload_check_cache_health_ability',
-		'preload_purge_cache_ability',
 		'preload_abilities_subscriber',
 	];
 
@@ -178,14 +176,11 @@ class ServiceProvider extends AbstractServiceProvider {
 					'preload_caches_query',
 				]
 			);
-		$this->getContainer()->add( 'preload_purge_cache_ability', PurgeCache::class )
-			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'preload_abilities_subscriber', AbilitiesSubscriber::class )
 			->addArguments(
 				[
 					'preload_check_cache_status_ability',
 					'preload_check_cache_health_ability',
-					'preload_purge_cache_ability',
 					'abilities_context',
 				]
 			);

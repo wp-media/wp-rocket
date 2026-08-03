@@ -22,13 +22,6 @@ class Subscriber implements Subscriber_Interface {
 	private $check_cache_health;
 
 	/**
-	 * PurgeCache ability instance.
-	 *
-	 * @var PurgeCache
-	 */
-	private $purge_cache;
-
-	/**
 	 * Abilities context instance.
 	 *
 	 * @var AbilitiesContext
@@ -40,13 +33,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @param CheckCacheStatus $check_cache_status The ability to get the cache status for a URL, post, or term.
 	 * @param CheckCacheHealth $check_cache_health The ability to get a sitewide cache health summary.
-	 * @param PurgeCache       $purge_cache        The ability to clear the cache.
 	 * @param AbilitiesContext $abilities_context  The abilities context instance.
 	 */
-	public function __construct( CheckCacheStatus $check_cache_status, CheckCacheHealth $check_cache_health, PurgeCache $purge_cache, AbilitiesContext $abilities_context ) {
+	public function __construct( CheckCacheStatus $check_cache_status, CheckCacheHealth $check_cache_health, AbilitiesContext $abilities_context ) {
 		$this->check_cache_status = $check_cache_status;
 		$this->check_cache_health = $check_cache_health;
-		$this->purge_cache        = $purge_cache;
 		$this->abilities_context  = $abilities_context;
 	}
 
@@ -60,7 +51,6 @@ class Subscriber implements Subscriber_Interface {
 			'wp_abilities_api_init' => [
 				[ 'register_check_cache_status_ability' ],
 				[ 'register_check_cache_health_ability' ],
-				[ 'register_purge_cache_ability' ],
 			],
 		];
 	}
@@ -89,18 +79,5 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$this->check_cache_health->register();
-	}
-
-	/**
-	 * Registers the ability to clear the cache.
-	 *
-	 * @return void
-	 */
-	public function register_purge_cache_ability(): void {
-		if ( ! $this->abilities_context->is_enabled() ) {
-			return;
-		}
-
-		$this->purge_cache->register();
 	}
 }
