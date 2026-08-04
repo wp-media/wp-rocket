@@ -6,6 +6,10 @@
  *
  * @param array $data {
  *      @type string $slug WP Rocket slug.
+ *      @type string $btn_submit_text Submit button text.
+ *      @type array $tools_page {
+ *          @type array $mcp_server_beacon MCP server beacon data.
+ *      }
  * }
  */
 
@@ -48,7 +52,7 @@ settings_errors( $data['slug'] ); ?>
 				) {
 					$this->render_imagify_section();
 				}
-				$this->render_tools_section();
+				$this->render_tools_section( $data['tools_page'] );
 				$this->render_tutorials_section();
 				$this->render_plugin_section();
 				?>
