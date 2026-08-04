@@ -2868,6 +2868,7 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-tools-col {
   flex: 1 1 auto;
+  align-self: center;
 }
 .wpr-tools-col:first-child {
   padding-left: 72px;
@@ -2890,7 +2891,7 @@ div.wpr-upgrade-websites.notstacked {
   }
 }
 .wpr-tools .wpr-button {
-  margin-top: 24px;
+  margin-top: 0;
   white-space: normal;
 }
 .wpr-tools .wpr-field-description {
