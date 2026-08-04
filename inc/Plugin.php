@@ -311,7 +311,6 @@ class Plugin {
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 		$this->container->addServiceProvider( new TrackingServiceProvider() );
-		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
@@ -426,9 +425,6 @@ class Plugin {
 			'tracking_subscriber',
 			'logger_subscriber',
 			'optimole_subscriber',
-			'abilities_subscriber',
-			'abilities_cli_subscriber',
-			'ri_abilities_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
@@ -457,6 +453,24 @@ class Plugin {
 			}
 		}
 
-		return $common_subscribers;
+		return array_merge( $common_subscribers, $this->init_abilities_subscribers() );
+	}
+
+	/**
+	 * Registers ability service providers and returns the list of ability subscriber service IDs.
+	 *
+	 * @return string[]
+	 */
+	private function init_abilities_subscribers(): array {
+		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
+
+		$subscribers = [
+			'abilities_subscriber',
+			'ri_abilities_subscriber',
+			'cache_abilities_subscriber',
+			'abilities_cli_subscriber',
+		];
+
+		return $subscribers;
 	}
 }
