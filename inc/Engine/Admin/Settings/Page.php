@@ -248,6 +248,9 @@ class Page extends Abstract_Render {
 			[
 				'slug'            => $this->slug, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 				'btn_submit_text' => $btn_submit_text, // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+				'tools_page'      => [
+					'mcp_server_beacon' => $this->beacon->get_suggest( 'mcp_server' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+				],
 			]
 		);
 	}

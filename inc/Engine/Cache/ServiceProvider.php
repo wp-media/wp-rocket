@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Cache\Config\ConfigSubscriber;
 use WP_Rocket\Engine\Cache\UrlValidation\{ TaxonomySubscriber, PostSubscriber };
 use WP_Rocket\Engine\Cache\Abilities\{
+	ClearUrlCache as ClearUrlCacheAbility,
 	ClearWebsiteCache as ClearWebsiteCacheAbility,
 	Subscriber as CacheAbilitiesSubscriber
 };
@@ -36,6 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cache_config',
 		'taxonomy_subscriber',
 		'post_subscriber',
+		'cache_abilities_clear_url_cache',
 		'cache_abilities_clear_website_cache',
 		'cache_abilities_subscriber',
 	];
@@ -110,10 +112,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'taxonomy_subscriber', TaxonomySubscriber::class );
 		$this->getContainer()->addShared( 'post_subscriber', PostSubscriber::class );
+		$this->getContainer()->add( 'cache_abilities_clear_url_cache', ClearUrlCacheAbility::class );
 		$this->getContainer()->add( 'cache_abilities_clear_website_cache', ClearWebsiteCacheAbility::class );
 		$this->getContainer()->addShared( 'cache_abilities_subscriber', CacheAbilitiesSubscriber::class )
 			->addArguments(
 				[
+					'cache_abilities_clear_url_cache',
 					'cache_abilities_clear_website_cache',
 					'abilities_context',
 				]

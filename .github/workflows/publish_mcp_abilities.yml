@@ -1,0 +1,107 @@
+name: Publish MCP Abilities to ARD Service
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  dump-abilities:
+    runs-on: ubuntu-latest
+
+    name: Dump WP Rocket abilities catalog (WP latest, PHP 8.2)
+
+    env:
+      WP_CORE_DIR: "/tmp/wordpress"
+      DB_NAME: "wordpress_test"
+      DB_USER: "root"
+      DB_PASS: "root"
+      DB_HOST: "127.0.0.1"
+      DB_PORT: "3306"
+
+    steps:
+    - name: Checkout WP Rocket
+      uses: actions/checkout@v4
+      with:
+        path: wp-rocket
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: none
+        tools: composer:v2, wp-cli
+
+    - name: Start mysql service
+      run: sudo /etc/init.d/mysql start
+
+    - name: Mysql8 auth plugin workaround
+      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+
+    - name: Get composer cache directory
+      id: composercache
+      working-directory: wp-rocket
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache dependencies
+      uses: actions/cache@v4
+      with:
+        path: ${{ steps.composercache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('wp-rocket/composer.json') }}
+        restore-keys: ${{ runner.os }}-composer-
+
+    - name: Install plugin composer dependencies
+      working-directory: wp-rocket
+      run: composer install --prefer-dist --no-interaction --no-scripts
+
+    - name: Create the test database
+      run: mysqladmin create "$DB_NAME" --user="$DB_USER" --password="$DB_PASS" --host="$DB_HOST" --port="$DB_PORT" --protocol=tcp
+
+    - name: Download WordPress core
+      run: wp core download --path="$WP_CORE_DIR" --version=latest
+
+    - name: Configure wp-config.php
+      run: |
+        wp config create --path="$WP_CORE_DIR" \
+          --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASS" --dbhost="${DB_HOST}:${DB_PORT}"
+
+    - name: Install WordPress
+      run: |
+        wp core install --path="$WP_CORE_DIR" \
+          --url="http://localhost" --title="WP Rocket CI" \
+          --admin_user="admin" --admin_password="admin" --admin_email="ci@example.com" \
+          --skip-email
+
+    - name: Symlink WP Rocket into the site's plugins directory
+      run: ln -s "$GITHUB_WORKSPACE/wp-rocket" "$WP_CORE_DIR/wp-content/plugins/wp-rocket"
+
+    - name: Activate WP Rocket
+      run: wp plugin activate wp-rocket --path="$WP_CORE_DIR"
+
+    - name: Dump abilities catalog as JSON
+      run: wp rocket abilities-catalog --path="$WP_CORE_DIR" > wp-rocket-abilities-catalog.json
+
+    - name: Upload abilities catalog artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: wp-rocket-abilities-catalog
+        path: wp-rocket-abilities-catalog.json
+        retention-days: 14
+
+    - name: Upload abilities catalog to ard-service
+      # No continue-on-error here: this workflow triggers on `release:
+      # published`, so the GitHub release has already happened by the time
+      # this step runs. A failure here can't block or delay the release —
+      # it can only fail to be noticed if swallowed. Letting this step fail
+      # for real surfaces it as a red workflow run (Actions tab, commit
+      # status, failure-notification emails), which is the whole point:
+      # this catalog going stale should be visible, even though it's not
+      # release-blocking.
+      env:
+        ARD_SERVICE_API_TOKEN: ${{ secrets.ARD_SERVICE_API_TOKEN }}
+      run: |
+        curl --fail -sS -X POST \
+          https://ard-service-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one/api/v1/upload/wp-rocket/manifest \
+          -H "Content-Type: application/json" \
+          -H "x-api-key: ${ARD_SERVICE_API_TOKEN}" \
+          --data @wp-rocket-abilities-catalog.json
