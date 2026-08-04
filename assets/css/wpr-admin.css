@@ -424,6 +424,15 @@ a:focus, button:focus {
   aspect-ratio: 20/21;
 }
 
+.wpr-icon-mcp:before {
+  display: block;
+  content: "";
+  background: url("../img/mcp.svg") no-repeat center center;
+  background-size: contain;
+  width: 45px;
+  height: 45px;
+}
+
 .wpr-title1 {
   font-size: 1.625rem;
   line-height: 1;
@@ -2859,6 +2868,7 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-tools-col {
   flex: 1 1 auto;
+  align-self: center;
 }
 .wpr-tools-col:first-child {
   padding-left: 72px;
@@ -2881,7 +2891,7 @@ div.wpr-upgrade-websites.notstacked {
   }
 }
 .wpr-tools .wpr-button {
-  margin-top: 24px;
+  margin-top: 0;
   white-space: normal;
 }
 .wpr-tools .wpr-field-description {
