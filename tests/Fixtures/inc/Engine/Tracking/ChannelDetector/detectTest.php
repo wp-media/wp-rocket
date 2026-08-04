@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'shouldReturnUIByDefault'                        => [
+	'shouldReturnUIByDefault'                           => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => false,
@@ -12,7 +12,7 @@ return [
 			'channel' => 'UI',
 		],
 	],
-	'shouldReturnUIWhenDoingAjax'                    => [
+	'shouldReturnUIWhenDoingAjax'                       => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => false,
@@ -23,29 +23,55 @@ return [
 			'channel' => 'UI',
 		],
 	],
-	'shouldReturnRestApiWhenRestRequestIsSet'         => [
+	'shouldReturnRestApiWhenRestRequestToUnknownRoute'   => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
 			'doing_ajax'   => false,
 			'argv'         => [],
+			'rest_route'   => '/wp-rocket/v1/rocketcdn',
 		],
 		'expected' => [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnRestApiWhenBothRestRequestAndAjax'  => [
+	'shouldReturnRestApiWhenBothRestRequestAndAjax'     => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
 			'doing_ajax'   => true,
 			'argv'         => [],
+			'rest_route'   => '/wp-rocket/v1/rocketcdn',
 		],
 		'expected' => [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'    => [
+	'shouldReturnMCPWhenRestRequestToMcpNamespace'      => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '/mcp/mcp-adapter-default-server',
+		],
+		'expected' => [
+			'channel' => 'MCP',
+		],
+	],
+	'shouldReturnRestApiWhenRestRouteIsEmpty'            => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '',
+		],
+		'expected' => [
+			'channel' => 'REST API',
+		],
+	],
+	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'       => [
 		'config'   => [
 			'wp_cli'       => true,
 			'rest_request' => false,
@@ -56,7 +82,7 @@ return [
 			'channel' => 'CLI',
 		],
 	],
-	'shouldReturnMCPWhenWpCliWithMcpAndServeInArgv' => [
+	'shouldReturnMCPWhenWpCliWithMcpAndServeInArgv'     => [
 		'config'   => [
 			'wp_cli'       => true,
 			'rest_request' => false,

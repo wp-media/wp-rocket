@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\ChannelDetector;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -33,9 +34,14 @@ class detectTest extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
 		$this->constants['WP_CLI']     = $config['wp_cli'];
-		$this->constants['DOING_AJAX'] = $config['doing_ajax'];
+		$this->constants['DOING_AJAX'] = $config['doing_ajax'] ?? false;
 		$this->rest_request            = $config['rest_request'];
 		$_SERVER['argv']               = $config['argv'];
+
+		if ( $config['rest_request'] ) {
+			$rest_route = $config['rest_route'] ?? '';
+			Functions\when( 'get_query_var' )->justReturn( $rest_route );
+		}
 
 		$this->assertSame( $expected['channel'], $this->detector->detect() );
 	}

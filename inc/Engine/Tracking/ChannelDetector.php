@@ -10,7 +10,6 @@ class ChannelDetector {
 	const CHANNEL_REST_API = 'REST API';
 	const CHANNEL_CLI      = 'CLI';
 
-
 	/**
 	 * Detect interaction channel
 	 *
@@ -22,14 +21,25 @@ class ChannelDetector {
 		}
 
 		if ( rocket_get_constant( 'REST_REQUEST', false ) ) {
-			return self::CHANNEL_REST_API;
-		}
-
-		if ( rocket_get_constant( 'DOING_AJAX', false ) ) {
-			return self::CHANNEL_UI;
+			return $this->detect_rest_channel();
 		}
 
 		return self::CHANNEL_UI;
+	}
+
+	/**
+	 * Detect the rest channel.
+	 *
+	 * @return string
+	 */
+	private function detect_rest_channel(): string {
+		$rest_route = ltrim( (string) get_query_var( 'rest_route', '' ), '/' );
+
+		if ( 0 === strpos( $rest_route, 'mcp/' ) ) {
+			return self::CHANNEL_MCP;
+		}
+
+		return self::CHANNEL_REST_API;
 	}
 
 	/**
