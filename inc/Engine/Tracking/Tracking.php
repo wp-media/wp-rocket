@@ -414,7 +414,7 @@ class Tracking extends Abstract_Render {
 			[
 				'context' => 'wp_plugin',
 			]
-			);
+		);
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}
