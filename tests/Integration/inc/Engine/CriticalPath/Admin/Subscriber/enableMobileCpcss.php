@@ -33,6 +33,15 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 		//create an editor user that has no capability
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
+
+		// The ajax action reaches RocketInsights, which queries this table.
+		self::installPerformanceMonitoringTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

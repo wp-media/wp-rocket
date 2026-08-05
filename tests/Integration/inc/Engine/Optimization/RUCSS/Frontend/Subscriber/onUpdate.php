@@ -11,6 +11,19 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RUCSS
  */
 class Test_OnUpdate extends TestCase {
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// The wp_rocket_upgrade action refreshes RocketInsights metrics, which queries this table.
+		self::installPerformanceMonitoringTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
 

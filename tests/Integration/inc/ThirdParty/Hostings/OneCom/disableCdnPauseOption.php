@@ -11,6 +11,19 @@ use Brain\Monkey\Functions;
  */
 class Test_DisableCdnPauseOption extends TestCase {
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// The rocket_cdn_driver_sections filter reaches RocketCDN, which queries this table.
+		self::installRocketCDNTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallRocketCDNTable();
+
+		parent::tear_down_after_class();
+	}
+
 	/**
 	 * @dataProvider providerTestData
 	 */

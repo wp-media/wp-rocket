@@ -11,6 +11,26 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group ThirdParty
  */
 class Test_RemoveActions extends TestCase {
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// switch_theme triggers rocket_clean_domain, which truncates the optimization tables.
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function testShouldRemoveRocketRegisteredActions() {
 
 		Functions\expect( 'rocket_clean_domain' )->never();

@@ -20,6 +20,8 @@ class Test_AddPurgeTermLink extends AdminTestCase {
 		self::installLrcTable();
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
+		// admin_init reaches RocketInsights, which queries this table.
+		self::installPerformanceMonitoringTable();
 
 		parent::set_up();
 	}
@@ -33,6 +35,7 @@ class Test_AddPurgeTermLink extends AdminTestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+		self::uninstallPerformanceMonitoringTable();
 	}
 
 	/**

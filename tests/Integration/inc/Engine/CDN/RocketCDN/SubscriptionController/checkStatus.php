@@ -13,9 +13,12 @@ class Test_CheckStatus extends AbstractSubscriptionControllerTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installRocketCDNTable();
+		// check_status triggers rocket_clean_domain, which truncates this table.
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public static function tear_down_after_class() {
+		self::uninstallPreconnectDomainsTable();
 		self::uninstallRocketCDNTable();
 		parent::tear_down_after_class();
 	}

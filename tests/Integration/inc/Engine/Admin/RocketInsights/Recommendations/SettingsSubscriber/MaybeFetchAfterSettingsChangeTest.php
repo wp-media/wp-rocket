@@ -14,6 +14,19 @@ use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
  */
 class MaybeFetchAfterSettingsChangeTest extends TestCase {
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// Saving settings triggers rocket_clean_domain, which truncates this table.
+		self::installPreconnectExternalDomainsTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
 	}

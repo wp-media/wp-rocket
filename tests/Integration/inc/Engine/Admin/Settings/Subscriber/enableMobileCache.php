@@ -12,6 +12,19 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  */
 class Test_EnableMobileCache extends AjaxTestCase {
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		// The ajax action reaches RocketInsights, which queries this table.
+		self::installPerformanceMonitoringTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPerformanceMonitoringTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
