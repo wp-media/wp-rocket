@@ -77,31 +77,7 @@ class RegisterCheckCacheHealthAbilityTest extends TestCase {
 	public function testShouldReturnCountsMatchingSeededRows(): void {
 		$this->set_up_user( true );
 		$this->enable_manual_preload();
-
-		self::addCache(
-			[
-				'url'    => home_url( '/pending-1' ),
-				'status' => 'pending',
-			]
-		);
-		self::addCache(
-			[
-				'url'    => home_url( '/pending-2' ),
-				'status' => 'pending',
-			]
-		);
-		self::addCache(
-			[
-				'url'    => home_url( '/completed-1' ),
-				'status' => 'completed',
-			]
-		);
-		self::addCache(
-			[
-				'url'    => home_url( '/failed-1' ),
-				'status' => 'failed',
-			]
-		);
+		$this->seed_cache_rows( __FUNCTION__ );
 
 		$ability = wp_get_ability( self::ABILITY_ID );
 		$result  = $ability->execute();
@@ -118,19 +94,33 @@ class RegisterCheckCacheHealthAbilityTest extends TestCase {
 	public function testShouldReturnNullEstimateWhenTrackingDisabled(): void {
 		$this->set_up_user( true );
 		$this->disable_manual_preload();
-
-		self::addCache(
-			[
-				'url'    => home_url( '/pending-only' ),
-				'status' => 'pending',
-			]
-		);
+		$this->seed_cache_rows( __FUNCTION__ );
 
 		$ability = wp_get_ability( self::ABILITY_ID );
 		$result  = $ability->execute();
 
 		$this->assertFalse( $result['tracking_enabled'] );
 		$this->assertNull( $result['estimate']['estimated_seconds_remaining'] );
+	}
+
+	/**
+	 * Seeds the Preload cache table with the rows fixture for the given test method.
+	 *
+	 * @param string $test_method Name of the calling test method, used as the fixture key.
+	 *
+	 * @return void
+	 */
+	private function seed_cache_rows( string $test_method ): void {
+		$rows = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Preload/Abilities/CheckCacheHealth/RegisterCheckCacheHealthAbilityTest.php';
+
+		foreach ( $rows[ $test_method ] as $row ) {
+			self::addCache(
+				[
+					'url'    => home_url( $row['url'] ),
+					'status' => $row['status'],
+				]
+			);
+		}
 	}
 
 	/**
