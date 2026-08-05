@@ -76,11 +76,18 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		if ( false !== get_transient( 'rocket_mixpanel_reseller_synced' ) ) {
+			return;
+		}
+
+		// We could fire this on change instead of running it once per day.
 		$this->mixpanel->set_user_property(
 			$this->mixpanel->hash( $consumer_email ),
 			'is_reseller',
 			$this->user->is_reseller_account()
 		);
+
+		set_transient( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
 	}
 
 	/**
