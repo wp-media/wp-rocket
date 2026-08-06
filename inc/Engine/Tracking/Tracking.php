@@ -72,6 +72,10 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	private function sync_is_reseller_property( string $consumer_email ): void {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		if ( ! $this->optin->can_track() ) {
 			return;
 		}

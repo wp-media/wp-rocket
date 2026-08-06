@@ -3,30 +3,42 @@
 return [
 	'shouldSyncResellerPropertyWhenTrackingEnabledAndReseller'    => [
 		'config' => [
-			'can_track'       => true,
+			'is_admin'         => true,
+			'can_track'        => true,
 			'transient_exists' => false,
-			'is_reseller'     => true,
+			'is_reseller'      => true,
 		],
 	],
 	'shouldSyncResellerPropertyWhenTrackingEnabledAndNotReseller' => [
 		'config' => [
-			'can_track'       => true,
+			'is_admin'         => true,
+			'can_track'        => true,
 			'transient_exists' => false,
-			'is_reseller'     => false,
+			'is_reseller'      => false,
 		],
 	],
 	'shouldNotSyncResellerPropertyWhenTrackingDisabled'           => [
 		'config' => [
-			'can_track'       => false,
+			'is_admin'         => true,
+			'can_track'        => false,
 			'transient_exists' => false,
-			'is_reseller'     => false,
+			'is_reseller'      => false,
 		],
 	],
 	'shouldNotSyncWhenAlreadySyncedToday'                         => [
 		'config' => [
-			'can_track'       => true,
+			'is_admin'         => true,
+			'can_track'        => true,
 			'transient_exists' => true,
-			'is_reseller'     => false,
+			'is_reseller'      => false,
+		],
+	],
+	'shouldNotSyncWhenNotInAdmin'                                 => [
+		'config' => [
+			'is_admin'         => false,
+			'can_track'        => true,
+			'transient_exists' => false,
+			'is_reseller'      => false,
 		],
 	],
 ];

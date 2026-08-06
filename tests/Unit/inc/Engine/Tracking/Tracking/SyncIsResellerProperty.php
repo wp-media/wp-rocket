@@ -39,6 +39,19 @@ class Test_SyncIsResellerProperty extends TestCase {
 			->once()
 			->with( $consumer_email );
 
+		Functions\when( 'is_admin' )->justReturn( $config['is_admin'] );
+
+		if ( ! $config['is_admin'] ) {
+			$optin->shouldNotReceive( 'can_track' );
+			$user->shouldNotReceive( 'is_reseller_account' );
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+
+			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+
+			return;
+		}
+
 		$optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( $config['can_track'] );
