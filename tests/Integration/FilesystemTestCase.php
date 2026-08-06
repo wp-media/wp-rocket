@@ -32,7 +32,6 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			}
 		}
 
-		// No-op under the install-once model (see DBTrait::persistTables); drops tables otherwise.
 		self::uninstallAll();
 
 		// Clean out the cached dirs before we run these tests.

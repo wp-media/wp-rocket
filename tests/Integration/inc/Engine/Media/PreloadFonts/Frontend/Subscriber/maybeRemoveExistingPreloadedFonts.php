@@ -18,6 +18,18 @@ class Test_MaybeRemoveExistingPreloadedFonts extends TestCase
 
 	protected $config;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::installPreloadFontsTable();
+	}
+
+	public static function tear_down_after_class() {
+		self::uninstallPreloadFontsTable();
+
+		parent::tear_down_after_class();
+	}
+
 	public function set_up() {
 		parent::set_up();
 

@@ -210,21 +210,6 @@ trait DBTrait {
 	}
 
 	/**
-	 * Whether the run uses the install-once table model.
-	 *
-	 * When enabled (via the WP_ROCKET_TESTS_PERSIST_TABLES env var set by the migrated groups'
-	 * composer scripts), the tables are created a single time at bootstrap as real, permanent
-	 * tables and kept for the whole run; per-test row isolation comes from WP_UnitTestCase's
-	 * transaction rollback. In that mode the per-class/uninstallAll DROPs are neutralised so a
-	 * class never tears down a table another class relies on.
-	 *
-	 * @return bool
-	 */
-	private static function persistTables(): bool {
-		return (bool) getenv( 'WP_ROCKET_TESTS_PERSIST_TABLES' );
-	}
-
-	/**
 	 * Resolve a table instance from the container, or null when the service is not registered.
 	 *
 	 * Some tables (`ri_table`, `rocketcdn_table`) are not registered in every context, so callers
@@ -283,11 +268,6 @@ trait DBTrait {
 	 * @return void
 	 */
 	private static function uninstallTable( string $service ) {
-		// Install-once model: tables are shared across the whole run, so never drop them here.
-		if ( self::persistTables() ) {
-			return;
-		}
-
 		$table = self::table( $service );
 
 		if ( $table && $table->exists() ) {

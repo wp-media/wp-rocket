@@ -36,7 +36,6 @@ abstract class TestCase extends BaseTestCase {
 			}
 		}
 
-		// No-op under the install-once model (see DBTrait::persistTables); drops tables otherwise.
 		self::uninstallAll();
 	}
 
