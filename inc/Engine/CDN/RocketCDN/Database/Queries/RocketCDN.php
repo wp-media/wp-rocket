@@ -6,11 +6,14 @@ namespace WP_Rocket\Engine\CDN\RocketCDN\Database\Queries;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Rows\RocketCDN as RocketCDNRow;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Schemas\RocketCDN as RocketCDNSchema;
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
+use WP_Rocket\Engine\Common\Page\PageHandlerTrait;
 
 /**
  * RocketCDN Query class.
  */
 class RocketCDN extends AbstractQuery {
+	use PageHandlerTrait;
+
 	/**
 	 * Name of the database table to query.
 	 *
@@ -84,7 +87,7 @@ class RocketCDN extends AbstractQuery {
 	 * @return RocketCDNRow|false
 	 */
 	public function get_by_url( string $url ) {
-		$normalized_url = untrailingslashit( $url );
+		$normalized_url = $this->normalize_url_path_encoding( untrailingslashit( $url ) );
 
 		$items = $this->query(
 			[
@@ -107,7 +110,7 @@ class RocketCDN extends AbstractQuery {
 	 * @return bool
 	 */
 	public function is_url_found( string $url ): bool {
-		$normalized_url = untrailingslashit( $url );
+		$normalized_url = $this->normalize_url_path_encoding( untrailingslashit( $url ) );
 
 		$counter = $this->query(
 			[

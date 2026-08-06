@@ -122,4 +122,39 @@ trait PageHandlerTrait {
 
 		return $payload;
 	}
+
+	/**
+	 * Normalizes percent-encoding in URL path segments so that raw unicode and
+	 * already-encoded forms produce the same canonical string.
+	 *
+	 * @param string $url URL to normalize.
+	 *
+	 * @return string
+	 */
+	public function normalize_url_path_encoding( string $url ): string {
+		$parsed = wp_parse_url( $url );
+
+		if ( empty( $parsed['path'] ) ) {
+			return $url;
+		}
+
+		$encoded_path = implode(
+			'/',
+			array_map(
+				static function ( string $segment ): string {
+					return rawurlencode( rawurldecode( $segment ) );
+				},
+				explode( '/', $parsed['path'] )
+			)
+		);
+
+		$result  = isset( $parsed['scheme'] ) ? $parsed['scheme'] . '://' : '';
+		$result .= $parsed['host'] ?? '';
+		$result .= isset( $parsed['port'] ) ? ':' . $parsed['port'] : '';
+		$result .= $encoded_path;
+		$result .= isset( $parsed['query'] ) ? '?' . $parsed['query'] : '';
+		$result .= isset( $parsed['fragment'] ) ? '#' . $parsed['fragment'] : '';
+
+		return $result;
+	}
 }
