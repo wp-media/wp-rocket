@@ -129,10 +129,11 @@ class Tracking extends Abstract_Render {
 			$this->mixpanel->track(
 				'Option Changed',
 				[
-					'context'        => 'wp_plugin',
-					'option_name'    => $option_tracked,
-					'previous_value' => $old_value[ $option_tracked ],
-					'new_value'      => $value[ $option_tracked ],
+					'context'             => 'wp_plugin',
+					'option_name'         => $option_tracked,
+					'previous_value'      => $old_value[ $option_tracked ],
+					'new_value'           => $value[ $option_tracked ],
+					'interaction_channel' => $this->channel_detector->detect(),
 				]
 			);
 		}
@@ -284,10 +285,11 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
 			[
-				'context'       => 'wp_plugin',
-				'plan_type'     => $plan,
-				'tracked_pages' => $urls_count,
-				'source'        => $source,
+				'context'             => 'wp_plugin',
+				'plan_type'           => $plan,
+				'tracked_pages'       => $urls_count,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -313,13 +315,14 @@ class Tracking extends Abstract_Render {
 		}
 
 		$event_data = [
-			'context'   => 'wp_plugin',
-			'status'    => $row_details->status,
-			'score'     => $row_details->score,
-			'retest'    => $row_details->data['is_retest'],
-			'duration'  => time() - $row_details->data['start_time'],
-			'plan_type' => $plan,
-			'source'    => $row_details->data['source'],
+			'context'             => 'wp_plugin',
+			'status'              => $row_details->status,
+			'score'               => $row_details->score,
+			'retest'              => $row_details->data['is_retest'],
+			'duration'            => time() - $row_details->data['start_time'],
+			'plan_type'           => $plan,
+			'source'              => $row_details->data['source'],
+			'interaction_channel' => $this->channel_detector->detect(),
 		];
 
 		if ( Utils::is_home( $row_details->url ) ) {
@@ -350,9 +353,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights View Details',
 			[
-				'context' => 'wp_plugin',
-				'source'  => $context,
-				'test_id' => $row_id,
+				'context'             => 'wp_plugin',
+				'source'              => $context,
+				'test_id'             => $row_id,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -374,9 +378,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track_direct(
 			$event_name,
 			[
-				'context' => 'wp_plugin',
-				'test_id' => $row_id,
-				'source'  => $source,
+				'context'             => 'wp_plugin',
+				'test_id'             => $row_id,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
