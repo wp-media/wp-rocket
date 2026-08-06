@@ -12,19 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_AddHashes extends TestCase {
   private $max_hashes;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// Install in set_up_before_class because of exists().
-		self::installLrcTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallLrcTable();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
 

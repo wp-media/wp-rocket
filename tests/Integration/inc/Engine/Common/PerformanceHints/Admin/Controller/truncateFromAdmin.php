@@ -16,25 +16,6 @@ use Mockery;
 class Test_TruncateFromAdmin extends TestCase {
 	protected $config;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// Install in set_up_before_class because of exists() requiring not temporary table.
-		self::installAtfTable();
-		self::installLrcTable();
-		self::installPreloadFontsTable();
-		self::installPreconnectExternalDomainsTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAtfTable();
-		self::uninstallLrcTable();
-		self::uninstallPreloadFontsTable();
-		self::uninstallPreconnectDomainsTable();
-
-		parent::tear_down_after_class();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */

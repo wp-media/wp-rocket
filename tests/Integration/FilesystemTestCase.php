@@ -6,6 +6,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
+use WPMedia\PHPUnit\BootstrapManager;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
@@ -32,7 +33,11 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			}
 		}
 
-		self::uninstallAll();
+		// PerformanceHints installs its tables once at bootstrap (install-once model); dropping
+		// them at the start of each class would defeat that, so skip the teardown for that group.
+		if ( ! getenv( 'WP_ROCKET_TESTS_PERSIST_TABLES' ) && ! BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			self::uninstallAll();
+		}
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );

@@ -309,21 +309,28 @@ tests_add_filter(
 	'wp_loaded',
 	function() {
 
-		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+		$container = apply_filters( 'rocket_container', null );
+		$tables    = [ 'atf_table', 'lrc_table', 'preload_fonts_table', 'preconnect_external_domains_table' ];
+
+		// PerformanceHints uses the install-once model: create the optimization tables a single
+		// time here, at bootstrap, where the WP test suite has NOT yet swapped CREATE TABLE for
+		// CREATE TEMPORARY TABLE (that rewrite is only active inside a test's transaction). The
+		// tables are therefore real and persist for the whole run; per-test row isolation is
+		// provided by that transaction, so individual PerformanceHints classes no longer
+		// install/uninstall them.
+		if ( getenv( 'WP_ROCKET_TESTS_PERSIST_TABLES' ) || BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			foreach ( $tables as $service ) {
+				$table = $container->get( $service );
+				if ( ! $table->exists() ) {
+					$table->install();
+				}
+			}
 			return;
 		}
-		$container = apply_filters( 'rocket_container', null );
-		$atf_table = $container->get( 'atf_table' );
-		$atf_table->uninstall();
 
-		$lrc_table = $container->get( 'lrc_table' );
-		$lrc_table->uninstall();
-
-		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-		$preload_fonts_table->uninstall();
-
-		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-		$preconnect_external_domains_table->uninstall();
+		foreach ( $tables as $service ) {
+			$container->get( $service )->uninstall();
+		}
 	}
 );
 
