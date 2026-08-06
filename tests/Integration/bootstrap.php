@@ -309,17 +309,29 @@ tests_add_filter(
 	'wp_loaded',
 	function() {
 
-		$container = apply_filters( 'rocket_container', null );
-		$tables    = [ 'atf_table', 'lrc_table', 'preload_fonts_table', 'preconnect_external_domains_table' ];
+		$container    = apply_filters( 'rocket_container', null );
+		$media_tables = [ 'atf_table', 'lrc_table', 'preload_fonts_table', 'preconnect_external_domains_table' ];
+		$all_tables   = [
+			'rucss_usedcss_table',
+			'preload_caches_table',
+			'atf_table',
+			'lrc_table',
+			'preload_fonts_table',
+			'preconnect_external_domains_table',
+			'ri_table',
+			'rocketcdn_table',
+		];
 
-		// PerformanceHints uses the install-once model: create the optimization tables a single
-		// time here, at bootstrap, where the WP test suite has NOT yet swapped CREATE TABLE for
-		// CREATE TEMPORARY TABLE (that rewrite is only active inside a test's transaction). The
-		// tables are therefore real and persist for the whole run; per-test row isolation is
-		// provided by that transaction, so individual PerformanceHints classes no longer
-		// install/uninstall them.
+		// Install-once model (see DBTrait::persistTables): create every plugin table a single time
+		// here, at bootstrap, where the WP test suite has NOT yet swapped CREATE TABLE for CREATE
+		// TEMPORARY TABLE (that rewrite is only active inside a test's transaction). The tables are
+		// therefore real and persist for the whole run; per-test row isolation is provided by that
+		// transaction, so classes in migrated groups no longer install/uninstall them.
 		if ( getenv( 'WP_ROCKET_TESTS_PERSIST_TABLES' ) || BootstrapManager::isGroup( 'PerformanceHints' ) ) {
-			foreach ( $tables as $service ) {
+			foreach ( $all_tables as $service ) {
+				if ( ! $container->has( $service ) ) {
+					continue;
+				}
 				$table = $container->get( $service );
 				if ( ! $table->exists() ) {
 					$table->install();
@@ -328,7 +340,7 @@ tests_add_filter(
 			return;
 		}
 
-		foreach ( $tables as $service ) {
+		foreach ( $media_tables as $service ) {
 			$container->get( $service )->uninstall();
 		}
 	}

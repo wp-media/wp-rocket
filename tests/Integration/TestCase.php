@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration;
 use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
-use WPMedia\PHPUnit\BootstrapManager;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
@@ -37,11 +36,8 @@ abstract class TestCase extends BaseTestCase {
 			}
 		}
 
-		// PerformanceHints installs its tables once at bootstrap (install-once model); dropping
-		// them at the start of each class would defeat that, so skip the teardown for that group.
-		if ( ! getenv( 'WP_ROCKET_TESTS_PERSIST_TABLES' ) && ! BootstrapManager::isGroup( 'PerformanceHints' ) ) {
-			self::uninstallAll();
-		}
+		// No-op under the install-once model (see DBTrait::persistTables); drops tables otherwise.
+		self::uninstallAll();
 	}
 
 	public static function tear_down_after_class() {
