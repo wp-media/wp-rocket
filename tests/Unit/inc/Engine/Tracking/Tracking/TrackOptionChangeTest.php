@@ -83,10 +83,11 @@ class TrackOptionChangeTest extends TestCase {
 				->with(
 					'Option Changed',
 					[
-						'context'        => 'wp_plugin',
-						'option_name'    => 'auto_preload_fonts',
-						'previous_value' => $config['old_value']['auto_preload_fonts'],
-						'new_value'      => $config['value']['auto_preload_fonts'],
+						'context'             => 'wp_plugin',
+						'option_name'         => 'auto_preload_fonts',
+						'previous_value'      => $config['old_value']['auto_preload_fonts'],
+						'new_value'           => $config['value']['auto_preload_fonts'],
+						'interaction_channel' => $config['interaction_channel'] ?? ChannelDetector::CHANNEL_UI,
 					]
 				);
 		}

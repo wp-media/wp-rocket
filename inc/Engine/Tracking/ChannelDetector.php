@@ -33,8 +33,7 @@ class ChannelDetector {
 	}
 
 	/**
-	 * Determines whether the current request is a genuine wp-admin UI request
-	 * (including admin-ajax.php), as opposed to a WP-Cron tick or a frontend request.
+	 * Determines whether the current request is from WP UI
 	 *
 	 * @return bool
 	 */
