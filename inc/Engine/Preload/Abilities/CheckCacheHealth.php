@@ -130,7 +130,7 @@ If tracking_enabled is false, tell the user Preload tracking is disabled rather 
 
 		$counts           = $this->query->get_status_counts();
 		$tracking_enabled = (bool) $this->options->get( 'manual_preload', 0 );
-		$mobile_active    = (bool) $this->options->get( 'do_caching_mobile_files', 0 );
+		$mobile_active    = $this->options->get( 'do_caching_mobile_files', 0 ) && $this->options->get( 'cache_mobile', 0 );
 		$pending          = $counts['pending'] ?? 0;
 
 		/**
