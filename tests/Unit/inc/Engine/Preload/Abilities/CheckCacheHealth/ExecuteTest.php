@@ -150,6 +150,7 @@ class ExecuteTest extends TestCase {
 
 		$this->options->shouldReceive( 'get' )->with( 'manual_preload', 0 )->andReturn( 1 );
 		$this->options->shouldReceive( 'get' )->with( 'do_caching_mobile_files', 0 )->andReturn( 1 );
+		$this->options->shouldReceive( 'get' )->with( 'cache_mobile', 0 )->andReturn( 1 );
 
 		$result = $this->ability->execute();
 
