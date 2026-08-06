@@ -14,6 +14,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class detectTest extends TestCase {
 	private $detector;
 	private $original_argv;
+	private array $original_get;
 
 	protected function set_up(): void {
 		parent::set_up();
@@ -23,12 +24,15 @@ class detectTest extends TestCase {
 		$this->constants['WP_ADMIN']   = false;
 		$this->constants['DOING_CRON'] = false;
 		$this->original_argv           = $_SERVER['argv'] ?? [];
+		$this->original_get            = $GLOBALS['_GET'] ?? [];
+		$GLOBALS['_GET']               = [];
 		$this->detector                = new ChannelDetector();
 	}
 
 	protected function tear_down(): void {
 		$_SERVER['argv'] = $this->original_argv;
-		unset( $GLOBALS['wp'], $_GET['rest_route'] );
+		$GLOBALS['_GET'] = $this->original_get;
+		unset( $GLOBALS['wp'] );
 		parent::tear_down();
 	}
 
