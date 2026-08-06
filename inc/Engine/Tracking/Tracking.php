@@ -72,11 +72,16 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	private function sync_is_reseller_property( string $consumer_email ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
 		if ( ! is_admin() ) {
 			return;
 		}
 
-		if ( ! $this->optin->can_track() ) {
+		$is_reseller = $this->user->is_reseller_account();
+		if ( ! $is_reseller ) {
 			return;
 		}
 
@@ -88,7 +93,7 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->set_user_property(
 			$this->mixpanel->hash( $consumer_email ),
 			'is_reseller',
-			$this->user->is_reseller_account()
+			$is_reseller
 		);
 
 		set_transient( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
