@@ -26,6 +26,7 @@ class detectTest extends TestCase {
 
 	protected function tear_down(): void {
 		$_SERVER['argv'] = $this->original_argv;
+		unset( $GLOBALS['wp'], $_GET['rest_route'] );
 		parent::tear_down();
 	}
 
@@ -41,6 +42,18 @@ class detectTest extends TestCase {
 		if ( $config['rest_request'] ) {
 			$rest_route = $config['rest_route'] ?? '';
 			Functions\when( 'get_query_var' )->justReturn( $rest_route );
+		}
+
+		if ( isset( $config['wp_query_vars_rest_route'] ) ) {
+			$wp_mock             = new \stdClass();
+			$wp_mock->query_vars = [ 'rest_route' => $config['wp_query_vars_rest_route'] ];
+			$GLOBALS['wp']       = $wp_mock;
+		}
+
+		if ( isset( $config['get_rest_route'] ) ) {
+			$_GET['rest_route'] = $config['get_rest_route'];
+			Functions\when( 'wp_unslash' )->returnArg();
+			Functions\when( 'sanitize_text_field' )->returnArg();
 		}
 
 		$this->assertSame( $expected['channel'], $this->detector->detect() );
