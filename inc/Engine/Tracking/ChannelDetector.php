@@ -35,6 +35,15 @@ class ChannelDetector {
 	private function detect_rest_channel(): string {
 		$rest_route = ltrim( (string) get_query_var( 'rest_route', '' ), '/' );
 
+		if ( '' === $rest_route && isset( $GLOBALS['wp'] ) ) {
+			$rest_route = ltrim( (string) ( $GLOBALS['wp']->query_vars['rest_route'] ?? '' ), '/' );
+		}
+
+		if ( '' === $rest_route ) {
+			$rest_route = ltrim( sanitize_text_field( wp_unslash( (string) ( $_GET['rest_route'] ?? '' ) ) ), '/' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		}
+
+		
 		$mcp_prefixes = [ 'mcp/', 'wp-abilities/' ];
 		foreach ( $mcp_prefixes as $prefix ) {
 			if ( 0 === strpos( $rest_route, $prefix ) ) {
