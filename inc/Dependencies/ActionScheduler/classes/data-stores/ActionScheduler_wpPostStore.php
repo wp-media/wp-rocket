@@ -238,13 +238,52 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$args = json_decode( $post->post_content, true );
 		$this->validate_args( $args, $post->ID );
 
-		$schedule = get_post_meta( $post->ID, self::SCHEDULE_META_KEY, true );
+		$schedule = $this->get_schedule_from_post_meta( $post->ID );
 		$this->validate_schedule( $schedule, $post->ID );
 
 		$group = wp_get_object_terms( $post->ID, self::GROUP_TAXONOMY, array( 'fields' => 'names' ) );
 		$group = empty( $group ) ? '' : reset( $group );
 
 		return ActionScheduler::factory()->get_stored_action( $this->get_action_status_by_post_status( $post->post_status ), $hook, $args, $schedule, $group );
+	}
+
+	/**
+	 * Read a scheduled action's schedule from post meta without instantiating unexpected classes.
+	 *
+	 * Using get_post_meta() would run the stored blob through maybe_unserialize(), instantiating
+	 * whatever classes it names before we can vet them. Instead we read the raw serialized value and
+	 * hand it to ActionScheduler_ScheduleDeserializer, which only instantiates a valid schedule (and its
+	 * vetted supporting classes). @see https://github.com/woocommerce/action-scheduler/issues/1318
+	 *
+	 * @param int $post_id Post ID of the scheduled action.
+	 * @return mixed The schedule object, false if unusable, or the raw meta value when it is not a
+	 *               serialized object (left for validate_schedule() to reject, as before).
+	 */
+	protected function get_schedule_from_post_meta( $post_id ) {
+		global $wpdb;
+
+		// Direct, uncached query is intentional: we need the raw serialized value before the meta API
+		// runs it through maybe_unserialize(), so we bypass get_post_meta() and its cache here.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$raw = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s ORDER BY meta_id ASC LIMIT 1",
+				$post_id,
+				self::SCHEDULE_META_KEY
+			)
+		);
+
+		if ( null === $raw ) {
+			return false;
+		}
+
+		// Schedule objects are stored serialized by the meta API. A non-serialized value cannot be a
+		// schedule object, so there is nothing to protect against — return it as-is for validation.
+		if ( ! is_serialized( $raw ) ) {
+			return $raw;
+		}
+
+		return ActionScheduler_ScheduleDeserializer::unserialize( $raw );
 	}
 
 	/**
@@ -404,10 +443,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		}
 
 		if ( ! empty( $query['search'] ) ) {
-			$sql .= ' AND (p.post_title LIKE %s OR p.post_content LIKE %s OR p.post_password LIKE %s)';
+			$sql .= ' AND (p.post_title LIKE %s OR p.post_content LIKE %s OR p.post_password LIKE %s';
 			for ( $i = 0; $i < 3; $i++ ) {
 				$sql_params[] = sprintf( '%%%s%%', $query['search'] );
 			}
+
+			$search_action_id = (int) $query['search'];
+			if ( $search_action_id ) {
+				$sql         .= ' OR p.ID = %d';
+				$sql_params[] = $search_action_id;
+			}
+
+			$sql .= ')';
 		}
 
 		if ( 'select' === $select_or_count ) {
@@ -693,7 +740,18 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 		$rows_affected = $wpdb->query( $wpdb->prepare( "{$update} {$where} {$order}", $params ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare
 
 		if ( false === $rows_affected ) {
-			throw new RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
+			$error = empty( $wpdb->last_error )
+				? _x( 'unknown', 'database error', 'action-scheduler' )
+				: $wpdb->last_error;
+			throw new RuntimeException(
+				esc_html(
+					sprintf(
+						/* translators: %s database error. */
+						__( 'Unable to claim actions. Database error: %s.', 'action-scheduler' ),
+						$error
+					)
+				)
+			);
 		}
 
 		return (int) $rows_affected;
@@ -791,24 +849,41 @@ class ActionScheduler_wpPostStore extends ActionScheduler_Store {
 	}
 
 	/**
-	 * Release claim.
+	 * Release pending actions from a claim.
 	 *
 	 * @param ActionScheduler_ActionClaim $claim Claim object to release.
 	 * @return void
 	 * @throws RuntimeException When the claim is not unlocked.
 	 */
 	public function release_claim( ActionScheduler_ActionClaim $claim ) {
-		$action_ids = $this->find_actions_by_claim_id( $claim->get_id() );
-		if ( empty( $action_ids ) ) {
-			return; // nothing to do.
-		}
-		$action_id_string = implode( ',', array_map( 'intval', $action_ids ) );
 		/**
 		 * Global wpdb object.
 		 *
 		 * @var wpdb $wpdb
 		 */
 		global $wpdb;
+
+		$claim_id = $claim->get_id();
+		if ( trim( $claim_id ) === '' ) {
+			// Verify that the claim_id is valid before attempting to release it.
+			return;
+		}
+
+		// Only attempt to release pending actions to be claimed again. Running and complete actions are no longer relevant outside of admin/analytics.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$action_ids = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT ID, post_date_gmt FROM {$wpdb->posts} WHERE post_type = %s AND post_password = %s AND post_status = %s",
+				self::POST_TYPE,
+				$claim_id,
+				self::STATUS_PENDING
+			)
+		);
+
+		if ( empty( $action_ids ) ) {
+			return; // nothing to do.
+		}
+		$action_id_string = implode( ',', array_map( 'intval', $action_ids ) );
 
 		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		$result = $wpdb->query(
