@@ -1,29 +1,59 @@
 <?php
 
 return [
-	'shouldReturnUIByDefault'                           => [
+	'shouldReturnUIByDefault'                              => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => false,
 			'doing_ajax'   => false,
+			'wp_admin'     => true,
+			'doing_cron'   => false,
 			'argv'         => [],
 		],
 		'expected' => [
 			'channel' => 'UI',
 		],
 	],
-	'shouldReturnUIWhenDoingAjax'                       => [
+	'shouldReturnUIWhenDoingAjax'                          => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => false,
 			'doing_ajax'   => true,
+			'wp_admin'     => true,
+			'doing_cron'   => false,
 			'argv'         => [],
 		],
 		'expected' => [
 			'channel' => 'UI',
 		],
 	],
-	'shouldReturnRestApiWhenRestRequestToUnknownRoute'   => [
+	'shouldReturnUnknownWhenDoingCron'                     => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => false,
+			'doing_ajax'   => false,
+			'wp_admin'     => false,
+			'doing_cron'   => true,
+			'argv'         => [],
+		],
+		'expected' => [
+			'channel' => 'Unknown',
+		],
+	],
+	'shouldReturnUnknownOnFrontendRequest'                 => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => false,
+			'doing_ajax'   => false,
+			'wp_admin'     => false,
+			'doing_cron'   => false,
+			'argv'         => [],
+		],
+		'expected' => [
+			'channel' => 'Unknown',
+		],
+	],
+	'shouldReturnRestApiWhenRestRequestToUnknownRoute'     => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
@@ -35,7 +65,7 @@ return [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnRestApiWhenBothRestRequestAndAjax'     => [
+	'shouldReturnRestApiWhenBothRestRequestAndAjax'        => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
@@ -47,7 +77,7 @@ return [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnMCPWhenRestRequestToMcpNamespace'      => [
+	'shouldReturnMCPWhenRestRequestToMcpNamespace'         => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
@@ -71,7 +101,7 @@ return [
 			'channel' => 'MCP',
 		],
 	],
-	'shouldReturnRestApiWhenRestRouteIsEmpty'            => [
+	'shouldReturnRestApiWhenRestRouteIsEmpty'              => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => true,
@@ -83,7 +113,7 @@ return [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'       => [
+	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'          => [
 		'config'   => [
 			'wp_cli'       => true,
 			'rest_request' => false,
@@ -94,7 +124,7 @@ return [
 			'channel' => 'CLI',
 		],
 	],
-	'shouldReturnMCPWhenWpCliWithMcpAndServeInArgv'     => [
+	'shouldReturnMCPWhenWpCliWithMcpAndServeInArgv'        => [
 		'config'   => [
 			'wp_cli'       => true,
 			'rest_request' => false,
@@ -105,7 +135,7 @@ return [
 			'channel' => 'MCP',
 		],
 	],
-	'shouldReturnMCPWhenGlobalsWpQueryVarHasMcpRoute'   => [
+	'shouldReturnMCPWhenGlobalsWpQueryVarHasMcpRoute'      => [
 		'config'   => [
 			'wp_cli'                   => false,
 			'rest_request'             => true,
@@ -118,7 +148,7 @@ return [
 			'channel' => 'MCP',
 		],
 	],
-	'shouldReturnMCPWhenGetParamHasMcpRoute'            => [
+	'shouldReturnMCPWhenGetParamHasMcpRoute'               => [
 		'config'   => [
 			'wp_cli'         => false,
 			'rest_request'   => true,

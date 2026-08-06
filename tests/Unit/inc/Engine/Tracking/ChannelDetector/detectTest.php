@@ -20,6 +20,8 @@ class detectTest extends TestCase {
 
 		$this->constants['WP_CLI']     = false;
 		$this->constants['DOING_AJAX'] = false;
+		$this->constants['WP_ADMIN']   = false;
+		$this->constants['DOING_CRON'] = false;
 		$this->original_argv           = $_SERVER['argv'] ?? [];
 		$this->detector                = new ChannelDetector();
 	}
@@ -36,6 +38,8 @@ class detectTest extends TestCase {
 	public function testShouldDoExpected( $config, $expected ): void {
 		$this->constants['WP_CLI']     = $config['wp_cli'];
 		$this->constants['DOING_AJAX'] = $config['doing_ajax'] ?? false;
+		$this->constants['WP_ADMIN']   = $config['wp_admin'] ?? false;
+		$this->constants['DOING_CRON'] = $config['doing_cron'] ?? false;
 		$this->rest_request            = $config['rest_request'];
 		$_SERVER['argv']               = $config['argv'];
 
@@ -50,10 +54,11 @@ class detectTest extends TestCase {
 			$GLOBALS['wp']       = $wp_mock;
 		}
 
+		Functions\when( 'wp_unslash' )->returnArg();
+		Functions\when( 'sanitize_text_field' )->returnArg();
+
 		if ( isset( $config['get_rest_route'] ) ) {
 			$_GET['rest_route'] = $config['get_rest_route'];
-			Functions\when( 'wp_unslash' )->returnArg();
-			Functions\when( 'sanitize_text_field' )->returnArg();
 		}
 
 		$this->assertSame( $expected['channel'], $this->detector->detect() );

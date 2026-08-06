@@ -9,6 +9,7 @@ class ChannelDetector {
 	const CHANNEL_MCP      = 'MCP';
 	const CHANNEL_REST_API = 'REST API';
 	const CHANNEL_CLI      = 'CLI';
+	const CHANNEL_UNKNOWN  = 'Unknown';
 
 	/**
 	 * Detect interaction channel
@@ -24,7 +25,25 @@ class ChannelDetector {
 			return $this->detect_rest_channel();
 		}
 
-		return self::CHANNEL_UI;
+		if ( $this->is_ui_request() ) {
+			return self::CHANNEL_UI;
+		}
+
+		return self::CHANNEL_UNKNOWN;
+	}
+
+	/**
+	 * Determines whether the current request is a genuine wp-admin UI request
+	 * (including admin-ajax.php), as opposed to a WP-Cron tick or a frontend request.
+	 *
+	 * @return bool
+	 */
+	private function is_ui_request(): bool {
+		if ( rocket_get_constant( 'DOING_CRON', false ) ) {
+			return false;
+		}
+
+		return (bool) rocket_get_constant( 'WP_ADMIN', false );
 	}
 
 	/**
@@ -43,7 +62,6 @@ class ChannelDetector {
 			$rest_route = ltrim( sanitize_text_field( wp_unslash( (string) ( $_GET['rest_route'] ?? '' ) ) ), '/' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
-		
 		$mcp_prefixes = [ 'mcp/', 'wp-abilities/' ];
 		foreach ( $mcp_prefixes as $prefix ) {
 			if ( 0 === strpos( $rest_route, $prefix ) ) {
