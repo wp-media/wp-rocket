@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'shouldSyncResellerPropertyWhenTrackingEnabledAndReseller'    => [
+	'shouldSyncResellerPropertyWhenTrackingEnabledAndReseller' => [
 		'config' => [
 			'is_admin'         => true,
 			'can_track'        => true,
@@ -9,7 +9,7 @@ return [
 			'is_reseller'      => true,
 		],
 	],
-	'shouldSyncResellerPropertyWhenTrackingEnabledAndNotReseller' => [
+	'shouldNotSyncPropertyWhenNotReseller'                     => [
 		'config' => [
 			'is_admin'         => true,
 			'can_track'        => true,
@@ -17,7 +17,7 @@ return [
 			'is_reseller'      => false,
 		],
 	],
-	'shouldNotSyncResellerPropertyWhenTrackingDisabled'           => [
+	'shouldNotSyncResellerPropertyWhenTrackingDisabled'        => [
 		'config' => [
 			'is_admin'         => true,
 			'can_track'        => false,
@@ -25,15 +25,15 @@ return [
 			'is_reseller'      => false,
 		],
 	],
-	'shouldNotSyncWhenAlreadySyncedToday'                         => [
+	'shouldNotSyncWhenAlreadySyncedToday'                      => [
 		'config' => [
 			'is_admin'         => true,
 			'can_track'        => true,
 			'transient_exists' => true,
-			'is_reseller'      => false,
+			'is_reseller'      => true,
 		],
 	],
-	'shouldNotSyncWhenNotInAdmin'                                 => [
+	'shouldNotSyncWhenNotInAdmin'                              => [
 		'config' => [
 			'is_admin'         => false,
 			'can_track'        => true,

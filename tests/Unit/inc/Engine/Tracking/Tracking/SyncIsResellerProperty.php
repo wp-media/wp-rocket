@@ -39,10 +39,12 @@ class Test_SyncIsResellerProperty extends TestCase {
 			->once()
 			->with( $consumer_email );
 
-		Functions\when( 'is_admin' )->justReturn( $config['is_admin'] );
+		$optin->shouldReceive( 'can_track' )
+			->once()
+			->andReturn( $config['can_track'] );
 
-		if ( ! $config['is_admin'] ) {
-			$optin->shouldNotReceive( 'can_track' );
+		if ( ! $config['can_track'] ) {
+			Functions\expect( 'is_admin' )->never();
 			$user->shouldNotReceive( 'is_reseller_account' );
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
@@ -52,17 +54,27 @@ class Test_SyncIsResellerProperty extends TestCase {
 			return;
 		}
 
-		$optin->shouldReceive( 'can_track' )
-			->once()
-			->andReturn( $config['can_track'] );
+		Functions\when( 'is_admin' )->justReturn( $config['is_admin'] );
 
-		if ( ! $config['can_track'] ) {
+		if ( ! $config['is_admin'] ) {
 			$user->shouldNotReceive( 'is_reseller_account' );
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+
+			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+
+			return;
+		}
+
+		$user->shouldReceive( 'is_reseller_account' )
+			->once()
+			->andReturn( $config['is_reseller'] );
+
+		if ( ! $config['is_reseller'] ) {
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 		} elseif ( $config['transient_exists'] ) {
 			Functions\when( 'get_transient' )->justReturn( 1 );
-			$user->shouldNotReceive( 'is_reseller_account' );
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 		} else {
@@ -70,10 +82,6 @@ class Test_SyncIsResellerProperty extends TestCase {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
-
-			$user->shouldReceive( 'is_reseller_account' )
-				->once()
-				->andReturn( $config['is_reseller'] );
 
 			$mixpanel->shouldReceive( 'hash' )
 				->once()
