@@ -59,6 +59,18 @@ return [
 			'channel' => 'MCP',
 		],
 	],
+	'shouldReturnMCPWhenRestRequestToWpAbilitiesNamespace' => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '/wp-abilities/v1/abilities/wp-rocket/set-option/run',
+		],
+		'expected' => [
+			'channel' => 'MCP',
+		],
+	],
 	'shouldReturnRestApiWhenRestRouteIsEmpty'            => [
 		'config'   => [
 			'wp_cli'       => false,

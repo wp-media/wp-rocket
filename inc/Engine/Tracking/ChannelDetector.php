@@ -35,8 +35,11 @@ class ChannelDetector {
 	private function detect_rest_channel(): string {
 		$rest_route = ltrim( (string) get_query_var( 'rest_route', '' ), '/' );
 
-		if ( 0 === strpos( $rest_route, 'mcp/' ) ) {
-			return self::CHANNEL_MCP;
+		$mcp_prefixes = [ 'mcp/', 'wp-abilities/' ];
+		foreach ( $mcp_prefixes as $prefix ) {
+			if ( 0 === strpos( $rest_route, $prefix ) ) {
+				return self::CHANNEL_MCP;
+			}
 		}
 
 		return self::CHANNEL_REST_API;

@@ -120,6 +120,7 @@ This action is destructive and non-idempotent. Before calling, explicitly confir
 			'MCP Ability Executed',
 			[
 				'ability' => 'wp-rocket/remove-page-insights',
+				'context' => 'wp_plugin_mcp',
 			]
 		);
 		if ( ! $this->context->is_allowed() ) {
