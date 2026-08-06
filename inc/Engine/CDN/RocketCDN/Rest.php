@@ -120,7 +120,7 @@ class Rest extends WP_REST_Controller {
 								return ! empty( $param ) && wp_http_validate_url( esc_url_raw( $param ) );
 							},
 							'sanitize_callback' => function ( $param ) {
-								return untrailingslashit( esc_url_raw( $param ) );
+								return $this->normalize_url_path_encoding( untrailingslashit( esc_url_raw( $param ) ) );
 							},
 						],
 					],
