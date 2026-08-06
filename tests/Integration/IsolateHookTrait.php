@@ -24,7 +24,10 @@ Trait IsolateHookTrait {
 					continue;
 				}
 
-				$wp_filter[ $event_name ]->callbacks[ $priority ] = [ $key => $config ];
+				// Accumulate every matching callback at this priority. Several objects can hook
+				// a method of the same name at the same priority, so replacing instead of
+				// accumulating would drop the callback under test.
+				$wp_filter[ $event_name ]->callbacks[ $priority ][ $key ] = $config;
 			}
 		}
 
@@ -57,6 +60,7 @@ Trait IsolateHookTrait {
 		global $wp_filter;
 		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
 
+		$kept = [];
 		foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
 
 			// Skip if not this tests callback.
@@ -64,9 +68,14 @@ Trait IsolateHookTrait {
 				continue;
 			}
 
-			$wp_filter[ $event_name ]->callbacks = [
-				$priority => [ $key => $config ],
-			];
+			// Accumulate every matching callback. Several objects can hook a method of the
+			// same name at the same priority (e.g. two `on_update` on `wp_rocket_upgrade`),
+			// so replacing instead of accumulating would drop the callback under test.
+			$kept[ $key ] = $config;
+		}
+
+		if ( ! empty( $kept ) ) {
+			$wp_filter[ $event_name ]->callbacks = [ $priority => $kept ];
 		}
 
 		try {

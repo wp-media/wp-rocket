@@ -11,33 +11,22 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RUCSS
  */
 class Test_OnUpdate extends TestCase {
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// The wp_rocket_upgrade action refreshes RocketInsights metrics, which queries this table.
-		self::installPerformanceMonitoringTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallPerformanceMonitoringTable();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
 
 		delete_option('wp_rocket_no_licence');
 		delete_transient('wp_rocket_no_licence');
 
-		// Disable ATF optimization to prevent DB request (unrelated to the test).
-		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+		// Isolate the upgrade hook to the callback under test so unrelated subscribers
+		// (e.g. RocketInsights, which queries its table) don't run and emit DB errors.
+		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'on_update', 10 );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
+
 		delete_option('wp_rocket_no_licence');
 		delete_transient('wp_rocket_no_licence');
-		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
 		parent::tear_down();
 	}
