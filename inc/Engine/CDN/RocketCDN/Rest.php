@@ -349,7 +349,7 @@ class Rest extends WP_REST_Controller {
 			return;
 		}
 
-		rocket_clean_files( [ $url ] );
+		rocket_clean_files( [ user_trailingslashit( $url ) ] );
 	}
 
 	/**
