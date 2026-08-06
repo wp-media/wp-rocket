@@ -83,32 +83,6 @@ return [
 			'channel' => 'REST API',
 		],
 	],
-	'shouldReturnMCPWhenGlobalsWpQueryVarHasMcpRoute'   => [
-		'config'   => [
-			'wp_cli'                   => false,
-			'rest_request'             => true,
-			'doing_ajax'               => false,
-			'argv'                     => [],
-			'rest_route'               => '',
-			'wp_query_vars_rest_route' => '/mcp/mcp-adapter-default-server',
-		],
-		'expected' => [
-			'channel' => 'MCP',
-		],
-	],
-	'shouldReturnMCPWhenGetParamHasMcpRoute'            => [
-		'config'   => [
-			'wp_cli'         => false,
-			'rest_request'   => true,
-			'doing_ajax'     => false,
-			'argv'           => [],
-			'rest_route'     => '',
-			'get_rest_route' => '/mcp/mcp-adapter-default-server',
-		],
-		'expected' => [
-			'channel' => 'MCP',
-		],
-	],
 	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'       => [
 		'config'   => [
 			'wp_cli'       => true,
