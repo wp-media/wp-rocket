@@ -21,12 +21,6 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 		self::removeDBHooks();
 	}
 
-	public function tear_down() {
-		wp_delete_term( $this->tag->term_id, 'post_tag' );
-
-		parent::tear_down();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
