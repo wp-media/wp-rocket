@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23-beta\n"
+"Project-Id-Version: WP Rocket 3.23.1-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-07-09T08:16:03+00:00\n"
+"POT-Creation-Date: 2026-07-23T11:30:55+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2026\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -1795,7 +1795,7 @@ msgid "No Subscription"
 msgstr "بدون اشتراک"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr "تاریخ صورتحساب بعدی"
 
@@ -2797,7 +2797,7 @@ msgid "Your CDN is active on your website"
 msgstr "CDN شما در سایت فعال است"
 
 #: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:838
+#: inc/Engine/CDN/Render/Controller.php:859
 msgid "RocketCDN is paused"
 msgstr "RocketCDN غیرفعال شد"
 
@@ -3307,25 +3307,25 @@ msgstr ""
 "قسمت نام دامنه آدرس به صورت خودکار حذف خواهد شد. <br> برای مستثنی کردن همه "
 "فایل‌های هم نوع موجود در یک مسیر از (.*) استفاده کنید."
 
-#: inc/Engine/CDN/Render/Controller.php:622
+#: inc/Engine/CDN/Render/Controller.php:638
 msgid "Serving files from 10 edge locations. Covering up to 3 pages."
 msgstr "ارائه فایل‌ها از 10 مکان حاشیه‌ای. پوشش حداکثر 3 صفحه."
 
-#: inc/Engine/CDN/Render/Controller.php:627
+#: inc/Engine/CDN/Render/Controller.php:643
 msgid ""
 "RocketCDN is currently paused because your WPRocket licence has expired."
 msgstr ""
 "RocketCDN در حال حاضر متوقف شده است زیرا مجوز WPRocket شما منقضی شده است."
 
-#: inc/Engine/CDN/Render/Controller.php:652
+#: inc/Engine/CDN/Render/Controller.php:672
 msgid "Serving files from 100+ edge locations"
 msgstr "ارائه فایل‌ها از بیش از 100 مکان لبه‌ای"
 
-#: inc/Engine/CDN/Render/Controller.php:653
+#: inc/Engine/CDN/Render/Controller.php:673
 msgid "RocketCDN is active on your website"
 msgstr "RocketCDN در سایت شما فعال است"
 
-#: inc/Engine/CDN/Render/Controller.php:657
+#: inc/Engine/CDN/Render/Controller.php:677
 msgid ""
 "RocketCDN is currently paused because your RocketCDN subscription was "
 "cancelled. Please wait up to two days before resuming."
@@ -3333,15 +3333,15 @@ msgstr ""
 "RocketCDN در حال حاضر متوقف شده است زیرا اشتراک RocketCDN شما لغو شده است. "
 "لطفاً تا دو روز قبل از از سرگیری صبر کنید."
 
-#: inc/Engine/CDN/Render/Controller.php:727
+#: inc/Engine/CDN/Render/Controller.php:747
 msgid "Remove page"
 msgstr "حذف برگه"
 
-#: inc/Engine/CDN/Render/Controller.php:839
+#: inc/Engine/CDN/Render/Controller.php:860
 msgid "RocketCDN is active"
 msgstr "RocketCDN فعال شد"
 
-#: inc/Engine/CDN/Render/Controller.php:840
+#: inc/Engine/CDN/Render/Controller.php:861
 msgid ""
 "RocketCDN is currently paused. Click Resume CDN to re-enable content "
 "delivery."
@@ -3350,7 +3350,7 @@ msgstr ""
 "Resume CDN کلیک کنید."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:844
+#: inc/Engine/CDN/Render/Controller.php:865
 #, php-format
 msgid ""
 "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
@@ -3359,23 +3359,23 @@ msgstr ""
 "%1$sبا صفحه اصلی خود شروع کنید و حداکثر 2 صفحه کلیدی %2$sدیگر اضافه کنید. "
 "شامل ترافیک نامحدود در 10 مکان حاشیه‌ای می‌شود."
 
-#: inc/Engine/CDN/Render/Controller.php:877
+#: inc/Engine/CDN/Render/Controller.php:898
 msgid "Creating your subscription..."
 msgstr "ایجاد اشتراک شما..."
 
-#: inc/Engine/CDN/Render/Controller.php:878
+#: inc/Engine/CDN/Render/Controller.php:899
 msgid "Please wait, RocketCDN will be ready in about 30s."
 msgstr "لطفا صبر کنید، RocketCDN حدود 30 ثانیه دیگر آماده خواهد شد."
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
 msgid "Plan"
 msgstr "طرح"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:102
 msgid "RocketCDN Pro"
 msgstr "RocketCDN حرفه ای"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:115
 msgid "No RocketCDN Pro Subscription"
 msgstr "بدون اشتراک RocketCDN حرفه ای"
 
@@ -3433,20 +3433,28 @@ msgid "RocketCDN cache purge successful."
 msgstr "حذف کش RocketCDN موفق بود."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:190
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:305
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sراهنمایی%2$s"
 
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:269
+msgid "Nice work!  You're using RocketCDN on all available pages."
+msgstr "آفرین! شما در تمام صفحات موجود از RocketCDN استفاده می‌کنید."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:270
+msgid "RocketCDN covers up to 3 pages, and you're all set."
+msgstr "RocketCDN حداکثر 3 صفحه را پوشش می‌دهد و همه چیز آماده است."
+
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "ما سرویس RocketCDN CNAME از %1$s به %2$s بروزرسانی کردیم."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:376
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3455,19 +3463,19 @@ msgstr ""
 "تغییر در تنظیمات افزونه انجام شده است. اگر در کد خود از CNAME استفاده می "
 "کنید، از بروزرسانی آن مطمئن شوید:%1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:385
 msgid "contact support"
 msgstr "تماس با پشتیبانی"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:433
 msgid "RocketCDN activation incomplete"
 msgstr "فعال‌سازی RocketCDN ناقص است"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:434
 msgid "RocketCDN isn’t active on this website yet."
 msgstr "RocketCDN هنوز در این وب‌سایت فعال نیست."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:435
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
@@ -3475,18 +3483,18 @@ msgstr ""
 "برای تکمیل فعال‌سازی، روی دکمه‌ی زیر کلیک کنید. برای تأیید اشتراک خود به "
 "صفحه‌ی پرداخت هدایت خواهید شد."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:447
 msgid "Complete activation"
 msgstr "فعال‌سازی کامل"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:533
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr "%1$sجدید در WP Rocket: بارگذاری سریع‌تر برای صفحات کلیدی شما%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:543
 #, php-format
 msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
@@ -3495,19 +3503,19 @@ msgstr ""
 "%1$sاکنون می‌توانید از تحویل محتوا، ارائه شده توسط RocketCDN، برای افزایش "
 "سرعت صفحه اصلی و ۲ صفحه دیگر خود، بدون هیچ هزینه اضافی، استفاده کنید.%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:554
 msgid "Dismiss"
 msgstr "ردکردن"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:568
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 "%1$sبرای افزایش سرعت تا 3صفحه، از RocketCDN به صورت رایگان استفاده کنید🚀%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:578
 #, php-format
 msgid ""
 "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 "
@@ -3517,7 +3525,7 @@ msgstr ""
 " برای حداکثر 3صفحه فعال کنید. صفحات برتر خود را انتخاب کنید و عملکرد آنها را"
 " در سراسر جهان سرعت بخشید!%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:589
 msgid "Check it later"
 msgstr "بعدا بررسی کن"
 
@@ -4029,17 +4037,17 @@ msgstr ""
 "قیمت راه اندازی برای 12 ماه اول معتبر است و پس از آن قیمت گذاری استاندارد "
 "اعمال می شود."
 
-#: inc/Engine/License/API/User.php:575
+#: inc/Engine/License/API/User.php:592
 msgid "There was an error updating the plugin."
 msgstr "خطایی در به‌روزرسانی افزونه رخ داده است."
 
 #. translators: %s: ban reason
-#: inc/Engine/License/API/User.php:583
+#: inc/Engine/License/API/User.php:600
 #, php-format
 msgid "because %s"
 msgstr "به دلیل %s"
 
-#: inc/Engine/License/API/User.php:606
+#: inc/Engine/License/API/User.php:623
 msgid "your website is banned"
 msgstr "وبسایت شما غیرمجاز است"
 
@@ -4318,108 +4326,6 @@ msgid ""
 msgstr ""
 "می توانید با ارتقاء لایسنس از موشک وردپرس در وب سایت های بیشتری استفاده کنید"
 " (فقط تفاوت قیمت بین لایسنس های فعلی و جدید خود را پرداخت خواهید کرد)."
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
-msgid "You must be logged in to authorise an MCP session."
-msgstr "برای اجازه دادن به جلسه MCP باید وارد سیستم شوید."
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:251
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
-msgid "OAuth Error"
-msgstr "خطای OAuth"
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
-msgid "Missing state parameter."
-msgstr "پارامتر حالت از دست رفته."
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
-msgid "Invalid or expired state. Please restart the authorization flow."
-msgstr ""
-"وضعیت نامعتبر یا منقضی شده است. لطفاً جریان مجوز را مجدداً راه اندازی کنید."
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:127
-msgid "Authorize Access"
-msgstr "دسترسی را مجاز کنید"
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:221
-msgid "Authorize access to your site?"
-msgstr "دسترسی به سایت شما را مجاز می‌کند؟"
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:233
-msgid "ID:"
-msgstr "شناسه:"
-
-#. translators: %s: publisher name
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:241
-#, php-format
-msgid "Verified publisher: %s"
-msgstr "ناشر تأیید شده:%s"
-
-#. translators: 1: client name, 2: site name
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:251
-#, php-format
-msgid ""
-"%1$s is requesting access to the WP Rocket MCP tools on %2$s on your behalf."
-msgstr "%1$sدرخواست دسترسی به ابزارهای WP Rocket MCP را دارد%2$sاز طرف شما."
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:263
-msgid "Allow"
-msgstr "مجاز"
-
-#: inc/Engine/MCP/Auth/AuthorizeCallback.php:266
-msgid "Deny"
-msgstr "غیرمجاز"
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
-msgid "client_id is required."
-msgstr "client_id ضروری است."
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
-msgid "Unknown OAuth client."
-msgstr "کلاینت OAuth ناشناخته."
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
-msgid "This OAuth client is not a verified publisher."
-msgstr "این کلاینت OAuth یک ناشر تأیید شده نیست."
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
-msgid "redirect_uri is required."
-msgstr "redirect_uriضروری است."
-
-#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
-msgid "redirect_uri does not match registered value."
-msgstr "redirect_uri با مقدار ثبت شده مطابقت ندارد."
-
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
-msgid "Method not allowed."
-msgstr "روش مجاز نیست."
-
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
-#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
-msgid "Your session has expired. Please restart the authorization flow."
-msgstr "جلسه شما منقضی شده است. لطفاً جریان مجوز را مجدداً راه اندازی کنید."
-
-#: inc/Engine/MCP/Auth/Subscriber.php:176
-msgid "Unknown OAuth endpoint."
-msgstr "نقطه پایانی OAuth ناشناخته."
-
-#: inc/Engine/MCP/Transport/OAuthHttpTransport.php:283
-msgid "MCP authentication required."
-msgstr "احراز هویت MCP مورد نیاز است."
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
@@ -5840,15 +5746,27 @@ msgstr "توقف CDN"
 msgid "RESUME CDN"
 msgstr "ادامه CDN"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:19
+msgid "Your access to RocketCDN has been paused."
+msgstr "دسترسی شما به RocketCDN متوقف شده است."
+
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:21
+msgid ""
+"Your hosting provider has paused this license. Please contact their support "
+"team for assistance."
+msgstr ""
+"ارائه دهنده خدمات میزبانی شما این مجوز را متوقف کرده است. لطفاً برای "
+"راهنمایی با تیم پشتیبانی آنها تماس بگیرید."
+
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
 msgid "Your WPRocket license has expired"
 msgstr "لایسنس شما منقضی شده است"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
 msgid "Please renew it to keep using RocketCDN."
 msgstr "لطفا آن را تمدید کنید تا بتوانید به استفاده از RocketCDN ادامه دهید."
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:30
 msgid "Renew Licence"
 msgstr "تمدید لایسنس"
 
@@ -5898,13 +5816,13 @@ msgid "Add Homepage"
 msgstr "افزودن خانه"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:23
 msgid "You have reached your maximum page limit"
 msgstr "شما به حداکثر محدودیت صفحه خود رسیده‌اید"
 
 #: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
-msgid "Add page +"
-msgstr "افزودن برگه +"
+msgid "Add page"
+msgstr "افزودن برگه"
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:14
 msgid "Rocket Insights Score"
