@@ -12,6 +12,11 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  GoogleFonts
  */
 class Test_EnableGoogleFonts extends AjaxTestCase {
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::removeDBHooks();
+	}
 
 	public function set_up() {
 		parent::set_up();

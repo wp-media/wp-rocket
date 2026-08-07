@@ -24,11 +24,10 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  CriticalPath
  * @group  CriticalPathAdminSubscriber
  */
-class Test_CpcssHeartbeat extends AjaxTestCase {
+class CpcssHeartbeatTest extends AjaxTestCase {
 	use ProviderTrait;
 	protected static $provider_class = 'Admin';
 
-	private static   $admin_user_id      = 0;
 	protected static $use_settings_trait = true;
 	protected static $transients         = [
 		'rocket_critical_css_generation_process_running' => null,
@@ -41,10 +40,8 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
+		self::removeDBHooks();
 		self::setAdminCap();
-
-		//create an editor user that has the capability
-		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public function set_up() {
@@ -144,7 +141,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			$this->setRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 		}
 
-		wp_set_current_user( self::$admin_user_id );
+		$this->_setRole( 'administrator' );
 	}
 
 	public function async_css() {

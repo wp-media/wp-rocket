@@ -27,6 +27,12 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::removeDBHooks();
+	}
+
 	public function set_up() {
 		parent::set_up();
 

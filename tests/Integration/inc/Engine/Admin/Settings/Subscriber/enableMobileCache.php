@@ -10,7 +10,13 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  *
  * @group  AdminOnly
  */
-class Test_EnableMobileCache extends AjaxTestCase {
+class EnableMobileCacheTest extends AjaxTestCase {
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::removeDBHooks();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
@@ -39,9 +45,9 @@ class Test_EnableMobileCache extends AjaxTestCase {
 			$role = get_role( 'administrator' );
 			$role->add_cap( 'rocket_manage_options' );
 
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
+			$this->_setRole( 'administrator' );
 		} else {
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'editor' ] ) );
+			$this->_setRole( 'editor' );
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
