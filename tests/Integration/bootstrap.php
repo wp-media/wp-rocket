@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use org\bovigo\vfs\vfsStream;
 use WC_Install;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
@@ -65,6 +66,16 @@ tests_add_filter(
 		// Set the path and URL to our virtual filesystem.
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
+
+		// The cache path constants above (and everything wp-rocket.php derives from them) live under the
+		// vfs:// scheme, so register its stream wrapper for the whole suite. Without it, tests that run
+		// without a FilesystemTestCase having registered it first (e.g. the standalone AdminOnly run) let
+		// cache writes — advanced-cache/cache-dir generation on admin_init, notices, etc. — collapse
+		// "vfs://" to "vfs:/" and create a real "vfs:" directory on disk. FilesystemTestCase/RESTVfsTestCase
+		// call vfsStream::setup() again with their own structure, replacing this empty root.
+		if ( ! in_array( 'vfs', stream_get_wrappers(), true ) ) {
+			vfsStream::setup( 'public' );
+		}
 
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
