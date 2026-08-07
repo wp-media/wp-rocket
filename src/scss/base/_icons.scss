@@ -212,3 +212,12 @@
   height: 24px;
   aspect-ratio: 20/21;
 }
+
+.wpr-icon-mcp:before {
+	display: block;
+	content: "";
+	background: url('../img/mcp.svg') no-repeat center center;
+	background-size: contain;
+	width: 45px;
+	height: 45px;
+}
