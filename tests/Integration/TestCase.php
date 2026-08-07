@@ -35,6 +35,8 @@ abstract class TestCase extends BaseTestCase {
 				self::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		self::uninstallAll();
 	}
 
 	public static function tear_down_after_class() {
