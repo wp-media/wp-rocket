@@ -6,6 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
@@ -25,6 +26,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  CriticalPathAdminSubscriber
  */
 class CpcssHeartbeatTest extends AjaxTestCase {
+	use IsolateHookTrait;
 	use ProviderTrait;
 	protected static $provider_class = 'Admin';
 
@@ -40,7 +42,6 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::removeDBHooks();
 		self::setAdminCap();
 	}
 
@@ -56,7 +57,7 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		] );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 
-		remove_action( 'admin_init', 'rocket_upgrader' );
+		$this->unregisterAllCallbacks( 'admin_init' );
 	}
 
 	public function tear_down() {
@@ -66,7 +67,7 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 
-		add_action( 'admin_init', 'rocket_upgrader' );
+		$this->restoreWpHook( 'admin_init' );
 
 		parent::tear_down();
 	}

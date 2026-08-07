@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enable_mobile_cache
@@ -11,11 +12,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  AdminOnly
  */
 class EnableMobileCacheTest extends AjaxTestCase {
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::removeDBHooks();
-	}
+	use IsolateHookTrait;
 
 	public function set_up() {
 		parent::set_up();
@@ -27,11 +24,11 @@ class EnableMobileCacheTest extends AjaxTestCase {
 
 		$this->action = 'rocket_enable_mobile_cache';
 
-		remove_action( 'admin_init', 'rocket_upgrader' );
+		$this->unregisterAllCallbacks( 'admin_init' );
 	}
 
 	public function tear_down() {
-		add_action( 'admin_init', 'rocket_upgrader' );
+		$this->restoreWpHook( 'admin_init' );
 
 		parent::tear_down();
 	}
