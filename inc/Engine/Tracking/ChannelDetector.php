@@ -9,6 +9,7 @@ class ChannelDetector {
 	const CHANNEL_MCP      = 'MCP';
 	const CHANNEL_REST_API = 'REST API';
 	const CHANNEL_CLI      = 'CLI';
+	const CHANNEL_CRON     = 'CRON';
 	const CHANNEL_UNKNOWN  = 'Unknown';
 
 	/**
@@ -17,6 +18,15 @@ class ChannelDetector {
 	 * @return string
 	 */
 	public function detect(): string {
+		return $this->resolve_channel();
+	}
+
+	/**
+	 * Resolves the interaction channel from the current request's signals.
+	 *
+	 * @return string
+	 */
+	private function resolve_channel(): string {
 		if ( rocket_get_constant( 'WP_CLI', false ) ) {
 			return $this->detect_cli_channel();
 		}
@@ -25,24 +35,15 @@ class ChannelDetector {
 			return $this->detect_rest_channel();
 		}
 
-		if ( $this->is_ui_request() ) {
+		if ( rocket_get_constant( 'DOING_CRON', false ) ) {
+			return self::CHANNEL_CRON;
+		}
+
+		if ( rocket_get_constant( 'WP_ADMIN', false ) ) {
 			return self::CHANNEL_UI;
 		}
 
 		return self::CHANNEL_UNKNOWN;
-	}
-
-	/**
-	 * Determines whether the current request is from WP UI
-	 *
-	 * @return bool
-	 */
-	private function is_ui_request(): bool {
-		if ( rocket_get_constant( 'DOING_CRON', false ) ) {
-			return false;
-		}
-
-		return (bool) rocket_get_constant( 'WP_ADMIN', false );
 	}
 
 	/**

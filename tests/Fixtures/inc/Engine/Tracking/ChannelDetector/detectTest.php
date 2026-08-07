@@ -27,7 +27,7 @@ return [
 			'channel' => 'UI',
 		],
 	],
-	'shouldReturnUnknownWhenDoingCron'                     => [
+	'shouldReturnCronWhenDoingCron'                        => [
 		'config'   => [
 			'wp_cli'       => false,
 			'rest_request' => false,
@@ -37,7 +37,20 @@ return [
 			'argv'         => [],
 		],
 		'expected' => [
-			'channel' => 'Unknown',
+			'channel' => 'CRON',
+		],
+	],
+	'shouldReturnCronWhenDoingCronEvenIfWpAdminIsTrue'     => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => false,
+			'doing_ajax'   => false,
+			'wp_admin'     => true,
+			'doing_cron'   => true,
+			'argv'         => [],
+		],
+		'expected' => [
+			'channel' => 'CRON',
 		],
 	],
 	'shouldReturnUnknownOnFrontendRequest'                 => [
