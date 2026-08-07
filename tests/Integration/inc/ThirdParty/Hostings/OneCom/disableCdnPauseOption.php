@@ -8,7 +8,6 @@ use Brain\Monkey\Functions;
  * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
  *
  * @group OneCom
- * @group AdminOnly
  */
 class Test_DisableCdnPauseOption extends TestCase {
 
