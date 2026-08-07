@@ -26,15 +26,6 @@ class IsAddingPageAllowedTest extends TestCase {
 		parent::tear_down_after_class();
 	}
 
-	public function set_up() {
-		parent::set_up();
-
-		// Prevent the tables' maybe_upgrade hooks from (re)creating tables on this request:
-		// setting the user / firing the insights filter reaches other subscribers whose
-		// tables aren't installed here, which would emit "table already exists" DB errors.
-		self::removeDBHooks();
-	}
-
     /**
      * @dataProvider configTestData
      */
