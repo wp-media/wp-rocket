@@ -38,10 +38,13 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 
 		wp_set_current_user( self::$user_id );
 		$this->action = 'rocket_dismiss_renewal';
+
+		remove_action( 'admin_init', 'rocket_upgrader' );
 	}
 
 	public function tear_down() {
 		delete_transient( 'rocket_renewal_banner_' . self::$user_id );
+		add_action( 'admin_init', 'rocket_upgrader' );
 
 		parent::tear_down();
 	}

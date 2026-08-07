@@ -26,6 +26,14 @@ class EnableMobileCacheTest extends AjaxTestCase {
 		update_option( 'wp_rocket_settings', $options );
 
 		$this->action = 'rocket_enable_mobile_cache';
+
+		remove_action( 'admin_init', 'rocket_upgrader' );
+	}
+
+	public function tear_down() {
+		add_action( 'admin_init', 'rocket_upgrader' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {

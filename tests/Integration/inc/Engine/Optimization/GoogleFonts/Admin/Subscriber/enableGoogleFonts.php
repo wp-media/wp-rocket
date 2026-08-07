@@ -24,6 +24,14 @@ class Test_EnableGoogleFonts extends AjaxTestCase {
 		$options                        = get_option( 'wp_rocket_settings', [] );
 		$options['minify_google_fonts'] = 0;
 		update_option( 'wp_rocket_settings', $options );
+
+		remove_action( 'admin_init', 'rocket_upgrader' );
+	}
+
+	public function tear_down() {
+		add_action( 'admin_init', 'rocket_upgrader' );
+
+		parent::tear_down();
 	}
 
 	/**

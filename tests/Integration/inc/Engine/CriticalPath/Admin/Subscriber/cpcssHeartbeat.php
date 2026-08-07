@@ -55,16 +55,20 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 			'items'     => [],
 		] );
 		delete_transient( 'rocket_cpcss_generation_pending' );
+
+		remove_action( 'admin_init', 'rocket_upgrader' );
 	}
 
 	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
-		parent::tear_down();
-
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
+
+		add_action( 'admin_init', 'rocket_upgrader' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {
