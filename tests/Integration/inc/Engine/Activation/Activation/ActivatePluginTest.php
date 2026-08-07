@@ -110,6 +110,13 @@ class ActivatePluginTest extends TestCase {
 		self::installPerformanceMonitoringTable();
 
 		add_filter( 'wpmedia_mcp_oauth_server_enabled', '__return_true' );
+
+		// The test fires do_action('init'), which triggers every BerlinDB table's
+		// maybe_upgrade hook; for tables not installed above (rocket_cdn, rucss) that
+		// re-creates their temporary table and emits a "table already exists" DB error.
+		// Remove those hooks (this isolates hooks, it does not install any table); the
+		// tables the flush actually queries are installed above.
+		self::removeDBHooks();
 	}
 
 	/**
