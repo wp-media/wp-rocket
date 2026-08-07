@@ -113,6 +113,48 @@ return [
 			'channel' => 'REST API',
 		],
 	],
+	'shouldReturnUIWhenRestRequestHasValidDashboardNonce'  => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '/wp-rocket/v1/rocketcdn',
+			'nonce_header' => 'valid-nonce',
+			'nonce_valid'  => true,
+		],
+		'expected' => [
+			'channel' => 'UI',
+		],
+	],
+	'shouldReturnRestApiWhenRestRequestHasInvalidNonce'    => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '/wp-rocket/v1/rocketcdn',
+			'nonce_header' => 'bad-nonce',
+			'nonce_valid'  => false,
+		],
+		'expected' => [
+			'channel' => 'REST API',
+		],
+	],
+	'shouldReturnMCPWhenMcpRouteEvenWithValidDashboardNonce' => [
+		'config'   => [
+			'wp_cli'       => false,
+			'rest_request' => true,
+			'doing_ajax'   => false,
+			'argv'         => [],
+			'rest_route'   => '/mcp/mcp-adapter-default-server',
+			'nonce_header' => 'valid-nonce',
+			'nonce_valid'  => true,
+		],
+		'expected' => [
+			'channel' => 'MCP',
+		],
+	],
 	'shouldReturnCLIWhenWpCliWithoutMcpServeArgs'          => [
 		'config'   => [
 			'wp_cli'       => true,

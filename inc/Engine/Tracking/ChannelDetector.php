@@ -68,7 +68,26 @@ class ChannelDetector {
 			}
 		}
 
+		if ( $this->has_valid_dashboard_nonce() ) {
+			return self::CHANNEL_UI;
+		}
+
 		return self::CHANNEL_REST_API;
+	}
+
+	/**
+	 * Determines if the request is from WPR dashboard
+	 *
+	 * @return bool
+	 */
+	private function has_valid_dashboard_nonce(): bool {
+		$nonce = isset( $_SERVER['HTTP_X_WP_NONCE'] ) ? sanitize_text_field( wp_unslash( (string) $_SERVER['HTTP_X_WP_NONCE'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		if ( '' === $nonce ) {
+			return false;
+		}
+
+		return (bool) wp_verify_nonce( $nonce, 'wp_rest' );
 	}
 
 	/**

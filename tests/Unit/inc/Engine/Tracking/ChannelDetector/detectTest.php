@@ -26,13 +26,14 @@ class detectTest extends TestCase {
 		$this->original_argv           = $_SERVER['argv'] ?? [];
 		$this->original_get            = $GLOBALS['_GET'] ?? [];
 		$GLOBALS['_GET']               = [];
-		$this->detector                = new ChannelDetector();
+		unset( $_SERVER['HTTP_X_WP_NONCE'] );
+		$this->detector = new ChannelDetector();
 	}
 
 	protected function tear_down(): void {
 		$_SERVER['argv'] = $this->original_argv;
 		$GLOBALS['_GET'] = $this->original_get;
-		unset( $GLOBALS['wp'] );
+		unset( $GLOBALS['wp'], $_SERVER['HTTP_X_WP_NONCE'] );
 		parent::tear_down();
 	}
 
@@ -64,6 +65,12 @@ class detectTest extends TestCase {
 		if ( isset( $config['get_rest_route'] ) ) {
 			$_GET['rest_route'] = $config['get_rest_route'];
 		}
+
+		if ( isset( $config['nonce_header'] ) ) {
+			$_SERVER['HTTP_X_WP_NONCE'] = $config['nonce_header'];
+		}
+
+		Functions\when( 'wp_verify_nonce' )->justReturn( $config['nonce_valid'] ?? false );
 
 		$this->assertSame( $expected['channel'], $this->detector->detect() );
 	}
