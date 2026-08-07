@@ -12,8 +12,14 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group AdminOnly
  * @group Cache
  */
-class Test_AddPurgeTermLink extends AdminTestCase {
+class AddPurgeTermLinkTest extends AdminTestCase {
 	private $tag;
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::removeDBHooks();
+	}
 
 	public function tear_down() {
 		wp_delete_term( $this->tag->term_id, 'post_tag' );
