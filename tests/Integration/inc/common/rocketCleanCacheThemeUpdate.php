@@ -17,19 +17,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// rocket_clean_domain resets the optimization queues, which count/truncate these tables.
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
 

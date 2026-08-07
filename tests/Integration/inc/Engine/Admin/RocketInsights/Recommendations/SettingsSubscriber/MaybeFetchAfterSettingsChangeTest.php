@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
 
 /**
  * Test class for SettingsSubscriber integration with WordPress hooks
@@ -13,27 +12,6 @@ use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
  * @group AdminOnly
  */
 class MaybeFetchAfterSettingsChangeTest extends TestCase {
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// Saving settings triggers rocket_clean_domain, which truncates this table.
-		self::installPreconnectExternalDomainsTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallPreconnectDomainsTable();
-
-		parent::tear_down_after_class();
-	}
-
-	public function set_up() {
-		parent::set_up();
-	}
-
-	public function tear_down() {
-		parent::tear_down();
-	}
 
 	/**
 	 * Test that the update_option_wp_rocket_settings hook fires when options are saved.
@@ -67,7 +45,7 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 		// Verify hook fired with correct parameters.
 		$this->assertTrue( $hook_fired, 'update_option_wp_rocket_settings hook should fire when settings are saved' );
 		$this->assertSame( $old_options, $old_value_received, 'Old options should be passed to hook' );
-		
+
 		// Check the minify_css value we changed.
 		$this->assertArrayHasKey( 'minify_css', $new_value_received, 'New options should contain minify_css' );
 		$this->assertSame( 1, $new_value_received['minify_css'], 'New minify_css value should be 1' );
@@ -78,10 +56,10 @@ class MaybeFetchAfterSettingsChangeTest extends TestCase {
 	 */
 	public function testShouldRegisterSettingsSubscriberInContainer() {
 		$container = apply_filters( 'rocket_container', null );
-		
+
 		$this->assertNotNull( $container, 'Container should exist' );
 		$this->assertTrue( $container->has( 'ri_recommendations_settings_subscriber' ), 'SettingsSubscriber should be registered in container' );
-		
+
 		if ( $container->has( 'ri_recommendations_settings_subscriber' ) ) {
 			$subscriber = $container->get( 'ri_recommendations_settings_subscriber' );
 			$this->assertInstanceOf(

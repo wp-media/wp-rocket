@@ -15,34 +15,17 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_AddPurgeTermLink extends AdminTestCase {
 	private $tag;
 
-	public function set_up() {
-		self::installAtfTable();
-		self::installLrcTable();
-		self::installPreloadFontsTable();
-		self::installPreconnectExternalDomainsTable();
-		// admin_init reaches RocketInsights, which queries this table.
-		self::installPerformanceMonitoringTable();
-
-		parent::set_up();
-	}
-
 	public function tear_down() {
 		wp_delete_term( $this->tag->term_id, 'post_tag' );
 
 		parent::tear_down();
-
-		self::uninstallAtfTable();
-		self::uninstallLrcTable();
-		self::uninstallPreloadFontsTable();
-		self::uninstallPreconnectDomainsTable();
-		self::uninstallPerformanceMonitoringTable();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldAddCallbackForEachTerm( $config, $expected ) {
-		$this->tag = $this->factory->tag->create_and_get( [ 'name' => 'Ipseum' ] );
+		$this->tag = self::factory()->tag->create_and_get( [ 'name' => 'Ipseum' ] );
 
 		if ( $config['cap'] ) {
 			$this->setRoleCap( 'administrator', 'rocket_purge_terms' );
@@ -53,8 +36,7 @@ class Test_AddPurgeTermLink extends AdminTestCase {
 				->andReturn( $config['nonce'] );
 		}
 		$this->setEditTagsAsCurrentScreen( 'post_tag' );
-		// Prevent trying to create tables on admin_init (ATF, cache, RUCSS).
-		self::removeDBHooks();
+
 		$this->fireAdminInit();
 
 		$this->hasCallbackRegistered( 'post_tag_row_actions', AdminSubscriber::class, 'add_purge_term_link' );

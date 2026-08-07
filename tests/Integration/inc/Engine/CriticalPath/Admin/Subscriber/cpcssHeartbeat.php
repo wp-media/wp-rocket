@@ -45,15 +45,6 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
-
-		// The heartbeat reaches RocketInsights, which queries this table.
-		self::installPerformanceMonitoringTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallPerformanceMonitoringTable();
-
-		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
