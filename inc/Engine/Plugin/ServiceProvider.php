@@ -23,6 +23,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'plugin_information_subscriber',
 		'plugin_updater_subscriber',
 		'plugin_notice_subscriber',
+		'options_backup',
+		'options_backup_subscriber',
 	];
 
 	/**
@@ -87,5 +89,14 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 		$this->getContainer()->addShared( 'plugin_notice_subscriber', NoticeSubscriber::class );
+		$this->getContainer()->addShared( 'options_backup', OptionsBackup::class )
+			->addArguments(
+				[
+					new StringArgument( WP_ROCKET_CONFIG_PATH ),
+					'options',
+				]
+			);
+		$this->getContainer()->addShared( 'options_backup_subscriber', OptionsBackupSubscriber::class )
+			->addArgument( 'options_backup' );
 	}
 }

@@ -215,7 +215,8 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		$newvalue = array_merge( $newvalue, $keys );
 	}
 
-	if ( ! $rocket_settings_errors ) {
+	// Added this as an additional check to ensure there's none regression for the update in inc/main.php.
+	if ( ! $is_form_submit || ! $rocket_settings_errors ) {
 		return $newvalue;
 	}
 

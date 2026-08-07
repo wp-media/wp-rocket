@@ -211,7 +211,7 @@ class Controller extends Abstract_Render {
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
-				'is_visible'            => $this->page_count > 0,
+				'is_visible'            => $this->page_count > 0 && ! $this->user->is_reseller_account(),
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
@@ -273,15 +273,24 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_exclude_cdn_section( array $sections ): array {
-		$cdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn' );
+		$cdn_exclude_beacon       = $this->beacon->get_suggest( 'exclude_cdn' );
+		$rocketcdn_exclude_beacon = $this->beacon->get_suggest( 'exclude_cdn_rocketcdn' );
+
+		$is_rocketcdn = $this->context->is_rocketcdn();
+		$initial_url  = $is_rocketcdn ? $rocketcdn_exclude_beacon['url'] : $cdn_exclude_beacon['url'];
+		$initial_id   = $is_rocketcdn ? $rocketcdn_exclude_beacon['id'] : $cdn_exclude_beacon['id'];
 
 		$sections['exclude_cdn_section'] = [
 			// translators: %s is the CDN driver, wrapped in a span for JS targeting.
 			'title' => sprintf( __( 'Manage %s Exclusions', 'rocket' ), '<span class="rocketcdn-driver-js">RocketCDN</span>' ),
 			'type'  => 'nocontainer_with_title',
 			'help'  => [
-				'id'  => $cdn_exclude_beacon['id'],
-				'url' => $cdn_exclude_beacon['url'],
+				'id'            => $initial_id,
+				'url'           => $initial_url,
+				'rocketcdn_url' => $rocketcdn_exclude_beacon['url'],
+				'rocketcdn_id'  => $rocketcdn_exclude_beacon['id'],
+				'other_cdn_url' => $cdn_exclude_beacon['url'],
+				'other_cdn_id'  => $cdn_exclude_beacon['id'],
 			],
 			'page'  => 'page_cdn',
 			'class' => [ 'cdn-shared-section' ],
@@ -532,9 +541,25 @@ class Controller extends Abstract_Render {
 
 		$data = [
 			'renewal_url' => $this->user->get_renewal_url(),
+			'is_reseller' => $this->user->is_reseller_account(),
 		];
 
 		echo $this->generate( 'partials/cdn/wpr-licence-expired-notice', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Renders the reseller-banned notice.
+	 *
+	 * @since 3.23.1
+	 *
+	 * @return void
+	 */
+	public function render_reseller_banned_notice(): void {
+		if ( ! $this->user->is_reseller_license_banned() ) {
+			return;
+		}
+
+		echo $this->generate( 'partials/cdn/wpr-licence-banned-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -618,6 +643,10 @@ class Controller extends Abstract_Render {
 			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
 		}
 
+		if ( $this->user->is_reseller_license_banned() ) {
+			$texts['paused_details'] = '';
+		}
+
 		return $texts;
 	}
 
@@ -660,8 +689,8 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_auto_create_rocketcdn_free_subscription() {
-		// Bail out if customer is outside the grace period to avoid unnecessary subscription creation on new accounts.
-		if ( ! $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+		// Bail out if there is an active subscription.
+		if ( $this->subscription_controller->has_active_subscription() ) {
 			return;
 		}
 
@@ -761,14 +790,15 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Checks if the current subscription is active and the license is valid.
+	 * Checks if the WP Rocket license is expired for a free RocketCDN subscriber.
 	 *
-	 * @return bool True when the subscription can be used.
+	 * @return bool True when the expired licence notice should be displayed.
 	 */
 	private function should_display_licence_expired_notice(): bool {
-		return $this->subscription_controller->has_active_subscription() &&
+		return $this->context->is_rocketcdn() &&
 				$this->subscription_controller->is_free() &&
-				$this->subscription_controller->is_license_invalid();
+				$this->subscription_controller->is_license_invalid() &&
+				! $this->user->is_reseller_license_banned();
 	}
 
 	/**

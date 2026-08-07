@@ -60,6 +60,7 @@ use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServicePr
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
+use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -335,6 +336,7 @@ class Plugin {
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
 			'plugin_notice_subscriber',
+			'options_backup_subscriber',
 			'capabilities_subscriber',
 			'varnish_subscriber',
 			'rocketcdn_rest_subscriber',
@@ -452,6 +454,25 @@ class Plugin {
 			}
 		}
 
-		return $common_subscribers;
+		return array_merge( $common_subscribers, $this->init_abilities_subscribers() );
+	}
+
+	/**
+	 * Registers ability service providers and returns the list of ability subscriber service IDs.
+	 *
+	 * @return string[]
+	 */
+	private function init_abilities_subscribers(): array {
+		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
+
+		$subscribers = [
+			'abilities_subscriber',
+			'ri_abilities_subscriber',
+			'cache_abilities_subscriber',
+			'preload_abilities_subscriber',
+			'abilities_cli_subscriber',
+		];
+
+		return $subscribers;
 	}
 }

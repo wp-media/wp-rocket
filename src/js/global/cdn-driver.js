@@ -73,8 +73,16 @@
 		}
 	}
 
+	/** Pending banner auto-expand timer ID, or null when no timer is active. */
+	let autoExpandTimer = null;
+
 	/**
 	 * Updates the RocketCDN CTA visibility and expansion state.
+	 *
+	 * When the page count reaches the limit, expansion is deferred by 15 seconds so the
+	 * user has time to react before the upsell banner opens. Any in-flight timer is
+	 * cancelled whenever this function is called (e.g. on page deletion), ensuring stale
+	 * expands never fire after the state has changed.
 	 *
 	 * @param {number} count Current number of free-tier pages.
 	 * @param {number} limit Free-tier page limit.
@@ -82,19 +90,59 @@
 	 */
 	function updateRocketCtaState( count, limit ) {
 		const cta = document.getElementById( 'wpr-rocketcdn-cta' );
+		const resellerBanner = document.getElementById( 'wpr-rocketcdn-reseller-limit-cta' );
 
-		if ( ! cta ) {
+		if ( ! cta && ! resellerBanner ) {
 			return;
 		}
 
-		const isVisible = count > 0;
-		const isExpanded = count >= limit;
+		// Cancel any pending expand — state has changed.
+		if ( autoExpandTimer !== null ) {
+			clearTimeout( autoExpandTimer );
+			autoExpandTimer = null;
+		}
 
-		cta.classList.toggle( 'wpr-isHidden', ! isVisible );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
-		cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+		const atLimit  = count >= limit;
+
+		if ( cta ) {
+			cta.classList.toggle( 'wpr-isHidden', count === 0 );
+		}
+
+		if ( resellerBanner ) {
+			resellerBanner.classList.toggle( 'wpr-isHidden', ! atLimit );
+		}
+
+		if ( cta ) {
+			if ( atLimit ) {
+				// Always show "Nice work!" text immediately.
+				cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
+
+				if ( ! cta.classList.contains( 'wpr-rocketcdn-cta--expanded' ) ) {
+					// Banner is collapsed — keep it collapsed for 15s then expand.
+					cta.classList.add( 'wpr-rocketcdn-cta--collapsed' );
+					cta.classList.remove( 'wpr-rocketcdn-cta--expanded' );
+
+					autoExpandTimer = setTimeout( () => {
+						autoExpandTimer = null;
+						cta.classList.remove( 'wpr-rocketcdn-cta--collapsed' );
+						cta.classList.add( 'wpr-rocketcdn-cta--expanded' );
+						document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
+					}, 15000 );
+				}
+			} else {
+				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', count > 0 );
+				cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
+			}
+		}
 	}
+
+	// Cancel any pending banner expand when the user navigates away from the CDN tab.
+	document.addEventListener( 'rocketJsAfterPageNavigation', ( e ) => {
+		if ( e.detail.pageId !== 'page_cdn' && autoExpandTimer !== null ) {
+			clearTimeout( autoExpandTimer );
+			autoExpandTimer = null;
+		}
+	} );
 
 	/**
 	 * Listens for custom 'rocketJsAfterPageNavigation' event to update the state of the submit button
@@ -220,6 +268,28 @@
 			} );
 		}
 
+		/**
+		 * Updates the "Need Help?" link href for the CDN Exclusions section
+		 * to point to the correct docs article for the active driver.
+		 *
+		 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+		 */
+		function updateExcludeCdnHelpUrl( driver ) {
+			const link = document.querySelector( '.exclude-cdn-help-js' );
+			if ( ! link ) {
+				return;
+			}
+			const isRocketCdn = 'rocketcdn' === driver;
+			const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
+			const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
+			if ( url ) {
+				link.href = url;
+			}
+			if ( id ) {
+				link.dataset.beaconId = id;
+			}
+		}
+
 		tabs.forEach( ( tab ) => {
 			tab.addEventListener( 'click', () => {
 				const driver = tab.getAttribute( 'data-cdn-driver' );
@@ -237,6 +307,7 @@
 
 				// Update dynamic driver label spans.
 				updateDriverLabel( tab );
+				updateExcludeCdnHelpUrl( driver );
 				notifyCdnStateChange();
 
 				// Initial value of the hidden input is set on page load by PHP based on the active driver.
@@ -275,6 +346,7 @@
 		// Set initial label from the active tab.
 		if ( activeTab ) {
 			updateDriverLabel( activeTab );
+			updateExcludeCdnHelpUrl( activeDriver );
 		}
 	}
 
@@ -626,10 +698,8 @@
 					}
 				}
 
-				if ( 0 === response.count ) {
-					// Update status inidicator component
-					updateStatusIndicatorComponent( response.status_indicator_html );
-				}
+				// Update status indicator component.
+				updateStatusIndicatorComponent( response.status_indicator_html );
 
 			} ).catch( () => {
 				button.disabled = false;

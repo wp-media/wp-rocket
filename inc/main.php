@@ -1,5 +1,6 @@
 <?php
 
+use WP\MCP\Core\McpAdapter;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
@@ -9,6 +10,22 @@ defined( 'ABSPATH' ) || exit;
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
+}
+
+$rocket_can_boot_mcp_adapter =
+	class_exists( McpAdapter::class )
+	&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+	&& function_exists( 'wp_register_ability' )
+	&& function_exists( 'wp_get_ability' )
+	&& function_exists( 'wp_get_abilities' )
+	&& function_exists( 'wp_register_ability_category' );
+
+if ( $rocket_can_boot_mcp_adapter ) {
+	McpAdapter::instance();
+
+	if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
+		\WPMedia\MCP\OAuth\Bootstrap::instance();
+	}
 }
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
@@ -85,10 +102,10 @@ function rocket_init() {
 			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
 		}
 	}
+	require WP_ROCKET_ADMIN_PATH . 'options.php';
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
-		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';

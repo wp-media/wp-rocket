@@ -94,6 +94,9 @@ class Activation {
 		 */
 		do_action( 'rocket_activation' );
 
+		// Flush once, after every activator has registered its rewrite rules.
+		flush_rewrite_rules();
+
 		if ( rocket_valid_key() ) {
 			// Add All WP Rocket rules of the .htaccess file.
 			flush_rocket_htaccess();

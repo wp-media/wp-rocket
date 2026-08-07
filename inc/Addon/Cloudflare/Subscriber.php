@@ -66,6 +66,8 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cron_deactivate_cloudflare_devmode' => 'deactivate_devmode',
 			'rocket_after_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
+			'after_rocket_clean_home'                   => [ 'purge_url', 10, 2 ],
+			'after_rocket_clean_files'                  => 'purge_url',
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
 			'update_option_' . $slug                    => [
@@ -210,6 +212,43 @@ class Subscriber implements Subscriber_Interface {
 
 		// Purge CloudFlare.
 		$this->cloudflare->purge_by_url( $post, $purge_urls, $lang );
+	}
+
+	/**
+	 * Purge specific Cloudflare cache URLs automatically.
+	 *
+	 * Used as the callback for both after_rocket_clean_home( $root, $lang ) and after_rocket_clean_files( $urls ).
+	 *
+	 * @param array|string $urls_or_root Array of URLs to purge when triggered by after_rocket_clean_files, or the home cache root path when triggered by after_rocket_clean_home.
+	 * @param string       $lang         The language to purge, only used when triggered by after_rocket_clean_home.
+	 *
+	 * @return void
+	 */
+	public function purge_url( $urls_or_root, $lang = '' ) {
+		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+			return;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+			return;
+		}
+
+		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
+
+		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
+			return;
+		}
+
+		// after_rocket_clean_files passes an array of URLs directly; after_rocket_clean_home passes a cache root path, so purge the home URL for that lang instead.
+		$purge_urls = is_array( $urls_or_root ) ? $urls_or_root : [ get_rocket_i18n_home_url( $lang ) ];
+		$purge_urls = array_unique( array_filter( $purge_urls ) );
+
+		if ( empty( $purge_urls ) ) {
+			return;
+		}
+
+		// Purge CloudFlare.
+		$this->cloudflare->purge_by_url( null, $purge_urls, $lang );
 	}
 
 	/**

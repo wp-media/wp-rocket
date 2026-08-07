@@ -5,9 +5,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22-beta2\n"
+"Project-Id-Version: WP Rocket 3.23-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-06-11T09:24:01+00:00\n"
+"POT-Creation-Date: 2026-07-09T08:16:03+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Mohammad Yousefzadeh <regedit2007@yahoo.com>, 2026\n"
 "Language-Team: Persian (Iran) (https://app.transifex.com/wp-media/teams/18133/fa_IR/)\n"
@@ -481,7 +481,7 @@ msgstr[1] "الگوی زیر نامعتبر بوده و حذف شده است:"
 msgid "More info"
 msgstr "اطلاعات بیشتر"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:687
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:680
 msgid "Clear cache"
 msgstr "پاک کردن کش"
 
@@ -558,14 +558,14 @@ msgid ""
 msgstr "%s به علت عدم دسترسی نوشتن .htaccess نمی‌تواند خود را تنظیم کند."
 
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
-#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:835
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:828
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "عیب‌یابی: %1$s چگونه فایل‌های سیستمی را قابل نوشتن کنیم%2$s"
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
 #. if applicable
-#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:837
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:830
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -644,39 +644,38 @@ msgstr "بله، اجازه می‌دهم"
 msgid "No, thanks"
 msgstr "نه، متشکرم"
 
-#: inc/admin/ui/notices.php:577
-msgid "Thank you!"
-msgstr "متشکریم!"
-
-#: inc/admin/ui/notices.php:582
-msgid "WP Rocket now collects these metrics from your website:"
-msgstr "موشک وردپرس اکنون این معیارها را از وب‌سایت شما جمع‌آوری می‌کند:"
+#. translators: %1$s = opening strong tag; %2$s = closing strong tag; %3$s =
+#. plugin name
+#: inc/admin/ui/notices.php:576
+#, php-format
+msgid "%1$sThank you!%2$s The data you share helps us improve %3$s."
+msgstr "%1$sباتشکر%2$sداده های اشتراکی شما به ما برای بهبود کمک می کند%3$s."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:620
+#: inc/admin/ui/notices.php:613
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: کش پاک شد."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:627
+#: inc/admin/ui/notices.php:620
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: کش نوشته پاک شد."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:634
+#: inc/admin/ui/notices.php:627
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s: کش شرط پاک شد."
 
 #. translators: %s = plugin name).
-#: inc/admin/ui/notices.php:641
+#: inc/admin/ui/notices.php:634
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: کش کاربر پاک شد."
 
-#: inc/admin/ui/notices.php:677 inc/Engine/License/views/promo-banner.php:38
+#: inc/admin/ui/notices.php:670 inc/Engine/License/views/promo-banner.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
 #: inc/Engine/License/views/renewal-expired-banner.php:37
@@ -684,50 +683,50 @@ msgstr "%s: کش کاربر پاک شد."
 msgid "Dismiss this notice"
 msgstr "نادیده گرفتن این پیام."
 
-#: inc/admin/ui/notices.php:698 inc/Engine/Saas/Admin/AdminBar.php:51
+#: inc/admin/ui/notices.php:691 inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr "پاکسازی CSSهای استفاده شده"
 
-#: inc/admin/ui/notices.php:701
+#: inc/admin/ui/notices.php:694
 msgid "Stop Preload"
 msgstr "توقف پیش بارگذاری"
 
-#: inc/admin/ui/notices.php:707
+#: inc/admin/ui/notices.php:700
 msgid "Turn on Remove Unused CSS"
 msgstr "حذف CSS های بدون استفاده را فعال کنید"
 
-#: inc/admin/ui/notices.php:713
+#: inc/admin/ui/notices.php:706
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
 msgstr "اکنون\" کش مجزا برای موبایل\" را فعال نمایید"
 
-#: inc/admin/ui/notices.php:731
+#: inc/admin/ui/notices.php:724
 msgid "Force deactivation "
 msgstr "غیرفعال سازی اجباری "
 
-#: inc/admin/ui/notices.php:735
+#: inc/admin/ui/notices.php:728
 msgid "Run the test now!"
 msgstr "اکنون تست را اجرا کنید!"
 
-#: inc/admin/ui/notices.php:748
+#: inc/admin/ui/notices.php:741
 msgid "Add your pages now"
 msgstr "الان صفحات را اضافه کنید"
 
-#: inc/admin/ui/notices.php:762
+#: inc/admin/ui/notices.php:755
 msgid "Start with my homepage"
 msgstr "شروع با صفحه اصلی"
 
-#: inc/admin/ui/notices.php:792
+#: inc/admin/ui/notices.php:785
 msgid "The following code should have been written to this file:"
 msgstr "کدهای زیر باید داخل این فایل نوشته شوند:"
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:823
+#: inc/admin/ui/notices.php:816
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%s به علت عدم دسترسی نوشتن نمی‌تواند خود را تنظیم کند."
 
 #. translators: %s = file/folder name
-#: inc/admin/ui/notices.php:829
+#: inc/admin/ui/notices.php:822
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "فایل\\فولدرهای مورد نظر: %s"
@@ -1145,7 +1144,7 @@ msgstr "نقشه سایت جت‌پک"
 msgid "Preload the sitemap from the Jetpack plugin"
 msgstr "پیش‌بارگذاری نقشه سایت از افزونه جت‌پک"
 
-#: inc/deprecated/3.15.php:28
+#: inc/deprecated/3.15.php:28 inc/Engine/Abilities/Options/Subscriber.php:78
 #: inc/Engine/Admin/Metaboxes/PostEditOptionsSubscriber.php:74
 msgid "WP Rocket Options"
 msgstr "تنظیمات موشک وردپرس"
@@ -1346,6 +1345,81 @@ msgstr "کلاس فراخوانی شده %1$s <strong>منسوخ</strong> شده
 msgid "weekly"
 msgstr "هفتگی"
 
+#: inc/Engine/Abilities/Options/GetOptions.php:421
+msgid "Get WP Rocket options"
+msgstr "گزینه‌های WP Rocket را دریافت کنید"
+
+#: inc/Engine/Abilities/Options/GetOptions.php:422
+msgctxt "Ability description"
+msgid ""
+"Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
+"Use this when the user asks what is enabled, disabled, or excluded. Do not use it to change settings; use set-option instead.\n"
+"Always call this before set-option when changing an array-type option, to avoid overwriting existing values. Do not show internal, credential, or read-only keys to the user.\n"
+"Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors."
+msgstr ""
+"تنظیمات فعلی WP Rocket را به عنوان یک شیء کلید-مقدار مسطح، شامل دکمه‌های تغییر وضعیت و گزینه‌های نوع آرایه، بازیابی می‌کند.\n"
+"از این گزینه زمانی استفاده کنید که کاربر می‌پرسد چه چیزی فعال، غیرفعال یا حذف شده است. از آن برای تغییر تنظیمات استفاده نکنید؛ در عوض از set-option استفاده کنید.\n"
+"همیشه هنگام تغییر یک گزینه از نوع آرایه، این را قبل از set-option فراخوانی کنید تا از بازنویسی مقادیر موجود جلوگیری شود. کلیدهای داخلی، اعتبارنامه‌ای یا فقط خواندنی را به کاربر نشان ندهید.\n"
+"مگر اینکه کاربر فرمت دیگری را درخواست کند، تنظیمات را به صورت یک داشبورد گروه‌بندی شده با کارت‌هایی برای ذخیره‌سازی، بهینه‌سازی فایل، رسانه، CDN، پایگاه داده و ضربان قلب ارائه دهید. هر کارت باید یک نشان در سطح گروه، ردیف‌های تنظیمات، قرص‌های وضعیت، نوارهای ضربه و توضیحات به زبان ساده با استفاده از رنگ‌های تأیید شده را نشان دهد."
+
+#: inc/Engine/Abilities/Options/SetOption.php:161
+msgid "Set a WP Rocket option"
+msgstr "تنظیم گزینه WP Rocket"
+
+#: inc/Engine/Abilities/Options/SetOption.php:162
+msgctxt "Ability description"
+msgid ""
+"Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.\n"
+"Use this when the user wants to enable, disable, or update a specific setting. For array-type options, always call get-options first.\n"
+"Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.\n"
+"A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn."
+msgstr ""
+"یک گزینه WP Rocket را با استفاده از option_name و option_value می‌نویسد. update_mode به طور پیش‌فرض روی update تنظیم شده است که به آرایه‌ها اضافه می‌شود؛ از replace برای بازنویسی کل آرایه استفاده کنید.\n"
+"از این مورد زمانی استفاده کنید که کاربر می‌خواهد یک تنظیم خاص را فعال، غیرفعال یا به‌روزرسانی کند. برای گزینه‌های نوع آرایه، همیشه ابتدا get-options را فراخوانی کنید.قبل از فراخوانی، تأیید لازم است. ابتدا نام تنظیم و مقدار فعلی را به مقدار جدید نشان دهید. سپس بپرسید: «آیا این تغییر را تأیید می‌کنید؟» و منتظر پاسخ بله یا خیر واضح باشید.\n"
+"درخواست کاربر مانند «فعال کردن» یا «غیرفعال کردن» برای تأیید کافی نیست. این قابلیت را فقط پس از پاسخ مثبت کاربر در همان نوبت فراخوانی کنید."
+
+#: inc/Engine/Abilities/Options/SetOption.php:176
+msgid "The name of the WP Rocket option to set"
+msgstr "نام گزینه WP Rocket برای تنظیم"
+
+#: inc/Engine/Abilities/Options/SetOption.php:189
+msgid "The value to set for the specified WP Rocket option"
+msgstr "مقداری که باید برای گزینه مشخص شده WP Rocket تنظیم شود"
+
+#: inc/Engine/Abilities/Options/SetOption.php:194
+msgid ""
+"For array and textarea options: \"update\" (default) adds new entries to the"
+" existing list; \"replace\" overwrites the entire list."
+msgstr ""
+"برای گزینه‌های آرایه و ناحیه متن: «به‌روزرسانی» (پیش‌فرض) ورودی‌های جدید را "
+"به لیست موجود اضافه می‌کند؛ «جایگزینی» کل لیست را بازنویسی می‌کند."
+
+#: inc/Engine/Abilities/Options/SetOption.php:204
+msgid "Indicates whether the option was successfully set"
+msgstr "نشان می‌دهد که آیا گزینه با موفقیت تنظیم شده است یا خیر"
+
+#: inc/Engine/Abilities/Options/SetOption.php:208
+msgid "Error message if the option could not be set"
+msgstr "پیام خطا در صورت عدم امکان تنظیم گزینه"
+
+#: inc/Engine/Abilities/Options/SetOption.php:220
+msgid "The previous value of the option before it was updated"
+msgstr "مقدار قبلی گزینه قبل از به‌روزرسانی"
+
+#: inc/Engine/Abilities/Options/SetOption.php:232
+msgid "The new value of the option after it was updated"
+msgstr "مقدار جدید گزینه پس از به‌روزرسانی آن"
+
+#. translators: %s: option name
+#: inc/Engine/Abilities/Options/SetOption.php:285
+#, php-format
+msgid "Invalid option name: %s. This option cannot be set via the ability."
+msgstr "نام گزینه نامعتبر:%s.این گزینه را نمی‌توان از طریق قابلیت تنظیم کرد."
+
+#: inc/Engine/Abilities/Options/Subscriber.php:79
+msgid "Abilities that retrieve or update WP Rocket options"
+msgstr "قابلیت‌هایی که گزینه‌های WP Rocket را بازیابی یا به‌روزرسانی می‌کنند"
+
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1412
 msgid "Revisions"
@@ -1421,11 +1495,165 @@ msgstr ""
 msgid "Regenerate WP Rocket configuration files now"
 msgstr "بازسازی مجدد تنظیمات پرونده های راکت وردپرس"
 
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:98
+msgid "Add Page Insights"
+msgstr "افزودن اطلاعات صفحه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:99
+msgctxt "Ability description"
+msgid ""
+"Adds a URL to Rocket Insights monitoring. Requires a valid URI.\n"
+"Use this when the user wants to monitor a new page. Do not use it when the page is already monitored; use retest-page-insights instead.\n"
+"Confirm the exact URL with the user before calling. This action is non-idempotent, so calling it twice for the same URL may return an error.\n"
+"On success, tell the user the first score may take a few minutes and offer to trigger an immediate test with retest-page-insights Recheck every minute in the background and poll results with get-page-insights-score."
+msgstr ""
+"یک URL به مانیتورینگ Rocket Insights اضافه می‌کند. به یک URI معتبر نیاز دارد.\n"
+"از این زمانی استفاده کنید که کاربر می‌خواهد صفحه جدیدی را رصد کند. وقتی صفحه از قبل رصد شده است از آن استفاده نکنید؛ به جای آن از retest-page-insights استفاده کنید.\n"
+"قبل از فراخوانی، URL دقیق را با کاربر تأیید کنید. این عمل غیر خودتوان است، بنابراین فراخوانی دو بار آن برای یک URL ممکن است خطا را برگرداند..\n"
+"در صورت موفقیت، به کاربر بگویید که اولین امتیاز ممکن است چند دقیقه طول بکشد و پیشنهاد دهید که یک تست فوری با retest-page-insights انجام شود. هر دقیقه در پس‌زمینه دوباره بررسی کنید و نتایج را با get-page-insights-score نظرسنجی کنید."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:123
+msgid "Indicates whether the page was successfully added"
+msgstr "نشان می‌دهد که آیا صفحه با موفقیت اضافه شده است یا خیر"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:127
+msgid "Error message if the page could not be added"
+msgstr "پیام خطا در صورت عدم امکان اضافه کردن صفحه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:184
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
-#: inc/Engine/CDN/RocketCDN/Rest.php:272
+#: inc/Engine/CDN/RocketCDN/Rest.php:264
 msgid "Homepage"
 msgstr "خانه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:50
+msgid "Get Rocket Insights Score"
+msgstr "امتیاز Rocket Insights را دریافت کنید"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:51
+msgctxt "Ability description"
+msgid ""
+"Returns a site-wide Rocket Insights summary with global_score, pages_monitored, is_running, and per-page results. Use include_metrics: true unless the user explicitly asks only for the global score.\n"
+"Do not open or read GTmetrix report_url links. You may show them as complementary report links.\n"
+"Use this when the user asks for a global score, site-wide overview, or all monitored pages. Do not use it for a specific page; use get-page-insights-score instead.\n"
+"If is_running is true or any result is not completed, tell the user tests are still in progress and only show completed results. Recheck every minute until remaining results are available. Do not show status when all results are completed. Do not show is_running unless at least one page result has is_running: true.\n"
+"Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
+"When showing scores or metrics, use only the approved performance colors and thresholds."
+msgstr ""
+"خلاصه‌ای از Rocket Insights در کل سایت را به همراه global_score، pages_monitored، is_running و نتایج هر صفحه برمی‌گرداند. از include_metrics: true استفاده کنید، مگر اینکه کاربر صریحاً فقط امتیاز کلی را درخواست کند.\n"
+"لینک‌های GTmetrix report_url را باز نکنید یا نخوانید. می‌توانید آنها را به عنوان لینک‌های گزارش مکمل نشان دهید.\n"
+"از این مورد زمانی استفاده کنید که کاربر امتیاز کلی، نمای کلی سایت یا تمام صفحات تحت نظارت را درخواست کند. از آن برای یک صفحه خاص استفاده نکنید؛ در عوض از get-page-insights-score استفاده کنید.\n"
+"اگر is_running برابر با true باشد یا هیچ نتیجه‌ای تکمیل نشده باشد، به کاربر بگویید که آزمایش‌ها هنوز در حال انجام هستند و فقط نتایج تکمیل شده را نشان دهید. هر دقیقه تا زمانی که نتایج باقی مانده در دسترس باشند، دوباره بررسی کنید. وقتی همه نتایج تکمیل شدند، وضعیت را نشان ندهید. is_running را نشان ندهید مگر اینکه حداقل یک نتیجه صفحه دارای is_running: true باشد. همیشه با یک حکم کلی یک خطی شروع کنید، مانند «امتیاز کلی: 84/100 - 3 صفحه سالم، 2 صفحه نیاز به توجه دارد.» نتایج را با استفاده از غنی‌ترین قالب موجود ارائه دهید: ابتدا نمودارها، سپس یک جدول Markdown، و سپس نثر ساختاریافته. هنگام نمایش نمرات یا معیارها، فقط از رنگ‌ها و آستانه‌های عملکرد تأیید شده استفاده کنید."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:50
+msgid "Get Rocket Insights Score for a Page"
+msgstr "برای یک صفحه امتیاز Rocket Insights دریافت کنید"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:51
+msgctxt "Ability description"
+msgid ""
+"Returns the latest Rocket Insights score for one specific URL. Requires a URI and returns score, status, report_url, and metric_data such as LCP, FCP, and TBT.\n"
+"Use this when the user asks about the performance or score of one page. Do not use it for fresh tests; use retest-page-insights instead. Do not use it for all pages; use get-insights-scores instead.\n"
+"If exists is false, tell the user the URL is not monitored and offer to add it with add-page-insights. This ability is read-only and does not trigger a new test.\n"
+"Always open with a one-line verdict, such as `Score: 94/100 - page is healthy.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
+"Do not open or read GTmetrix report_url links. You may show them as complementary report links. When showing scores or metrics, use only the approved performance colors and thresholds."
+msgstr ""
+"آخرین امتیاز Rocket Insights را برای یک URL خاص برمی‌گرداند. به یک URI نیاز دارد و امتیاز، وضعیت، report_url و داده‌های متریک مانند LCP، FCP و TBT را برمی‌گرداند.\n"
+"از این گزینه زمانی استفاده کنید که کاربر در مورد عملکرد یا امتیاز یک صفحه سوال می‌کند. از آن برای آزمایش‌های جدید استفاده نکنید؛ به جای آن از retest-page-insights استفاده کنید. از آن برای همه صفحات استفاده نکنید؛ به جای آن از get-insights-scores استفاده کنید.\n"
+"اگر exist نادرست است، به کاربر بگویید که URL مانیتور نمی‌شود و پیشنهاد دهید که آن را با add-page-insights اضافه کنید. این قابلیت فقط خواندنی است و آزمایش جدیدی را آغاز نمی‌کند.\n"
+"همیشه با یک حکم تک خطی، مانند `امتیاز: 94/100 - صفحه سالم است` باز کنید. نتایج را با استفاده از غنی‌ترین قالب موجود ارائه دهید: ابتدا نمودارها، سپس یک جدول Markdown، سپس نثر ساختاریافته.\n"
+"لینک‌های GTmetrix report_url را باز یا نخوانید. می‌توانید آنها را به عنوان لینک‌های گزارش مکمل نشان دهید. هنگام نمایش امتیازات یا معیارها، فقط از رنگ‌ها و آستانه‌های عملکرد تأیید شده استفاده کنید."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:82
+msgid "Get Rocket Insights Recommendations"
+msgstr "توصیه‌های Rocket Insights را دریافت کنید"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:83
+msgid ""
+"Returns WP Rocket's own site-specific performance recommendations.\n"
+"Use this when the user asks what to improve or wants prioritized optimization suggestions. Do not use it for scores or test results; use get-insights-scores or get-page-insights-score instead.\n"
+"Check the status first. If status is loading, retry in a few minutes. If status is completed, show the recommendations. If status is failed or expired, tell the user no recommendation data is available.\n"
+"For each recommendation, mcp_actionable: true means it can be applied with set-option and may be suggested for activation. mcp_actionable: false means the recommendation requires a manual step."
+msgstr ""
+"توصیه‌های عملکرد خاص سایت WP Rocket را برمی‌گرداند.\n"
+"از این گزینه زمانی استفاده کنید که کاربر می‌پرسد چه چیزی را باید بهبود بخشد یا پیشنهادهای بهینه‌سازی اولویت‌بندی‌شده می‌خواهد. از آن برای امتیازها یا نتایج آزمایش استفاده نکنید؛ در عوض از get-insights-score یا get-page-insights-score استفاده کنید.\n"
+"ابتدا وضعیت را بررسی کنید. اگر وضعیت در حال بارگیری است، چند دقیقه دیگر دوباره امتحان کنید. اگر وضعیت تکمیل شد، توصیه‌ها را نشان دهید. اگر وضعیت ناموفق یا منقضی شده است، به کاربر بگویید که هیچ داده توصیه‌ای در دسترس نیست.\n"
+"برای هر توصیه، mcp_actionable: true به این معنی است که می‌توان آن را با set-option اعمال کرد و ممکن است برای فعال‌سازی پیشنهاد شود. mcp_actionable: false به این معنی است که توصیه نیاز به یک مرحله دستی دارد."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:52
+msgid "Remove Page Insights"
+msgstr "حذف اطلاعات صفحه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:53
+msgctxt "Ability description"
+msgid ""
+"Permanently removes a URL from Rocket Insights monitoring and deletes its historical score data.\n"
+"Use this only when the user explicitly asks to stop monitoring a page and accepts data deletion. Do not use it for pausing or retesting.\n"
+"This action is destructive and non-idempotent. Before calling, explicitly confirm the exact URL with the user. Never remove multiple pages in bulk; require separate confirmation for each URL."
+msgstr ""
+"یک URL را به طور دائم از نظارت Rocket Insights حذف می‌کند و داده‌های امتیاز تاریخی آن را حذف می‌کند.\n"
+"این را فقط زمانی استفاده کنید که کاربر صریحاً درخواست توقف نظارت بر یک صفحه را بدهد و حذف داده‌ها را بپذیرد. از آن برای مکث یا آزمایش مجدد استفاده نکنید.\n"
+"این اقدام مخرب و غیرخودکار است. قبل از فراخوانی، URL دقیق را به صراحت با کاربر تأیید کنید. هرگز چندین صفحه را به صورت دسته جمعی حذف نکنید؛ برای هر URL نیاز به تأیید جداگانه دارید."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:67
+msgid "Full URL of the page to remove from Rocket Insights monitoring."
+msgstr ""
+"آدرس اینترنتی کامل صفحه‌ای که قرار است از نظارت Rocket Insights حذف شود."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:77
+msgid "Indicates whether the page was successfully removed"
+msgstr "نشان می‌دهد که آیا صفحه با موفقیت حذف شده است یا خیر"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:81
+msgid "Error message if the page could not be removed"
+msgstr "پیام خطا در صورت عدم امکان حذف صفحه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:75
+msgid "Retest Page Insights"
+msgstr "بررسی مجدد اطلاعات صفحه"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:76
+msgid ""
+"Triggers a fresh Rocket Insights performance test for an already monitored URL. Requires a valid URI.\n"
+"Use this when the user wants a fresh test for a monitored page. Do not call it while a test is already running.\n"
+"Handle response statuses as follows: triggered means the test was queued and results should be polled with get-page-insights-score; running means a test is already in progress and should not be triggered again; not_found means the page is not tracked and add-page-insights should be offered; failed means an error occurred.\n"
+"If the user wants results, wait and check every minute with get-page-insights-score, since the test may take a few minutes."
+msgstr ""
+"یک تست عملکرد جدید Rocket Insights را برای یک URL که از قبل مانیتور شده است، اجرا می‌کند. به یک URI معتبر نیاز دارد.\n"
+"از این گزینه زمانی استفاده کنید که کاربر می‌خواهد یک تست جدید برای یک صفحه مانیتور شده انجام دهد. در حالی که تست در حال اجرا است، آن را فراخوانی نکنید.\n"
+"وضعیت‌های پاسخ را به شرح زیر مدیریت کنید: فعال شده به این معنی است که تست در صف قرار گرفته و نتایج باید با get-page-insights-score نظرسنجی شوند؛ در حال اجرا به این معنی است که تست در حال انجام است و نباید دوباره فعال شود؛ not_found به این معنی است که صفحه ردیابی نشده و add-page-insights باید ارائه شود؛ ناموفق به این معنی است که خطایی رخ داده است.\n"
+"اگر کاربر نتایج را می‌خواهد، منتظر بمانید و هر دقیقه با get-page-insights-score بررسی کنید، زیرا تست ممکن است چند دقیقه طول بکشد."
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:99
+msgid "Whether the retest was triggered"
+msgstr "آیا آزمایش مجدد انجام شده است یا خیر"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:104
+msgid ""
+"Current job status: running = test already in flight; triggered = retest "
+"queued; not_found = URL not tracked; failed = error"
+msgstr ""
+"وضعیت فعلی کار: در حال اجرا = آزمایش از قبل در حال انجام است؛ فعال شده = "
+"آزمایش مجدد در صف انتظار است؛ not_found = نشانی اینترنتی ردیابی نشده است؛ "
+"failed = خطا"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:108
+msgid "Error message if retest could not be triggered"
+msgstr "پیام خطا در صورت عدم امکان اجرای مجدد تست"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:125
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:256
+#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:264
+#: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
+#: inc/Engine/Admin/Settings/Page.php:1730
+msgid "Rocket Insights"
+msgstr "بینش‌های راکت"
+
+#: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:126
+msgid ""
+"Abilities related to Rocket Insights performance monitoring and scoring."
+msgstr "توانایی‌های مرتبط با نظارت بر عملکرد و امتیازدهی Rocket Insights."
 
 #: inc/Engine/Admin/RocketInsights/Controller.php:306
 msgid "month"
@@ -1503,13 +1731,6 @@ msgstr "حداکثر تعداد URL های قابل دسترسی برای لای
 msgid "Analyzing your page (~1 min)."
 msgstr "تجزیه و تحلیل صفحه شما (~1 دقیقه)."
 
-#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:256
-#: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:264
-#: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
-#: inc/Engine/Admin/Settings/Page.php:1730
-msgid "Rocket Insights"
-msgstr "بینش‌های راکت"
-
 #: inc/Engine/Admin/RocketInsights/Render.php:356
 msgid "Monitored Pages"
 msgstr "برگه های تحت نظارت"
@@ -1570,12 +1791,11 @@ msgid "You are not allowed to access items."
 msgstr "شما اجازه دسترسی به موارد را ندارید."
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:95
 msgid "No Subscription"
 msgstr "بدون اشتراک"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
 msgid "Next Billing Date"
 msgstr "تاریخ صورتحساب بعدی"
 
@@ -2577,7 +2797,7 @@ msgid "Your CDN is active on your website"
 msgstr "CDN شما در سایت فعال است"
 
 #: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:700
+#: inc/Engine/CDN/Render/Controller.php:838
 msgid "RocketCDN is paused"
 msgstr "RocketCDN غیرفعال شد"
 
@@ -2998,15 +3218,15 @@ msgstr "مقدار WP_CACHE تنظیم نشده است"
 msgid "WP_CACHE is set to false"
 msgstr "مقدار WP_CACHE به false تنظیم شده است"
 
-#: inc/Engine/CDN/Render/Controller.php:128
-#: inc/Engine/CDN/Render/Controller.php:190
+#: inc/Engine/CDN/Render/Controller.php:139
+#: inc/Engine/CDN/Render/Controller.php:201
 #: views/settings/partials/cdn/cdn-driver-tabs.php:25
 #: views/settings/partials/cdn/cdn-driver-tabs.php:29
 msgid "RocketCDN"
 msgstr "RocketCDN"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/Render/Controller.php:161
+#: inc/Engine/CDN/Render/Controller.php:172
 #, php-format
 msgid ""
 "%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all "
@@ -3017,12 +3237,12 @@ msgstr ""
 
 #. translators: %1$s = opening strong tag, %2$s = number of pages allowed,
 #. %3$s = closing strong tag.
-#: inc/Engine/CDN/Render/Controller.php:168
+#: inc/Engine/CDN/Render/Controller.php:179
 #, php-format
 msgid "%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s "
 msgstr "%1$sکارت خوب بود RocketCDN در%2$sصفحات کلیدی فعال است%3$s"
 
-#: inc/Engine/CDN/Render/Controller.php:174
+#: inc/Engine/CDN/Render/Controller.php:185
 msgid ""
 "Upgrade to RocketCDN Pro to extend faster content delivery across all your "
 "pages from 100+ edge locations worldwide."
@@ -3031,35 +3251,35 @@ msgstr ""
 "جهان، به RocketCDN Pro ارتقا دهید."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:231
+#: inc/Engine/CDN/Render/Controller.php:243
 #, php-format
 msgid "Purge %s Cache"
 msgstr "پاکسازی%sکش"
 
 #. translators: %s = CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:235
+#: inc/Engine/CDN/Render/Controller.php:247
 #, php-format
 msgid "Purges %s cached resources for your website."
 msgstr "پاکسازی%s منابعد کش سایت شما."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:268
+#: inc/Engine/CDN/Render/Controller.php:285
 #, php-format
 msgid "Manage %s Exclusions"
 msgstr "مدیریت%sاستثنائات"
 
-#: inc/Engine/CDN/Render/Controller.php:300
+#: inc/Engine/CDN/Render/Controller.php:321
 msgid "Exclude Pages from CDN"
 msgstr "مستثنی کردن صفحات از CDN"
 
-#: inc/Engine/CDN/Render/Controller.php:301
+#: inc/Engine/CDN/Render/Controller.php:322
 msgid ""
 "Specify URL(s) of pages that should not get served via CDN (one per line)."
 msgstr ""
 "آدرس برگه‌(ها) یا نوشته‌هایی که هرگز نباید CDN شوند را تعیین کنید (در هر خط "
 "یکی)."
 
-#: inc/Engine/CDN/Render/Controller.php:302
+#: inc/Engine/CDN/Render/Controller.php:323
 msgid ""
 "Use (.*) wildcards to exclude all files of a given file type located at a "
 "specific path."
@@ -3067,18 +3287,18 @@ msgstr ""
 "از کاراکترهای جایگزین (.*) برای حذف تمام فایل‌هایی که از یک نوع فایل مشخص در"
 " یک مسیر خاص قرار دارند، استفاده کنید."
 
-#: inc/Engine/CDN/Render/Controller.php:318
+#: inc/Engine/CDN/Render/Controller.php:339
 msgid "Exclude Files from CDN"
 msgstr "مستثنی کردن فایل‌ها از CDN"
 
-#: inc/Engine/CDN/Render/Controller.php:319
+#: inc/Engine/CDN/Render/Controller.php:340
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "آدرس فایل‌(هایی) که نباید از طریق CDN بارگذاری شوند را تعیین کنید.(هرخط یک "
 "آدرس)"
 
-#: inc/Engine/CDN/Render/Controller.php:320
+#: inc/Engine/CDN/Render/Controller.php:341
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -3087,15 +3307,41 @@ msgstr ""
 "قسمت نام دامنه آدرس به صورت خودکار حذف خواهد شد. <br> برای مستثنی کردن همه "
 "فایل‌های هم نوع موجود در یک مسیر از (.*) استفاده کنید."
 
-#: inc/Engine/CDN/Render/Controller.php:590
+#: inc/Engine/CDN/Render/Controller.php:622
+msgid "Serving files from 10 edge locations. Covering up to 3 pages."
+msgstr "ارائه فایل‌ها از 10 مکان حاشیه‌ای. پوشش حداکثر 3 صفحه."
+
+#: inc/Engine/CDN/Render/Controller.php:627
+msgid ""
+"RocketCDN is currently paused because your WPRocket licence has expired."
+msgstr ""
+"RocketCDN در حال حاضر متوقف شده است زیرا مجوز WPRocket شما منقضی شده است."
+
+#: inc/Engine/CDN/Render/Controller.php:652
+msgid "Serving files from 100+ edge locations"
+msgstr "ارائه فایل‌ها از بیش از 100 مکان لبه‌ای"
+
+#: inc/Engine/CDN/Render/Controller.php:653
+msgid "RocketCDN is active on your website"
+msgstr "RocketCDN در سایت شما فعال است"
+
+#: inc/Engine/CDN/Render/Controller.php:657
+msgid ""
+"RocketCDN is currently paused because your RocketCDN subscription was "
+"cancelled. Please wait up to two days before resuming."
+msgstr ""
+"RocketCDN در حال حاضر متوقف شده است زیرا اشتراک RocketCDN شما لغو شده است. "
+"لطفاً تا دو روز قبل از از سرگیری صبر کنید."
+
+#: inc/Engine/CDN/Render/Controller.php:727
 msgid "Remove page"
 msgstr "حذف برگه"
 
-#: inc/Engine/CDN/Render/Controller.php:701
+#: inc/Engine/CDN/Render/Controller.php:839
 msgid "RocketCDN is active"
 msgstr "RocketCDN فعال شد"
 
-#: inc/Engine/CDN/Render/Controller.php:702
+#: inc/Engine/CDN/Render/Controller.php:840
 msgid ""
 "RocketCDN is currently paused. Click Resume CDN to re-enable content "
 "delivery."
@@ -3104,7 +3350,7 @@ msgstr ""
 "Resume CDN کلیک کنید."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:707
+#: inc/Engine/CDN/Render/Controller.php:844
 #, php-format
 msgid ""
 "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
@@ -3113,43 +3359,37 @@ msgstr ""
 "%1$sبا صفحه اصلی خود شروع کنید و حداکثر 2 صفحه کلیدی %2$sدیگر اضافه کنید. "
 "شامل ترافیک نامحدود در 10 مکان حاشیه‌ای می‌شود."
 
-#: inc/Engine/CDN/Render/Controller.php:714
-msgid "Serving files from 10 edge locations. Covering up to 3 pages."
-msgstr "ارائه فایل‌ها از 10 مکان حاشیه‌ای. پوشش حداکثر 3 صفحه."
-
-#: inc/Engine/CDN/Render/Controller.php:718
-msgid "Serving files from 100+ edge locations"
-msgstr "ارائه فایل‌ها از بیش از 100 مکان لبه‌ای"
-
-#: inc/Engine/CDN/Render/Controller.php:719
-msgid "RocketCDN is active on your website"
-msgstr "RocketCDN در سایت شما فعال است"
-
-#: inc/Engine/CDN/Render/Controller.php:725
+#: inc/Engine/CDN/Render/Controller.php:877
 msgid "Creating your subscription..."
 msgstr "ایجاد اشتراک شما..."
 
-#: inc/Engine/CDN/Render/Controller.php:726
-msgid "Please wait, RocketCDN will be ready and active shortly."
-msgstr "لطفا صبر کنید، RocketCDN به زودی آماده و فعال خواهد شد."
+#: inc/Engine/CDN/Render/Controller.php:878
+msgid "Please wait, RocketCDN will be ready in about 30s."
+msgstr "لطفا صبر کنید، RocketCDN حدود 30 ثانیه دیگر آماده خواهد شد."
 
-#: inc/Engine/CDN/Render/Controller.php:735
-msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
-msgstr ""
-"RocketCDN در حال حاضر متوقف شده است زیرا مجوز WPRocket شما منقضی شده است."
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
+msgid "Plan"
+msgstr "طرح"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:157
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+msgid "RocketCDN Pro"
+msgstr "RocketCDN حرفه ای"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
+msgid "No RocketCDN Pro Subscription"
+msgstr "بدون اشتراک RocketCDN حرفه ای"
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:162
 msgid "Missing required parameters for subscription activation."
 msgstr "پارامترهای لازم برای فعال‌سازی اشتراک وجود ندارد."
 
 #. translators: %d: HTTP response code
-#: inc/Engine/CDN/RocketCDN/APIClient.php:188
+#: inc/Engine/CDN/RocketCDN/APIClient.php:193
 #, php-format
 msgid "Failed to activate RocketCDN subscription. API returned %d."
 msgstr "فعال‌سازی اشتراک RocketCDN ناموفق بود. API بازگردانده شد.%d"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:212
+#: inc/Engine/CDN/RocketCDN/APIClient.php:217
 msgid ""
 "We could not fetch the current price because RocketCDN API returned an "
 "unexpected error code."
@@ -3157,38 +3397,38 @@ msgstr ""
 "ما نتوانستیم قیمت فعلی را دریافت کنیم زیرا RocketCDN API یک کد خطای "
 "غیرمنتظره را برگرداند."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:218
+#: inc/Engine/CDN/RocketCDN/APIClient.php:223
 msgid "RocketCDN is not available at the moment. Please retry later."
 msgstr "RocketCDN دردسترس نیست. بعدا تلاش کنید"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:255
+#: inc/Engine/CDN/RocketCDN/APIClient.php:260
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
 msgstr "حذف کش RocketCDN شکست خورد:پارامتر شناسه وجود ندارد."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:264
+#: inc/Engine/CDN/RocketCDN/APIClient.php:269
 msgid "RocketCDN cache purge failed: Missing user token."
 msgstr "حذف کش RocketCDN شکست خورد:کد کاربر وجود ندارد."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:290
+#: inc/Engine/CDN/RocketCDN/APIClient.php:295
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr "حذف کش RocketCDN شکست خورد:API یک کد پاسخ غیر منتظره را بازگرداند."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:299
+#: inc/Engine/CDN/RocketCDN/APIClient.php:304
 msgid "RocketCDN cache purge failed: The API returned an empty response."
 msgstr "حذف کش RocketCDN شکست خورد:API پاسخی خالی داد."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:308
+#: inc/Engine/CDN/RocketCDN/APIClient.php:313
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
 msgstr "حذف کش RocketCDN شکست خورد:API پاسخی غیرمنتظره داد."
 
 #. translators: %s = message returned by the API.
-#: inc/Engine/CDN/RocketCDN/APIClient.php:317
+#: inc/Engine/CDN/RocketCDN/APIClient.php:322
 #, php-format
 msgid "RocketCDN cache purge failed: %s."
 msgstr "خطای پاک کردن حافظه RocketCDN:%s."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:325
+#: inc/Engine/CDN/RocketCDN/APIClient.php:330
 msgid "RocketCDN cache purge successful."
 msgstr "حذف کش RocketCDN موفق بود."
 
@@ -3285,38 +3525,34 @@ msgstr "بعدا بررسی کن"
 msgid "Addition of pages to RocketCDN is disabled for local environment."
 msgstr "افزودن صفحات به RocketCDN برای محیط محلی غیرفعال است."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:245
-msgid "You do not have an active RocketCDN subscription."
-msgstr "شما اشتراک فعال RocketCDN ندارید."
-
 #. translators: %d: maximum number of free pages
-#: inc/Engine/CDN/RocketCDN/Rest.php:255
+#: inc/Engine/CDN/RocketCDN/Rest.php:247
 #, php-format
 msgid ""
 "Page limit of %d has been reached. Remove a page before adding a new one."
 msgstr "محدودیت برگه از%dرسیده است. قبل از افزودن صفحه جدید، آن را حذف کنید."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:283
+#: inc/Engine/CDN/RocketCDN/Rest.php:275
 msgid "This page is already registered for RocketCDN delivery."
 msgstr "این صفحه قبلاً برای تحویل RocketCDN ثبت شده است."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:301
+#: inc/Engine/CDN/RocketCDN/Rest.php:293
 msgid "Adding page is disabled by the filter."
 msgstr "افزودن صفحه توسط فیلتر غیرفعال است."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:318
+#: inc/Engine/CDN/RocketCDN/Rest.php:310
 msgid "Failed to save page to the database."
 msgstr "ذخیره صفحه در پایگاه داده ناموفق بود."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:378
+#: inc/Engine/CDN/RocketCDN/Rest.php:370
 msgid "The specified page was not found."
 msgstr "صفحه مورد نظر یافت نشد."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:558
+#: inc/Engine/CDN/RocketCDN/Rest.php:550
 msgid "Invalid URL provided."
 msgstr "آدرس اینترنتی نامعتبر ارائه شده است."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:564
+#: inc/Engine/CDN/RocketCDN/Rest.php:556
 msgid "URL must be on the same domain as the site."
 msgstr "آدرس اینترنتی باید در همان دامنه سایت باشد."
 
@@ -3398,13 +3634,13 @@ msgstr "بدون مالیات بر ارزش افزوده"
 msgid "Upgrade Now"
 msgstr "اکنون ارتقاء دهید"
 
-#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:24
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:22
 msgid "RocketCDN is unavailable on local domains and staging sites."
 msgstr "سرویس RocketCDN در دامنه محلی و سایت های آزمایشی دردسترس نیست."
 
-#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:33
-msgid "Get RocketCDN"
-msgstr "خرید RocketCDN"
+#: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:35
+msgid "Get RocketCDN Pro"
+msgstr "خرید RocketCDN حرفه ای"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:190
 msgid "WP Rocket process pending jobs"
@@ -3817,25 +4053,29 @@ msgstr ""
 "لایسنس%1$s%2$s افزونه شما در حال انقضاءاست%3$s: به زودی دسترسی به بروزرسانی "
 "محصول و پشتیبانی را نخواهید داشت."
 
+#: inc/Engine/License/Renewal.php:191
+msgid "(excl. taxes)"
+msgstr "(بدون مالیات)"
+
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:194
+#: inc/Engine/License/Renewal.php:195
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "تمدید کنید تا دیر نشده، شما فقط%1$s%3$s%2$sپرداخت میکنید."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:203
+#: inc/Engine/License/Renewal.php:204
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%1$s%4$s%3$s!"
+"%1$s%4$s%3$s"
 msgstr ""
-"تمدید با %1$s%2$sتخفیف%3$sقبل از اینکه دیر شود، شما فقط %1$s%4$s%3$s پرداخت "
-"می کنید!"
+"تمدید با%1$s%2$sتخفیف%3$s قبل از اینکه دیر بشه، فقط پرداخت می "
+"کنید%1$s%4$s%3$s"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:527
+#: inc/Engine/License/Renewal.php:528
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -3845,14 +4085,14 @@ msgstr ""
 "کنید%2$sقبل از حذف دسترسیتان"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:548
+#: inc/Engine/License/Renewal.php:549
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
 "برای فعالسازی این گزینه به لایسنس فعال نیاز دارید.%1$sاکنون تمدید کنید%2$s"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:576
+#: inc/Engine/License/Renewal.php:577
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -4027,19 +4267,23 @@ msgstr "خرید افزونه با 20% تخفیف"
 msgid "Save"
 msgstr "ذخیره"
 
-#: inc/Engine/License/views/upgrade-item.php:49
-#: inc/Engine/License/views/upgrade-item.php:64
+#: inc/Engine/License/views/upgrade-item.php:41
+msgid "excl. taxes"
+msgstr "بدون مالیات"
+
+#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:65
 msgid "Websites"
 msgstr "سایتها"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:72
+#: inc/Engine/License/views/upgrade-item.php:73
 #, php-format
 msgid "%s websites"
 msgstr "%s سایت"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:80
+#: inc/Engine/License/views/upgrade-item.php:81
 #, php-format
 msgid "Upgrade to %s"
 msgstr "ارتقاء به %s"
@@ -4074,6 +4318,108 @@ msgid ""
 msgstr ""
 "می توانید با ارتقاء لایسنس از موشک وردپرس در وب سایت های بیشتری استفاده کنید"
 " (فقط تفاوت قیمت بین لایسنس های فعلی و جدید خود را پرداخت خواهید کرد)."
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
+msgid "You must be logged in to authorise an MCP session."
+msgstr "برای اجازه دادن به جلسه MCP باید وارد سیستم شوید."
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:49
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:251
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:40
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
+msgid "OAuth Error"
+msgstr "خطای OAuth"
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:54
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:48
+msgid "Missing state parameter."
+msgstr "پارامتر حالت از دست رفته."
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:62
+msgid "Invalid or expired state. Please restart the authorization flow."
+msgstr ""
+"وضعیت نامعتبر یا منقضی شده است. لطفاً جریان مجوز را مجدداً راه اندازی کنید."
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:127
+msgid "Authorize Access"
+msgstr "دسترسی را مجاز کنید"
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:221
+msgid "Authorize access to your site?"
+msgstr "دسترسی به سایت شما را مجاز می‌کند؟"
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:233
+msgid "ID:"
+msgstr "شناسه:"
+
+#. translators: %s: publisher name
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:241
+#, php-format
+msgid "Verified publisher: %s"
+msgstr "ناشر تأیید شده:%s"
+
+#. translators: 1: client name, 2: site name
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:251
+#, php-format
+msgid ""
+"%1$s is requesting access to the WP Rocket MCP tools on %2$s on your behalf."
+msgstr "%1$sدرخواست دسترسی به ابزارهای WP Rocket MCP را دارد%2$sاز طرف شما."
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:263
+msgid "Allow"
+msgstr "مجاز"
+
+#: inc/Engine/MCP/Auth/AuthorizeCallback.php:266
+msgid "Deny"
+msgstr "غیرمجاز"
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:75
+msgid "client_id is required."
+msgstr "client_id ضروری است."
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:81
+msgid "Unknown OAuth client."
+msgstr "کلاینت OAuth ناشناخته."
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:86
+msgid "This OAuth client is not a verified publisher."
+msgstr "این کلاینت OAuth یک ناشر تأیید شده نیست."
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:91
+msgid "redirect_uri is required."
+msgstr "redirect_uriضروری است."
+
+#: inc/Engine/MCP/Auth/AuthorizeEndpoint.php:103
+msgid "redirect_uri does not match registered value."
+msgstr "redirect_uri با مقدار ثبت شده مطابقت ندارد."
+
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:35
+msgid "Method not allowed."
+msgstr "روش مجاز نیست."
+
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:59
+#: inc/Engine/MCP/Auth/ConsentEndpoint.php:67
+msgid "Your session has expired. Please restart the authorization flow."
+msgstr "جلسه شما منقضی شده است. لطفاً جریان مجوز را مجدداً راه اندازی کنید."
+
+#: inc/Engine/MCP/Auth/Subscriber.php:176
+msgid "Unknown OAuth endpoint."
+msgstr "نقطه پایانی OAuth ناشناخته."
+
+#: inc/Engine/MCP/Transport/OAuthHttpTransport.php:283
+msgid "MCP authentication required."
+msgstr "احراز هویت MCP مورد نیاز است."
 
 #: inc/Engine/Media/Lazyload/AdminSubscriber.php:62
 msgid "LazyLoad for images"
@@ -4982,21 +5328,21 @@ msgstr "وردپرس"
 msgid "For All Files"
 msgstr "همه فایل‌ها"
 
-#: views/settings/fields/cnames.php:54 views/settings/fields/cnames.php:89
+#: views/settings/fields/cnames.php:43 views/settings/fields/cnames.php:78
+msgid "For CSS"
+msgstr "برای CSS"
+
+#: views/settings/fields/cnames.php:55 views/settings/fields/cnames.php:90
 msgid "For Images"
 msgstr "همه تصاویر"
-
-#: views/settings/fields/cnames.php:56 views/settings/fields/cnames.php:91
-msgid "For CSS & JavaScript"
-msgstr "برای CSS و JS"
 
 #: views/settings/fields/cnames.php:57 views/settings/fields/cnames.php:92
 msgid "For JavaScript"
 msgstr "برای JS"
 
 #: views/settings/fields/cnames.php:58 views/settings/fields/cnames.php:93
-msgid "For CSS"
-msgstr "برای CSS"
+msgid "For CSS & JavaScript"
+msgstr "برای CSS و JS"
 
 #: views/settings/fields/cnames.php:73
 msgid "Enter a page URL: cdn.example.com"
@@ -5703,7 +6049,7 @@ msgstr "خلاصه عملکرد"
 #: views/settings/sections/cdn/rocketcdn-paid.php:32
 #: views/settings/sections/cdn/your-own-cdn.php:29
 #: views/settings/sections/fields-container.php:28
-#: views/settings/sections/nocontainer-with-title.php:28
+#: views/settings/sections/nocontainer-with-title.php:39
 msgid "Need Help?"
 msgstr "به کمک نیاز دارید؟"
 
@@ -5754,9 +6100,13 @@ msgstr "آدرس اینترنتی صفحه را برای افزودن به Rocke
 msgid "ADD HOMEPAGE"
 msgstr "افزونه صفحه اصلی"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:77
+#: views/settings/sections/cdn/rocketcdn-free.php:78
 msgid "ADD PAGE"
 msgstr "افزودن برگه"
+
+#: views/settings/sections/cdn/rocketcdn-free.php:82
+msgid "You have reached the limit of 3 free pages."
+msgstr "شما به سقف مجاز 3 صفحه رایگان رسیده‌اید."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/sections/optin.php:27

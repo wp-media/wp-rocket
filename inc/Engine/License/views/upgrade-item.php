@@ -38,6 +38,7 @@ $rocket_initial_item = 'stacked' === $data['type'] ? reset( $data['item'] ) : $d
 			</del>
 		<?php } ?>
 	</div>
+	<span class="price-tax__info"><?php esc_html_e( 'excl. taxes', 'rocket' ); ?></span>
 	<div class="wpr-upgrade-websites
 	<?php
 	if ( 'stacked' !== $data['type'] ) {
