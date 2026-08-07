@@ -26,6 +26,16 @@ class IsAddingPageAllowedTest extends TestCase {
 		parent::tear_down_after_class();
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		// Isolate the table hooks: setting the user reaches other tables' maybe_upgrade
+		// callbacks on init/admin_init, which re-create their (temporary) tables and emit
+		// "table already exists" DB errors. This removes those hooks (it does not install
+		// any table); ri stays installed because the method under test queries it.
+		self::removeDBHooks();
+	}
+
     /**
      * @dataProvider configTestData
      */
