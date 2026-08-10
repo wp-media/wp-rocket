@@ -10,12 +10,21 @@ on:
       - enhancement/*
       - fix/*
 
+# Cancel all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 30
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['7.4']
