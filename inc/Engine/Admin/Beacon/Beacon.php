@@ -888,7 +888,11 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'mcp_server'                 => [
 				'en' => [
 					'id'  => '6a5a7a2d8609704abe640d81',
-					'url' => 'https://docs.wp-rocket.me/article/1922-wp-rocket-mcp',
+					'url' => 'https://docs.wp-rocket.me/article/1922-wp-rocket-mcp?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6a635ff8a20e9375e2188b72',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1923-mcp-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

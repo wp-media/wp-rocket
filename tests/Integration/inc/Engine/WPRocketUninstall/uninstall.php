@@ -67,6 +67,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_get_refreshed_fragments_cache'            => null,
 		'wpr_user_information_timeout_active'             => null,
 		'wpr_user_information_timeout'                    => null,
+		'rocket_mixpanel_reseller_synced'                 => null,
 	];
 
 	private $events = [
