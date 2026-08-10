@@ -13,6 +13,14 @@ define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 
+// Under the PHPUnit CLI there is no HTTP request, so $_SERVER['REQUEST_URI'] is unset. WordPress core's
+// _wp_cron() (wp-includes/cron.php) reads it without a guard when spawning due cron events on shutdown,
+// which emits an "Undefined array key REQUEST_URI" warning in groups that leave a cron event due (e.g.
+// Cloudflare). Seed a default so core behaves as it would on a real request.
+if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+	$_SERVER['REQUEST_URI'] = '/';
+}
+
 // Manually load the plugin being tested.
 tests_add_filter(
 	'muplugins_loaded',
