@@ -154,6 +154,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'ri_query',
 					'ri_saas_context',
 					'ri_plan',
+					'channel_detector',
 				]
 			);
 

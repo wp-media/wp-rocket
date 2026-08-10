@@ -322,7 +322,7 @@ class Tracking extends Abstract_Render {
 			'duration'            => time() - $row_details->data['start_time'],
 			'plan_type'           => $plan,
 			'source'              => $row_details->data['source'],
-			'interaction_channel' => $this->channel_detector->detect(),
+			'interaction_channel' => $row_details->data['interaction_channel'] ?? $this->channel_detector->detect(),
 		];
 
 		if ( Utils::is_home( $row_details->url ) ) {
