@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23.2-alpha\n"
+"Project-Id-Version: WP Rocket 3.23.2-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-08-07T15:48:35+00:00\n"
+"POT-Creation-Date: 2026-08-10T09:37:35+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -6206,8 +6206,8 @@ msgstr ""
 "pour obtenir de l'aide."
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
-msgid "Your WPRocket license has expired"
-msgstr "Votre licence WPRocket a expiré"
+msgid "Your WP Rocket license has expired"
+msgstr "Votre licence WP Rocket a expiré"
 
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
 msgid "Please renew it to keep using RocketCDN."
