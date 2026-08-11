@@ -71,10 +71,20 @@ jobs:
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
         tools: composer:v2
 
+    - name: Cache WordPress test suite
+      id: wp-cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          /tmp/wordpress-develop
+          /tmp/tests
+        key: wp-tests-${{ runner.os }}-wp${{ matrix.wp-versions }}-${{ hashFiles('bin/install-wp-tests.sh') }}
+
     - name: Install SVN
+      if: steps.wp-cache.outputs.cache-hit != 'true'
       run: |
         sudo apt-get update
-        sudo apt-get install -y subversion
+        sudo apt-get install -y --no-install-recommends subversion
 
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
@@ -86,14 +96,6 @@ jobs:
       uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
       with:
         composer-options: "--no-scripts"
-
-    - name: Cache WordPress test suite
-      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-      with:
-        path: |
-          /tmp/wordpress-develop
-          /tmp/tests
-        key: wp-tests-${{ runner.os }}-wp${{ matrix.wp-versions }}-${{ hashFiles('bin/install-wp-tests.sh') }}
 
     - name: Configure MySQL native password auth
       run: mysql --get-server-public-key -h 127.0.0.1 -P 3306 -u root -proot -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';"
