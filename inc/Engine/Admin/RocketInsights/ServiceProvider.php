@@ -226,6 +226,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'ri_global_score',
 					'ri_metric_formatter',
+					'ri_query',
 				]
 			);
 
