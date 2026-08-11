@@ -1,14 +1,8 @@
-name: Unit/Integration tests Old PHP
+name: PHP tests legacy
 
 on:
   pull_request:
-    branches:
-      - trunk
-      - develop
-      - branch-*
-      - feature/*
-      - enhancement/*
-      - fix/*
+  workflow_dispatch:
 
 # Cancel all previous workflow runs for the same branch that have not yet completed.
 concurrency:
@@ -30,7 +24,7 @@ jobs:
         php-versions: ['7.4']
         wp-versions: ['5.9']
 
-    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }}
 
     services:
       mysql:
@@ -63,15 +57,27 @@ jobs:
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Setup PHP + Composer
-      uses: wp-media/workflows/.github/actions/setup-php-composer@feature/3-reusable-test-workflow
+      uses: wp-media/workflows/.github/actions/setup-php-composer@main
       with:
         php-version: ${{ matrix.php-versions }}
         extra-require: wpackagist-plugin/woocommerce "^7"
 
     - name: Setup WordPress test suite
-      uses: wp-media/workflows/.github/actions/setup-wp-tests@feature/3-reusable-test-workflow
+      uses: wp-media/workflows/.github/actions/setup-wp-tests@main
       with:
         wp-version: ${{ matrix.wp-versions }}
 
-    - name: Test
-      run: composer run-tests
+    - name: Unit tests
+      run: composer test-unit
+
+    - name: Integration tests
+      run: composer test-integration
+
+    - name: Admin integration tests
+      run: composer test-integration-adminonly
+
+    - name: Performance Hints integration tests
+      run: composer test-integration-performancehints
+
+    - name: Third Party integration tests
+      run: composer run-tests-integration-specific
