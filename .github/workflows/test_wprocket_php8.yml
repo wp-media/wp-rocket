@@ -32,6 +32,20 @@ jobs:
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --default-authentication-plugin=mysql_native_password
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     env:
       WP_TESTS_DIR: "/tmp/tests/phpunit"
       WP_CORE_DIR: "/tmp/wordpress-develop"
@@ -49,20 +63,19 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v2, phpunit
+        tools: composer:v2
 
     - name: Install SVN
-      run: sudo apt-get install subversion
-
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y subversion
 
     - name: Setup problem matchers for PHP
       run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
@@ -71,15 +84,20 @@ jobs:
       run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
     - name: Install dependencies
-      uses: ramsey/composer-install@v4
+      uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
       with:
         composer-options: "--no-scripts"
 
+    - name: Cache WordPress test suite
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: |
+          /tmp/wordpress-develop
+          /tmp/tests
+        key: wp-tests-${{ runner.os }}-wp${{ matrix.wp-versions }}-${{ hashFiles('bin/install-wp-tests.sh') }}
+
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
-
-    - name: Mysql8 auth plugin workaround
-      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Test
       run: composer run-tests
