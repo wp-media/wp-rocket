@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22.1\n"
+"Project-Id-Version: WP Rocket 3.23.1-beta\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-07-02T08:01:12+00:00\n"
+"POT-Creation-Date: 2026-07-23T11:30:55+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -1383,11 +1383,11 @@ msgstr ""
 msgid "weekly"
 msgstr "haftalık"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:42
+#: inc/Engine/Abilities/Options/GetOptions.php:421
 msgid "Get WP Rocket options"
 msgstr "WP Rocket seçeneklerini edinin"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:43
+#: inc/Engine/Abilities/Options/GetOptions.php:422
 msgctxt "Ability description"
 msgid ""
 "Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
@@ -1395,12 +1395,16 @@ msgid ""
 "Always call this before set-option when changing an array-type option, to avoid overwriting existing values. Do not show internal, credential, or read-only keys to the user.\n"
 "Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors."
 msgstr ""
+"Geçişler ve dizilim türü seçenekleri de dahil olmak üzere şu anki WP Rocket ayarlarını düz bir anahtar değeri nesnesi olarak alır.\n"
+"Kullanıcı neyin etkinleştirildiğini, etkisizleştirildiğini veya hariç tutulduğunu sorduğunda bunu kullanın. Ayarları değiştirmek için kullanmayın; bunun yerine seçeneği ayarlayı kullanın.\n"
+"Varolan değerlerin üzerine yazılmasını önlemek için bir dizilim türü seçeneğini değiştirirken her zaman seçeneği ayarlamadan önce bunu çağırın. Kullanıcıya dahili, kimlik bilgisi veya salt okunur anahtarları göstermeyin.\n"
+"Kullanıcı başka bir biçim istemediği sürece ayarları, Önbellekleme, Dosya İyileştirme, Ortam, CDN, Veritabanı ve Sinyal kartlarını içeren gruplandırılmış bir panel olarak sunun. Her kartta bir group-level rozeti, ayar satırları, durum hapları, etki çubukları ve onaylanmış renkleri kullanan düz dil açıklamaları bulunmalıdır."
 
-#: inc/Engine/Abilities/Options/SetOption.php:135
+#: inc/Engine/Abilities/Options/SetOption.php:161
 msgid "Set a WP Rocket option"
-msgstr ""
+msgstr "WP Rocket seçeneğini ayarlayın"
 
-#: inc/Engine/Abilities/Options/SetOption.php:136
+#: inc/Engine/Abilities/Options/SetOption.php:162
 msgctxt "Ability description"
 msgid ""
 "Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.\n"
@@ -1408,46 +1412,53 @@ msgid ""
 "Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.\n"
 "A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn."
 msgstr ""
+"option_name ve update_mode kullanarak bir WP Rocket seçeneği yazar. update_mode’un varsayılanı dizilimlere update olarak eklenir; tam dizilimin üzerine yazmak için replace’i kullanın\n"
+"Kullanıcı belirli bir ayarı etkinleştirmek, etkisizleştirmek veya güncellemek istediğinde bunu kullanın. dizilim türü seçenekleri için her zaman önce ayarları almayı çağırın.\n"
+"Çağırmadan önce onay gerekir. Öncelikle ayar adını ve şu anki değeri yeni değere gösterin. Ardından `Bu değişiklik onaylansın mı?` diye sorun ve net bir evet veya hayır cevabını bekleyin.\n"
+"`Etkinleştir` veya `etkisizleştir` gibi bir kullanıcı isteği yeterli onay değildir. Bu yeteneği yalnızca kullanıcı aynı sırayla olumlu yanıt verdikten sonra çağırın."
 
-#: inc/Engine/Abilities/Options/SetOption.php:150
+#: inc/Engine/Abilities/Options/SetOption.php:176
 msgid "The name of the WP Rocket option to set"
-msgstr ""
+msgstr "Ayarlanacak WP Rocket seçeneğinin adı"
 
-#: inc/Engine/Abilities/Options/SetOption.php:162
+#: inc/Engine/Abilities/Options/SetOption.php:189
 msgid "The value to set for the specified WP Rocket option"
-msgstr ""
+msgstr "Belirtilen WP Rocket seçeneği için ayarlanacak değer"
 
-#: inc/Engine/Abilities/Options/SetOption.php:167
+#: inc/Engine/Abilities/Options/SetOption.php:194
 msgid ""
 "For array and textarea options: \"update\" (default) adds new entries to the"
 " existing list; \"replace\" overwrites the entire list."
 msgstr ""
+"Dizilim ve metin alanı seçenekleri için: \"update\" (varsayılan) varolan "
+"listeye yeni girişler ekler; \"replace\" bütün listenin üzerine yazar."
 
-#: inc/Engine/Abilities/Options/SetOption.php:177
+#: inc/Engine/Abilities/Options/SetOption.php:204
 msgid "Indicates whether the option was successfully set"
-msgstr ""
+msgstr "Seçeneğin başarılı olarak ayarlanıp ayarlanmadığını gösterir"
 
-#: inc/Engine/Abilities/Options/SetOption.php:181
+#: inc/Engine/Abilities/Options/SetOption.php:208
 msgid "Error message if the option could not be set"
-msgstr ""
+msgstr "Seçenek ayarlanamadıysa hata iletisi"
 
-#: inc/Engine/Abilities/Options/SetOption.php:193
+#: inc/Engine/Abilities/Options/SetOption.php:220
 msgid "The previous value of the option before it was updated"
-msgstr ""
+msgstr "Seçeneğin güncellenmeden önce, önceki değeri"
 
-#: inc/Engine/Abilities/Options/SetOption.php:205
+#: inc/Engine/Abilities/Options/SetOption.php:232
 msgid "The new value of the option after it was updated"
-msgstr ""
+msgstr "Seçeneğin güncellendikten sonraki yeni değeri"
 
 #. translators: %s: option name
-#: inc/Engine/Abilities/Options/SetOption.php:252
+#: inc/Engine/Abilities/Options/SetOption.php:285
 #, php-format
 msgid "Invalid option name: %s. This option cannot be set via the ability."
 msgstr ""
+"Geçersiz seçenek adı: %s. Bu seçenek yetenek aracılığıyla ayarlanamaz."
 
 #: inc/Engine/Abilities/Options/Subscriber.php:79
 msgid "Abilities that retrieve or update WP Rocket options"
-msgstr ""
+msgstr "WP Rocket seçeneklerini alan veya güncelleyen yetenekler"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
 #: inc/Engine/Admin/Settings/Page.php:1412
@@ -1527,7 +1538,7 @@ msgstr "WP Rocket yapılandırma dosyalarını şimdi yeniden oluştur"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:98
 msgid "Add Page Insights"
-msgstr ""
+msgstr "Sayfa İçgörüleri Ekleyin"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:99
 msgctxt "Ability description"
@@ -1537,16 +1548,20 @@ msgid ""
 "Confirm the exact URL with the user before calling. This action is non-idempotent, so calling it twice for the same URL may return an error.\n"
 "On success, tell the user the first score may take a few minutes and offer to trigger an immediate test with retest-page-insights Recheck every minute in the background and poll results with get-page-insights-score."
 msgstr ""
+"Rocket Insights izlemesine bir URL ekler. Geçerli bir URI gerektirir.\n"
+"Kullanıcı yeni bir sayfayı izlemek istediğinde bunu kullanın. Sayfa zaten izleniyorken bunu kullanmayın; bunun yerine retest-page-insights kullanın.\n"
+"Çağırmadan önce tam URL’yi kullanıcıyla doğrulayın. Bu eylem aynı değerde değildir, dolayısıyla aynı URL için iki kez çağrılması hata döndürebilir.\n"
+"Başarı halinde, kullanıcıya ilk puanın birkaç dakika sürebileceğini söyler ve retest-page-insights ile anında bir denemeyi tetiklemeyi teklif eder. Arka planda her dakika ve get-page-insights-score ile anket sonuçlarını yeniden denetler."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:123
 msgid "Indicates whether the page was successfully added"
-msgstr ""
+msgstr "Sayfanın başarılı olarak eklenip eklenmediğini gösterir"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:127
 msgid "Error message if the page could not be added"
-msgstr ""
+msgstr "Sayfa eklenemediyse hata iletisi"
 
-#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:178
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:184
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
 #: inc/Engine/CDN/RocketCDN/Rest.php:264
@@ -1555,7 +1570,7 @@ msgstr "Ana sayfa"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:50
 msgid "Get Rocket Insights Score"
-msgstr ""
+msgstr "Rocket Insights Puanını Alın"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:51
 msgctxt "Ability description"
@@ -1567,10 +1582,16 @@ msgid ""
 "Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"global_score, sites_monitored, is_running ve sayfa başına sonuçları içeren site çapında bir Rocket Insights özeti döndürür. Kullanıcı açıkça yalnızca genel puanı istemediği sürece include_metrics: true kullanın.\n"
+"GTmetrix report_url bağlantılarını açmayın veya okumayın. Bunları tamamlayıcı rapor bağlantıları olarak gösterebilirsiniz.\n"
+"Kullanıcı genel bir puan, site geneline genel bakış veya izlenen tüm sayfaları istediğinde bunu kullanın. Belirli bir sayfa için kullanmayın; bunun yerine get-page-insights-score’u kullanın.\n"
+"Eğer is_running ture ise veya herhangi bir sonuç tamamlanmadıysa, kullanıcıya denemelerinin hala devam ettiğini ve yalnızca tamamlanmış sonuçları gösterdiğini söyleyin. Kalan sonuçlar elde edilene kadar her dakika yeniden denetleyin. Tüm sonuçlar tamamlandığında durumu göstermeyin. En az bir sayfa sonucunda is_running: true olmadığı sürece is_running’i göstermeyin.\n"
+"Her zaman `Genel puan: 84/100 - 3 sayfa sağlıklı, 2`sine dikkat edilmesi gerekir` gibi tek satırlık genel bir kararla açın. Sonuçları mümkün olan en zengin formatı kullanarak sunun: önce çizelgeler, ardından Markdown tablosu, ardından yapılandırılmış düzyazı.\n"
+"Puanları veya ölçümleri gösterirken yalnızca onaylanmış performans renklerini ve eşiklerini kullanın."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:50
 msgid "Get Rocket Insights Score for a Page"
-msgstr ""
+msgstr "Bir Sayfa için Rocket Insights Puanını Alın"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:51
 msgctxt "Ability description"
@@ -1581,10 +1602,15 @@ msgid ""
 "Always open with a one-line verdict, such as `Score: 94/100 - page is healthy.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "Do not open or read GTmetrix report_url links. You may show them as complementary report links. When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"Belirli bir URL için en son Rocket Insights puanını döndürür. Bir URI gerektirir ve LCP, FCP ve TBT gibi puanı, durumu, report_url’yi ve metric_data’yı döndürür.\n"
+"Kullanıcı bir sayfanın performansı veya puanı hakkında soru sorduğunda bunu kullanın. Yeni denemeler için kullanmayın; bunun yerine retest-page-insights’ı kullanın. Bunu tüm sayfalar için kullanmayın; bunun yerine get-insights-scores’u kullanın.\n"
+"Eğer var false ise, kullanıcıya URL’nin izlenmediğini söyleyin ve bunu add-page-insights ile eklemeyi teklif edin. Bu yetenek salt okunurdur ve yeni bir denemeyi tetiklemez.\n"
+"Her zaman `Puan: 94/100 - sayfa sağlıklı` gibi tek satırlık bir kararla açın. Sonuçları mümkün olan en zengin biçimi kullanarak sunun: önce çizelgeler, ardından Markdown tablosu, ardından yapılandırılmış düzyazı.\n"
+"GTmetrix report_url bağlantılarını açmayın veya okumayın. Bunları tamamlayıcı rapor bağlantıları olarak gösterebilirsiniz. Puanları veya ölçümleri gösterirken yalnızca onaylanmış performans renklerini ve eşiklerini kullanın."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:82
 msgid "Get Rocket Insights Recommendations"
-msgstr ""
+msgstr "Rocket Insights Önerilerini Alın"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:83
 msgid ""
@@ -1593,10 +1619,14 @@ msgid ""
 "Check the status first. If status is loading, retry in a few minutes. If status is completed, show the recommendations. If status is failed or expired, tell the user no recommendation data is available.\n"
 "For each recommendation, mcp_actionable: true means it can be applied with set-option and may be suggested for activation. mcp_actionable: false means the recommendation requires a manual step."
 msgstr ""
+"WP Rocket’in kendi siteye özgü performans önerilerini döndürür.\n"
+"Kullanıcı nelerin iyileştirilmesi gerektiğini sorduğunda veya öncelikli en uygun hale getirme önerileri istediğinde bunu kullanın. Puanlar veya deneme sonuçları için bunu kullanmayın; bunun yerine get-insights-scores veya get-page-insights-score kullanın.\n"
+"Önce durumu gözden geçirin. Eğer durum yükleniyorsa, birkaç dakika sonra yeniden deneyin. Eğer durum tamamlandıysa, önerileri gösterin. Eğer durum başarısız olduysa veya süresi dolmuşsa, kullanıcıya hiçbir öneri verisinin mevcut olmadığını söyleyin.\n"
+"Her öneri için mcp_actionable: true, set-option ile uygulanabileceği ve etkinleştirme için önerilebileceği anlamına gelir. mcp_actionable: false, önerinin elle bir adım gerektirdiği anlamına gelir."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:52
 msgid "Remove Page Insights"
-msgstr ""
+msgstr "Sayfa İçgörülerini Kaldırın"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:53
 msgctxt "Ability description"
@@ -1605,22 +1635,25 @@ msgid ""
 "Use this only when the user explicitly asks to stop monitoring a page and accepts data deletion. Do not use it for pausing or retesting.\n"
 "This action is destructive and non-idempotent. Before calling, explicitly confirm the exact URL with the user. Never remove multiple pages in bulk; require separate confirmation for each URL."
 msgstr ""
+"Bir URL’yi Rocket Insights izlemesinden kalıcı olarak kaldırır ve geçmiş puan verilerini siler.\n"
+"Bunu yalnızca kullanıcı açıkça bir sayfayı izlemeyi bırakmayı istediğinde ve veri silinmesini kabul ettiğinde kullanın. Duraklatmak veya yeniden denemek için kullanmayın.\n"
+"Bu eylem yıkıcıdır ve önemsizdir. Çağırmadan önce, tam URL’yi kullanıcıyla açıkça doğrulayın. Birden çok sayfayı asla toplu olarak kaldırmayın; her URL için ayrı onay gerektirin."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:67
 msgid "Full URL of the page to remove from Rocket Insights monitoring."
-msgstr ""
+msgstr "Rocket Insights izlemesinden kaldırılacak sayfanın tam URL’si."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:77
 msgid "Indicates whether the page was successfully removed"
-msgstr ""
+msgstr "Sayfanın başarılı olarak kaldırılıp kaldırılmadığını gösterir"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:81
 msgid "Error message if the page could not be removed"
-msgstr ""
+msgstr "Sayfa kaldırılamazsa hata iletisi"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:75
 msgid "Retest Page Insights"
-msgstr ""
+msgstr "Sayfa İçgörülerini Yeniden Dene"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:76
 msgid ""
@@ -1629,20 +1662,26 @@ msgid ""
 "Handle response statuses as follows: triggered means the test was queued and results should be polled with get-page-insights-score; running means a test is already in progress and should not be triggered again; not_found means the page is not tracked and add-page-insights should be offered; failed means an error occurred.\n"
 "If the user wants results, wait and check every minute with get-page-insights-score, since the test may take a few minutes."
 msgstr ""
+"Zaten izlenen bir URL için yeni bir Rocket Insights performans denemesini tetikler. Geçerli bir URI gerektirir.\n"
+"Kullanıcı izlenen bir sayfa için yeni bir deneme istediğinde bunu kullanın. Bir deneme zaten çalışıyorken onu çağırmayın.\n"
+"Yanıt durumlarını şu şekilde ele alın: triggered, denemenin sıraya alındığı ve sonuçların get-page-insights-score ile yoklanması gerektiği anlamına gelir; running, bir denemenin zaten devam ettiği ve tekrar tetiklenmemesi gerektiği anlamına gelir; not_found, sayfanın izlenmediği ve add-page-insights sunulması gerektiği anlamına gelir; failed, bir hata meydana geldiği anlamına gelir.\n"
+"Eğer kullanıcı sonuç istiyorsa bekleyin ve deneme birkaç dakika sürebileceğinden her dakika get-page-insights-score ile denetleyin."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:99
 msgid "Whether the retest was triggered"
-msgstr ""
+msgstr "Yeniden denemenin tetiklenip tetiklenmediği"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:104
 msgid ""
 "Current job status: running = test already in flight; triggered = retest "
 "queued; not_found = URL not tracked; failed = error"
 msgstr ""
+"Şu anki iş durumu: running = deneme zaten uçuşta; triggered = yeniden deneme"
+" kuyruğa alındı; not_found = URL izlenmedi; failed = hata"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:108
 msgid "Error message if retest could not be triggered"
-msgstr ""
+msgstr "Yeniden deneme tetiklenemediğinde hata iletisi"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:125
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:256
@@ -1655,7 +1694,7 @@ msgstr "Rocket Insights"
 #: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:126
 msgid ""
 "Abilities related to Rocket Insights performance monitoring and scoring."
-msgstr ""
+msgstr "Rocket Insights performans izleme ve puanlamayla ilgili yetenekler."
 
 #: inc/Engine/Admin/RocketInsights/Controller.php:306
 msgid "month"
@@ -1800,7 +1839,7 @@ msgid "No Subscription"
 msgstr "Abonelik Yok"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr "Sonraki Fatura Tarihi"
 
@@ -2139,7 +2178,6 @@ msgstr ""
 "JS dosyalarını birleştirir, HTTP isteklerini azaltır. Siteniz HTTP/2 "
 "kullanıyorsa önerilmez. %1$sDaha fazla bilgi%2$s"
 
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/Engine/Admin/Settings/Page.php:710
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
@@ -2825,7 +2863,7 @@ msgid "Your CDN is active on your website"
 msgstr "CDN’niz web sitenizde aktif"
 
 #: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:838
+#: inc/Engine/CDN/Render/Controller.php:859
 msgid "RocketCDN is paused"
 msgstr "RocketCDN duraklatıldı"
 
@@ -3221,7 +3259,7 @@ msgstr "Daha İyi, Daha Hızlı, Daha Güvenli Oluşturun"
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
-msgstr "WP Roket Süresi Dolmuş Önbellek Aralığı"
+msgstr "WP Rocket Süresi Dolmuş Önbellek Aralığı"
 
 #: inc/Engine/Cache/WPCache.php:338
 msgid "WP_CACHE value"
@@ -3341,25 +3379,25 @@ msgstr ""
 " yolda bulunan verilen bir dosya türünün tüm dosyalarını hariç tutmak için "
 "(.*) joker karakterlerini kullanın."
 
-#: inc/Engine/CDN/Render/Controller.php:622
+#: inc/Engine/CDN/Render/Controller.php:638
 msgid "Serving files from 10 edge locations. Covering up to 3 pages."
 msgstr "Dosyalar 10 uç konumdan sunuluyor. 3 sayfaya kadar kapsar."
 
-#: inc/Engine/CDN/Render/Controller.php:627
+#: inc/Engine/CDN/Render/Controller.php:643
 msgid ""
 "RocketCDN is currently paused because your WPRocket licence has expired."
 msgstr ""
 "WPRocket lisansınızın süresi dolduğundan RocketCDN şu anda duraklatıldı."
 
-#: inc/Engine/CDN/Render/Controller.php:652
+#: inc/Engine/CDN/Render/Controller.php:672
 msgid "Serving files from 100+ edge locations"
 msgstr "100’den fazla uç konumdan dosya sunuluyor"
 
-#: inc/Engine/CDN/Render/Controller.php:653
+#: inc/Engine/CDN/Render/Controller.php:673
 msgid "RocketCDN is active on your website"
 msgstr "RocketCDN web sitenizde aktif"
 
-#: inc/Engine/CDN/Render/Controller.php:657
+#: inc/Engine/CDN/Render/Controller.php:677
 msgid ""
 "RocketCDN is currently paused because your RocketCDN subscription was "
 "cancelled. Please wait up to two days before resuming."
@@ -3367,15 +3405,15 @@ msgstr ""
 "RocketCDN aboneliğiniz iptal edildiğinden RocketCDN şu anda duraklatıldı. "
 "Lütfen devam etmeden önce iki gün kadar bekleyin."
 
-#: inc/Engine/CDN/Render/Controller.php:727
+#: inc/Engine/CDN/Render/Controller.php:747
 msgid "Remove page"
 msgstr "Sayfayı kaldır"
 
-#: inc/Engine/CDN/Render/Controller.php:839
+#: inc/Engine/CDN/Render/Controller.php:860
 msgid "RocketCDN is active"
 msgstr "RocketCDN aktif"
 
-#: inc/Engine/CDN/Render/Controller.php:840
+#: inc/Engine/CDN/Render/Controller.php:861
 msgid ""
 "RocketCDN is currently paused. Click Resume CDN to re-enable content "
 "delivery."
@@ -3384,7 +3422,7 @@ msgstr ""
 "etkinleştirmek için CDN’yi Sürdür’e tıklayın."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:844
+#: inc/Engine/CDN/Render/Controller.php:865
 #, php-format
 msgid ""
 "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
@@ -3393,23 +3431,23 @@ msgstr ""
 "%1$sAna sayfanızla başlayın ve en fazla 2 önemli sayfa daha ekleyin.%2$s 10 "
 "uç konumda sınırsız trafik içerir."
 
-#: inc/Engine/CDN/Render/Controller.php:877
+#: inc/Engine/CDN/Render/Controller.php:898
 msgid "Creating your subscription..."
 msgstr "Aboneliğiniz oluşturuluyor..."
 
-#: inc/Engine/CDN/Render/Controller.php:878
+#: inc/Engine/CDN/Render/Controller.php:899
 msgid "Please wait, RocketCDN will be ready in about 30s."
-msgstr ""
+msgstr "Lütfen bekleyin, RocketCDN yaklaşık 30 saniye içinde hazır olacaktır."
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
 msgid "Plan"
 msgstr "Plan"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:102
 msgid "RocketCDN Pro"
 msgstr "RocketCDN Pro"
 
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:115
 msgid "No RocketCDN Pro Subscription"
 msgstr "RocketCDN Pro Aboneliği Yok"
 
@@ -3476,20 +3514,28 @@ msgid "RocketCDN cache purge successful."
 msgstr "RocketCDN önbellek temizleme başarılı."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:190
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:305
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sDaha Fazla Bilgi%2$s"
 
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:269
+msgid "Nice work!  You're using RocketCDN on all available pages."
+msgstr "İyi iş! Mevcut tüm sayfalarda RocketCDN kullanıyorsunuz!"
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:270
+msgid "RocketCDN covers up to 3 pages, and you're all set."
+msgstr "RocketCDN, 3 sayfaya kadar kapsar ve artık hazırsınız."
+
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr "RocketCDN CNAME’inizi %1$s ifadesinden %2$s ifadesine güncelledik."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:376
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
@@ -3498,19 +3544,19 @@ msgstr ""
 "Değişiklik zaten eklenti ayarlarına uygulandı. Eğer kodunuzda CNAME "
 "kullanıyorsanız, bunu şu şekilde güncellediğinizden emin olun: %1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:385
 msgid "contact support"
 msgstr "destek ile iletişime geçin"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:433
 msgid "RocketCDN activation incomplete"
 msgstr "RocketCDN etkinleştirmesi tamamlanmadı"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:434
 msgid "RocketCDN isn’t active on this website yet."
 msgstr "RocketCDN henüz bu web sitesinde aktif değil."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:435
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
@@ -3518,12 +3564,12 @@ msgstr ""
 "Etkinleştirmeyi tamamlamak için aşağıya tıklayın. Aboneliğinizi onaylamak "
 "için ödeme sayfasına yönlendirileceksiniz."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:447
 msgid "Complete activation"
 msgstr "Etkinleştirmeyi tamamla"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:533
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
@@ -3531,7 +3577,7 @@ msgstr ""
 "yükleme%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:543
 #, php-format
 msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
@@ -3541,19 +3587,19 @@ msgstr ""
 "hızlandırmak için RocketCDN tarafından desteklenen İçerik Dağıtımını "
 "kullanabilirsiniz.%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:554
 msgid "Dismiss"
 msgstr "Yoksay"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:568
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 "%1$s3 sayfaya kadar artırmak için RocketCDN’yi ücretsiz kullanın 🚀%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:578
 #, php-format
 msgid ""
 "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 "
@@ -3563,7 +3609,7 @@ msgstr ""
 " olarak etkinleştirebilirsiniz. En iyi sayfalarınızı seçin ve dünya "
 "çapındaki performanslarını hızlandırın!%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:589
 msgid "Check it later"
 msgstr "Daha sonra denetle"
 
@@ -3701,7 +3747,7 @@ msgstr "WP Rocket başarısız işleri temizledi"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:226
 msgid "WP Rocket process on submit jobs"
-msgstr "Gönderme işlerinde WP Roket süreci"
+msgstr "Gönderme işlerinde WP Rocket süreci"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
 msgid "Clear Priority Elements"
@@ -3788,7 +3834,6 @@ msgstr "Bu özelliği kullanmak için %l."
 msgid "Publish the %s"
 msgstr "%s Yayınla"
 
-#. translators: %s = post type.
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "WP Rocket ayarlarında CSS’yi eşzamanlı olmadan yükle’yi etkinleştir"
@@ -4086,17 +4131,17 @@ msgstr ""
 " Başlangıç fiyatı ilk 12 ay için geçerlidir, sonrasında standart "
 "fiyatlandırma uygulanır."
 
-#: inc/Engine/License/API/User.php:575
+#: inc/Engine/License/API/User.php:592
 msgid "There was an error updating the plugin."
 msgstr "Eklenti güncellenirken bir hata oldu."
 
 #. translators: %s: ban reason
-#: inc/Engine/License/API/User.php:583
+#: inc/Engine/License/API/User.php:600
 #, php-format
 msgid "because %s"
 msgstr "çünkü %s"
 
-#: inc/Engine/License/API/User.php:606
+#: inc/Engine/License/API/User.php:623
 msgid "your website is banned"
 msgstr "web siteniz yasaklandı"
 
@@ -4110,25 +4155,29 @@ msgstr ""
 "%1$s%2$s lisansınızın süresi dolmak üzere%3$s: yakında ürün güncellemelerine"
 " ve desteğine erişiminizi kaybedeceksiniz."
 
+#: inc/Engine/License/Renewal.php:191
+msgid "(excl. taxes)"
+msgstr "(vergiler hariç)"
+
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:194
+#: inc/Engine/License/Renewal.php:195
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr "Çok geç olmadan yenileyin, %1$s%3$s%2$s ödeyeceksiniz."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:203
+#: inc/Engine/License/Renewal.php:204
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%1$s%4$s%3$s!"
+"%1$s%4$s%3$s"
 msgstr ""
 "Çok geç olmadan %1$s%2$s indirim%3$s ile yenileyin, sadece %1$s%4$s%3$s "
-"ödeyeceksiniz!"
+"ödeyeceksiniz"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:527
+#: inc/Engine/License/Renewal.php:528
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -4138,7 +4187,7 @@ msgstr ""
 " Erişimi kaybetmeden önce %1$sşimdi yenileyin%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:548
+#: inc/Engine/License/Renewal.php:549
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
@@ -4146,7 +4195,7 @@ msgstr ""
 " yenile%2$s."
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:576
+#: inc/Engine/License/Renewal.php:577
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -4326,19 +4375,23 @@ msgstr "WP ROCKET’I %20 İNDİRİMLİ ALIN"
 msgid "Save"
 msgstr "Tasarruf edin"
 
-#: inc/Engine/License/views/upgrade-item.php:49
-#: inc/Engine/License/views/upgrade-item.php:64
+#: inc/Engine/License/views/upgrade-item.php:41
+msgid "excl. taxes"
+msgstr "vergiler hariç"
+
+#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:65
 msgid "Websites"
 msgstr "Web siteleri"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:72
+#: inc/Engine/License/views/upgrade-item.php:73
 #, php-format
 msgid "%s websites"
 msgstr "%s web sitesi"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:80
+#: inc/Engine/License/views/upgrade-item.php:81
 #, php-format
 msgid "Upgrade to %s"
 msgstr "%s olarak yükselt"
@@ -4652,7 +4705,7 @@ msgstr "WP Rocket’ın özellikleri nasıl çalışır ve uygulanır."
 
 #: inc/functions/admin.php:442
 msgid "WP Rocket license type"
-msgstr "WP Roket lisans türü"
+msgstr "WP Rocket lisans türü"
 
 #: inc/functions/admin.php:563
 msgid "Revoked"
@@ -5254,7 +5307,7 @@ msgid ""
 "and enhancements of this major version. You need an active license to use "
 "them on your website, don’t miss out! %6$sRenew Now%5$s"
 msgstr ""
-" %1$sWP Roket %2$s%3$s kullanılabilir. Bu ana sürümün güncellemeleri ve "
+" %1$sWP Rocket%2$s%3$s kullanılabilir. Bu ana sürümün güncellemeleri ve "
 "geliştirmeleri hakkında %4$sdaha fazla bilgi edinin%5$s. Bunları web "
 "sitenizde kullanmak için aktif bir lisansa ihtiyacınız var, kaçırmayın! "
 "%6$sŞimdi Yenile%5$s"
@@ -5367,7 +5420,6 @@ msgstr "CDN CNAME"
 msgid "Purges RocketCDN cached resources for your website. %s"
 msgstr "Web siteniz için RocketCDN önbelleklenmiş kaynaklarını temizler. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
@@ -5405,7 +5457,6 @@ msgstr "Cloudflare Önbelleği"
 msgid "Purges cached resources for your website. %s"
 msgstr "Web sitenizin önbelleklenmiş kaynaklarını temizler. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -5846,15 +5897,27 @@ msgstr "CDN’yi DURAKLAT"
 msgid "RESUME CDN"
 msgstr "CDN’yi SÜRDÜR"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:19
+msgid "Your access to RocketCDN has been paused."
+msgstr "RocketCDN’ye erişiminiz duraklatıldı."
+
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:21
+msgid ""
+"Your hosting provider has paused this license. Please contact their support "
+"team for assistance."
+msgstr ""
+"Barındırma sağlayıcınız bu lisansı duraklattı. Yardım için lütfen destek "
+"ekibiyle iletişime geçin."
+
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
 msgid "Your WPRocket license has expired"
 msgstr "WPRocket lisansınızın süresi doldu"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
 msgid "Please renew it to keep using RocketCDN."
 msgstr "RocketCDN’yi kullanmaya devam etmek için lütfen yenileyin."
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:30
 msgid "Renew Licence"
 msgstr "Lisansı Yenile"
 
@@ -5870,7 +5933,7 @@ msgstr "Belgeleri okuyun"
 
 #: views/settings/partials/getting-started.php:11
 msgid "What WP Rocket Does For You By Default"
-msgstr "WP Roket Varsayılan Olarak Sizin İçin Ne Yapar"
+msgstr "WP Rocket Varsayılan Olarak Sizin İçin Ne Yapar"
 
 #: views/settings/partials/quick-actions.php:13
 msgid "Quick Actions"
@@ -5906,13 +5969,13 @@ msgid "Add Homepage"
 msgstr "Ana Sayfa Ekle"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:23
 msgid "You have reached your maximum page limit"
 msgstr "En fazla sayfa sınırınıza ulaştınız"
 
 #: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
-msgid "Add page +"
-msgstr "Sayfa ekle +"
+msgid "Add page"
+msgstr "Sayfa ekle"
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:14
 msgid "Rocket Insights Score"
@@ -6114,7 +6177,7 @@ msgstr "SAYFA EKLE"
 
 #: views/settings/sections/cdn/rocketcdn-free.php:82
 msgid "You have reached the limit of 3 free pages."
-msgstr ""
+msgstr "3 ücretsiz sayfa sınırına ulaştınız."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/sections/optin.php:27

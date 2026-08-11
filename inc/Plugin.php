@@ -468,6 +468,7 @@ class Plugin {
 			'abilities_subscriber',
 			'ri_abilities_subscriber',
 			'cache_abilities_subscriber',
+			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
 		];
 

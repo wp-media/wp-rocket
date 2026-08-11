@@ -76,11 +76,27 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$is_reseller = $this->user->is_reseller_account();
+		if ( ! $is_reseller ) {
+			return;
+		}
+
+		if ( false !== get_transient( 'rocket_mixpanel_reseller_synced' ) ) {
+			return;
+		}
+
+		// We could fire this on change instead of running it once per day.
 		$this->mixpanel->set_user_property(
 			$this->mixpanel->hash( $consumer_email ),
 			'is_reseller',
-			$this->user->is_reseller_account()
+			$is_reseller
 		);
+
+		set_transient( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
 	}
 
 	/**
@@ -407,7 +423,7 @@ class Tracking extends Abstract_Render {
 			[
 				'context' => 'wp_plugin',
 			]
-			);
+		);
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}

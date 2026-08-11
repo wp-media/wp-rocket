@@ -292,6 +292,15 @@ trait DBTrait {
 		}
 	}
 
+	public static function truncatePreloadCacheTable() {
+		$container           = apply_filters( 'rocket_container', null );
+		$preload_cache_table = $container->get( 'preload_caches_table' );
+
+		if ( $preload_cache_table && $preload_cache_table->exists() ) {
+			$preload_cache_table->truncate();
+		}
+	}
+
 	private static function add_exists_filter( $table ) {
 		if ( ! $table ) {
 			return;
