@@ -1,14 +1,8 @@
-name: Unit/Integration tests Old PHP
+name: PHP tests legacy
 
 on:
   pull_request:
-    branches:
-      - trunk
-      - develop
-      - branch-*
-      - feature/*
-      - enhancement/*
-      - fix/*
+  workflow_dispatch:
 
 # Cancel all previous workflow runs for the same branch that have not yet completed.
 concurrency:
@@ -30,11 +24,22 @@ jobs:
         php-versions: ['7.4']
         wp-versions: ['5.9']
 
-    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     env:
-      WP_TESTS_DIR: "/tmp/tests/phpunit"
-      WP_CORE_DIR: "/tmp/wordpress-develop"
       ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
       ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
       ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
@@ -49,40 +54,30 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+    - name: Setup PHP + Composer
+      uses: wp-media/workflows/.github/actions/setup-php-composer@main
       with:
         php-version: ${{ matrix.php-versions }}
-        coverage: none  # XDebug can be enabled here 'coverage: xdebug'
-        tools: composer:v2, phpunit
+        extra-require: wpackagist-plugin/woocommerce "^7"
 
-    - name: Install SVN
-      run: sudo apt-get install subversion
-
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
-    - name: Setup problem matchers for PHP
-      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-    - name: Setup problem matchers for PHPUnit
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-    - name: Install dependencies
-      uses: ramsey/composer-install@v4
+    - name: Setup WordPress test suite
+      uses: wp-media/workflows/.github/actions/setup-wp-tests@main
       with:
-        composer-options: "--no-scripts"
+        wp-version: ${{ matrix.wp-versions }}
 
-    - name: Require WooCommerce 7 for WP compatibility
-      run: composer require --dev --no-scripts wpackagist-plugin/woocommerce "^7" -W
+    - name: Unit tests
+      run: composer test-unit
 
-    - name: Install tests
-      run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
+    - name: Integration tests
+      run: composer test-integration
 
-    - name: Mysql8 auth plugin workaround
-      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+    - name: Admin integration tests
+      run: composer test-integration-adminonly
 
-    - name: Test
-      run: composer run-tests
+    - name: Performance Hints integration tests
+      run: composer test-integration-performancehints
+
+    - name: Third Party integration tests
+      run: composer run-tests-integration-specific

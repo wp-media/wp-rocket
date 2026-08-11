@@ -1,14 +1,8 @@
-name: Unit/Integration General tests Latest version with coverage
+name: PHP tests code coverage
 
 on:
   pull_request:
-    branches:
-      - trunk
-      - develop
-      - branch-*
-      - feature/*
-      - enhancement/*
-      - fix/*
+  workflow_dispatch:
 
 # Cancel all previous workflow runs for the same branch that have not yet completed.
 concurrency:
@@ -30,11 +24,22 @@ jobs:
         php-versions: ['8.4']
         wp-versions: ['latest']
 
-    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }} on ${{ matrix.operating-system }}.
+    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     env:
-      WP_TESTS_DIR: "/tmp/tests/phpunit"
-      WP_CORE_DIR: "/tmp/wordpress-develop"
       ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
       ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
       ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
@@ -49,40 +54,19 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v7
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+    - name: Setup PHP + Composer
+      uses: wp-media/workflows/.github/actions/setup-php-composer@main
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: xdebug
-        tools: composer:v2, phpunit
+        extra-require: phpunit/phpcov
 
-    - name: Install SVN
-      run: sudo apt-get install subversion
-
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
-    - name: Setup problem matchers for PHP
-      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-    - name: Setup problem matchers for PHPUnit
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-    - name: Install dependencies
-      uses: ramsey/composer-install@v4
+    - name: Setup WordPress test suite
+      uses: wp-media/workflows/.github/actions/setup-wp-tests@main
       with:
-        composer-options: "--no-scripts"
-
-    - name: Require phpcov for coverage reporting
-      run: composer require --dev --no-scripts phpunit/phpcov -W
-
-    - name: Install tests
-      run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
-
-    - name: Mysql8 auth plugin workaround
-      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
+        wp-version: ${{ matrix.wp-versions }}
 
     - name: Test
       run: composer run-tests-coverage
@@ -91,7 +75,7 @@ jobs:
       run: composer report-code-coverage
 
     - name: Run codacy-coverage-reporter
-      uses: codacy/codacy-coverage-reporter-action@v1
+      uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
         coverage-reports: tests/report/coverage.clover
