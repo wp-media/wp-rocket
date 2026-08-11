@@ -46,8 +46,6 @@ jobs:
           --health-retries=5
 
     env:
-      WP_TESTS_DIR: "/tmp/tests/phpunit"
-      WP_CORE_DIR: "/tmp/wordpress-develop"
       ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
       ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
       ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
@@ -64,47 +62,17 @@ jobs:
     - name: Checkout
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+    - name: Setup PHP + Composer
+      uses: wp-media/workflows/.github/actions/setup-php-composer@feature/3-reusable-test-workflow
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: xdebug
-        tools: composer:v2
+        extra-require: phpunit/phpcov
 
-    - name: Cache WordPress test suite
-      id: wp-cache
-      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+    - name: Setup WordPress test suite
+      uses: wp-media/workflows/.github/actions/setup-wp-tests@feature/3-reusable-test-workflow
       with:
-        path: |
-          /tmp/wordpress-develop
-          /tmp/tests
-        key: wp-tests-${{ runner.os }}-wp${{ matrix.wp-versions }}-${{ hashFiles('bin/install-wp-tests.sh') }}
-
-    - name: Install SVN
-      if: steps.wp-cache.outputs.cache-hit != 'true'
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y --no-install-recommends subversion
-
-    - name: Setup problem matchers for PHP
-      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
-
-    - name: Setup problem matchers for PHPUnit
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
-
-    - name: Install dependencies
-      uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
-      with:
-        composer-options: "--no-scripts"
-
-    - name: Require phpcov for coverage reporting
-      run: composer require --dev --no-scripts phpunit/phpcov -W
-
-    - name: Configure MySQL native password auth
-      run: mysql --get-server-public-key -h 127.0.0.1 -P 3306 -u root -proot -e "ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'root';"
-
-    - name: Install tests
-      run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
+        wp-version: ${{ matrix.wp-versions }}
 
     - name: Test
       run: composer run-tests-coverage
