@@ -66,6 +66,15 @@ jobs:
       with:
         wp-version: ${{ matrix.wp-versions }}
 
+    # Registered here, not in the composite action: GitHub removes problem
+    # matchers added inside a composite action when it finishes, so they must
+    # be added in the caller to stay active for the test steps below.
+    - name: Setup problem matchers for PHP
+      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+    - name: Setup problem matchers for PHPUnit
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
     - name: Unit tests
       run: composer test-unit
 
