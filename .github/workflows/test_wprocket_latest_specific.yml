@@ -10,12 +10,21 @@ on:
       - enhancement/*
       - fix/*
 
+# Cancel all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
 jobs:
   run:
     runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 30
 
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
         php-versions: ['8.4']
@@ -40,7 +49,7 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -61,19 +70,10 @@ jobs:
     - name: Setup problem matchers for PHPUnit
       run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-    - name: Get composer cache directory
-      id: composercache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Cache dependencies
-      uses: actions/cache@v4
-      with:
-        path: ${{ steps.composercache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-        restore-keys: ${{ runner.os }}-composer-
-
     - name: Install dependencies
-      run: composer install --prefer-dist --no-interaction --no-scripts
+      uses: ramsey/composer-install@v4
+      with:
+        composer-options: "--no-scripts"
 
     - name: Install tests
       run: bash bin/install-wp-tests.sh wordpress_test root root 127.0.0.1:3306 ${{ matrix.wp-versions }}
