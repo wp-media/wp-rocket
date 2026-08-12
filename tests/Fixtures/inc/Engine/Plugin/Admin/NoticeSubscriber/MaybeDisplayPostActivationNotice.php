@@ -118,7 +118,7 @@ return [
 			'previous_version' => '3.21.0',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
-			'boxes'            => [ 'rocket_major_release_notice_3_22' ],
+			'boxes'            => [ 'rocket_major_release_notice_3_23' ],
 		],
 		'expected' => [
 			'display' => false,
