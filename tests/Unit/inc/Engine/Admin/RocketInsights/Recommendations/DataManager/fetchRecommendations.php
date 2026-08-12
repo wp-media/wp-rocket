@@ -61,7 +61,7 @@ class Test_FetchRecommendations extends TestCase {
 	/**
 	 * RocketInsights Query mock.
 	 *
-	 * @var Mockery\MockInterface|RocketInsightsQuery
+	 * @var \PHPUnit\Framework\MockObject\MockObject&RocketInsightsQuery
 	 */
 	private $ri_query;
 
