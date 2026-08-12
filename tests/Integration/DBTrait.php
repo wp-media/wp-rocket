@@ -3,369 +3,170 @@
 namespace WP_Rocket\Tests\Integration;
 
 trait DBTrait {
+
+	/**
+	 * Container service IDs for every plugin BerlinDB table, in install/uninstall order.
+	 *
+	 * Single source of truth: install/uninstall/hook-removal all iterate this list, and each
+	 * public per-table helper delegates to the generic core using one of these IDs.
+	 */
+	private static $table_services = [
+		'rucss_usedcss_table',
+		'preload_caches_table',
+		'atf_table',
+		'lrc_table',
+		'preload_fonts_table',
+		'preconnect_external_domains_table',
+		'ri_table',
+		'rocketcdn_table',
+	];
+
 	public static function resourceFound( array $resource ): bool {
-		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_used_css_query' );
-		return count($resource_query->query( $resource )) > 0;
+		$resource_query = self::container()->get( 'rucss_used_css_query' );
+		return count( $resource_query->query( $resource ) ) > 0;
 	}
 
-	public static function addResource(array $resource) {
-		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'rucss_used_css_query' );
-		$job_id = $resource_query->create_new_job($resource['url'], $resource['job_id'], $resource['queue_name']);
-		if(key_exists('status', $resource) && 'in-progress' === $resource['status']) {
-			$resource_query->make_status_inprogress($resource['url'], $resource['is_mobile']);
+	public static function addResource( array $resource ) {
+		$resource_query = self::container()->get( 'rucss_used_css_query' );
+		$job_id         = $resource_query->create_new_job( $resource['url'], $resource['job_id'], $resource['queue_name'] );
+		if ( key_exists( 'status', $resource ) && 'in-progress' === $resource['status'] ) {
+			$resource_query->make_status_inprogress( $resource['url'], $resource['is_mobile'] );
 		}
-		if(key_exists('status', $resource) && 'pending' === $resource['status']) {
-			$resource_query->make_status_pending($resource['url'], $job_id, $resource['queue_name'], $resource['is_mobile']);
+		if ( key_exists( 'status', $resource ) && 'pending' === $resource['status'] ) {
+			$resource_query->make_status_pending( $resource['url'], $job_id, $resource['queue_name'], $resource['is_mobile'] );
 		}
-		if(key_exists('status', $resource) && 'completed' === $resource['status']) {
-			$resource_query->make_status_completed($resource['url'], $resource['is_mobile'], $resource['hash']);
+		if ( key_exists( 'status', $resource ) && 'completed' === $resource['status'] ) {
+			$resource_query->make_status_completed( $resource['url'], $resource['is_mobile'], $resource['hash'] );
 		}
 		return $job_id;
 	}
 
-	public static function cacheFound( array $cache): bool {
-		$container = apply_filters( 'rocket_container', null );
-		$resource_query = $container->get( 'preload_caches_query' );
-		return count($resource_query->query( $cache )) > 0;
-	}
-
-	public static function truncateUsedCssTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-
-		if ( $rucss_usedcss_table->exists() ) {
-			$rucss_usedcss_table->truncate();
-		}
+	public static function cacheFound( array $cache ): bool {
+		$resource_query = self::container()->get( 'preload_caches_query' );
+		return count( $resource_query->query( $cache ) ) > 0;
 	}
 
 	public static function addCache( array $resource ) {
-		$container = apply_filters( 'rocket_container', null );
-		$cache_query = $container->get( 'preload_caches_query' );
-		return $cache_query->create_or_update( $resource );
+		return self::container()->get( 'preload_caches_query' )->create_or_update( $resource );
 	}
 
 	public static function addLcp( array $resource ) {
-		$container = apply_filters( 'rocket_container', null );
-		$lcp_query = $container->get( 'atf_query' );
-		return $lcp_query->add_item( $resource );
+		return self::addItem( 'atf_query', $resource );
 	}
 
 	public static function addLrc( array $resource ) {
-		$container = apply_filters( 'rocket_container', null );
-		$lrc_query = $container->get( 'lrc_query' );
-
-		return $lrc_query->add_item( $resource );
+		return self::addItem( 'lrc_query', $resource );
 	}
 
-	public static function addPreloadFonts(array $resource) {
-		$container = apply_filters( 'rocket_container', null );
-		$preload_fonts_query = $container->get( 'preload_fonts_query' );
-		return $preload_fonts_query->add_item( $resource );
+	public static function addPreloadFonts( array $resource ) {
+		return self::addItem( 'preload_fonts_query', $resource );
 	}
 
-	public static function addPreconnectExternalDomains(array $resource) {
-		$container = apply_filters( 'rocket_container', null );
-		$preconnect_external_domains = $container->get( 'preconnect_external_domains_query' );
-
-		return $preconnect_external_domains->add_item( $resource );
+	public static function addPreconnectExternalDomains( array $resource ) {
+		return self::addItem( 'preconnect_external_domains_query', $resource );
 	}
 
-	public static function addPerformanceMonitoring(array $resource) {
-		$container = apply_filters( 'rocket_container', null );
-		$ri_query = $container->get( 'ri_query' );
-
-		return $ri_query->add_item( $resource );
+	public static function addPerformanceMonitoring( array $resource ) {
+		return self::addItem( 'ri_query', $resource );
 	}
 
 	public static function installFresh() {
-		$container = apply_filters( 'rocket_container', null );
-
 		self::uninstallAll();
 
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-		$rucss_usedcss_table->install();
-		self::add_exists_filter( $rucss_usedcss_table );
-
-		$preload_cache_table = $container->get( 'preload_caches_table' );
-		$preload_cache_table->install();
-		self::add_exists_filter( $preload_cache_table );
-
-		$atf_table = $container->get( 'atf_table' );
-		$atf_table->install();
-		self::add_exists_filter( $atf_table );
-
-		$lrc_table = $container->get( 'lrc_table' );
-		$lrc_table->install();
-		self::add_exists_filter( $lrc_table );
-
-		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-		$preload_fonts_table->install();
-		self::add_exists_filter( $preload_fonts_table );
-
-		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-		$preconnect_external_domains_table->install();
-		self::add_exists_filter( $preconnect_external_domains_table );
-
-		$ri_table = $container->get( 'ri_table' );
-		$ri_table->install();
-		self::add_exists_filter( $ri_table );
-
-		$rocketcdn_table = $container->get( 'rocketcdn_table' );
-		$rocketcdn_table->install();
-		self::add_exists_filter( $rocketcdn_table );
-	}
-
-	public static function installUsedCssTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-
-		if ( $rucss_usedcss_table && ! $rucss_usedcss_table->exists() ) {
-			$rucss_usedcss_table->install();
+		foreach ( self::$table_services as $service ) {
+			self::installTable( $service );
 		}
-
-		self::add_exists_filter( $rucss_usedcss_table );
-	}
-
-	public static function installPreconnectExternalDomainsTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-
-		if ( $preconnect_external_domains_table && ! $preconnect_external_domains_table->exists() ) {
-			$preconnect_external_domains_table->install();
-		}
-
-		self::add_exists_filter( $preconnect_external_domains_table );
-	}
-
-	public static function installPreloadCacheTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$preload_cache_table = $container->get( 'preload_caches_table' );
-
-		if ( $preload_cache_table && ! $preload_cache_table->exists() ) {
-			$preload_cache_table->install();
-		}
-
-		self::add_exists_filter( $preload_cache_table );
-	}
-
-	public static function installAtfTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$atf_table = $container->get( 'atf_table' );
-
-		if ( $atf_table && ! $atf_table->exists() ) {
-			$atf_table->install();
-		}
-
-		self::add_exists_filter( $atf_table );
-	}
-
-	public static function installLrcTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$lrc_table = $container->get( 'lrc_table' );
-
-		if ( $lrc_table && ! $lrc_table->exists() ) {
-			$lrc_table->install();
-		}
-
-		self::add_exists_filter( $lrc_table );
-	}
-
-	public static function installPreloadFontsTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-
-		if ( $preload_fonts_table && ! $preload_fonts_table->exists() ) {
-			$preload_fonts_table->install();
-		}
-
-		self::add_exists_filter( $preload_fonts_table );
-	}
-
-	public static function installPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$ri_table = $container->get( 'ri_table' );
-
-		if ( $ri_table && ! $ri_table->exists() ) {
-			$ri_table->install();
-		}
-
-		self::add_exists_filter( $ri_table );
-	}
-
-	public static function installRocketCDNTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$rocketcdn_table = $container->get( 'rocketcdn_table' );
-
-		if ( $rocketcdn_table && ! $rocketcdn_table->exists() ) {
-			$rocketcdn_table->install();
-		}
-
-		self::add_exists_filter( $rocketcdn_table );
 	}
 
 	public static function uninstallAll() {
-		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
+		foreach ( self::$table_services as $service ) {
+			self::uninstallTable( $service );
+		}
+	}
 
-		if ( $rucss_usedcss_table && $rucss_usedcss_table->exists() ) {
-			$rucss_usedcss_table->uninstall();
-		}
-		self::remove_exists_filter( $rucss_usedcss_table );
+	public static function installUsedCssTable() {
+		self::installTable( 'rucss_usedcss_table' );
+	}
 
-		$preload_cache_table = $container->get( 'preload_caches_table' );
-		if ( $preload_cache_table && $preload_cache_table->exists() ) {
-			$preload_cache_table->uninstall();
-		}
-		self::remove_exists_filter( $preload_cache_table );
+	public static function installPreconnectExternalDomainsTable() {
+		self::installTable( 'preconnect_external_domains_table' );
+	}
 
-		$atf_table = $container->get( 'atf_table' );
-		if ( $atf_table && $atf_table->exists() ) {
-			$atf_table->uninstall();
-		}
-		self::remove_exists_filter( $atf_table );
+	public static function installPreloadCacheTable() {
+		self::installTable( 'preload_caches_table' );
+	}
 
-		$lrc_table = $container->get( 'lrc_table' );
-		if ( $atf_table && $lrc_table->exists() ) {
-			$lrc_table->uninstall();
-		}
-		self::remove_exists_filter( $lrc_table );
+	public static function installAtfTable() {
+		self::installTable( 'atf_table' );
+	}
 
-		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-		if ( $preload_fonts_table && $preload_fonts_table->exists() ) {
-			$preload_fonts_table->uninstall();
-		}
-		self::remove_exists_filter( $preload_fonts_table );
+	public static function installLrcTable() {
+		self::installTable( 'lrc_table' );
+	}
 
-		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-		if ( $preconnect_external_domains_table && $preconnect_external_domains_table->exists() ) {
-			$preconnect_external_domains_table->uninstall();
-		}
-		self::remove_exists_filter( $preconnect_external_domains_table );
+	public static function installPreloadFontsTable() {
+		self::installTable( 'preload_fonts_table' );
+	}
 
-		if ( ! $container->has( 'ri_table' ) ) {
-			return;
-		}
-		$ri_table = $container->get( 'ri_table' );
-		if ( $ri_table && $ri_table->exists() ) {
-			$ri_table->uninstall();
-		}
-		self::remove_exists_filter( $ri_table );
+	public static function installPerformanceMonitoringTable() {
+		self::installTable( 'ri_table' );
+	}
 
-		$rocketcdn_table = $container->get( 'rocketcdn_table' );
-		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
-			$rocketcdn_table->uninstall();
-		}
-		self::remove_exists_filter( $rocketcdn_table );
+	public static function installRocketCDNTable() {
+		self::installTable( 'rocketcdn_table' );
 	}
 
 	public static function uninstallPreconnectDomainsTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
-
-		if ( $preconnect_external_domains_table && $preconnect_external_domains_table->exists() ) {
-			$preconnect_external_domains_table->uninstall();
-		}
-		self::remove_exists_filter( $preconnect_external_domains_table );
+		self::uninstallTable( 'preconnect_external_domains_table' );
 	}
 
 	public static function uninstallUsedCssTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
-
-		if ( $rucss_usedcss_table && $rucss_usedcss_table->exists() ) {
-			$rucss_usedcss_table->uninstall();
-		}
-
-		self::remove_exists_filter( $rucss_usedcss_table );
+		self::uninstallTable( 'rucss_usedcss_table' );
 	}
 
 	public static function uninstallPreloadCacheTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$preload_cache_table = $container->get( 'preload_caches_table' );
-
-		if ( $preload_cache_table && $preload_cache_table->exists() ) {
-			$preload_cache_table->uninstall();
-		}
-
-		self::remove_exists_filter( $preload_cache_table );
+		self::uninstallTable( 'preload_caches_table' );
 	}
 
 	public static function uninstallAtfTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$atf_table = $container->get( 'atf_table' );
-
-		if ( $atf_table && $atf_table->exists() ) {
-			$atf_table->uninstall();
-		}
-		self::remove_exists_filter( $atf_table );
+		self::uninstallTable( 'atf_table' );
 	}
 
 	public static function uninstallLrcTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$lrc_table = $container->get( 'lrc_table' );
-
-		if ( $lrc_table && $lrc_table->exists() ) {
-			$lrc_table->uninstall();
-		}
-
-		self::remove_exists_filter( $lrc_table );
+		self::uninstallTable( 'lrc_table' );
 	}
 
 	public static function uninstallPreloadFontsTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$preload_fonts_table = $container->get( 'preload_fonts_table' );
-
-		if ( $preload_fonts_table && $preload_fonts_table->exists() ) {
-			$preload_fonts_table->uninstall();
-		}
-
-		self::remove_exists_filter( $preload_fonts_table );
+		self::uninstallTable( 'preload_fonts_table' );
 	}
 
 	public static function uninstallPerformanceMonitoringTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$ri_table = $container->get( 'ri_table' );
-
-		if ( $ri_table && $ri_table->exists() ) {
-			$ri_table->uninstall();
-		}
-
-		self::remove_exists_filter( $ri_table );
+		self::uninstallTable( 'ri_table' );
 	}
 
 	public static function uninstallRocketCDNTable() {
-		$container = apply_filters( 'rocket_container', null );
-		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+		self::uninstallTable( 'rocketcdn_table' );
+	}
 
-		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
-			$rocketcdn_table->uninstall();
-		}
+	public static function truncateUsedCssTable() {
+		self::truncateTable( 'rucss_usedcss_table' );
+	}
 
-		self::remove_exists_filter( $rocketcdn_table );
+	public static function truncatePerformanceMonitoringTable() {
+		self::truncateTable( 'ri_table' );
+	}
+
+	public static function truncateRocketCDNTable() {
+		self::truncateTable( 'rocketcdn_table' );
 	}
 
 	public static function removeDBHooks() {
-		$container           = apply_filters( 'rocket_container', null );
+		foreach ( self::$table_services as $service ) {
+			$table = self::table( $service );
+			if ( ! $table ) {
+				continue;
+			}
 
-		$tables = [
-			$container->get( 'rucss_usedcss_table' ),
-			$container->get( 'preload_caches_table' ),
-			$container->get( 'atf_table' ),
-			$container->get( 'lrc_table' ),
-			$container->get( 'preload_fonts_table' ),
-			$container->get( 'preconnect_external_domains_table' ),
-		];
-		if ( $container->has( 'ri_table' ) ) {
-			$tables[] = $container->get( 'ri_table' );
-		}
-
-		if ( $container->has( 'rocketcdn_table' ) ) {
-			$tables[] = $container->get( 'rocketcdn_table' );
-		}
-
-		foreach ( $tables as $table ) {
 			self::forceRemoveTableAdminInitHooks( 'init', get_class( $table ), 'maybe_upgrade', 10 );
 			self::forceRemoveTableAdminInitHooks( 'admin_init', get_class( $table ), 'maybe_upgrade', 10 );
 			self::forceRemoveTableAdminInitHooks( 'switch_blog', get_class( $table ), 'switch_blog', 10 );
@@ -394,28 +195,100 @@ trait DBTrait {
 					}
 				}
 			}
-
 		}
 
 		return false;
 	}
 
-	public static function truncatePerformanceMonitoringTable() {
-		$container           = apply_filters( 'rocket_container', null );
-		$ri_table = $container->get( 'ri_table' );
-
-		if ( $ri_table && $ri_table->exists() ) {
-			$ri_table->truncate();
-		}
-
+	/**
+	 * The plugin DI container.
+	 *
+	 * @return mixed
+	 */
+	private static function container() {
+		return apply_filters( 'rocket_container', null );
 	}
 
-	public static function truncateRocketCDNTable() {
-		$container       = apply_filters( 'rocket_container', null );
-		$rocketcdn_table = $container->get( 'rocketcdn_table' );
+	/**
+	 * Resolve a table instance from the container, or null when the service is not registered.
+	 *
+	 * Some tables (`ri_table`, `rocketcdn_table`) are not registered in every context, so callers
+	 * can iterate {@see self::$table_services} without special-casing them.
+	 *
+	 * @param string $service Container service ID.
+	 *
+	 * @return object|null
+	 */
+	private static function table( string $service ) {
+		$container = self::container();
 
-		if ( $rocketcdn_table && $rocketcdn_table->exists() ) {
-			$rocketcdn_table->truncate();
+		return $container->has( $service ) ? $container->get( $service ) : null;
+	}
+
+	/**
+	 * Add an item to a BerlinDB query service.
+	 *
+	 * @param string $query_service Container service ID of the query.
+	 * @param array  $resource      Item data.
+	 *
+	 * @return mixed
+	 */
+	private static function addItem( string $query_service, array $resource ) {
+		return self::container()->get( $query_service )->add_item( $resource );
+	}
+
+	/**
+	 * Install a table when it is not already installed, then arm the exists shim.
+	 *
+	 * Existence is checked through `AbstractTable::exists()` (the cached/transient-backed check),
+	 * NOT a raw `SHOW TABLES`. Under the WP test suite `CREATE TABLE` is rewritten to
+	 * `CREATE TEMPORARY TABLE`, and `SHOW TABLES` cannot see temporary tables — so a raw check
+	 * would report an existing temp table as absent and re-run `CREATE`, triggering a
+	 * "table already exists" error. Trusting the cached check avoids that.
+	 *
+	 * @param string $service Container service ID.
+	 *
+	 * @return void
+	 */
+	private static function installTable( string $service ) {
+		$table = self::table( $service );
+
+		if ( $table && ! $table->exists() ) {
+			$table->install();
+		}
+
+		self::add_exists_filter( $table );
+	}
+
+	/**
+	 * Uninstall a table when it exists, then clear the exists shim.
+	 *
+	 * @param string $service Container service ID.
+	 *
+	 * @return void
+	 */
+	private static function uninstallTable( string $service ) {
+		$table = self::table( $service );
+
+		if ( $table && $table->exists() ) {
+			$table->uninstall();
+		}
+
+		self::remove_exists_filter( $table );
+	}
+
+	/**
+	 * Truncate a table when it exists.
+	 *
+	 * @param string $service Container service ID.
+	 *
+	 * @return void
+	 */
+	private static function truncateTable( string $service ) {
+		$table = self::table( $service );
+
+		if ( $table && $table->exists() ) {
+			$table->truncate();
 		}
 	}
 
