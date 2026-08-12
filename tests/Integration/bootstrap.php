@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use org\bovigo\vfs\vfsStream;
 use WC_Install;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
@@ -16,6 +17,22 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function () {
+		// Under the PHPUnit CLI there is no HTTP request, so $_SERVER['REQUEST_URI'] is unset. Since
+		// WordPress 6.9 core's _wp_cron() (wp-includes/cron.php) runs on the shutdown hook and reads
+		// $_SERVER['REQUEST_URI'] without a guard when spawning due cron events, emitting an
+		// "Undefined array key REQUEST_URI" warning. Seeding it earlier does not survive the WP test
+		// suite's own $_SERVER setup, so ensure the key exists on shutdown just before _wp_cron
+		// (default priority 10) reads it.
+		add_action(
+			'shutdown',
+			function () {
+				if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+					$_SERVER['REQUEST_URI'] = '/';
+				}
+			},
+			0
+		);
+
 		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
@@ -65,6 +82,16 @@ tests_add_filter(
 		// Set the path and URL to our virtual filesystem.
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
+
+		// The cache path constants above (and everything wp-rocket.php derives from them) live under the
+		// vfs:// scheme, so register its stream wrapper for the whole suite. Without it, tests that run
+		// without a FilesystemTestCase having registered it first (e.g. the standalone AdminOnly run) let
+		// cache writes — advanced-cache/cache-dir generation on admin_init, notices, etc. — collapse
+		// "vfs://" to "vfs:/" and create a real "vfs:" directory on disk. FilesystemTestCase/RESTVfsTestCase
+		// call vfsStream::setup() again with their own structure, replacing this empty root.
+		if ( ! in_array( 'vfs', stream_get_wrappers(), true ) ) {
+			vfsStream::setup( 'public' );
+		}
 
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.

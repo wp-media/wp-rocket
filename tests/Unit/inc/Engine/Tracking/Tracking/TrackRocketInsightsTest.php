@@ -82,6 +82,7 @@ class TrackRocketInsightsTest extends TestCase {
 		$this->mixpanel->shouldReceive( 'identify' )
 			->once()
 			->with( '' );
+		Functions\when( 'is_admin' )->justReturn( true );
 		$this->optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( false );

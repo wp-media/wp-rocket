@@ -38,6 +38,8 @@ class LocalizeOptinStatusTest extends TestCase {
 			->with( $config['consumer_email'] )
 			->andReturnNull();
 
+		Functions\when( 'is_admin' )->justReturn( true );
+
 		$optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( false );
