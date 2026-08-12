@@ -16,6 +16,12 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_DisplayNoTableNotice extends AdminTestCase {
 	protected $rucss;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::uninstallUsedCssTable();
+	}
+
 	public function set_up() {
 		parent::set_up();
 

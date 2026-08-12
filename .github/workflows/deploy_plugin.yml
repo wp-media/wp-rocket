@@ -10,23 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: '7.4'
           tools: composer:v2
-
-      - name: Get composer cache directory
-        id: composercache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
 
       - name: Download zip
         run: |
@@ -40,8 +30,10 @@ jobs:
         working-directory: /tmp/wp-rocket
 
       - name: Run composer
-        run: composer install --no-scripts --no-dev
-        working-directory: /tmp/wp-rocket
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: /tmp/wp-rocket
+          composer-options: "--no-scripts --no-dev"
 
       - name: Remove composer installers
         run: composer remove composer/installers --update-no-dev --no-scripts
