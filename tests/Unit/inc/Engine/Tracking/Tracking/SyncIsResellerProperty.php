@@ -40,6 +40,9 @@ class Test_SyncIsResellerProperty extends TestCase {
 			->once()
 			->with( $consumer_email );
 
+		$channel_detector = Mockery::mock( ChannelDetector::class );
+		$channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
+
 		$optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( $config['can_track'] );
@@ -50,7 +53,7 @@ class Test_SyncIsResellerProperty extends TestCase {
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 
-			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 
 			return;
 		}
@@ -62,7 +65,7 @@ class Test_SyncIsResellerProperty extends TestCase {
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 
-			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 
 			return;
 		}
@@ -93,9 +96,6 @@ class Test_SyncIsResellerProperty extends TestCase {
 				->once()
 				->with( $hashed_email, 'is_reseller', $config['is_reseller'] );
 		}
-
-		$channel_detector = Mockery::mock( ChannelDetector::class );
-		$channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
 
 		new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 	}
