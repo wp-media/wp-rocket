@@ -576,11 +576,11 @@ class Cache extends Abstract_Buffer {
 			return $filename;
 		}
 
-		if ( ! class_exists( 'WP_Rocket_Mobile_Detect' ) ) {
+		if ( ! class_exists( 'WP_Rocket\Dependencies\Detection\MobileDetect' ) ) {
 			return $filename;
 		}
 
-		$detect = new \WP_Rocket_Mobile_Detect();
+		$detect = new \WP_Rocket\Dependencies\Detection\MobileDetect();
 
 		if (
 			( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet )

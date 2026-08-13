@@ -7,7 +7,7 @@ use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Support\Meta;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -24,7 +24,7 @@ class TestAddMetaGenerator extends TestCase {
 		parent::set_up();
 
 		$this->options       = Mockery::mock( Options_Data::class );
-		$this->mobile_detect = Mockery::mock( WP_Rocket_Mobile_Detect::class );
+		$this->mobile_detect = Mockery::mock( MobileDetect::class );
 		$this->meta          = new Meta( $this->mobile_detect, $this->options );
 	}
 

@@ -17,7 +17,7 @@ use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Engine\Preload\Frontend\FetchSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -68,7 +68,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'mobile_detect', WP_Rocket_Mobile_Detect::class );
+		$this->getContainer()->add( 'mobile_detect', MobileDetect::class );
 		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
 			->addArgument( 'logger' );
