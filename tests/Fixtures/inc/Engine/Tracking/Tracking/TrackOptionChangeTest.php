@@ -45,6 +45,7 @@ return [
 			'value'         => [
 				'auto_preload_fonts' => 1,
 			],
+			'interaction_channel' => 'UI'
 		],
 		'expected' => true,
 	],

@@ -9,6 +9,7 @@ use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -39,6 +40,9 @@ class Test_SyncIsResellerProperty extends TestCase {
 			->once()
 			->with( $consumer_email );
 
+		$channel_detector = Mockery::mock( ChannelDetector::class );
+		$channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
+
 		$optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( $config['can_track'] );
@@ -49,7 +53,7 @@ class Test_SyncIsResellerProperty extends TestCase {
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 
-			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 
 			return;
 		}
@@ -61,7 +65,7 @@ class Test_SyncIsResellerProperty extends TestCase {
 			$mixpanel->shouldNotReceive( 'hash' );
 			$mixpanel->shouldNotReceive( 'set_user_property' );
 
-			new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 
 			return;
 		}
@@ -93,6 +97,6 @@ class Test_SyncIsResellerProperty extends TestCase {
 				->with( $hashed_email, 'is_reseller', $config['is_reseller'] );
 		}
 
-		new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+		new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 	}
 }
