@@ -41,21 +41,30 @@ class Tracking extends Abstract_Render {
 	private $user;
 
 	/**
+	 * ChannelDetector instance.
+	 *
+	 * @var ChannelDetector
+	 */
+	private $channel_detector;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data     $options Options Data instance.
-	 * @param Optin            $optin Optin instance.
-	 * @param MixpanelTracking $mixpanel Mixpanel Tracking instance.
-	 * @param User             $user License User instance.
-	 * @param string           $template_path Path to the template files.
+	 * @param Options_Data     $options          Options Data instance.
+	 * @param Optin            $optin            Optin instance.
+	 * @param MixpanelTracking $mixpanel         Mixpanel Tracking instance.
+	 * @param User             $user             License User instance.
+	 * @param ChannelDetector  $channel_detector Channel Detector instance.
+	 * @param string           $template_path    Path to the template files.
 	 */
-	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, $template_path ) {
+	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, ChannelDetector $channel_detector, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->options  = $options;
-		$this->optin    = $optin;
-		$this->mixpanel = $mixpanel;
-		$this->user     = $user;
+		$this->options          = $options;
+		$this->optin            = $optin;
+		$this->mixpanel         = $mixpanel;
+		$this->user             = $user;
+		$this->channel_detector = $channel_detector;
 
 		$consumer_email = $this->options->get( 'consumer_email', '' );
 
@@ -76,11 +85,27 @@ class Tracking extends Abstract_Render {
 			return;
 		}
 
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$is_reseller = $this->user->is_reseller_account();
+		if ( ! $is_reseller ) {
+			return;
+		}
+
+		if ( false !== get_transient( 'rocket_mixpanel_reseller_synced' ) ) {
+			return;
+		}
+
+		// We could fire this on change instead of running it once per day.
 		$this->mixpanel->set_user_property(
 			$this->mixpanel->hash( $consumer_email ),
 			'is_reseller',
-			$this->user->is_reseller_account()
+			$is_reseller
 		);
+
+		set_transient( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
 	}
 
 	/**
@@ -120,10 +145,11 @@ class Tracking extends Abstract_Render {
 			$this->mixpanel->track(
 				'Option Changed',
 				[
-					'context'        => 'wp_plugin',
-					'option_name'    => $option_tracked,
-					'previous_value' => $old_value[ $option_tracked ],
-					'new_value'      => $value[ $option_tracked ],
+					'context'             => 'wp_plugin',
+					'option_name'         => $option_tracked,
+					'previous_value'      => $old_value[ $option_tracked ],
+					'new_value'           => $value[ $option_tracked ],
+					'interaction_channel' => $this->channel_detector->detect(),
 				]
 			);
 		}
@@ -275,10 +301,11 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
 			[
-				'context'       => 'wp_plugin',
-				'plan_type'     => $plan,
-				'tracked_pages' => $urls_count,
-				'source'        => $source,
+				'context'             => 'wp_plugin',
+				'plan_type'           => $plan,
+				'tracked_pages'       => $urls_count,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -304,13 +331,14 @@ class Tracking extends Abstract_Render {
 		}
 
 		$event_data = [
-			'context'   => 'wp_plugin',
-			'status'    => $row_details->status,
-			'score'     => $row_details->score,
-			'retest'    => $row_details->data['is_retest'],
-			'duration'  => time() - $row_details->data['start_time'],
-			'plan_type' => $plan,
-			'source'    => $row_details->data['source'],
+			'context'             => 'wp_plugin',
+			'status'              => $row_details->status,
+			'score'               => $row_details->score,
+			'retest'              => $row_details->data['is_retest'],
+			'duration'            => time() - $row_details->data['start_time'],
+			'plan_type'           => $plan,
+			'source'              => $row_details->data['source'],
+			'interaction_channel' => $row_details->data['interaction_channel'] ?? $this->channel_detector->detect(),
 		];
 
 		if ( Utils::is_home( $row_details->url ) ) {
@@ -341,9 +369,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights View Details',
 			[
-				'context' => 'wp_plugin',
-				'source'  => $context,
-				'test_id' => $row_id,
+				'context'             => 'wp_plugin',
+				'source'              => $context,
+				'test_id'             => $row_id,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -365,9 +394,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track_direct(
 			$event_name,
 			[
-				'context' => 'wp_plugin',
-				'test_id' => $row_id,
-				'source'  => $source,
+				'context'             => 'wp_plugin',
+				'test_id'             => $row_id,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -405,9 +435,10 @@ class Tracking extends Abstract_Render {
 		$event_data = wp_parse_args(
 			$event_data,
 			[
-				'context' => 'wp_plugin',
+				'context'             => 'wp_plugin',
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
-			);
+		);
 
 		$this->mixpanel->track( $event_name, $event_data );
 	}

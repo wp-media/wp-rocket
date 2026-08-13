@@ -177,20 +177,50 @@ trait StubTrait {
 	}
 
 	protected function stubWpNormalizePath() {
+		// wp_normalize_path() uses wp_is_stream() to keep stream wrappers (e.g. vfs://) intact.
+		$this->stubWpIsStream();
+
+		// Mirrors WordPress core's wp_normalize_path(), minus its static cache.
 		Functions\when( 'wp_normalize_path' )->alias(
 			function ( $path ) {
 				if ( true === $this->just_return_path ) {
 					return $path;
 				}
 
+				$path    = (string) $path;
+				$wrapper = '';
+
+				if ( wp_is_stream( $path ) ) {
+					list( $wrapper, $path ) = explode( '://', $path, 2 );
+
+					$wrapper .= '://';
+				}
+
 				$path = str_replace( '\\', '/', $path );
-				$path = preg_replace( '|(?<=.)/+|', '/', $path );
+				$path = (string) preg_replace( '|(?<=.)/+|', '/', $path );
 
 				if ( ':' === substr( $path, 1, 1 ) ) {
 					$path = ucfirst( $path );
 				}
 
-				return $path;
+				return $wrapper . $path;
+			}
+		);
+	}
+
+	protected function stubWpIsStream() {
+		// Mirrors WordPress core's wp_is_stream().
+		Functions\when( 'wp_is_stream' )->alias(
+			function ( $path ) {
+				$scheme_separator = strpos( $path, '://' );
+
+				if ( false === $scheme_separator ) {
+					return false;
+				}
+
+				$stream = substr( $path, 0, $scheme_separator );
+
+				return in_array( $stream, stream_get_wrappers(), true );
 			}
 		);
 	}

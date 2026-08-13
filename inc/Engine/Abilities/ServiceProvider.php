@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Abilities;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Abilities\Catalog;
+use WP_Rocket\Engine\Abilities\CLI\Command as CLICommand;
+use WP_Rocket\Engine\Abilities\CLI\Subscriber as CLISubscriber;
 use WP_Rocket\Engine\Abilities\Context;
 use WP_Rocket\Engine\Abilities\Options\AllowedOptions;
 use WP_Rocket\Engine\Abilities\Options\GetOptions;
@@ -22,6 +25,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'abilities_get_options',
 		'abilities_set_option',
 		'abilities_subscriber',
+		'abilities_catalog',
+		'abilities_cli_command',
+		'abilities_cli_subscriber',
 	];
 
 	/**
@@ -55,5 +61,10 @@ class ServiceProvider extends AbstractServiceProvider {
 					'abilities_context',
 				]
 			);
+		$this->getContainer()->addShared( 'abilities_catalog', Catalog::class );
+		$this->getContainer()->add( 'abilities_cli_command', CLICommand::class )
+			->addArgument( 'abilities_catalog' );
+		$this->getContainer()->addShared( 'abilities_cli_subscriber', CLISubscriber::class )
+			->addArgument( 'abilities_cli_command' );
 	}
 }
