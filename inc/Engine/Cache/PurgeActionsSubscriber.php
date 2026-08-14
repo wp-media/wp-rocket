@@ -210,11 +210,7 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update( $new_version, $old_version ) {
-		if (
-			version_compare( $old_version, '3.15.3', '>=' )
-			&&
-			version_compare( $old_version, '3.23.3', '>=' )
-		) {
+		if ( version_compare( $old_version, '3.23.3', '>=' ) ) {
 			return;
 		}
 		rocket_generate_advanced_cache_file();
