@@ -86,8 +86,9 @@ function as_schedule_single_action( $timestamp, $hook, $args = array(), $group =
 	 * @param array    $args       Action arguments.
 	 * @param string   $group      Action group.
 	 * @param int      $priorities Action priority.
+	 * @param bool     $unique     Unique action.
 	 */
-	$pre = apply_filters( 'pre_as_schedule_single_action', null, $timestamp, $hook, $args, $group, $priority );
+	$pre = apply_filters( 'pre_as_schedule_single_action', null, $timestamp, $hook, $args, $group, $priority, $unique );
 	if ( null !== $pre ) {
 		return is_int( $pre ) ? $pre : 0;
 	}
@@ -159,8 +160,9 @@ function as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, 
 	 * @param array    $args                Action arguments.
 	 * @param string   $group               Action group.
 	 * @param int      $priority            Action priority.
+	 * @param bool     $unique              Unique action.
 	 */
-	$pre = apply_filters( 'pre_as_schedule_recurring_action', null, $timestamp, $interval_in_seconds, $hook, $args, $group, $priority );
+	$pre = apply_filters( 'pre_as_schedule_recurring_action', null, $timestamp, $interval_in_seconds, $hook, $args, $group, $priority, $unique );
 	if ( null !== $pre ) {
 		return is_int( $pre ) ? $pre : 0;
 	}
@@ -225,8 +227,9 @@ function as_schedule_cron_action( $timestamp, $schedule, $hook, $args = array(),
 	 * @param array    $args       Action arguments.
 	 * @param string   $group      Action group.
 	 * @param int      $priority   Action priority.
+	 * @param bool     $unique     Unique action.
 	 */
-	$pre = apply_filters( 'pre_as_schedule_cron_action', null, $timestamp, $schedule, $hook, $args, $group, $priority );
+	$pre = apply_filters( 'pre_as_schedule_cron_action', null, $timestamp, $schedule, $hook, $args, $group, $priority, $unique );
 	if ( null !== $pre ) {
 		return is_int( $pre ) ? $pre : 0;
 	}
@@ -492,4 +495,19 @@ function as_get_datetime_object( $date_string = null, $timezone = 'UTC' ) {
 		$date = new ActionScheduler_DateTime( null === $date_string ? 'now' : $date_string, new DateTimeZone( $timezone ) );
 	}
 	return $date;
+}
+
+/**
+ * Check if a specific feature is supported by the current version of Action Scheduler.
+ *
+ * @since 3.9.3
+ *
+ * @param string $feature The feature to check support for.
+ *
+ * @return bool True if the feature is supported, false otherwise.
+ */
+function as_supports( string $feature ): bool {
+	$supported_features = array( 'ensure_recurring_actions_hook' );
+
+	return in_array( $feature, $supported_features, true );
 }
