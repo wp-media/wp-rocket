@@ -31,6 +31,41 @@ class Context {
 	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
 
 	/**
+	 * Applied CDN state: no CDN is applied.
+	 */
+	public const APPLIED_STATE_NOTHING = 'nothing';
+
+	/**
+	 * Applied CDN state: RocketCDN is applied.
+	 */
+	public const APPLIED_STATE_ROCKETCDN = 'rocketcdn';
+
+	/**
+	 * Applied CDN state: bring-your-own CDN is applied.
+	 */
+	public const APPLIED_STATE_BYOCDN = 'byocdn';
+
+	/**
+	 * RocketCDN state: no RocketCDN subscription.
+	 */
+	public const ROCKETCDN_STATE_NOTHING = 'nothing';
+
+	/**
+	 * RocketCDN state: free subscription creation is in progress.
+	 */
+	public const ROCKETCDN_STATE_ONGOING_FREE = 'ongoing_activation_free';
+
+	/**
+	 * RocketCDN state: active free subscription.
+	 */
+	public const ROCKETCDN_STATE_FREE = 'free';
+
+	/**
+	 * RocketCDN state: active paid subscription, or paid subscription within its grace period.
+	 */
+	public const ROCKETCDN_STATE_PRO = 'pro';
+
+	/**
 	 * WP Rocket options.
 	 *
 	 * @var Options_Data
@@ -95,6 +130,50 @@ class Context {
 	 */
 	public function get_free_page_limit(): int {
 		return 3;
+	}
+
+	/**
+	 * Gets the currently applied CDN state, based on the decoupled CDN toggle flags.
+	 *
+	 * @return string One of the APPLIED_STATE_* constants.
+	 */
+	public function get_applied_cdn_state(): string {
+		if ( $this->options->get( 'cdn_byocdn_enabled', 0 ) ) {
+			return self::APPLIED_STATE_BYOCDN;
+		}
+
+		if ( $this->options->get( 'rocketcdn_free_enabled', 0 ) || $this->options->get( 'rocketcdn_pro_enabled', 0 ) ) {
+			return self::APPLIED_STATE_ROCKETCDN;
+		}
+
+		return self::APPLIED_STATE_NOTHING;
+	}
+
+	/**
+	 * Gets the current RocketCDN subscription state.
+	 *
+	 * @return string One of the ROCKETCDN_STATE_* constants.
+	 */
+	public function get_rocketcdn_state(): string {
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return self::ROCKETCDN_STATE_ONGOING_FREE;
+		}
+
+		if ( $this->subscription_controller->is_in_grace_period() ) {
+			return self::ROCKETCDN_STATE_PRO;
+		}
+
+		if ( $this->subscription_controller->has_active_subscription() ) {
+			if ( $this->subscription_controller->is_paid() ) {
+				return self::ROCKETCDN_STATE_PRO;
+			}
+
+			if ( $this->subscription_controller->is_free() ) {
+				return self::ROCKETCDN_STATE_FREE;
+			}
+		}
+
+		return self::ROCKETCDN_STATE_NOTHING;
 	}
 
 	/**

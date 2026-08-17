@@ -47,6 +47,9 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
+		$fields[] = 'rocketcdn_free_enabled';
+		$fields[] = 'rocketcdn_pro_enabled';
+		$fields[] = 'cdn_byocdn_enabled';
 
 		return $fields;
 	}
@@ -73,6 +76,22 @@ class Subscriber implements Subscriber_Interface {
 
 		// Sanitize the value.
 		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
+
+		foreach ( [ 'rocketcdn_free_enabled', 'rocketcdn_pro_enabled', 'cdn_byocdn_enabled' ] as $flag ) {
+			if ( ! isset( $input[ $flag ] ) ) {
+				continue;
+			}
+
+			$input[ $flag ] = ! empty( $input[ $flag ] ) ? 1 : 0;
+		}
+
+		// Enforce mutual exclusion: at most one of the three flags can be enabled.
+		if ( ! empty( $input['cdn_byocdn_enabled'] ) ) {
+			$input['rocketcdn_free_enabled'] = 0;
+			$input['rocketcdn_pro_enabled']  = 0;
+		} elseif ( ! empty( $input['rocketcdn_pro_enabled'] ) ) {
+			$input['rocketcdn_free_enabled'] = 0;
+		}
 
 		return $input;
 	}
