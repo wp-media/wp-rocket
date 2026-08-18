@@ -17,8 +17,6 @@ class Context {
 
 	/**
 	 * CDN state: no CDN is applied.
-	 *
-	 * Canonical value shared by APPLIED_STATE_NOTHING and ROCKETCDN_STATE_NOTHING.
 	 */
 	public const CDN_STATE_NOTHING = 'nothing';
 
