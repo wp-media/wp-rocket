@@ -1557,6 +1557,8 @@ class Page extends Abstract_Render {
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 					'hide_pause_btn'     => true,
 				],
+				// @todo Story 1 (#8693): replace with Context::get_applied_cdn_state() once Context is injected here.
+				'applied_cdn_state' => 'byocdn' === (string) $this->options->get( 'cdn_type', 'rocketcdn' ) ? 'BYOCDN' : 'RocketCDN',
 			],
 		];
 

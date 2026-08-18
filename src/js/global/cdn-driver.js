@@ -7,6 +7,7 @@
 
 	document.addEventListener( 'DOMContentLoaded', () => {
 		initCdnDriverTabs();
+		initCdnModeToggle();
 		initCdnPauseToggle();
 		initAddHomepage();
 		initAddPage();
@@ -224,6 +225,79 @@
 	}
 
 	/**
+	 * Initializes the CDN mode toggle checkboxes.
+	 *
+	 */
+	function initCdnModeToggle() {
+		document.addEventListener( 'change', ( event ) => {
+			const toggle = event.target.closest( '.wpr-cdn-mode-toggle__input' );
+
+			if ( ! toggle ) {
+				return;
+			}
+
+			const mode = toggle.getAttribute( 'data-cdn-mode' );
+
+			if ( ! mode ) {
+				return;
+			}
+
+			const cdnTypeInput = document.getElementById( 'cdn_type' );
+			const currentValue = cdnTypeInput ? cdnTypeInput.value : '';
+
+			// "Nothing active" is not supported until Story 1 (#8693) — revert uncheck.
+			if ( ! toggle.checked ) {
+				toggle.checked = true;
+				return;
+			}
+
+			const driverValue   = 'byocdn' === mode ? 'byocdn' : 'rocketcdn';
+			const sectionDriver = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+
+			// Uncheck all other mode toggles (mutually exclusive).
+			document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
+				if ( other !== toggle ) {
+					other.checked = false;
+				}
+			} );
+
+			toggleDriverSections( sectionDriver );
+			notifyCdnStateChange();
+
+			window.wp.apiFetch( {
+				path: '/wp-rocket/v1/rocketcdn/driver',
+				method: 'POST',
+				data: { driver: driverValue },
+			} ).then( ( response ) => {
+				if ( cdnTypeInput ) {
+					cdnTypeInput.value = driverValue;
+				}
+
+				updateRocketCDNElementsState( driverValue, response.disable_rocket_cdn_elements );
+			} ).catch( () => {
+				// Revert to previous state on failure.
+				toggle.checked = false;
+				toggleDriverSections( 'byocdn' === currentValue ? 'your-own-cdn' : 'rocketcdn' );
+
+				if ( cdnTypeInput ) {
+					cdnTypeInput.value = currentValue;
+				}
+			} );
+		} );
+	}
+
+	/**
+	 * Toggles visibility of CDN driver sections using the hidden utility class.
+	 *
+	 * @param {string} activeDriver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function toggleDriverSections( activeDriver ) {
+		document.querySelectorAll( '.rocketcdn, .your-own-cdn' ).forEach( ( section ) => {
+			section.classList.toggle( 'wpr-isHidden', ! section.classList.contains( activeDriver ) );
+		} );
+	}
+
+	/**
 	 * Initializes CDN driver tab switching behavior.
 	 *
 	 * Toggles visibility of CDN driver sections (built-in-cdn / your-own-cdn)
@@ -231,21 +305,9 @@
 	 */
 	function initCdnDriverTabs() {
 		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
-		const driverSections = document.querySelectorAll( '.rocketcdn, .your-own-cdn' );
 
 		if ( ! tabs.length ) {
 			return;
-		}
-
-		/**
-		 * Toggles visibility of CDN driver sections using the hidden utility class.
-		 *
-		 * @param {string} activeDriver Active CDN driver slug.
-		 */
-		function toggleDriverSections( activeDriver ) {
-			driverSections.forEach( ( section ) => {
-				section.classList.toggle( 'wpr-isHidden', ! section.classList.contains( activeDriver ) );
-			} );
 		}
 
 		/**
@@ -588,6 +650,7 @@
 						addPageBtn.disabled = true;
 					}
 					updateTooltipState( true );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
 				// Set subscription loading state when first page is added.
