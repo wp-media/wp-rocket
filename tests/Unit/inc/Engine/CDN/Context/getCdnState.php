@@ -9,7 +9,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Tests\Unit\TestCase;
 
-class Test_GetAppliedCdnState extends TestCase {
+class Test_GetCdnState extends TestCase {
 	/**
 	 * @var Mockery\MockInterface|Options_Data
 	 */
@@ -36,23 +36,11 @@ class Test_GetAppliedCdnState extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpectedAppliedState( array $config, string $expected ) {
+	public function testShouldReturnExpectedCdnState( array $config, string $expected ) {
 		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_byocdn_enabled', 0 )
-			->andReturn( $config['cdn_byocdn_enabled'] ?? 0 );
+			->with( 'cdn_state', Context::CDN_STATE_NOTHING )
+			->andReturn( $config['cdn_state'] );
 
-		if ( empty( $config['cdn_byocdn_enabled'] ) ) {
-			$this->options->shouldReceive( 'get' )
-				->with( 'rocketcdn_free_enabled', 0 )
-				->andReturn( $config['rocketcdn_free_enabled'] ?? 0 );
-
-			if ( empty( $config['rocketcdn_free_enabled'] ) ) {
-				$this->options->shouldReceive( 'get' )
-					->with( 'rocketcdn_pro_enabled', 0 )
-					->andReturn( $config['rocketcdn_pro_enabled'] ?? 0 );
-			}
-		}
-
-		$this->assertSame( $expected, $this->context->get_applied_cdn_state() );
+		$this->assertSame( $expected, $this->context->get_cdn_state() );
 	}
 }

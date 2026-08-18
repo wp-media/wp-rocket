@@ -31,39 +31,24 @@ class Context {
 	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
 
 	/**
-	 * Applied CDN state: no CDN is applied.
+	 * CDN state: no CDN is applied.
 	 */
-	public const APPLIED_STATE_NOTHING = 'nothing';
+	public const CDN_STATE_NOTHING = 'nothing';
 
 	/**
-	 * Applied CDN state: RocketCDN is applied.
+	 * CDN state: RocketCDN free plan is applied.
 	 */
-	public const APPLIED_STATE_ROCKETCDN = 'rocketcdn';
+	public const CDN_STATE_ROCKETCDN_FREE = 'rocketcdn_free';
 
 	/**
-	 * Applied CDN state: bring-your-own CDN is applied.
+	 * CDN state: RocketCDN pro plan is applied.
 	 */
-	public const APPLIED_STATE_BYOCDN = 'byocdn';
+	public const CDN_STATE_ROCKETCDN_PRO = 'rocketcdn_pro';
 
 	/**
-	 * RocketCDN state: no RocketCDN subscription.
+	 * CDN state: bring-your-own CDN is applied.
 	 */
-	public const ROCKETCDN_STATE_NOTHING = 'nothing';
-
-	/**
-	 * RocketCDN state: free subscription creation is in progress.
-	 */
-	public const ROCKETCDN_STATE_ONGOING_FREE = 'ongoing_activation_free';
-
-	/**
-	 * RocketCDN state: active free subscription.
-	 */
-	public const ROCKETCDN_STATE_FREE = 'free';
-
-	/**
-	 * RocketCDN state: active paid subscription, or paid subscription within its grace period.
-	 */
-	public const ROCKETCDN_STATE_PRO = 'pro';
+	public const CDN_STATE_BYOCDN = 'byocdn';
 
 	/**
 	 * WP Rocket options.
@@ -133,43 +118,25 @@ class Context {
 	}
 
 	/**
-	 * Gets the currently applied CDN state, based on the decoupled CDN toggle flags.
+	 * Gets the currently applied CDN state.
 	 *
-	 * @return string One of the APPLIED_STATE_* constants.
+	 * @return string One of the CDN_STATE_* constants.
 	 */
-	public function get_applied_cdn_state(): string {
-		if ( $this->options->get( 'cdn_byocdn_enabled', 0 ) ) {
-			return self::APPLIED_STATE_BYOCDN;
+	public function get_cdn_state(): string {
+		$state = (string) $this->options->get( 'cdn_state', self::CDN_STATE_NOTHING );
+
+		$allowed_states = [
+			self::CDN_STATE_NOTHING,
+			self::CDN_STATE_ROCKETCDN_FREE,
+			self::CDN_STATE_ROCKETCDN_PRO,
+			self::CDN_STATE_BYOCDN,
+		];
+
+		if ( ! in_array( $state, $allowed_states, true ) ) {
+			return self::CDN_STATE_NOTHING;
 		}
 
-		if ( $this->options->get( 'rocketcdn_free_enabled', 0 ) || $this->options->get( 'rocketcdn_pro_enabled', 0 ) ) {
-			return self::APPLIED_STATE_ROCKETCDN;
-		}
-
-		return self::APPLIED_STATE_NOTHING;
-	}
-
-	/**
-	 * Gets the current RocketCDN subscription state.
-	 *
-	 * @return string One of the ROCKETCDN_STATE_* constants.
-	 */
-	public function get_rocketcdn_state(): string {
-		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
-			return self::ROCKETCDN_STATE_ONGOING_FREE;
-		}
-
-		if ( $this->subscription_controller->is_in_grace_period() || $this->subscription_controller->has_active_subscription() ) {
-			if ( $this->subscription_controller->is_paid() ) {
-				return self::ROCKETCDN_STATE_PRO;
-			}
-
-			if ( $this->subscription_controller->is_free() ) {
-				return self::ROCKETCDN_STATE_FREE;
-			}
-		}
-
-		return self::ROCKETCDN_STATE_NOTHING;
+		return $state;
 	}
 
 	/**

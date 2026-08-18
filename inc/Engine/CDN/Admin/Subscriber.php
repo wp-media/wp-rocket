@@ -47,9 +47,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
-		$fields[] = 'rocketcdn_free_enabled';
-		$fields[] = 'rocketcdn_pro_enabled';
-		$fields[] = 'cdn_byocdn_enabled';
+		$fields[] = 'cdn_state';
 
 		return $fields;
 	}
@@ -77,20 +75,19 @@ class Subscriber implements Subscriber_Interface {
 		// Sanitize the value.
 		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
 
-		foreach ( [ 'rocketcdn_free_enabled', 'rocketcdn_pro_enabled', 'cdn_byocdn_enabled' ] as $flag ) {
-			if ( ! isset( $input[ $flag ] ) ) {
-				continue;
+		if ( isset( $input['cdn_state'] ) ) {
+			$allowed_states = [
+				Context::CDN_STATE_NOTHING,
+				Context::CDN_STATE_ROCKETCDN_FREE,
+				Context::CDN_STATE_ROCKETCDN_PRO,
+				Context::CDN_STATE_BYOCDN,
+			];
+
+			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
+				$input['cdn_state'] = Context::CDN_STATE_NOTHING;
 			}
 
-			$input[ $flag ] = ! empty( $input[ $flag ] ) ? 1 : 0;
-		}
-
-		// Enforce mutual exclusion: at most one of the three flags can be enabled.
-		if ( ! empty( $input['cdn_byocdn_enabled'] ) ) {
-			$input['rocketcdn_free_enabled'] = 0;
-			$input['rocketcdn_pro_enabled']  = 0;
-		} elseif ( ! empty( $input['rocketcdn_pro_enabled'] ) ) {
-			$input['rocketcdn_free_enabled'] = 0;
+			$input['cdn_state'] = sanitize_text_field( $input['cdn_state'] );
 		}
 
 		return $input;
