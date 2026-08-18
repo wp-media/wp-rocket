@@ -100,13 +100,13 @@ return [
 		'config' => [
 			'input' => [
 				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_pro',
+				'cdn_state' => 'rocketcdn_paid',
 			]
 		],
 		'expected' => [
 			'input' => [
 				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_pro',
+				'cdn_state' => 'rocketcdn_paid',
 			]
 		],
 	],
