@@ -113,7 +113,7 @@ class Context {
 	/**
 	 * Gets the currently applied CDN state.
 	 *
-	 * @return string One of the CDN_STATE_* constants.
+	 * @return string One of CDN_STATE_NOTHING, ROCKETCDN_FREE_TYPE, ROCKETCDN_PAID_TYPE or BYOCDN_TYPE.
 	 */
 	public function get_cdn_state(): string {
 		$state = (string) $this->options->get( 'cdn_state', self::CDN_STATE_NOTHING );
@@ -133,9 +133,9 @@ class Context {
 	}
 
 	/**
-	 * Gets the currently applied CDN state.
+	 * Gets the CDN driver type implied by the currently applied CDN state.
 	 *
-	 * @return string One of the APPLIED_STATE_* constants.
+	 * @return string One of CDN_STATE_NOTHING, ROCKETCDN_TYPE or BYOCDN_TYPE.
 	 */
 	public function get_applied_cdn_state(): string {
 		$cdn_state = $this->get_cdn_state();
