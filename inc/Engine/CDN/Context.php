@@ -23,33 +23,14 @@ class Context {
 	public const CDN_STATE_NOTHING = 'nothing';
 
 	/**
-	 * CDN state: RocketCDN free plan is applied.
-	 *
-	 * Canonical value shared by ROCKETCDN_FREE_TYPE.
-	 */
-	public const CDN_STATE_ROCKETCDN_FREE = 'rocketcdn_free';
-
-	/**
-	 * CDN state: RocketCDN pro plan is applied.
-	 */
-	public const CDN_STATE_ROCKETCDN_PRO = 'rocketcdn_pro';
-
-	/**
-	 * CDN state: bring-your-own CDN is applied.
-	 *
-	 * Canonical value shared by BYOCDN_TYPE and APPLIED_STATE_BYOCDN.
-	 */
-	public const CDN_STATE_BYOCDN = 'byocdn';
-
-	/**
 	 * CDN type value for bring-your-own CDN.
 	 */
-	public const BYOCDN_TYPE = self::CDN_STATE_BYOCDN;
+	public const BYOCDN_TYPE = 'byocdn';
 
 	/**
 	 * Resolved RocketCDN type for free users.
 	 */
-	public const ROCKETCDN_FREE_TYPE = self::CDN_STATE_ROCKETCDN_FREE;
+	public const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
 
 	/**
 	 * Resolved RocketCDN type for paid users.
@@ -57,39 +38,12 @@ class Context {
 	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
 
 	/**
-	 * Applied CDN state: no CDN is applied.
-	 */
-	public const APPLIED_STATE_NOTHING = self::CDN_STATE_NOTHING;
-
-	/**
-	 * Applied CDN state: RocketCDN is applied.
-	 */
-	public const APPLIED_STATE_ROCKETCDN = self::ROCKETCDN_TYPE;
-
-	/**
-	 * Applied CDN state: bring-your-own CDN is applied.
-	 */
-	public const APPLIED_STATE_BYOCDN = self::CDN_STATE_BYOCDN;
-
-	/**
-	 * RocketCDN state: no RocketCDN subscription.
-	 */
-	public const ROCKETCDN_STATE_NOTHING = self::CDN_STATE_NOTHING;
-
-	/**
 	 * RocketCDN state: free subscription creation is in progress.
+	 *
+	 * The only state that isn't a CDN_STATE_* value — it's a live transient,
+	 * never persisted in the cdn_state option.
 	 */
 	public const ROCKETCDN_STATE_ONGOING_FREE = 'ongoing_activation_free';
-
-	/**
-	 * RocketCDN state: active free subscription.
-	 */
-	public const ROCKETCDN_STATE_FREE = 'free';
-
-	/**
-	 * RocketCDN state: active paid subscription.
-	 */
-	public const ROCKETCDN_STATE_PRO = 'pro';
 
 	/**
 	 * WP Rocket options.
@@ -168,9 +122,9 @@ class Context {
 
 		$allowed_states = [
 			self::CDN_STATE_NOTHING,
-			self::CDN_STATE_ROCKETCDN_FREE,
-			self::CDN_STATE_ROCKETCDN_PRO,
-			self::CDN_STATE_BYOCDN,
+			self::ROCKETCDN_FREE_TYPE,
+			self::ROCKETCDN_PAID_TYPE,
+			self::BYOCDN_TYPE,
 		];
 
 		if ( ! in_array( $state, $allowed_states, true ) ) {
@@ -188,15 +142,15 @@ class Context {
 	public function get_applied_cdn_state(): string {
 		$cdn_state = $this->get_cdn_state();
 
-		if ( self::CDN_STATE_BYOCDN === $cdn_state ) {
-			return self::APPLIED_STATE_BYOCDN;
+		if ( self::BYOCDN_TYPE === $cdn_state ) {
+			return self::BYOCDN_TYPE;
 		}
 
-		if ( self::CDN_STATE_ROCKETCDN_FREE === $cdn_state || self::CDN_STATE_ROCKETCDN_PRO === $cdn_state ) {
-			return self::APPLIED_STATE_ROCKETCDN;
+		if ( self::ROCKETCDN_FREE_TYPE === $cdn_state || self::ROCKETCDN_PAID_TYPE === $cdn_state ) {
+			return self::ROCKETCDN_TYPE;
 		}
 
-		return self::APPLIED_STATE_NOTHING;
+		return self::CDN_STATE_NOTHING;
 	}
 
 	/**
@@ -211,15 +165,15 @@ class Context {
 
 		$cdn_state = $this->get_cdn_state();
 
-		if ( self::CDN_STATE_ROCKETCDN_PRO === $cdn_state ) {
-			return self::ROCKETCDN_STATE_PRO;
+		if ( self::ROCKETCDN_PAID_TYPE === $cdn_state ) {
+			return self::ROCKETCDN_PAID_TYPE;
 		}
 
-		if ( self::CDN_STATE_ROCKETCDN_FREE === $cdn_state ) {
-			return self::ROCKETCDN_STATE_FREE;
+		if ( self::ROCKETCDN_FREE_TYPE === $cdn_state ) {
+			return self::ROCKETCDN_FREE_TYPE;
 		}
 
-		return self::ROCKETCDN_STATE_NOTHING;
+		return self::CDN_STATE_NOTHING;
 	}
 
 	/**

@@ -9,15 +9,15 @@ return [
 	],
 	'testShouldReturnProWhenCdnStateIsRocketcdnPro'     => [
 		'config'   => [
-			'cdn_state' => 'rocketcdn_pro',
+			'cdn_state' => 'rocketcdn_paid',
 		],
-		'expected' => 'pro',
+		'expected' => 'rocketcdn_paid',
 	],
 	'testShouldReturnFreeWhenCdnStateIsRocketcdnFree'   => [
 		'config'   => [
 			'cdn_state' => 'rocketcdn_free',
 		],
-		'expected' => 'free',
+		'expected' => 'rocketcdn_free',
 	],
 	'testShouldReturnNothingWhenCdnStateIsNothing'      => [
 		'config'   => [

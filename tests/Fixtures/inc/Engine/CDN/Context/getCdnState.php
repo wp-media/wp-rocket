@@ -15,9 +15,9 @@ return [
 	],
 	'testShouldReturnRocketcdnPro'                   => [
 		'config'   => [
-			'cdn_state' => 'rocketcdn_pro',
+			'cdn_state' => 'rocketcdn_paid',
 		],
-		'expected' => 'rocketcdn_pro',
+		'expected' => 'rocketcdn_paid',
 	],
 	'testShouldReturnByocdn'                         => [
 		'config'   => [
