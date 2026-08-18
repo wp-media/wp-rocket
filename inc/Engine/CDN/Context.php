@@ -16,27 +16,16 @@ class Context {
 	public const ROCKETCDN_TYPE = 'rocketcdn';
 
 	/**
-	 * CDN type value for bring-your-own CDN.
-	 */
-	public const BYOCDN_TYPE = 'byocdn';
-
-	/**
-	 * Resolved RocketCDN type for free users.
-	 */
-	public const ROCKETCDN_FREE_TYPE = 'rocketcdn_free';
-
-	/**
-	 * Resolved RocketCDN type for paid users.
-	 */
-	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
-
-	/**
 	 * CDN state: no CDN is applied.
+	 *
+	 * Canonical value shared by APPLIED_STATE_NOTHING and ROCKETCDN_STATE_NOTHING.
 	 */
 	public const CDN_STATE_NOTHING = 'nothing';
 
 	/**
 	 * CDN state: RocketCDN free plan is applied.
+	 *
+	 * Canonical value shared by ROCKETCDN_FREE_TYPE.
 	 */
 	public const CDN_STATE_ROCKETCDN_FREE = 'rocketcdn_free';
 
@@ -47,28 +36,45 @@ class Context {
 
 	/**
 	 * CDN state: bring-your-own CDN is applied.
+	 *
+	 * Canonical value shared by BYOCDN_TYPE and APPLIED_STATE_BYOCDN.
 	 */
 	public const CDN_STATE_BYOCDN = 'byocdn';
 
 	/**
+	 * CDN type value for bring-your-own CDN.
+	 */
+	public const BYOCDN_TYPE = self::CDN_STATE_BYOCDN;
+
+	/**
+	 * Resolved RocketCDN type for free users.
+	 */
+	public const ROCKETCDN_FREE_TYPE = self::CDN_STATE_ROCKETCDN_FREE;
+
+	/**
+	 * Resolved RocketCDN type for paid users.
+	 */
+	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
+
+	/**
 	 * Applied CDN state: no CDN is applied.
 	 */
-	public const APPLIED_STATE_NOTHING = 'nothing';
+	public const APPLIED_STATE_NOTHING = self::CDN_STATE_NOTHING;
 
 	/**
 	 * Applied CDN state: RocketCDN is applied.
 	 */
-	public const APPLIED_STATE_ROCKETCDN = 'rocketcdn';
+	public const APPLIED_STATE_ROCKETCDN = self::ROCKETCDN_TYPE;
 
 	/**
 	 * Applied CDN state: bring-your-own CDN is applied.
 	 */
-	public const APPLIED_STATE_BYOCDN = 'byocdn';
+	public const APPLIED_STATE_BYOCDN = self::CDN_STATE_BYOCDN;
 
 	/**
 	 * RocketCDN state: no RocketCDN subscription.
 	 */
-	public const ROCKETCDN_STATE_NOTHING = 'nothing';
+	public const ROCKETCDN_STATE_NOTHING = self::CDN_STATE_NOTHING;
 
 	/**
 	 * RocketCDN state: free subscription creation is in progress.
