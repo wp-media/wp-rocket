@@ -96,19 +96,18 @@ class UsedCSS extends AbstractQuery {
 			return false;
 		}
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
+		$old = $this->get_row( $url, $is_mobile );
+
+		if ( ! $old ) {
+			return false;
+		}
 
 		$data = [
 			'hash'   => $hash,
 			'status' => 'completed',
 		];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
