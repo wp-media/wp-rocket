@@ -329,6 +329,7 @@ class GetOptions implements AbilitiesInterface {
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'Pages to exclude from CDN.',
 			],
+
 			// Cloudflare.
 			'do_cloudflare'                             => [
 				'type'        => 'integer',
