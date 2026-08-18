@@ -78,9 +78,9 @@ class Subscriber implements Subscriber_Interface {
 		if ( isset( $input['cdn_state'] ) ) {
 			$allowed_states = [
 				Context::CDN_STATE_NOTHING,
-				Context::CDN_STATE_ROCKETCDN_FREE,
-				Context::CDN_STATE_ROCKETCDN_PRO,
-				Context::CDN_STATE_BYOCDN,
+				Context::ROCKETCDN_FREE_TYPE,
+				Context::ROCKETCDN_PAID_TYPE,
+				Context::BYOCDN_TYPE,
 			];
 
 			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
