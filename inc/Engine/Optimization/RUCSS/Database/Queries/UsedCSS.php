@@ -69,6 +69,15 @@ class UsedCSS extends AbstractQuery {
 	 */
 	protected $item_shape = UsedCSSRow::class;
 
+	/** Cache *****************************************************************/
+
+	/**
+	 * Group to cache queries and queried items in.
+	 *
+	 * @var   string
+	 */
+	protected $cache_group = 'wpr_used_css';
+
 	/**
 	 * Complete a job.
 	 *
