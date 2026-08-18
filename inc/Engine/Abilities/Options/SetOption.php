@@ -94,6 +94,7 @@ class SetOption implements AbilitiesInterface {
 		'heartbeat_site_behavior'     => [ '', 'reduce_periodicity', 'disable' ],
 		'heartbeat_admin_behavior'    => [ '', 'reduce_periodicity', 'disable' ],
 		'heartbeat_editor_behavior'   => [ '', 'reduce_periodicity', 'disable' ],
+		'cdn_state'                   => [ 'nothing', 'rocketcdn_free', 'rocketcdn_pro', 'byocdn' ],
 	];
 
 	/**
