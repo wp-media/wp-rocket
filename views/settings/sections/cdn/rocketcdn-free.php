@@ -31,6 +31,16 @@ defined( 'ABSPATH' ) || exit;
 		<h3 class="wpr-title2 wpr-title2--orange"><?php echo esc_html( $data['title'] ); ?></h3>
 		<span class="wpr-badge wpr-badge--grey"><?php esc_html_e( 'Free', 'rocket' ); ?></span>
 	</div>
+	<label class="wpr-cdn-mode-toggle">
+		<input
+			type="checkbox"
+			class="wpr-cdn-mode-toggle__input"
+			id="wpr-rocketcdn-free-toggle"
+			data-cdn-mode="rocketcdn_free"
+			<?php checked( in_array( $data['rocketcdn_state'], [ 'FREE', 'ongoing_activation_free' ], true ) ); ?>
+		/>
+		<span class="wpr-cdn-mode-toggle__slider"></span>
+	</label>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>

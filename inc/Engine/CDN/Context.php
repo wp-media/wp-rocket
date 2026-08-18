@@ -98,6 +98,50 @@ class Context {
 	}
 
 	/**
+	 * Returns which CDN driver is currently active.
+	 *
+	 * Possible values: 'Nothing' | 'BYOCDN' | 'RocketCDN'.
+	 *
+	 * @todo Story 1 (#8693) replaces this stub body with the real state resolver.
+	 *       Signatures are locked — do not change return values.
+	 *
+	 * @return string
+	 */
+	public function get_applied_cdn_state(): string {
+		$cdn_type = $this->get_cdn_type();
+
+		if ( self::BYOCDN_TYPE === $cdn_type ) {
+			return 'BYOCDN';
+		}
+
+		if ( self::ROCKETCDN_TYPE === $cdn_type ) {
+			return 'RocketCDN';
+		}
+
+		return 'Nothing';
+	}
+
+	/**
+	 * Returns the current RocketCDN subscription state.
+	 *
+	 * Possible values: 'Nothing' | 'ongoing_activation_free' | 'FREE' | 'PRO'.
+	 *
+	 * @todo Story 1 (#8693) replaces this stub body with the real state resolver.
+	 *       Signatures are locked — do not change return values.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_state(): string {
+		$driver = $this->rocketcdn_resolver();
+
+		return match( $driver ) {
+			self::ROCKETCDN_PAID_TYPE => 'PRO',
+			self::ROCKETCDN_FREE_TYPE => 'FREE',
+			default                   => 'Nothing',
+		};
+	}
+
+	/**
 	 * Resolves RocketCDN to either free or paid type.
 	 *
 	 * @return string
