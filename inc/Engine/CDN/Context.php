@@ -51,6 +51,41 @@ class Context {
 	public const CDN_STATE_BYOCDN = 'byocdn';
 
 	/**
+	 * Applied CDN state: no CDN is applied.
+	 */
+	public const APPLIED_STATE_NOTHING = 'nothing';
+
+	/**
+	 * Applied CDN state: RocketCDN is applied.
+	 */
+	public const APPLIED_STATE_ROCKETCDN = 'rocketcdn';
+
+	/**
+	 * Applied CDN state: bring-your-own CDN is applied.
+	 */
+	public const APPLIED_STATE_BYOCDN = 'byocdn';
+
+	/**
+	 * RocketCDN state: no RocketCDN subscription.
+	 */
+	public const ROCKETCDN_STATE_NOTHING = 'nothing';
+
+	/**
+	 * RocketCDN state: free subscription creation is in progress.
+	 */
+	public const ROCKETCDN_STATE_ONGOING_FREE = 'ongoing_activation_free';
+
+	/**
+	 * RocketCDN state: active free subscription.
+	 */
+	public const ROCKETCDN_STATE_FREE = 'free';
+
+	/**
+	 * RocketCDN state: active paid subscription.
+	 */
+	public const ROCKETCDN_STATE_PRO = 'pro';
+
+	/**
 	 * WP Rocket options.
 	 *
 	 * @var Options_Data
@@ -137,6 +172,48 @@ class Context {
 		}
 
 		return $state;
+	}
+
+	/**
+	 * Gets the currently applied CDN state.
+	 *
+	 * @return string One of the APPLIED_STATE_* constants.
+	 */
+	public function get_applied_cdn_state(): string {
+		$cdn_state = $this->get_cdn_state();
+
+		if ( self::CDN_STATE_BYOCDN === $cdn_state ) {
+			return self::APPLIED_STATE_BYOCDN;
+		}
+
+		if ( self::CDN_STATE_ROCKETCDN_FREE === $cdn_state || self::CDN_STATE_ROCKETCDN_PRO === $cdn_state ) {
+			return self::APPLIED_STATE_ROCKETCDN;
+		}
+
+		return self::APPLIED_STATE_NOTHING;
+	}
+
+	/**
+	 * Gets the current RocketCDN subscription state.
+	 *
+	 * @return string One of the ROCKETCDN_STATE_* constants.
+	 */
+	public function get_rocketcdn_state(): string {
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return self::ROCKETCDN_STATE_ONGOING_FREE;
+		}
+
+		$cdn_state = $this->get_cdn_state();
+
+		if ( self::CDN_STATE_ROCKETCDN_PRO === $cdn_state ) {
+			return self::ROCKETCDN_STATE_PRO;
+		}
+
+		if ( self::CDN_STATE_ROCKETCDN_FREE === $cdn_state ) {
+			return self::ROCKETCDN_STATE_FREE;
+		}
+
+		return self::ROCKETCDN_STATE_NOTHING;
 	}
 
 	/**
