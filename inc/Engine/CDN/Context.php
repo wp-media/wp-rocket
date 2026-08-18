@@ -159,11 +159,7 @@ class Context {
 			return self::ROCKETCDN_STATE_ONGOING_FREE;
 		}
 
-		if ( $this->subscription_controller->is_in_grace_period() ) {
-			return self::ROCKETCDN_STATE_PRO;
-		}
-
-		if ( $this->subscription_controller->has_active_subscription() ) {
+		if ( $this->subscription_controller->is_in_grace_period() || $this->subscription_controller->has_active_subscription() ) {
 			if ( $this->subscription_controller->is_paid() ) {
 				return self::ROCKETCDN_STATE_PRO;
 			}

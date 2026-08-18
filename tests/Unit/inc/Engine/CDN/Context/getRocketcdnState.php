@@ -49,16 +49,16 @@ class Test_GetRocketcdnState extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
 			->andReturn( $config['is_in_grace_period'] ?? false );
 
-		if ( $config['is_in_grace_period'] ?? false ) {
-			$this->assertSame( $expected, $this->context->get_rocketcdn_state() );
+		$grace_or_active = $config['is_in_grace_period'] ?? false;
 
-			return;
+		if ( ! $grace_or_active ) {
+			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+				->andReturn( $config['has_active_subscription'] ?? false );
+
+			$grace_or_active = $config['has_active_subscription'] ?? false;
 		}
 
-		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
-			->andReturn( $config['has_active_subscription'] ?? false );
-
-		if ( $config['has_active_subscription'] ?? false ) {
+		if ( $grace_or_active ) {
 			$this->subscription_controller->shouldReceive( 'is_paid' )
 				->andReturn( $config['is_paid'] ?? false );
 

@@ -1,26 +1,43 @@
 <?php
 
 return [
-	'testShouldReturnOngoingActivationFreeWhenLoading'      => [
+	'testShouldReturnOngoingActivationFreeWhenLoading'    => [
 		'config'   => [
 			'is_subscription_creation_loading' => true,
 		],
 		'expected' => 'ongoing_activation_free',
 	],
-	'testShouldReturnProWhenInGracePeriod'                  => [
+	'testShouldReturnProWhenGracePeriodPaidSubscription'  => [
 		'config'   => [
 			'is_in_grace_period' => true,
+			'is_paid'            => true,
 		],
 		'expected' => 'pro',
 	],
-	'testShouldReturnProWhenActivePaidSubscription'         => [
+	'testShouldReturnFreeWhenGracePeriodFreeSubscription' => [
+		'config'   => [
+			'is_in_grace_period' => true,
+			'is_paid'            => false,
+			'is_free'            => true,
+		],
+		'expected' => 'free',
+	],
+	'testShouldReturnNothingWhenGracePeriodUnexpectedPlanType' => [
+		'config'   => [
+			'is_in_grace_period' => true,
+			'is_paid'            => false,
+			'is_free'            => false,
+		],
+		'expected' => 'nothing',
+	],
+	'testShouldReturnProWhenActivePaidSubscription'       => [
 		'config'   => [
 			'has_active_subscription' => true,
 			'is_paid'                 => true,
 		],
 		'expected' => 'pro',
 	],
-	'testShouldReturnFreeWhenActiveFreeSubscription'        => [
+	'testShouldReturnFreeWhenActiveFreeSubscription'      => [
 		'config'   => [
 			'has_active_subscription' => true,
 			'is_paid'                 => false,
@@ -28,7 +45,7 @@ return [
 		],
 		'expected' => 'free',
 	],
-	'testShouldReturnNothingWhenNoSubscription'             => [
+	'testShouldReturnNothingWhenNoSubscription'           => [
 		'config'   => [
 			'has_active_subscription' => false,
 		],
