@@ -12,6 +12,7 @@ use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
+use WP_Rocket\Engine\CDN\Context as CDNContext;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -44,7 +45,8 @@ class TestAsyncWistiaScript extends TestCase {
 			$template_path,
 			Mockery::mock( Options_Data::class ),
 			Mockery::mock( Context::class ),
-			Mockery::mock( SubscriptionController::class )
+			Mockery::mock( SubscriptionController::class ),
+			Mockery::mock( CDNContext::class )
 		);
 
         $this->assertSame(
