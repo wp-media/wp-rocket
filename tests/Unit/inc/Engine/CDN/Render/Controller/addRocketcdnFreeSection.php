@@ -123,6 +123,12 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_TYPE );
 
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
 		$this->context->shouldReceive( 'get_free_page_limit' )
 			->andReturn( 3 );
 
