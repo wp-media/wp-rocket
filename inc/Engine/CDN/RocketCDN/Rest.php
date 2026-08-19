@@ -199,6 +199,34 @@ class Rest extends WP_REST_Controller {
 
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/mode',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_cdn_mode' ],
+				'permission_callback' => [ $this, 'check_permission' ],
+				'args'                => [
+					'mode' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return in_array(
+								$param,
+								[
+									Context::ROCKETCDN_FREE_TYPE,
+									Context::ROCKETCDN_PAID_TYPE,
+									Context::BYOCDN_TYPE,
+									Context::CDN_STATE_NOTHING,
+								],
+								true
+								);
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
 			self::ROUTE_BASE . '/subscription',
 			[
 				[
@@ -486,6 +514,46 @@ class Rest extends WP_REST_Controller {
 	 */
 	protected function get_free_page_limit(): int {
 		return $this->context->get_free_page_limit();
+	}
+
+	/**
+	 * Activates or deactivates a CDN mode via the toggle.
+	 *
+	 * Accepts 'rocketcdn_free', 'byocdn', or 'nothing' (deactivate all).
+	 * Rejects activation of RocketCDN free when it is in a forced-off state.
+	 *
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_cdn_mode( WP_REST_Request $request ) {
+		$mode = $request->get_param( 'mode' );
+
+		if ( Context::ROCKETCDN_FREE_TYPE === $mode && $this->render_controller->should_disable_element_for_rocketcdn() ) {
+			return new WP_Error(
+				'cdn_mode_forced_off',
+				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
+		}
+
+		$this->options->set( 'cdn_state', $mode );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		/**
+		 * Fires after the CDN mode is changed via the toggle.
+		 *
+		 * @param string $mode The new CDN mode ('rocketcdn_free', 'byocdn', or 'nothing').
+		 */
+		do_action( 'rocket_cdn_mode_changed', $mode );
+
+		return new WP_REST_Response(
+			[
+				'applied_cdn_state'           => $this->context->get_applied_cdn_state(),
+				'rocketcdn_state'             => $this->context->get_rocketcdn_state(),
+				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
+			],
+			200
+		);
 	}
 
 	/**

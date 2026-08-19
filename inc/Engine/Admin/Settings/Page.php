@@ -9,6 +9,7 @@ use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
+use WP_Rocket\Engine\CDN\Context as CDNContext;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 
@@ -111,6 +112,13 @@ class Page extends Abstract_Render {
 	private $ri_context;
 
 	/**
+	 * CDN context instance.
+	 *
+	 * @var CDNContext
+	 */
+	private $cdn_context;
+
+	/**
 	 * Subscription controller instance.
 	 *
 	 * @var SubscriptionController
@@ -131,6 +139,7 @@ class Page extends Abstract_Render {
 	 * @param Options_Data           $options       WP Rocket options instance.
 	 * @param Context                $ri_context   Rocket Insights context instance.
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param CDNContext             $cdn_context  CDN context instance.
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -144,7 +153,8 @@ class Page extends Abstract_Render {
 		$template_path,
 		Options_Data $options,
 		Context $ri_context,
-		SubscriptionController $subscription_controller
+		SubscriptionController $subscription_controller,
+		CDNContext $cdn_context
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -168,6 +178,7 @@ class Page extends Abstract_Render {
 		$this->options                 = $options;
 		$this->ri_context              = $ri_context;
 		$this->subscription_controller = $subscription_controller;
+		$this->cdn_context             = $cdn_context;
 	}
 
 	/**
@@ -1539,23 +1550,17 @@ class Page extends Abstract_Render {
 
 		$cdn_beacon = $this->beacon->get_suggest( 'own_cdn' );
 
-		// @todo (#8693): replace with Context::get_applied_cdn_state() once Context is injected here.
-		$cdn_state         = (string) $this->options->get( 'cdn_state', 'nothing' );
-		$applied_cdn_state = in_array( $cdn_state, [ 'rocketcdn_free', 'rocketcdn_paid' ], true )
-			? 'rocketcdn'
-			: $cdn_state; // 'byocdn' or 'nothing' pass through unchanged.
-
 		$cdn_sections = [
 			'cdn_section' => [
-				'title'            => __( 'Your CDN', 'rocket' ),
-				'type'             => 'your_own_cdn',
-				'help'             => [
+				'title'             => __( 'Your CDN', 'rocket' ),
+				'type'              => 'your_own_cdn',
+				'help'              => [
 					'id'  => $cdn_beacon['id'],
 					'url' => $cdn_beacon['url'],
 				],
-				'page'             => 'page_cdn',
-				'class'            => [ 'your-own-cdn' ],
-				'status_indicator' => [
+				'page'              => 'page_cdn',
+				'class'             => [ 'your-own-cdn' ],
+				'status_indicator'  => [
 					// Read raw options to avoid values filtered through pre_get_rocket_option_* when RocketCDN is active.
 					// This prevents incorrect BYOCDN status display when CDN is enabled but no CNAMEs are configured.
 					'is_active'          => ! empty( ( (array) $this->options->get_options() )['cdn_cnames'] ?? [] ),
@@ -1563,7 +1568,7 @@ class Page extends Abstract_Render {
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 					'hide_pause_btn'     => true,
 				],
-				'applied_cdn_state' => $applied_cdn_state,
+				'applied_cdn_state' => $this->cdn_context->get_applied_cdn_state(),
 			],
 		];
 

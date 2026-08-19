@@ -57,13 +57,6 @@ if ( ! $data['is_active'] ) {
 					<span class="wpr-cdn-indicator__text"><?php echo esc_html( $data['status_text'] ); ?></span>
 				</div>
 			<?php endif; ?>
-			<?php if ( ! $rocket_hide_pause_btn ) : ?>
-				<button type="button" class="wpr-cdn-pause <?php echo $data['is_paused'] ? 'wpr-cdn-pause--paused' : ''; ?>" aria-pressed="false" <?php echo $rocket_is_pause_btn_disabled ? 'disabled' : ''; ?>>
-					<span class="wpr-cdn-pause__icon"></span>
-					<span class="wpr-cdn-pause__text wpr-cdn-pause__text--pause"><?php esc_html_e( 'PAUSE CDN', 'rocket' ); ?></span>
-					<span class="wpr-cdn-pause__text wpr-cdn-pause__text--resume"><?php esc_html_e( 'RESUME CDN', 'rocket' ); ?></span>
-				</button>
-			<?php endif; ?>
 		</div>
 		<?php if ( ! empty( $rocket_details ) ) : ?>
 			<p class="wpr-cdn-indicator__details">

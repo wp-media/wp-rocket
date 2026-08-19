@@ -136,15 +136,17 @@ class Controller extends Abstract_Render {
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$sections['rocketcdn_paid_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_paid',
-			'class'            => [ 'rocketcdn' ],
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_paid',
+			'class'             => [ 'rocketcdn' ],
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $status_indicator_data,
+			'status_indicator'  => $status_indicator_data,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'is_forced_off'     => $this->should_disable_element_for_rocketcdn(),
 		];
 
 		return $sections;
@@ -198,16 +200,16 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$sections['rocketcdn_free_section'] = [
-			'title'              => __( 'RocketCDN', 'rocket' ),
-			'type'               => 'rocketcdn_free',
-			'class'              => $classes,
-			'page'               => 'page_cdn',
-			'help'               => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_free',
+			'class'             => $classes,
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'   => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'           => [
+			'status_indicator'  => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'          => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
@@ -215,9 +217,10 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
-			'limit_reached'      => $limit_reached,
-			'applied_cdn_state'  => $this->context->get_applied_cdn_state(),
-			'rocketcdn_state'    => $this->context->get_rocketcdn_state(),
+			'limit_reached'     => $limit_reached,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $this->context->get_rocketcdn_state(),
+			'is_forced_off'     => $this->should_disable_element_for_rocketcdn(),
 		];
 
 		return $sections;
