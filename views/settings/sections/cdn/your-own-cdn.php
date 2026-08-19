@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 			class="wpr-cdn-mode-toggle__input"
 			id="wpr-byocdn-toggle"
 			data-cdn-mode="byocdn"
-			<?php checked( 'BYOCDN' === $data['applied_cdn_state'] ); ?>
+			<?php checked( 'byocdn' === $data['applied_cdn_state'] ); ?>
 		/>
 		<span class="wpr-cdn-mode-toggle__slider"></span>
 	</label>

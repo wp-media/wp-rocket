@@ -37,7 +37,7 @@ defined( 'ABSPATH' ) || exit;
 			class="wpr-cdn-mode-toggle__input"
 			id="wpr-rocketcdn-free-toggle"
 			data-cdn-mode="rocketcdn_free"
-			<?php checked( in_array( $data['rocketcdn_state'], [ 'FREE', 'ongoing_activation_free' ], true ) ); ?>
+			<?php checked( in_array( $data['rocketcdn_state'], [ 'rocketcdn_free', 'ongoing_activation_free' ], true ) ); ?>
 		/>
 		<span class="wpr-cdn-mode-toggle__slider"></span>
 	</label>

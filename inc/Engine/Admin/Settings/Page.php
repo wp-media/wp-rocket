@@ -1539,6 +1539,12 @@ class Page extends Abstract_Render {
 
 		$cdn_beacon = $this->beacon->get_suggest( 'own_cdn' );
 
+		// @todo (#8693): replace with Context::get_applied_cdn_state() once Context is injected here.
+		$cdn_state         = (string) $this->options->get( 'cdn_state', 'nothing' );
+		$applied_cdn_state = in_array( $cdn_state, [ 'rocketcdn_free', 'rocketcdn_paid' ], true )
+			? 'rocketcdn'
+			: $cdn_state; // 'byocdn' or 'nothing' pass through unchanged.
+
 		$cdn_sections = [
 			'cdn_section' => [
 				'title'            => __( 'Your CDN', 'rocket' ),
@@ -1557,8 +1563,7 @@ class Page extends Abstract_Render {
 					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
 					'hide_pause_btn'     => true,
 				],
-				// @todo Story 1 (#8693): replace with Context::get_applied_cdn_state() once Context is injected here.
-				'applied_cdn_state' => 'byocdn' === (string) $this->options->get( 'cdn_type', 'rocketcdn' ) ? 'BYOCDN' : 'RocketCDN',
+				'applied_cdn_state' => $applied_cdn_state,
 			],
 		];
 

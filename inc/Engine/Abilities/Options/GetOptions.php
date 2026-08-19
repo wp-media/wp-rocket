@@ -329,6 +329,11 @@ class GetOptions implements AbilitiesInterface {
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'Pages to exclude from CDN.',
 			],
+			'cdn_state'                                 => [
+				'type'        => 'string',
+				'description' => 'Currently applied CDN state.',
+				'enum'        => [ 'nothing', 'rocketcdn_free', 'rocketcdn_pro', 'byocdn' ],
+			],
 
 			// Cloudflare.
 			'do_cloudflare'                             => [
