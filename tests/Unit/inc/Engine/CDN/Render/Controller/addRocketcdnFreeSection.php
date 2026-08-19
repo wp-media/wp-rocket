@@ -88,7 +88,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
-		$this->cache                    = Mockery::mock( Cache::class );
+		$this->cache                   = Mockery::mock( Cache::class );
 	}
 
 	/**
@@ -148,6 +148,12 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			->andReturn( false );
 
 		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( false );
 
 		$this->options->shouldReceive( 'get' )
