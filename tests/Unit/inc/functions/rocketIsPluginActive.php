@@ -12,8 +12,6 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  Functions
  */
 class Test_RocketIsPluginActive extends TestCase {
-	private $config;
-
 	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
