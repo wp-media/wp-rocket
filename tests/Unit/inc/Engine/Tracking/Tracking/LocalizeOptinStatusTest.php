@@ -9,6 +9,7 @@ use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -50,7 +51,10 @@ class LocalizeOptinStatusTest extends TestCase {
 				->andReturn( hash( 'sha224', $config['consumer_email'] ) );
 		}
 
-		$tracking = new Tracking( $options, $optin, $mixpanel, $user, '' );
+		$channel_detector = Mockery::mock( ChannelDetector::class );
+		$channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
+
+		$tracking = new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, '' );
 
 		Functions\when( 'current_user_can' )->justReturn( $config['user_can_manage'] );
 

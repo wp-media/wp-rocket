@@ -10,6 +10,13 @@ use Action_Scheduler\WP_CLI\ProgressBar;
 class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 	/**
+	 * Whether the cleaner instance is a non-default one.
+	 *
+	 * @var bool
+	 */
+	private $is_custom_cleaner;
+
+	/**
 	 * Claimed actions.
 	 *
 	 * @var array
@@ -46,6 +53,8 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 		}
 
 		parent::__construct( $store, $monitor, $cleaner );
+
+		$this->is_custom_cleaner = get_class( $this->cleaner ) !== ActionScheduler_QueueCleaner::class;
 	}
 
 	/**
@@ -60,7 +69,18 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	 * @throws \WP_CLI\ExitException When there are too many concurrent batches.
 	 */
 	public function setup( $batch_size, $hooks = array(), $group = '', $force = false ) {
-		$this->run_cleanup();
+		$cleanup_time_limit = 10 * $this->get_time_limit();
+		// Backward compatibility: If the action cleaner is standard, cleaning will be performed as an action to improve throughput
+		// and enable daily runs. If not, cleaning will occur explicitly before processing actions to ensure backward compatibility.
+		if ( $this->is_custom_cleaner ) {
+			// Execute complete cleanup cycle, as in this logical branch deletion IS NOT executed via a separate action.
+			$this->cleaner->clean( $cleanup_time_limit );
+		} else {
+			// Execute partial cleanup cycle, as in this logical branch deletion IS executed via a separate action.
+			$this->cleaner->reset_timeouts( $cleanup_time_limit );
+			$this->cleaner->mark_failures( $cleanup_time_limit );
+		}
+
 		$this->add_hooks();
 
 		// Check to make sure there aren't too many concurrent processes running.
@@ -111,9 +131,11 @@ class ActionScheduler_WPCLI_QueueRunner extends ActionScheduler_Abstract_QueueRu
 	public function run( $context = 'WP CLI' ) {
 		do_action( 'action_scheduler_before_process_queue' );
 		$this->setup_progress_bar();
+
+		$claim_id = $this->claim->get_id();
 		foreach ( $this->actions as $action_id ) {
-			// Error if we lost the claim.
-			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $this->claim->get_id() ), true ) ) {
+			// Bail if we lost the claim.
+			if ( $claim_id !== $this->store->get_claim_id( $action_id ) ) {
 				WP_CLI::warning( __( 'The claim has been lost. Aborting current batch.', 'action-scheduler' ) );
 				break;
 			}
