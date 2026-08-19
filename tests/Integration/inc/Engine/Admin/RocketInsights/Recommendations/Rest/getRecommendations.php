@@ -14,8 +14,6 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  */
 class getRecommendations extends RESTfulTestCase {
 
-	private $config;
-
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();

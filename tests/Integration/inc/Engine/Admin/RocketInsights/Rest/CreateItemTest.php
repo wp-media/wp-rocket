@@ -17,7 +17,6 @@ class CreateItemTest extends RESTfulTestCase {
 
 	private $hook_fired = false;
 	private $container;
-	private $config;
 
 	public function configTestData() {
 		if ( empty( $this->config ) ) {

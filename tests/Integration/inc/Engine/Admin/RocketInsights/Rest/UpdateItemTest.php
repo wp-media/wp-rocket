@@ -15,7 +15,6 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 class UpdateItemTest extends RESTfulTestCase {
 	use DBTrait;
 
-	private $config;
 	private $hook_fired = false;
 	private $hook_fired_id = null;
 

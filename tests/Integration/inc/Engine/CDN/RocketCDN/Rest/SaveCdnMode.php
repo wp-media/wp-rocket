@@ -16,7 +16,6 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 	use CapTrait, DBTrait;
 
 	private $admin_id;
-	private $config;
 
 	protected $options_data;
 	protected $options_api;
@@ -40,6 +39,17 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		$container          = apply_filters( 'rocket_container', null );
 		$this->options_data = $container->get( 'options' );
 		$this->options_api  = $container->get( 'options_api' );
+
+		// save_cdn_mode() forces the free mode off unless there's an active subscription;
+		// simulate one so it doesn't get rejected (matches the pattern used in AddPage.php).
+		set_transient(
+			'rocketcdn_status',
+			[
+				'subscription_status' => 'running',
+				'cdn_url'              => 'example1.org',
+			],
+			HOUR_IN_SECONDS
+		);
 	}
 
 	public function tear_down() {
@@ -48,6 +58,8 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		$settings = $this->options_api->get( 'settings', [] );
 		unset( $settings['cdn_state'] );
 		$this->options_api->set( 'settings', $settings );
+
+		delete_transient( 'rocketcdn_status' );
 
 		parent::tear_down();
 	}

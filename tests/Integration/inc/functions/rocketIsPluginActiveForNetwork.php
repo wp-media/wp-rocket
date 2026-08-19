@@ -10,8 +10,6 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  Functions
  */
 class Test_RocketIsPluginActiveForNetwork extends TestCase {
-	private $config;
-
 	public function set_up() {
 		parent::set_up();
 
