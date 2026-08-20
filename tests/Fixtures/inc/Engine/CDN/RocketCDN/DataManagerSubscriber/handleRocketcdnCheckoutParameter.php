@@ -77,8 +77,6 @@ return [
         'expected' => [
             'token_value'      => '1234567890123456789012345678901234567890',
             'cdn_enabled'      => true,
-            'cdn_url'          => 'https://example.rocketcdn.me',
-            'cdn_state'        => 'rocketcdn_paid',
             'expects_redirect' => true,
         ],
     ],
