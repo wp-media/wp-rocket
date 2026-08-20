@@ -26,6 +26,17 @@ if ( $rocket_can_boot_mcp_adapter ) {
 	if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
 		\WPMedia\MCP\OAuth\Bootstrap::instance();
 	}
+
+	/**
+	 * MCP Helpers proof of concept: register the WP Rocket filter/action catalog
+	 * and approved callbacks, then boot the filter-callback abilities (discovery
+	 * + CRUD) and the applier.
+	 */
+	if ( function_exists( 'MCPHelpers\bootstrap' ) ) {
+		require_once WP_ROCKET_INC_PATH . 'MCP/catalog/filters.php';
+		require_once WP_ROCKET_INC_PATH . 'MCP/catalog/callbacks.php';
+		MCPHelpers\bootstrap();
+	}
 }
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
@@ -129,3 +140,13 @@ add_action( 'plugins_loaded', 'rocket_init' );
 
 register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate_plugin' ] );
 register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate_plugin' ] );
+
+// MCP Helpers proof of concept: create the filter-callback table on activation.
+register_activation_hook(
+	WP_ROCKET_FILE,
+	static function () {
+		if ( class_exists( MCPHelpers\Table\FilterCallbackTable::class ) ) {
+			( new MCPHelpers\Table\FilterCallbackTable() )->install();
+		}
+	}
+);

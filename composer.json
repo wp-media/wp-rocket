@@ -99,8 +99,12 @@
 			"inc/classes/class-wp-rocket-requirements-check.php"
 		],
 		"psr-4": {
-			"WP_Rocket\\": "inc/"
-		}
+			"WP_Rocket\\": "inc/",
+			"MCPHelpers\\": "inc/vendors/mcp-helpers/src/"
+		},
+		"files": [
+			"inc/vendors/mcp-helpers/mcp-helpers.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
