@@ -29,7 +29,7 @@ class Test_AddPage extends RESTfulTestCase {
 		parent::tear_down_after_class();
 	}
 
-	private $config;
+	protected $config;
 
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
