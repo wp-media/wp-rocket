@@ -532,6 +532,10 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 * @return void
 	 */
 	public function unregister_cloudflare_clean_on_post() {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
 		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs' );
 		$this->unregister_callback( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
 	}
