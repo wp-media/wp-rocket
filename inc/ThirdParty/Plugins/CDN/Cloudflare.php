@@ -559,7 +559,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
 
-			if ( substr( $key, - strlen( $method ) ) !== $method ) {
+			if ( substr( (string) $key, - strlen( $method ) ) !== $method ) {
 				continue;
 			}
 
