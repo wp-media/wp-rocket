@@ -559,7 +559,8 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
 
-			if ( substr( $key, - strlen( $method ) ) !== $method ) {
+			// PHP casts numeric-string array keys to int, so $key is not always a string.
+			if ( substr( (string) $key, - strlen( $method ) ) !== $method ) {
 				continue;
 			}
 
