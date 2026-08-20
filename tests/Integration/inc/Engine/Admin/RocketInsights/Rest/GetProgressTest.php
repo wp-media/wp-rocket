@@ -15,6 +15,8 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 class GetProgressTest extends RESTfulTestCase {
 	use DBTrait;
 
+	protected $config;
+
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();

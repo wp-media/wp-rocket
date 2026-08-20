@@ -17,6 +17,8 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 
 	private $admin_id;
 
+	protected $config;
+
 	protected $options_data;
 	protected $options_api;
 

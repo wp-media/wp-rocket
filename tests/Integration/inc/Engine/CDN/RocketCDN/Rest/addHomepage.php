@@ -17,6 +17,8 @@ class Test_AddHomepage extends RESTfulTestCase {
 
 	private $admin_id;
 
+	protected $config;
+
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();

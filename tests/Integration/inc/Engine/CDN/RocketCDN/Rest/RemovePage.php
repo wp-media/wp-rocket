@@ -17,6 +17,8 @@ class Test_RemovePage extends RESTfulTestCase {
 
 	private $admin_id;
 
+	protected $config;
+
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::installRocketCDNTable();

@@ -11,6 +11,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
  * @group  Functions
  */
 class Test_RocketIsPluginActive extends TestCase {
+	protected $config;
+
 	public function set_up() {
 		parent::set_up();
 

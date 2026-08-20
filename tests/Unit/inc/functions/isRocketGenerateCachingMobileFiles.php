@@ -13,6 +13,8 @@ use WPMedia\PHPUnit\Unit\TestCase;
  * @group  Functions
  */
 class Test_IsRocketGenerateCachingMobileFiles extends TestCase {
+	protected $config = [];
+
 	protected function setUp() : void {
 		parent::setUp();
 

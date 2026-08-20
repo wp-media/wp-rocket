@@ -16,6 +16,7 @@ use WP_Rocket\Engine\CDN\Context;
 class Test_RewriteSrcset extends TestCase {
 	private $options;
 	private $cdn;
+	protected $config;
 
 	public function setUp() : void {
 		parent::setUp();
