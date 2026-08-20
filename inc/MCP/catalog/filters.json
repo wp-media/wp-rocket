@@ -1,0 +1,4197 @@
+[
+    {
+        "name": "rocket_action_scheduler_clean_batch_size",
+        "type": "filter",
+        "label": "Action scheduler clean batch size",
+        "description": "Filters the clean batch size.",
+        "category": "common",
+        "keywords": [
+            "action",
+            "scheduler",
+            "clean",
+            "batch",
+            "size"
+        ],
+        "params": [
+            {
+                "name": "batch_size",
+                "type": "int",
+                "description": "Batch size."
+            },
+            {
+                "name": "group",
+                "type": "string",
+                "description": "The group name."
+            }
+        ],
+        "since": "3.11.0.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_action_scheduler_retention_period",
+        "type": "filter",
+        "label": "Action scheduler retention period",
+        "description": "Filters the retention period for our tasks only.",
+        "category": "common",
+        "keywords": [
+            "action",
+            "scheduler",
+            "retention",
+            "period"
+        ],
+        "params": [
+            {
+                "name": "lifespan",
+                "type": "int",
+                "description": "Lifespan in seconds."
+            },
+            {
+                "name": "group",
+                "type": "string",
+                "description": "The group name."
+            }
+        ],
+        "since": "3.11.0.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_allow_cdn_images",
+        "type": "filter",
+        "label": "Allow cdn images",
+        "description": "Controls the inclusion of images option for the CDN dropdown",
+        "category": "deprecated",
+        "keywords": [
+            "allow",
+            "cdn",
+            "images"
+        ],
+        "params": [
+            {
+                "name": "allow",
+                "type": "bool",
+                "description": "true to add the option, false otherwise."
+            }
+        ],
+        "since": "2.10.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_atf_images_number",
+        "type": "filter",
+        "label": "Atf images number",
+        "description": "Filters the maximum number of ATF images being saved into the database.",
+        "category": "media",
+        "keywords": [
+            "atf",
+            "images",
+            "number"
+        ],
+        "params": [
+            {
+                "name": "max_number",
+                "type": "int",
+                "description": "Maximum number to allow."
+            },
+            {
+                "name": "url",
+                "type": "string",
+                "description": "Current page url."
+            },
+            {
+                "name": "images",
+                "type": "string[]|array",
+                "description": "Current list of ATF images."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_atf_valid_image",
+        "type": "filter",
+        "label": "Atf valid image",
+        "description": "Filters If the image src is a valid image or not.",
+        "category": "media",
+        "keywords": [
+            "atf",
+            "valid",
+            "image"
+        ],
+        "params": [
+            {
+                "name": "valid_image",
+                "type": "bool",
+                "description": "Valid image or not."
+            },
+            {
+                "name": "image_src_url",
+                "type": "string",
+                "description": "Image src url."
+            },
+            {
+                "name": "image_object",
+                "type": "object",
+                "description": "Image object with full details."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_attributes_for_webp",
+        "type": "filter",
+        "label": "Attributes for webp",
+        "description": "Filter the names of the HTML attributes where WP Rocket must search for image files.",
+        "category": "addon:webp",
+        "keywords": [
+            "attributes",
+            "for",
+            "webp"
+        ],
+        "params": [
+            {
+                "name": "attributes",
+                "type": "array",
+                "description": "An array of HTML attribute names."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_bad_deactivations",
+        "type": "filter",
+        "label": "Bad deactivations",
+        "description": "Filter the output messages for each bad deactivation attempt.",
+        "category": "admin",
+        "keywords": [
+            "bad",
+            "deactivations"
+        ],
+        "params": [
+            {
+                "name": "errors",
+                "type": "array",
+                "description": "Contains the error messages to be filtered"
+            },
+            {
+                "name": "msg",
+                "type": "string",
+                "description": "Contains the error type (wpconfig or htaccess)"
+            }
+        ],
+        "since": "2.0.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_before_add_field_to_settings",
+        "type": "filter",
+        "label": "Before add field to settings",
+        "description": "Filters the field  before add to the settings",
+        "category": "admin",
+        "keywords": [
+            "before",
+            "add",
+            "field",
+            "settings"
+        ],
+        "params": [
+            {
+                "name": "input",
+                "type": "array",
+                "description": "Array of sanitized values after being submitted by the form."
+            }
+        ],
+        "since": "3.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_dynamic_cookies",
+        "type": "filter",
+        "label": "Cache dynamic cookies",
+        "description": "Filter list of dynamic cookies.",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "dynamic",
+            "cookies"
+        ],
+        "params": [
+            {
+                "name": "cookies",
+                "type": "array",
+                "description": "List of dynamic cookies."
+            }
+        ],
+        "since": "2.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_ignored_parameters",
+        "type": "filter",
+        "label": "Cache ignored parameters",
+        "description": "Filters the ignored parameters",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "ignored",
+            "parameters"
+        ],
+        "params": [
+            {
+                "name": "params",
+                "type": "array",
+                "description": "An array of ignored parameters as array keys."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_mandatory_cookies",
+        "type": "filter",
+        "label": "Cache mandatory cookies",
+        "description": "Filter list of mandatory cookies.",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "mandatory",
+            "cookies"
+        ],
+        "params": [
+            {
+                "name": "cookies",
+                "type": "array",
+                "description": "List of mandatory cookies."
+            }
+        ],
+        "since": "2.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_query_strings",
+        "type": "filter",
+        "label": "Cache query strings",
+        "description": "Filter query strings which can be cached.",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "query",
+            "strings"
+        ],
+        "params": [
+            {
+                "name": "query_strings",
+                "type": "array",
+                "description": "List of query strings which can be cached."
+            }
+        ],
+        "since": "2.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_reject_cookies",
+        "type": "filter",
+        "label": "Cache reject cookies",
+        "description": "Filter the rejected cookies.",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "reject",
+            "cookies"
+        ],
+        "params": [
+            {
+                "name": "cookies",
+                "type": "array",
+                "description": "List of rejected cookies."
+            }
+        ],
+        "since": "2.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_reject_ua",
+        "type": "filter",
+        "label": "Cache reject ua",
+        "description": "Filter the rejected User-Agent",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "reject"
+        ],
+        "params": [
+            {
+                "name": "ua",
+                "type": "array",
+                "description": "List of rejected User-Agent."
+            }
+        ],
+        "since": "2.3.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_reject_uri",
+        "type": "filter",
+        "label": "Cache reject uri",
+        "description": "Filter the rejected uri",
+        "category": "functions",
+        "keywords": [
+            "cache",
+            "reject",
+            "uri"
+        ],
+        "params": [
+            {
+                "name": "uris",
+                "type": "array",
+                "description": "List of rejected uri"
+            },
+            {
+                "name": "show_safe_content",
+                "type": "bool",
+                "description": "show sensitive uris."
+            }
+        ],
+        "since": "2.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cache_reject_wc_rest_api",
+        "type": "filter",
+        "label": "Cache reject wc rest api",
+        "description": "By default, don't cache the WooCommerce REST API.",
+        "category": "thirdparty",
+        "keywords": [
+            "cache",
+            "reject",
+            "rest",
+            "api"
+        ],
+        "params": [
+            {
+                "name": "cache_wc_rest_api",
+                "type": "bool",
+                "description": "false will force to cache the WooCommerce REST API"
+            }
+        ],
+        "since": "2.6.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cache_reject_wp_rest_api",
+        "type": "filter",
+        "label": "Cache reject wp rest api",
+        "description": "By default, don't cache the WP REST API.",
+        "category": "3rd-party",
+        "keywords": [
+            "cache",
+            "reject",
+            "rest",
+            "api"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "bool",
+                "description": "false will force to cache the WP REST API"
+            }
+        ],
+        "since": "2.5.12",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cache_search",
+        "type": "filter",
+        "label": "Cache search",
+        "description": "At this point we’re in the WP’s search page.",
+        "category": "criticalpath",
+        "keywords": [
+            "cache",
+            "search"
+        ],
+        "params": [
+            {
+                "name": "cache_search",
+                "type": "bool",
+                "description": "True will force caching search results."
+            }
+        ],
+        "since": "2.3.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cache_wc_empty_cart",
+        "type": "filter",
+        "label": "Cache wc empty cart",
+        "description": "Filters activation of WooCommerce empty cart caching",
+        "category": "thirdparty",
+        "keywords": [
+            "cache",
+            "empty",
+            "cart"
+        ],
+        "params": [
+            {
+                "name": "cache_cart",
+                "type": "bool",
+                "description": "true to activate, false to deactivate."
+            }
+        ],
+        "since": "3.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cache_webp_setting_field",
+        "type": "filter",
+        "label": "Cache webp setting field",
+        "description": "Add more content to the 'cache_webp' setting field.",
+        "category": "admin",
+        "keywords": [
+            "cache",
+            "webp",
+            "setting",
+            "field"
+        ],
+        "params": [
+            {
+                "name": "cache_webp_field",
+                "type": "array",
+                "description": "Data to be added to the setting field."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_cnames",
+        "type": "filter",
+        "label": "Cdn cnames",
+        "description": "Filter all CDN URLs.",
+        "category": "cdn",
+        "keywords": [
+            "cdn",
+            "cnames"
+        ],
+        "params": [
+            {
+                "name": "hosts",
+                "type": "array",
+                "description": "List of CDN URLs."
+            },
+            {
+                "name": "zones",
+                "type": "array",
+                "description": "List of zones. Default is [ 'all' ]."
+            }
+        ],
+        "since": "3.4 Added $zone parameter.",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_custom_filetypes",
+        "type": "filter",
+        "label": "Cdn custom filetypes",
+        "description": "Filters the filetypes allowed for the CDN",
+        "category": "deprecated",
+        "keywords": [
+            "cdn",
+            "custom",
+            "filetypes"
+        ],
+        "params": [
+            {
+                "name": "filetypes",
+                "type": "array",
+                "description": "Array of file types."
+            }
+        ],
+        "since": "2.9",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_exclude_inline_scripts",
+        "type": "filter",
+        "label": "Cdn exclude inline scripts",
+        "description": "Filters the exclusion of CDN rewriting inside inline scripts",
+        "category": "cdn",
+        "keywords": [
+            "cdn",
+            "exclude",
+            "inline",
+            "scripts"
+        ],
+        "params": [
+            {
+                "name": "enable",
+                "type": "bool",
+                "description": "True to exclude, false otherwise."
+            }
+        ],
+        "since": "3.10.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cdn_hosts",
+        "type": "filter",
+        "label": "Cdn hosts",
+        "description": "Filters the allowed hosts for optimization",
+        "category": "media",
+        "keywords": [
+            "cdn",
+            "hosts"
+        ],
+        "params": [
+            {
+                "name": "hosts",
+                "type": "array",
+                "description": "Allowed hosts."
+            },
+            {
+                "name": "zones",
+                "type": "array",
+                "description": "Zones to check available hosts."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_images_html",
+        "type": "filter",
+        "label": "Cdn images html",
+        "description": "Filter the image HTML output with the CDN link",
+        "category": "deprecated",
+        "keywords": [
+            "cdn",
+            "images",
+            "html"
+        ],
+        "params": [
+            {
+                "name": "html",
+                "type": "array",
+                "description": "Output that will be printed."
+            }
+        ],
+        "since": "2.5.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_reject_files",
+        "type": "filter",
+        "label": "Cdn reject files",
+        "description": "Filter the excluded files.",
+        "category": "cdn",
+        "keywords": [
+            "cdn",
+            "reject",
+            "files"
+        ],
+        "params": [
+            {
+                "name": "files",
+                "type": "array",
+                "description": "List of excluded files."
+            }
+        ],
+        "since": "2.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_relative_paths",
+        "type": "filter",
+        "label": "Cdn relative paths",
+        "description": "Filters the CDN rewriting of relative paths",
+        "category": "cdn",
+        "keywords": [
+            "cdn",
+            "relative",
+            "paths"
+        ],
+        "params": [
+            {
+                "name": "enable",
+                "type": "bool",
+                "description": "True to enable, false otherwise."
+            }
+        ],
+        "since": "3.10.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_cdn_settings_fields",
+        "type": "filter",
+        "label": "Cdn settings fields",
+        "description": "Filters the fields for the CDN section.",
+        "category": "admin",
+        "keywords": [
+            "cdn",
+            "settings",
+            "fields"
+        ],
+        "params": [
+            {
+                "name": "cdn_settings_fields",
+                "type": "array",
+                "description": "Data to be added to the CDN section."
+            }
+        ],
+        "since": "3.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cdn_srcset_attributes",
+        "type": "filter",
+        "label": "Cdn srcset attributes",
+        "description": "Filter the srcset attributes.",
+        "category": "cdn",
+        "keywords": [
+            "cdn",
+            "srcset",
+            "attributes"
+        ],
+        "params": [
+            {
+                "name": "srcset_attributes",
+                "type": "array",
+                "description": "List of srcset attributes."
+            }
+        ],
+        "since": "3.8.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_clean_domain_urls",
+        "type": "filter",
+        "label": "Clean domain urls",
+        "description": "Filter URLs to delete all caching files from a domain.",
+        "category": "functions",
+        "keywords": [
+            "clean",
+            "domain",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "array",
+                "description": "URLs that will be returned."
+            },
+            {
+                "name": "",
+                "type": "string",
+                "description": "The language code."
+            }
+        ],
+        "since": "2.6.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_clean_home_feeds",
+        "type": "filter",
+        "label": "Clean home feeds",
+        "description": "Filter the home feeds urls",
+        "category": "addon:cloudflare",
+        "keywords": [
+            "clean",
+            "home",
+            "feeds"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "The urls of the home feeds."
+            }
+        ],
+        "since": "2.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_clean_home_root",
+        "type": "filter",
+        "label": "Clean home root",
+        "description": "Filter the homepage caching folder root",
+        "category": "functions",
+        "keywords": [
+            "clean",
+            "home",
+            "root"
+        ],
+        "params": [
+            {
+                "name": "root",
+                "type": "array",
+                "description": "The root that will be returned."
+            },
+            {
+                "name": "host",
+                "type": "string",
+                "description": "The website host."
+            },
+            {
+                "name": "path",
+                "type": "string",
+                "description": "The website path."
+            }
+        ],
+        "since": "2.6.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cloudflare_field_settings",
+        "type": "filter",
+        "label": "Cloudflare field settings",
+        "description": "Filters the Cloudflare Addon field values",
+        "category": "admin",
+        "keywords": [
+            "cloudflare",
+            "field",
+            "settings"
+        ],
+        "params": [
+            {
+                "name": "cf_settings",
+                "type": "array",
+                "description": "Array of values to populate the field."
+            }
+        ],
+        "since": "3.14",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_comment_cookie_lifetime",
+        "type": "filter",
+        "label": "Comment cookie lifetime",
+        "description": "Filter the lifetime of the cookie comment",
+        "category": "front",
+        "keywords": [
+            "comment",
+            "cookie",
+            "lifetime"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "int",
+                "description": "The lifetime of the cookie in seconds"
+            }
+        ],
+        "since": "2.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_common_cache_logged_users",
+        "type": "filter",
+        "label": "Common cache logged users",
+        "description": "Filters the activation of the common cache for logged-in users.",
+        "category": "cache",
+        "keywords": [
+            "common",
+            "cache",
+            "logged",
+            "users"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "bool",
+                "description": "True to activate the common cache, false to ignore."
+            }
+        ],
+        "since": "2.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_config_files_path",
+        "type": "filter",
+        "label": "Config files path",
+        "description": "Filter all config files path",
+        "category": "functions",
+        "keywords": [
+            "config",
+            "files",
+            "path"
+        ],
+        "params": [
+            {
+                "name": "config_files_path",
+                "type": "array",
+                "description": "Path of all config files."
+            }
+        ],
+        "since": "2.6.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cpcss_excluded_post_types",
+        "type": "filter",
+        "label": "Cpcss excluded post types",
+        "description": "Filters the post types excluded from critical CSS generation.",
+        "category": "optimization",
+        "keywords": [
+            "cpcss",
+            "excluded",
+            "post",
+            "types"
+        ],
+        "params": [
+            {
+                "name": "excluded_post_types",
+                "type": "array",
+                "description": "An array of post types names."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cpcss_excluded_taxonomies",
+        "type": "filter",
+        "label": "Cpcss excluded taxonomies",
+        "description": "Filters the taxonomies excluded from critical CSS generation.",
+        "category": "optimization",
+        "keywords": [
+            "cpcss",
+            "excluded",
+            "taxonomies"
+        ],
+        "params": [
+            {
+                "name": "excluded_taxonomies",
+                "type": "array",
+                "description": "An array of taxonomies names."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cpcss_items",
+        "type": "filter",
+        "label": "Cpcss items",
+        "description": "Filters the array containing the items to send to the critical CSS generator.",
+        "category": "criticalpath",
+        "keywords": [
+            "cpcss",
+            "items"
+        ],
+        "params": [
+            {
+                "name": "items",
+                "type": "array",
+                "description": "Array containing the type/url pair for each item to send."
+            }
+        ],
+        "since": "2.11.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_cpcss_job_request",
+        "type": "filter",
+        "label": "Cpcss job request",
+        "description": "Filters the parameters sent to the Critical CSS generator API.",
+        "category": "criticalpath",
+        "keywords": [
+            "cpcss",
+            "job",
+            "request"
+        ],
+        "params": [
+            {
+                "name": "params",
+                "type": "array",
+                "description": "An array of parameters to send to the API."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_css_image_lazyload_images_load",
+        "type": "filter",
+        "label": "Css image lazyload images load",
+        "description": "Lazyload background CSS excluded urls.",
+        "category": "media",
+        "keywords": [
+            "css",
+            "image",
+            "lazyload",
+            "images",
+            "load"
+        ],
+        "params": [
+            {
+                "name": "excluded",
+                "type": "array",
+                "description": "Excluded URLs."
+            },
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "List of Urls processed."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_defer_inline_exclusions",
+        "type": "filter",
+        "label": "Defer inline exclusions",
+        "description": "Filters the patterns used to find inline JS that should not be deferred",
+        "category": "optimization",
+        "keywords": [
+            "defer",
+            "inline",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "inline_exclusions_list",
+                "type": "array",
+                "description": "Array of inline JS that should not be deferred."
+            }
+        ],
+        "since": "3.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_delay_js_default_exclusions",
+        "type": "filter",
+        "label": "Delay js default exclusions",
+        "description": "Filters the delay JS default exclusions list.",
+        "category": "optimization",
+        "keywords": [
+            "delay",
+            "default",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "items",
+                "type": "array",
+                "description": "Array of default excluded items."
+            }
+        ],
+        "since": "3.13",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_deprecated_class_trigger_error",
+        "type": "filter",
+        "label": "Deprecated class trigger error",
+        "description": "Filters whether to trigger an error for deprecated classes.",
+        "category": "deprecated",
+        "keywords": [
+            "deprecated",
+            "class",
+            "trigger",
+            "error"
+        ],
+        "params": [
+            {
+                "name": "trigger",
+                "type": "bool",
+                "description": "Whether to trigger the error for deprecated classes. Default true."
+            }
+        ],
+        "since": "3.6",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_disable_htaccess",
+        "type": "filter",
+        "label": "Disable htaccess",
+        "description": "Filters disabling of WP Rocket htaccess rules",
+        "category": "admin",
+        "keywords": [
+            "disable",
+            "htaccess"
+        ],
+        "params": [
+            {
+                "name": "disable",
+                "type": "bool",
+                "description": "True to disable, false otherwise."
+            }
+        ],
+        "since": "3.2.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_disable_rucss_setting",
+        "type": "filter",
+        "label": "Disable rucss setting",
+        "description": "Filters the status of the RUCSS option.",
+        "category": "admin",
+        "keywords": [
+            "disable",
+            "rucss",
+            "setting"
+        ],
+        "params": [
+            {
+                "name": "should_disable",
+                "type": "array",
+                "description": "will return array with disable status and text."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_display_rocketcdn_cta",
+        "type": "filter",
+        "label": "Display rocketcdn cta",
+        "description": "Filters the display of the RocketCDN cta banner.",
+        "category": "cdn",
+        "keywords": [
+            "display",
+            "rocketcdn",
+            "cta"
+        ],
+        "params": [
+            {
+                "name": "display_cta_banner;",
+                "type": "bool",
+                "description": "true to display, false otherwise."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_display_rocketcdn_status",
+        "type": "filter",
+        "label": "Display rocketcdn status",
+        "description": "Filters the display of the RocketCDN status.",
+        "category": "cdn",
+        "keywords": [
+            "display",
+            "rocketcdn",
+            "status"
+        ],
+        "params": [
+            {
+                "name": "display_rocketcdn_status;",
+                "type": "bool",
+                "description": "true to display, false otherwise."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_display_varnish_options_tab",
+        "type": "filter",
+        "label": "Display varnish options tab",
+        "description": "Allow to display the \"Varnish\" tab in the settings page",
+        "category": "admin",
+        "keywords": [
+            "display",
+            "varnish",
+            "options",
+            "tab"
+        ],
+        "params": [
+            {
+                "name": "display",
+                "type": "bool",
+                "description": "true will display the \"Varnish\" tab."
+            }
+        ],
+        "since": "2.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_divi_bypass_save_template",
+        "type": "filter",
+        "label": "Divi bypass save template",
+        "description": "Filters Bypassing saving template functionality.",
+        "category": "thirdparty",
+        "keywords": [
+            "divi",
+            "bypass",
+            "save",
+            "template"
+        ],
+        "params": [
+            {
+                "name": "bypass",
+                "type": "bool",
+                "description": "Bypass save template functionality."
+            },
+            {
+                "name": "template_post_id",
+                "type": "int",
+                "description": "Currently saved template post id."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_dns_prefetch",
+        "type": "filter",
+        "label": "Dns prefetch",
+        "description": "Filter list of domains to prefetch DNS",
+        "category": "functions",
+        "keywords": [
+            "dns",
+            "prefetch"
+        ],
+        "params": [
+            {
+                "name": "domains",
+                "type": "array",
+                "description": "List of domains to prefetch DNS"
+            }
+        ],
+        "since": "1.1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_enable_rucss_fonts_preload",
+        "type": "filter",
+        "label": "Enable rucss fonts preload",
+        "description": "Filters the fonts preload from the used CSS",
+        "category": "optimization",
+        "keywords": [
+            "enable",
+            "rucss",
+            "fonts",
+            "preload"
+        ],
+        "params": [
+            {
+                "name": "enable",
+                "type": "bool",
+                "description": "True to enable, false to disable."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_exclude_async_css",
+        "type": "filter",
+        "label": "Exclude async css",
+        "description": "Filter list of async CSS files",
+        "category": "criticalpath",
+        "keywords": [
+            "exclude",
+            "async",
+            "css"
+        ],
+        "params": [
+            {
+                "name": "exclude_async_css",
+                "type": "array",
+                "description": "An array of URLs for the CSS files to be excluded."
+            }
+        ],
+        "since": "2.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_cache_busting",
+        "type": "filter",
+        "label": "Exclude cache busting",
+        "description": "Filters files to exclude from cache busting",
+        "category": "deprecated",
+        "keywords": [
+            "exclude",
+            "cache",
+            "busting"
+        ],
+        "params": [
+            {
+                "name": "excluded_files",
+                "type": "array",
+                "description": "An array of filepath to exclude."
+            }
+        ],
+        "since": "2.9.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_css",
+        "type": "filter",
+        "label": "Exclude css",
+        "description": "Filters CSS files to exclude from minification/concatenation.",
+        "category": "optimization",
+        "keywords": [
+            "exclude",
+            "css"
+        ],
+        "params": [
+            {
+                "name": "excluded_files",
+                "type": "array",
+                "description": "List of excluded CSS files."
+            }
+        ],
+        "since": "2.6",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_defer_js",
+        "type": "filter",
+        "label": "Exclude defer js",
+        "description": "Filter list of Deferred JavaScript files",
+        "category": "optimization",
+        "keywords": [
+            "exclude",
+            "defer"
+        ],
+        "params": [
+            {
+                "name": "exclude_defer_js",
+                "type": "array",
+                "description": "An array of URLs for the JS files to be excluded."
+            }
+        ],
+        "since": "2.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_js",
+        "type": "filter",
+        "label": "Exclude js",
+        "description": "Filter JS files to exclude from minification/concatenation.",
+        "category": "optimization",
+        "keywords": [
+            "exclude"
+        ],
+        "params": [
+            {
+                "name": "js_files",
+                "type": "array",
+                "description": "List of excluded JS files."
+            }
+        ],
+        "since": "2.6",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_post_taxonomy",
+        "type": "filter",
+        "label": "Exclude post taxonomy",
+        "description": "Filters the taxonomies excluded from post purge",
+        "category": "cache",
+        "keywords": [
+            "exclude",
+            "post",
+            "taxonomy"
+        ],
+        "params": [
+            {
+                "name": "excluded_taxonomies",
+                "type": "array",
+                "description": "Array of excluded taxonomies names."
+            }
+        ],
+        "since": "3.9.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_exclude_static_dynamic_resources",
+        "type": "filter",
+        "label": "Exclude static dynamic resources",
+        "description": "Filters files to exclude from static dynamic resources",
+        "category": "optimization",
+        "keywords": [
+            "exclude",
+            "static",
+            "dynamic",
+            "resources"
+        ],
+        "params": [
+            {
+                "name": "excluded_files",
+                "type": "array",
+                "description": "An array of filepath to exclude."
+            }
+        ],
+        "since": "2.9.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_excluded_inline_js_content",
+        "type": "filter",
+        "label": "Excluded inline js content",
+        "description": "Filters inline JS excluded from being combined",
+        "category": "optimization",
+        "keywords": [
+            "excluded",
+            "inline",
+            "content"
+        ],
+        "params": [
+            {
+                "name": "pattern",
+                "type": "array",
+                "description": "Patterns to match."
+            }
+        ],
+        "since": "3.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_file_extensions_for_webp",
+        "type": "filter",
+        "label": "File extensions for webp",
+        "description": "Filter the list of file extensions that may have a webp version.",
+        "category": "addon:webp",
+        "keywords": [
+            "file",
+            "extensions",
+            "for",
+            "webp"
+        ],
+        "params": [
+            {
+                "name": "extensions",
+                "type": "array",
+                "description": "An array of file extensions."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_first_install_options",
+        "type": "filter",
+        "label": "First install options",
+        "description": "Filters the default rocket options array",
+        "category": "admin",
+        "keywords": [
+            "first",
+            "install",
+            "options"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "array",
+                "description": "Array of default rocket options"
+            }
+        ],
+        "since": "2.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_force_full_path",
+        "type": "filter",
+        "label": "Force full path",
+        "description": "Allow the path to be fully printed or dependant od %DOCUMENT_ROOT (forced for 1&1 by default)",
+        "category": "functions",
+        "keywords": [
+            "force",
+            "full",
+            "path"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "bool",
+                "description": "true will force the path to be full."
+            }
+        ],
+        "since": "1.3.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_force_gzip_htaccess_rules",
+        "type": "filter",
+        "label": "Force gzip htaccess rules",
+        "description": "Allow to serve gzip cache file",
+        "category": "functions",
+        "keywords": [
+            "force",
+            "gzip",
+            "htaccess",
+            "rules"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "bool",
+                "description": "true will force to serve gzip cache file."
+            }
+        ],
+        "since": "2.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_generate_advanced_cache_file",
+        "type": "filter",
+        "label": "Generate advanced cache file",
+        "description": "Filters whether to generate the advanced-cache.php file.",
+        "category": "cache",
+        "keywords": [
+            "generate",
+            "advanced",
+            "cache",
+            "file"
+        ],
+        "params": [
+            {
+                "name": "generate",
+                "type": "bool",
+                "description": "True (default) to go ahead with advanced cache file generation; false to stop generation."
+            }
+        ],
+        "since": "3.6.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_geotargetingwp_enabled_cookies",
+        "type": "filter",
+        "label": "Geotargetingwp enabled cookies",
+        "description": "Geotargeting cookies.",
+        "category": "thirdparty",
+        "keywords": [
+            "geotargetingwp",
+            "enabled",
+            "cookies"
+        ],
+        "params": [
+            {
+                "name": "types",
+                "type": "array",
+                "description": "Types from cookies (country, state, city)."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_get_i18n_code",
+        "type": "filter",
+        "label": "Get i18n code",
+        "description": "Filters the active languages codes list",
+        "category": "functions",
+        "keywords": [
+            "get",
+            "i18n",
+            "code"
+        ],
+        "params": [
+            {
+                "name": "codes",
+                "type": "array",
+                "description": "Array of languages codes."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_get_i18n_uri",
+        "type": "filter",
+        "label": "Get i18n uri",
+        "description": "Filters the value of all active languages URI",
+        "category": "functions",
+        "keywords": [
+            "get",
+            "i18n",
+            "uri"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "array",
+                "description": "Array of active languages URI."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_gzencode_level_compression",
+        "type": "filter",
+        "label": "Gzencode level compression",
+        "description": "Filters the Gzip compression level to use for the cache file",
+        "category": "optimization",
+        "keywords": [
+            "gzencode",
+            "level",
+            "compression"
+        ],
+        "params": [
+            {
+                "name": "compression_level",
+                "type": "int",
+                "description": "Compression level between 0 and 9."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_has_wp_htaccess_rules",
+        "type": "filter",
+        "label": "Has wp htaccess rules",
+        "description": "Tell if WP rewrite rules are present in a given string.",
+        "category": "functions",
+        "keywords": [
+            "has",
+            "htaccess",
+            "rules"
+        ],
+        "params": [
+            {
+                "name": "has_wp_rules",
+                "type": "bool",
+                "description": "True when present. False otherwise."
+            },
+            {
+                "name": "content",
+                "type": "string",
+                "description": ".htaccess content."
+            }
+        ],
+        "since": "3.2.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_hidden_settings_fields",
+        "type": "filter",
+        "label": "Hidden settings fields",
+        "description": "Filters the hidden settings fields",
+        "category": "admin",
+        "keywords": [
+            "hidden",
+            "settings",
+            "fields"
+        ],
+        "params": [
+            {
+                "name": "hidden_settings_fields",
+                "type": "array",
+                "description": "An array of hidden settings fields ID"
+            }
+        ],
+        "since": "3.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_homepage_preload_url_request_args",
+        "type": "filter",
+        "label": "Homepage preload url request args",
+        "description": "Filters the arguments for the partial preload request.",
+        "category": "preload",
+        "keywords": [
+            "homepage",
+            "preload",
+            "url",
+            "request",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Request arguments."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_htaccess_rules_test_args",
+        "type": "filter",
+        "label": "Htaccess rules test args",
+        "description": "Filters the request arguments",
+        "category": "functions",
+        "keywords": [
+            "htaccess",
+            "rules",
+            "test",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Array of argument for the request."
+            }
+        ],
+        "since": "2.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_i18n_admin_bar_menu",
+        "type": "filter",
+        "label": "I18n admin bar menu",
+        "description": "Filters the value of the lang links menu",
+        "category": "common",
+        "keywords": [
+            "i18n",
+            "admin",
+            "bar",
+            "menu"
+        ],
+        "params": [
+            {
+                "name": "langlinks",
+                "type": "array",
+                "description": "Array of languages."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_i18n_subdomains",
+        "type": "filter",
+        "label": "I18n subdomains",
+        "description": "Filters the list of languages subdomains URLs",
+        "category": "functions",
+        "keywords": [
+            "i18n",
+            "subdomains"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "Array of languages subdomains URLs."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_i18n_translated_post_urls",
+        "type": "filter",
+        "label": "I18n translated post urls",
+        "description": "Filters the list of translated URLs for a post ID",
+        "category": "functions",
+        "keywords": [
+            "i18n",
+            "translated",
+            "post",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "Array of translated URLs."
+            },
+            {
+                "name": "url",
+                "type": "string",
+                "description": "URL to use."
+            },
+            {
+                "name": "post_type",
+                "type": "string",
+                "description": "Post type."
+            },
+            {
+                "name": "regex",
+                "type": "string",
+                "description": "Pattern to include at the end."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_input_sanitize",
+        "type": "filter",
+        "label": "Input sanitize",
+        "description": "Filters the sanitized input before returning the array",
+        "category": "admin",
+        "keywords": [
+            "input",
+            "sanitize"
+        ],
+        "params": [
+            {
+                "name": "input",
+                "type": "array",
+                "description": "Array of sanitized values after being submitted by the form."
+            },
+            {
+                "name": "settings",
+                "type": "Settings",
+                "description": "Current class instance."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_is_importing",
+        "type": "filter",
+        "label": "Is importing",
+        "description": "Filter use to determine if we are currently importing data into the WordPress.",
+        "category": "functions",
+        "keywords": [
+            "importing"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "boolean",
+                "description": "Tells if we are importing or not."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_langs_to_preserve",
+        "type": "filter",
+        "label": "Langs to preserve",
+        "description": "Filter directories path to preserve of cache purge.",
+        "category": "functions",
+        "keywords": [
+            "langs",
+            "preserve"
+        ],
+        "params": [
+            {
+                "name": "langs_to_preserve",
+                "type": "array",
+                "description": "List of directories path to preserve."
+            }
+        ],
+        "since": "2.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_background_images",
+        "type": "filter",
+        "label": "Lazyload background images",
+        "description": "Filters the application of lazyload on background images",
+        "category": "media",
+        "keywords": [
+            "lazyload",
+            "background",
+            "images"
+        ],
+        "params": [
+            {
+                "name": "lazyload",
+                "type": "bool",
+                "description": "True to apply, false otherwise."
+            }
+        ],
+        "since": "3.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_css_ignored_urls",
+        "type": "filter",
+        "label": "Lazyload css ignored urls",
+        "description": "Lazyload ignored URLs.",
+        "category": "media",
+        "keywords": [
+            "lazyload",
+            "css",
+            "ignored",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "string[]",
+                "description": "Ignored URLs."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_excluded_attributes",
+        "type": "filter",
+        "label": "Lazyload excluded attributes",
+        "description": "Filters the attributes used to prevent lazylad from being applied",
+        "category": "deprecated",
+        "keywords": [
+            "lazyload",
+            "excluded",
+            "attributes"
+        ],
+        "params": [
+            {
+                "name": "excluded_attributes",
+                "type": "array",
+                "description": "An array of excluded attributes."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_excluded_src",
+        "type": "filter",
+        "label": "Lazyload excluded src",
+        "description": "Filters the src used to prevent lazylad from being applied",
+        "category": "deprecated",
+        "keywords": [
+            "lazyload",
+            "excluded",
+            "src"
+        ],
+        "params": [
+            {
+                "name": "excluded_src",
+                "type": "array",
+                "description": "An array of excluded src."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_html",
+        "type": "filter",
+        "label": "Lazyload html",
+        "description": "Filter the LazyLoad HTML output",
+        "category": "deprecated",
+        "keywords": [
+            "lazyload",
+            "html"
+        ],
+        "params": [
+            {
+                "name": "html",
+                "type": "array",
+                "description": "Output that will be printed"
+            }
+        ],
+        "since": "1.0.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_iframe_html",
+        "type": "filter",
+        "label": "Lazyload iframe html",
+        "description": "Filter the LazyLoad HTML output on iframes",
+        "category": "deprecated",
+        "keywords": [
+            "lazyload",
+            "iframe",
+            "html"
+        ],
+        "params": [
+            {
+                "name": "html",
+                "type": "array",
+                "description": "Output that will be printed."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_script_args",
+        "type": "filter",
+        "label": "Lazyload script args",
+        "description": "Filters the arguments array for the lazyload script options",
+        "category": "media",
+        "keywords": [
+            "lazyload",
+            "script",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "inline_args",
+                "type": "array",
+                "description": "Arguments used for the lazyload script options."
+            }
+        ],
+        "since": "3.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_threshold",
+        "type": "filter",
+        "label": "Lazyload threshold",
+        "description": "Filters the threshold at which lazyload is triggered",
+        "category": "media",
+        "keywords": [
+            "lazyload",
+            "threshold"
+        ],
+        "params": [
+            {
+                "name": "threshold",
+                "type": "int",
+                "description": "Threshold value."
+            }
+        ],
+        "since": "1.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_lazyload_youtube_html",
+        "type": "filter",
+        "label": "Lazyload youtube html",
+        "description": "Filter the LazyLoad HTML output on Youtube iframes",
+        "category": "deprecated",
+        "keywords": [
+            "lazyload",
+            "youtube",
+            "html"
+        ],
+        "params": [
+            {
+                "name": "html",
+                "type": "array",
+                "description": "Output that will be printed."
+            }
+        ],
+        "since": "2.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_localize_admin_script",
+        "type": "filter",
+        "label": "Localize admin script",
+        "description": "Filters the data passed to the localize script function for WP Rocket admin JS",
+        "category": "admin",
+        "keywords": [
+            "localize",
+            "admin",
+            "script"
+        ],
+        "params": [
+            {
+                "name": "data",
+                "type": "array",
+                "description": "Localize script data."
+            }
+        ],
+        "since": "3.7.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_maybe_disable_css_bg_img_lazyload_helper",
+        "type": "filter",
+        "label": "Maybe disable css bg img lazyload helper",
+        "description": "Lazyload Helper filter which disables WPR lazyload functionality for bg css.",
+        "category": "admin",
+        "keywords": [
+            "maybe",
+            "disable",
+            "css",
+            "img",
+            "lazyload",
+            "helper"
+        ],
+        "params": [
+            {
+                "name": "disable_css_bg_img_lazyload",
+                "type": "bool",
+                "description": "Should the lazyload CSS be disabled."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_maybe_disable_iframes_lazyload_helper",
+        "type": "filter",
+        "label": "Maybe disable iframes lazyload helper",
+        "description": "Lazyload Helper filter which disables WPR lazyload functionality for iframes.",
+        "category": "admin",
+        "keywords": [
+            "maybe",
+            "disable",
+            "iframes",
+            "lazyload",
+            "helper"
+        ],
+        "params": [
+            {
+                "name": "disable_iframes_lazyload",
+                "type": "array",
+                "description": "Will return the array with all plugin names which should disable LazyLoad"
+            }
+        ],
+        "since": "3.5.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_maybe_disable_lazyload_helper",
+        "type": "filter",
+        "label": "Maybe disable lazyload helper",
+        "description": "Lazyload Helper filter which disables WPR lazyload functionality for images.",
+        "category": "admin",
+        "keywords": [
+            "maybe",
+            "disable",
+            "lazyload",
+            "helper"
+        ],
+        "params": [
+            {
+                "name": "disable_images_lazyload",
+                "type": "array",
+                "description": "Will return the array with all plugin names which should disable LazyLoad"
+            }
+        ],
+        "since": "3.4.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_maybe_disable_youtube_lazyload_helper",
+        "type": "filter",
+        "label": "Maybe disable youtube lazyload helper",
+        "description": "Lazyload Helper filter which disables WPR lazyload functionality to replace YouTube iframe with preview image.",
+        "category": "admin",
+        "keywords": [
+            "maybe",
+            "disable",
+            "youtube",
+            "lazyload",
+            "helper"
+        ],
+        "params": [
+            {
+                "name": "disable_youtube_lazyload",
+                "type": "array",
+                "description": "Will return the array with all plugin/themes names which should disable replace YouTube iframe with preview image"
+            }
+        ],
+        "since": "3.6.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_meta_boxes_fields",
+        "type": "filter",
+        "label": "Meta boxes fields",
+        "description": "WP Rocket Metabox fields on post edit page.",
+        "category": "deprecated",
+        "keywords": [
+            "meta",
+            "boxes",
+            "fields"
+        ],
+        "params": [
+            {
+                "name": "fields",
+                "type": "string[]",
+                "description": "Metaboxes fields."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_metabox_options_post_types",
+        "type": "filter",
+        "label": "Metabox options post types",
+        "description": "Filters the post types to add the options metabox to",
+        "category": "admin",
+        "keywords": [
+            "metabox",
+            "options",
+            "post",
+            "types"
+        ],
+        "params": [
+            {
+                "name": "cpts",
+                "type": "array",
+                "description": "Array of post types."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_minify_deferred_js",
+        "type": "filter",
+        "label": "Minify deferred js",
+        "description": "Filter list of Deferred JavaScript files",
+        "category": "deprecated",
+        "keywords": [
+            "minify",
+            "deferred"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "array",
+                "description": "List of Deferred JavaScript files"
+            }
+        ],
+        "since": "1.1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_minify_excluded_external_js",
+        "type": "filter",
+        "label": "Minify excluded external js",
+        "description": "Filters JS externals files to exclude from the combine process",
+        "category": "optimization",
+        "keywords": [
+            "minify",
+            "excluded",
+            "external"
+        ],
+        "params": [
+            {
+                "name": "pattern",
+                "type": "array",
+                "description": "Patterns to match."
+            }
+        ],
+        "since": "2.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_minify_html_options",
+        "type": "filter",
+        "label": "Minify html options",
+        "description": "Filter options of minify inline HTML",
+        "category": "deprecated",
+        "keywords": [
+            "minify",
+            "html",
+            "options"
+        ],
+        "params": [
+            {
+                "name": "html_options",
+                "type": "array",
+                "description": "Options of minify inline HTML."
+            }
+        ],
+        "since": "1.1.12",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_move_after_combine_js",
+        "type": "filter",
+        "label": "Move after combine js",
+        "description": "Filters inline JS to move after the combined JS file",
+        "category": "optimization",
+        "keywords": [
+            "move",
+            "after",
+            "combine"
+        ],
+        "params": [
+            {
+                "name": "move_after_scripts",
+                "type": "array",
+                "description": "Patterns to match."
+            }
+        ],
+        "since": "3.1.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_notice_args",
+        "type": "filter",
+        "label": "Notice args",
+        "description": "Notice arguments.",
+        "category": "admin",
+        "keywords": [
+            "notice",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "arguments from the notice."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_override_donotcachepage",
+        "type": "filter",
+        "label": "Override donotcachepage",
+        "description": "At this point the constant DONOTCACHEPAGE is set to true.",
+        "category": "classes",
+        "keywords": [
+            "override",
+            "donotcachepage"
+        ],
+        "params": [
+            {
+                "name": "override_donotcachepage",
+                "type": "bool",
+                "description": "True will force the page to be cached."
+            }
+        ],
+        "since": "2.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_page_has_webp_files",
+        "type": "filter",
+        "label": "Page has webp files",
+        "description": "Tell if the page contains webp files.",
+        "category": "addon:webp",
+        "keywords": [
+            "page",
+            "has",
+            "webp",
+            "files"
+        ],
+        "params": [
+            {
+                "name": "has_webp",
+                "type": "bool",
+                "description": "True if the page contains webp files. False otherwise."
+            },
+            {
+                "name": "html",
+                "type": "string",
+                "description": "The page’s html contents."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_parse_url",
+        "type": "filter",
+        "label": "Parse url",
+        "description": "Filter components of an URL",
+        "category": "functions",
+        "keywords": [
+            "parse",
+            "url"
+        ],
+        "params": [
+            {
+                "name": "",
+                "type": "array",
+                "description": "Components of an URL"
+            }
+        ],
+        "since": "2.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_permit_force_deactivation",
+        "type": "filter",
+        "label": "Permit force deactivation",
+        "description": "Allow a \"force deactivation\" link to be printed, use at your own risks",
+        "category": "admin",
+        "keywords": [
+            "permit",
+            "force",
+            "deactivation"
+        ],
+        "params": [
+            {
+                "name": "permit_force_deactivation",
+                "type": "bool",
+                "description": "true will print the link."
+            }
+        ],
+        "since": "2.0.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_plugins_to_deactivate",
+        "type": "filter",
+        "label": "Plugins to deactivate",
+        "description": "Filter the recommended plugins to deactivate to prevent conflicts",
+        "category": "admin",
+        "keywords": [
+            "plugins",
+            "deactivate"
+        ],
+        "params": [
+            {
+                "name": "plugins",
+                "type": "array",
+                "description": "List of recommended plugins to deactivate."
+            }
+        ],
+        "since": "2.6.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_plugins_to_deactivate_explanations",
+        "type": "filter",
+        "label": "Plugins to deactivate explanations",
+        "description": "Filter the recommended plugins to deactivate explanations",
+        "category": "admin",
+        "keywords": [
+            "plugins",
+            "deactivate",
+            "explanations"
+        ],
+        "params": [
+            {
+                "name": "plugins",
+                "type": "array",
+                "description": "List of recommended plugins to deactivate explanations."
+            }
+        ],
+        "since": "3.10.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_post_dates_urls",
+        "type": "filter",
+        "label": "Post dates urls",
+        "description": "Filter the list of dates URLs.",
+        "category": "cache",
+        "keywords": [
+            "post",
+            "dates",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "List of dates URLs."
+            }
+        ],
+        "since": "1.1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_post_purge_urls",
+        "type": "filter",
+        "label": "Post purge urls",
+        "description": "Filter URLs cache files to remove",
+        "category": "common",
+        "keywords": [
+            "post",
+            "purge",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "purge_urls",
+                "type": "array",
+                "description": "List of URLs cache files to remove"
+            }
+        ],
+        "since": "1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_post_terms_urls",
+        "type": "filter",
+        "label": "Post terms urls",
+        "description": "Filter the list of taxonomies URLs",
+        "category": "cache",
+        "keywords": [
+            "post",
+            "terms",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "urls",
+                "type": "array",
+                "description": "List of taxonomies URLs"
+            }
+        ],
+        "since": "1.1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_preload_after_purge_cache_request_args",
+        "type": "filter",
+        "label": "Preload after purge cache request args",
+        "description": "Filters the arguments for the preload request being triggered after clearing the cache.",
+        "category": "common",
+        "keywords": [
+            "preload",
+            "after",
+            "purge",
+            "cache",
+            "request",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Request arguments."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_preload_cache_min_in_progress_jobs_count",
+        "type": "filter",
+        "label": "Preload cache min in progress jobs count",
+        "description": "Get the number of in progress cron job",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "cache",
+            "min",
+            "progress",
+            "jobs",
+            "count"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "int",
+                "description": "Minimum number of job size."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_cache_pending_jobs_cron_rows_count",
+        "type": "filter",
+        "label": "Preload cache pending jobs cron rows count",
+        "description": "Get the number of pending cron job",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "cache",
+            "pending",
+            "jobs",
+            "cron",
+            "rows",
+            "count"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "int",
+                "description": "Maximum number of job size."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_delay_between_requests",
+        "type": "filter",
+        "label": "Preload delay between requests",
+        "description": "Filter the delay between each preload request.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "delay",
+            "between",
+            "requests"
+        ],
+        "params": [
+            {
+                "name": "delay_between",
+                "type": "int",
+                "description": "the defined delay."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_exclude",
+        "type": "filter",
+        "label": "Preload exclude",
+        "description": "Check if the url is excluded or not.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "exclude"
+        ],
+        "params": [
+            {
+                "name": "isExcluded",
+                "type": "bool",
+                "description": "Default excluded or not."
+            },
+            {
+                "name": "url",
+                "type": "string",
+                "description": "URL to check."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_preload_exclude_urls",
+        "type": "filter",
+        "label": "Preload exclude urls",
+        "description": "Regex to exclude URI from preload.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "exclude",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "regexes",
+                "type": "string[]",
+                "description": "Regexes to check."
+            },
+            {
+                "name": "url",
+                "type": "string",
+                "description": "Current preloading url."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_preload_load_custom_urls",
+        "type": "filter",
+        "label": "Preload load custom urls",
+        "description": "Filter custom preload URL.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "load",
+            "custom",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "custom_urls",
+                "type": "array",
+                "description": "Array of custom preload URLs."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_preload_order",
+        "type": "filter",
+        "label": "Preload order",
+        "description": "Filter order for preloading pending urls.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "order"
+        ],
+        "params": [
+            {
+                "name": "orderby",
+                "type": "bool",
+                "description": "order for preloading pending urls."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_preload_outdated",
+        "type": "filter",
+        "label": "Preload outdated",
+        "description": "Set the delay before an in-progress row is considered as outdated.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "outdated"
+        ],
+        "params": [
+            {
+                "name": "delay",
+                "type": "int",
+                "description": "delay."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_pending_jobs_cron_interval",
+        "type": "filter",
+        "label": "Preload pending jobs cron interval",
+        "description": "Filters the cron interval.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "pending",
+            "jobs",
+            "cron",
+            "interval"
+        ],
+        "params": [
+            {
+                "name": "interval",
+                "type": "int",
+                "description": "Interval in seconds."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_revert_old_failed_rows_cron_interval",
+        "type": "filter",
+        "label": "Preload revert old failed rows cron interval",
+        "description": "Filters the cron interval.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "revert",
+            "old",
+            "failed",
+            "rows",
+            "cron",
+            "interval"
+        ],
+        "params": [
+            {
+                "name": "interval",
+                "type": "int",
+                "description": "Interval in seconds."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/return-int",
+            "core/return-zero"
+        ]
+    },
+    {
+        "name": "rocket_preload_sitemap_before_queue",
+        "type": "filter",
+        "label": "Preload sitemap before queue",
+        "description": "Filter sitemaps URLs that will be preloaded.",
+        "category": "preload",
+        "keywords": [
+            "preload",
+            "sitemap",
+            "before",
+            "queue"
+        ],
+        "params": [
+            {
+                "name": "sitemaps",
+                "type": "array",
+                "description": "Array of sitemaps URLs."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_preload_sitemap_request_args",
+        "type": "filter",
+        "label": "Preload sitemap request args",
+        "description": "Filters the arguments for the sitemap preload request",
+        "category": "deprecated",
+        "keywords": [
+            "preload",
+            "sitemap",
+            "request",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Arguments for the request."
+            }
+        ],
+        "since": "2.10.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_prevent_deactivation",
+        "type": "filter",
+        "label": "Prevent deactivation",
+        "description": "Filters the causes which can prevent the deactivation of the plugin",
+        "category": "deactivation",
+        "keywords": [
+            "prevent",
+            "deactivation"
+        ],
+        "params": [
+            {
+                "name": "causes",
+                "type": "array",
+                "description": "An array of causes to pass to the notice."
+            }
+        ],
+        "since": "3.6.3",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_rucss_external_exclusions",
+        "type": "filter",
+        "label": "Rucss external exclusions",
+        "description": "Filters the array of external exclusions.",
+        "category": "optimization",
+        "keywords": [
+            "rucss",
+            "external",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "external_exclusions",
+                "type": "array",
+                "description": "Array of patterns used to match against the external style tag."
+            }
+        ],
+        "since": "3.11.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_rucss_inline_atts_exclusions",
+        "type": "filter",
+        "label": "Rucss inline atts exclusions",
+        "description": "Filters the array of inline CSS attributes patterns to preserve",
+        "category": "optimization",
+        "keywords": [
+            "rucss",
+            "inline",
+            "atts",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "inline_atts_exclusions",
+                "type": "array",
+                "description": "Array of patterns used to match against the inline CSS attributes."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_rucss_inline_content_exclusions",
+        "type": "filter",
+        "label": "Rucss inline content exclusions",
+        "description": "Filters the array of inline CSS content patterns to preserve",
+        "category": "optimization",
+        "keywords": [
+            "rucss",
+            "inline",
+            "content",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "inline_atts_exclusions",
+                "type": "array",
+                "description": "Array of patterns used to match against the inline CSS content."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_rucss_preserve_inline_style_tags",
+        "type": "filter",
+        "label": "Rucss preserve inline style tags",
+        "description": "Filters the status of preserving inline style tags.",
+        "category": "optimization",
+        "keywords": [
+            "rucss",
+            "preserve",
+            "inline",
+            "style",
+            "tags"
+        ],
+        "params": [
+            {
+                "name": "preserve_status",
+                "type": "bool",
+                "description": "Status of preserve."
+            },
+            {
+                "name": "style",
+                "type": "array",
+                "description": "Full match style tag."
+            }
+        ],
+        "since": "3.11.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_rucss_safelist",
+        "type": "filter",
+        "label": "Rucss safelist",
+        "description": "Filters the RUCSS safelist",
+        "category": "optimization",
+        "keywords": [
+            "rucss",
+            "safelist"
+        ],
+        "params": [
+            {
+                "name": "safelist",
+                "type": "array",
+                "description": "Array of safelist values."
+            }
+        ],
+        "since": "3.11",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_safe_mode_reset_options",
+        "type": "filter",
+        "label": "Safe mode reset options",
+        "description": "Filters the array of options to reset when activating safe mode",
+        "category": "admin",
+        "keywords": [
+            "safe",
+            "mode",
+            "reset",
+            "options"
+        ],
+        "params": [
+            {
+                "name": "options",
+                "type": "array",
+                "description": "Array of options to reset."
+            }
+        ],
+        "since": "3.7",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_set_wp_cache_constant",
+        "type": "filter",
+        "label": "Set wp cache constant",
+        "description": "Filters the writing of the WP_CACHE constant in wp-config.php",
+        "category": "cache",
+        "keywords": [
+            "set",
+            "cache",
+            "constant"
+        ],
+        "params": [
+            {
+                "name": "set",
+                "type": "bool",
+                "description": "True to allow writing, false otherwise."
+            }
+        ],
+        "since": "3.6.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_settings_menu_navigation",
+        "type": "filter",
+        "label": "Settings menu navigation",
+        "description": "Filters WP Rocket settings page navigation items.",
+        "category": "admin",
+        "keywords": [
+            "settings",
+            "menu",
+            "navigation"
+        ],
+        "params": [
+            {
+                "name": "navigation",
+                "type": "array",
+                "description": "{"
+            }
+        ],
+        "since": "3.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_sitemap_preload_list",
+        "type": "filter",
+        "label": "Sitemap preload list",
+        "description": "Filter sitemaps URLs.",
+        "category": "preload",
+        "keywords": [
+            "sitemap",
+            "preload",
+            "list"
+        ],
+        "params": [
+            {
+                "name": "sitemaps",
+                "type": "array",
+                "description": "Array of sitemaps URLs."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_skip_admin_bar_cache_purge_option",
+        "type": "filter",
+        "label": "Skip admin bar cache purge option",
+        "description": "Filters the rocket clear post admin bar menu.",
+        "category": "common",
+        "keywords": [
+            "skip",
+            "admin",
+            "bar",
+            "cache",
+            "purge",
+            "option"
+        ],
+        "params": [
+            {
+                "name": "should_skip",
+                "type": "bool",
+                "description": "Should skip adding clear post to rocket option in admin bar."
+            },
+            {
+                "name": "post",
+                "type": "type",
+                "description": "Post object."
+            }
+        ],
+        "since": "3.11.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_skip_import_replacement",
+        "type": "filter",
+        "label": "Skip import replacement",
+        "description": "Filter Skip import replacement for one file.",
+        "category": "optimization",
+        "keywords": [
+            "skip",
+            "import",
+            "replacement"
+        ],
+        "params": [
+            {
+                "name": "skip_import",
+                "type": "bool",
+                "description": "Skipped or not (Default not skipped)."
+            },
+            {
+                "name": "file_path",
+                "type": "string",
+                "description": "Matched import path."
+            },
+            {
+                "name": "import_match",
+                "type": "array",
+                "description": "Full import match."
+            }
+        ],
+        "since": "3.8.6",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_skip_post_row_actions",
+        "type": "filter",
+        "label": "Skip post row actions",
+        "description": "Filters the post type on row actions.",
+        "category": "admin",
+        "keywords": [
+            "skip",
+            "post",
+            "row",
+            "actions"
+        ],
+        "params": [
+            {
+                "name": "cpts",
+                "type": "array",
+                "description": "Post Types."
+            }
+        ],
+        "since": "3.11.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_specify_dimension_images",
+        "type": "filter",
+        "label": "Specify dimension images",
+        "description": "Filters Page images passed to specify dimensions.",
+        "category": "media",
+        "keywords": [
+            "specify",
+            "dimension",
+            "images"
+        ],
+        "params": [
+            {
+                "name": "images",
+                "type": "array",
+                "description": "Page images."
+            }
+        ],
+        "since": "3.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_specify_dimension_skip_pictures",
+        "type": "filter",
+        "label": "Specify dimension skip pictures",
+        "description": "Filters Specify image dimensions inside picture tags also.",
+        "category": "media",
+        "keywords": [
+            "specify",
+            "dimension",
+            "skip",
+            "pictures"
+        ],
+        "params": [
+            {
+                "name": "skip_pictures",
+                "type": "bool",
+                "description": "Do or not. Default is True, so it will skip all img tags that are inside picture tag."
+            }
+        ],
+        "since": "3.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_specify_image_dimensions",
+        "type": "filter",
+        "label": "Specify image dimensions",
+        "description": "Filter images dimensions attributes process.",
+        "category": "media",
+        "keywords": [
+            "specify",
+            "image",
+            "dimensions"
+        ],
+        "params": [
+            {
+                "name": "specify_dimensions",
+                "type": "bool",
+                "description": "Do the job or not."
+            }
+        ],
+        "since": "2.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_specify_image_dimensions_for_distant",
+        "type": "filter",
+        "label": "Specify image dimensions for distant",
+        "description": "Enable/Disable specify image dimensions for external images.",
+        "category": "media",
+        "keywords": [
+            "specify",
+            "image",
+            "dimensions",
+            "for",
+            "distant"
+        ],
+        "params": [
+            {
+                "name": "specify_dimensions_external",
+                "type": "bool",
+                "description": "Specify image dimensions for external images or not."
+            }
+        ],
+        "since": "3.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_staging_list",
+        "type": "filter",
+        "label": "Staging list",
+        "description": "Get the list of staging domains from SaaS",
+        "category": "functions",
+        "keywords": [
+            "staging",
+            "list"
+        ],
+        "params": [
+            {
+                "name": "default_staging",
+                "type": "array",
+                "description": "default result in case there isn't."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_submitbox_options_post_types",
+        "type": "filter",
+        "label": "Submitbox options post types",
+        "description": "Filters the post type on submitbox.",
+        "category": "admin",
+        "keywords": [
+            "submitbox",
+            "options",
+            "post",
+            "types"
+        ],
+        "params": [
+            {
+                "name": "cpts",
+                "type": "array",
+                "description": "Post Types."
+            }
+        ],
+        "since": "3.12.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_sucuri_api_request_args",
+        "type": "filter",
+        "label": "Sucuri api request args",
+        "description": "Filters the arguments for the Sucuri API request",
+        "category": "addon:sucuri",
+        "keywords": [
+            "sucuri",
+            "api",
+            "request",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Arguments for the request."
+            }
+        ],
+        "since": "3.3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_term_purge_urls",
+        "type": "filter",
+        "label": "Term purge urls",
+        "description": "Filter URLs cache files to remove",
+        "category": "functions",
+        "keywords": [
+            "term",
+            "purge",
+            "urls"
+        ],
+        "params": [
+            {
+                "name": "purge_urls",
+                "type": "array",
+                "description": "List of URLs cache files to remove."
+            },
+            {
+                "name": "term",
+                "type": "obj",
+                "description": "The term object."
+            }
+        ],
+        "since": "2.6.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_thirdparty_load",
+        "type": "filter",
+        "label": "Thirdparty load",
+        "description": "Filters register this compatibility events or not.",
+        "category": "thirdparty",
+        "keywords": [
+            "thirdparty",
+            "load"
+        ],
+        "params": [
+            {
+                "name": "status",
+                "type": "bool",
+                "description": "Load the compatibility file or not, default is True."
+            },
+            {
+                "name": "thirdparty",
+                "type": "string",
+                "description": "Thirdparty id."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_url_to_path_associations",
+        "type": "filter",
+        "label": "Url to path associations",
+        "description": "Filter the list of URL/path associations.",
+        "category": "addon:webp",
+        "keywords": [
+            "url",
+            "path",
+            "associations"
+        ],
+        "params": [
+            {
+                "name": "list",
+                "type": "array",
+                "description": "The list of URL/path associations. URLs are schema-less, starting by a double slash."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_url_to_postid_query_args",
+        "type": "filter",
+        "label": "Url to postid query args",
+        "description": "Filters WP_Query class passed args.",
+        "category": "functions",
+        "keywords": [
+            "url",
+            "postid",
+            "query",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "query",
+                "type": "array",
+                "description": "WP_Query passed args."
+            },
+            {
+                "name": "url",
+                "type": "string",
+                "description": "The URL to derive the post ID from."
+            }
+        ],
+        "since": "",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_use_native_lazyload",
+        "type": "filter",
+        "label": "Use native lazyload",
+        "description": "Filters the use of native lazyload",
+        "category": "media",
+        "keywords": [
+            "use",
+            "native",
+            "lazyload"
+        ],
+        "params": [
+            {
+                "name": "use_native",
+                "type": "bool",
+                "description": "True to use native lazyload, false otherwise."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_use_native_lazyload_images",
+        "type": "filter",
+        "label": "Use native lazyload images",
+        "description": "Filters the use of native lazyload for images",
+        "category": "media",
+        "keywords": [
+            "use",
+            "native",
+            "lazyload",
+            "images"
+        ],
+        "params": [
+            {
+                "name": "use_native",
+                "type": "bool",
+                "description": "True to use native lazyload for images, false otherwise."
+            }
+        ],
+        "since": "3.10.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_varnish_field_settings",
+        "type": "filter",
+        "label": "Varnish field settings",
+        "description": "Filters the Varnish field settings data",
+        "category": "admin",
+        "keywords": [
+            "varnish",
+            "field",
+            "settings"
+        ],
+        "params": [
+            {
+                "name": "settings",
+                "type": "array",
+                "description": "Field settings data."
+            }
+        ],
+        "since": "3.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_varnish_ip",
+        "type": "filter",
+        "label": "Varnish ip",
+        "description": "Filter the Varnish IP to call",
+        "category": "addon:varnish",
+        "keywords": [
+            "varnish"
+        ],
+        "params": [
+            {
+                "name": "varnish_ip",
+                "type": "string|array",
+                "description": "The Varnish IP"
+            }
+        ],
+        "since": "2.6.8",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_varnish_purge_headers",
+        "type": "filter",
+        "label": "Varnish purge headers",
+        "description": "Filters the headers to send with the Varnish purge request",
+        "category": "addon:varnish",
+        "keywords": [
+            "varnish",
+            "purge",
+            "headers"
+        ],
+        "params": [
+            {
+                "name": "headers",
+                "type": "array",
+                "description": "Headers to send."
+            }
+        ],
+        "since": "3.1",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_varnish_purge_request_args",
+        "type": "filter",
+        "label": "Varnish purge request args",
+        "description": "Filters the arguments passed to the Varnish purge request",
+        "category": "addon:varnish",
+        "keywords": [
+            "varnish",
+            "purge",
+            "request",
+            "args"
+        ],
+        "params": [
+            {
+                "name": "args",
+                "type": "array",
+                "description": "Array of arguments for the request."
+            }
+        ],
+        "since": "3.5",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_wc_product_gallery_delay_js_exclusions",
+        "type": "filter",
+        "label": "Wc product gallery delay js exclusions",
+        "description": "Filters the JS files excluded from delay JS when WC product gallery has images.",
+        "category": "thirdparty",
+        "keywords": [
+            "product",
+            "gallery",
+            "delay",
+            "exclusions"
+        ],
+        "params": [
+            {
+                "name": "exclusions_gallery",
+                "type": "array",
+                "description": "Array of excluded filepaths."
+            }
+        ],
+        "since": "3.10.2",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_webp_is_using_cdn",
+        "type": "filter",
+        "label": "Webp is using cdn",
+        "description": "Filter whether WP Rocket is using a CDN for webp images.",
+        "category": "addon:webp",
+        "keywords": [
+            "webp",
+            "using",
+            "cdn"
+        ],
+        "params": [
+            {
+                "name": "use",
+                "type": "bool",
+                "description": "True if WP Rocket is using a CDN for webp images. False otherwise."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-true",
+            "core/return-false"
+        ]
+    },
+    {
+        "name": "rocket_webp_plugins",
+        "type": "filter",
+        "label": "Webp plugins",
+        "description": "Add Webp plugins.",
+        "category": "addon:webp",
+        "keywords": [
+            "webp",
+            "plugins"
+        ],
+        "params": [
+            {
+                "name": "webp_plugins",
+                "type": "array",
+                "description": "An array of Webp_Interface objects."
+            }
+        ],
+        "since": "3.4",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    },
+    {
+        "name": "rocket_wordfence_whitelisted_ips",
+        "type": "filter",
+        "label": "Wordfence whitelisted ips",
+        "description": "Rocket wordfence whitelisted ips filter which adds IPs to wordfence whitelist.",
+        "category": "thirdparty",
+        "keywords": [
+            "wordfence",
+            "whitelisted",
+            "ips"
+        ],
+        "params": [
+            {
+                "name": "ips",
+                "type": "array",
+                "description": "list of IPs should be whitelisted"
+            }
+        ],
+        "since": "3.10",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "rocket/append-to-list",
+            "rocket/remove-from-list",
+            "core/return-empty-array"
+        ]
+    }
+]

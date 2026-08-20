@@ -1,9 +1,10 @@
 <?php
 /**
- * Scans WP Rocket for `rocket_` filters and actions and generates the
- * mcp_helpers_filter_catalog file.
+ * Scans WP Rocket for `rocket_` hooks and generates filters.json — the catalog
+ * of filters that can be exercised by a validated MCP Helpers callback.
  *
- * Usage: php scan-hooks.php <plugin-root> <output-file>
+ * Usage: php inc/MCP/tools/scan-hooks.php <plugin-root> <output-json>
+ * Example: php inc/MCP/tools/scan-hooks.php . inc/MCP/catalog/filters.json
  */
 
 $root = rtrim($argv[1] ?? '', '/');
@@ -188,26 +189,28 @@ $cats = [];
 foreach ($catalog as $e) { $cats[$e['category']] = ($cats[$e['category']] ?? 0) + 1; }
 ksort($cats);
 
-$php = "<?php\n";
-$php .= "/**\n";
-$php .= " * WP Rocket filter/action catalog for MCP Helpers.\n";
-$php .= " *\n";
-$php .= " * AUTO-GENERATED — do not edit by hand.\n";
-$php .= " * Regenerate: php inc/MCP/tools/scan-hooks.php . inc/MCP/catalog/filters.php\n";
-$php .= " *\n";
-$php .= " * Hooks: {$total} ({$filters} filters, {$actions} actions). With docblock summary: {$withDoc}.\n";
-$php .= " *\n";
-$php .= " * @package MCPHelpers\\WPRocket\n";
-$php .= " */\n\n";
-$php .= "defined( 'ABSPATH' ) || exit;\n\n";
-$php .= "add_filter(\n\t'mcp_helpers_filter_catalog',\n\tstatic function ( array \$catalog ): array {\n";
-$php .= "\t\t\$rocket = [\n";
-
-$export = function ($v) {
-	return var_export($v, true);
-};
-
+// Keep only filters that can be exercised by a validated callback (their filtered
+// value is an array, bool, or int). Actions and string/other/undocumented filters
+// are dropped: a return-value callback can't act on them meaningfully.
+$entries = [];
+$kept = ['array' => 0, 'bool' => 0, 'int' => 0];
 foreach ($catalog as $e) {
+	if ($e['type'] !== 'filter') { continue; }
+
+	$ft = strtolower($e['params'][0]['type'] ?? '');
+	if (strpos($ft, 'array') !== false || strpos($ft, '[]') !== false) {
+		$compat = ['rocket/append-to-list', 'rocket/remove-from-list', 'core/return-empty-array'];
+		$kept['array']++;
+	} elseif (strpos($ft, 'bool') !== false) {
+		$compat = ['core/return-true', 'core/return-false'];
+		$kept['bool']++;
+	} elseif (strpos($ft, 'int') !== false) {
+		$compat = ['rocket/return-int', 'core/return-zero'];
+		$kept['int']++;
+	} else {
+		continue; // not exercisable
+	}
+
 	$keywords = array_values(array_unique(array_filter(
 		explode('_', preg_replace('/^rocket_/', '', $e['name'])),
 		fn($w) => strlen($w) > 2
@@ -225,48 +228,33 @@ foreach ($catalog as $e) {
 		];
 	}
 
-	// Suggest approved callbacks based on the filtered value's type.
-	$compat = [];
-	if ($e['type'] === 'filter') {
-		$ft = strtolower($e['params'][0]['type'] ?? '');
-		if (strpos($ft, 'array') !== false || strpos($ft, '[]') !== false) {
-			$compat = ['rocket/append-to-list', 'rocket/remove-from-list', 'core/return-empty-array'];
-		} elseif (strpos($ft, 'bool') !== false) {
-			$compat = ['core/return-true', 'core/return-false'];
-		} elseif (strpos($ft, 'int') !== false) {
-			$compat = ['rocket/return-int', 'core/return-zero'];
-		}
-	}
-
-	$php .= "\t\t\t[\n";
-	$php .= "\t\t\t\t'name'        => " . $export($e['name']) . ",\n";
-	$php .= "\t\t\t\t'type'        => " . $export($e['type']) . ",\n";
-	$php .= "\t\t\t\t'label'       => " . $export($label) . ",\n";
-	$php .= "\t\t\t\t'description' => " . $export($desc) . ",\n";
-	$php .= "\t\t\t\t'category'    => " . $export($e['category']) . ",\n";
-	$php .= "\t\t\t\t'keywords'    => " . preg_replace('/\s+/', ' ', $export($keywords)) . ",\n";
-	if ($params) {
-		$php .= "\t\t\t\t'params'      => " . preg_replace('/\s+/', ' ', $export($params)) . ",\n";
-	} else {
-		$php .= "\t\t\t\t'params'      => [],\n";
-	}
-	$php .= "\t\t\t\t'since'       => " . $export($e['since']) . ",\n";
-	if ($compat) {
-		$php .= "\t\t\t\t'compatible_callbacks' => " . preg_replace('/\s+/', ' ', $export($compat)) . ",\n";
-	}
-	$php .= "\t\t\t],\n";
+	$entries[] = [
+		'name'                 => $e['name'],
+		'type'                 => 'filter',
+		'label'                => $label,
+		'description'          => $desc,
+		'category'             => $e['category'],
+		'keywords'             => $keywords,
+		'params'               => $params,
+		'since'                => $e['since'],
+		'deprecated'           => (bool) $e['deprecated'],
+		'compatible_callbacks' => $compat,
+	];
 }
 
-$php .= "\t\t];\n\n";
-$php .= "\t\treturn array_merge( \$catalog, \$rocket );\n";
-$php .= "\t}\n);\n";
-
-file_put_contents($out, $php);
+file_put_contents(
+	$out,
+	json_encode($entries, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n"
+);
 
 // ---- Report ----
-fwrite(STDERR, "Total rocket_ hooks: {$total}\n");
-fwrite(STDERR, "  filters: {$filters}\n  actions: {$actions}\n");
-fwrite(STDERR, "  with docblock summary: {$withDoc}\n");
-fwrite(STDERR, "Categories:\n");
-foreach ($cats as $c => $cnt) { fwrite(STDERR, sprintf("  %-22s %d\n", ($c === '' ? '(none)' : $c), $cnt)); }
+$keptTotal = count($entries);
+$deprecated = count(array_filter($entries, fn($e) => $e['deprecated']));
+fwrite(STDERR, "Scanned {$total} rocket_ hooks ({$filters} filters, {$actions} actions).\n");
+fwrite(STDERR, "Kept {$keptTotal} exercisable filters:\n");
+fwrite(STDERR, "  array-valued (append/remove/empty): {$kept['array']}\n");
+fwrite(STDERR, "  bool-valued  (return-true/false):   {$kept['bool']}\n");
+fwrite(STDERR, "  int-valued   (return-int/zero):     {$kept['int']}\n");
+fwrite(STDERR, "  (of which deprecated: {$deprecated})\n");
+fwrite(STDERR, "Dropped " . ($total - $keptTotal) . " (actions + non-exercisable filters).\n");
 fwrite(STDERR, "Wrote: {$out}\n");
