@@ -17,39 +17,37 @@ class TestUnregisterCallback extends TestCase {
 	 * registered directly on a hook. That string is purely numeric, so PHP
 	 * casts it to an int array key in WP_Hook::$callbacks. Rather than
 	 * relying on core's callback-ID algorithm (which has changed across
-	 * versions), this test forges that int key directly so the regression
-	 * is verified independently of the WP version running the suite.
-	 * unregister_callback() must not fatal (substr() expects a string) when
-	 * it iterates over such a key.
+	 * versions), this test forges the callback key directly so the
+	 * regression is verified independently of the WP version running the
+	 * suite. unregister_callback() must not fatal (substr() expects a
+	 * string) when it iterates over an int key, and must still remove only
+	 * the callbacks whose key matches the target method name.
+	 *
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Fixture config; 'key' is the callback array key to forge.
+	 * @param array $expected Fixture expectation; 'removed' is whether the key should be gone.
 	 */
-	public function testShouldNotFatalWhenAnotherCallbackHasIntKey() {
+	public function testShouldNotFatalAndShouldOnlyRemoveMatchingCallback( $config, $expected ) {
 		global $wp_filter;
 
-		$noop = static function () {};
-
-		add_action( 'transition_post_status', $noop, PHP_INT_MAX );
-
-		$idx = 12345;
-
-		$wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $idx ] = [
-			'function'      => function () {},
+		$wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $config['key'] ] = [
+			'function'      => static function () {},
 			'accepted_args' => 3,
 		];
 
 		$container  = apply_filters( 'rocket_container', null );
 		$cloudflare = $container->get( 'cloudflare_plugin_subscriber' );
 
-		// Prior to the fix this call fatals with:
+		// Prior to the fix, an int $key fatals here with:
 		// TypeError: substr(): Argument #1 ($string) must be of type string, int given.
 		$cloudflare->unregister_cloudflare_clean_on_post();
 
-		$this->assertArrayHasKey(
-			$idx,
-			$wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ],
-			'The unrelated int-keyed callback must be left untouched.'
+		$this->assertSame(
+			! $expected['removed'],
+			isset( $wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $config['key'] ] )
 		);
 
-		remove_action( 'transition_post_status', $noop, PHP_INT_MAX );
-		unset( $wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $idx ] );
+		unset( $wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $config['key'] ] );
 	}
 }
