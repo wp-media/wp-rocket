@@ -18,7 +18,7 @@ class Test_SaveState extends RESTfulTestCase {
 
 	private $admin_id;
 
-	private $config;
+	protected $config;
 
 	protected $options_data;
 	protected $options_api;
