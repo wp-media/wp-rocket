@@ -47,37 +47,27 @@ class Test_unregisterCloudflareCleanOnPost extends TestCase {
 		$this->facade      = Mockery::mock( CloudflareFacade::class );
 	}
 
-	public function testShouldNotUnregisterWhenPluginInactive() {
+	/**
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Fixture config; is_plugin_active()'s active flag and CF credentials.
+	 * @param array $expected Fixture expectation; 'should_unregister' is whether unregister_callback() must run.
+	 */
+	public function testShouldUnregisterOnlyWhenPluginActive( $config, $expected ) {
 		Functions\expect( 'is_plugin_active' )
 			->with( 'cloudflare/cloudflare.php' )
 			->once()
-			->andReturn( false );
-
-		$cloudflare = Mockery::mock(
-			Cloudflare::class,
-			[ $this->options, $this->option_api, $this->beacon, $this->facade ]
-		)->makePartial()->shouldAllowMockingProtectedMethods();
-
-		$cloudflare->shouldNotReceive( 'unregister_callback' );
-
-		$cloudflare->unregister_cloudflare_clean_on_post();
-	}
-
-	public function testShouldUnregisterWhenPluginActive() {
-		Functions\expect( 'is_plugin_active' )
-			->with( 'cloudflare/cloudflare.php' )
-			->once()
-			->andReturn( true );
+			->andReturn( $config['plugin_active'] );
 
 		Functions\when( 'get_option' )->alias(
-			function ( $option_name, $default = false ) {
+			function ( $option_name, $default = false ) use ( $config ) {
 				switch ( $option_name ) {
 					case 'cloudflare_api_email':
-						return 'test@example.com';
+						return $config['cloudflare_api_email'];
 					case 'cloudflare_api_key':
-						return 'test-api-key';
+						return $config['cloudflare_api_key'];
 					case 'cloudflare_cached_domain_name':
-						return 'example.com';
+						return $config['cloudflare_cached_domain_name'];
 					default:
 						return $default;
 				}
@@ -89,13 +79,17 @@ class Test_unregisterCloudflareCleanOnPost extends TestCase {
 			[ $this->options, $this->option_api, $this->beacon, $this->facade ]
 		)->makePartial()->shouldAllowMockingProtectedMethods();
 
-		$cloudflare->shouldReceive( 'unregister_callback' )
-			->once()
-			->with( 'deleted_post', 'purgeCacheByRelevantURLs' );
+		if ( $expected['should_unregister'] ) {
+			$cloudflare->shouldReceive( 'unregister_callback' )
+				->once()
+				->with( 'deleted_post', 'purgeCacheByRelevantURLs' );
 
-		$cloudflare->shouldReceive( 'unregister_callback' )
-			->once()
-			->with( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
+			$cloudflare->shouldReceive( 'unregister_callback' )
+				->once()
+				->with( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
+		} else {
+			$cloudflare->shouldNotReceive( 'unregister_callback' );
+		}
 
 		$cloudflare->unregister_cloudflare_clean_on_post();
 	}
