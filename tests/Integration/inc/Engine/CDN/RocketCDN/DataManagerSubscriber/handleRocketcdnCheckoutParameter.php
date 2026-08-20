@@ -170,5 +170,11 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			$this->assertArrayHasKey( 'cdn_cnames', $settings );
 			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
 		}
+
+		if ( isset( $expected['cdn_state'] ) ) {
+			$settings = get_option( 'wp_rocket_settings' );
+			$this->assertArrayHasKey( 'cdn_state', $settings );
+			$this->assertSame( $expected['cdn_state'], $settings['cdn_state'] );
+		}
 	}
 }

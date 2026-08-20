@@ -55,6 +55,23 @@ class CDNOptionsManager {
 	}
 
 	/**
+	 * Set the CDN state and persist it.
+	 *
+	 * Writing through Options_Data + Options::set( 'settings', ... ) triggers WP's
+	 * update_option_wp_rocket_settings action, which Subscriber::maybe_clear_cache()
+	 * already listens on to clear the right cache scope for the transition.
+	 *
+	 * @param string $state One of Context::CDN_STATE_NOTHING, Context::ROCKETCDN_FREE_TYPE,
+	 *                       Context::ROCKETCDN_PAID_TYPE, or Context::BYOCDN_TYPE.
+	 * @return void
+	 */
+	public function set_cdn_state( string $state ) {
+		$this->options->set( 'cdn_state', $state );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
 	 * Save RocketCDN user token.
 	 *
 	 * @since 3.20.5

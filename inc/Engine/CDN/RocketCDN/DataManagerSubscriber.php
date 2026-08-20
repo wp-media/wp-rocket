@@ -103,6 +103,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
+			'transient_rocketcdn_status'             => [ 'maybe_sync_cdn_state', 10, 2 ],
 		];
 	}
 
@@ -187,6 +188,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
 		$this->cdn_options->enable();
+		$this->cdn_options->set_cdn_state( Context::ROCKETCDN_PAID_TYPE );
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -380,6 +382,46 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->cdn_options->disable();
+	}
+
+	/**
+	 * Syncs cdn_state's RocketCDN tier when the cached subscription plan_type changes.
+	 *
+	 * Hooked to transient_rocketcdn_status, which WordPress fires on every
+	 * get_transient( 'rocketcdn_status' ) read (i.e. every time subscription data is
+	 * read, via SubscriptionController/APIClient). This catches a plan_type change
+	 * (e.g. a Pro subscription downgraded to Free) that happens outside the checkout
+	 * flow, without needing a dedicated cron re-check.
+	 *
+	 * Only corrects the tier while RocketCDN is already the applied cdn_state - it
+	 * never activates RocketCDN from "nothing", and never touches "byocdn".
+	 *
+	 * @param mixed  $value     Transient value.
+	 * @param string $transient Transient name.
+	 * @return mixed
+	 */
+	public function maybe_sync_cdn_state( $value, $transient ) {
+		if ( ! is_array( $value ) || empty( $value['plan_type'] ) ) {
+			return $value;
+		}
+
+		// Read the option directly rather than through $this->options: Options_Data is a
+		// per-request snapshot taken when the container built it, so it won't reflect a
+		// write CDNOptionsManager::set_cdn_state() made through its own separate instance.
+		$settings      = $this->options_api->get( 'settings', [] );
+		$current_state = (string) ( $settings['cdn_state'] ?? Context::CDN_STATE_NOTHING );
+
+		if ( ! in_array( $current_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ], true ) ) {
+			return $value;
+		}
+
+		$new_state = 'paid' === $value['plan_type'] ? Context::ROCKETCDN_PAID_TYPE : Context::ROCKETCDN_FREE_TYPE;
+
+		if ( $new_state !== $current_state ) {
+			$this->cdn_options->set_cdn_state( $new_state );
+		}
+
+		return $value;
 	}
 
 	/**
