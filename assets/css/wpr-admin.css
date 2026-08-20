@@ -4811,6 +4811,14 @@ div.wpr-tutorial-item {
   aspect-ratio: 20/21;
 }
 
+.wpr-cdn-active-label {
+  display: none;
+}
+
+.wpr-cdn-active-indicator .wpr-cdn-active-label {
+  display: inline;
+}
+
 .wpr-cdn-status--paused .wpr-cdn-indicator__dot {
   background: #e5a800;
 }

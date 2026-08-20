@@ -146,6 +146,7 @@ class Controller extends Abstract_Render {
 			],
 			'status_indicator'  => $status_indicator_data,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $this->context->get_rocketcdn_state(),
 			'is_forced_off'     => $this->should_disable_element_for_rocketcdn(),
 		];
 

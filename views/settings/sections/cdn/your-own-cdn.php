@@ -23,15 +23,17 @@ defined( 'ABSPATH' ) || exit;
 
 ?>
 
-<div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?>">
+<?php $rocket_byocdn_active = 'byocdn' === $data['applied_cdn_state']; ?>
+<div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_byocdn_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
+	<span class="wpr-cdn-active-label"><?php esc_html_e( 'Active', 'rocket' ); ?></span>
 	<label class="wpr-cdn-mode-toggle">
 		<input
 			type="checkbox"
 			class="wpr-cdn-mode-toggle__input"
 			id="wpr-byocdn-toggle"
 			data-cdn-mode="byocdn"
-			<?php checked( 'byocdn' === $data['applied_cdn_state'] ); ?>
+			<?php checked( $rocket_byocdn_active ); ?>
 		/>
 		<span class="wpr-cdn-mode-toggle__slider"></span>
 	</label>

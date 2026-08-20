@@ -113,10 +113,12 @@ class Context {
 	/**
 	 * Gets the currently applied CDN state.
 	 *
+	 * @param string|null $cdn_state Optional.
+	 *
 	 * @return string One of CDN_STATE_NOTHING, ROCKETCDN_FREE_TYPE, ROCKETCDN_PAID_TYPE or BYOCDN_TYPE.
 	 */
-	public function get_cdn_state(): string {
-		$state = (string) $this->options->get( 'cdn_state', self::CDN_STATE_NOTHING );
+	public function get_cdn_state( ?string $cdn_state = null ): string {
+		$state = $cdn_state ?? (string) $this->options->get( 'cdn_state', self::CDN_STATE_NOTHING );
 
 		$allowed_states = [
 			self::CDN_STATE_NOTHING,
@@ -135,10 +137,12 @@ class Context {
 	/**
 	 * Gets the CDN driver type implied by the currently applied CDN state.
 	 *
+	 * @param string|null $cdn_state Optional.
+	 *
 	 * @return string One of CDN_STATE_NOTHING, ROCKETCDN_TYPE or BYOCDN_TYPE.
 	 */
-	public function get_applied_cdn_state(): string {
-		$cdn_state = $this->get_cdn_state();
+	public function get_applied_cdn_state( ?string $cdn_state = null ): string {
+		$cdn_state = $this->get_cdn_state( $cdn_state );
 
 		if ( self::BYOCDN_TYPE === $cdn_state ) {
 			return self::BYOCDN_TYPE;
@@ -154,14 +158,16 @@ class Context {
 	/**
 	 * Gets the current RocketCDN subscription state.
 	 *
+	 * @param string|null $cdn_state CDN state.
+	 *
 	 * @return string One of the ROCKETCDN_STATE_* constants.
 	 */
-	public function get_rocketcdn_state(): string {
+	public function get_rocketcdn_state( ?string $cdn_state = null ): string {
 		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
 			return self::ROCKETCDN_STATE_ONGOING_FREE;
 		}
 
-		$cdn_state = $this->get_cdn_state();
+		$cdn_state = $this->get_cdn_state( $cdn_state );
 
 		if ( self::ROCKETCDN_PAID_TYPE === $cdn_state ) {
 			return self::ROCKETCDN_PAID_TYPE;

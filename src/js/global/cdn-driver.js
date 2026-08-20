@@ -224,6 +224,24 @@
 	}
 
 	/**
+	 * Updates the `wpr-cdn-active-indicator` class to reflect which CDN driver header is active.
+	 *
+	 * @param {Element|null} activeToggle Toggle whose parent header should receive the class, or null to clear all.
+	 */
+	function updateCdnActiveIndicator( activeToggle ) {
+		document.querySelectorAll( '.wpr-cdn-active-indicator' ).forEach( ( el ) => {
+			el.classList.remove( 'wpr-cdn-active-indicator' );
+		} );
+
+		if ( activeToggle ) {
+			const header = activeToggle.closest( '.wpr-optionHeader' );
+			if ( header ) {
+				header.classList.add( 'wpr-cdn-active-indicator' );
+			}
+		}
+	}
+
+	/**
 	 * Initializes the CDN mode toggle checkboxes.
 	 *
 	 * Checking activates that mode; unchecking leaves all modes inactive ('nothing').
@@ -245,7 +263,12 @@
 			}
 
 			// Capture the previously active toggle for rollback on failure.
-			const previouslyActive = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
+			// Read from wpr-cdn-active-indicator (maintained by PHP + this function) rather than
+			// :checked, because the change event fires after the checkbox state has already flipped.
+			const previouslyActiveHeader = document.querySelector( '.wpr-optionHeader.wpr-cdn-active-indicator' );
+			const previouslyActive = previouslyActiveHeader
+				? previouslyActiveHeader.querySelector( '.wpr-cdn-mode-toggle__input' )
+				: null;
 
 			// mode sent to the server: the toggle's mode when checking, 'nothing' when unchecking.
 			const requestedMode = toggle.checked ? mode : 'nothing';
@@ -259,7 +282,11 @@
 					}
 				} );
 				toggleDriverSections( sectionDriver );
+				setActiveTab( sectionDriver );
 			}
+
+			// Optimistically update the active indicator before the request completes.
+			updateCdnActiveIndicator( toggle.checked ? toggle : null );
 
 			notifyCdnStateChange();
 
@@ -275,6 +302,7 @@
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
+				updateCdnActiveIndicator( previouslyActive );
 
 				if ( previouslyActive && previouslyActive !== toggle ) {
 					previouslyActive.checked = true;
@@ -298,58 +326,80 @@
 	}
 
 	/**
+	 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function updateDriverLabel( driver ) {
+		const tab = document.querySelector( `.wpr-cdn-tabs__tab[data-cdn-driver="${driver}"]` );
+
+		if ( ! tab ) {
+			return;
+		}
+
+		const label = tab.getAttribute( 'data-title' );
+
+		if ( ! label ) {
+			return;
+		}
+
+		document.querySelectorAll( '.rocketcdn-driver-js' ).forEach( ( span ) => {
+			span.textContent = label;
+		} );
+	}
+
+	/**
+	 * Updates the "Need Help?" link href for the CDN Exclusions section
+	 * to point to the correct docs article for the active driver.
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function updateExcludeCdnHelpUrl( driver ) {
+		const link = document.querySelector( '.exclude-cdn-help-js' );
+
+		if ( ! link ) {
+			return;
+		}
+
+		const isRocketCdn = 'rocketcdn' === driver;
+		const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
+		const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
+
+		if ( url ) {
+			link.href = url;
+		}
+
+		if ( id ) {
+			link.dataset.beaconId = id;
+		}
+	}
+
+	/**
+	 * Sets the active driver tab and syncs all tab-dependent UI (label spans, help URL).
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function setActiveTab( driver ) {
+		document.querySelectorAll( '.wpr-cdn-tabs__tab' ).forEach( ( t ) => {
+			t.classList.toggle( 'wpr-cdn-tabs__tab--active', t.getAttribute( 'data-cdn-driver' ) === driver );
+		} );
+
+		updateDriverLabel( driver );
+		updateExcludeCdnHelpUrl( driver );
+	}
+
+	/**
 	 * Initializes CDN driver tab switching behavior.
 	 *
-	 * Toggles visibility of CDN driver sections (built-in-cdn / your-own-cdn)
-	 * based on which tab is clicked.
+	 * Tabs are navigation only — no backend call on click.
+	 * Initial driver is derived from the PHP-rendered checked toggle (cdn_state),
+	 * not from cdn_type.
 	 */
 	function initCdnDriverTabs() {
 		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
 
 		if ( ! tabs.length ) {
 			return;
-		}
-
-		/**
-		 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
-		 * The label is read from the active tab's data-title attribute, preserving
-		 * the original capitalisation set by the PHP translation.
-		 *
-		 * @param {HTMLElement} activeTab The currently active tab element.
-		 */
-		function updateDriverLabel( activeTab ) {
-			const label = activeTab.getAttribute( 'data-title' );
-
-			if ( ! label ) {
-				return;
-			}
-
-			document.querySelectorAll( '.rocketcdn-driver-js' ).forEach( ( span ) => {
-				// Preserve the original text-transform (uppercase spans stay uppercase via CSS).
-				span.textContent = label;
-			} );
-		}
-
-		/**
-		 * Updates the "Need Help?" link href for the CDN Exclusions section
-		 * to point to the correct docs article for the active driver.
-		 *
-		 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
-		 */
-		function updateExcludeCdnHelpUrl( driver ) {
-			const link = document.querySelector( '.exclude-cdn-help-js' );
-			if ( ! link ) {
-				return;
-			}
-			const isRocketCdn = 'rocketcdn' === driver;
-			const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
-			const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
-			if ( url ) {
-				link.href = url;
-			}
-			if ( id ) {
-				link.dataset.beaconId = id;
-			}
 		}
 
 		tabs.forEach( ( tab ) => {
@@ -360,56 +410,21 @@
 					return;
 				}
 
-				// Update active tab.
-				tabs.forEach( ( t ) => t.classList.remove( 'wpr-cdn-tabs__tab--active' ) );
-				tab.classList.add( 'wpr-cdn-tabs__tab--active' );
-
-				// Toggle sections: show matching driver, hide others.
+				setActiveTab( driver );
 				toggleDriverSections( driver );
-
-				// Update dynamic driver label spans.
-				updateDriverLabel( tab );
-				updateExcludeCdnHelpUrl( driver );
 				notifyCdnStateChange();
-
-				// Initial value of the hidden input is set on page load by PHP based on the active driver.
-				const cdnTypeInput = document.getElementById('cdn_type');
-				let currentValue = cdnTypeInput.value;
-
-				// Persist the active driver selection.
-				const driverValue = 'your-own-cdn' === driver ? 'byocdn' : 'rocketcdn';
-
-				window.wp.apiFetch( {
-					path: '/wp-rocket/v1/rocketcdn/driver',
-					method: 'POST',
-					data: { driver: driverValue },
-				} ).then((response) => {
-					// Updated hidden input value on success.
-					cdnTypeInput.value = driverValue;
-					
-					// Update the state of RocketCDN specific elements based on the selected driver and response from the server.
-					updateRocketCDNElementsState( driverValue, response.disable_rocket_cdn_elements );
-				} ).catch(() => {
-					// Revert active tab and sections on failure.
-					cdnTypeInput.value = currentValue;
-				} );
 			} );
 		} );
 
-		// Set initial state from active tab, fallback to rocketcdn.
-		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
-		const activeDriver = activeTab ? activeTab.getAttribute( 'data-cdn-driver' ) : 'rocketcdn';
+		// Derive initial driver from whichever toggle is checked (set by PHP from cdn_state).
+		const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
+		const initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
+			? 'your-own-cdn'
+			: 'rocketcdn';
 
-		if ( activeDriver ) {
-			toggleDriverSections( activeDriver );
-			notifyCdnStateChange();
-		}
-
-		// Set initial label from the active tab.
-		if ( activeTab ) {
-			updateDriverLabel( activeTab );
-			updateExcludeCdnHelpUrl( activeDriver );
-		}
+		setActiveTab( initialDriver );
+		toggleDriverSections( initialDriver );
+		notifyCdnStateChange();
 	}
 
 	/**

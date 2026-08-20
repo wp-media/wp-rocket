@@ -542,14 +542,14 @@ class Rest extends WP_REST_Controller {
 		/**
 		 * Fires after the CDN mode is changed via the toggle.
 		 *
-		 * @param string $mode The new CDN mode ('rocketcdn_free', 'byocdn', or 'nothing').
+		 * @param string $mode The new CDN mode ('rocketcdn_free', 'rocketcdn_paid', 'byocdn', or 'nothing').
 		 */
 		do_action( 'rocket_cdn_mode_changed', $mode );
 
 		return new WP_REST_Response(
 			[
-				'applied_cdn_state'           => $this->context->get_applied_cdn_state(),
-				'rocketcdn_state'             => $this->context->get_rocketcdn_state(),
+				'applied_cdn_state'           => $this->context->get_applied_cdn_state( $mode ),
+				'rocketcdn_state'             => $this->context->get_rocketcdn_state( $mode ),
 				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
 			],
 			200
