@@ -25,7 +25,9 @@ class TestUnregisterCallback extends TestCase {
 	public function testShouldNotFatalWhenAnotherCallbackHasIntKey() {
 		global $wp_filter;
 
-		add_action( 'transition_post_status', '__return_null', PHP_INT_MAX );
+		$noop = static function () {};
+
+		add_action( 'transition_post_status', $noop, PHP_INT_MAX );
 
 		$idx = 12345;
 
@@ -47,7 +49,7 @@ class TestUnregisterCallback extends TestCase {
 			'The unrelated int-keyed callback must be left untouched.'
 		);
 
-		remove_action( 'transition_post_status', '__return_null', PHP_INT_MAX );
+		remove_action( 'transition_post_status', $noop, PHP_INT_MAX );
 		unset( $wp_filter['transition_post_status']->callbacks[ PHP_INT_MAX ][ $idx ] );
 	}
 }
