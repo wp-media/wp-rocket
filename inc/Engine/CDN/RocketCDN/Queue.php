@@ -27,6 +27,13 @@ class Queue extends AbstractASQueue {
 	private $create_status_job = 'rocket_cdnfree_website_create_status';
 
 	/**
+	 * Pro detection task hook.
+	 *
+	 * @var string
+	 */
+	private $pro_detect_job = 'rocket_cdn_auto_detect';
+
+	/**
 	 * Cancel create job.
 	 */
 	public function cancel_create_status_job(): void {
@@ -55,11 +62,41 @@ class Queue extends AbstractASQueue {
 	}
 
 	/**
+	 * Schedule the Pro subscription detection job.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 *
+	 * @return void
+	 */
+	public function schedule_pro_detection_job( int $attempt = 3 ): void {
+		$this->schedule_single(
+			time() + 30, // After 30 seconds from now.
+			$this->pro_detect_job,
+			[
+				'attempt' => $attempt,
+			]
+		);
+	}
+
+	/**
+	 * Cancel the Pro subscription detection job.
+	 *
+	 * @return void
+	 */
+	public function cancel_pro_detection_job(): void {
+		if ( ! $this->is_scheduled( $this->pro_detect_job ) ) {
+			return;
+		}
+		$this->cancel( $this->pro_detect_job );
+	}
+
+	/**
 	 * Cancel all scheduled tasks.
 	 *
 	 * @return void
 	 */
 	public function cancel_all_tasks() {
 		$this->cancel_create_status_job();
+		$this->cancel_pro_detection_job();
 	}
 }
