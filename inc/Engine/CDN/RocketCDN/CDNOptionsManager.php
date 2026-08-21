@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Context;
 
 /**
  * Manager for WP Rocket CDN options
@@ -109,5 +110,18 @@ class CDNOptionsManager {
 	public function flush_subscription_cache() {
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'rocket_cdn_website_search' );
+	}
+
+	/**
+	 * Resolve the CDN state following first-install Pro detection.
+	 *
+	 * @param bool $is_subscription_running Whether a running paid subscription was detected.
+	 *
+	 * @return void
+	 */
+	public function resolve_auto_detect_data( bool $is_subscription_running ): void {
+		$this->options->set( 'cdn_state', $is_subscription_running ? Context::ROCKETCDN_PAID_TYPE : Context::CDN_STATE_NOTHING );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 }
