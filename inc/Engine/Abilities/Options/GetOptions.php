@@ -332,7 +332,7 @@ class GetOptions implements AbilitiesInterface {
 			'cdn_state'                                 => [
 				'type'        => 'string',
 				'description' => 'Currently applied CDN state.',
-				'enum'        => [ 'nothing', 'rocketcdn_free', 'rocketcdn_pro', 'byocdn' ],
+				'enum'        => [ 'nothing', 'rocketcdn_free', 'rocketcdn_paid', 'byocdn' ],
 			],
 
 			// Cloudflare.
