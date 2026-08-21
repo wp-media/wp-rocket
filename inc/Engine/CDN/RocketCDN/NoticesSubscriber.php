@@ -113,6 +113,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
 				[ 'maybe_display_rocketcdn_notice' ],
+				[ 'display_pro_detection_failure' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'display_rocketcdn_cta' ],
@@ -445,6 +446,50 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 					'<a href="%1$s" target="_blank" rel="noopener" class="wpr-button" id="wpr-rocketcdn-activation-cta">%2$s</a>',
 					esc_url( $express_checkout_url ),
 					esc_html__( 'Complete activation', 'rocket' )
+				),
+			]
+		);
+	}
+
+	/**
+	 * Displays an admin notice when fresh-install Pro subscription detection failed after all retries.
+	 *
+	 * @return void
+	 */
+	public function display_pro_detection_failure(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		if ( ! get_transient( 'rocket_cdn_pro_detection_failed' ) ) {
+			return;
+		}
+
+		$retry_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_retry_pro_detection' ),
+			'rocket_retry_pro_detection'
+		);
+
+		$message = sprintf(
+			'<strong>%1$s</strong><br><br>%2$s',
+			esc_html__( 'RocketCDN subscription detection failed', 'rocket' ),
+			esc_html__( 'We couldn’t determine your RocketCDN subscription status. Please refresh your customer data or try again later.', 'rocket' )
+		);
+
+		rocket_notice_html(
+			[
+				'status'      => 'error',
+				'message'     => $message,
+				'dismissible' => false,
+				'id'          => 'rocketcdn_pro_detection_failed_notice',
+				'action'      => sprintf(
+					'<a href="%1$s" class="wpr-button" id="wpr-rocketcdn-retry-pro-detection">%2$s</a>',
+					esc_url( $retry_url ),
+					esc_html__( 'Refresh customer data', 'rocket' )
 				),
 			]
 		);
