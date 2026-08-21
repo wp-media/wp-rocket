@@ -468,9 +468,9 @@ class SubscriptionController implements LoggerAwareInterface {
 			return;
 		}
 
-		$is_subscription_running = ! empty( $website['subscription_status'] ) && 'running' === $website['subscription_status'] && ! empty( $website['plan_type'] ) && 'paid' === $website['plan_type'];
+		$is_paid_subscription_running = ! empty( $website['subscription_status'] ) && 'running' === $website['subscription_status'] && ! empty( $website['plan_type'] ) && 'paid' === $website['plan_type'];
 
-		$this->options_manager->resolve_auto_detect_data( $is_subscription_running );
+		$this->options_manager->resolve_auto_detect_data( $is_paid_subscription_running );
 
 		delete_transient( 'rocket_cdn_pro_detection_failed' );
 		$this->queue->cancel_pro_detection_job();
