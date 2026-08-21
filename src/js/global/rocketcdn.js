@@ -468,7 +468,8 @@
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
 			application: rocket_mixpanel_data.app,
-			cdn_mode: cdnMode
+			cdn_mode: cdnMode,
+			interaction_channel: 'UI'
 		});
 	}
 
@@ -526,7 +527,8 @@
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
 			application: rocket_mixpanel_data.app,
-			path: rocket_mixpanel_data.path
+			path: rocket_mixpanel_data.path,
+			interaction_channel: 'UI'
 		};
 
 		// Merge extra properties if provided and valid.

@@ -10,6 +10,17 @@ use Brain\Monkey\Functions;
  * @group OneCom
  */
 class Test_DisableCdnPauseOption extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		$this->unregisterAllCallbacksExcept( 'rocket_cdn_driver_sections', 'disable_cdn_pause_option', PHP_INT_MAX );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'rocket_cdn_driver_sections' );
+
+		parent::tear_down();
+	}
 
 	/**
 	 * @dataProvider providerTestData

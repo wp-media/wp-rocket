@@ -51,7 +51,11 @@ function rocket_after_save_options( $oldvalue, $value ) {
 				$oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files']
 			)
 			||
-			$oldvalue['cache_mobile'] !== $value['cache_mobile']
+			(
+				isset( $oldvalue['cache_mobile'], $value['cache_mobile'] )
+				&&
+				$oldvalue['cache_mobile'] !== $value['cache_mobile']
+			)
 		) ) {
 		rocket_generate_advanced_cache_file();
 	}
