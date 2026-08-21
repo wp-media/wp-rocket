@@ -37,4 +37,20 @@ return [
 			'scheduled_next_attempt' => null,
 		],
 	],
+	'testShouldNotChangeCdnStateConclusiveNotPaid'       => [
+		'config'   => [
+			'attempt'             => 3,
+			'website_search_code' => 200,
+			'website_search_body' => [
+				'subscription_status'    => 'cancelled',
+				'subscription_plan_type' => 'free',
+			],
+			'pre_set_cdn_state'   => 'nothing',
+		],
+		'expected' => [
+			'cdn_state'              => 'nothing',
+			'failed_transient'       => false,
+			'scheduled_next_attempt' => null,
+		],
+	],
 ];

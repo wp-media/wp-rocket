@@ -34,6 +34,11 @@ class Test_AutoDetectProSubscription extends AbstractSubscriptionControllerTestC
 	public function testShouldDoAsExpected( array $config, array $expected ): void {
 		$this->mock_api( $config );
 
+		if ( isset( $config['pre_set_cdn_state'] ) ) {
+			// Mimics the state already written by wp_rocket_first_install before this job ever runs.
+			$this->update_rocketcdn_settings( [ 'cdn_state' => $config['pre_set_cdn_state'] ] );
+		}
+
 		$queue = $this->getRocketContainer()->get( 'rocketcdn_queue' );
 
 		do_action( 'rocket_cdn_auto_detect', $config['attempt'] );
