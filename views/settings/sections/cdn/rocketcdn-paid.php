@@ -16,14 +16,15 @@
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
  *     @type array  $status_indicator Data for the CDN status indicator partial.
+ *     @type bool   $is_active    Whether RocketCDN Pro is the currently applied CDN mode.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_rocketcdn_paid_active = $data['is_active'];
 ?>
 
-<?php $rocket_rocketcdn_paid_active = 'rocketcdn_paid' === $data['rocketcdn_state']; ?>
 <div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_rocketcdn_paid_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2 wpr-title2--orange"><?php echo esc_html( $data['title'] ); ?></h3>

@@ -16,14 +16,14 @@
  *     @type string $class       Section classes.
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
+ *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
-
+$rocket_byocdn_active = $data['is_active'];
 ?>
 
-<?php $rocket_byocdn_active = 'byocdn' === $data['applied_cdn_state']; ?>
 <div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_byocdn_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	<span class="wpr-cdn-active-label"><?php esc_html_e( 'Active', 'rocket' ); ?></span>

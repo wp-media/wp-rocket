@@ -520,7 +520,7 @@ class Rest extends WP_REST_Controller {
 	 * Activates or deactivates a CDN mode via the toggle.
 	 *
 	 * Accepts 'rocketcdn_free', 'byocdn', or 'nothing' (deactivate all).
-	 * Rejects activation of RocketCDN free when it is in a forced-off state.
+	 * Rejects activation of RocketCDN (free or paid) when it is in a forced-off state.
 	 *
 	 * @param WP_REST_Request $request REST request.
 	 * @return WP_REST_Response|WP_Error
@@ -528,7 +528,9 @@ class Rest extends WP_REST_Controller {
 	public function save_cdn_mode( WP_REST_Request $request ) {
 		$mode = $request->get_param( 'mode' );
 
-		if ( Context::ROCKETCDN_FREE_TYPE === $mode && $this->render_controller->should_disable_element_for_rocketcdn() ) {
+		$rocketcdn_types = [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ];
+
+		if ( in_array( $mode, $rocketcdn_types, true ) && $this->render_controller->should_disable_element_for_rocketcdn() ) {
 			return new WP_Error(
 				'cdn_mode_forced_off',
 				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),

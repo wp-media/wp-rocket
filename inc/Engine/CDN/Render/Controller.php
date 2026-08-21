@@ -117,6 +117,28 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Adds the applied CDN state to the "Your CDN" (BYOCDN) section, when present.
+	 *
+	 * @since 3.23.3
+	 *
+	 * @param array $sections CDN driver sections.
+	 *
+	 * @return array
+	 */
+	public function add_applied_cdn_state_to_cdn_section( array $sections ): array {
+		if ( ! isset( $sections['cdn_section'] ) ) {
+			return $sections;
+		}
+
+		$applied_cdn_state = $this->context->get_applied_cdn_state();
+
+		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
+		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
+
+		return $sections;
+	}
+
+	/**
 	 * Adds the RocketCDN Paid section to the CDN driver sections.
 	 *
 	 * @since 3.22
@@ -135,6 +157,8 @@ class Controller extends Abstract_Render {
 		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
+		$rocketcdn_state = $this->context->get_rocketcdn_state();
+
 		$sections['rocketcdn_paid_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
 			'type'              => 'rocketcdn_paid',
@@ -146,8 +170,9 @@ class Controller extends Abstract_Render {
 			],
 			'status_indicator'  => $status_indicator_data,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
-			'rocketcdn_state'   => $this->context->get_rocketcdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_disable_element_for_rocketcdn(),
+			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;
@@ -200,6 +225,8 @@ class Controller extends Abstract_Render {
 
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
+		$rocketcdn_state = $this->context->get_rocketcdn_state();
+
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
 			'type'              => 'rocketcdn_free',
@@ -220,8 +247,9 @@ class Controller extends Abstract_Render {
 			],
 			'limit_reached'     => $limit_reached,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
-			'rocketcdn_state'   => $this->context->get_rocketcdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_disable_element_for_rocketcdn(),
+			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;

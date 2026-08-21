@@ -42,8 +42,9 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		$this->options_data = $container->get( 'options' );
 		$this->options_api  = $container->get( 'options_api' );
 
-		// save_cdn_mode() forces the free mode off unless there's an active subscription;
-		// simulate one so it doesn't get rejected (matches the pattern used in AddPage.php).
+		// save_cdn_mode() forces RocketCDN (free or paid) off unless there's an active
+		// subscription and the CDN isn't paused; simulate both so activation isn't
+		// rejected (matches the pattern used in AddPage.php).
 		set_transient(
 			'rocketcdn_status',
 			[
@@ -52,10 +53,18 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 			],
 			HOUR_IN_SECONDS
 		);
+
+		// render_controller's Options_Data instance is frozen well before this test runs,
+		// so writing 'cdn' through options_api/options_data here wouldn't be seen by it.
+		// pre_get_rocket_option_cdn is read live on every call (Options_Data::get()), so
+		// use that instead to make is_cdn_paused() see the CDN as enabled.
+		add_filter( 'pre_get_rocket_option_cdn', '__return_true', PHP_INT_MAX );
 	}
 
 	public function tear_down() {
 		wp_set_current_user( 0 );
+
+		remove_filter( 'pre_get_rocket_option_cdn', '__return_true', PHP_INT_MAX );
 
 		$settings = $this->options_api->get( 'settings', [] );
 		unset( $settings['cdn_state'] );

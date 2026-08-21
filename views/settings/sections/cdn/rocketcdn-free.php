@@ -19,14 +19,15 @@
  *     @type array  $cta_data    Data for the CTA banner.
  *     @type string $renewal_url    URL for renewing the license.
  *     @type bool   $active_subscription Whether the user has an active subscription or not.
+ *     @type bool   $is_active    Whether RocketCDN Free is the currently applied CDN mode.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_rocketcdn_free_active = $data['is_active'];
 ?>
 
-<?php $rocket_rocketcdn_free_active = 'rocketcdn_free' === $data['rocketcdn_state']; ?>
 <div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_rocketcdn_free_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<label class="wpr-cdn-mode-toggle">
 		<input
@@ -67,7 +68,7 @@ defined( 'ABSPATH' ) || exit;
 	?>
 
 	<div class="wpr-cdn-built-in__separator"></div>
-	
+
 	<?php
 	/**
 	 * Fires to render the built-in CDN page list table.

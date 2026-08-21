@@ -75,7 +75,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options',
 					'ri_context',
 					'rocketcdn_subscription_controller',
-					'cdn_context',
 				]
 			);
 		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
