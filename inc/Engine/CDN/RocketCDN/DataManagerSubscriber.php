@@ -103,7 +103,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
-			'wp_rocket_first_install'                => 'schedule_initial_pro_detection',
+			'wp_rocket_first_install'                => [
+				[ 'schedule_initial_pro_detection', 12 ],
+			],
 			'rocket_cdn_auto_detect'                 => 'auto_detect_pro_subscription',
 			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
 		];
