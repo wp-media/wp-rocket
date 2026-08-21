@@ -436,4 +436,80 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function is_cancelled_outside_grace_period(): bool {
 		return $this->is_cancelled() && ! $this->is_website_pending_deletion();
 	}
+
+	/**
+	 * Schedules the initial Pro subscription detection job on fresh install.
+	 *
+	 * @return void
+	 */
+	public function schedule_initial_pro_detection(): void {
+		$this->queue->schedule_pro_detection_job();
+	}
+
+	/**
+	 * Run the fresh-install Pro subscription detection.
+	 *
+	 * Resolves the CDN state to Pro or Free as soon as the RocketCDN API gives a conclusive
+	 * answer. An inconclusive answer (no token yet, network error, empty response) is retried
+	 * until the attempt budget runs out, at which point the failure transient is set.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 *
+	 * @return void
+	 */
+	public function auto_detect_pro_subscription( int $attempt ): void {
+		delete_transient( 'rocket_cdn_website_search' );
+
+		$this->website_search_api_client->set_site_url( home_url() );
+		$website = $this->website_search_api_client->find();
+
+		if ( false === $website ) {
+			$this->retry_or_fail_detection( $attempt );
+			return;
+		}
+
+		$is_subscription_running = ! empty( $website['subscription_status'] ) && 'running' === $website['subscription_status'] && ! empty( $website['plan_type'] ) && 'paid' === $website['plan_type'];
+
+		$this->options_manager->resolve_auto_detect_data( $is_subscription_running );
+
+		delete_transient( 'rocket_cdn_pro_detection_failed' );
+		$this->queue->cancel_pro_detection_job();
+	}
+
+	/**
+	 * Handles the manual retry of the fresh-install Pro subscription detection from admin notice.
+	 *
+	 * @return void
+	 */
+	public function handle_manual_retry_pro_detection(): void {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_retry_pro_detection' ) ) {
+			wp_nonce_ays( '' );
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_die();
+		}
+
+		delete_transient( 'rocket_cdn_pro_detection_failed' );
+		$this->queue->schedule_pro_detection_job( 1 );
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Reschedules the Pro detection job, or marks it failed once attempts are exhausted.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 *
+	 * @return void
+	 */
+	private function retry_or_fail_detection( int $attempt ): void {
+		if ( $attempt > 1 ) {
+			$this->queue->schedule_pro_detection_job( $attempt - 1 );
+			return;
+		}
+
+		set_transient( 'rocket_cdn_pro_detection_failed', true, WEEK_IN_SECONDS );
+	}
 }
