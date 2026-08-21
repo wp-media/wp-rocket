@@ -11,6 +11,53 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group CloudflarePlugin
  */
 class TestUnregisterCallback extends TestCase {
+
+	/**
+	 * unregister_cloudflare_clean_on_post() is guarded behind is_plugin_active(), which
+	 * requires the Cloudflare plugin to be active and its credentials to be set. Stub
+	 * all four so the guard passes through and this test still reaches the removal
+	 * logic it's actually meant to cover.
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		add_filter( 'pre_option_active_plugins', [ $this, 'plugin_enabled' ] );
+		add_filter( 'pre_option_cloudflare_api_email', [ $this, 'cloudflare_api_email' ] );
+		add_filter( 'pre_option_cloudflare_api_key', [ $this, 'cloudflare_api_key' ] );
+		add_filter( 'pre_option_cloudflare_cached_domain_name', [ $this, 'cloudflare_cached_domain_name' ] );
+	}
+
+	public function tear_down() {
+		remove_filter( 'pre_option_active_plugins', [ $this, 'plugin_enabled' ] );
+		remove_filter( 'pre_option_cloudflare_api_email', [ $this, 'cloudflare_api_email' ] );
+		remove_filter( 'pre_option_cloudflare_api_key', [ $this, 'cloudflare_api_key' ] );
+		remove_filter( 'pre_option_cloudflare_cached_domain_name', [ $this, 'cloudflare_cached_domain_name' ] );
+
+		parent::tear_down();
+	}
+
+	public function plugin_enabled( $plugins ) {
+		if ( ! is_array( $plugins ) ) {
+			$plugins = (array) $plugins;
+		}
+
+		$plugins[] = 'cloudflare/cloudflare.php';
+
+		return $plugins;
+	}
+
+	public function cloudflare_api_email() {
+		return 'test@example.com';
+	}
+
+	public function cloudflare_api_key() {
+		return 'test-api-key';
+	}
+
+	public function cloudflare_cached_domain_name() {
+		return 'example.com';
+	}
+
 	/**
 	 * On current WordPress core, _wp_filter_build_unique_id() returns
 	 * (string) spl_object_id( $callback ) for a Closure/invokable object
