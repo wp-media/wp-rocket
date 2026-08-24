@@ -1,5 +1,60 @@
 *** Changelog ***
 
+= 4.1.0 - 2026-08-05 =
+* Fix - Correct an oversight in the lock implementation (used to rate-limit async request runners) that could leave a lock permanently stuck and result in database errors in unusual cases.
+* Fix - Correct the behavior of the `wp action-scheduler clean` command so that the `--before` option defaults to 31 days ago.
+* Performance - Reduce the number of SQL queries on the Action Scheduler admin page.
+* Performance - Cache resolved group IDs to reduce the number of SQL queries.
+* Performance - Use the WordPress caching layer for the option lock component.
+* Enhancement - Display action IDs in the admin list and allow searching by action ID.
+* Enhancement - Use `wp_admin_notice()` to render admin notices, instead of custom HTML.
+* Security - Add protections to guard against the risk of object-injection/deserialization attacks when retrieving stored schedule data.
+* Dev - Include the underlying database error in the exception thrown when the legacy post store fails to claim actions.
+* Dev - Add filters (`action_scheduler_allowed_nested_schedule_classes`, `action_scheduler_enforce_schedule_allowed_classes`) and an action (`action_scheduler_unexpected_schedule_class`) to tune and observe schedule deserialization.
+
+= 4.0.0 - 2026-06-16 =
+* Breaking change: action args are taken into account when scheduling unique actions.
+* Breaking change: failed actions are now automatically purged after 3 months by default, controlled by the `action_scheduler_retention_period_for_failed` filter.
+* Add `action_scheduler_enable_failed_action_cleanup` filter to disable automatic cleanup of failed actions.
+* Performance - Actions with corrupted data are automatically cancelled on detection and their excess logs cleaned up in batches, preventing queue stalls and log table bloat.
+* Performance - Action cleanup now runs as a dedicated daily task at 3 am site time with higher throughput.
+* Update favicon images.
+* Fix number formating for action numbers in list view.
+* Import missing `WP_CLI` class to prevent fatal error.
+* Fix possible undefined variable in `action cancel --all` CLI command.
+* Move recurring A-S cache key to transient.
+* Optimize `get_claim_count()` query for large stores.
+* Update `require_once` path for Cancel_CommandFix absolute import.
+* Fix `esc_html()` hook name in admin notice markup.
+* Ensure cleanup action is enqueued via queue runner.
+* Bump WordPress compatibility to version 7.0 and require at least 6.8.
+* Dev - Bump picomatch from 2.3.1 to 2.3.2.
+* Dev - Bump phpunit/phpunit from 8.5.42 to 8.5.52.
+* Dev - Bump lodash, grunt-legacy-log and grunt-legacy-util.
+
+= 3.9.3 - 2025-07-15 =
+* Add hook 'action_scheduler_ensure_recurring_actions' specifically for scheduling recurring actions.
+* Assume an action is valid until proven otherwise.
+* Implement SKIP LOCKED during action claiming.
+* Import `get_flag_value()` from `WP_CLI\Utils` before using.
+* Make `$unique` available to all pre-creation/short-circuit hooks.
+* Make version/source information available via new class.
+* Only release claims on pending actions.
+* Tweak - WP 6.8 compatibility.
+* Update minimum supported php and phpunit versions.
+* Update readme.txt.
+* WP CLI get action command: correct parentheses/nesting of conditional checks.
+
+= 3.9.2 - 2025-02-03 =
+* Fixed fatal errors by moving version info methods to a new class and deprecating conflicting ones in ActionScheduler_Versions
+
+= 3.9.1 - 2025-01-21 =
+* A number of new WP CLI commands have been added, making it easier to manage actions in the terminal and from scripts.
+* New wp action-scheduler source command to help determine how Action Scheduler is being loaded.
+* Additional information about the active instance of Action Scheduler is now available in the Help pull-down drawer.
+* Make some other nullable parameters explicitly nullable.
+* Set option value to `no` rather than deleting.
+
 = 3.9.0 - 2024-11-14 =  
 * Minimum required version of PHP is now 7.1.  
 * Performance improvements for the `as_pending_actions_due()` function.  

@@ -76,7 +76,6 @@ class ActionScheduler_wcSystemStatus {
 
 		$action = $this->store->query_actions(
 			array(
-				'claimed'  => false,
 				'status'   => $status,
 				'per_page' => 1,
 				'order'    => $order,

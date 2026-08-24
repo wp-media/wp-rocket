@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration;
 
 use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;

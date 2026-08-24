@@ -17,6 +17,22 @@ define( 'WP_ROCKET_IS_TESTING', true );
 tests_add_filter(
 	'muplugins_loaded',
 	function () {
+		// Under the PHPUnit CLI there is no HTTP request, so $_SERVER['REQUEST_URI'] is unset. Since
+		// WordPress 6.9 core's _wp_cron() (wp-includes/cron.php) runs on the shutdown hook and reads
+		// $_SERVER['REQUEST_URI'] without a guard when spawning due cron events, emitting an
+		// "Undefined array key REQUEST_URI" warning. Seeding it earlier does not survive the WP test
+		// suite's own $_SERVER setup, so ensure the key exists on shutdown just before _wp_cron
+		// (default priority 10) reads it.
+		add_action(
+			'shutdown',
+			function () {
+				if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+					$_SERVER['REQUEST_URI'] = '/';
+				}
+			},
+			0
+		);
+
 		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
