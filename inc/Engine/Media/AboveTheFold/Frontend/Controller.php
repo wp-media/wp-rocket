@@ -141,13 +141,19 @@ class Controller implements ControllerInterface {
 			return $html;
 		}
 
-		$html    = $this->replace_html_comments( $html );
-		$url     = urldecode( preg_quote( $lcp->src, '/' ) );
+		$html = $this->replace_html_comments( $html );
+		// Decode first, then escape: any percent-encoded byte (including %23 => '#', the pattern's own
+		// delimiter) must be turned into its literal character before preg_quote() escapes it, otherwise
+		// a decoded metacharacter is injected into $pattern unescaped. The delimiter passed to preg_quote()
+		// must match the delimiter used to build $pattern below ('#'), not '/'.
+		$url     = preg_quote( urldecode( $lcp->src ), '#' );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
+			// This branch only ever receives a PHP_URL_PATH (no urldecode()), so it can't contain a
+			// literal '#' today; the delimiter is aligned to '#' for consistency with $pattern below.
 			$url = preg_quote(
 				wp_parse_url( $lcp->src, PHP_URL_PATH ),
-			'/'
+			'#'
 				);
 
 			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
