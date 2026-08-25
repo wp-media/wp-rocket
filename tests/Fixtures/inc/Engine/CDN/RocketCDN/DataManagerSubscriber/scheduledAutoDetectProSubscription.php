@@ -1,54 +1,33 @@
 <?php
 return [
-	'testShouldRescheduleAutoDetectInconclusiveWithAttemptsLeft'  => [
+	'testShouldRescheduleInconclusiveWithAttemptsLeft'        => [
 		'config'   => [
-			'attempt'             => 3,
-			'website_search_code' => 404,
+			'attempt'                  => 2,
+			'subscription_status_code' => 404,
 		],
 		'expected' => [
-			'cdn_state'              => null,
 			'failed_transient'       => false,
-			'scheduled_next_attempt' => 2,
+			'scheduled_next_attempt' => 1,
 		],
 	],
 	'testShouldSetFailureTransientInconclusiveAttemptsExhausted' => [
 		'config'   => [
-			'attempt'             => 1,
-			'website_search_code' => 404,
+			'attempt'                  => 1,
+			'subscription_status_code' => 404,
 		],
 		'expected' => [
-			'cdn_state'              => null,
 			'failed_transient'       => true,
 			'scheduled_next_attempt' => null,
 		],
 	],
-	'testShouldSetCdnStateConclusiveRunningPaid'         => [
+	'testShouldClearFailureAndCancelPendingJobWhenConclusive' => [
 		'config'   => [
-			'attempt'             => 3,
-			'website_search_code' => 200,
-			'website_search_body' => [
-				'subscription_status'    => 'running',
-				'subscription_plan_type' => 'paid',
-			],
+			'attempt'                  => 2,
+			'subscription_status_code' => 200,
+			'pre_set_failed_transient' => true,
+			'pre_scheduled_attempt'    => 1,
 		],
 		'expected' => [
-			'cdn_state'              => 'rocketcdn_paid',
-			'failed_transient'       => false,
-			'scheduled_next_attempt' => null,
-		],
-	],
-	'testShouldNotChangeCdnStateConclusiveNotPaid'       => [
-		'config'   => [
-			'attempt'             => 3,
-			'website_search_code' => 200,
-			'website_search_body' => [
-				'subscription_status'    => 'cancelled',
-				'subscription_plan_type' => 'free',
-			],
-			'pre_set_cdn_state'   => 'nothing',
-		],
-		'expected' => [
-			'cdn_state'              => 'nothing',
 			'failed_transient'       => false,
 			'scheduled_next_attempt' => null,
 		],

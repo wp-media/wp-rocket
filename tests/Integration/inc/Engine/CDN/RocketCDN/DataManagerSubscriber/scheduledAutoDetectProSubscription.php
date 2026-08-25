@@ -6,13 +6,13 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscr
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::auto_detect_pro_subscription
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::scheduled_auto_detect_pro_subscription
  *
  * @group RocketCDN
  * @group CDN
  * @group AdminOnly
  */
-class Test_AutoDetectProSubscription extends AbstractSubscriptionControllerTestCase {
+class Test_ScheduledAutoDetectProSubscription extends AbstractSubscriptionControllerTestCase {
 
 	public function set_up() {
 		parent::set_up();
@@ -34,17 +34,20 @@ class Test_AutoDetectProSubscription extends AbstractSubscriptionControllerTestC
 	public function testShouldDoAsExpected( array $config, array $expected ): void {
 		$this->mock_api( $config );
 
-		if ( isset( $config['pre_set_cdn_state'] ) ) {
-			// Mimics the state already written by wp_rocket_first_install before this job ever runs.
-			$this->update_rocketcdn_settings( [ 'cdn_state' => $config['pre_set_cdn_state'] ] );
-		}
-
 		$queue = $this->getRocketContainer()->get( 'rocketcdn_queue' );
 
-		do_action( 'rocket_cdn_auto_detect', $config['attempt'] );
+		if ( ! empty( $config['pre_set_failed_transient'] ) ) {
+			// Mimics a previous run having already given up, to verify a conclusive result clears it.
+			set_transient( 'rocket_cdn_pro_detection_failed', true, WEEK_IN_SECONDS );
+		}
 
-		$settings = $this->options_api->get( 'settings', [] );
-		$this->assertSame( $expected['cdn_state'], $settings['cdn_state'] ?? null );
+		if ( isset( $config['pre_scheduled_attempt'] ) ) {
+			// Mimics a still-pending job (e.g. from the automatic backoff chain), to verify a
+			// conclusive result cancels it instead of leaving it to run alongside a new one.
+			$queue->schedule_pro_detection_job( $config['pre_scheduled_attempt'] );
+		}
+
+		do_action( 'rocket_cdn_auto_detect', $config['attempt'] );
 
 		$this->assertSame(
 			$expected['failed_transient'],
@@ -52,7 +55,7 @@ class Test_AutoDetectProSubscription extends AbstractSubscriptionControllerTestC
 		);
 
 		if ( null === $expected['scheduled_next_attempt'] ) {
-			$this->assertFalse( $queue->is_scheduled( 'rocket_cdn_auto_detect' ) );
+			$this->assertFalse( $queue->is_scheduled( 'rocket_cdn_auto_detect', null ) );
 		} else {
 			$this->assertTrue( $queue->is_scheduled( 'rocket_cdn_auto_detect', [ 'attempt' => $expected['scheduled_next_attempt'] ] ) );
 		}
