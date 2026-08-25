@@ -541,7 +541,7 @@ class SubscriptionController implements LoggerAwareInterface {
 		// Flush user data cache.
 		$this->user_client->flush_cache();
 
-		// Create the user data cache again, to trigger refresh of rocketcdn details; 
+		// Create the user data cache again, to trigger refresh of rocketcdn details;
 		// Also triggers cache clearing of rocketcdn_status with `set_transient_wp_rocket_customer_data` hook.
 		$this->user_client->get_user_data();
 
