@@ -506,7 +506,7 @@ class SubscriptionController implements LoggerAwareInterface {
 		}
 
 		delete_transient( 'rocket_cdn_pro_detection_failed' );
-		$this->queue->schedule_pro_detection_job( 1 );
+		$this->flush_caches_and_get_subscription_data();
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
