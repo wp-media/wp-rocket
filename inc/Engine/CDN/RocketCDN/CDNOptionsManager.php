@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\CDN\Context;
 
 /**
  * Manager for WP Rocket CDN options
