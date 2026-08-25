@@ -48,7 +48,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	private $tracking;
 
 	/**
-	 * WP Rocket options instance
+	 * WP Rocket options instance.
 	 *
 	 * @var Options_Data
 	 */
@@ -112,8 +112,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'purge_cache_notice' ],
 				[ 'change_cname_notice' ],
 				[ 'activation_failed_notice' ],
-				[ 'maybe_display_rocketcdn_notice' ],
-				[ 'display_pro_detection_failure' ],
+				[ 'display_pro_detection_failure_notice' ],
 			],
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'display_rocketcdn_cta' ],
@@ -124,6 +123,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				[ 'track_rocketcdn_notice_dismissed', 5 ],
 			],
 			'wp_ajax_rocket_ignore'                   => [ [ 'track_rocketcdn_notice_dismissed', 5 ] ],
+			'rocket_display_major_release_notice'     => 'maybe_display_major_release_notice',
 		];
 	}
 
@@ -456,7 +456,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @return void
 	 */
-	public function display_pro_detection_failure(): void {
+	public function display_pro_detection_failure_notice(): void {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
@@ -544,7 +544,9 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed
+	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed.
+	 * Kept for backward compatibility — no longer hooked via get_subscribed_events().
+	 * Post-activation notice display is now handled by NoticeSubscriber.
 	 *
 	 * @since 3.22
 	 *
@@ -574,7 +576,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		// Fresh install, show new install notice.
 		if ( empty( $previous_version ) ) {
 			$message = sprintf(
-			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+				// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 				esc_html__(
 					'%1$sNew in WP Rocket: Faster loading for your key pages%2$s',
 					'rocket'
@@ -584,7 +586,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			);
 
 			$message .= sprintf(
-			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+				// translators: %1$s opening <p> tag, %2$s closing </p> tag.
 				esc_html__(
 					'%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s',
 					'rocket'
@@ -609,7 +611,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		}
 
 		$message = sprintf(
-		// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
+			// translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 			esc_html__(
 				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
 				'rocket'
@@ -619,7 +621,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		);
 
 		$message .= sprintf(
-		// translators: %1$s opening <p> tag, %2$s closing </p> tag.
+			// translators: %1$s opening <p> tag, %2$s closing </p> tag.
 			esc_html__(
 				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
 				'rocket'
@@ -683,5 +685,72 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		// Track Mixpanel event immediately.
 		$this->track_event( 'RocketCDN Admin Notice Dismissed' );
+	}
+
+	/**
+	 * Displays the major release upgrade notice for RocketCDN.
+	 *
+	 * @param string $major_version Current major.minor version.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_major_release_notice( string $major_version ): void {
+		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
+
+		if ( ! empty( $rocket_cdn_token ) ) {
+			return;
+		}
+
+		$message = sprintf(
+			// translators: %1$s = opening strong+paragraph tags, %2$s = closing strong+paragraph tags.
+			esc_html__(
+				'%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s',
+				'rocket'
+			),
+			'<p><strong>',
+			'</strong></p>'
+		);
+
+		$message .= sprintf(
+			// translators: %1$s = opening paragraph tag, %2$s = closing paragraph tag.
+			esc_html__(
+				'%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s',
+				'rocket'
+			),
+			'<p>',
+			'</p>'
+		);
+
+		$notice_key   = $this->get_major_release_notice_key( $major_version );
+		$redirect_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' );
+		$action_url   = wp_nonce_url(
+			admin_url(
+				'admin-post.php?action=rocket_ignore&box=' . $notice_key
+				. '&redirect=' . rawurlencode( $redirect_url )
+			),
+			'rocket_ignore_' . $notice_key
+		);
+
+		$notice_info = [
+			'new_version'     => WP_ROCKET_VERSION,
+			'dismiss_button'  => $notice_key,
+			'dismiss_message' => __( 'Check it later', 'rocket' ),
+			'message'         => $message,
+			'action'          => '<a class="button button-primary" href="' . esc_url( $action_url ) . '">' . esc_html__( 'Add your pages now', 'rocket' ) . '</a>',
+			'status'          => 'info',
+			'track_event'     => true,
+		];
+
+		Utils::display_update_notice( $notice_info, true );
+	}
+
+	/**
+	 * Returns the notice dismiss key for the given major release version.
+	 *
+	 * @param string $major_version Major.minor version string (e.g. "3.22").
+	 * @return string
+	 */
+	private function get_major_release_notice_key( string $major_version ): string {
+		return 'rocket_major_release_notice_' . str_replace( '.', '_', $major_version );
 	}
 }
