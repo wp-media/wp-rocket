@@ -68,7 +68,10 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @return void
 	 */
-	public function schedule_pro_detection_job( int $attempt = 3 ): void {
+	public function schedule_pro_detection_job( int $attempt = 2 ): void {
+		// Avoid piling up duplicate pending actions across retries/re-triggers.
+		$this->cancel_pro_detection_job();
+
 		$this->schedule_single(
 			time() + 30, // After 30 seconds from now.
 			$this->pro_detect_job,
@@ -84,10 +87,11 @@ class Queue extends AbstractASQueue {
 	 * @return void
 	 */
 	public function cancel_pro_detection_job(): void {
-		if ( ! $this->is_scheduled( $this->pro_detect_job ) ) {
+		// Match regardless of the 'attempt' arg the job was scheduled with.
+		if ( ! $this->is_scheduled( $this->pro_detect_job, null ) ) {
 			return;
 		}
-		$this->cancel( $this->pro_detect_job );
+		$this->cancel_all( $this->pro_detect_job, null );
 	}
 
 	/**
