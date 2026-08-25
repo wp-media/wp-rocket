@@ -104,9 +104,9 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
 			'wp_rocket_first_install'                => [
-				[ 'schedule_initial_pro_detection', 12 ],
+				[ 'auto_detect_pro_subscription', 12 ],
 			],
-			'rocket_cdn_auto_detect'                 => 'auto_detect_pro_subscription',
+			'rocket_cdn_auto_detect'                 => 'scheduled_auto_detect_pro_subscription',
 			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
 		];
 	}
@@ -619,22 +619,22 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Schedules the initial Pro subscription detection job on fresh install.
+	 * Run the fresh-install Pro subscription detection.
 	 *
 	 * @return void
 	 */
-	public function schedule_initial_pro_detection(): void {
-		$this->subscription_controller->schedule_initial_pro_detection();
+	public function auto_detect_pro_subscription() {
+		$this->subscription_controller->auto_detect_pro_subscription();
 	}
 
 	/**
-	 * Run the fresh-install Pro subscription detection.
+	 * Action Scheduler callback that retries the fresh-install Pro subscription detection.
 	 *
 	 * @param int $attempt Number of remaining detection attempts.
 	 * @return void
 	 */
-	public function auto_detect_pro_subscription( int $attempt ) {
-		$this->subscription_controller->auto_detect_pro_subscription( $attempt );
+	public function scheduled_auto_detect_pro_subscription( int $attempt ) {
+		$this->subscription_controller->scheduled_auto_detect_pro_subscription( $attempt );
 	}
 
 	/**
