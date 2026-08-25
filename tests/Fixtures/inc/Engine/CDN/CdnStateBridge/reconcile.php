@@ -1,44 +1,9 @@
 <?php
 
 return [
-	'testShouldDeriveByocdnStateFromLegacyWrite'  => [
-		'config'   => [
-			'initial' => [
-				'cdn'       => 0,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'nothing',
-			],
-			'write'   => [
-				'cdn'      => 1,
-				'cdn_type' => 'byocdn',
-			],
-		],
-		'expected' => [
-			'cdn'       => 1,
-			'cdn_type'  => 'byocdn',
-			'cdn_state' => 'byocdn',
-		],
-	],
-	'testShouldDeriveNothingStateWhenLegacyCdnIsDisabled' => [
-		'config'   => [
-			'initial'      => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_free',
-			],
-			'subscription' => [
-				'subscription_status' => 'running',
-				'plan_type'            => 'free',
-			],
-			'write'        => [
-				'cdn' => 0,
-			],
-		],
-		'expected' => [
-			'cdn'       => 0,
-			'cdn_state' => 'nothing',
-		],
-	],
+	// legacy -> state is no longer something the bridge writes to storage: CdnStateResolver
+	// resolves it live on every read instead (tests/Integration/.../CdnStateResolver/resolve.php).
+	// This fixture now only covers the bridge's remaining direction, state -> legacy.
 	'testShouldDeriveLegacyFieldsFromDirectStateWrite' => [
 		'config'   => [
 			'initial'      => [

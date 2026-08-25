@@ -54,19 +54,22 @@ class Test_Reconcile extends TestCase {
 		$this->bridge->reconcile( null, 'not-an-array' );
 	}
 
-	public function testShouldDoNothingWhenNeitherLegacyNorStateChanged() {
+	public function testShouldDoNothingWhenStateDidNotChange() {
 		$settings = [
 			'cdn'       => 1,
 			'cdn_type'  => 'rocketcdn',
 			'cdn_state' => 'rocketcdn_free',
 		];
 
+		$this->translator->shouldNotReceive( 'state_to_legacy' );
 		$this->options_api->shouldNotReceive( 'set' );
 
 		$this->bridge->reconcile( $settings, $settings );
 	}
 
-	public function testShouldNotPersistWhenLegacyChangedButStateAlreadyAgrees() {
+	public function testShouldIgnoreLegacyFieldChangesEntirely() {
+		// legacy -> state is CdnStateResolver's job now, not the bridge's - reconcile() must
+		// not react to a legacy-only change at all.
 		$old = [
 			'cdn'       => 0,
 			'cdn_type'  => 'rocketcdn',
@@ -75,40 +78,12 @@ class Test_Reconcile extends TestCase {
 		$new = [
 			'cdn'       => 1,
 			'cdn_type'  => 'byocdn',
-			'cdn_state' => 'byocdn',
+			'cdn_state' => 'nothing',
 		];
 
-		$this->translator->shouldReceive( 'legacy_to_state' )
-			->with( $new )
-			->andReturn( 'byocdn' );
-
+		$this->translator->shouldNotReceive( 'legacy_to_state' );
+		$this->translator->shouldNotReceive( 'state_to_legacy' );
 		$this->options_api->shouldNotReceive( 'set' );
-
-		$this->bridge->reconcile( $old, $new );
-	}
-
-	public function testShouldPersistCorrectedStateWhenLegacyChanged() {
-		$old = [
-			'cdn'       => 0,
-			'cdn_type'  => 'rocketcdn',
-			'cdn_state' => 'nothing',
-		];
-		$new = [
-			'cdn'       => 1,
-			'cdn_type'  => 'byocdn',
-			'cdn_state' => 'nothing',
-		];
-
-		$this->translator->shouldReceive( 'legacy_to_state' )
-			->with( $new )
-			->andReturn( 'byocdn' );
-
-		$expected = $new;
-		$expected['cdn_state'] = 'byocdn';
-
-		$this->options_api->shouldReceive( 'set' )
-			->once()
-			->with( 'settings', $expected );
 
 		$this->bridge->reconcile( $old, $new );
 	}
@@ -182,12 +157,11 @@ class Test_Reconcile extends TestCase {
 			'cdn_state' => 'nothing',
 		];
 		$new = [
-			'cdn'       => 1,
-			'cdn_type'  => 'byocdn',
-			'cdn_state' => 'nothing',
+			'cdn'       => 0,
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_paid',
 		];
 
-		$this->translator->shouldNotReceive( 'legacy_to_state' );
 		$this->translator->shouldNotReceive( 'state_to_legacy' );
 		$this->options_api->shouldNotReceive( 'set' );
 

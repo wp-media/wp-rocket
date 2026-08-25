@@ -317,6 +317,7 @@ class Plugin {
 			'cdn_subscriber',
 			'cdn_admin_subscriber',
 			'cdn_state_bridge',
+			'cdn_state_resolver',
 			'cdn_render_subscriber',
 			'rocketcdn_frontend_subscriber',
 			'critical_css_subscriber',

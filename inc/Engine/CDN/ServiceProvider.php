@@ -42,6 +42,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cache_controller',
 		'cdn_state_translator',
 		'cdn_state_bridge',
+		'cdn_state_resolver',
 	];
 
 	/**
@@ -139,6 +140,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options_api',
 				]
 			);
+
+		$this->getContainer()->addShared( 'cdn_state_resolver', CdnStateResolver::class )
+			->addArgument( 'cdn_state_translator' );
 
 		// CDN Render controller.
 		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
