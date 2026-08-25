@@ -7,7 +7,10 @@ use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
-use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\{
+	User,
+	UserClient
+};
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
@@ -57,6 +60,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $user;
 
 	/**
+	 * License UserClient instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
 	 * Subscription creation loading state transient name.
 	 *
 	 * @var string
@@ -87,6 +97,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
 	 * @param User                 $user  License User instance.
 	 * @param WebsiteSearch        $website_search_api_client Website Search API Client instance.
+	 * @param UserClient           $user_client License UserClient instance.
 	 */
 	public function __construct(
 		APIClient $api_client,
@@ -95,7 +106,8 @@ class SubscriptionController implements LoggerAwareInterface {
 		Queue $queue,
 		CheckStatusAPIClient $check_status_api_client,
 		User $user,
-		WebsiteSearch $website_search_api_client
+		WebsiteSearch $website_search_api_client,
+		UserClient $user_client
 	) {
 		$this->api_client                = $api_client;
 		$this->create_api_client         = $create_api_client;
@@ -104,6 +116,7 @@ class SubscriptionController implements LoggerAwareInterface {
 		$this->check_status_api_client   = $check_status_api_client;
 		$this->user                      = $user;
 		$this->website_search_api_client = $website_search_api_client;
+		$this->user_client               = $user_client;
 	}
 
 	/**
@@ -438,39 +451,41 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Schedules the initial Pro subscription detection job on fresh install.
+	 * Runs the initial fresh-install Pro subscription detection.
+	 *
+	 * Fired synchronously on `wp_rocket_first_install`. If the API doesn't give a conclusive
+	 * answer right away, schedules the Action Scheduler job to keep retrying in the background.
 	 *
 	 * @return void
 	 */
-	public function schedule_initial_pro_detection(): void {
-		$this->queue->schedule_pro_detection_job();
+	public function auto_detect_pro_subscription(): void {
+		$subscription_data = $this->flush_caches_and_get_subscription_data();
+
+		if ( 200 !== $subscription_data['status_code'] ) {
+			$this->queue->schedule_pro_detection_job();
+			return;
+		}
 	}
 
 	/**
-	 * Run the fresh-install Pro subscription detection.
+	 * Action Scheduler callback that retries the fresh-install Pro subscription detection.
 	 *
-	 * Resolves the CDN state to Pro or Free as soon as the RocketCDN API gives a conclusive
-	 * answer. An inconclusive answer (no token yet, network error, empty response) is retried
-	 * until the attempt budget runs out, at which point the failure transient is set.
+	 * A conclusive answer (HTTP 200) clears the failure transient and cancels any further
+	 * pending detection job. An inconclusive answer (no token yet, network error, empty
+	 * response) is retried until the attempt budget runs out, at which point the failure
+	 * transient is set instead.
 	 *
 	 * @param int $attempt Number of remaining detection attempts.
 	 *
 	 * @return void
 	 */
-	public function auto_detect_pro_subscription( int $attempt ): void {
-		delete_transient( 'rocket_cdn_website_search' );
+	public function scheduled_auto_detect_pro_subscription( int $attempt ): void {
+		$subscription_data = $this->flush_caches_and_get_subscription_data();
 
-		$this->website_search_api_client->set_site_url( home_url() );
-		$website = $this->website_search_api_client->find();
-
-		if ( false === $website ) {
+		if ( 200 !== $subscription_data['status_code'] ) {
 			$this->retry_or_fail_detection( $attempt );
 			return;
 		}
-
-		$is_paid_subscription_running = ! empty( $website['subscription_status'] ) && 'running' === $website['subscription_status'] && ! empty( $website['plan_type'] ) && 'paid' === $website['plan_type'];
-
-		$this->options_manager->resolve_auto_detect_data( $is_paid_subscription_running );
 
 		delete_transient( 'rocket_cdn_pro_detection_failed' );
 		$this->queue->cancel_pro_detection_job();
@@ -511,5 +526,26 @@ class SubscriptionController implements LoggerAwareInterface {
 		}
 
 		set_transient( 'rocket_cdn_pro_detection_failed', true, WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * Flushes the cached user and subscription data, then fetches fresh subscription data.
+	 *
+	 * Flushing the user data cache forces a fresh call to the user endpoint, which (via the
+	 * `set_transient_wp_rocket_customer_data` hook) triggers saving the RocketCDN token if the
+	 * account now has one. The fresh subscription data call similarly re-caches `rocketcdn_status`.
+	 *
+	 * @return array Fresh subscription data, as returned by APIClient::get_subscription_data().
+	 */
+	private function flush_caches_and_get_subscription_data(): array {
+		// Flush user data cache.
+		$this->user_client->flush_cache();
+
+		// Create the user data cache again, to trigger refresh of rocketcdn details; 
+		// Also triggers cache clearing of rocketcdn_status with `set_transient_wp_rocket_customer_data` hook.
+		$this->user_client->get_user_data();
+
+		// Get subscription data again, to trigger saving the rocketcdn_status.
+		return $this->api_client->get_subscription_data();
 	}
 }
