@@ -77,6 +77,12 @@ class Test_HandleManualRetryProDetection extends AbstractSubscriptionControllerT
 			set_transient( 'rocket_cdn_pro_detection_failed', true );
 		}
 
+		if ( ! empty( $config['token'] ) ) {
+			$this->set_rocketcdn_user_token();
+		}
+
+		$this->mock_api( $config );
+
 		add_filter( 'wp_redirect', [ $this, 'return_empty_string' ] );
 
 		// handle_manual_retry_pro_detection() always ends in wp_nonce_ays(), wp_die(), or a
@@ -98,9 +104,9 @@ class Test_HandleManualRetryProDetection extends AbstractSubscriptionControllerT
 			$this->assertFalse( get_transient( 'rocket_cdn_pro_detection_failed' ) );
 		}
 
-		if ( isset( $expected['scheduled_next_attempt'] ) ) {
+		if ( isset( $expected['job_scheduled'] ) ) {
 			$queue = $this->getRocketContainer()->get( 'rocketcdn_queue' );
-			$this->assertTrue( $queue->is_scheduled( 'rocket_cdn_auto_detect', [ 'attempt' => $expected['scheduled_next_attempt'] ] ) );
+			$this->assertSame( $expected['job_scheduled'], $queue->is_scheduled( 'rocket_cdn_auto_detect', null ) );
 		}
 	}
 }
