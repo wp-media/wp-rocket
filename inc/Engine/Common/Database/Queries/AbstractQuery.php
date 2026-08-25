@@ -245,32 +245,19 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
-
-		$prefixed_table_name = $db->prefix . $this->table_name;
-
 		$old = $this->get_row( $url, $is_mobile );
 
-		$retries          = 0;
-		$previous_message = '';
-
-		if ( $old ) {
-			$retries          = $old->retries;
-			$previous_message = $old->error_message;
+		if ( ! $old ) {
+			return false;
 		}
 
 		$data = [
-			'retries'       => $retries + 1,
+			'retries'       => $old->retries + 1,
 			'status'        => 'pending',
-			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
+			'error_message' => $old->error_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
@@ -299,17 +286,15 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
+		$old = $this->get_row( $url, $is_mobile );
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
-		$where               = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
+		if ( ! $old ) {
+			return false;
+		}
 
 		$additional_update_fields['status'] = 'in-progress';
 
-		return $db->update( $prefixed_table_name, $additional_update_fields, $where );
+		return $this->update_item( $old->id, $additional_update_fields );
 	}
 
 	/**
@@ -360,26 +345,19 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
-
-		$prefixed_table_name = $db->prefix . $this->table_name;
-
 		$old = $this->get_row( $url, $is_mobile );
 
-		$previous_message = $old ? $old->error_message : '';
+		if ( ! $old ) {
+			return false;
+		}
 
 		$data = [
 			'status'        => 'failed',
 			'error_code'    => $error_code,
-			'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
+			'error_message' => $old->error_message . ' - ' . current_time( 'mysql', true ) . " {$error_code}: {$error_message}",
 		];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
@@ -552,10 +530,13 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
+		$old = $this->get_row( $url, $is_mobile );
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
-		$data                = [
+		if ( ! $old ) {
+			return false;
+		}
+
+		$data = [
 			'job_id'       => $job_id,
 			'queue_name'   => $queue_name,
 			'status'       => 'pending',
@@ -563,12 +544,7 @@ class AbstractQuery extends Query implements QueryInterface {
 			'submitted_at' => current_time( 'mysql', true ),
 		];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
@@ -587,18 +563,15 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
+		$old = $this->get_row( $url, $is_mobile );
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
+		if ( ! $old ) {
+			return false;
+		}
 
 		$data = [ 'error_message' => $previous_message . ' - ' . current_time( 'mysql', true ) . " {$code}: {$message}" ];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
@@ -615,10 +588,6 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
-		$db = $this->get_db();
-
-		$prefixed_table_name = $db->prefix . $this->table_name;
-
 		if ( is_string( $next_retry_time ) && strtotime( $next_retry_time ) ) {
 			// If $next_retry_time is a valid date string, convert it to a timestamp.
 			$next_retry_time = strtotime( $next_retry_time );
@@ -627,14 +596,15 @@ class AbstractQuery extends Query implements QueryInterface {
 			return false;
 		}
 
+		$old = $this->get_row( $url, $is_mobile );
+
+		if ( ! $old ) {
+			return false;
+		}
+
 		$data = [ 'next_retry_time' => gmdate( 'Y-m-d H:i:s', $next_retry_time ) ];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**

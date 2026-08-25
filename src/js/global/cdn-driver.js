@@ -588,6 +588,7 @@
 						addPageBtn.disabled = true;
 					}
 					updateTooltipState( true );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
 				// Set subscription loading state when first page is added.

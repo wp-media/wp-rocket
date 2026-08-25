@@ -67,6 +67,15 @@ class AboveTheFold extends AbstractQuery {
 	 */
 	protected $item_shape = AboveTheFoldRow::class;
 
+	/** Cache *****************************************************************/
+
+	/**
+	 * Group to cache queries and queried items in.
+	 *
+	 * @var   string
+	 */
+	protected $cache_group = 'wpr_above_the_fold';
+
 	/**
 	 * Complete a job.
 	 *

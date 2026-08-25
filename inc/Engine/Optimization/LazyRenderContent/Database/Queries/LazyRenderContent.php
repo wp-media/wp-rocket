@@ -66,6 +66,15 @@ class LazyRenderContent extends AbstractQuery {
 	 */
 	protected $item_shape = LRCRow::class;
 
+	/** Cache *****************************************************************/
+
+	/**
+	 * Group to cache queries and queried items in.
+	 *
+	 * @var   string
+	 */
+	protected $cache_group = 'wpr_lazy_render_content';
+
 	/**
 	 * Delete all rows which were not accessed in the last month.
 	 *
