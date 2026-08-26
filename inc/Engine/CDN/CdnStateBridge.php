@@ -4,55 +4,26 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Corrects the legacy `cdn` / `cdn_type` fields whenever something writes `cdn_state` directly,
- * so code that hasn't migrated to reading cdn_state yet keeps working.
- *
- * This is one half of the compatibility bridge for the RocketCDN refactor epic (#8693) - the
- * other half, legacy fields -> cdn_state, is CdnStateResolver, which resolves that direction
- * live on every read instead of caching it here. This class only ever needs to run the opposite
- * direction: cdn_state is genuinely persisted data going forward, so when something writes it
- * directly (Story 2's toggle UI, the wp-rocket/set-option ability), the legacy fields - real
- * stored data other, unmigrated code still reads directly - need to be corrected to match.
- *
- * Its removal criterion is Story 10 - once nothing reads the legacy fields directly any more,
- * this class and CdnStateTranslator can both be deleted along with them.
- *
- * It does no more than reconcile option shapes: no cache clearing, no API calls. Those stay the
- * sole responsibility of whatever already reacts to `update_option_wp_rocket_settings` at a
- * later priority (e.g. Subscriber::maybe_clear_cache()), which this class runs ahead of so it
- * always sees settled legacy fields.
+ * Mirrors the legacy `cdn` / `cdn_type` fields into `cdn_state` whenever they change.
  */
 class CdnStateBridge implements Subscriber_Interface {
 	/**
-	 * Runs ahead of the cache-clearing subscriber on the same hook, so it always sees a
-	 * reconciled cdn_state rather than a half-written one.
+	 * Runs ahead of the cache-clearing subscriber on the same hook, so it always sees
+	 * settled legacy fields before anything else reacts to the save.
 	 */
 	const PRIORITY = 5;
 
 	/**
-	 * Hard backstop against runaway recursion. The reconciliation is idempotent by
-	 * construction - a settled state should never trigger a further write - but a static
-	 * depth guard makes "cannot recurse" true regardless of whether that holds in every case.
-	 */
-	const MAX_DEPTH = 1;
-
-	/**
-	 * Current re-entrancy depth.
+	 * Subscription controller, used to resolve RocketCDN free vs. paid and cancellation state.
 	 *
-	 * @var int
+	 * @var SubscriptionController
 	 */
-	private static $depth = 0;
-
-	/**
-	 * Translator between the legacy fields and cdn_state.
-	 *
-	 * @var CdnStateTranslator
-	 */
-	private $translator;
+	private $subscription_controller;
 
 	/**
 	 * WP Options API instance.
@@ -64,12 +35,12 @@ class CdnStateBridge implements Subscriber_Interface {
 	/**
 	 * Constructor.
 	 *
-	 * @param CdnStateTranslator $translator  Translator between the legacy fields and cdn_state.
-	 * @param Options            $options_api WP Options API instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
+	 * @param Options                $options_api              WP Options API instance.
 	 */
-	public function __construct( CdnStateTranslator $translator, Options $options_api ) {
-		$this->translator  = $translator;
-		$this->options_api = $options_api;
+	public function __construct( SubscriptionController $subscription_controller, Options $options_api ) {
+		$this->subscription_controller = $subscription_controller;
+		$this->options_api             = $options_api;
 	}
 
 	/**
@@ -78,11 +49,12 @@ class CdnStateBridge implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', self::PRIORITY, 2 ],
+			'pre_get_rocket_option_cdn_state'   => [ 'resolve_live', 10, 2 ],
 		];
 	}
 
 	/**
-	 * Reconciles the legacy fields against cdn_state after a settings save.
+	 * Recomputes cdn_state from the legacy fields after a settings save, if either changed.
 	 *
 	 * @param mixed $old_value Previous wp_rocket_settings value.
 	 * @param mixed $value     New wp_rocket_settings value.
@@ -94,56 +66,73 @@ class CdnStateBridge implements Subscriber_Interface {
 			return;
 		}
 
-		if ( self::$depth >= self::MAX_DEPTH ) {
+		if (
+			! Utils::did_setting_change( 'cdn', $old_value, $value )
+			&&
+			! Utils::did_setting_change( 'cdn_type', $old_value, $value )
+		) {
 			return;
 		}
 
-		if ( Utils::did_setting_change( 'cdn_state', $old_value, $value ) ) {
-			$this->sync_state_to_legacy( $value );
-		}
-	}
+		$new_state = $this->legacy_to_state( $value );
 
-	/**
-	 * Corrects the legacy fields to match the cdn_state that just changed.
-	 *
-	 * @param array $value New wp_rocket_settings value.
-	 *
-	 * @return void
-	 */
-	private function sync_state_to_legacy( array $value ): void {
-		$state           = (string) ( $value['cdn_state'] ?? Context::CDN_STATE_NOTHING );
-		$expected_legacy = $this->translator->state_to_legacy( $state );
-
-		$needs_write = false;
-
-		foreach ( $expected_legacy as $key => $expected ) {
-			if ( ( $value[ $key ] ?? null ) !== $expected ) {
-				$needs_write = true;
-				break;
-			}
-		}
-
-		if ( ! $needs_write ) {
+		if ( ( $value['cdn_state'] ?? null ) === $new_state ) {
 			return;
 		}
 
-		$this->persist( array_merge( $value, $expected_legacy ) );
+		$value['cdn_state'] = $new_state;
+
+		$this->options_api->set( 'settings', $value );
 	}
 
 	/**
-	 * Persists a corrected settings array, guarded against re-entrant reconciliation.
+	 * Resolves cdn_state live from the legacy fields, instead of trusting whatever was last
+	 * written to the option.
 	 *
-	 * @param array $settings Full settings array to persist.
+	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
+	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
-	 * @return void
+	 * @return string
 	 */
-	private function persist( array $settings ): void {
-		++self::$depth;
+	public function resolve_live( $value, $default ): string {
+		return $this->legacy_to_state(
+			[
+				'cdn'      => get_rocket_option( 'cdn' ),
+				'cdn_type' => get_rocket_option( 'cdn_type' ),
+			]
+		);
+	}
 
-		try {
-			$this->options_api->set( 'settings', $settings );
-		} finally {
-			--self::$depth;
+	/**
+	 * Resolves the cdn_state implied by the legacy `cdn` / `cdn_type` fields and live subscription state.
+	 *
+	 * @param array $settings Full wp_rocket_settings array (or any array carrying 'cdn' / 'cdn_type').
+	 *
+	 * @return string One of the Context::CDN_STATE_* / *_TYPE constants.
+	 */
+	private function legacy_to_state( array $settings ): string {
+		if ( empty( $settings['cdn'] ) ) {
+			return Context::CDN_STATE_NOTHING;
 		}
+
+		$cdn_type = (string) ( $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE );
+
+		if ( Context::ROCKETCDN_TYPE !== $cdn_type ) {
+			return Context::BYOCDN_TYPE;
+		}
+
+		if (
+			! $this->subscription_controller->has_active_subscription()
+			&&
+			$this->subscription_controller->is_cancelled_outside_grace_period()
+		) {
+			return Context::CDN_STATE_NOTHING;
+		}
+
+		if ( $this->subscription_controller->is_paid() ) {
+			return Context::ROCKETCDN_PAID_TYPE;
+		}
+
+		return Context::ROCKETCDN_FREE_TYPE;
 	}
 }
