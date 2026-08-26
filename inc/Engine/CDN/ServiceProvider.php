@@ -40,9 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_byocdn',
 		'cdn_driver',
 		'cache_controller',
-		'cdn_state_translator',
 		'cdn_state_bridge',
-		'cdn_state_resolver',
 	];
 
 	/**
@@ -130,19 +128,13 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
 
 		// CDN state compatibility bridge (RocketCDN refactor epic #8693 - temporary, removed in Story 10).
-		$this->getContainer()->addShared( 'cdn_state_translator', CdnStateTranslator::class )
-			->addArgument( 'rocketcdn_subscription_controller' );
-
 		$this->getContainer()->addShared( 'cdn_state_bridge', CdnStateBridge::class )
 			->addArguments(
 				[
-					'cdn_state_translator',
+					'rocketcdn_subscription_controller',
 					'options_api',
 				]
 			);
-
-		$this->getContainer()->addShared( 'cdn_state_resolver', CdnStateResolver::class )
-			->addArgument( 'cdn_state_translator' );
 
 		// CDN Render controller.
 		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
