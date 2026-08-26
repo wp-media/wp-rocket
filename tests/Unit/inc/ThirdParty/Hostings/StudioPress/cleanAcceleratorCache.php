@@ -45,7 +45,7 @@ class Test_CleanAcceleratorCache extends TestCase {
 		$this->subscriber->clean_accelerator_cache();
 
 		if ( ! $config['global_set'] ) {
-			$this->addToAssertionCount( 1 );
+			$this->assertArrayNotHasKey( 'sp_accel_nginx_proxy_cache_purge', $GLOBALS );
 		}
 	}
 }

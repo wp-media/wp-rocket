@@ -45,8 +45,13 @@ class Test_ClearCacheAfterAccelerator extends TestCase {
 			->andReturn( $config['has_cap'] );
 
 		if ( ! $config['has_cap'] ) {
+			Functions\expect( 'wp_verify_nonce' )->never();
+			Functions\expect( 'rocket_clean_files' )->never();
+			Functions\expect( 'rocket_clean_domain' )->never();
+			Functions\expect( 'run_rocket_bot' )->never();
+			Functions\expect( 'run_rocket_sitemap_preload' )->never();
+
 			$this->subscriber->clear_cache_after_accelerator();
-			$this->addToAssertionCount( 1 );
 			return;
 		}
 

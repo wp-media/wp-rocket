@@ -31,6 +31,6 @@ class Test_CleanAcceleratorCache extends TestCase {
 	public function testShouldDoNothingWhenAcceleratorAbsent() {
 		do_action( 'rocket_after_clean_domain' );
 
-		$this->addToAssertionCount( 1 );
+		$this->assertArrayNotHasKey( 'sp_accel_nginx_proxy_cache_purge', $GLOBALS );
 	}
 }
