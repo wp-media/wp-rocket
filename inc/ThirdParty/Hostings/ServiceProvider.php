@@ -7,6 +7,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\BootableServiceProviderInterface;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
+use WP_Rocket\ThirdParty\Hostings\StudioPress;
 
 /**
  * Hostings compatibility service provider
@@ -17,7 +18,7 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 *
 	 * @var array
 	 */
-	protected $provides = [];
+	protected $provides = [ 'studiopress_accelerator' ];
 
 	/**
 	 * Check if the service provider provides a specific service.
@@ -51,6 +52,9 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()
+			->addShared( 'studiopress_accelerator', StudioPress::class );
+
 		$hosting_service = HostResolver::get_host_service();
 
 		if ( ! empty( $hosting_service ) ) {
