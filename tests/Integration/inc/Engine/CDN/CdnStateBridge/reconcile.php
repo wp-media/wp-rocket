@@ -5,9 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * End-to-end test for \WP_Rocket\Engine\CDN\CdnStateBridge, wired exactly as it runs in
- * production: through the real container, the real `update_option_wp_rocket_settings` hook,
- * and a real SubscriptionController reading from the rocketcdn_status transient.
+ * @covers \WP_Rocket\Engine\CDN\CdnStateBridge::reconcile
  *
  * @group AdminOnly
  * @group RocketCDN

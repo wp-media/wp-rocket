@@ -1,22 +1,81 @@
 <?php
 
 return [
-	// legacy -> state is no longer something the bridge writes to storage: CdnStateResolver
-	// resolves it live on every read instead (tests/Integration/.../CdnStateResolver/resolve.php).
-	// This fixture now only covers the bridge's remaining direction, state -> legacy.
-	'testShouldDeriveLegacyFieldsFromDirectStateWrite' => [
+	'testShouldSetByocdnWhenCdnTypeChangesToByocdn'                     => [
 		'config'   => [
-			'initial'      => [
+			'initial' => [
 				'cdn'       => 0,
 				'cdn_type'  => 'rocketcdn',
 				'cdn_state' => 'nothing',
 			],
+			'write'   => [
+				'cdn'      => 1,
+				'cdn_type' => 'byocdn',
+			],
+		],
+		'expected' => [
+			'cdn'       => 1,
+			'cdn_type'  => 'byocdn',
+			'cdn_state' => 'byocdn',
+		],
+	],
+	'testShouldSetNothingWhenCdnIsDisabled'                             => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 1,
+				'cdn_type'  => 'rocketcdn',
+				'cdn_state' => 'rocketcdn_free',
+			],
 			'subscription' => [
 				'subscription_status' => 'running',
-				'plan_type'            => 'paid',
+				'plan_type'           => 'free',
 			],
 			'write'        => [
-				'cdn_state' => 'rocketcdn_paid',
+				'cdn' => 0,
+			],
+		],
+		'expected' => [
+			'cdn'       => 0,
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'nothing',
+		],
+	],
+	'testShouldSetRocketcdnFreeWhenSubscriptionActiveAndNotPaid'        => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 0,
+				'cdn_type'  => 'byocdn',
+				'cdn_state' => 'nothing',
+			],
+			'subscription' => [
+				'subscription_status' => 'running',
+				'plan_type'           => 'free',
+			],
+			'write'        => [
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
+			],
+		],
+		'expected' => [
+			'cdn'       => 1,
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_free',
+		],
+	],
+	'testShouldSetRocketcdnPaidWhenSubscriptionActiveAndPaid'           => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 0,
+				'cdn_type'  => 'byocdn',
+				'cdn_state' => 'nothing',
+			],
+			'subscription' => [
+				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
+			],
+			'write'        => [
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
 			],
 		],
 		'expected' => [
@@ -25,23 +84,70 @@ return [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldLeaveAlreadyConsistentDualWriteUntouched' => [
+	'testShouldSetNothingWhenSubscriptionCancelledOutsideGracePeriod'   => [
 		'config'   => [
-			'initial' => [
+			'initial'      => [
 				'cdn'       => 0,
-				'cdn_type'  => 'rocketcdn',
+				'cdn_type'  => 'byocdn',
 				'cdn_state' => 'nothing',
 			],
-			'write'   => [
-				'cdn'       => 1,
-				'cdn_type'  => 'byocdn',
-				'cdn_state' => 'byocdn',
+			'subscription' => [
+				'subscription_status' => 'cancelled',
+				'website_status'      => 'active',
+			],
+			'write'        => [
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
 			],
 		],
 		'expected' => [
 			'cdn'       => 1,
-			'cdn_type'  => 'byocdn',
-			'cdn_state' => 'byocdn',
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'nothing',
+		],
+	],
+	'testShouldSetRocketcdnFreeWhenSubscriptionCancelledButInGracePeriod' => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 0,
+				'cdn_type'  => 'byocdn',
+				'cdn_state' => 'nothing',
+			],
+			'subscription' => [
+				'subscription_status' => 'cancelled',
+				'website_status'      => 'pending_deletion',
+			],
+			'write'        => [
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
+			],
+		],
+		'expected' => [
+			'cdn'       => 1,
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_free',
+		],
+	],
+	'testShouldLeaveCdnStateUntouchedWhenOnlyUnrelatedFieldsChange'     => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 1,
+				'cdn_type'  => 'rocketcdn',
+				'cdn_state' => 'rocketcdn_free',
+			],
+			'subscription' => [
+				'subscription_status' => 'running',
+				'plan_type'           => 'free',
+			],
+			'write'        => [
+				'cdn_cnames' => [ 'https://example.com' ],
+			],
+		],
+		'expected' => [
+			'cdn'        => 1,
+			'cdn_type'   => 'rocketcdn',
+			'cdn_state'  => 'rocketcdn_free',
+			'cdn_cnames' => [ 'https://example.com' ],
 		],
 	],
 ];
