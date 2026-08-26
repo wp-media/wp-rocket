@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
@@ -37,7 +37,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'mobile_detect', WP_Rocket_Mobile_Detect::class );
+		$this->getContainer()->add( 'mobile_detect', MobileDetect::class );
 
 		$this->getContainer()->add( 'support_data', Data::class )
 			->addArgument( 'options' );

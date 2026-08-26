@@ -102,14 +102,10 @@
 			autoExpandTimer = null;
 		}
 
-		const isVisible = count > 0;
 		const atLimit  = count >= limit;
 
 		if ( cta ) {
-			cta.classList.toggle( 'wpr-isHidden', ! isVisible );
-			cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible && ! isExpanded );
-			cta.classList.toggle( 'wpr-rocketcdn-cta--expanded', isVisible && isExpanded );
-			cta.classList.toggle( 'wpr-rocketcdn-cta---max-limit', isVisible && isExpanded );
+			cta.classList.toggle( 'wpr-isHidden', count === 0 );
 		}
 
 		if ( resellerBanner ) {
@@ -117,7 +113,7 @@
 		}
 
 		if ( cta ) {
-			if ( isVisible && atLimit ) {
+			if ( atLimit ) {
 				// Always show "Nice work!" text immediately.
 				cta.classList.add( 'wpr-rocketcdn-cta---max-limit' );
 
@@ -134,7 +130,7 @@
 					}, 15000 );
 				}
 			} else {
-				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', isVisible );
+				cta.classList.toggle( 'wpr-rocketcdn-cta--collapsed', count > 0 );
 				cta.classList.remove( 'wpr-rocketcdn-cta--expanded', 'wpr-rocketcdn-cta---max-limit' );
 			}
 		}
@@ -592,6 +588,7 @@
 						addPageBtn.disabled = true;
 					}
 					updateTooltipState( true );
+					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
 				// Set subscription loading state when first page is added.
@@ -701,10 +698,8 @@
 					}
 				}
 
-				if ( 0 === response.count ) {
-					// Update status inidicator component
-					updateStatusIndicatorComponent( response.status_indicator_html );
-				}
+				// Update status indicator component.
+				updateStatusIndicatorComponent( response.status_indicator_html );
 
 			} ).catch( () => {
 				button.disabled = false;

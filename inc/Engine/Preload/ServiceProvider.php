@@ -4,6 +4,9 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Preload;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheHealth;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheStatus;
+use WP_Rocket\Engine\Preload\Abilities\Subscriber as AbilitiesSubscriber;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
@@ -14,7 +17,7 @@ use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Engine\Preload\Frontend\FetchSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 /**
  * Service provider for the WP Rocket preload.
@@ -41,6 +44,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
 		'preload_activation',
+		'preload_check_cache_status_ability',
+		'preload_check_cache_health_ability',
+		'preload_abilities_subscriber',
 	];
 
 	/**
@@ -62,7 +68,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'mobile_detect', WP_Rocket_Mobile_Detect::class );
+		$this->getContainer()->add( 'mobile_detect', MobileDetect::class );
 		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
 			->addArgument( 'logger' );
@@ -155,5 +161,28 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		$this->getContainer()->addShared( 'preload_admin_subscriber', AdminSubscriber::class )
 			->addArgument( 'preload_settings' );
+
+		$this->getContainer()->add( 'preload_check_cache_status_ability', CheckCacheStatus::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->add( 'preload_check_cache_health_ability', CheckCacheHealth::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->addShared( 'preload_abilities_subscriber', AbilitiesSubscriber::class )
+			->addArguments(
+				[
+					'preload_check_cache_status_ability',
+					'preload_check_cache_health_ability',
+					'abilities_context',
+				]
+			);
 	}
 }

@@ -17,7 +17,7 @@ class Test_SaveCdnType extends RESTfulTestCase {
 	use CapTrait, DBTrait;
 
 	private $admin_id;
-	private $config;
+	protected $config;
 
 	protected $options_data;
 	protected $options_api;

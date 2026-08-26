@@ -3,11 +3,13 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Tracking\Tracking;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -38,14 +40,52 @@ class Test_SyncIsResellerProperty extends TestCase {
 			->once()
 			->with( $consumer_email );
 
+		$channel_detector = Mockery::mock( ChannelDetector::class );
+		$channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
+
 		$optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( $config['can_track'] );
 
-		if ( $config['can_track'] ) {
-			$user->shouldReceive( 'is_reseller_account' )
+		if ( ! $config['can_track'] ) {
+			Functions\expect( 'is_admin' )->never();
+			$user->shouldNotReceive( 'is_reseller_account' );
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
+
+			return;
+		}
+
+		Functions\when( 'is_admin' )->justReturn( $config['is_admin'] );
+
+		if ( ! $config['is_admin'] ) {
+			$user->shouldNotReceive( 'is_reseller_account' );
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+
+			new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
+
+			return;
+		}
+
+		$user->shouldReceive( 'is_reseller_account' )
+			->once()
+			->andReturn( $config['is_reseller'] );
+
+		if ( ! $config['is_reseller'] ) {
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+		} elseif ( $config['transient_exists'] ) {
+			Functions\when( 'get_transient' )->justReturn( 1 );
+			$mixpanel->shouldNotReceive( 'hash' );
+			$mixpanel->shouldNotReceive( 'set_user_property' );
+		} else {
+			Functions\when( 'get_transient' )->justReturn( false );
+			Functions\expect( 'set_transient' )
 				->once()
-				->andReturn( $config['is_reseller'] );
+				->with( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
 
 			$mixpanel->shouldReceive( 'hash' )
 				->once()
@@ -55,12 +95,8 @@ class Test_SyncIsResellerProperty extends TestCase {
 			$mixpanel->shouldReceive( 'set_user_property' )
 				->once()
 				->with( $hashed_email, 'is_reseller', $config['is_reseller'] );
-		} else {
-			$user->shouldNotReceive( 'is_reseller_account' );
-			$mixpanel->shouldNotReceive( 'hash' );
-			$mixpanel->shouldNotReceive( 'set_user_property' );
 		}
 
-		new Tracking( $options, $optin, $mixpanel, $user, 'path/to/templates' );
+		new Tracking( $options, $optin, $mixpanel, $user, $channel_detector, 'path/to/templates' );
 	}
 }

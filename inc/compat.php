@@ -32,3 +32,14 @@ if ( ! function_exists( 'str_contains' ) ) {
 		return ( '' === $needle || false !== strpos( $haystack, $needle ) );
 	}
 }
+
+if ( ! function_exists( 'wp_is_serving_rest_request' ) ) {
+	/**
+	 * Polyfill for wp_is_serving_rest_request() function added in WordPress 6.5.
+	 *
+	 * @return bool True if a REST request, otherwise false.
+	 */
+	function wp_is_serving_rest_request() {
+		return defined( 'REST_REQUEST' ) && REST_REQUEST;
+	}
+}
