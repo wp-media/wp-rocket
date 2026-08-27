@@ -441,46 +441,6 @@ function rocket_warning_busting_cache_dir_permissions() {
 }
 add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
 
-/**
- * Confirming notice when the site has been added
- *
- * @since 2.2
- */
-function rocket_thank_you_license() {
-	if ( '1' === get_rocket_option( 'license' ) ) {
-		$options            = get_option( WP_ROCKET_SLUG );
-		$options['license'] = time();
-		$options['ignore']  = true;
-		update_option( WP_ROCKET_SLUG, $options );
-
-		$message = sprintf(
-		/* translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong> */
-		__( '%1$s %2$s is good to go! %3$s Your website is already faster.', 'rocket' ),
-		'<strong>',
-		WP_ROCKET_PLUGIN_NAME,
-		'</strong>'
-		);
-
-		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
-		$rocket_insights_enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
-
-		if ( $rocket_insights_enabled ) {
-			$message = sprintf(
-			/* translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing link tag */
-			__( '%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s Rocket Insights %5$s to check your homepage\'s performance, add more pages to measure WP Rocket\'s impact, and keep your site fast.', 'rocket' ),
-			'<strong>',
-			WP_ROCKET_PLUGIN_NAME,
-			'</strong>',
-			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_thankyou_license#rocket_insights' ) . '">',
-			'</a>'
-			);
-		}
-
-		rocket_notice_html( [ 'message' => $message ] );
-	}
-}
-add_action( 'admin_notices', 'rocket_thank_you_license' );
-
 
 /**
  * Displays a notice for analytics opt-in
