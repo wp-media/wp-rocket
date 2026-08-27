@@ -71,9 +71,7 @@ class Test_GetHostResolver extends TestCase {
 				Functions\when( 'rocket_is_plugin_active' )->justReturn( true );
 				break;
 			case 'wpserveur':
-				if ( ! defined( 'DB_HOST' ) ) {
-					define( 'DB_HOST', 'db.example.wpserveur.net' );
-				}
+				$this->constants['DB_HOST'] = 'db.example.wpserveur.net';
 				break;
 			case 'presslabs':
 				if ( ! defined( 'PL_INSTANCE_REF' ) ) {

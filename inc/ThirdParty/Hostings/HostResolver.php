@@ -141,7 +141,8 @@ class HostResolver {
 			return 'siteground';
 		}
 
-		if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
+		$db_host = rocket_get_constant( 'DB_HOST', '' );
+		if ( ! empty( $db_host ) && strpos( $db_host, '.wpserveur.net' ) !== false ) {
 			self::$hostname = 'wpserveur';
 			return 'wpserveur';
 		}
