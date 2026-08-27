@@ -131,6 +131,31 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( class_exists( 'FlywheelNginxCompat' ) ) {
+			self::$hostname = 'flywheel';
+			return 'flywheel';
+		}
+
+		if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
+			self::$hostname = 'siteground';
+			return 'siteground';
+		}
+
+		if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
+			self::$hostname = 'wpserveur';
+			return 'wpserveur';
+		}
+
+		if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
+			self::$hostname = 'presslabs';
+			return 'presslabs';
+		}
+
+		if ( class_exists( 'PagelyCachePurge' ) ) {
+			self::$hostname = 'pagely';
+			return 'pagely';
+		}
+
 		return '';
 	}
 

@@ -26,5 +26,30 @@ return [
 			'host'     => 'savvii',
 			'expected' => 'WP_Rocket\ThirdParty\Hostings\Savvii',
 		],
+
+		'testShouldReturnFlywheel' => [
+			'host'     => 'flywheel',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\Flywheel',
+		],
+
+		'testShouldReturnSiteground' => [
+			'host'     => 'siteground',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\SiteGround',
+		],
+
+		'testShouldReturnWpserveur' => [
+			'host'     => 'wpserveur',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\WpServeur',
+		],
+
+		'testShouldReturnPresslabs' => [
+			'host'     => 'presslabs',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\Presslabs',
+		],
+
+		'testShouldReturnPagely' => [
+			'host'     => 'pagely',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\Pagely',
+		],
 	],
 ];
