@@ -287,8 +287,7 @@
         "since": "3.4",
         "deprecated": false,
         "compatible_callbacks": [
-            "rocket/append-to-list",
-            "rocket/remove-from-list",
+            "rocket/set-array-key",
             "core/return-empty-array"
         ]
     },
@@ -3270,8 +3269,7 @@
         "since": "2.10.8",
         "deprecated": false,
         "compatible_callbacks": [
-            "rocket/append-to-list",
-            "rocket/remove-from-list",
+            "rocket/set-array-key",
             "core/return-empty-array"
         ]
     },

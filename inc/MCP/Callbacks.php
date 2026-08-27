@@ -65,4 +65,29 @@ class Callbacks {
 			return $value;
 		};
 	}
+
+	/**
+	 * rocket/set-array-key — set one key on an associative-array-returning filter.
+	 *
+	 * For filters whose value is a map (request args, ignored parameters, …) rather
+	 * than a plain list. The key is always set (added or overwritten); the existing
+	 * array is preserved otherwise.
+	 *
+	 * @param array $args Bound args: { key: string, value: scalar (default 1) }.
+	 * @return callable
+	 */
+	public static function set_array_key( array $args ): callable {
+		$key   = (string) ( $args['key'] ?? '' );
+		$value = array_key_exists( 'value', $args ) ? $args['value'] : 1;
+
+		return static function ( $map ) use ( $key, $value ) {
+			$map = is_array( $map ) ? $map : [];
+
+			if ( '' !== $key ) {
+				$map[ $key ] = $value;
+			}
+
+			return $map;
+		};
+	}
 }

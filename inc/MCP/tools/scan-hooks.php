@@ -193,12 +193,24 @@ ksort($cats);
 // value is an array, bool, or int). Actions and string/other/undocumented filters
 // are dropped: a return-value callback can't act on them meaningfully.
 $entries = [];
-$kept = ['array' => 0, 'bool' => 0, 'int' => 0];
+$kept = ['array' => 0, 'assoc' => 0, 'bool' => 0, 'int' => 0];
+
+// Array-typed filters whose value is an associative MAP, not a plain list. These
+// take rocket/set-array-key (setting a named key), not append/remove.
+$associative = [
+	'rocket_cache_ignored_parameters',
+	'rocket_preload_sitemap_request_args',
+	'rocket_partial_preload_url_request_args',
+];
+
 foreach ($catalog as $e) {
 	if ($e['type'] !== 'filter') { continue; }
 
 	$ft = strtolower($e['params'][0]['type'] ?? '');
-	if (strpos($ft, 'array') !== false || strpos($ft, '[]') !== false) {
+	if (in_array($e['name'], $associative, true)) {
+		$compat = ['rocket/set-array-key', 'core/return-empty-array'];
+		$kept['assoc']++;
+	} elseif (strpos($ft, 'array') !== false || strpos($ft, '[]') !== false) {
 		$compat = ['rocket/append-to-list', 'rocket/remove-from-list', 'core/return-empty-array'];
 		$kept['array']++;
 	} elseif (strpos($ft, 'bool') !== false) {
@@ -253,6 +265,7 @@ $deprecated = count(array_filter($entries, fn($e) => $e['deprecated']));
 fwrite(STDERR, "Scanned {$total} rocket_ hooks ({$filters} filters, {$actions} actions).\n");
 fwrite(STDERR, "Kept {$keptTotal} exercisable filters:\n");
 fwrite(STDERR, "  array-valued (append/remove/empty): {$kept['array']}\n");
+	fwrite(STDERR, "  assoc-map    (set-array-key):       {$kept['assoc']}\n");
 fwrite(STDERR, "  bool-valued  (return-true/false):   {$kept['bool']}\n");
 fwrite(STDERR, "  int-valued   (return-int/zero):     {$kept['int']}\n");
 fwrite(STDERR, "  (of which deprecated: {$deprecated})\n");

@@ -61,6 +61,27 @@ add_filter(
 			'factory'     => [ Callbacks::class, 'return_int' ],
 		];
 
+		$callbacks['rocket/set-array-key'] = [
+			'label'       => 'Set a key on an associative array',
+			'description' => 'Set one key on a map-returning filter (request args, ignored '
+						. 'query parameters, …). Use for associative arrays, not plain lists.',
+			'params'      => [
+				[
+					'name'        => 'key',
+					'type'        => 'string',
+					'required'    => true,
+					'description' => 'The array key to set.',
+				],
+				[
+					'name'        => 'value',
+					'type'        => 'string|int|bool',
+					'required'    => false,
+					'description' => 'The value to set for the key. Defaults to 1.',
+				],
+			],
+			'factory'     => [ Callbacks::class, 'set_array_key' ],
+		];
+
 		return $callbacks;
 	}
 );
