@@ -49,7 +49,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', self::PRIORITY, 2 ],
-			'pre_get_rocket_option_cdn_state'   => [ 'resolve_live', 10, 2 ],
+			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
 		];
 	}
 
