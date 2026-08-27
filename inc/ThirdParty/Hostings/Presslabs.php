@@ -15,6 +15,13 @@ class Presslabs implements Subscriber_Interface {
 
 	/**
 	 * Presslabs constructor.
+	 *
+	 * Kept from the legacy presslabs.php: loads the Presslabs advanced-cache drop-in so the
+	 * \Presslabs\Cache\CacheHandler used by the purge callbacks is available. This is idempotent
+	 * (require_once) and safe in every context — including the activation/deactivation path, where
+	 * HostResolver now instantiates this subscriber: the host is only detected when
+	 * class_exists( '\Presslabs\Cache\CacheHandler' ) is already true, so the class is loaded and this
+	 * require is a no-op. See #8768.
 	 */
 	public function __construct() {
 		require_once WP_CONTENT_DIR . '/advanced-cache.php';
