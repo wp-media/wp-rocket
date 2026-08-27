@@ -80,8 +80,11 @@ class SetOption implements AbilitiesInterface {
 	/**
 	 * Options that are readable via get-options but cannot be written through this ability.
 	 *
-	 * cdn_state is derived from the legacy cdn / cdn_type fields by CdnStateBridge - it must
-	 * not be settable independently, or it would go stale the moment those fields next change.
+	 * The option - cdn_state is one-way derived from the legacy cdn / cdn_type fields by CdnStateBridge -
+	 * nothing syncs the reverse direction. Setting it directly here would let it disagree with
+	 * cdn / cdn_type immediately, not just eventually, since no code writes cdn_state back into
+	 * the legacy fields. Supporting that would mean reintroducing a state -> legacy sync, the
+	 * exact bidirectional complexity this bridge was deliberately simplified away from.
 	 */
 	private const READ_ONLY_OPTIONS = [
 		'cdn_state',
