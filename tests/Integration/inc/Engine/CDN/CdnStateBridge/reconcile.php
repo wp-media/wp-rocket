@@ -27,6 +27,8 @@ class Test_Reconcile extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'reconcile', 5 );
+
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
@@ -38,6 +40,8 @@ class Test_Reconcile extends AdminTestCase {
 	public function tear_down() {
 		update_option( 'wp_rocket_settings', $this->original_settings );
 		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		parent::tear_down();
 	}
