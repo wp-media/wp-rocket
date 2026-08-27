@@ -193,7 +193,7 @@ ksort($cats);
 // value is an array, bool, or int). Actions and string/other/undocumented filters
 // are dropped: a return-value callback can't act on them meaningfully.
 $entries = [];
-$kept = ['array' => 0, 'assoc' => 0, 'bool' => 0, 'int' => 0];
+$kept = ['array' => 0, 'assoc' => 0, 'bool' => 0, 'int' => 0, 'htaccess' => 0];
 
 // Array-typed filters whose value is an associative MAP, not a plain list. These
 // take rocket/set-array-key (setting a named key), not append/remove.
@@ -203,6 +203,14 @@ $associative = [
 	'rocket_partial_preload_url_request_args',
 ];
 
+// htaccess rule-block filters return rule TEXT (string), so they are normally
+// dropped — injecting a string into .htaccess is a server-config risk. But a
+// boolean DISABLE (return false to blank the block) is a safe, real pattern used
+// by the helpers, so these specific ones are exposed with core/return-false only.
+$htaccess_toggle = [
+	'rocket_htaccess_mod_rewrite',
+];
+
 foreach ($catalog as $e) {
 	if ($e['type'] !== 'filter') { continue; }
 
@@ -210,6 +218,9 @@ foreach ($catalog as $e) {
 	if (in_array($e['name'], $associative, true)) {
 		$compat = ['rocket/set-array-key', 'core/return-empty-array'];
 		$kept['assoc']++;
+	} elseif (in_array($e['name'], $htaccess_toggle, true)) {
+		$compat = ['core/return-false'];
+		$kept['htaccess']++;
 	} elseif (strpos($ft, 'array') !== false || strpos($ft, '[]') !== false) {
 		$compat = ['rocket/append-to-list', 'rocket/remove-from-list', 'core/return-empty-array'];
 		$kept['array']++;
@@ -266,6 +277,7 @@ fwrite(STDERR, "Scanned {$total} rocket_ hooks ({$filters} filters, {$actions} a
 fwrite(STDERR, "Kept {$keptTotal} exercisable filters:\n");
 fwrite(STDERR, "  array-valued (append/remove/empty): {$kept['array']}\n");
 	fwrite(STDERR, "  assoc-map    (set-array-key):       {$kept['assoc']}\n");
+	fwrite(STDERR, "  htaccess     (return-false only):   {$kept['htaccess']}\n");
 fwrite(STDERR, "  bool-valued  (return-true/false):   {$kept['bool']}\n");
 fwrite(STDERR, "  int-valued   (return-int/zero):     {$kept['int']}\n");
 fwrite(STDERR, "  (of which deprecated: {$deprecated})\n");

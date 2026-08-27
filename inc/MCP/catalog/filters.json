@@ -1936,6 +1936,30 @@
         ]
     },
     {
+        "name": "rocket_htaccess_mod_rewrite",
+        "type": "filter",
+        "label": "Htaccess mod rewrite",
+        "description": "Filter rewrite rules to serve the cache file",
+        "category": "functions",
+        "keywords": [
+            "htaccess",
+            "mod",
+            "rewrite"
+        ],
+        "params": [
+            {
+                "name": "rules",
+                "type": "string",
+                "description": "Rules that will be printed."
+            }
+        ],
+        "since": "1.0",
+        "deprecated": false,
+        "compatible_callbacks": [
+            "core/return-false"
+        ]
+    },
+    {
         "name": "rocket_htaccess_rules_test_args",
         "type": "filter",
         "label": "Htaccess rules test args",
