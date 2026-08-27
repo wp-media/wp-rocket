@@ -21,6 +21,8 @@ class SiteGround implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
+		// get_subscribed_events() is static (Subscriber_Interface), but the supercacher gate and the
+		// version-dependent hook map both rely on instance methods, so we work through a local instance.
 		$instance = new self();
 
 		if ( ! $instance->is_supercacher_active() ) {
@@ -79,14 +81,15 @@ class SiteGround implements Subscriber_Interface {
 	 * @return bool
 	 */
 	public function is_supercacher_active() {
-		// @todo #8768: pre-existing operator-precedence bug ported verbatim from legacy siteground.php; `!version_compare(...)` is always 0 or 1, never negative, so this branch is currently unreachable.
-		if ( ! version_compare( $this->get_sg_optimizer_version(), '5.0' ) < 0 ) {
+		// SG Optimizer < 5.0 exposes its state through the legacy $sg_cachepress_environment global;
+		// 5.0+ stores it in the siteground_optimizer_enable_cache option.
+		if ( version_compare( $this->get_sg_optimizer_version(), '5.0' ) < 0 ) {
 			global $sg_cachepress_environment;
 
 			return isset( $sg_cachepress_environment ) && $sg_cachepress_environment instanceof \SG_CachePress_Environment && $sg_cachepress_environment->cache_is_enabled();
 		}
 
-		return (bool) get_option( 'siteground_optimizer_enable_cache', 0 ); // @phpstan-ignore-line custom.rules.discourageOptionUsage -- #8768: get_option preserved verbatim from legacy siteground.php; migrating to the Option object would be a behavioral/architectural change, deferred to a follow-up.
+		return (bool) get_option( 'siteground_optimizer_enable_cache', 0 ); // @phpstan-ignore-line custom.rules.discourageOptionUsage -- #8768: get_option kept as-is from legacy siteground.php; migrating to the Option object would be a separate architectural change.
 	}
 
 	/**
@@ -101,11 +104,14 @@ class SiteGround implements Subscriber_Interface {
 			return;
 		}
 
-		// @todo #8768: pre-existing operator-precedence bug ported verbatim from legacy siteground.php; this branch is currently unreachable, and the elseif below is also always false (missing `global $sg_cachepress_supercacher;`).
-		if ( ! version_compare( $this->get_sg_optimizer_version(), '5.0' ) < 0 ) {
+		global $sg_cachepress_supercacher;
+
+		// SG Optimizer 5.0+ purges through the namespaced Supercacher class; earlier versions expose the
+		// legacy $sg_cachepress_supercacher global.
+		if ( version_compare( $this->get_sg_optimizer_version(), '5.0' ) >= 0 ) {
 			\SiteGround_Optimizer\Supercacher\Supercacher::purge_cache();
-		} elseif ( isset( $sg_cachepress_supercacher ) && $sg_cachepress_supercacher instanceof \SG_CachePress_Supercacher ) { // @phpstan-ignore-line -- #8768: pre-existing bug preserved verbatim — `$sg_cachepress_supercacher` is never declared `global` in legacy siteground.php, so this branch is dead; adding the global would restore behavior and violate the no-behavioral-change AC.
-			$sg_cachepress_supercacher->purge_cache(); // @phpstan-ignore-line variable.undefined -- #8768: see above; verbatim port of the pre-existing undefined-variable bug.
+		} elseif ( isset( $sg_cachepress_supercacher ) && $sg_cachepress_supercacher instanceof \SG_CachePress_Supercacher ) {
+			$sg_cachepress_supercacher->purge_cache();
 		}
 	}
 

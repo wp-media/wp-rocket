@@ -3,16 +3,17 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\SiteGround;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\SiteGround;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Hostings\SiteGround::get_subscribed_events
  *
- * The inner "is supercacher active" gate is governed by a pre-existing operator-precedence bug
- * (`! version_compare(...) < 0` is always false, so the version-based branch is unreachable and the
- * method always falls back to the `siteground_optimizer_enable_cache` option). This is preserved
- * verbatim per issue #8768 and pinned by these tests rather than "fixed".
+ * The map is returned only when the supercacher is active (SG Optimizer < 5.0 via the legacy
+ * $sg_cachepress_environment global, 5.0+ via the siteground_optimizer_enable_cache option), and the
+ * version determines which AJAX purge hook and whether the pre-4.0.5 "force caching files" filter is
+ * added. See issue #8768.
  *
  * @group SiteGround
  * @group ThirdParty
@@ -58,22 +59,27 @@ class Test_GetSubscribedEvents extends TestCase {
 	}
 
 	/**
-	 * Pinned regression: even on a version that predates SG Optimizer 5.0 (where the legacy AJAX hook
-	 * and the "force caching files" filter would apply), the option-based fallback still governs whether
-	 * the subscriber is active at all, because the inner precedence bug never lets the version-based
-	 * branch run.
+	 * On a version predating SG Optimizer 5.0 (and 4.0.5), the legacy AJAX hook and the "force caching
+	 * files" filter apply; the supercacher is active via the legacy $sg_cachepress_environment global.
 	 *
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
 	public function testShouldReturnLegacyAjaxHookAndForceCachingFilesForOldVersionWhenActive() {
+		global $sg_cachepress_environment;
+
 		Functions\when( 'get_file_data' )->justReturn( [ 'Version' => '4.0.0' ] );
-		Functions\when( 'get_option' )->justReturn( 1 );
+		Functions\when( 'get_option' )->justReturn( 0 );
+
+		$sg_cachepress_environment = Mockery::mock( 'overload:SG_CachePress_Environment' );
+		$sg_cachepress_environment->shouldReceive( 'cache_is_enabled' )->andReturn( true );
 
 		$events = SiteGround::get_subscribed_events();
 
 		$this->assertSame( [ 'return_true', 11 ], $events['do_rocket_generate_caching_files'] );
 		$this->assertSame( [ 'sg_clear_cache', 0 ], $events['wp_ajax_sg-cachepress-purge'] );
 		$this->assertArrayNotHasKey( 'wp_ajax_admin_bar_purge_cache', $events );
+
+		unset( $sg_cachepress_environment );
 	}
 }

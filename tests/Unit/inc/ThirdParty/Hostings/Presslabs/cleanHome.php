@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Presslabs;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Presslabs;
@@ -9,10 +10,7 @@ use WP_Rocket\ThirdParty\Hostings\Presslabs;
 /**
  * Test class covering \WP_Rocket\ThirdParty\Hostings\Presslabs::clean_home
  *
- * Pinned regression for the pre-existing bug ported verbatim from legacy presslabs.php: the method
- * checks undefined `$post`/`$permalink` instead of its own `$root`/`$lang` parameters, so the guard
- * always returns early and the method body never executes, regardless of the `$root`/`$lang` values
- * passed in. See issue #8768 — do not fix, only pin.
+ * clean_home() invalidates the Presslabs cache for the homepage URL. See issue #8768.
  *
  * @group Presslabs
  * @group ThirdParty
@@ -27,13 +25,14 @@ class Test_CleanHome extends TestCase {
 		}
 	}
 
-	public function testShouldAlwaysReturnEarlyRegardlessOfArguments() {
-		$cache_handler = Mockery::mock( 'overload:Presslabs\Cache\CacheHandler' );
-		$cache_handler->shouldReceive( 'invalidate_url' )->never();
+	public function testShouldInvalidateHomeUrl() {
+		Functions\when( 'home_url' )->justReturn( 'https://example.com/' );
 
-		// The pinned bug references undefined $post/$permalink, which raises a PHP warning on PHP 8+;
-		// suppressed here (not in production code) purely so the test harness (which converts warnings
-		// to exceptions) can assert the resulting no-op behaviour instead of erroring on the warning itself.
-		@( ( new Presslabs() )->clean_home( '/cache/root/', 'en_US' ) );
+		$cache_handler = Mockery::mock( 'overload:Presslabs\Cache\CacheHandler' );
+		$cache_handler->shouldReceive( 'invalidate_url' )
+			->once()
+			->with( 'https://example.com/', true );
+
+		( new Presslabs() )->clean_home( '/cache/root/', 'en_US' );
 	}
 }

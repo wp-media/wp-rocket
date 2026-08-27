@@ -86,11 +86,6 @@ class Presslabs implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clean_home( $root = false, $lang = false ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
-		// @todo #8768: pre-existing bug ported verbatim from legacy presslabs.php — checks undefined $post/$permalink instead of $root/$lang, so this method always returns early today. Do not fix without a conscious decision.
-		if ( ! $post || ! $permalink ) { // @phpstan-ignore-line variable.undefined -- verbatim port of the pre-existing bug; see comment above.
-			return;
-		}
-
 		$cache_handler = new \Presslabs\Cache\CacheHandler();
 		$cache_handler->invalidate_url( home_url( '/' ), true );
 	}
