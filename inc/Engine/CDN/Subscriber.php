@@ -505,23 +505,25 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
-		$current_options = $this->options_api->get( 'settings', [] );
+		if ( version_compare( $old_version, '3.22', '>=' ) ) {
+			return;
+		}
 
-		if ( version_compare( $old_version, '3.22', '<' ) ) {
-			$has_active_subscription = $this->subscription_controller->has_active_subscription();
-			$cdn_type                = 'rocketcdn';
+		$has_active_subscription = $this->subscription_controller->has_active_subscription();
+		$cdn_type                = 'rocketcdn';
+		// Check if a CNAME is saved, cdn is enabled, and no RocketCDN subscription, then default to byocdn.
+		if (
+			! $has_active_subscription
+			&&
+			! empty( $this->options->get( 'cdn_cnames', [] ) ) && $this->is_cdn_enabled()
+		) {
+			$cdn_type = 'byocdn';
+		}
 
-			if ( ! $has_active_subscription ) {
-				if ( ! empty( $this->options->get( 'cdn_cnames', [] ) ) ) {
-					// CNAME present with no RocketCDN subscription: port to Other CDN, preserve current cdn on/off state.
-					$cdn_type = 'byocdn';
-				} else {
-					// No subscription and no CNAME: default to RocketCDN active.
-					$current_options['cdn'] = 1;
-				}
-			}
-
-			$current_options['cdn_type'] = $cdn_type;
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = $cdn_type;
+		if ( ! $has_active_subscription ) {
+			$current_options['cdn'] = 1;
 		}
 
 		$this->options_api->set( 'settings', $current_options );
