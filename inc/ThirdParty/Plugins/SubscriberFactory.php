@@ -122,33 +122,38 @@ class SubscriberFactory {
 	 * @return array
 	 */
 	public function get_arguments( string $id ): array {
-		switch ( $id ) {
-			case 'elementor_subscriber':
-				return [ 'options', rocket_direct_filesystem(), 'delay_js_html' ];
-			case 'woocommerce_subscriber':
-				return [ 'delay_js_html' ];
-			case 'smush_subscriber':
-				return [ 'options_api', 'options' ];
-			case 'imagify_webp_subscriber':
-			case 'shortpixel_webp_subscriber':
-			case 'ewww_webp_subscriber':
-			case 'autoptimize':
-			case 'jetpack':
-			case 'all_in_one_seo_pack':
-			case 'seopress':
-			case 'the_seo_framework':
-				return [ 'options' ];
-			case 'amp_subscriber':
-				return [ 'cdn_subscriber' ];
-			case 'simple_custom_css':
-				return [
-					new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH', '' ) ),
-					new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL', '' ) ),
-				];
-			case 'cloudflare_plugin_subscriber':
-				return [ 'options', 'options_api', 'beacon', 'cloudflare_plugin_facade' ];
-			default:
-				return [];
+		// Container-id arguments only: plain lazy references, no runtime construction.
+		$lazy_arguments = [
+			'woocommerce_subscriber'       => [ 'delay_js_html' ],
+			'smush_subscriber'             => [ 'options_api', 'options' ],
+			'imagify_webp_subscriber'      => [ 'options' ],
+			'shortpixel_webp_subscriber'   => [ 'options' ],
+			'ewww_webp_subscriber'         => [ 'options' ],
+			'autoptimize'                  => [ 'options' ],
+			'jetpack'                      => [ 'options' ],
+			'all_in_one_seo_pack'          => [ 'options' ],
+			'seopress'                     => [ 'options' ],
+			'the_seo_framework'            => [ 'options' ],
+			'amp_subscriber'               => [ 'cdn_subscriber' ],
+			'cloudflare_plugin_subscriber' => [ 'options', 'options_api', 'beacon', 'cloudflare_plugin_facade' ],
+		];
+
+		if ( isset( $lazy_arguments[ $id ] ) ) {
+			return $lazy_arguments[ $id ];
 		}
+
+		// Ids whose arguments must be constructed at register time, built only when requested.
+		if ( 'elementor_subscriber' === $id ) {
+			return [ 'options', rocket_direct_filesystem(), 'delay_js_html' ];
+		}
+
+		if ( 'simple_custom_css' === $id ) {
+			return [
+				new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_PATH', '' ) ),
+				new StringArgument( rocket_get_constant( 'WP_ROCKET_CACHE_BUSTING_URL', '' ) ),
+			];
+		}
+
+		return [];
 	}
 }
