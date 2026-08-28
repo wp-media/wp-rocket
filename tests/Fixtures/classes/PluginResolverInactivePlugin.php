@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Fixtures\Classes;
+namespace WP_Rocket\Tests\Fixtures\classes;
 
 use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
