@@ -41,6 +41,10 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		if ( ! empty( $hosting_service ) ) {
 			$this->provides[] = $hosting_service;
 		}
+
+		if ( Nginx::is_active() ) {
+			$this->provides[] = 'nginx';
+		}
 	}
 
 	/**
@@ -56,6 +60,10 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		if ( ! empty( $hosting_service ) ) {
 			$this->getContainer()
 				->addShared( $hosting_service, ( new HostSubscriberFactory() )->get_subscriber() );
+		}
+
+		if ( Nginx::is_active() ) {
+			$this->getContainer()->addShared( 'nginx', Nginx::class );
 		}
 	}
 }
