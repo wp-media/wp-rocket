@@ -461,10 +461,10 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function auto_detect_pro_subscription(): void {
 		$subscription_data = $this->flush_caches_and_get_subscription_data();
 
-		if ( 200 !== $subscription_data['status_code'] ) {
-			$this->queue->schedule_pro_detection_job();
+		if ( 200 === $subscription_data['status_code'] ) {
 			return;
 		}
+		$this->queue->schedule_pro_detection_job();
 	}
 
 	/**
