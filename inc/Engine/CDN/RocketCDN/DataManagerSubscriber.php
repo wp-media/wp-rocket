@@ -395,11 +395,20 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * Only corrects the tier while RocketCDN is already the applied cdn_state - it
 	 * never activates RocketCDN from "nothing", and never touches "byocdn".
 	 *
+	 * Restricted to admin requests: this subscriber is currently admin-only, but the
+	 * transient is also read from front-end requests (e.g. FrontendSubscriber's CDN
+	 * cname/zone resolution), and this callback writes an option + can trigger a cache
+	 * clear as a side effect - not something a front-end page view should ever do.
+	 *
 	 * @param mixed  $value     Transient value.
 	 * @param string $transient Transient name.
 	 * @return mixed
 	 */
 	public function maybe_sync_cdn_state( $value, $transient ) {
+		if ( ! is_admin() ) {
+			return $value;
+		}
+
 		if ( ! is_array( $value ) || empty( $value['plan_type'] ) ) {
 			return $value;
 		}
