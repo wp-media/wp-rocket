@@ -315,6 +315,7 @@ class Plugin {
 			'license_subscriber',
 			'cdn_subscriber',
 			'cdn_admin_subscriber',
+			'cdn_state_bridge',
 			'cdn_render_subscriber',
 			'rocketcdn_frontend_subscriber',
 			'rocketcdn_data_manager_subscriber',
