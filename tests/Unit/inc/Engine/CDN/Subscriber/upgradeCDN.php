@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\CDN\Cache;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -24,6 +25,7 @@ class Test_UpgradeCDN extends TestCase {
 	private $options_api;
 	private $subscriber;
 	private $subscription_controller;
+	private $cdn_state_bridge;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -32,6 +34,7 @@ class Test_UpgradeCDN extends TestCase {
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->options_api             = Mockery::mock( Options::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+		$this->cdn_state_bridge        = Mockery::mock( CdnStateBridge::class );
 
 		$this->subscriber = new Subscriber(
 			$this->options,
@@ -39,7 +42,8 @@ class Test_UpgradeCDN extends TestCase {
 			$this->options_api,
 			$this->subscription_controller,
 			Mockery::mock( Cache::class ),
-			$this->createMock( RocketCDN::class )
+			$this->createMock( RocketCDN::class ),
+			$this->cdn_state_bridge
 		);
 	}
 
@@ -60,9 +64,7 @@ class Test_UpgradeCDN extends TestCase {
 		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
 		$this->options_api->expects()->set( 'settings', $expected['options'] );
 
-		$is_less_than_322 = version_compare( $config['old_version'], '3.22', '<' );
-
-		if ( $is_less_than_322 ) {
+		if ( version_compare( $config['old_version'], '3.22', '<' ) ) {
 			$has_active = $config['has_active_subscription'] ?? false;
 
 			$this->subscription_controller->expects()->has_active_subscription()->andReturn( $has_active );
@@ -72,22 +74,9 @@ class Test_UpgradeCDN extends TestCase {
 			}
 		}
 
-		// has_active_subscription() is called by compute_cdn_state_from_legacy() for >= 3.22
-		// when cdn=1 and cdn_type='rocketcdn'. Fixture includes the key only when the call is expected.
-		if ( ! $is_less_than_322 && array_key_exists( 'has_active_subscription', $config ) ) {
-			$this->subscription_controller->expects()->has_active_subscription()
-				->andReturn( $config['has_active_subscription'] );
-		}
-
-		if ( array_key_exists( 'is_cancelled_outside_grace_period', $config ) ) {
-			$this->subscription_controller->expects()->is_cancelled_outside_grace_period()
-				->andReturn( $config['is_cancelled_outside_grace_period'] );
-		}
-
-		if ( array_key_exists( 'is_paid', $config ) ) {
-			$this->subscription_controller->expects()->is_paid()
-				->andReturn( $config['is_paid'] );
-		}
+		$this->cdn_state_bridge->shouldReceive( 'legacy_to_state' )
+			->once()
+			->andReturn( $config['cdn_state_from_bridge'] );
 
 		$this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
 	}

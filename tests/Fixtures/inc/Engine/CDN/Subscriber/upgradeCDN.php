@@ -15,6 +15,7 @@ return [
 			'cdn_cnames'              => [
 				'https://cdnexample.org/',
 			],
+			'cdn_state_from_bridge'   => 'byocdn',
 		],
 		'expected' => [
 			'options' => [
@@ -27,12 +28,11 @@ return [
 
 	'shouldSetRocketcdnWhenCdnIsNotEnabled'                            => [
 		'config'   => [
-			'new_version'                        => '3.22.0',
-			'old_version'                        => '3.21.1',
-			'current_options'                    => [],
-			'has_active_subscription'            => false,
-			'is_cancelled_outside_grace_period'  => false,
-			'is_paid'                            => false,
+			'new_version'             => '3.22.0',
+			'old_version'             => '3.21.1',
+			'current_options'         => [],
+			'has_active_subscription' => false,
+			'cdn_state_from_bridge'   => 'rocketcdn_free',
 		],
 		'expected' => [
 			'options' => [
@@ -52,6 +52,7 @@ return [
 			'current_options'         => [ 'cdn' => 0 ],
 			'has_active_subscription' => false,
 			'cdn_cnames'              => [ 'https://cdnexample.org/' ],
+			'cdn_state_from_bridge'   => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -68,6 +69,7 @@ return [
 			'old_version'             => '3.21.1',
 			'current_options'         => [],
 			'has_active_subscription' => true,
+			'cdn_state_from_bridge'   => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -84,7 +86,7 @@ return [
 			'old_version'             => '3.21.1',
 			'current_options'         => [ 'cdn' => 1 ],
 			'has_active_subscription' => true,
-			'is_paid'                 => true,
+			'cdn_state_from_bridge'   => 'rocketcdn_paid',
 		],
 		'expected' => [
 			'options' => [
@@ -101,12 +103,13 @@ return [
 
 	'shouldSetNothingWhenFreePausedGreaterThanOrEqual322'              => [
 		'config'   => [
-			'new_version'     => '3.26.0',
-			'old_version'     => '3.22.0',
-			'current_options' => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 0,
 				'cdn_type' => 'rocketcdn',
 			],
+			'cdn_state_from_bridge' => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -119,14 +122,13 @@ return [
 
 	'shouldSetRocketcdnFreeWhenFreeActiveGreaterThanOrEqual322'        => [
 		'config'   => [
-			'new_version'             => '3.26.0',
-			'old_version'             => '3.22.0',
-			'current_options'         => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
 			],
-			'has_active_subscription' => true,
-			'is_paid'                 => false,
+			'cdn_state_from_bridge' => 'rocketcdn_free',
 		],
 		'expected' => [
 			'options' => [
@@ -139,12 +141,13 @@ return [
 
 	'shouldSetNothingWhenProPausedGreaterThanOrEqual322'               => [
 		'config'   => [
-			'new_version'     => '3.26.0',
-			'old_version'     => '3.22.0',
-			'current_options' => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 0,
 				'cdn_type' => 'rocketcdn',
 			],
+			'cdn_state_from_bridge' => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -157,14 +160,13 @@ return [
 
 	'shouldSetRocketcdnPaidWhenProActiveGreaterThanOrEqual322'         => [
 		'config'   => [
-			'new_version'             => '3.26.0',
-			'old_version'             => '3.22.0',
-			'current_options'         => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
 			],
-			'has_active_subscription' => true,
-			'is_paid'                 => true,
+			'cdn_state_from_bridge' => 'rocketcdn_paid',
 		],
 		'expected' => [
 			'options' => [
@@ -177,12 +179,13 @@ return [
 
 	'shouldSetNothingWhenByocdnPausedGreaterThanOrEqual322'            => [
 		'config'   => [
-			'new_version'     => '3.26.0',
-			'old_version'     => '3.22.0',
-			'current_options' => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 0,
 				'cdn_type' => 'byocdn',
 			],
+			'cdn_state_from_bridge' => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -195,12 +198,13 @@ return [
 
 	'shouldSetByocdnWhenByocdnActiveGreaterThanOrEqual322'             => [
 		'config'   => [
-			'new_version'     => '3.26.0',
-			'old_version'     => '3.22.0',
-			'current_options' => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'byocdn',
 			],
+			'cdn_state_from_bridge' => 'byocdn',
 		],
 		'expected' => [
 			'options' => [
@@ -213,14 +217,13 @@ return [
 
 	'shouldSetNothingWhenCancelledOutsideGracePeriodGreaterThanOrEqual322' => [
 		'config'   => [
-			'new_version'                        => '3.26.0',
-			'old_version'                        => '3.22.0',
-			'current_options'                    => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
 			],
-			'has_active_subscription'            => false,
-			'is_cancelled_outside_grace_period'  => true,
+			'cdn_state_from_bridge' => 'nothing',
 		],
 		'expected' => [
 			'options' => [
@@ -233,15 +236,13 @@ return [
 
 	'shouldSetRocketcdnFreeWhenInGracePeriodGreaterThanOrEqual322'     => [
 		'config'   => [
-			'new_version'                        => '3.26.0',
-			'old_version'                        => '3.22.0',
-			'current_options'                    => [
+			'new_version'           => '3.26.0',
+			'old_version'           => '3.22.0',
+			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
 			],
-			'has_active_subscription'            => false,
-			'is_cancelled_outside_grace_period'  => false,
-			'is_paid'                            => false,
+			'cdn_state_from_bridge' => 'rocketcdn_free',
 		],
 		'expected' => [
 			'options' => [

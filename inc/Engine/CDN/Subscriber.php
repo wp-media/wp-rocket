@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\{
+	CdnStateBridge,
 	CNAMEValidator,
 	Drivers\DriverInterface,
 	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
@@ -78,6 +79,13 @@ class Subscriber implements Subscriber_Interface {
 	private $cname_validator;
 
 	/**
+	 * CDN state bridge instance.
+	 *
+	 * @var CdnStateBridge
+	 */
+	private $cdn_state_bridge;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data           $options                 WP Rocket Options_Data instance.
@@ -86,6 +94,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @param Cache                  $cache                   Cache instance.
 	 * @param RocketCDNQuery         $query                   RocketCDN pages query.
+	 * @param CdnStateBridge         $cdn_state_bridge        CDN state bridge instance.
 	 * @param DriverInterface|null   $driver                  CDN Driver instance, optional.
 	 * @param CNAMEValidator|null    $cname_validator         CNAME Validator instance, optional.
 	 */
@@ -96,6 +105,7 @@ class Subscriber implements Subscriber_Interface {
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
+		CdnStateBridge $cdn_state_bridge,
 		?DriverInterface $driver = null,
 		?CNAMEValidator $cname_validator = null
 	) {
@@ -106,6 +116,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
+		$this->cdn_state_bridge        = $cdn_state_bridge;
 		$this->cname_validator         = $cname_validator;
 	}
 
@@ -493,14 +504,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
-		$current_options      = $this->options_api->get( 'settings', [] );
-		$has_active_sub_cache = null;
+		$current_options = $this->options_api->get( 'settings', [] );
 
 		if ( version_compare( $old_version, '3.22', '<' ) ) {
-			$has_active_sub_cache = $this->subscription_controller->has_active_subscription();
-			$cdn_type             = 'rocketcdn';
+			$has_active_subscription = $this->subscription_controller->has_active_subscription();
+			$cdn_type                = 'rocketcdn';
 
-			if ( ! $has_active_sub_cache ) {
+			if ( ! $has_active_subscription ) {
 				if ( ! empty( $this->options->get( 'cdn_cnames', [] ) ) ) {
 					// CNAME present with no RocketCDN subscription: port to Other CDN, preserve current cdn on/off state.
 					$cdn_type = 'byocdn';
@@ -513,37 +523,11 @@ class Subscriber implements Subscriber_Interface {
 			$current_options['cdn_type'] = $cdn_type;
 		}
 
-		$current_options['cdn_state'] = $this->compute_cdn_state_from_legacy( $current_options, $has_active_sub_cache );
+		// Runs for all versions — the bridge won't fire during upgrade because
+		// did_setting_change() requires both old/new to have the key and differ.
+		$current_options['cdn_state'] = $this->cdn_state_bridge->legacy_to_state( $current_options );
 
 		$this->options_api->set( 'settings', $current_options );
-	}
-
-	/**
-	 * Resolves cdn_state from legacy cdn / cdn_type fields and live subscription state.
-	 *
-	 * @param array     $settings             Settings array carrying 'cdn' and 'cdn_type' keys.
-	 * @param bool|null $has_active_subscription Pre-fetched result to avoid a second transient read
-	 *                                           when the < 3.22 path already called it. Null means
-	 *                                           the helper fetches it itself (>= 3.22 path).
-	 *
-	 * @return string
-	 */
-	private function compute_cdn_state_from_legacy( array $settings, ?bool $has_active_subscription = null ): string {
-		if ( empty( $settings['cdn'] ) ) {
-			return 'nothing';
-		}
-
-		if ( 'rocketcdn' !== ( (string) ( $settings['cdn_type'] ?? 'rocketcdn' ) ) ) {
-			return 'byocdn';
-		}
-
-		$is_active = $has_active_subscription ?? $this->subscription_controller->has_active_subscription();
-
-		if ( ! $is_active && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
-			return 'nothing';
-		}
-
-		return $this->subscription_controller->is_paid() ? 'rocketcdn_paid' : 'rocketcdn_free';
 	}
 
 	/**

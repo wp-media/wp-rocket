@@ -104,7 +104,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 *
 	 * @return string One of the Context::CDN_STATE_* / *_TYPE constants.
 	 */
-	private function legacy_to_state( array $settings ): string {
+	public function legacy_to_state( array $settings ): string {
 		if ( empty( $settings['cdn'] ) ) {
 			return Context::CDN_STATE_NOTHING;
 		}
