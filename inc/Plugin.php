@@ -15,6 +15,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCS
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
@@ -325,13 +326,6 @@ class Plugin {
 			'expired_cache_purge_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
-			'mobile_subscriber',
-			'woocommerce_subscriber',
-			'bigcommerce_subscriber',
-			'syntaxhighlighter_subscriber',
-			'elementor_subscriber',
-			'ngg_subscriber',
-			'smush_subscriber',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
@@ -342,11 +336,7 @@ class Plugin {
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
-			'beaverbuilder_subscriber',
-			'amp_subscriber',
 			'rest_cpcss_subscriber',
-			'simple_custom_css',
-			'pdfembedder',
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
 			'rucss_option_subscriber',
@@ -360,43 +350,12 @@ class Plugin {
 			'mod_pagespeed',
 			'webp_subscriber',
 			'webp_admin_subscriber',
-			'imagify_webp_subscriber',
-			'shortpixel_webp_subscriber',
-			'ewww_webp_subscriber',
-			'optimus_webp_subscriber',
-			'adthrive',
-			'autoptimize',
-			'wp-meteor',
-			'revolution_slider_subscriber',
-			'wordfence_subscriber',
 			'ezoic',
-			'thirstyaffiliates',
-			'pwa',
-			'yoast_seo',
-			'convertplug',
 			'dynamic_lists_subscriber',
-			'unlimited_elements',
-			'inline_related_posts',
-			'jetpack',
-			'rank_math_seo',
-			'all_in_one_seo_pack',
-			'seopress',
-			'the_seo_framework',
-			'wpml',
-			'cloudflare_plugin_subscriber',
 			'cache_config',
-			'rocket_lazy_load',
-			'cache_config',
-			'the_events_calendar',
 			'admin_api_subscriber',
-			'perfmatters',
-			'rapidload',
-			'translatepress',
-			'wpgeotargeting',
 			'lazyload_css_subscriber',
-			'weglot',
 			'cron_subscriber',
-			'contactform7',
 			'debug_subscriber',
 			'rucss_cron_subscriber',
 			'saas_admin_subscriber',
@@ -408,7 +367,6 @@ class Plugin {
 			'performance_hints_admin_subscriber',
 			'lrc_frontend_subscriber',
 			'taxonomy_subscriber',
-			'termly_subscriber',
 			'media_fonts_frontend_subscriber',
 			'media_fonts_admin_subscriber',
 			'media_fonts_clean_subscriber',
@@ -420,12 +378,10 @@ class Plugin {
 			'ri_post_listing_subscriber',
 			'ri_global_metrics_subscriber',
 			'ri_recommendations_subscriber',
-			'ri_recommendations_subscriber',
 			'ri_recommendations_settings_subscriber',
 			'post_subscriber',
 			'tracking_subscriber',
 			'logger_subscriber',
-			'optimole_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
@@ -438,6 +394,8 @@ class Plugin {
 		if ( ! empty( $theme ) ) {
 			$common_subscribers[] = $theme;
 		}
+
+		$common_subscribers = array_merge( $common_subscribers, PluginResolver::get_active_plugins() );
 
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
 			$this->container->addServiceProvider( new CloudflareServiceProvider() );
