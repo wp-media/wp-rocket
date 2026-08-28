@@ -1,10 +1,11 @@
 <?php
 return [
 	// -------------------------------------------------------------------------
-	// < 3.22 path — sets cdn_type (and fixes cdn flag where needed)
+	// < 3.22 path — sets cdn_type
 	// -------------------------------------------------------------------------
 
-	'shouldSetByocdnWhenLegacyCdnIsEnabled'               => [
+	// CDN enabled with CNAME and no RocketCDN sub → byocdn.
+	'shouldSetByocdnWhenLegacyCdnIsEnabled'                        => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
@@ -15,6 +16,7 @@ return [
 			'cdn_cnames'              => [
 				'https://cdnexample.org/',
 			],
+			'cdn_enabled'             => 1,
 		],
 		'expected' => [
 			'options' => [
@@ -24,7 +26,8 @@ return [
 		],
 	],
 
-	'shouldSetRocketcdnWhenCdnIsNotEnabled'               => [
+	// No CNAME, no sub → rocketcdn, cdn forced on.
+	'shouldSetRocketcdnWhenCdnIsNotEnabled'                        => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
@@ -39,25 +42,27 @@ return [
 		],
 	],
 
-	// cdn disabled but CNAME present: ports to byocdn, preserves cdn=0.
-	// Previous behaviour wrongly forced cdn=1 and defaulted to rocketcdn.
-	'shouldSetByocdnWhenCdnDisabledButCnameExists'        => [
+	// CNAME present but cdn disabled → is_cdn_enabled() returns false, byocdn condition fails.
+	// cdn_type defaults to rocketcdn and cdn is forced on.
+	'shouldSetRocketcdnWhenCdnDisabledButCnameExists'              => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
 			'current_options'         => [ 'cdn' => 0 ],
 			'has_active_subscription' => false,
 			'cdn_cnames'              => [ 'https://cdnexample.org/' ],
+			'cdn_enabled'             => 0,
 		],
 		'expected' => [
 			'options' => [
-				'cdn'      => 0,
-				'cdn_type' => 'byocdn',
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
 			],
 		],
 	],
 
-	'shouldSetRocketcdnWhenHavingActiveSubscription'      => [
+	// Active sub → rocketcdn, cdn not forced.
+	'shouldSetRocketcdnWhenHavingActiveSubscription'               => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
@@ -71,8 +76,8 @@ return [
 		],
 	],
 
-	// Active subscription + cdn already enabled: cdn=1 is preserved.
-	'shouldPreserveCdnEnabledWithActiveSubscription'      => [
+	// Active sub + cdn already on → cdn=1 preserved, rocketcdn.
+	'shouldPreserveCdnEnabledWithActiveSubscription'               => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',

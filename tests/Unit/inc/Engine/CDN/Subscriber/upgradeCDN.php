@@ -59,15 +59,21 @@ class Test_UpgradeCDN extends TestCase {
 				}
 			);
 
-		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
-		$this->options_api->expects()->set( 'settings', $expected['options'] );
-
 		$has_active = $config['has_active_subscription'] ?? false;
 		$this->subscription_controller->expects()->has_active_subscription()->andReturn( $has_active );
 
 		if ( ! $has_active ) {
-			$this->options->expects()->get( 'cdn_cnames', [] )->andReturn( $config['cdn_cnames'] ?? [] );
+			$cdn_cnames = $config['cdn_cnames'] ?? [];
+			$this->options->expects()->get( 'cdn_cnames', [] )->andReturn( $cdn_cnames );
+
+			// is_cdn_enabled() is called only when cnames are present (&&-short-circuit).
+			if ( ! empty( $cdn_cnames ) ) {
+				$this->options->expects()->get( 'cdn', 0 )->andReturn( $config['cdn_enabled'] ?? 0 );
+			}
 		}
+
+		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
+		$this->options_api->expects()->set( 'settings', $expected['options'] );
 
 		$this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
 	}
