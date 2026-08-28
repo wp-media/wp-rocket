@@ -26,5 +26,10 @@ return [
 			'host'     => 'savvii',
 			'expected' => 'WP_Rocket\ThirdParty\Hostings\Savvii',
 		],
+
+		'testShouldReturnSiteground' => [
+			'host'     => 'siteground',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\SiteGround',
+		],
 	],
 ];
