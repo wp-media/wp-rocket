@@ -131,6 +131,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( class_exists( 'FlywheelNginxCompat' ) ) {
+			self::$hostname = 'flywheel';
+			return 'flywheel';
+		}
+
 		return '';
 	}
 
