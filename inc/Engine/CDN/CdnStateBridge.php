@@ -13,12 +13,6 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class CdnStateBridge implements Subscriber_Interface {
 	/**
-	 * Runs ahead of the cache-clearing subscriber on the same hook, so it always sees
-	 * settled legacy fields before anything else reacts to the save.
-	 */
-	const PRIORITY = 5;
-
-	/**
 	 * Subscription controller, used to resolve RocketCDN free vs. paid and cancellation state.
 	 *
 	 * @var SubscriptionController
@@ -48,7 +42,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'update_option_wp_rocket_settings' => [ 'reconcile', self::PRIORITY, 2 ],
+			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
 		];
 	}
@@ -121,11 +115,7 @@ class CdnStateBridge implements Subscriber_Interface {
 			return Context::BYOCDN_TYPE;
 		}
 
-		if (
-			! $this->subscription_controller->has_active_subscription()
-			&&
-			$this->subscription_controller->is_cancelled_outside_grace_period()
-		) {
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
 			return Context::CDN_STATE_NOTHING;
 		}
 
