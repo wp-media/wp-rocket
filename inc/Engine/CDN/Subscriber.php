@@ -146,6 +146,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'             => 'add_cdn_type_option',
 			'wp_rocket_upgrade'                        => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
+				[ 'on_update_add_cdn_state_option', 11, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 			'update_option_wp_rocket_settings'         => [
@@ -494,7 +495,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add cdn_type and cdn_state options when upgrading from < 3.22 and >= 3.22.
+	 * Add cdn_type option when upgrading from < 3.22.
 	 *
 	 * @since 3.22
 	 *
@@ -523,8 +524,25 @@ class Subscriber implements Subscriber_Interface {
 			$current_options['cdn_type'] = $cdn_type;
 		}
 
-		// Runs for all versions — the bridge won't fire during upgrade because
-		// did_setting_change() requires both old/new to have the key and differ.
+		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Add cdn_state option during plugin update when upgrading from < 3.23.4.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param string $_new_version New plugin version.
+	 * @param string $old_version  Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_state_option( string $_new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.23.4', '>=' ) ) {
+			return;
+		}
+
+		$current_options              = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_state'] = $this->cdn_state_bridge->legacy_to_state( $current_options );
 
 		$this->options_api->set( 'settings', $current_options );

@@ -1,10 +1,10 @@
 <?php
 return [
 	// -------------------------------------------------------------------------
-	// < 3.22 path (existing cases, updated to include cdn_state)
+	// < 3.22 path — sets cdn_type (and fixes cdn flag where needed)
 	// -------------------------------------------------------------------------
 
-	'shouldSetByocdnWhenLegacyCdnIsEnabled'                            => [
+	'shouldSetByocdnWhenLegacyCdnIsEnabled'               => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
@@ -15,240 +15,74 @@ return [
 			'cdn_cnames'              => [
 				'https://cdnexample.org/',
 			],
-			'cdn_state_from_bridge'   => 'byocdn',
 		],
 		'expected' => [
 			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'byocdn',
-				'cdn_state' => 'byocdn',
+				'cdn'      => 1,
+				'cdn_type' => 'byocdn',
 			],
 		],
 	],
 
-	'shouldSetRocketcdnWhenCdnIsNotEnabled'                            => [
+	'shouldSetRocketcdnWhenCdnIsNotEnabled'               => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
 			'current_options'         => [],
 			'has_active_subscription' => false,
-			'cdn_state_from_bridge'   => 'rocketcdn_free',
 		],
 		'expected' => [
 			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_free',
+				'cdn'      => 1,
+				'cdn_type' => 'rocketcdn',
 			],
 		],
 	],
 
-	// cdn disabled but CNAME present: ports to byocdn inactive (cdn_state='nothing').
+	// cdn disabled but CNAME present: ports to byocdn, preserves cdn=0.
 	// Previous behaviour wrongly forced cdn=1 and defaulted to rocketcdn.
-	'shouldSetByocdnNothingWhenCdnDisabledButCnameExists'              => [
+	'shouldSetByocdnWhenCdnDisabledButCnameExists'        => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
 			'current_options'         => [ 'cdn' => 0 ],
 			'has_active_subscription' => false,
 			'cdn_cnames'              => [ 'https://cdnexample.org/' ],
-			'cdn_state_from_bridge'   => 'nothing',
 		],
 		'expected' => [
 			'options' => [
-				'cdn'       => 0,
-				'cdn_type'  => 'byocdn',
-				'cdn_state' => 'nothing',
+				'cdn'      => 0,
+				'cdn_type' => 'byocdn',
 			],
 		],
 	],
 
-	'shouldSetRocketcdnWhenHavingRocketcdnSubscription'                => [
+	'shouldSetRocketcdnWhenHavingActiveSubscription'      => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
 			'current_options'         => [],
 			'has_active_subscription' => true,
-			'cdn_state_from_bridge'   => 'nothing',
 		],
 		'expected' => [
 			'options' => [
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'nothing',
+				'cdn_type' => 'rocketcdn',
 			],
 		],
 	],
 
-	// < 3.22 — active Pro subscription + cdn=1: should migrate to rocketcdn_paid.
-	'shouldSetRocketcdnPaidWhenActiveProSubscriptionLessThan322'       => [
+	// Active subscription + cdn already enabled: cdn=1 is preserved.
+	'shouldPreserveCdnEnabledWithActiveSubscription'      => [
 		'config'   => [
 			'new_version'             => '3.22.0',
 			'old_version'             => '3.21.1',
 			'current_options'         => [ 'cdn' => 1 ],
 			'has_active_subscription' => true,
-			'cdn_state_from_bridge'   => 'rocketcdn_paid',
 		],
 		'expected' => [
 			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_paid',
-			],
-		],
-	],
-
-	// -------------------------------------------------------------------------
-	// >= 3.22 path (cdn_type already set, cdn_state is new)
-	// -------------------------------------------------------------------------
-
-	'shouldSetNothingWhenFreePausedGreaterThanOrEqual322'              => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 0,
-				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'nothing',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 0,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'nothing',
-			],
-		],
-	],
-
-	'shouldSetRocketcdnFreeWhenFreeActiveGreaterThanOrEqual322'        => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'rocketcdn_free',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_free',
-			],
-		],
-	],
-
-	'shouldSetNothingWhenProPausedGreaterThanOrEqual322'               => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 0,
-				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'nothing',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 0,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'nothing',
-			],
-		],
-	],
-
-	'shouldSetRocketcdnPaidWhenProActiveGreaterThanOrEqual322'         => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 1,
-				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'rocketcdn_paid',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_paid',
-			],
-		],
-	],
-
-	'shouldSetNothingWhenByocdnPausedGreaterThanOrEqual322'            => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 0,
-				'cdn_type' => 'byocdn',
-			],
-			'cdn_state_from_bridge' => 'nothing',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 0,
-				'cdn_type'  => 'byocdn',
-				'cdn_state' => 'nothing',
-			],
-		],
-	],
-
-	'shouldSetByocdnWhenByocdnActiveGreaterThanOrEqual322'             => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 1,
-				'cdn_type' => 'byocdn',
-			],
-			'cdn_state_from_bridge' => 'byocdn',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'byocdn',
-				'cdn_state' => 'byocdn',
-			],
-		],
-	],
-
-	'shouldSetNothingWhenCancelledOutsideGracePeriodGreaterThanOrEqual322' => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 1,
-				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'nothing',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'nothing',
-			],
-		],
-	],
-
-	'shouldSetRocketcdnFreeWhenInGracePeriodGreaterThanOrEqual322'     => [
-		'config'   => [
-			'new_version'           => '3.26.0',
-			'old_version'           => '3.22.0',
-			'current_options'       => [
-				'cdn'      => 1,
-				'cdn_type' => 'rocketcdn',
-			],
-			'cdn_state_from_bridge' => 'rocketcdn_free',
-		],
-		'expected' => [
-			'options' => [
-				'cdn'       => 1,
-				'cdn_type'  => 'rocketcdn',
-				'cdn_state' => 'rocketcdn_free',
 			],
 		],
 	],
