@@ -4,8 +4,8 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use ReflectionMethod;
 use ReflectionProperty;
-use WP_Rocket\Tests\Fixtures\Classes\PluginResolverActivePlugin;
-use WP_Rocket\Tests\Fixtures\Classes\PluginResolverInactivePlugin;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
