@@ -1051,6 +1051,30 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableSeparateCacheFilesMobile.php
 
 		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
+
+		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
 			count: 2
