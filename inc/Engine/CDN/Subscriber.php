@@ -483,7 +483,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add cdn_type option when upgrading from a version older than 3.22
+	 * Add cdn_type and cdn_state options when upgrading from < 3.22 and >= 3.22.
 	 *
 	 * @since 3.22
 	 *
@@ -493,29 +493,57 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
-		// Bail early.
-		if ( version_compare( $old_version, '3.22', '>=' ) ) {
-			return;
+		$current_options      = $this->options_api->get( 'settings', [] );
+		$has_active_sub_cache = null;
+
+		if ( version_compare( $old_version, '3.22', '<' ) ) {
+			$has_active_sub_cache = $this->subscription_controller->has_active_subscription();
+			$cdn_type             = 'rocketcdn';
+
+			if ( ! $has_active_sub_cache ) {
+				if ( ! empty( $this->options->get( 'cdn_cnames', [] ) ) ) {
+					// CNAME present with no RocketCDN subscription: port to Other CDN, preserve current cdn on/off state.
+					$cdn_type = 'byocdn';
+				} else {
+					// No subscription and no CNAME: default to RocketCDN active.
+					$current_options['cdn'] = 1;
+				}
+			}
+
+			$current_options['cdn_type'] = $cdn_type;
 		}
 
-		$has_active_subscription = $this->subscription_controller->has_active_subscription();
-		$cdn_type                = 'rocketcdn';
-		// Check if a CNAME is saved, cdn is enabled, and no RocketCDN subscription, then default to byocdn.
-		if (
-			! $has_active_subscription
-			&&
-			! empty( $this->options->get( 'cdn_cnames', [] ) ) && $this->is_cdn_enabled()
-		) {
-			$cdn_type = 'byocdn';
-		}
-
-		$current_options             = $this->options_api->get( 'settings', [] );
-		$current_options['cdn_type'] = $cdn_type;
-		if ( ! $has_active_subscription ) {
-			$current_options['cdn'] = 1;
-		}
+		$current_options['cdn_state'] = $this->compute_cdn_state_from_legacy( $current_options, $has_active_sub_cache );
 
 		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Resolves cdn_state from legacy cdn / cdn_type fields and live subscription state.
+	 *
+	 * @param array     $settings             Settings array carrying 'cdn' and 'cdn_type' keys.
+	 * @param bool|null $has_active_subscription Pre-fetched result to avoid a second transient read
+	 *                                           when the < 3.22 path already called it. Null means
+	 *                                           the helper fetches it itself (>= 3.22 path).
+	 *
+	 * @return string
+	 */
+	private function compute_cdn_state_from_legacy( array $settings, ?bool $has_active_subscription = null ): string {
+		if ( empty( $settings['cdn'] ) ) {
+			return 'nothing';
+		}
+
+		if ( 'rocketcdn' !== ( (string) ( $settings['cdn_type'] ?? 'rocketcdn' ) ) ) {
+			return 'byocdn';
+		}
+
+		$is_active = $has_active_subscription ?? $this->subscription_controller->has_active_subscription();
+
+		if ( ! $is_active && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return 'nothing';
+		}
+
+		return $this->subscription_controller->is_paid() ? 'rocketcdn_paid' : 'rocketcdn_free';
 	}
 
 	/**
