@@ -20,6 +20,7 @@ class Test_CpcssSection extends TestCase {
 	protected static $provider_class = 'Post';
 	private $async_css_mobile;
 	private $async_css;
+	private $remove_unused_css = 0;
 	private $post_id;
 	private static $user_id;
 
@@ -35,6 +36,7 @@ class Test_CpcssSection extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
+		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 
 		set_current_screen( 'edit-post' );
 	}
@@ -44,6 +46,7 @@ class Test_CpcssSection extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 
 		parent::tear_down();
@@ -53,12 +56,17 @@ class Test_CpcssSection extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
+		if ( null === $expected ) {
+			$this->markTestSkipped( 'This scenario is for early-return tests.' );
+		}
+
 		wp_set_current_user( self::getUserId() );
 
-		$this->async_css_mobile = $config['options']['async_css_mobile'];
-		$this->async_css        = $config['options']['async_css'];
-		$this->post_id          = $config['post']->ID;
-		$GLOBALS['post']        = $config['post'];
+		$this->async_css_mobile  = $config['options']['async_css_mobile'] ?? 0;
+		$this->async_css         = $config['options']['async_css'];
+		$this->remove_unused_css = $config['options']['remove_unused_css'] ?? 0;
+		$this->post_id           = $config['post']->ID;
+		$GLOBALS['post']         = $config['post'];
 
 		if ( $config['is_option_excluded'] ) {
 			add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
@@ -76,6 +84,10 @@ class Test_CpcssSection extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	public function setRemoveUnusedCSSOption() {
+		return $this->remove_unused_css;
 	}
 
 	private function get_actual_html() {
