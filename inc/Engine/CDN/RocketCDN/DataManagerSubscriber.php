@@ -392,8 +392,14 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * (e.g. a Pro subscription downgraded to Free) that happens outside the checkout
 	 * flow, without needing a dedicated cron re-check.
 	 *
-	 * Only corrects the tier while RocketCDN is already the applied cdn_state - it
-	 * never activates RocketCDN from "nothing", and never touches "byocdn".
+	 * Also activates the tier from "nothing" - a real (non-default) plan_type here
+	 * can only come from a live API response, which APIClient only fetches when a
+	 * rocketcdn_user_token already exists for this site (see APIClient::get_remote_subscription_data()),
+	 * so a conclusive result always means this site already went through a genuine
+	 * per-site activation flow, never an account-wide/incidental signal. Never touches
+	 * "byocdn" though - that's an explicit user choice this callback must not override,
+	 * especially since a BYOCDN site can still carry a leftover RocketCDN token from a
+	 * past trial.
 	 *
 	 * Restricted to admin requests: this subscriber is currently admin-only, but the
 	 * transient is also read from front-end requests (e.g. FrontendSubscriber's CDN
@@ -419,7 +425,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$settings      = $this->options_api->get( 'settings', [] );
 		$current_state = (string) ( $settings['cdn_state'] ?? Context::CDN_STATE_NOTHING );
 
-		if ( ! in_array( $current_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ], true ) ) {
+		if ( Context::BYOCDN_TYPE === $current_state ) {
 			return $value;
 		}
 

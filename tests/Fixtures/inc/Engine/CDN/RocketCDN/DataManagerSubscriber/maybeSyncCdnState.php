@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldDowngradeProToFreeWhenPlanTypeIsFree' => [
+	'testShouldDowngradeProToFreeWhenPlanTypeIsFree'   => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_paid',
 			'transient_value'   => [ 'plan_type' => 'free' ],
@@ -10,7 +10,7 @@ return [
 			'cdn_state' => 'rocketcdn_free',
 		],
 	],
-	'testShouldUpgradeFreeToProWhenPlanTypeIsPaid' => [
+	'testShouldUpgradeFreeToProWhenPlanTypeIsPaid'     => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_free',
 			'transient_value'   => [ 'plan_type' => 'paid' ],
@@ -28,7 +28,7 @@ return [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldNotTouchByocdnState' => [
+	'testShouldNotTouchByocdnState'                    => [
 		'config'   => [
 			'initial_cdn_state' => 'byocdn',
 			'transient_value'   => [ 'plan_type' => 'free' ],
@@ -37,16 +37,25 @@ return [
 			'cdn_state' => 'byocdn',
 		],
 	],
-	'testShouldNotActivateFromNothing' => [
+	'testShouldActivateFromNothingWhenPlanTypeIsPaid'  => [
 		'config'   => [
 			'initial_cdn_state' => 'nothing',
 			'transient_value'   => [ 'plan_type' => 'paid' ],
 		],
 		'expected' => [
-			'cdn_state' => 'nothing',
+			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldIgnoreEmptyTransientValue' => [
+	'testShouldActivateFromNothingWhenPlanTypeIsFree'  => [
+		'config'   => [
+			'initial_cdn_state' => 'nothing',
+			'transient_value'   => [ 'plan_type' => 'free' ],
+		],
+		'expected' => [
+			'cdn_state' => 'rocketcdn_free',
+		],
+	],
+	'testShouldIgnoreEmptyTransientValue'              => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_paid',
 			'transient_value'   => false,
