@@ -1,64 +1,105 @@
 <?php
 
 return [
-	'testShouldDowngradeProToFreeWhenPlanTypeIsFree'   => [
+	'testShouldDowngradeProToFreeWhenPlanTypeIsFree'     => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_paid',
-			'transient_value'   => [ 'plan_type' => 'free' ],
+			'transient_value'   => [
+				'plan_type'   => 'free',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_free',
 		],
 	],
-	'testShouldUpgradeFreeToProWhenPlanTypeIsPaid'     => [
+	'testShouldUpgradeFreeToProWhenPlanTypeIsPaid'       => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_free',
-			'transient_value'   => [ 'plan_type' => 'paid' ],
+			'transient_value'   => [
+				'plan_type'   => 'paid',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldLeaveProUnchangedWhenPlanTypeStillPaid' => [
+	'testShouldLeaveProUnchangedWhenPlanTypeStillPaid'   => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_paid',
-			'transient_value'   => [ 'plan_type' => 'paid' ],
+			'transient_value'   => [
+				'plan_type'   => 'paid',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldNotTouchByocdnState'                    => [
+	'testShouldNotTouchByocdnState'                      => [
 		'config'   => [
 			'initial_cdn_state' => 'byocdn',
-			'transient_value'   => [ 'plan_type' => 'free' ],
+			'transient_value'   => [
+				'plan_type'   => 'free',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'byocdn',
 		],
 	],
-	'testShouldActivateFromNothingWhenPlanTypeIsPaid'  => [
+	'testShouldActivateFromNothingWhenPlanTypeIsPaid'    => [
 		'config'   => [
 			'initial_cdn_state' => 'nothing',
-			'transient_value'   => [ 'plan_type' => 'paid' ],
+			'transient_value'   => [
+				'plan_type'   => 'paid',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldActivateFromNothingWhenPlanTypeIsFree'  => [
+	'testShouldActivateFromNothingWhenPlanTypeIsFree'    => [
 		'config'   => [
 			'initial_cdn_state' => 'nothing',
-			'transient_value'   => [ 'plan_type' => 'free' ],
+			'transient_value'   => [
+				'plan_type'   => 'free',
+				'status_code' => 200,
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_free',
 		],
 	],
-	'testShouldIgnoreEmptyTransientValue'              => [
+	'testShouldIgnoreEmptyTransientValue'                => [
 		'config'   => [
 			'initial_cdn_state' => 'rocketcdn_paid',
 			'transient_value'   => false,
+		],
+		'expected' => [
+			'cdn_state' => 'rocketcdn_paid',
+		],
+	],
+	'testShouldIgnoreApiFallbackDefaultWithNon200Status' => [
+		'config'   => [
+			'initial_cdn_state' => 'nothing',
+			'transient_value'   => [
+				'plan_type'   => 'free',
+				'status_code' => 500,
+			],
+		],
+		'expected' => [
+			'cdn_state' => 'nothing',
+		],
+	],
+	'testShouldIgnoreMissingStatusCode'                  => [
+		'config'   => [
+			'initial_cdn_state' => 'rocketcdn_paid',
+			'transient_value'   => [
+				'plan_type' => 'free',
+			],
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_paid',

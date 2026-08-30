@@ -392,14 +392,19 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * (e.g. a Pro subscription downgraded to Free) that happens outside the checkout
 	 * flow, without needing a dedicated cron re-check.
 	 *
-	 * Also activates the tier from "nothing" - a real (non-default) plan_type here
-	 * can only come from a live API response, which APIClient only fetches when a
-	 * rocketcdn_user_token already exists for this site (see APIClient::get_remote_subscription_data()),
-	 * so a conclusive result always means this site already went through a genuine
-	 * per-site activation flow, never an account-wide/incidental signal. Never touches
-	 * "byocdn" though - that's an explicit user choice this callback must not override,
-	 * especially since a BYOCDN site can still carry a leftover RocketCDN token from a
-	 * past trial.
+	 * Also activates the tier from "nothing" - a genuine, API-confirmed plan_type here
+	 * (status_code 200, checked below) can only come from a live successful API call,
+	 * which APIClient only fetches when a rocketcdn_user_token already exists for this
+	 * site (see APIClient::get_remote_subscription_data()), so a confirmed result always
+	 * means this site already went through a genuine per-site activation flow, never an
+	 * account-wide/incidental signal. Never touches "byocdn" though - that's an explicit
+	 * user choice this callback must not override, especially since a BYOCDN site can
+	 * still carry a leftover RocketCDN token from a past trial.
+	 *
+	 * The status_code check matters: APIClient::get_remote_subscription_data()'s own
+	 * error/fallback default (network failure, non-200, empty body, decode failure) also
+	 * carries a non-empty plan_type ('free') - without checking status_code === 200, a
+	 * transient API outage would be indistinguishable from a genuine free-tier response.
 	 *
 	 * Restricted to admin requests: this subscriber is currently admin-only, but the
 	 * transient is also read from front-end requests (e.g. FrontendSubscriber's CDN
@@ -411,11 +416,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return mixed
 	 */
 	public function maybe_sync_cdn_state( $value, $transient ) {
-		if ( ! is_admin() ) {
+		if ( ! is_admin() || ! current_user_can( 'rocket_manage_options' ) ) {
 			return $value;
 		}
 
-		if ( ! is_array( $value ) || empty( $value['plan_type'] ) ) {
+		if ( ! is_array( $value ) || empty( $value['plan_type'] ) || 200 !== ( $value['status_code'] ?? null ) ) {
 			return $value;
 		}
 
