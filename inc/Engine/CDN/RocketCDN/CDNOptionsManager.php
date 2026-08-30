@@ -38,15 +38,22 @@ class CDNOptionsManager {
 	/**
 	 * Enable CDN option, save CDN URL & delete RocketCDN status transient
 	 *
+	 * Reads the current settings via $this->options_api rather than $this->options: see
+	 * the note on set_cdn_state() below - a stale Options_Data snapshot here can silently
+	 * clobber a write made elsewhere in the same request (e.g. maybe_retry_activation()
+	 * reading subscription data, which can trigger a set_cdn_state() write, before calling
+	 * this method later in the same request).
+	 *
 	 * @since 3.5
 	 *
 	 * @param bool $clear_cache Clear website whole cache.
 	 * @return void
 	 */
 	public function enable( bool $clear_cache = true ) {
-		$this->options->set( 'cdn', 1 );
+		$settings        = $this->options_api->get( 'settings', [] );
+		$settings['cdn'] = 1;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $settings );
 
 		delete_transient( 'rocketcdn_status' );
 		if ( $clear_cache ) {
@@ -93,14 +100,18 @@ class CDNOptionsManager {
 	/**
 	 * Disable CDN option, remove CDN URL & user token, delete RocketCDN status transient
 	 *
+	 * Reads the current settings via $this->options_api rather than $this->options - see
+	 * the note on enable()/set_cdn_state() above.
+	 *
 	 * @since 3.5
 	 *
 	 * @return void
 	 */
 	public function disable() {
-		$this->options->set( 'cdn', 0 );
+		$settings        = $this->options_api->get( 'settings', [] );
+		$settings['cdn'] = 0;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $settings );
 
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
