@@ -579,6 +579,7 @@ class Subscriber implements Subscriber_Interface {
 		// Clear whole cache when moving from nothing to byocdn OR from byocdn to nothing.
 		// Clear whole cache when moving from rocketcdn_paid to byocdn OR from byocdn to rocketcdn_paid.
 		// Clear whole cache when moving from rocketcdn_paid to rocketcdn_free OR from rocketcdn_free to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_free to byocdn OR from byocdn to rocketcdn_free.
 		// Clear free pages' cache when moving from nothing to rocketcdn_free OR from rocketcdn_free to nothing.
 
 		if (
