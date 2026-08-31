@@ -544,9 +544,14 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$current_options              = $this->options_api->get( 'settings', [] );
-		$current_options['cdn_state'] = $this->cdn_state_bridge->legacy_to_state( $current_options );
+		$current_options = $this->options_api->get( 'settings', [] );
+		$new_state       = $this->cdn_state_bridge->legacy_to_state( $current_options );
 
+		if ( ( $current_options['cdn_state'] ?? null ) === $new_state ) {
+			return;
+		}
+
+		$current_options['cdn_state'] = $new_state;
 		$this->options_api->set( 'settings', $current_options );
 	}
 

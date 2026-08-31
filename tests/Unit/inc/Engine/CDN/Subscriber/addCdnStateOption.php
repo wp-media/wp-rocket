@@ -70,7 +70,13 @@ class Test_AddCdnStateOption extends TestCase {
 
 		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
 		$this->cdn_state_bridge->shouldReceive( 'legacy_to_state' )->once()->andReturn( $config['cdn_state_from_bridge'] );
-		$this->options_api->expects()->set( 'settings', $expected['options'] );
+
+		if ( ! empty( $expected['should_save'] ) || isset( $expected['options'] ) ) {
+			$this->options_api->expects()->set( 'settings', $expected['options'] );
+		} else {
+			// Guard path: cdn_state already correct — no write should occur.
+			$this->options_api->shouldNotReceive( 'set' );
+		}
 
 		$this->subscriber->on_update_add_cdn_state_option( $config['new_version'], $config['old_version'] );
 	}

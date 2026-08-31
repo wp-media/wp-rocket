@@ -28,6 +28,23 @@ return [
 		],
 	],
 
+	// cdn_state already matches legacy fields (e.g. reconcile() ran first on < 3.22 path) — no save.
+	'shouldSkipSaveWhenCdnStateAlreadyMatchesLegacyFields' => [
+		'config'   => [
+			'new_version'           => '3.23.4',
+			'old_version'           => '3.21.0',
+			'current_options'       => [
+				'cdn'       => 1,
+				'cdn_type'  => 'rocketcdn',
+				'cdn_state' => 'rocketcdn_free',
+			],
+			'cdn_state_from_bridge' => 'rocketcdn_free',
+		],
+		'expected' => [
+			'should_save' => false,
+		],
+	],
+
 	'shouldSetNothingWhenCdnDisabledBelow3234'            => [
 		'config'   => [
 			'new_version'           => '3.23.4',
