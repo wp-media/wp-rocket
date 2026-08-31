@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Recommendations\Rest as RecommendationsRest,
 };
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -175,6 +176,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
+			'rocket_insights_add_homepage_notice'         => 'notice_add_homepage',
+			'rocket_display_activation_notice'            => [ 'maybe_display_activation_notice', 10, 2 ],
+			'rocket_display_default_notice'               => 'maybe_display_default_notice',
 			'rocket_deactivation'                         => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
@@ -414,6 +418,74 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function add_homepage_from_widget(): void {
 		$this->controller->add_homepage_from_widget();
+	}
+
+	/**
+	 * Filters whether to display the default activation notice.
+	 *
+	 * Returns false when Rocket Insights is enabled and will render its own notice.
+	 *
+	 * @param bool $display Whether to display the default notice.
+	 *
+	 * @return bool
+	 */
+	public function maybe_display_default_notice( bool $display ): bool {
+		return $display && ! $this->context->is_allowed();
+	}
+
+	/**
+	 * Renders the new-user activation notice.
+	 *
+	 * @param string $message Default notice message.
+	 * @param string $dismiss_key Dismiss key.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_activation_notice( string $message, string $dismiss_key ): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$message = sprintf(
+			// translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing strong, %4$s = opening link tag, %5$s = closing link.
+			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+			'<strong>',
+			WP_ROCKET_PLUGIN_NAME,
+			'</strong>',
+			'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) ) . '">',
+			'</a>'
+		);
+
+		$action_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
+			'rocket_insights_add_homepage_notice'
+		);
+
+		$notice_info = [
+			'dismiss_button'  => $dismiss_key,
+			'dismiss_message' => __( 'Dismiss', 'rocket' ),
+			'message'         => $message,
+			'action'          => '<a class="button button-primary" href="' . esc_url( $action_url ) . '">' . esc_html__( 'Start with my homepage', 'rocket' ) . '</a>',
+			'status'          => 'success',
+		];
+
+		Utils::display_update_notice( $notice_info, true );
+	}
+
+	/**
+	 * Add homepage from the notice action.
+	 *
+	 * @return void
+	 */
+	public function notice_add_homepage(): void {
+		if (
+			! isset( $_GET['_wpnonce'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			|| ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'rocket_insights_add_homepage_notice' )
+		) {
+			wp_nonce_ays( 'rocket_insights_add_homepage_notice' );
+		}
+
+		$this->controller->add_homepage( 'activation_notice' );
 	}
 
 	/**

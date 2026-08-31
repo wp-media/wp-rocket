@@ -78,6 +78,19 @@ class SetOption implements AbilitiesInterface {
 	];
 
 	/**
+	 * Options that are readable via get-options but cannot be written through this ability.
+	 *
+	 * The option - cdn_state is one-way derived from the legacy cdn / cdn_type fields by CdnStateBridge -
+	 * nothing syncs the reverse direction. Setting it directly here would let it disagree with
+	 * cdn / cdn_type immediately, not just eventually, since no code writes cdn_state back into
+	 * the legacy fields. Supporting that would mean reintroducing a state -> legacy sync, the
+	 * exact bidirectional complexity this bridge was deliberately simplified away from.
+	 */
+	private const READ_ONLY_OPTIONS = [
+		'cdn_state',
+	];
+
+	/**
 	 * Options that accept integer values.
 	 */
 	private const INTEGER_OPTIONS = [
@@ -174,7 +187,7 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 						'option_name'  => [
 							'type'        => 'string',
 							'description' => __( 'The name of the WP Rocket option to set', 'rocket' ),
-							'enum'        => $this->allowed_options->get(),
+							'enum'        => $this->get_allowed_options(),
 						],
 						'option_value' => [
 							'anyOf'       => [
@@ -301,12 +314,12 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 	}
 
 	/**
-	 * Returns an array of all allowed option names.
+	 * Returns an array of all option names writable through this ability.
 	 *
-	 * @return array List of allowed option names.
+	 * @return array List of writable option names.
 	 */
 	private function get_allowed_options(): array {
-		return $this->allowed_options->get();
+		return array_diff( $this->allowed_options->get(), self::READ_ONLY_OPTIONS );
 	}
 
 	/**

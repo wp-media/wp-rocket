@@ -1,6 +1,12 @@
 parameters:
 	ignoreErrors:
 		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
+			path: inc/Engine/Plugin/Admin/NoticeSubscriber.php
+
+		-
 			rawMessage: 'Usage of apply_filters() is discouraged. Use wpm_apply_filters_typed() instead.'
 			identifier: custom.rules.discourageApplyFilters
 			count: 3
@@ -225,7 +231,7 @@ parameters:
 		-
 			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 3
+			count: 5
 			path: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php
 
 		-
@@ -1045,6 +1051,30 @@ parameters:
 			path: tests/Integration/inc/Engine/Admin/Settings/Subscriber/enableSeparateCacheFilesMobile.php
 
 		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
+
+		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
 			count: 2
@@ -1407,6 +1437,21 @@ parameters:
 		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/Plugin/Admin/NoticeSubscriber/MaybeDisplayPostActivationNotice.php
+
+		-
+			message: "#^Usage of get_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 1
+			path: tests/Integration/inc/Engine/Plugin/Admin/NoticeSubscriber/MaybeDisplayPostActivationNotice.php
+
+		-
+			message: "#^Usage of update_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
+			count: 2
+			path: tests/Integration/inc/Engine/Plugin/Admin/NoticeSubscriber/MaybeDisplayPostActivationNotice.php
+
+		-
+			message: "#^Usage of delete_option\\(\\) is discouraged\\. Use the Option object instead\\.$#"
 			count: 2
 			path: tests/Integration/inc/Engine/WPRocketUninstall/uninstall.php
 

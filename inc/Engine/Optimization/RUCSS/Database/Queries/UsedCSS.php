@@ -69,6 +69,15 @@ class UsedCSS extends AbstractQuery {
 	 */
 	protected $item_shape = UsedCSSRow::class;
 
+	/** Cache *****************************************************************/
+
+	/**
+	 * Group to cache queries and queried items in.
+	 *
+	 * @var   string
+	 */
+	protected $cache_group = 'wpr_used_css';
+
 	/**
 	 * Complete a job.
 	 *
@@ -87,19 +96,18 @@ class UsedCSS extends AbstractQuery {
 			return false;
 		}
 
-		$prefixed_table_name = $db->prefix . $this->table_name;
+		$old = $this->get_row( $url, $is_mobile );
+
+		if ( ! $old ) {
+			return false;
+		}
 
 		$data = [
 			'hash'   => $hash,
 			'status' => 'completed',
 		];
 
-		$where = [
-			'url'       => untrailingslashit( $url ),
-			'is_mobile' => $is_mobile,
-		];
-
-		return $db->update( $prefixed_table_name, $data, $where );
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**

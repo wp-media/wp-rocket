@@ -532,6 +532,10 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	 * @return void
 	 */
 	public function unregister_cloudflare_clean_on_post() {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
 		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs' );
 		$this->unregister_callback( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
 	}
@@ -553,13 +557,17 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		$original_wp_filter = $wp_filter[ $hook ]->callbacks;
 
+		if ( ! is_array( $original_wp_filter ) ) {
+			return;
+		}
+
 		if ( ! key_exists( $priority, $original_wp_filter ) ) {
 			return;
 		}
 
 		foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
 
-			if ( substr( $key, - strlen( $method ) ) !== $method ) {
+			if ( substr( (string) $key, - strlen( $method ) ) !== $method ) {
 				continue;
 			}
 
