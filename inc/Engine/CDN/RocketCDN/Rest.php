@@ -539,6 +539,8 @@ class Rest extends WP_REST_Controller {
 		}
 
 		$this->options->set( 'cdn_state', $mode );
+		$this->options->set( 'cdn', (int) ( Context::CDN_STATE_NOTHING !== $mode ) );
+		$this->options->set( 'cdn_type', Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn' );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		/**

@@ -67,7 +67,7 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		remove_filter( 'pre_get_rocket_option_cdn', '__return_true', PHP_INT_MAX );
 
 		$settings = $this->options_api->get( 'settings', [] );
-		unset( $settings['cdn_state'] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
 		$this->options_api->set( 'settings', $settings );
 
 		delete_transient( 'rocketcdn_status' );
@@ -106,12 +106,19 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 			$config['params']
 		);
 
+		$settings = $this->options_api->get( 'settings', [] );
+
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
 				case 'cdn_state_response':
-					$settings = $this->options_api->get( 'settings', [] );
 					$this->assertSame( $value, $response['applied_cdn_state'] );
 					$this->assertSame( $config['params']['mode'], $settings['cdn_state'] ?? null );
+					break;
+				case 'cdn':
+					$this->assertSame( $value, $settings['cdn'] ?? null );
+					break;
+				case 'cdn_type':
+					$this->assertSame( $value, $settings['cdn_type'] ?? null );
 					break;
 				case 'code':
 					$this->assertSame( $value, $response['code'] );

@@ -8,6 +8,8 @@ return [
 		],
 		'expected' => [
 			'cdn_state_response' => 'rocketcdn',
+			'cdn'                => 1,
+			'cdn_type'           => 'rocketcdn',
 		],
 	],
 	'shouldSaveRocketcdnPaidMode'             => [
@@ -17,6 +19,8 @@ return [
 		],
 		'expected' => [
 			'cdn_state_response' => 'rocketcdn',
+			'cdn'                => 1,
+			'cdn_type'           => 'rocketcdn',
 		],
 	],
 	'shouldSaveByocdnMode'                    => [
@@ -26,6 +30,8 @@ return [
 		],
 		'expected' => [
 			'cdn_state_response' => 'byocdn',
+			'cdn'                => 1,
+			'cdn_type'           => 'byocdn',
 		],
 	],
 	'shouldSaveNothingMode'                   => [
@@ -35,6 +41,8 @@ return [
 		],
 		'expected' => [
 			'cdn_state_response' => 'nothing',
+			'cdn'                => 0,
+			'cdn_type'           => 'rocketcdn',
 		],
 	],
 	'shouldRejectInvalidMode'                 => [
