@@ -1,12 +1,12 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber::auto_detect_pro_subscription
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::auto_detect_pro_subscription
  *
  * @group RocketCDN
  * @group CDN
@@ -32,7 +32,7 @@ class Test_AutoDetectProSubscription extends AbstractSubscriptionControllerTestC
 			$this->set_rocketcdn_user_token();
 		}
 
-		$subscriber = $this->getRocketContainer()->get( 'rocketcdn_frontend_subscriber' );
+		$subscriber = $this->getRocketContainer()->get( 'rocketcdn_data_manager_subscriber' );
 		$queue      = $this->getRocketContainer()->get( 'rocketcdn_queue' );
 
 		$subscriber->auto_detect_pro_subscription();
