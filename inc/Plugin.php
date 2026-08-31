@@ -335,6 +335,7 @@ class Plugin {
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
+			'plugin_notice_subscriber',
 			'options_backup_subscriber',
 			'capabilities_subscriber',
 			'varnish_subscriber',
