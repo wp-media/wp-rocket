@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  AdvancedCache
  */
-class Test_NoticePermissions extends FileSystemTestCase {
+class Test_NoticePermissions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
 	public function setUp() : void {
