@@ -85,4 +85,60 @@ return [
 			'code' => 'rest_forbidden',
 		],
 	],
+	'shouldAutoActivateFreeWhenNothingActive'    => [
+		'config'   => [
+			'url'              => 'post_url',
+			'prefill_count'    => 0,
+			'add_first'        => false,
+			'unauthenticated'  => false,
+			'initial_cdn_state' => 'nothing',
+		],
+		'expected' => [
+			'count'          => 1,
+			'free_activated' => true,
+			'cdn_state'      => 'rocketcdn_free',
+		],
+	],
+	'shouldRequireConfirmationWhenAnotherModeActive' => [
+		'config'   => [
+			'url'              => 'post_url',
+			'prefill_count'    => 0,
+			'add_first'        => false,
+			'unauthenticated'  => false,
+			'initial_cdn_state' => 'byocdn',
+		],
+		'expected' => [
+			'code'   => 'rocketcdn_free_inactive_confirm_required',
+			'status' => 409,
+		],
+	],
+	'shouldActivateFreeAfterConfirmation'        => [
+		'config'   => [
+			'url'                => 'post_url',
+			'prefill_count'      => 0,
+			'add_first'          => false,
+			'unauthenticated'    => false,
+			'initial_cdn_state'   => 'byocdn',
+			'confirm_activation' => true,
+		],
+		'expected' => [
+			'count'          => 1,
+			'free_activated' => true,
+			'cdn_state'      => 'rocketcdn_free',
+		],
+	],
+	'shouldNotReactivateWhenFreeAlreadyActive'   => [
+		'config'   => [
+			'url'              => 'post_url',
+			'prefill_count'    => 0,
+			'add_first'        => false,
+			'unauthenticated'  => false,
+			'initial_cdn_state' => 'rocketcdn_free',
+		],
+		'expected' => [
+			'count'          => 1,
+			'free_activated' => false,
+			'cdn_state'      => 'rocketcdn_free',
+		],
+	],
 ];

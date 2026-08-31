@@ -17,6 +17,7 @@
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
  *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
+ *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
  * }
  */
 
@@ -32,6 +33,7 @@ $rocket_byocdn_active = $data['is_active'];
 			id="wpr-byocdn-toggle"
 			data-cdn-mode="byocdn"
 			<?php checked( $rocket_byocdn_active ); ?>
+			<?php disabled( $data['is_forced_off'] ); ?>
 		/>
 		<span class="wpr-cdn-mode-toggle__slider"></span>
 	</label>

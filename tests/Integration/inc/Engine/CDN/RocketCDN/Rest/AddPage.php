@@ -76,6 +76,22 @@ class Test_AddPage extends RESTfulTestCase {
 		wp_delete_post( $this->post_id, true );
 		self::truncateRocketCDNTable();
 		delete_transient( 'rocketcdn_status' );
+
+		// Reset the CDN mode any AC5 test case may have set (on both the shared
+		// 'options' service and the persisted DB row), so it doesn't bleed into
+		// other tests.
+		$container   = apply_filters( 'rocket_container', null );
+		$options     = $container->get( 'options' );
+		$options_api = $container->get( 'options_api' );
+
+		$options->set( 'cdn_state', 'nothing' );
+		$options->set( 'cdn', 0 );
+		$options->set( 'cdn_type', 'rocketcdn' );
+
+		$settings = $options_api->get( 'settings', [] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
+		$options_api->set( 'settings', $settings );
+
 		parent::tear_down();
 	}
 
@@ -132,6 +148,15 @@ class Test_AddPage extends RESTfulTestCase {
 			wp_cache_flush();
 		}
 
+		// Pre-set the active CDN mode if configured (AC5: activation-prompt scenarios).
+		// Written through the shared 'options' service (not options_api) so the Rest
+		// controller's injected Options_Data instance — read live within this same
+		// request — actually sees it.
+		if ( isset( $config['initial_cdn_state'] ) ) {
+			$options = apply_filters( 'rocket_container', null )->get( 'options' );
+			$options->set( 'cdn_state', $config['initial_cdn_state'] );
+		}
+
 		// Set unauthenticated if configured.
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
@@ -145,7 +170,13 @@ class Test_AddPage extends RESTfulTestCase {
 			$url = $config['url'];
 		}
 
-		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pages', [ 'url' => $url ] );
+		$params = [ 'url' => $url ];
+
+		if ( isset( $config['confirm_activation'] ) ) {
+			$params['confirm_activation'] = $config['confirm_activation'];
+		}
+
+		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pages', $params );
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
@@ -163,6 +194,14 @@ class Test_AddPage extends RESTfulTestCase {
 					break;
 				case 'status':
 					$this->assertSame( $value, $response['data']['status'] );
+					break;
+				case 'free_activated':
+					$this->assertSame( $value, $response['free_activated'] );
+					break;
+				case 'cdn_state':
+					$options_api = apply_filters( 'rocket_container', null )->get( 'options_api' );
+					$settings    = $options_api->get( 'settings', [] );
+					$this->assertSame( $value, $settings['cdn_state'] ?? null );
 					break;
 			}
 		}

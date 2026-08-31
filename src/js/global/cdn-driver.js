@@ -224,9 +224,11 @@
 	}
 
 	/**
-	 * Updates the `wpr-cdn-active-indicator` class to reflect which CDN driver header is active.
+	 * Updates the `wpr-cdn-active-indicator` class to reflect which CDN driver header
+	 * and tab are active.
 	 *
-	 * @param {Element|null} activeToggle Toggle whose parent header should receive the class, or null to clear all.
+	 * @param {Element|null} activeToggle Toggle whose parent header and matching tab should
+	 *                                    receive the class, or null to clear all.
 	 */
 	function updateCdnActiveIndicator( activeToggle ) {
 		document.querySelectorAll( '.wpr-cdn-active-indicator' ).forEach( ( el ) => {
@@ -238,7 +240,37 @@
 			if ( header ) {
 				header.classList.add( 'wpr-cdn-active-indicator' );
 			}
+
+			const mode = activeToggle.getAttribute( 'data-cdn-mode' );
+			const tabDriver = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+			const tab = document.querySelector( `.wpr-cdn-tabs__tab[data-cdn-driver="${ tabDriver }"]` );
+
+			if ( tab ) {
+				tab.classList.add( 'wpr-cdn-active-indicator' );
+			}
 		}
+	}
+
+	/**
+	 * Updates the toggle checkboxes and active indicators to reflect RocketCDN Free
+	 * having just been activated server-side (auto-activation from the "nothing active"
+	 * state, or after a confirmed activation prompt), without a full page reload.
+	 */
+	function activateFreeModeUI() {
+		const freeToggle = document.querySelector( '.wpr-cdn-mode-toggle__input[data-cdn-mode="rocketcdn_free"]' );
+
+		if ( ! freeToggle ) {
+			return;
+		}
+
+		document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
+			other.checked = ( other === freeToggle );
+		} );
+
+		updateCdnActiveIndicator( freeToggle );
+		toggleDriverSections( 'rocketcdn' );
+		setActiveTab( 'rocketcdn' );
+		notifyCdnStateChange();
 	}
 
 	/**
@@ -428,6 +460,37 @@
 	}
 
 	/**
+	 * Adds a page (or the homepage) to RocketCDN free-tier delivery, transparently
+	 * handling the "RocketCDN Free is inactive" activation prompt: on a 409
+	 * confirm-required error, shows a native confirmation dialog and retries with
+	 * `confirm_activation` if the user accepts. If the server auto-activated Free
+	 * (no mode was active at all), updates the toggle UI to reflect it.
+	 *
+	 * @param {string} path REST path to call ('/wp-rocket/v1/rocketcdn/pages' or '.../pages/homepage').
+	 * @param {Object} data Request body data (e.g. { url }).
+	 * @returns {Promise} Resolves with the REST response; rejects on final failure or cancellation.
+	 */
+	function requestAddPage( path, data ) {
+		return window.wp.apiFetch( {
+			path,
+			method: 'POST',
+			data,
+		} ).then( ( response ) => {
+			if ( response.free_activated ) {
+				activateFreeModeUI();
+			}
+
+			return response;
+		} ).catch( ( error ) => {
+			if ( 'rocketcdn_free_inactive_confirm_required' === error.code && window.confirm( error.message ) ) {
+				return requestAddPage( path, Object.assign( {}, data, { confirm_activation: true } ) );
+			}
+
+			throw error;
+		} );
+	}
+
+	/**
 	 * Initializes the "ADD HOMEPAGE" button.
 	 *
 	 * Sends a POST request to the RocketCDN REST endpoint to add
@@ -448,10 +511,7 @@
 				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
 			}
 
-			window.wp.apiFetch( {
-				path: '/wp-rocket/v1/rocketcdn/pages/homepage',
-				method: 'POST',
-			} ).then( ( response ) => {
+			requestAddPage( '/wp-rocket/v1/rocketcdn/pages/homepage', {} ).then( ( response ) => {
 				button.classList.add( 'wpr-isHidden' );
 				updateRocketCtaState( response.count, response.limit );
 
@@ -534,11 +594,7 @@
 				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
 			}
 
-			window.wp.apiFetch( {
-				path: '/wp-rocket/v1/rocketcdn/pages',
-				method: 'POST',
-				data: { url },
-			} ).then( ( response ) => {
+			requestAddPage( '/wp-rocket/v1/rocketcdn/pages', { url } ).then( ( response ) => {
 				input.value = '';
 				input.disabled = false;
 				button.disabled = false;
