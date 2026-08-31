@@ -281,10 +281,9 @@ class Rest extends WP_REST_Controller {
 				);
 			}
 
-			if ( Context::CDN_STATE_NOTHING === $cdn_state ) {
-				// No mode active at all — auto-activate Free for the first page, no prompt needed.
-				$should_activate_free = true;
-			} elseif ( ! $request->get_param( 'confirm_activation' ) ) {
+			// Another mode is active (not "nothing") and the user hasn't confirmed
+			// switching away from it yet — ask before activating Free.
+			if ( Context::CDN_STATE_NOTHING !== $cdn_state && ! $request->get_param( 'confirm_activation' ) ) {
 				return new WP_Error(
 					'rocketcdn_free_inactive_confirm_required',
 					__( 'RocketCDN Free is currently inactive. Adding this page will activate it and turn off the current CDN mode. Add this page anyway?', 'rocket' ),
@@ -293,10 +292,11 @@ class Rest extends WP_REST_Controller {
 						'current_mode' => $cdn_state,
 					]
 				);
-			} else {
-				// User confirmed activation despite another mode being active.
-				$should_activate_free = true;
 			}
+
+			// Either no mode was active at all (no prompt needed), or the user
+			// just confirmed switching away from another active mode.
+			$should_activate_free = true;
 		}
 
 		if ( $this->is_limit_reached() ) {

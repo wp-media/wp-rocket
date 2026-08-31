@@ -18,6 +18,7 @@ class Test_AddPage extends RESTfulTestCase {
 	private $admin_id;
 	private $post_id;
 	private $post_url;
+	private $cdn_state_override;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -72,25 +73,22 @@ class Test_AddPage extends RESTfulTestCase {
 
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
+
+		if ( null !== $this->cdn_state_override ) {
+			remove_filter( 'pre_get_rocket_option_cdn_state', $this->cdn_state_override );
+			$this->cdn_state_override = null;
+		}
+
 		wp_set_current_user( 0 );
 		wp_delete_post( $this->post_id, true );
 		self::truncateRocketCDNTable();
 		delete_transient( 'rocketcdn_status' );
 
-		// Reset the CDN mode any AC5 test case may have set (on both the shared
-		// 'options' service and the persisted DB row), so it doesn't bleed into
-		// other tests.
-		$container   = apply_filters( 'rocket_container', null );
-		$options     = $container->get( 'options' );
-		$options_api = $container->get( 'options_api' );
-
-		$options->set( 'cdn_state', 'nothing' );
-		$options->set( 'cdn', 0 );
-		$options->set( 'cdn_type', 'rocketcdn' );
-
-		$settings = $options_api->get( 'settings', [] );
+		// Reset any CDN mode an AC5 test case's apply_cdn_mode() call persisted,
+		// so it doesn't bleed into other tests.
+		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
 		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
-		$options_api->set( 'settings', $settings );
+		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
 
 		parent::tear_down();
 	}
@@ -149,12 +147,19 @@ class Test_AddPage extends RESTfulTestCase {
 		}
 
 		// Pre-set the active CDN mode if configured (AC5: activation-prompt scenarios).
-		// Written through the shared 'options' service (not options_api) so the Rest
-		// controller's injected Options_Data instance — read live within this same
-		// request — actually sees it.
+		// Options_Data is read once per-request from whatever the option row held
+		// when the container built it, so directly set()-ing the option after the
+		// fact isn't reliably seen by the Rest controller's own injected instance —
+		// use the same live pre_get_rocket_option_* filter override technique the
+		// 'cdn' key already relies on elsewhere in this test suite.
 		if ( isset( $config['initial_cdn_state'] ) ) {
-			$options = apply_filters( 'rocket_container', null )->get( 'options' );
-			$options->set( 'cdn_state', $config['initial_cdn_state'] );
+			$initial_cdn_state = $config['initial_cdn_state'];
+
+			$this->cdn_state_override = function () use ( $initial_cdn_state ) {
+				return $initial_cdn_state;
+			};
+
+			add_filter( 'pre_get_rocket_option_cdn_state', $this->cdn_state_override );
 		}
 
 		// Set unauthenticated if configured.

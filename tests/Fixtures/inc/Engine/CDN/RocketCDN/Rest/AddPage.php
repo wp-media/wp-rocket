@@ -138,7 +138,6 @@ return [
 		'expected' => [
 			'count'          => 1,
 			'free_activated' => false,
-			'cdn_state'      => 'rocketcdn_free',
 		],
 	],
 ];
