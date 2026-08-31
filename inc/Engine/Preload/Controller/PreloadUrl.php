@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Controller;
 
+use WP_Rocket\Buffer\Cache as BufferCache;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Filesystem_Direct;
@@ -323,14 +324,26 @@ class PreloadUrl {
 
 		$mobile = $is_mobile ? '-mobile' : '';
 
-		$file_cache_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '.html';
+		/*
+		 * Bound the directory as the writer does, or a page whose URI carries an overlong segment is
+		 * looked up under a name that was never written and is preloaded again on every run.
+		 *
+		 * The bound is applied to the string this lookup actually uses, after its own normalisation.
+		 * That normalisation is not the writer's: strtolower() here lowercases the whole path, while
+		 * the writer lowercases only %XX escapes. For a mixed-case URL the two disagree with or
+		 * without the bound, which predates this and is not addressed here.
+		 */
+		$cache_dir = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' )
+			. BufferCache::bound_path_components( $url['host'] . strtolower( $url['path'] . $url['query'] ) );
+
+		$file_cache_path = $cache_dir . 'index' . $mobile . $https . '.html';
 
 		if ( ! $this->options->get( 'cache_webp', false ) ) {
 			return $this->filesystem->exists( $file_cache_path );
 		}
 
-		$webp_path    = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . 'index' . $mobile . $https . '-webp.html';
-		$no_webp_path = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $url['host'] . strtolower( $url['path'] . $url['query'] ) . '.no-webp';
+		$webp_path    = $cache_dir . 'index' . $mobile . $https . '-webp.html';
+		$no_webp_path = $cache_dir . '.no-webp';
 
 		return $this->filesystem->exists( $webp_path ) || ( $this->filesystem->exists( $no_webp_path ) && $this->filesystem->exists( $file_cache_path ) );
 	}
