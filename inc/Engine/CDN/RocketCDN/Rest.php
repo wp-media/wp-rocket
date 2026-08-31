@@ -159,27 +159,6 @@ class Rest extends WP_REST_Controller {
 
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/pause',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'save_pause_state' ],
-				'permission_callback' => [ $this, 'check_permission' ],
-				'args'                => [
-					'paused' => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							return is_bool( $param ) || in_array( (string) $param, [ '0', '1' ], true );
-						},
-						'sanitize_callback' => function ( $param ) {
-							return (int) (bool) $param;
-						},
-					],
-				],
-			]
-		);
-
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
 			self::ROUTE_BASE . '/driver',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
@@ -445,30 +424,6 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Saves CDN driver state options.
 	 *
-	 * Persists the paused state.
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 * @return WP_REST_Response
-	 */
-	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
-		$paused = (int) $request->get_param( 'paused' );
-
-		$this->options->set( 'cdn', $paused );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
-		$status = 0 === $paused ? 'paused' : 'active';
-		$action = 0 === $paused ? 'user_paused' : 'user_resume';
-
-		do_action( 'rocket_rocketcdn_cdn_state_changed', $status, $action );
-
-		return new WP_REST_Response(
-			[
-				'paused' => $this->options->get( 'cdn', 0 ),
-			],
-			200
-		);
-	}
-
 	/**
 	 * Checks whether the free-tier page limit has been reached.
 	 *
@@ -534,6 +489,14 @@ class Rest extends WP_REST_Controller {
 			return new WP_Error(
 				'cdn_mode_forced_off',
 				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
+		}
+
+		if ( Context::ROCKETCDN_PAID_TYPE === $mode && ! $this->subscription_controller->is_paid() ) {
+			return new WP_Error(
+				'cdn_mode_paid_subscription_required',
+				__( 'A RocketCDN paid subscription is required to activate this mode.', 'rocket' ),
 				[ 'status' => 403 ]
 			);
 		}

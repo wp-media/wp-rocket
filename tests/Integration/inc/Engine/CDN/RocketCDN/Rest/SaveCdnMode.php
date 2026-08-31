@@ -42,14 +42,13 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		$this->options_data = $container->get( 'options' );
 		$this->options_api  = $container->get( 'options_api' );
 
-		// save_cdn_mode() forces RocketCDN (free or paid) off unless there's an active
-		// subscription and the CDN isn't paused; simulate both so activation isn't
-		// rejected (matches the pattern used in AddPage.php).
+		// Default transient: active free subscription (running, no plan_type=paid).
+		// Tests that need a paid subscription override this via config['subscription'].
 		set_transient(
 			'rocketcdn_status',
 			[
 				'subscription_status' => 'running',
-				'cdn_url'              => 'example1.org',
+				'cdn_url'             => 'example1.org',
 			],
 			HOUR_IN_SECONDS
 		);
@@ -98,6 +97,11 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 	public function testShouldDoAsExpected( array $config, array $expected ) {
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
+		}
+
+		// Per-case subscription override (e.g. paid plan requires plan_type=paid).
+		if ( ! empty( $config['subscription'] ) ) {
+			set_transient( 'rocketcdn_status', $config['subscription'], HOUR_IN_SECONDS );
 		}
 
 		$response = $this->doRestRequest(

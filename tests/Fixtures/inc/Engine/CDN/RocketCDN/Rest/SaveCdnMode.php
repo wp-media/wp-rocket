@@ -14,13 +14,28 @@ return [
 	],
 	'shouldSaveRocketcdnPaidMode'             => [
 		'config'   => [
-			'params'          => [ 'mode' => 'rocketcdn_paid' ],
+			'params'       => [ 'mode' => 'rocketcdn_paid' ],
 			'unauthenticated' => false,
+			'subscription' => [
+				'subscription_status' => 'running',
+				'plan_type'           => 'paid',
+				'cdn_url'             => 'example1.org',
+			],
 		],
 		'expected' => [
 			'cdn_state_response' => 'rocketcdn',
 			'cdn'                => 1,
 			'cdn_type'           => 'rocketcdn',
+		],
+	],
+	'shouldRejectPaidModeWhenSubscriptionIsNotPaid' => [
+		'config'   => [
+			'params'          => [ 'mode' => 'rocketcdn_paid' ],
+			'unauthenticated' => false,
+		],
+		'expected' => [
+			'code'   => 'cdn_mode_paid_subscription_required',
+			'status' => 403,
 		],
 	],
 	'shouldSaveByocdnMode'                    => [
