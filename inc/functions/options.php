@@ -31,7 +31,15 @@ function rocket_export_options() {
 	$site_name = get_rocket_parse_url( get_home_url() );
 	$site_name = $site_name['host'] . $site_name['path'];
 	$filename  = sprintf( 'wp-rocket-settings-%s-%s-%s.json', $site_name, date( 'Y-m-d' ), uniqid() ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
-	return [ $filename, wp_json_encode( get_option( WP_ROCKET_SLUG ), JSON_PRETTY_PRINT ) ]; // do not use get_rocket_option() here.
+	$settings  = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
+
+	if ( ! is_array( $settings ) ) {
+		$settings = [];
+	}
+
+	$settings['analytics_enabled'] = (int) get_option( 'rocket_mixpanel_optin', 0 );
+
+	return [ $filename, wp_json_encode( $settings, JSON_PRETTY_PRINT ) ];
 }
 
 /**
