@@ -1,14 +1,14 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 use WPDieException;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_manual_retry_pro_detection
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber::handle_manual_retry_pro_detection
  *
  * @group RocketCDN
  * @group CDN

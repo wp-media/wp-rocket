@@ -1,12 +1,12 @@
 <?php
 declare( strict_types=1 );
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::scheduled_auto_detect_pro_subscription
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\FrontendSubscriber::scheduled_auto_detect_pro_subscription
  *
  * @group RocketCDN
  * @group CDN
