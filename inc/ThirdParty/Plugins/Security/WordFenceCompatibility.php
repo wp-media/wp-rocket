@@ -2,6 +2,7 @@
 namespace WP_Rocket\ThirdParty\Plugins\Security;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 use wordfence;
 use wfConfig;
 
@@ -10,7 +11,7 @@ use wfConfig;
  *
  * @since 3.10
  */
-class WordFenceCompatibility implements Subscriber_Interface {
+class WordFenceCompatibility implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Whitelisted_IPS.
@@ -25,6 +26,15 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	private $old_rucss_ip = '135.125.83.227';
 
 	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'WORDFENCE_VERSION' );
+	}
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.10
@@ -32,10 +42,6 @@ class WordFenceCompatibility implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'WORDFENCE_VERSION' ) ) {
-			return [];
-		}
-
 		return [
 			'init'                => [ 'whitelist_wordfence_firewall_ips', 11 ],
 			'rocket_deactivation' => 'pop_ip_from_whitelist',

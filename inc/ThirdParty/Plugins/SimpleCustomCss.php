@@ -3,6 +3,7 @@ namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for compatibility with Simple Custom CSS plugin.
@@ -10,7 +11,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.6
  * @author Soponar Cristina
  */
-class SimpleCustomCss implements Subscriber_Interface {
+class SimpleCustomCss implements Subscriber_Interface, PluginCompatibilityInterface {
 	use CSSTrait;
 
 	const FILENAME = 'sccss.css';
@@ -49,6 +50,15 @@ class SimpleCustomCss implements Subscriber_Interface {
 		$this->file_url           = $cache_busting_url . $blog_id . '/' . self::FILENAME;
 	}
 	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'SCCSS_FILE' );
+	}
+
+	/**
 	 * Subscribed events for AMP.
 	 *
 	 * @since  3.5.3
@@ -56,10 +66,6 @@ class SimpleCustomCss implements Subscriber_Interface {
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'SCCSS_FILE' ) ) {
-			return [];
-		}
-
 		return [
 			'wp_enqueue_scripts'           => [ 'cache_sccss', 98 ],
 			'update_option_sccss_settings' => 'update_cache_file',
