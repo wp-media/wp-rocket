@@ -37,6 +37,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_cdn_driver_sections'              => [
+				[ 'add_applied_cdn_state_to_cdn_section' ],
 				[ 'add_rocketcdn_paid_section' ],
 				[ 'add_rocketcdn_free_section' ],
 				[ 'add_exclude_cdn_section' ],
@@ -60,6 +61,19 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'admin_init'                              => 'maybe_auto_create_rocketcdn_free_subscription',
 		];
+	}
+
+	/**
+	 * Adds the applied CDN state to the "Your CDN" (BYOCDN) section, when present.
+	 *
+	 * @since 3.23.3
+	 *
+	 * @param array $sections CDN driver sections.
+	 *
+	 * @return array
+	 */
+	public function add_applied_cdn_state_to_cdn_section( array $sections ): array {
+		return $this->controller->add_applied_cdn_state_to_cdn_section( $sections );
 	}
 
 	/**

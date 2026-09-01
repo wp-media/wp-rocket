@@ -18,6 +18,7 @@ class Test_AddPage extends RESTfulTestCase {
 	private $admin_id;
 	private $post_id;
 	private $post_url;
+	private $cdn_state_override;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -72,10 +73,23 @@ class Test_AddPage extends RESTfulTestCase {
 
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
+
+		if ( null !== $this->cdn_state_override ) {
+			remove_filter( 'pre_get_rocket_option_cdn_state', $this->cdn_state_override );
+			$this->cdn_state_override = null;
+		}
+
 		wp_set_current_user( 0 );
 		wp_delete_post( $this->post_id, true );
 		self::truncateRocketCDNTable();
 		delete_transient( 'rocketcdn_status' );
+
+		// Reset any CDN mode an AC5 test case's apply_cdn_mode() call persisted,
+		// so it doesn't bleed into other tests.
+		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
+		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
+
 		parent::tear_down();
 	}
 
@@ -132,6 +146,22 @@ class Test_AddPage extends RESTfulTestCase {
 			wp_cache_flush();
 		}
 
+		// Pre-set the active CDN mode if configured (AC5: activation-prompt scenarios).
+		// Options_Data is read once per-request from whatever the option row held
+		// when the container built it, so directly set()-ing the option after the
+		// fact isn't reliably seen by the Rest controller's own injected instance —
+		// use the same live pre_get_rocket_option_* filter override technique the
+		// 'cdn' key already relies on elsewhere in this test suite.
+		if ( isset( $config['initial_cdn_state'] ) ) {
+			$initial_cdn_state = $config['initial_cdn_state'];
+
+			$this->cdn_state_override = function () use ( $initial_cdn_state ) {
+				return $initial_cdn_state;
+			};
+
+			add_filter( 'pre_get_rocket_option_cdn_state', $this->cdn_state_override );
+		}
+
 		// Set unauthenticated if configured.
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
@@ -145,7 +175,13 @@ class Test_AddPage extends RESTfulTestCase {
 			$url = $config['url'];
 		}
 
-		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pages', [ 'url' => $url ] );
+		$params = [ 'url' => $url ];
+
+		if ( isset( $config['confirm_activation'] ) ) {
+			$params['confirm_activation'] = $config['confirm_activation'];
+		}
+
+		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pages', $params );
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
@@ -163,6 +199,14 @@ class Test_AddPage extends RESTfulTestCase {
 					break;
 				case 'status':
 					$this->assertSame( $value, $response['data']['status'] );
+					break;
+				case 'free_activated':
+					$this->assertSame( $value, $response['free_activated'] );
+					break;
+				case 'cdn_state':
+					$options_api = apply_filters( 'rocket_container', null )->get( 'options_api' );
+					$settings    = $options_api->get( 'settings', [] );
+					$this->assertSame( $value, $settings['cdn_state'] ?? null );
 					break;
 			}
 		}

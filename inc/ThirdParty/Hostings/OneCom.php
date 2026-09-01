@@ -32,7 +32,7 @@ class OneCom implements Subscriber_Interface {
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 			'rocket_display_rocketcdn_cta'            => 'return_false',
 			'rocket_display_rocketcdn_status'         => 'return_false',
-			'rocket_cdn_driver_sections'              => [ 'disable_cdn_pause_option', PHP_INT_MAX ],
+			'rocket_cdn_driver_sections'              => [ 'disable_cdn_mode_toggle', PHP_INT_MAX ],
 			'rocket_cdn_tab_badge'                    => 'return_empty_string',
 			'rocket_show_rocketcdn_banner'            => 'return_false',
 			'rocket_hide_rocketcdn_notices'           => 'return_true',
@@ -97,12 +97,17 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable CDN pause option.
+	 * Disables the CDN mode toggle for all CDN driver sections.
+	 *
+	 * When One.com's own CDN handling is active, WP Rocket's CDN mode toggle
+	 * (BYOCDN, RocketCDN Free, RocketCDN Paid) must not be switchable — One.com
+	 * manages CDN delivery itself, so letting a user flip WP Rocket's own CDN
+	 * modes on top of it would conflict.
 	 *
 	 * @param array $sections CDN sections data.
 	 * @return array
 	 */
-	public function disable_cdn_pause_option( array $sections ): array {
+	public function disable_cdn_mode_toggle( array $sections ): array {
 		if ( ! $this->is_oc_cdn_enabled() ) {
 			return $sections;
 		}
@@ -120,7 +125,7 @@ class OneCom implements Subscriber_Interface {
 				continue;
 			}
 
-			$sections[ $cdn_section_key ]['status_indicator']['disable_pause_btn'] = true;
+			$sections[ $cdn_section_key ]['is_forced_off'] = true;
 		}
 
 		return $sections;
