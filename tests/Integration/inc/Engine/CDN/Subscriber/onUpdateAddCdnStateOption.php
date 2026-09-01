@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
@@ -27,10 +28,16 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 	 */
 	private $original_settings;
 
+	/**
+	 * @var Options
+	 */
+	private $options;
+
 	public function set_up() {
 		parent::set_up();
 
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+		$this->options          = new Options( 'wp_rocket_' );
+		$this->original_settings = $this->options->get( 'settings', [] );
 	}
 
 	public function tear_down() {
@@ -43,7 +50,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		// Write original settings back without triggering reconcile cascade.
 		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
-		update_option( 'wp_rocket_settings', $this->original_settings );
+		$this->options->set( 'settings', $this->original_settings );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		parent::tear_down();
@@ -70,7 +77,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		// Write the initial DB state without triggering update_option_wp_rocket_settings
 		// callbacks, so reconcile() doesn't pre-seed cdn_state before the migration runs.
 		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
-		update_option( 'wp_rocket_settings', array_merge( $this->original_settings, $config['initial_options'] ) );
+		$this->options->set( 'settings', array_merge( $this->original_settings, $config['initial_options'] ) );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		// Count every update_option_wp_rocket_settings call triggered by wp_rocket_upgrade.
@@ -84,7 +91,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		remove_action( 'update_option_wp_rocket_settings', $counter, PHP_INT_MAX );
 
-		$final = get_option( 'wp_rocket_settings', [] );
+		$final = $this->options->get( 'settings', [] );
 
 		$this->assertSame(
 			$expected['cdn_state'],
