@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverSlice1GatedIds;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
@@ -15,23 +16,6 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  * @group  ThirdParty
  */
 class Test_GetActivePlugins extends TestCase {
-	/**
-	 * Ids gated by issue #8789 slice 1 that report inactive in this test
-	 * environment (none of their target plugins are installed/defined), so
-	 * they no longer default-active like the rest of the registry.
-	 *
-	 * @var array<string>
-	 */
-	private const SLICE_1_GATED_INACTIVE_IDS = [
-		'elementor_subscriber',
-		'beaverbuilder_subscriber',
-		'simple_custom_css',
-		'pdfembedder',
-		'wordfence_subscriber',
-		'unlimited_elements',
-		'inline_related_posts',
-	];
-
 	/**
 	 * Resets memoization before each test.
 	 *
@@ -70,7 +54,7 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->assertSame( $expected, array_keys( $registry ) );
 
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverSlice1GatedIds::IDS ) );
 
 		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
@@ -108,7 +92,7 @@ class Test_GetActivePlugins extends TestCase {
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
 		$registry            = ( new SubscriberFactory() )->get_registry();
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverSlice1GatedIds::IDS ) );
 
 		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
