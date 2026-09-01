@@ -13,10 +13,17 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
- * AC2 regression lock: on WP Rocket licence renewal, admin_init (fired for real,
- * not called directly) drives Render\Controller::maybe_auto_create_rocketcdn_free_subscription()
- * to resolve all three outcomes correctly, with no destructive write ever needed
+ * AC2 regression lock: on WP Rocket licence renewal,
+ * Render\Controller::maybe_auto_create_rocketcdn_free_subscription() - the exact
+ * method production wires to the global `admin_init` hook via Render\Subscriber -
+ * resolves all three outcomes correctly, with no destructive write ever needed
  * for the common case (RocketCDN's own subscription never stopped running).
+ *
+ * The method is invoked directly on the container's `cdn_render_controller`
+ * singleton rather than via `do_action( 'admin_init' )`, so this test doesn't
+ * cascade into every unrelated subscriber hooked on the real, global admin_init
+ * action (e.g. BerlinDB table-migration subscribers), which corrupts
+ * transactional test isolation for the rest of the suite.
  *
  * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_auto_create_rocketcdn_free_subscription
  *
@@ -69,6 +76,14 @@ class Test_AutoResumeOnLicenceRenewal extends AdminTestCase {
 	private $cdn_query;
 
 	/**
+	 * CDN Render Controller instance, from the container - the exact singleton
+	 * `admin_init` is wired to in production (see Render\Subscriber).
+	 *
+	 * @var \WP_Rocket\Engine\CDN\Render\Controller
+	 */
+	private $render_controller;
+
+	/**
 	 * Installs the RocketCDN pages table for the whole test class.
 	 *
 	 * @return void
@@ -110,8 +125,8 @@ class Test_AutoResumeOnLicenceRenewal extends AdminTestCase {
 		// 'cdn_render_controller' singleton (not a fresh `rocketcdn_subscription_controller`
 		// from the container - that key is a factory, and this test needs to assert
 		// against, and patch, the exact instance production code will use below).
-		$render_controller             = $container->get( 'cdn_render_controller' );
-		$this->subscription_controller = $this->get_private_property( $render_controller, 'subscription_controller' );
+		$this->render_controller       = $container->get( 'cdn_render_controller' );
+		$this->subscription_controller = $this->get_private_property( $this->render_controller, 'subscription_controller' );
 
 		self::truncateRocketCDNTable();
 
@@ -302,7 +317,7 @@ class Test_AutoResumeOnLicenceRenewal extends AdminTestCase {
 
 		$this->set_licence_state( false );
 
-		do_action( 'admin_init' );
+		$this->render_controller->maybe_auto_create_rocketcdn_free_subscription();
 
 		$this->assertSame( Context::ROCKETCDN_FREE_TYPE, $this->context->get_cdn_state(), 'cdn_state must resolve back to rocketcdn_free with no restore code.' );
 		$this->assertFalse( get_transient( 'rocket_cdn_subscription_creation_in_progress' ), 'create_subscription() must never be invoked in this scenario.' );
@@ -336,7 +351,7 @@ class Test_AutoResumeOnLicenceRenewal extends AdminTestCase {
 		$this->set_licence_state( false );
 		$this->force_create_api_client_free_url( 'https://rocketcdn.me/api/website/create-free/' );
 
-		do_action( 'admin_init' );
+		$this->render_controller->maybe_auto_create_rocketcdn_free_subscription();
 
 		$this->assertNotFalse( get_transient( 'rocket_cdn_subscription_creation_in_progress' ), 'create_subscription() must have been invoked.' );
 		$this->assertSame( 'newtoken12345678901234567890123456789', get_option( 'rocketcdn_user_token' ) );
@@ -356,7 +371,7 @@ class Test_AutoResumeOnLicenceRenewal extends AdminTestCase {
 
 		$this->set_licence_state( false );
 
-		do_action( 'admin_init' );
+		$this->render_controller->maybe_auto_create_rocketcdn_free_subscription();
 
 		$this->assertFalse( get_transient( 'rocket_cdn_subscription_creation_in_progress' ), 'create_subscription() must not be invoked when there are no pages to re-create.' );
 		$this->assertSame( '', (string) get_option( 'rocketcdn_user_token', '' ) );
