@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  WPCache
  */
-class Test_FindWpConfigPath extends FileSystemTestCase {
+class Test_FindWpConfigPath extends FilesystemTestCase {
     protected $path_to_test_data = '/inc/Engine/Cache/WPCache/findWpconfigPath.php';
 
 	/**
