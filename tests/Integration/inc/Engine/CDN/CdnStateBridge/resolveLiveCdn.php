@@ -17,6 +17,13 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class Test_ResolveLiveCdn extends AdminTestCase {
 	/**
+	 * WP Options API instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
 	 * Settings present before this test, restored in tear_down.
 	 *
 	 * @var array
@@ -31,7 +38,13 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+		// Explicitly pin admin context rather than depending on ambient screen state left
+		// over from whichever test ran previously - Subscriber::apply_pause_on_rocketcdn_only()
+		// (also hooked on this same 'cdn' read path) behaves differently in admin vs. front end.
+		set_current_screen( 'settings_page_wprocket' );
+
+		$this->options_api       = new Options( 'wp_rocket_' );
+		$this->original_settings = $this->options_api->get( 'settings', [] );
 	}
 
 	/**
@@ -40,11 +53,11 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 	 * @return void
 	 */
 	public function tear_down() {
-		update_option( 'wp_rocket_settings', $this->original_settings );
+		$this->options_api->set( 'settings', $this->original_settings );
 		delete_transient( 'rocketcdn_status' );
-		delete_option( 'rocketcdn_user_token' );
 		remove_all_filters( 'pre_get_rocket_option_cdn' );
 		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
+		set_current_screen( 'front' );
 
 		parent::tear_down();
 	}
@@ -73,18 +86,17 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 			}
 		);
 
-		$settings        = get_option( 'wp_rocket_settings', [] );
+		$settings        = $this->options_api->get( 'settings', [] );
 		$settings['cdn'] = 0;
-		update_option( 'wp_rocket_settings', $settings );
+		$this->options_api->set( 'settings', $settings );
 
 		// Simulates a class already holding its own Options_Data snapshot from before
 		// CDNOptionsManager::enable() runs later in the same request.
-		$early_reader = new Options_Data( ( new Options( 'wp_rocket_' ) )->get( 'settings', [] ) );
+		$early_reader = new Options_Data( $this->options_api->get( 'settings', [] ) );
 
 		$this->assertSame( 0, $early_reader->get( 'cdn' ), 'Sanity check on the pre-enable stored value.' );
 
-		$options_api = new Options( 'wp_rocket_' );
-		$cdn_options = new CDNOptionsManager( $options_api, new Options_Data( $options_api->get( 'settings', [] ) ) );
+		$cdn_options = new CDNOptionsManager( $this->options_api, new Options_Data( $this->options_api->get( 'settings', [] ) ) );
 
 		$cdn_options->enable( false );
 
@@ -93,5 +105,33 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 		$cdn_options->disable();
 
 		$this->assertSame( 0, $early_reader->get( 'cdn' ), 'Same for disable().' );
+	}
+
+	/**
+	 * Resolve_live_cdn() always returns a non-null value, which short-circuits
+	 * Options_Data::get() before it would normally apply the get_rocket_option_cdn
+	 * post-filter to whatever it found in its internal array. Subscriber::apply_pause_on_rocketcdn_only()
+	 * is registered on that exact post-filter and must still run against the live value -
+	 * proves resolve_live_cdn() re-applies it explicitly instead of silently bypassing it.
+	 */
+	public function testShouldStillApplyGetRocketOptionCdnPostFilterOnTheFrontEnd() {
+		// apply_pause_on_rocketcdn_only() only overrides on the front end (its own
+		// is_admin() guard is a no-op pass-through in admin context).
+		set_current_screen( 'front' );
+
+		add_filter(
+			'pre_get_rocket_option_cdn_type',
+			function () {
+				return 'byocdn';
+			}
+		);
+
+		$settings        = $this->options_api->get( 'settings', [] );
+		$settings['cdn'] = 0;
+		$this->options_api->set( 'settings', $settings );
+
+		// apply_pause_on_rocketcdn_only() forces 'cdn' truthy on the front end whenever the
+		// driver isn't rocketcdn, regardless of the stored value.
+		$this->assertTrue( get_rocket_option( 'cdn' ) );
 	}
 }

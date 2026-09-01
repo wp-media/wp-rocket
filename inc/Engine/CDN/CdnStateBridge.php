@@ -139,6 +139,12 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * every 'cdn' read live instead, the same way pre_get_rocket_option_cdn_state already
 	 * does for cdn_state.
 	 *
+	 * Always returning a non-null value here short-circuits Options_Data::get() before it
+	 * ever reaches its own get_rocket_option_cdn post-filter application - which would
+	 * silently stop Subscriber::apply_pause_on_rocketcdn_only() (forces 'cdn' on for a
+	 * BYOCDN driver on the front end) from ever running. Re-apply that same post-filter
+	 * here so it still fires against the live value instead of being bypassed.
+	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
@@ -146,8 +152,9 @@ class CdnStateBridge implements Subscriber_Interface {
 	 */
 	public function resolve_live_cdn( $value, $default ) {
 		$settings = $this->options_api->get( 'settings', [] );
+		$live     = $settings['cdn'] ?? $default;
 
-		return $settings['cdn'] ?? $default;
+		return wpm_apply_filters_typed( 'boolean|integer|string', 'get_rocket_option_cdn', $live, $default );
 	}
 
 	/**
