@@ -9,7 +9,8 @@ use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Mirrors the legacy `cdn` / `cdn_type` fields into `cdn_state` whenever they change.
+ * Mirrors the legacy `cdn` / `cdn_type` fields into `cdn_state` whenever they change, and
+ * resolves `cdn` itself live (see resolve_live_cdn()).
  */
 class CdnStateBridge implements Subscriber_Interface {
 	/**
@@ -44,6 +45,7 @@ class CdnStateBridge implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
+			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', 10, 2 ],
 			'wp_rocket_upgrade'                => 'backfill_cdn_state_on_upgrade',
 		];
 	}
@@ -122,6 +124,30 @@ class CdnStateBridge implements Subscriber_Interface {
 				'cdn_type' => get_rocket_option( 'cdn_type' ),
 			]
 		);
+	}
+
+	/**
+	 * Resolves 'cdn' live from $this->options_api, instead of trusting whatever
+	 * Options_Data snapshot the caller's instance happens to hold.
+	 *
+	 * The 'options' container service is registered with add(), not addShared() (see
+	 * class-options.php), so every class gets its own independently-resolved Options_Data
+	 * instance, frozen with whatever 'settings' looked like when that instance was built.
+	 * A write made through one instance (e.g. CDNOptionsManager::enable()/disable()) is
+	 * therefore never visible to another class's instance for the rest of the request -
+	 * there is no single shared object a write could propagate through. This filter makes
+	 * every 'cdn' read live instead, the same way pre_get_rocket_option_cdn_state already
+	 * does for cdn_state.
+	 *
+	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
+	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
+	 *
+	 * @return mixed
+	 */
+	public function resolve_live_cdn( $value, $default ) {
+		$settings = $this->options_api->get( 'settings', [] );
+
+		return $settings['cdn'] ?? $default;
 	}
 
 	/**
