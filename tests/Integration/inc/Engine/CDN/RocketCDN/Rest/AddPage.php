@@ -90,7 +90,27 @@ class Test_AddPage extends RESTfulTestCase {
 		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
 		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
 
+		// Reset the shared User singleton so a banned-reseller scenario doesn't
+		// leak into the next test case.
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( new \stdClass() );
+
 		parent::tear_down();
+	}
+
+	/**
+	 * Configures the shared User singleton from fixture config, e.g.:
+	 * 'user' => [ 'is_reseller' => true, 'is_revoked' => true, 'ban_reason' => 'BANNED_WEBSITE' ].
+	 */
+	private function set_user_license( array $config ): void {
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = ! empty( $config['is_revoked'] );
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
+
+		$user_data              = new \stdClass();
+		$user_data->licence     = $licence;
+		$user_data->is_reseller = ! empty( $config['is_reseller'] );
+
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( $user_data );
 	}
 
 	public function mock_http_response( $pre, $args, $url ) {
@@ -165,6 +185,11 @@ class Test_AddPage extends RESTfulTestCase {
 		// Set unauthenticated if configured.
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
+		}
+
+		// Per-case licence/reseller override (e.g. a banned reseller licence).
+		if ( ! empty( $config['user'] ) ) {
+			$this->set_user_license( $config['user'] );
 		}
 
 		if ( 'post_url' === $config['url'] ) {

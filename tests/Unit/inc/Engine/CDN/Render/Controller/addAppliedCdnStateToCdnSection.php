@@ -127,6 +127,8 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 
 		$this->assertSame( Context::BYOCDN_TYPE, $sections['cdn_section']['applied_cdn_state'] );
 		$this->assertTrue( $sections['cdn_section']['is_active'] );
+		$this->assertFalse( $sections['cdn_section']['is_forced_off'] );
+		$this->assertSame( '', $sections['cdn_section']['forced_off_tooltip'] );
 	}
 
 	/**

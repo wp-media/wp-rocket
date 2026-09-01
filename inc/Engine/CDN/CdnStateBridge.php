@@ -14,6 +14,23 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class CdnStateBridge implements Subscriber_Interface {
 	/**
+	 * Priority at which {@see resolve_live_cdn()} runs on `pre_get_rocket_option_cdn`.
+	 *
+	 * This callback discards whatever `$value` it receives (see its docblock) and acts
+	 * as the seeder for the entire live `cdn` resolution chain, so it must run before
+	 * any callback that expects to observe or override its result - specifically
+	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription()}
+	 * and {@see \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option()}, both
+	 * registered at the default priority 10. Pinning this to an earlier priority makes
+	 * that ordering explicit instead of relying on `inc/Plugin.php`'s subscriber
+	 * registration array order (`cdn_state_bridge` listed before `cdn_render_subscriber`),
+	 * which today is the only reason the licence-expiry force-off survives.
+	 *
+	 * @var int
+	 */
+	private const CDN_SEEDER_PRIORITY = 5;
+
+	/**
 	 * Subscription controller, used to resolve RocketCDN free vs. paid and cancellation state.
 	 *
 	 * @var SubscriptionController
@@ -45,7 +62,7 @@ class CdnStateBridge implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
-			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', 10, 2 ],
+			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', self::CDN_SEEDER_PRIORITY, 2 ],
 			'wp_rocket_upgrade'                => 'backfill_cdn_state_on_upgrade',
 		];
 	}
@@ -144,6 +161,14 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * silently stop Subscriber::apply_pause_on_rocketcdn_only() (forces 'cdn' on for a
 	 * BYOCDN driver on the front end) from ever running. Re-apply that same post-filter
 	 * here so it still fires against the live value instead of being bypassed.
+	 *
+	 * This callback intentionally ignores its incoming `$value` argument - it is the
+	 * seeder for the whole `cdn` resolution chain, not an overrider, so it is registered
+	 * at {@see self::CDN_SEEDER_PRIORITY} (an explicit early priority) rather than the
+	 * default 10. Any callback that needs to override the live value it seeds (e.g.
+	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription()})
+	 * must run at a later priority so it observes this method's return value as its own
+	 * `$value` argument.
 	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
