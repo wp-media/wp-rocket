@@ -401,10 +401,13 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * user choice this callback must not override, especially since a BYOCDN site can
 	 * still carry a leftover RocketCDN token from a past trial.
 	 *
-	 * The status_code check matters: APIClient::get_remote_subscription_data()'s own
-	 * error/fallback default (network failure, non-200, empty body, decode failure) also
-	 * carries a non-empty plan_type ('free') - without checking status_code === 200, a
-	 * transient API outage would be indistinguishable from a genuine free-tier response.
+	 * The status_code and success checks matter: APIClient::get_remote_subscription_data()'s
+	 * own error/fallback default (network failure, non-200, empty body, decode failure, or
+	 * an explicit success:false from the API) also carries a non-empty plan_type ('free').
+	 * Some of those fallbacks - empty body, undecodable JSON, success:false - still carry a
+	 * genuine status_code of 200 because they're detected after the transport-level status
+	 * check already passed, so status_code === 200 alone can't tell a confirmed free-tier
+	 * response apart from a malformed-but-200 one; success must be checked too.
 	 *
 	 * Restricted to admin requests: this subscriber is currently admin-only, but the
 	 * transient is also read from front-end requests (e.g. FrontendSubscriber's CDN
@@ -420,7 +423,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return $value;
 		}
 
-		if ( ! is_array( $value ) || empty( $value['plan_type'] ) || 200 !== ( $value['status_code'] ?? null ) ) {
+		if ( ! is_array( $value ) || empty( $value['plan_type'] ) || 200 !== ( $value['status_code'] ?? null ) || empty( $value['success'] ) ) {
 			return $value;
 		}
 

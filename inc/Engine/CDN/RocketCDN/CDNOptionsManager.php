@@ -44,6 +44,13 @@ class CDNOptionsManager {
 	 * reading subscription data, which can trigger a set_cdn_state() write, before calling
 	 * this method later in the same request).
 	 *
+	 * Also mirrors the new value onto $this->options: that instance is shared (via the
+	 * container) with other classes that read 'cdn' straight off it (CDN.php,
+	 * Render/Controller.php, RocketCDN/Rest.php, Subscriber.php, Support/Meta.php), and
+	 * unlike cdn_state there's no pre_get_rocket_option_cdn filter recomputing it live -
+	 * without this, those reads would keep returning the pre-enable value for the rest of
+	 * the request.
+	 *
 	 * @since 3.5
 	 *
 	 * @param bool $clear_cache Clear website whole cache.
@@ -54,6 +61,7 @@ class CDNOptionsManager {
 		$settings['cdn'] = 1;
 
 		$this->options_api->set( 'settings', $settings );
+		$this->options->set( 'cdn', 1 );
 
 		delete_transient( 'rocketcdn_status' );
 		if ( $clear_cache ) {
@@ -101,7 +109,8 @@ class CDNOptionsManager {
 	 * Disable CDN option, remove CDN URL & user token, delete RocketCDN status transient
 	 *
 	 * Reads the current settings via $this->options_api rather than $this->options - see
-	 * the note on enable()/set_cdn_state() above.
+	 * the note on enable()/set_cdn_state() above. Also mirrors the value onto $this->options
+	 * for the same reason as enable().
 	 *
 	 * @since 3.5
 	 *
@@ -112,6 +121,7 @@ class CDNOptionsManager {
 		$settings['cdn'] = 0;
 
 		$this->options_api->set( 'settings', $settings );
+		$this->options->set( 'cdn', 0 );
 
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
