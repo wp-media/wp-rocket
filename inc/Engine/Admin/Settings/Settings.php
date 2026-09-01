@@ -347,8 +347,7 @@ class Settings {
 		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
 		$input['heartbeat_editor_behavior'] = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
 
-		// Option : CDN.
-		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
+		$input['cdn'] = (int) $this->options->get( 'cdn', 0 );
 
 		// Option : CDN Cnames.
 		if ( isset( $input['cdn_cnames'] ) ) {

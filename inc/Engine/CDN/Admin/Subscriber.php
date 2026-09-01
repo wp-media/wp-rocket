@@ -3,10 +3,27 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\Admin;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Context;
 
 class Subscriber implements Subscriber_Interface {
+	/**
+	 * WP Rocket options.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param Options_Data $options WP Rocket options.
+	 */
+	public function __construct( Options_Data $options ) {
+		$this->options = $options;
+	}
+
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *
@@ -55,40 +72,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Sanitize the CDN type option.
 	 *
+	 * Ensure a form save doesn't overwrite toggle REST API.
+	 *
 	 * @param array $input Input array.
 	 *
 	 * @return array
 	 */
 	public function sanitize_cdn_type_option( array $input ) {
-		// Set default value if empty.
-		if ( empty( $input['cdn_type'] ) ) {
-			$input['cdn_type'] = Context::ROCKETCDN_TYPE;
-		}
-
-		$allowed_drivers = [ Context::ROCKETCDN_TYPE, Context::BYOCDN_TYPE ];
-
-		// Validate that the value is one of the allowed drivers.
-		if ( ! in_array( $input['cdn_type'], $allowed_drivers, true ) ) {
-			$input['cdn_type'] = Context::ROCKETCDN_TYPE;
-		}
-
-		// Sanitize the value.
-		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
-
-		if ( isset( $input['cdn_state'] ) ) {
-			$allowed_states = [
-				Context::CDN_STATE_NOTHING,
-				Context::ROCKETCDN_FREE_TYPE,
-				Context::ROCKETCDN_PAID_TYPE,
-				Context::BYOCDN_TYPE,
-			];
-
-			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
-				$input['cdn_state'] = Context::CDN_STATE_NOTHING;
-			}
-
-			$input['cdn_state'] = sanitize_text_field( $input['cdn_state'] );
-		}
+		$input['cdn_type']  = (string) $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE );
+		$input['cdn_state'] = (string) $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
 
 		return $input;
 	}
