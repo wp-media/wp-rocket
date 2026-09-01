@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PluginResolver;
 
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverSlice1GatedIds;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -32,23 +33,6 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	private const EXPECTED_PLUGIN_SUBSCRIBERS = 38;
 
 	/**
-	 * Ids gated by issue #8789 slice 1 that report inactive in this test
-	 * environment (none of their target plugins are installed), so they no
-	 * longer default-active like the rest of the registry.
-	 *
-	 * @var array<string>
-	 */
-	private const SLICE_1_GATED_INACTIVE_IDS = [
-		'elementor_subscriber',
-		'beaverbuilder_subscriber',
-		'simple_custom_css',
-		'pdfembedder',
-		'wordfence_subscriber',
-		'unlimited_elements',
-		'inline_related_posts',
-	];
-
-	/**
 	 * Phase 0 defaults every registry id active; issue #8789 slice 1 opts 7 ids
 	 * into real detection, so the resolver's set is the full registry minus
 	 * those 7 (their target plugins are absent here), and the container must
@@ -62,7 +46,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$active_ids = PluginResolver::get_active_plugins( true );
 		$registry   = ( new SubscriberFactory() )->get_registry();
 
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverSlice1GatedIds::IDS ) );
 
 		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slice 1 must resolve to the 43-id registry minus the 7 gated-inactive ids.' );
 		$this->assertCount( 36, $active_ids );
