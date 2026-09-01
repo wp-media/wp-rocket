@@ -7,7 +7,7 @@
 
 	document.addEventListener( 'DOMContentLoaded', () => {
 		initCdnDriverTabs();
-		initCdnPauseToggle();
+		initCdnModeToggle();
 		initAddHomepage();
 		initAddPage();
 		initDeletePage();
@@ -224,70 +224,214 @@
 	}
 
 	/**
-	 * Initializes CDN driver tab switching behavior.
+	 * Updates the `wpr-cdn-active-indicator` class to reflect which CDN driver header
+	 * and tab are active.
 	 *
-	 * Toggles visibility of CDN driver sections (built-in-cdn / your-own-cdn)
-	 * based on which tab is clicked.
+	 * @param {Element|null} activeToggle Toggle whose parent header and matching tab should
+	 *                                    receive the class, or null to clear all.
 	 */
-	function initCdnDriverTabs() {
-		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
-		const driverSections = document.querySelectorAll( '.rocketcdn, .your-own-cdn' );
+	function updateCdnActiveIndicator( activeToggle ) {
+		document.querySelectorAll( '.wpr-cdn-active-indicator' ).forEach( ( el ) => {
+			el.classList.remove( 'wpr-cdn-active-indicator' );
+		} );
 
-		if ( ! tabs.length ) {
+		if ( activeToggle ) {
+			const header = activeToggle.closest( '.wpr-optionHeader' );
+			if ( header ) {
+				header.classList.add( 'wpr-cdn-active-indicator' );
+			}
+
+			const mode = activeToggle.getAttribute( 'data-cdn-mode' );
+			const tabDriver = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+			const tab = document.querySelector( `.wpr-cdn-tabs__tab[data-cdn-driver="${ tabDriver }"]` );
+
+			if ( tab ) {
+				tab.classList.add( 'wpr-cdn-active-indicator' );
+			}
+		}
+	}
+
+	/**
+	 * Updates the toggle checkboxes and active indicators to reflect RocketCDN Free
+	 * having just been activated server-side (auto-activation from the "nothing active"
+	 * state, or after a confirmed activation prompt), without a full page reload.
+	 */
+	function activateFreeModeUI() {
+		const freeToggle = document.querySelector( '.wpr-cdn-mode-toggle__input[data-cdn-mode="rocketcdn_free"]' );
+
+		if ( ! freeToggle ) {
 			return;
 		}
 
-		/**
-		 * Toggles visibility of CDN driver sections using the hidden utility class.
-		 *
-		 * @param {string} activeDriver Active CDN driver slug.
-		 */
-		function toggleDriverSections( activeDriver ) {
-			driverSections.forEach( ( section ) => {
-				section.classList.toggle( 'wpr-isHidden', ! section.classList.contains( activeDriver ) );
-			} );
-		}
+		document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
+			other.checked = ( other === freeToggle );
+		} );
 
-		/**
-		 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
-		 * The label is read from the active tab's data-title attribute, preserving
-		 * the original capitalisation set by the PHP translation.
-		 *
-		 * @param {HTMLElement} activeTab The currently active tab element.
-		 */
-		function updateDriverLabel( activeTab ) {
-			const label = activeTab.getAttribute( 'data-title' );
+		updateCdnActiveIndicator( freeToggle );
+		toggleDriverSections( 'rocketcdn' );
+		setActiveTab( 'rocketcdn' );
+		notifyCdnStateChange();
+	}
 
-			if ( ! label ) {
+	/**
+	 * Initializes the CDN mode toggle checkboxes.
+	 *
+	 * Checking activates that mode; unchecking leaves all modes inactive ('nothing').
+	 * Only one mode can be active at a time — checking one unchecks the others.
+	 * The request fires immediately on toggle change.
+	 */
+	function initCdnModeToggle() {
+		document.addEventListener( 'change', ( event ) => {
+			const toggle = event.target.closest( '.wpr-cdn-mode-toggle__input' );
+
+			if ( ! toggle ) {
 				return;
 			}
 
-			document.querySelectorAll( '.rocketcdn-driver-js' ).forEach( ( span ) => {
-				// Preserve the original text-transform (uppercase spans stay uppercase via CSS).
-				span.textContent = label;
-			} );
-		}
+			const mode = toggle.getAttribute( 'data-cdn-mode' );
 
-		/**
-		 * Updates the "Need Help?" link href for the CDN Exclusions section
-		 * to point to the correct docs article for the active driver.
-		 *
-		 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
-		 */
-		function updateExcludeCdnHelpUrl( driver ) {
-			const link = document.querySelector( '.exclude-cdn-help-js' );
-			if ( ! link ) {
+			if ( ! mode ) {
 				return;
 			}
-			const isRocketCdn = 'rocketcdn' === driver;
-			const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
-			const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
-			if ( url ) {
-				link.href = url;
+
+			// Capture the previously active toggle for rollback on failure.
+			// Read from wpr-cdn-active-indicator (maintained by PHP + this function) rather than
+			// :checked, because the change event fires after the checkbox state has already flipped.
+			const previouslyActiveHeader = document.querySelector( '.wpr-optionHeader.wpr-cdn-active-indicator' );
+			const previouslyActive = previouslyActiveHeader
+				? previouslyActiveHeader.querySelector( '.wpr-cdn-mode-toggle__input' )
+				: null;
+
+			// mode sent to the server: the toggle's mode when checking, 'nothing' when unchecking.
+			const requestedMode = toggle.checked ? mode : 'nothing';
+			const sectionDriver = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+
+			if ( toggle.checked ) {
+				// Uncheck all other mode toggles (mutually exclusive).
+				document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
+					if ( other !== toggle ) {
+						other.checked = false;
+					}
+				} );
+				toggleDriverSections( sectionDriver );
+				setActiveTab( sectionDriver );
 			}
-			if ( id ) {
-				link.dataset.beaconId = id;
-			}
+
+			// Optimistically update the active indicator before the request completes.
+			updateCdnActiveIndicator( toggle.checked ? toggle : null );
+
+			notifyCdnStateChange();
+
+			window.wp.apiFetch( {
+				path: '/wp-rocket/v1/rocketcdn/mode',
+				method: 'POST',
+				data: { mode: requestedMode },
+			} ).then( ( response ) => {
+				updateRocketCDNElementsState(
+					'byocdn' === mode ? 'byocdn' : 'rocketcdn',
+					response.disable_rocket_cdn_elements
+				);
+			} ).catch( () => {
+				// Revert to previous state on failure.
+				toggle.checked = ! toggle.checked;
+				updateCdnActiveIndicator( previouslyActive );
+
+				if ( previouslyActive && previouslyActive !== toggle ) {
+					previouslyActive.checked = true;
+					const prevMode   = previouslyActive.getAttribute( 'data-cdn-mode' );
+					const prevDriver = 'byocdn' === prevMode ? 'your-own-cdn' : 'rocketcdn';
+					toggleDriverSections( prevDriver );
+				}
+			} );
+		} );
+	}
+
+	/**
+	 * Toggles visibility of CDN driver sections using the hidden utility class.
+	 *
+	 * @param {string} activeDriver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function toggleDriverSections( activeDriver ) {
+		document.querySelectorAll( '.rocketcdn, .your-own-cdn' ).forEach( ( section ) => {
+			section.classList.toggle( 'wpr-isHidden', ! section.classList.contains( activeDriver ) );
+		} );
+	}
+
+	/**
+	 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function updateDriverLabel( driver ) {
+		const tab = document.querySelector( `.wpr-cdn-tabs__tab[data-cdn-driver="${driver}"]` );
+
+		if ( ! tab ) {
+			return;
+		}
+
+		const label = tab.getAttribute( 'data-title' );
+
+		if ( ! label ) {
+			return;
+		}
+
+		document.querySelectorAll( '.rocketcdn-driver-js' ).forEach( ( span ) => {
+			span.textContent = label;
+		} );
+	}
+
+	/**
+	 * Updates the "Need Help?" link href for the CDN Exclusions section
+	 * to point to the correct docs article for the active driver.
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function updateExcludeCdnHelpUrl( driver ) {
+		const link = document.querySelector( '.exclude-cdn-help-js' );
+
+		if ( ! link ) {
+			return;
+		}
+
+		const isRocketCdn = 'rocketcdn' === driver;
+		const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
+		const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
+
+		if ( url ) {
+			link.href = url;
+		}
+
+		if ( id ) {
+			link.dataset.beaconId = id;
+		}
+	}
+
+	/**
+	 * Sets the active driver tab and syncs all tab-dependent UI (label spans, help URL).
+	 *
+	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
+	 */
+	function setActiveTab( driver ) {
+		document.querySelectorAll( '.wpr-cdn-tabs__tab' ).forEach( ( t ) => {
+			t.classList.toggle( 'wpr-cdn-tabs__tab--active', t.getAttribute( 'data-cdn-driver' ) === driver );
+		} );
+
+		updateDriverLabel( driver );
+		updateExcludeCdnHelpUrl( driver );
+	}
+
+	/**
+	 * Initializes CDN driver tab switching behavior.
+	 *
+	 * Tabs are navigation only — no backend call on click.
+	 * Initial driver is derived from the PHP-rendered checked toggle (cdn_state),
+	 * not from cdn_type.
+	 */
+	function initCdnDriverTabs() {
+		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
+
+		if ( ! tabs.length ) {
+			return;
 		}
 
 		tabs.forEach( ( tab ) => {
@@ -298,142 +442,54 @@
 					return;
 				}
 
-				// Update active tab.
-				tabs.forEach( ( t ) => t.classList.remove( 'wpr-cdn-tabs__tab--active' ) );
-				tab.classList.add( 'wpr-cdn-tabs__tab--active' );
-
-				// Toggle sections: show matching driver, hide others.
+				setActiveTab( driver );
 				toggleDriverSections( driver );
-
-				// Update dynamic driver label spans.
-				updateDriverLabel( tab );
-				updateExcludeCdnHelpUrl( driver );
 				notifyCdnStateChange();
-
-				// Initial value of the hidden input is set on page load by PHP based on the active driver.
-				const cdnTypeInput = document.getElementById('cdn_type');
-				let currentValue = cdnTypeInput.value;
-
-				// Persist the active driver selection.
-				const driverValue = 'your-own-cdn' === driver ? 'byocdn' : 'rocketcdn';
-
-				window.wp.apiFetch( {
-					path: '/wp-rocket/v1/rocketcdn/driver',
-					method: 'POST',
-					data: { driver: driverValue },
-				} ).then((response) => {
-					// Updated hidden input value on success.
-					cdnTypeInput.value = driverValue;
-					
-					// Update the state of RocketCDN specific elements based on the selected driver and response from the server.
-					updateRocketCDNElementsState( driverValue, response.disable_rocket_cdn_elements );
-				} ).catch(() => {
-					// Revert active tab and sections on failure.
-					cdnTypeInput.value = currentValue;
-				} );
 			} );
 		} );
 
-		// Set initial state from active tab, fallback to rocketcdn.
-		const activeTab = document.querySelector( '.wpr-cdn-tabs__tab--active' );
-		const activeDriver = activeTab ? activeTab.getAttribute( 'data-cdn-driver' ) : 'rocketcdn';
+		// Derive initial driver from whichever toggle is checked (set by PHP from cdn_state).
+		const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
+		const initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
+			? 'your-own-cdn'
+			: 'rocketcdn';
 
-		if ( activeDriver ) {
-			toggleDriverSections( activeDriver );
-			notifyCdnStateChange();
-		}
-
-		// Set initial label from the active tab.
-		if ( activeTab ) {
-			updateDriverLabel( activeTab );
-			updateExcludeCdnHelpUrl( activeDriver );
-		}
+		setActiveTab( initialDriver );
+		toggleDriverSections( initialDriver );
+		notifyCdnStateChange();
 	}
 
 	/**
-	 * Initializes the CDN pause/resume toggle buttons.
+	 * Adds a page (or the homepage) to RocketCDN free-tier delivery, transparently
+	 * handling the "RocketCDN Free is inactive" activation prompt: on a 409
+	 * confirm-required error, shows a native confirmation dialog and retries with
+	 * `confirm_activation` if the user accepts. If the server auto-activated Free
+	 * (no mode was active at all), updates the toggle UI to reflect it.
 	 *
-	 * Toggles between "PAUSE CDN" and "RESUME CDN" states,
-	 * swapping the icon via a CSS modifier class.
+	 * @param {string} path REST path to call ('/wp-rocket/v1/rocketcdn/pages' or '.../pages/homepage').
+	 * @param {Object} data Request body data (e.g. { url }).
+	 * @returns {Promise} Resolves with the REST response; rejects on final failure or cancellation.
 	 */
-	function initCdnPauseToggle() {
-		document.addEventListener( 'click', ( event ) => {
-			const button = event.target.closest( '.wpr-cdn-pause' );
-			if ( ! button ) {
-				return;
+	function requestAddPage( path, data ) {
+		return window.wp.apiFetch( {
+			path,
+			method: 'POST',
+			data,
+		} ).then( ( response ) => {
+			if ( response.free_activated ) {
+				activateFreeModeUI();
 			}
 
-			const isPaused = button.classList.toggle( 'wpr-cdn-pause--paused' );
-			button.setAttribute( 'aria-pressed', isPaused ? 'true' : 'false' );
-			button.disabled = true;
-
-			const statusDot = document.querySelector( '.rocketcdn .wpr-cdn-indicator__dot' );
-			if ( statusDot ) {
-				statusDot.className = 'wpr-icon-orange-loader';
+			return response;
+		} ).catch( ( error ) => {
+			if ( 'rocketcdn_free_inactive_confirm_required' === error.code && window.confirm( error.message ) ) {
+				return requestAddPage( path, Object.assign( {}, data, { confirm_activation: true } ) );
 			}
 
-			window.wp.apiFetch( {
-				path: '/wp-rocket/v1/rocketcdn/pause',
-				method: 'POST',
-				data: { paused: isPaused ? 0 : 1 },
-			} ).then( () => {
-				// Remove the loader.
-				if ( statusDot ) {
-					statusDot.className = 'wpr-cdn-indicator__dot';
-				}
-
-				button.disabled = false;
-
-				// Simulate real click to prepare checkbox state for form submission.
-				document.querySelector('label[for="cdn"]').click();
-
-				updateRocketCDNElementsState( 'rocketcdn', isPaused );
-
-				const statusContainer = button.closest( '.wpr-cdn-status' );
-				if ( ! statusContainer ) {
-					return;
-				}
-
-				statusContainer.classList.toggle( 'wpr-cdn-status--paused', isPaused );
-				statusContainer.classList.toggle(
-					'wpr-cdn-status--long-details',
-					isPaused && '1' === statusContainer.dataset.longDetails
-				);
-
-				const builtIn = statusContainer.closest( '.wpr-cdn-built-in' );
-				if ( builtIn ) {
-					builtIn.classList.toggle( 'wpr-cdn-built-in--paused', isPaused );
-				}
-
-				notifyCdnStateChange();
-
-				const textKey = isPaused ? 'pausedText' : 'activeText';
-
-				const statusText = statusContainer.querySelector( '.wpr-cdn-indicator__text' );
-
-				if ( statusText && statusContainer.dataset[ textKey ] ) {
-					statusText.textContent = statusContainer.dataset[ textKey ];
-				}
-
-				const detailsKey = isPaused ? 'pausedDetails' : 'activeDetails';
-				const detailsEl = statusContainer.querySelector( '.wpr-cdn-indicator__details' );
-
-				if ( detailsEl && statusContainer.dataset[ detailsKey ] ) {
-					detailsEl.textContent = statusContainer.dataset[ detailsKey ];
-				}
-			} ).catch( () => {
-				// Revert toggle on failure.
-				button.classList.toggle( 'wpr-cdn-pause--paused', ! isPaused );
-				button.setAttribute( 'aria-pressed', ! isPaused ? 'true' : 'false' );
-				button.disabled = false;
-
-				// Remove the loader.
-				if ( statusDot ) {
-					statusDot.className = 'wpr-cdn-indicator__dot';
-				}
-			} );
+			throw error;
 		} );
 	}
+
 	/**
 	 * Initializes the "ADD HOMEPAGE" button.
 	 *
@@ -455,10 +511,7 @@
 				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
 			}
 
-			window.wp.apiFetch( {
-				path: '/wp-rocket/v1/rocketcdn/pages/homepage',
-				method: 'POST',
-			} ).then( ( response ) => {
+			requestAddPage( '/wp-rocket/v1/rocketcdn/pages/homepage', {} ).then( ( response ) => {
 				button.classList.add( 'wpr-isHidden' );
 				updateRocketCtaState( response.count, response.limit );
 
@@ -541,11 +594,7 @@
 				builtIn.classList.add( 'wpr-cdn-built-in--disabled' );
 			}
 
-			window.wp.apiFetch( {
-				path: '/wp-rocket/v1/rocketcdn/pages',
-				method: 'POST',
-				data: { url },
-			} ).then( ( response ) => {
+			requestAddPage( '/wp-rocket/v1/rocketcdn/pages', { url } ).then( ( response ) => {
 				input.value = '';
 				input.disabled = false;
 				button.disabled = false;

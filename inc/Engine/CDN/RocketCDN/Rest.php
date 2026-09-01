@@ -114,7 +114,7 @@ class Rest extends WP_REST_Controller {
 					'callback'            => [ $this, 'add_page' ],
 					'permission_callback' => [ $this, 'check_permission' ],
 					'args'                => [
-						'url' => [
+						'url'                => [
 							'required'          => true,
 							'validate_callback' => function ( $param ) {
 								return ! empty( $param ) && wp_http_validate_url( esc_url_raw( $param ) );
@@ -122,6 +122,11 @@ class Rest extends WP_REST_Controller {
 							'sanitize_callback' => function ( $param ) {
 								return $this->normalize_url_path_encoding( untrailingslashit( esc_url_raw( $param ) ) );
 							},
+						],
+						'confirm_activation' => [
+							'required'          => false,
+							'default'           => false,
+							'sanitize_callback' => 'rest_sanitize_boolean',
 						],
 					],
 				],
@@ -135,6 +140,13 @@ class Rest extends WP_REST_Controller {
 				'methods'             => WP_REST_Server::CREATABLE,
 				'callback'            => [ $this, 'add_homepage' ],
 				'permission_callback' => [ $this, 'check_permission' ],
+				'args'                => [
+					'confirm_activation' => [
+						'required'          => false,
+						'default'           => false,
+						'sanitize_callback' => 'rest_sanitize_boolean',
+					],
+				],
 			]
 		);
 
@@ -159,27 +171,6 @@ class Rest extends WP_REST_Controller {
 
 		register_rest_route(
 			self::ROUTE_NAMESPACE,
-			self::ROUTE_BASE . '/pause',
-			[
-				'methods'             => WP_REST_Server::CREATABLE,
-				'callback'            => [ $this, 'save_pause_state' ],
-				'permission_callback' => [ $this, 'check_permission' ],
-				'args'                => [
-					'paused' => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							return is_bool( $param ) || in_array( (string) $param, [ '0', '1' ], true );
-						},
-						'sanitize_callback' => function ( $param ) {
-							return (int) (bool) $param;
-						},
-					],
-				],
-			]
-		);
-
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
 			self::ROUTE_BASE . '/driver',
 			[
 				'methods'             => WP_REST_Server::CREATABLE,
@@ -190,6 +181,34 @@ class Rest extends WP_REST_Controller {
 						'required'          => true,
 						'validate_callback' => function ( $param ) {
 							return in_array( $param, [ 'byocdn', 'rocketcdn' ], true );
+						},
+						'sanitize_callback' => 'sanitize_text_field',
+					],
+				],
+			]
+		);
+
+		register_rest_route(
+			self::ROUTE_NAMESPACE,
+			self::ROUTE_BASE . '/mode',
+			[
+				'methods'             => WP_REST_Server::CREATABLE,
+				'callback'            => [ $this, 'save_cdn_mode' ],
+				'permission_callback' => [ $this, 'check_permission' ],
+				'args'                => [
+					'mode' => [
+						'required'          => true,
+						'validate_callback' => function ( $param ) {
+							return in_array(
+								$param,
+								[
+									Context::ROCKETCDN_FREE_TYPE,
+									Context::ROCKETCDN_PAID_TYPE,
+									Context::BYOCDN_TYPE,
+									Context::CDN_STATE_NOTHING,
+								],
+								true
+								);
 						},
 						'sanitize_callback' => 'sanitize_text_field',
 					],
@@ -224,7 +243,18 @@ class Rest extends WP_REST_Controller {
 	 *
 	 * Validates the URL, checks the page limit, and saves to DB.
 	 *
-	 * @param WP_REST_Request $request REST request.
+	 * If RocketCDN Free is not the active mode, this auto-activates it when no
+	 * mode is active at all (no prompt needed), or returns a 409
+	 * 'rocketcdn_free_inactive_confirm_required' error naming the currently active
+	 * mode when another mode is active — the caller re-submits with
+	 * 'confirm_activation' set to proceed anyway. Either way, activation is subject
+	 * to the same {@see Controller::should_reject_rocketcdn_activation()} gate
+	 * `save_cdn_mode()` enforces, and is only actually applied once the page has
+	 * been validated and successfully persisted — never left switched on a
+	 * subsequent failure.
+	 *
+	 * @param WP_REST_Request $request REST request. Accepts 'url' and, on re-submission
+	 *                                 after a confirm-required response, 'confirm_activation'.
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function add_page( WP_REST_Request $request ) {
@@ -237,6 +267,36 @@ class Rest extends WP_REST_Controller {
 				__( 'Addition of pages to RocketCDN is disabled for local environment.', 'rocket' ),
 				[ 'status' => 400 ]
 			);
+		}
+
+		$should_activate_free = false;
+		$cdn_state            = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
+
+		if ( Context::ROCKETCDN_FREE_TYPE !== $cdn_state ) {
+			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
+				return new WP_Error(
+					'cdn_mode_forced_off',
+					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+					[ 'status' => 403 ]
+				);
+			}
+
+			// Another mode is active (not "nothing") and the user hasn't confirmed
+			// switching away from it yet — ask before activating Free.
+			if ( Context::CDN_STATE_NOTHING !== $cdn_state && ! $request->get_param( 'confirm_activation' ) ) {
+				return new WP_Error(
+					'rocketcdn_free_inactive_confirm_required',
+					__( 'RocketCDN Free is currently inactive. Adding this page will activate it and turn off the current CDN mode. Add this page anyway?', 'rocket' ),
+					[
+						'status'       => 409,
+						'current_mode' => $cdn_state,
+					]
+				);
+			}
+
+			// Either no mode was active at all (no prompt needed), or the user
+			// just confirmed switching away from another active mode.
+			$should_activate_free = true;
 		}
 
 		if ( $this->is_limit_reached() ) {
@@ -312,6 +372,12 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
+		// Only actually switch the CDN mode once the page is confirmed persisted —
+		// never on a request that ultimately fails validation or insertion.
+		if ( $should_activate_free ) {
+			$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE );
+		}
+
 		$this->clean_url_cache( $url );
 
 		$pages_count   = $this->query->get_total_count( false );
@@ -332,7 +398,13 @@ class Rest extends WP_REST_Controller {
 
 		$this->track_event( 'Button Clicked', $tracked_event );
 
-		return new WP_REST_Response( $this->get_pages_data(), 201 );
+		return new WP_REST_Response(
+			array_merge(
+				$this->get_pages_data(),
+				[ 'free_activated' => $should_activate_free ]
+			),
+			201
+		);
 	}
 
 	/**
@@ -404,12 +476,14 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Quick-adds the site homepage as a free-tier CDN page.
 	 *
+	 * @param WP_REST_Request $incoming_request REST request (carries 'confirm_activation' when re-submitted after the activation prompt).
 	 * @return WP_REST_Response|WP_Error
 	 */
-	public function add_homepage() {
+	public function add_homepage( WP_REST_Request $incoming_request ) {
 		$request = new WP_REST_Request( 'POST' );
 		$request->set_param( 'url', untrailingslashit( home_url() ) );
 		$request->set_param( 'source', 'add_homepage_button' );
+		$request->set_param( 'confirm_activation', $incoming_request->get_param( 'confirm_activation' ) );
 
 		return $this->add_page( $request );
 	}
@@ -417,30 +491,6 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Saves CDN driver state options.
 	 *
-	 * Persists the paused state.
-	 *
-	 * @param WP_REST_Request $request REST request.
-	 * @return WP_REST_Response
-	 */
-	public function save_pause_state( WP_REST_Request $request ): WP_REST_Response {
-		$paused = (int) $request->get_param( 'paused' );
-
-		$this->options->set( 'cdn', $paused );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
-		$status = 0 === $paused ? 'paused' : 'active';
-		$action = 0 === $paused ? 'user_paused' : 'user_resume';
-
-		do_action( 'rocket_rocketcdn_cdn_state_changed', $status, $action );
-
-		return new WP_REST_Response(
-			[
-				'paused' => $this->options->get( 'cdn', 0 ),
-			],
-			200
-		);
-	}
-
 	/**
 	 * Checks whether the free-tier page limit has been reached.
 	 *
@@ -486,6 +536,71 @@ class Rest extends WP_REST_Controller {
 	 */
 	protected function get_free_page_limit(): int {
 		return $this->context->get_free_page_limit();
+	}
+
+	/**
+	 * Activates or deactivates a CDN mode via the toggle.
+	 *
+	 * Accepts 'rocketcdn_free', 'byocdn', or 'nothing' (deactivate all).
+	 * Rejects activation of RocketCDN (free or paid) when it is in a forced-off state.
+	 *
+	 * @param WP_REST_Request $request REST request.
+	 * @return WP_REST_Response|WP_Error
+	 */
+	public function save_cdn_mode( WP_REST_Request $request ) {
+		$mode = $request->get_param( 'mode' );
+
+		$rocketcdn_types = [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ];
+
+		if ( in_array( $mode, $rocketcdn_types, true ) && $this->render_controller->should_reject_rocketcdn_activation() ) {
+			return new WP_Error(
+				'cdn_mode_forced_off',
+				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
+		}
+
+		if ( Context::ROCKETCDN_PAID_TYPE === $mode && ! $this->subscription_controller->is_paid() ) {
+			return new WP_Error(
+				'cdn_mode_paid_subscription_required',
+				__( 'A RocketCDN paid subscription is required to activate this mode.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
+		}
+
+		$this->apply_cdn_mode( $mode );
+
+		return new WP_REST_Response(
+			[
+				'applied_cdn_state'           => $this->context->get_applied_cdn_state( $mode ),
+				'rocketcdn_state'             => $this->context->get_rocketcdn_state( $mode ),
+				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
+			],
+			200
+		);
+	}
+
+	/**
+	 * Persists a CDN mode and fires the associated change action.
+	 *
+	 * Shared by {@see save_cdn_mode()} and the activation-prompt/auto-activation
+	 * flow in {@see add_page()}, so both paths apply a mode change identically.
+	 *
+	 * @param string $mode The CDN mode to apply ('rocketcdn_free', 'rocketcdn_paid', 'byocdn', or 'nothing').
+	 * @return void
+	 */
+	private function apply_cdn_mode( string $mode ): void {
+		$this->options->set( 'cdn_state', $mode );
+		$this->options->set( 'cdn', (int) ( Context::CDN_STATE_NOTHING !== $mode ) );
+		$this->options->set( 'cdn_type', Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn' );
+		$this->options_api->set( 'settings', $this->options->get_options() );
+
+		/**
+		 * Fires after the CDN mode is changed via the toggle.
+		 *
+		 * @param string $mode The new CDN mode ('rocketcdn_free', 'rocketcdn_paid', 'byocdn', or 'nothing').
+		 */
+		do_action( 'rocket_cdn_mode_changed', $mode );
 	}
 
 	/**
