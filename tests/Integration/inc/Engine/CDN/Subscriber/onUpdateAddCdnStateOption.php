@@ -76,8 +76,10 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		// Write the initial DB state without triggering update_option_wp_rocket_settings
 		// callbacks, so reconcile() doesn't pre-seed cdn_state before the migration runs.
+		$base = $this->original_settings;
+		unset( $base['cdn_type'], $base['cdn_state'] );
 		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
-		$this->options->set( 'settings', array_merge( $this->original_settings, $config['initial_options'] ) );
+		$this->options->set( 'settings', array_merge( $base, $config['initial_options'] ) );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		// Count every update_option_wp_rocket_settings call triggered by wp_rocket_upgrade.
