@@ -26,6 +26,7 @@ For each angle below, ask: **what would cause this plan to fail?**
 
 1. **Root cause** — Is the spec addressing the real cause or patching a symptom? Is there a deeper issue being sidestepped?
 2. **Hidden assumptions** — What does the plan assume is true that was not verified in the codebase? (callers, data shapes, WordPress option names, multisite behavior, concurrency)
+   - If the spec writes any file to disk under `wp-content/` (backups, exports, logs, generated config), does it contain secrets, API keys, tokens, or PII? If so, does the spec keep it outside the web-served tree, or serve it only through an authenticated PHP handler? `.htaccess deny` and an `index.php` stub are both insufficient by themselves — `.htaccess` doesn't work on Nginx, and `index.php` doesn't intercept requests for sibling static files at all (both web servers serve those straight from disk). A guessable filename pattern (version + timestamp) is not a mitigation — flag the absence of a real mitigation as MUST_HAVE.
 3. **Missing dependencies** — Are there callers, hooks, Subscribers, or ServiceProviders that need to change and are not listed in the spec?
 4. **Effort realism** — Is the effort estimate consistent with the files and complexity involved?
 
