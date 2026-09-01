@@ -674,8 +674,7 @@ class Controller extends Abstract_Render {
 	 */
 	public function should_reject_rocketcdn_activation(): bool {
 		return $this->is_subscription_loading()
-			|| $this->should_display_licence_expired_notice()
-			|| ! $this->subscription_controller->has_active_subscription();
+			|| $this->should_display_licence_expired_notice();
 	}
 
 	/**
