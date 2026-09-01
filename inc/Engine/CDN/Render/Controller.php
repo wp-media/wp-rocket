@@ -117,6 +117,33 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Adds the applied CDN state to the "Your CDN" (BYOCDN) section, when present.
+	 *
+	 * Also seeds `is_forced_off => false` as the default — the key hosting
+	 * compatibility subscribers (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()})
+	 * can override to `true` later in the same `rocket_cdn_driver_sections` filter chain.
+	 *
+	 * @since 3.23.3
+	 *
+	 * @param array $sections CDN driver sections.
+	 *
+	 * @return array
+	 */
+	public function add_applied_cdn_state_to_cdn_section( array $sections ): array {
+		if ( ! isset( $sections['cdn_section'] ) ) {
+			return $sections;
+		}
+
+		$applied_cdn_state = $this->context->get_applied_cdn_state();
+
+		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
+		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
+		$sections['cdn_section']['is_forced_off']     = false;
+
+		return $sections;
+	}
+
+	/**
 	 * Adds the RocketCDN Paid section to the CDN driver sections.
 	 *
 	 * @since 3.22
@@ -135,16 +162,22 @@ class Controller extends Abstract_Render {
 		$status_indicator_data           = $this->get_status_indicator_data( 1, $this->is_subscription_loading(), false );
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
+		$rocketcdn_state = $this->context->get_rocketcdn_state();
+
 		$sections['rocketcdn_paid_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_paid',
-			'class'            => [ 'rocketcdn' ],
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_paid',
+			'class'             => [ 'rocketcdn' ],
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $status_indicator_data,
+			'status_indicator'  => $status_indicator_data,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;
@@ -197,17 +230,19 @@ class Controller extends Abstract_Render {
 
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
+		$rocketcdn_state = $this->context->get_rocketcdn_state();
+
 		$sections['rocketcdn_free_section'] = [
-			'title'            => __( 'RocketCDN', 'rocket' ),
-			'type'             => 'rocketcdn_free',
-			'class'            => $classes,
-			'page'             => 'page_cdn',
-			'help'             => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_free',
+			'class'             => $classes,
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator' => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'         => [
+			'status_indicator'  => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'          => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
@@ -215,7 +250,11 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
-			'limit_reached'    => $limit_reached,
+			'limit_reached'     => $limit_reached,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;
@@ -516,12 +555,15 @@ class Controller extends Abstract_Render {
 	 */
 	public function render_cdn_driver_tabs(): void {
 
-		$driver = $this->context->get_driver();
-		$data   = [
+		$driver            = $this->context->get_driver();
+		$applied_cdn_state = $this->context->get_applied_cdn_state();
+		$data              = [
 			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $driver,
 			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
 			'display_tabs'      => ! $this->is_cdn_type_filtered(),
 			'rocketcdn_mode'    => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
+			'rocketcdn_active'  => Context::ROCKETCDN_TYPE === $applied_cdn_state,
+			'byocdn_active'     => Context::BYOCDN_TYPE === $applied_cdn_state,
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
@@ -612,6 +654,27 @@ class Controller extends Abstract_Render {
 			|| $this->is_cdn_paused()
 			|| $this->should_display_licence_expired_notice()
 			|| ! $this->subscription_controller->has_active_subscription();
+	}
+
+	/**
+	 * Determines whether activating RocketCDN (free or paid) should be rejected.
+	 *
+	 * Used both to gate the `save_cdn_mode()` REST activation request and to decide
+	 * whether the mode toggle checkbox itself is disabled in the UI — the two must
+	 * agree, or the REST endpoint accepts a request the checkbox never lets a user send.
+	 *
+	 * Deliberately omits the current pause state that {@see should_disable_element_for_rocketcdn()}
+	 * includes: activating is by definition attempted while CDN is currently paused
+	 * (cdn option is 0), so including that check here would always reject the very
+	 * transition it's meant to allow. `should_disable_element_for_rocketcdn()` remains
+	 * correct for elements that legitimately stay disabled while paused (purge button,
+	 * exclusions, etc.).
+	 *
+	 * @return bool True if activation should be rejected, false otherwise.
+	 */
+	public function should_reject_rocketcdn_activation(): bool {
+		return $this->is_subscription_loading()
+			|| $this->should_display_licence_expired_notice();
 	}
 
 	/**
