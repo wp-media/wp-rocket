@@ -19,17 +19,31 @@
  *     @type array  $cta_data    Data for the CTA banner.
  *     @type string $renewal_url    URL for renewing the license.
  *     @type bool   $active_subscription Whether the user has an active subscription or not.
+ *     @type bool   $is_active    Whether RocketCDN Free is the currently applied CDN mode.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_rocketcdn_free_active = $data['is_active'];
 ?>
 
-<div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?>">
+<div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_rocketcdn_free_active ? ' wpr-cdn-active-indicator' : ''; ?>">
+	<label class="wpr-cdn-mode-toggle">
+		<input
+			type="checkbox"
+			class="wpr-cdn-mode-toggle__input"
+			id="wpr-rocketcdn-free-toggle"
+			data-cdn-mode="rocketcdn_free"
+			<?php checked( $rocket_rocketcdn_free_active ); ?>
+			<?php disabled( $data['is_forced_off'] ); ?>
+		/>
+		<span class="wpr-cdn-mode-toggle__slider"></span>
+	</label>
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2 wpr-title2--orange"><?php echo esc_html( $data['title'] ); ?></h3>
 		<span class="wpr-badge wpr-badge--grey"><?php esc_html_e( 'Free', 'rocket' ); ?></span>
+		<span class="wpr-cdn-active-label"><?php esc_html_e( 'Active', 'rocket' ); ?></span>
 	</div>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
@@ -54,7 +68,7 @@ defined( 'ABSPATH' ) || exit;
 	?>
 
 	<div class="wpr-cdn-built-in__separator"></div>
-	
+
 	<?php
 	/**
 	 * Fires to render the built-in CDN page list table.

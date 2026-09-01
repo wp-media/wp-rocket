@@ -6,17 +6,18 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle
+ *
  * @group OneCom
  * @group ThirdParty
  */
-class Test_DisableCdnPauseOption extends TestCase {
-    private $onecom;
+class Test_DisableCdnModeToggle extends TestCase {
+	private $onecom;
 
-	public function setUp() : void {
+	public function setUp(): void {
 		parent::setUp();
 
-        $this->onecom = new OneCom();
+		$this->onecom = new OneCom();
 	}
 
 	/**
@@ -31,17 +32,18 @@ class Test_DisableCdnPauseOption extends TestCase {
 				->andReturn( $config['oc_cdn_enabled'] );
 
 			Functions\when( 'get_option' )
-				->alias( function( $value ) use( $config ) {
-					if ( 'oc_cdn_enabled' === $value ) {
-						return $config['oc_cdn_enabled'];
-					}
-				}
+				->alias(
+						function ( $value ) use ( $config ) {
+							if ( 'oc_cdn_enabled' === $value ) {
+									return $config['oc_cdn_enabled'];
+							}
+						}
 				);
 		}
 
 		$this->assertSame(
 			$expected['sections'],
-			$this->onecom->disable_cdn_pause_option( $config['sections'] )
+			$this->onecom->disable_cdn_mode_toggle( $config['sections'] )
 		);
 	}
 }
