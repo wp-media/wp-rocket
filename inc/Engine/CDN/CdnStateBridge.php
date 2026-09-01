@@ -43,7 +43,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
-			'get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
+			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
 		];
 	}
 
@@ -89,10 +89,6 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function resolve_live( $value, $default ): string {
-		if ( ! empty( $value ) ) {
-			return $value;
-		}
-
 		return $this->legacy_to_state(
 			[
 				'cdn'      => get_rocket_option( 'cdn' ),
