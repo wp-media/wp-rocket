@@ -16,17 +16,43 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	/**
-	 * Baseline: the 43 factory-owned ids + the 2 statically-registered special
-	 * ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously hardcoded
-	 * in Plugin::$common_subscribers.
+	 * Baseline: originally the 43 factory-owned ids + the 2 statically-registered
+	 * special ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously
+	 * hardcoded in Plugin::$common_subscribers.
+	 *
+	 * Issue #8789 slice 1 gates 7 of the 43 registry ids (elementor_subscriber,
+	 * beaverbuilder_subscriber, simple_custom_css, pdfembedder, wordfence_subscriber,
+	 * unlimited_elements, inline_related_posts) behind PluginCompatibilityInterface;
+	 * none of their target plugins are installed in this test environment, so they
+	 * drop out of get_active_plugins(). 43 - 7 + 2 = 38. Later #8789 slices will
+	 * lower this further as the remaining ids are gated.
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 45;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 38;
 
 	/**
-	 * Phase 0 defaults every registry id active, so the resolver's set is the
-	 * full registry, and the container must resolve every one of them.
+	 * Ids gated by issue #8789 slice 1 that report inactive in this test
+	 * environment (none of their target plugins are installed), so they no
+	 * longer default-active like the rest of the registry.
+	 *
+	 * @var array<string>
+	 */
+	private const SLICE_1_GATED_INACTIVE_IDS = [
+		'elementor_subscriber',
+		'beaverbuilder_subscriber',
+		'simple_custom_css',
+		'pdfembedder',
+		'wordfence_subscriber',
+		'unlimited_elements',
+		'inline_related_posts',
+	];
+
+	/**
+	 * Phase 0 defaults every registry id active; issue #8789 slice 1 opts 7 ids
+	 * into real detection, so the resolver's set is the full registry minus
+	 * those 7 (their target plugins are absent here), and the container must
+	 * still resolve every remaining one of them.
 	 */
 	public function testShouldResolveEveryActivePluginIdFromTheLiveContainer() {
 		$container = apply_filters( 'rocket_container', null );
@@ -36,8 +62,10 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$active_ids = PluginResolver::get_active_plugins( true );
 		$registry   = ( new SubscriberFactory() )->get_registry();
 
-		$this->assertSame( array_keys( $registry ), $active_ids, 'Phase 0 must resolve to the full 43-id registry.' );
-		$this->assertCount( 43, $active_ids );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+
+		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slice 1 must resolve to the 43-id registry minus the 7 gated-inactive ids.' );
+		$this->assertCount( 36, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
@@ -86,8 +114,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 43 resolver ids + ezoic + mod_pagespeed = the 45 plugin ids formerly
-		// hardcoded in Plugin::$common_subscribers.
+		// 36 active resolver ids (43 - 7 slice-1-gated) + ezoic + mod_pagespeed = 38.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }

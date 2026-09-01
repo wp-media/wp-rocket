@@ -16,6 +16,23 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetActivePlugins extends TestCase {
 	/**
+	 * Ids gated by issue #8789 slice 1 that report inactive in this test
+	 * environment (none of their target plugins are installed/defined), so
+	 * they no longer default-active like the rest of the registry.
+	 *
+	 * @var array<string>
+	 */
+	private const SLICE_1_GATED_INACTIVE_IDS = [
+		'elementor_subscriber',
+		'beaverbuilder_subscriber',
+		'simple_custom_css',
+		'pdfembedder',
+		'wordfence_subscriber',
+		'unlimited_elements',
+		'inline_related_posts',
+	];
+
+	/**
 	 * Resets memoization before each test.
 	 *
 	 * @inheritDoc
@@ -39,17 +56,23 @@ class Test_GetActivePlugins extends TestCase {
 
 	/**
 	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so every id defaults active — the resolved set equals the full registry.
+	 * so every id defaults active — the registry's full id set is unchanged.
+	 * Issue #8789 slice 1 opts 7 ids into real detection; none of their target
+	 * plugins are present in this test environment, so those 7 are excluded
+	 * from the resolved active set while the rest still default active.
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array $expected Expected active plugin ids.
+	 * @param array $expected Expected full registry ids.
 	 */
 	public function testShouldReturnAllRegistryIdsByDefault( $expected ) {
 		$registry = ( new SubscriberFactory() )->get_registry();
 
 		$this->assertSame( $expected, array_keys( $registry ) );
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+
+		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**
@@ -84,9 +107,10 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
-		$registry = ( new SubscriberFactory() )->get_registry();
+		$registry            = ( new SubscriberFactory() )->get_registry();
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
 
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**

@@ -2,18 +2,24 @@
 namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class BeaverBuilder implements Subscriber_Interface {
+class BeaverBuilder implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return (bool) rocket_get_constant( 'FL_BUILDER_VERSION' );
+	}
+
 	/**
 	 * Events this subscriber listens to
 	 *
 	 * @inheritDoc
 	 */
 	public static function get_subscribed_events() {
-		if ( ! rocket_get_constant( 'FL_BUILDER_VERSION' ) ) {
-			return [];
-		}
-
 		return [
 			'fl_builder_before_save_layout' => 'purge_cache',
 			'fl_builder_cache_cleared'      => 'purge_cache',

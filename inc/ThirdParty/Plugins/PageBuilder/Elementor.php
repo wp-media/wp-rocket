@@ -6,11 +6,12 @@ namespace WP_Rocket\ThirdParty\Plugins\PageBuilder;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Compatibility file for Elementor plugin
  */
-class Elementor implements Subscriber_Interface {
+class Elementor implements Subscriber_Interface, PluginCompatibilityInterface {
 	/**
 	 * WP Rocket options.
 	 *
@@ -46,15 +47,20 @@ class Elementor implements Subscriber_Interface {
 	}
 
 	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'ELEMENTOR_VERSION' );
+	}
+
+	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'ELEMENTOR_VERSION' ) ) {
-			return [];
-		}
-
 		return [
 			'wp_rocket_loaded'                            => 'remove_widget_callback',
 			'rocket_exclude_css'                          => 'exclude_post_css',
