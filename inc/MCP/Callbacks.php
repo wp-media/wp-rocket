@@ -70,10 +70,12 @@ class Callbacks {
 	 * rocket/set-array-key — set one key on an associative-array-returning filter.
 	 *
 	 * For filters whose value is a map (request args, ignored parameters, …) rather
-	 * than a plain list. The key is always set (added or overwritten); the existing
-	 * array is preserved otherwise.
+	 * than a plain list. Other top-level keys are preserved. When both the new value
+	 * and the existing value at the key are arrays, they are deep-merged (nested
+	 * entries preserved, leaves overridden) rather than overwritten — so e.g. adding
+	 * one header does not drop the others.
 	 *
-	 * @param array $args Bound args: { key: string, value: scalar (default 1) }.
+	 * @param array $args Bound args: { key: string, value: scalar|array (default 1) }.
 	 * @return callable
 	 */
 	public static function set_array_key( array $args ): callable {
@@ -83,11 +85,37 @@ class Callbacks {
 		return static function ( $map ) use ( $key, $value ) {
 			$map = is_array( $map ) ? $map : [];
 
-			if ( '' !== $key ) {
+			if ( '' === $key ) {
+				return $map;
+			}
+
+			if ( is_array( $value ) && isset( $map[ $key ] ) && is_array( $map[ $key ] ) ) {
+				$map[ $key ] = self::deep_merge( $map[ $key ], $value );
+			} else {
 				$map[ $key ] = $value;
 			}
 
 			return $map;
 		};
+	}
+
+	/**
+	 * Recursively merges $override into $base: array branches are merged, leaves
+	 * (and non-array values) are overridden, and keys present only in $base are kept.
+	 *
+	 * @param array $base     Existing array.
+	 * @param array $override Array to merge in.
+	 * @return array
+	 */
+	private static function deep_merge( array $base, array $override ): array {
+		foreach ( $override as $k => $v ) {
+			if ( is_array( $v ) && isset( $base[ $k ] ) && is_array( $base[ $k ] ) ) {
+				$base[ $k ] = self::deep_merge( $base[ $k ], $v );
+			} else {
+				$base[ $k ] = $v;
+			}
+		}
+
+		return $base;
 	}
 }

@@ -64,7 +64,9 @@ add_filter(
 		$callbacks['rocket/set-array-key'] = [
 			'label'       => 'Set a key on an associative array',
 			'description' => 'Set one key on a map-returning filter (request args, ignored '
-						. 'query parameters, …). Use for associative arrays, not plain lists.',
+						. 'query parameters, …). Use for associative arrays, not plain lists. '
+						. 'If the value is an array and the key already holds one, they are '
+						. 'deep-merged (existing entries preserved).',
 			'params'      => [
 				[
 					'name'        => 'key',
@@ -74,9 +76,9 @@ add_filter(
 				],
 				[
 					'name'        => 'value',
-					'type'        => 'string|int|bool',
+					'type'        => 'string|int|bool|object',
 					'required'    => false,
-					'description' => 'The value to set for the key. Defaults to 1.',
+					'description' => 'The value to set for the key (deep-merged if both are objects). Defaults to 1.',
 				],
 			],
 			'factory'     => [ Callbacks::class, 'set_array_key' ],
