@@ -15,12 +15,17 @@ if ( ! is_dir($root) || '' === $out ) {
 }
 
 $hookFns = [
-	'apply_filters'            => ['type' => 'filter', 'deprecated' => false],
-	'apply_filters_ref_array'  => ['type' => 'filter', 'deprecated' => false],
-	'apply_filters_deprecated' => ['type' => 'filter', 'deprecated' => true],
-	'do_action'                => ['type' => 'action', 'deprecated' => false],
-	'do_action_ref_array'      => ['type' => 'action', 'deprecated' => false],
-	'do_action_deprecated'     => ['type' => 'action', 'deprecated' => true],
+	// 'hook_arg' = index of the hook-name argument. Core filters/actions put it
+	// first; wp-media/apply-filters-typed's wpm_apply_filters_typed() puts the type
+	// first and the hook name second.
+	'apply_filters'             => ['type' => 'filter', 'deprecated' => false, 'hook_arg' => 0],
+	'apply_filters_ref_array'   => ['type' => 'filter', 'deprecated' => false, 'hook_arg' => 0],
+	'apply_filters_deprecated'  => ['type' => 'filter', 'deprecated' => true,  'hook_arg' => 0],
+	'wpm_apply_filters_typed'   => ['type' => 'filter', 'deprecated' => false, 'hook_arg' => 1],
+	'wpm_apply_filters_typesafe' => ['type' => 'filter', 'deprecated' => false, 'hook_arg' => 0],
+	'do_action'                 => ['type' => 'action', 'deprecated' => false, 'hook_arg' => 0],
+	'do_action_ref_array'       => ['type' => 'action', 'deprecated' => false, 'hook_arg' => 0],
+	'do_action_deprecated'      => ['type' => 'action', 'deprecated' => true,  'hook_arg' => 0],
 ];
 
 // Directories to scan (WP Rocket's own code) and to skip.
@@ -28,6 +33,7 @@ $scanDirs = [ $root . '/inc' ];
 $skip = [
 	$root . '/inc/vendors',
 	$root . '/inc/Dependencies',
+	$root . '/inc/MCP', // the integration's own files (demo probes reference hooks).
 ];
 
 $files = [];
@@ -118,12 +124,26 @@ foreach ($files as $file) {
 		while ($j < $n && is_array($tokens[$j]) && in_array($tokens[$j][0], [T_WHITESPACE, T_COMMENT], true)) $j++;
 		if ($j >= $n || $tokens[$j] !== '(') continue;
 
-		// First argument must be a single quoted string literal.
-		$k = $j + 1;
-		while ($k < $n && is_array($tokens[$k]) && in_array($tokens[$k][0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) $k++;
-		if ($k >= $n || !is_array($tokens[$k]) || $tokens[$k][0] !== T_CONSTANT_ENCAPSED_STRING) continue;
+		// Locate the hook-name argument. Its position depends on the function:
+		// core filters/actions -> 0; wpm_apply_filters_typed -> 1 (type is first).
+		$hookArgIndex = $hookFns[$fn]['hook_arg'];
+		$depth = 0; $argIdx = -1; $expectStart = false; $hookTok = null;
+		for ($m = $j; $m < $n; $m++) {
+			$t = $tokens[$m];
+			if ($t === '(') { $depth++; if ($depth === 1) { $argIdx = 0; $expectStart = true; } continue; }
+			if ($t === ')') { $depth--; if ($depth === 0) break; continue; }
+			if ($t === '[' || $t === '{') { $depth++; continue; }
+			if ($t === ']' || $t === '}') { $depth--; continue; }
+			if ($depth === 1 && $t === ',') { $argIdx++; $expectStart = true; continue; }
+			if ($depth === 1 && $expectStart) {
+				if (is_array($t) && in_array($t[0], [T_WHITESPACE, T_COMMENT, T_DOC_COMMENT], true)) continue;
+				if ($argIdx === $hookArgIndex) { $hookTok = $t; }
+				$expectStart = false;
+			}
+		}
+		if (!is_array($hookTok) || $hookTok[0] !== T_CONSTANT_ENCAPSED_STRING) continue;
 
-		$raw = $tokens[$k][1];
+		$raw = $hookTok[1];
 		$quote = $raw[0];
 		$name = substr($raw, 1, -1);
 		if ($quote === "'") { $name = str_replace(["\\'", "\\\\"], ["'", "\\"], $name); }
@@ -199,8 +219,9 @@ $kept = ['array' => 0, 'assoc' => 0, 'bool' => 0, 'int' => 0, 'htaccess' => 0];
 // take rocket/set-array-key (setting a named key), not append/remove.
 $associative = [
 	'rocket_cache_ignored_parameters',
-	'rocket_preload_sitemap_request_args',
-	'rocket_partial_preload_url_request_args',
+	'rocket_preload_url_request_args',
+	'rocket_homepage_preload_url_request_args',
+	'rocket_preload_after_purge_cache_request_args',
 ];
 
 // htaccess rule-block filters return rule TEXT (string), so they are normally
@@ -213,6 +234,10 @@ $htaccess_toggle = [
 
 foreach ($catalog as $e) {
 	if ($e['type'] !== 'filter') { continue; }
+
+	// Never catalog deprecated hooks (called via *_deprecated, or defined under
+	// inc/deprecated/), so agents are only steered to current hooks.
+	if ( ! empty($e['deprecated']) || 'deprecated' === $e['category'] ) { continue; }
 
 	$ft = strtolower($e['params'][0]['type'] ?? '');
 	if (in_array($e['name'], $associative, true)) {
