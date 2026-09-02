@@ -141,7 +141,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
 			],
-			'get_rocket_option_cdn'                    => 'apply_pause_on_rocketcdn_only',
 		];
 	}
 
@@ -619,18 +618,11 @@ class Subscriber implements Subscriber_Interface {
 		$this->cname_validator->clear_validation_cache( $all_cnames );
 	}
 
-	/**
-	 * Apply the pause of CDN on RocketCDN only.
-	 *
-	 * @param bool $cdn The current CDN status.
-	 *
-	 * @return bool
-	 */
-	public function apply_pause_on_rocketcdn_only( $cdn ) {
-		if ( is_admin() ) {
-			return $cdn;
-		}
-
-		return $cdn || 'rocketcdn' !== $this->options->get( 'cdn_type' );
-	}
+	// Note: this class used to hook a `get_rocket_option_cdn` filter here
+	// (`apply_pause_on_rocketcdn_only()`, bug #932 / PR #8431) that force-reported
+	// the `cdn` option as enabled whenever `cdn_type` was 'byocdn', regardless of
+	// the actual `cdn` value. That protection is now handled architecturally by
+	// `Rest::apply_cdn_mode()`, which keeps `cdn`/`cdn_type` in sync on every
+	// toggle-driven transition, so the override was removed (issue #8707) rather
+	// than patched — it was actively masking a BYOCDN user's explicit "off" state.
 }
