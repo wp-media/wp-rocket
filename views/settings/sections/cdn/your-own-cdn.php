@@ -70,7 +70,6 @@ $rocket_byocdn_active = $data['is_active'];
 			<a
 				href="#"
 				class="wpr-notice-close wpr-cdn-no-cname-warning__cta"
-				onclick="event.preventDefault(); var t = document.querySelector( '.wpr-cdn-tabs__tab[data-cdn-driver=&quot;rocketcdn&quot;]' ); if ( t ) { t.click(); }"
 			>
 				<?php esc_html_e( 'Use RocketCDN Free instead', 'rocket' ); ?>
 			</a>

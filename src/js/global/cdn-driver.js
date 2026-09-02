@@ -11,6 +11,7 @@
 		initAddHomepage();
 		initAddPage();
 		initDeletePage();
+		initNoCnameWarningCta();
 		updateSubmitButtonStateOnSubscriptionLoading();
 	} );
 
@@ -457,6 +458,31 @@
 		setActiveTab( initialDriver );
 		toggleDriverSections( initialDriver );
 		notifyCdnStateChange();
+	}
+
+	/**
+	 * Initializes the "Use RocketCDN Free instead" CTA in the BYOCDN missing-CNAME
+	 * warning notice.
+	 *
+	 * Clicking it switches to the RocketCDN tab by delegating to the existing
+	 * RocketCDN tab element, rather than duplicating tab-switch logic.
+	 */
+	function initNoCnameWarningCta() {
+		document.addEventListener( 'click', ( event ) => {
+			const cta = event.target.closest( '.wpr-cdn-no-cname-warning__cta' );
+
+			if ( ! cta ) {
+				return;
+			}
+
+			event.preventDefault();
+
+			const rocketCdnTab = document.querySelector( '.wpr-cdn-tabs__tab[data-cdn-driver="rocketcdn"]' );
+
+			if ( rocketCdnTab ) {
+				rocketCdnTab.click();
+			}
+		} );
 	}
 
 	/**
