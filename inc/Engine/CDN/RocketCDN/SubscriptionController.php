@@ -78,6 +78,13 @@ class SubscriptionController implements LoggerAwareInterface {
 	private $website_search_api_client;
 
 	/**
+	 * Task ID from the most-recent async (cdn_task_enqueued) subscription creation, or null.
+	 *
+	 * @var string|null
+	 */
+	private $last_async_task_id = null;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param APIClient            $api_client API Client instance.
@@ -104,6 +111,15 @@ class SubscriptionController implements LoggerAwareInterface {
 		$this->check_status_api_client   = $check_status_api_client;
 		$this->user                      = $user;
 		$this->website_search_api_client = $website_search_api_client;
+	}
+
+	/**
+	 * Returns the task ID when the most-recent create_subscription() call enqueued an async job, null otherwise.
+	 *
+	 * @return string|null
+	 */
+	public function get_last_async_task_id(): ?string {
+		return $this->last_async_task_id;
 	}
 
 	/**
@@ -201,6 +217,9 @@ class SubscriptionController implements LoggerAwareInterface {
 				// Save CDN token.
 				$this->options_manager->save_token( $created['data']['cdn_token'] );
 
+				// Track task_id so callers can associate a page with this async job for cleanup.
+				$this->last_async_task_id = $created['data']['task_id'];
+
 				// Enqueue AS single task after 30 seconds from now to check the status.
 				$this->queue->schedule_create_status_job( $created['data']['task_id'] );
 
@@ -249,17 +268,20 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function check_status( string $task_id ) {
 		if ( $this->has_active_subscription() ) {
 			$this->stop_subscription_creation_loader();
+			delete_transient( 'rocket_cdnfree_pending_page_' . $task_id );
 			return;
 		}
 
 		$this->check_status_api_client->set_task_id( $task_id );
 		$status = $this->check_status_api_client->check();
 		if ( ! $status ) {
+			$this->trigger_creation_failed( $task_id );
 			$this->stop_subscription_creation_loader();
 			return;
 		}
 
 		if ( ! $status['success'] ) {
+			$this->trigger_creation_failed( $task_id );
 			$this->stop_subscription_creation_loader();
 			$this->logger::error(
 				'RocketCDN: Failed to check creation status.',
@@ -274,6 +296,7 @@ class SubscriptionController implements LoggerAwareInterface {
 				$this->queue->schedule_create_status_job( $task_id );
 				break;
 			case 'SUCCESS':
+				delete_transient( 'rocket_cdnfree_pending_page_' . $task_id );
 				$this->options_manager->enable( false );
 
 				$this->stop_subscription_creation_loader();
@@ -284,12 +307,36 @@ class SubscriptionController implements LoggerAwareInterface {
 				do_action( 'rocket_cdnfree_website_created' );
 				break;
 			default:
+				$this->trigger_creation_failed( $task_id );
 				$this->stop_subscription_creation_loader();
 				$this->logger::error(
 					'RocketCDN: Received not known response code when check subscription\'s status.',
 					$status
 				);
 		}
+	}
+
+	/**
+	 * Fires the subscription-creation-failed action and cleans up the pending-page transient.
+	 *
+	 * @param string $task_id Async task ID whose pending-page transient should be read.
+	 * @return void
+	 */
+	private function trigger_creation_failed( string $task_id ): void {
+		$page_id = get_transient( 'rocket_cdnfree_pending_page_' . $task_id );
+		if ( $page_id ) {
+			delete_transient( 'rocket_cdnfree_pending_page_' . $task_id );
+		}
+
+		/**
+		 * Fires when async RocketCDN subscription creation definitively fails.
+		 *
+		 * Passes the page DB record ID that triggered the subscription attempt, or null
+		 * if no page was associated (e.g. CDN was already active before the failure).
+		 *
+		 * @param int|null $page_id Page record ID to roll back, or null.
+		 */
+		do_action( 'rocket_cdnfree_subscription_creation_failed', $page_id ? (int) $page_id : null );
 	}
 
 	/**

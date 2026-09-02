@@ -62,12 +62,13 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'                        => [
+			'rest_api_init'                               => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
 				[ 'register_routes' ],
 			],
-			'rocket_cdnfree_website_create_status' => 'check_status',
+			'rocket_cdnfree_website_create_status'        => 'check_status',
+			'rocket_cdnfree_subscription_creation_failed' => [ 'handle_subscription_creation_failed', 10, 1 ],
 		];
 	}
 
@@ -235,5 +236,17 @@ class RESTSubscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->subscription_controller->check_status( $task_id );
+	}
+
+	/**
+	 * Rollback a failed async subscription creation via the REST controller.
+	 *
+	 * Fires when rocket_cdnfree_subscription_creation_failed is triggered by SubscriptionController.
+	 *
+	 * @param int|null $page_id Page DB record ID to remove, or null.
+	 * @return void
+	 */
+	public function handle_subscription_creation_failed( ?int $page_id ): void {
+		$this->rest->rollback_failed_subscription( $page_id );
 	}
 }

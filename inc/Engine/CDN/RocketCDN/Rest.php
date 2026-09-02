@@ -241,26 +241,18 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Adds a page URL to RocketCDN free-tier delivery.
 	 *
-	 * Validates the URL, checks the page limit, and saves to DB.
+	 * CDN activation rules:
+	 *  - CDN already in free mode   → page added, CDN untouched.
+	 *  - CDN off, first page        → CDN activated automatically.
+	 *  - CDN off, 2nd+ page         → page added, CDN left off.
+	 *  - BYOCDN / other active mode → confirmation prompt (409), then switch on confirm.
 	 *
-	 * If RocketCDN Free is not the active mode, this auto-activates it when no
-	 * mode is active at all (no prompt needed), or returns a 409
-	 * 'rocketcdn_free_inactive_confirm_required' error naming the currently active
-	 * mode when another mode is active — the caller re-submits with
-	 * 'confirm_activation' set to proceed anyway. Either way, activation is subject
-	 * to the same {@see Controller::should_reject_rocketcdn_activation()} gate
-	 * `save_cdn_mode()` enforces, and is only actually applied once the page has
-	 * been validated and successfully persisted — never left switched on a
-	 * subsequent failure.
-	 *
-	 * @param WP_REST_Request $request REST request. Accepts 'url' and, on re-submission
-	 *                                 after a confirm-required response, 'confirm_activation'.
+	 * @param WP_REST_Request $request REST request. Accepts 'url' and 'confirm_activation'.
 	 * @return WP_REST_Response|WP_Error
 	 */
 	public function add_page( WP_REST_Request $request ) {
 		$url = $request->get_param( 'url' );
 
-		// Check for local environment.
 		if ( 'local' === wp_get_environment_type() ) {
 			return new WP_Error(
 				'rocketcdn_on_local_environment',
@@ -269,34 +261,9 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$should_activate_free = false;
-		$cdn_state            = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
-
-		if ( Context::ROCKETCDN_FREE_TYPE !== $cdn_state ) {
-			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
-				return new WP_Error(
-					'cdn_mode_forced_off',
-					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
-					[ 'status' => 403 ]
-				);
-			}
-
-			// Another mode is active (not "nothing") and the user hasn't confirmed
-			// switching away from it yet — ask before activating Free.
-			if ( Context::CDN_STATE_NOTHING !== $cdn_state && ! $request->get_param( 'confirm_activation' ) ) {
-				return new WP_Error(
-					'rocketcdn_free_inactive_confirm_required',
-					__( 'RocketCDN Free is currently inactive. Adding this page will activate it and turn off the current CDN mode. Add this page anyway?', 'rocket' ),
-					[
-						'status'       => 409,
-						'current_mode' => $cdn_state,
-					]
-				);
-			}
-
-			// Either no mode was active at all (no prompt needed), or the user
-			// just confirmed switching away from another active mode.
-			$should_activate_free = true;
+		$should_activate = $this->resolve_cdn_activation( $request );
+		if ( is_wp_error( $should_activate ) ) {
+			return $should_activate;
 		}
 
 		if ( $this->is_limit_reached() ) {
@@ -311,42 +278,18 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$payload = $this->get_url_validation_payload( $url );
-
-		if ( $payload['error'] ) {
-			return new WP_Error(
-				'rocketcdn_url_not_found',
-				$payload['message'],
-				[ 'status' => $payload['data']['status'] ]
-			);
+		$page_data = $this->validate_page_for_add( $url );
+		if ( is_wp_error( $page_data ) ) {
+			return $page_data;
 		}
 
-		$page_title = __( 'Homepage', 'rocket' );
-
-		if ( ! Utils::is_home( $url ) ) {
-			$page_title = $this->get_page_title( $payload['message'] );
+		if ( $should_activate ) {
+			$created = $this->subscription_controller->create_subscription();
+			if ( is_wp_error( $created ) ) {
+				return $created;
+			}
 		}
 
-		$existing = $this->query->get_by_url( $url );
-
-		if ( false !== $existing ) {
-			return new WP_Error(
-				'rocketcdn_page_already_exists',
-				__( 'This page is already registered for RocketCDN delivery.', 'rocket' ),
-				[ 'status' => 409 ]
-			);
-		}
-
-		$created = $this->subscription_controller->create_subscription();
-		if ( is_wp_error( $created ) ) {
-			return $created;
-		}
-
-		/**
-		 * WP Rocket Metabox fields on post edit page.
-		 *
-		 * @param string[] $original_fields Metaboxes fields.
-		 */
 		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_cdnfree_can_add_page', true, $url ) ) {
 			return new WP_Error(
 				'rocketcdn_disabled_by_filter',
@@ -355,15 +298,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$inserted = $this->query->add_item(
-			[
-				'url'           => $url,
-				'title'         => $page_title,
-				'modified'      => current_time( 'mysql' ),
-				'last_accessed' => current_time( 'mysql' ),
-			]
-		);
-
+		$inserted = $this->query->add_item( $page_data );
 		if ( ! $inserted ) {
 			return new WP_Error(
 				'rocketcdn_db_error',
@@ -372,39 +307,144 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		// Only actually switch the CDN mode once the page is confirmed persisted —
-		// never on a request that ultimately fails validation or insertion.
-		if ( $should_activate_free ) {
-			$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE );
+		if ( $should_activate ) {
+			$this->finalize_cdn_activation( (int) $inserted );
 		}
 
 		$this->clean_url_cache( $url );
-
-		$pages_count   = $this->query->get_total_count( false );
-		$source_raw    = $request->get_param( 'source' );
-		$source        = is_string( $source_raw ) && '' !== $source_raw ? sanitize_key( $source_raw ) : 'manual';
-		$tracked_event = [
-			'button'      => 'rocket cdn add page',
-			'is_homepage' => Utils::is_home( $url ),
-			'pages_count' => $pages_count,
-			'source'      => $source,
-		];
-
-		if ( Utils::is_home( $url ) ) {
-			$tracked_event['button'] = 'rocket cdn add homepage';
-			unset( $tracked_event['is_homepage'] );
-			unset( $tracked_event['pages_count'] );
-		}
-
-		$this->track_event( 'Button Clicked', $tracked_event );
+		$this->track_event( 'Button Clicked', $this->build_add_page_event( $url, $request ) );
 
 		return new WP_REST_Response(
-			array_merge(
-				$this->get_pages_data(),
-				[ 'free_activated' => $should_activate_free ]
-			),
+			array_merge( $this->get_pages_data(), [ 'free_activated' => $should_activate ] ),
 			201
 		);
+	}
+
+	/**
+	 * Decides whether CDN Free mode should be activated when adding a page.
+	 *
+	 * @param WP_REST_Request $request Incoming REST request.
+	 *
+	 * @return bool|WP_Error True to activate, false to skip, WP_Error to abort.
+	 */
+	private function resolve_cdn_activation( WP_REST_Request $request ) {
+		$cdn_state = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
+
+		if ( Context::ROCKETCDN_FREE_TYPE === $cdn_state ) {
+			return false;
+		}
+
+		if ( Context::CDN_STATE_NOTHING !== $cdn_state ) {
+			// BYOCDN or other active mode: reject check → confirmation prompt → switch.
+			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
+				return new WP_Error(
+					'cdn_mode_forced_off',
+					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+					[ 'status' => 403 ]
+				);
+			}
+
+			if ( ! $request->get_param( 'confirm_activation' ) ) {
+				return new WP_Error(
+					'rocketcdn_free_inactive_confirm_required',
+					__( 'RocketCDN Free is currently inactive. Adding this page will activate it and turn off the current CDN mode. Add this page anyway?', 'rocket' ),
+					[
+						'status'       => 409,
+						'current_mode' => $cdn_state,
+					]
+				);
+			}
+
+			return true;
+		}
+
+		// CDN is off. Activate only for the very first page.
+		if ( 0 === $this->query->get_total_count( false ) ) {
+			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
+				return new WP_Error(
+					'cdn_mode_forced_off',
+					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+					[ 'status' => 403 ]
+				);
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Validates the URL and checks for an existing record, returning the data array for add_item().
+	 *
+	 * @param string $url Page URL to validate.
+	 * @return array|WP_Error Row data ready for add_item(), or WP_Error on failure.
+	 */
+	private function validate_page_for_add( string $url ) {
+		$payload = $this->get_url_validation_payload( $url );
+		if ( $payload['error'] ) {
+			return new WP_Error(
+				'rocketcdn_url_not_found',
+				$payload['message'],
+				[ 'status' => $payload['data']['status'] ]
+			);
+		}
+
+		if ( false !== $this->query->get_by_url( $url ) ) {
+			return new WP_Error(
+				'rocketcdn_page_already_exists',
+				__( 'This page is already registered for RocketCDN delivery.', 'rocket' ),
+				[ 'status' => 409 ]
+			);
+		}
+
+		return [
+			'url'           => $url,
+			'title'         => Utils::is_home( $url ) ? __( 'Homepage', 'rocket' ) : $this->get_page_title( $payload['message'] ),
+			'modified'      => current_time( 'mysql' ),
+			'last_accessed' => current_time( 'mysql' ),
+		];
+	}
+
+	/**
+	 * Switches CDN to Free mode and registers the page for rollback if the async subscription job fails.
+	 *
+	 * @param int $page_id Inserted page DB record ID.
+	 * @return void
+	 */
+	private function finalize_cdn_activation( int $page_id ): void {
+		$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE );
+
+		$async_task_id = $this->subscription_controller->get_last_async_task_id();
+		if ( null !== $async_task_id ) {
+			set_transient( 'rocket_cdnfree_pending_page_' . $async_task_id, $page_id, DAY_IN_SECONDS );
+		}
+	}
+
+	/**
+	 * Builds the tracking event payload for a successful page add.
+	 *
+	 * @param string          $url     Page URL that was added.
+	 * @param WP_REST_Request $request Original REST request (carries 'source').
+	 * @return array
+	 */
+	private function build_add_page_event( string $url, WP_REST_Request $request ): array {
+		$source_raw = $request->get_param( 'source' );
+		$source     = is_string( $source_raw ) && '' !== $source_raw ? sanitize_key( $source_raw ) : 'manual';
+
+		if ( Utils::is_home( $url ) ) {
+			return [
+				'button' => 'rocket cdn add homepage',
+				'source' => $source,
+			];
+		}
+
+		return [
+			'button'      => 'rocket cdn add page',
+			'is_homepage' => false,
+			'pages_count' => $this->query->get_total_count( false ),
+			'source'      => $source,
+		];
 	}
 
 	/**
@@ -462,6 +502,23 @@ class Rest extends WP_REST_Controller {
 		);
 
 		return new WP_REST_Response( $this->get_pages_data(), 200 );
+	}
+
+	/**
+	 * Rolls back a failed async subscription creation.
+	 *
+	 * Deletes the page record (if one was associated) and resets CDN mode to 'nothing'.
+	 * Called by RESTSubscriber when rocket_cdnfree_subscription_creation_failed fires.
+	 *
+	 * @param int|null $page_id Page DB record ID to remove, or null if none was recorded.
+	 * @return void
+	 */
+	public function rollback_failed_subscription( ?int $page_id ): void {
+		if ( null !== $page_id ) {
+			$this->query->delete_item( $page_id );
+		}
+
+		$this->apply_cdn_mode( Context::CDN_STATE_NOTHING );
 	}
 
 	/**
