@@ -18,6 +18,7 @@
  *     @type string $page        Page section identifier.
  *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
  *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type bool   $show_no_cname_warning Whether to display the missing-CNAME warning (BYOCDN active, no CNAME configured).
  * }
  */
 
@@ -58,6 +59,22 @@ $rocket_byocdn_active = $data['is_active'];
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 	<div class="wpr-fieldsContainer-description">
 		<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+	</div>
+	<?php endif; ?>
+	<?php if ( ! empty( $data['show_no_cname_warning'] ) ) : ?>
+	<div class="wpr-notice wpr-ri-notice wpr-cdn-no-cname-warning">
+		<div class="wpr-notice-container">
+			<div class="wpr-notice-description wpr-notice-70">
+				<p><?php esc_html_e( 'Other CDN is active, but no CNAME has been configured yet — your assets will not be delivered through a CDN until you add one.', 'rocket' ); ?></p>
+			</div>
+			<a
+				href="#"
+				class="wpr-notice-close wpr-cdn-no-cname-warning__cta"
+				onclick="event.preventDefault(); var t = document.querySelector( '.wpr-cdn-tabs__tab[data-cdn-driver=&quot;rocketcdn&quot;]' ); if ( t ) { t.click(); }"
+			>
+				<?php esc_html_e( 'Use RocketCDN Free instead', 'rocket' ); ?>
+			</a>
+		</div>
 	</div>
 	<?php endif; ?>
 	<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>

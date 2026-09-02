@@ -116,6 +116,10 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 			->once()
 			->andReturn( Context::BYOCDN_TYPE );
 
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [ 'cdn.example.org' ] );
+
 		$controller = $this->get_controller();
 		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
 			[
@@ -163,5 +167,79 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 		$sections   = $controller->add_applied_cdn_state_to_cdn_section( [ 'other_section' => [] ] );
 
 		$this->assertSame( [ 'other_section' => [] ], $sections );
+	}
+
+	/**
+	 * Shows the no-CNAME warning when BYOCDN is active and no CNAME is configured.
+	 *
+	 * @return void
+	 */
+	public function testShouldShowNoCnameWarningWhenByocdnActiveWithoutCnames(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::BYOCDN_TYPE );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertTrue( $sections['cdn_section']['show_no_cname_warning'] );
+	}
+
+	/**
+	 * Hides the no-CNAME warning when BYOCDN is active but a CNAME is already configured.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotShowNoCnameWarningWhenByocdnActiveWithCnames(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::BYOCDN_TYPE );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [ 'cdn.example.org' ] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertFalse( $sections['cdn_section']['show_no_cname_warning'] );
+	}
+
+	/**
+	 * Hides the no-CNAME warning when BYOCDN isn't the applied mode, regardless of CNAMEs.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotShowNoCnameWarningWhenByocdnNotActive(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertFalse( $sections['cdn_section']['show_no_cname_warning'] );
 	}
 }
