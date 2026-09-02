@@ -3,12 +3,22 @@
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for compatibility with Inline Related Posts.
  */
-class InlineRelatedPosts implements Subscriber_Interface {
+class InlineRelatedPosts implements Subscriber_Interface, PluginCompatibilityInterface {
 
+
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return (bool) rocket_get_constant( 'IRP_PLUGIN_SLUG' );
+	}
 
 	/**
 	 * Subscriber for Inline Related Posts.
@@ -16,10 +26,6 @@ class InlineRelatedPosts implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! defined( 'IRP_PLUGIN_SLUG' ) ) {
-			return [];
-		}
-
 		return [ 'rocket_rucss_inline_content_exclusions' => 'exclude_inline_from_rucss' ];
 	}
 
