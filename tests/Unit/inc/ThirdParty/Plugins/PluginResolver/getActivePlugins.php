@@ -2,8 +2,6 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
-use ReflectionMethod;
-use ReflectionProperty;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -58,7 +56,7 @@ class Test_GetActivePlugins extends TestCase {
 	 * A registry entry implementing PluginCompatibilityInterface::is_activated() as false is excluded.
 	 */
 	public function testShouldExcludeInactiveInterfaceImplementingClass() {
-		$result = $this->get_filter_active_registry_method()->invoke(
+		$result = $this->get_reflective_method( 'filter_active_registry', PluginResolver::class )->invoke(
 			null,
 			[ 'inactive_stub' => PluginResolverInactivePlugin::class ]
 		);
@@ -70,7 +68,7 @@ class Test_GetActivePlugins extends TestCase {
 	 * A registry entry implementing PluginCompatibilityInterface::is_activated() as true is included.
 	 */
 	public function testShouldIncludeActiveInterfaceImplementingClass() {
-		$result = $this->get_filter_active_registry_method()->invoke(
+		$result = $this->get_reflective_method( 'filter_active_registry', PluginResolver::class )->invoke(
 			null,
 			[ 'active_stub' => PluginResolverActivePlugin::class ]
 		);
@@ -82,8 +80,7 @@ class Test_GetActivePlugins extends TestCase {
 	 * $force bypasses the memoized result.
 	 */
 	public function testShouldBypassMemoizationWhenForced() {
-		$property = $this->get_active_plugins_property();
-		$property->setValue( null, [ 'stale_id' ] );
+		$this->set_reflective_property( [ 'stale_id' ], 'active_plugins', PluginResolver::class );
 
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
@@ -93,35 +90,11 @@ class Test_GetActivePlugins extends TestCase {
 	}
 
 	/**
-	 * Reflection accessor for the private static filter_active_registry() method.
-	 *
-	 * @return ReflectionMethod
-	 */
-	private function get_filter_active_registry_method(): ReflectionMethod {
-		$method = new ReflectionMethod( PluginResolver::class, 'filter_active_registry' );
-		$method->setAccessible( true );
-
-		return $method;
-	}
-
-	/**
-	 * Reflection accessor for the private static $active_plugins memoization property.
-	 *
-	 * @return ReflectionProperty
-	 */
-	private function get_active_plugins_property(): ReflectionProperty {
-		$property = new ReflectionProperty( PluginResolver::class, 'active_plugins' );
-		$property->setAccessible( true );
-
-		return $property;
-	}
-
-	/**
 	 * Resets the memoized active plugins list between tests.
 	 *
 	 * @return void
 	 */
 	private function reset_memoization(): void {
-		$this->get_active_plugins_property()->setValue( null, null );
+		$this->set_reflective_property( null, 'active_plugins', PluginResolver::class );
 	}
 }
