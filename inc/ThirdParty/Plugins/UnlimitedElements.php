@@ -17,7 +17,7 @@ class UnlimitedElements implements Subscriber_Interface, PluginCompatibilityInte
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return defined( 'UNLIMITED_ELEMENTS_INC' );
+		return (bool) rocket_get_constant( 'UNLIMITED_ELEMENTS_INC' );
 	}
 
 	/**

@@ -14,16 +14,14 @@ class Test_IsActivated extends TestCase {
 	/**
 	 * Tests InlineRelatedPosts::is_activated() against the presence/absence of IRP_PLUGIN_SLUG.
 	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 *
 	 * @param array $config   Test configuration.
 	 * @param bool  $expected Expected return value.
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		if ( $config['define_irp_plugin_slug'] ) {
-			define( 'IRP_PLUGIN_SLUG', 'inline-related-posts' );
+		if ( null !== $config['irp_plugin_slug'] ) {
+			$this->constants['IRP_PLUGIN_SLUG'] = $config['irp_plugin_slug'];
 		}
 
 		$this->assertSame( $expected, InlineRelatedPosts::is_activated() );

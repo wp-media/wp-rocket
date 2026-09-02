@@ -2,11 +2,11 @@
 
 return [
 	'shouldReturnFalseWhenSimpleCustomCssNotPresent' => [
-		'config'   => [ 'define_sccss_file' => false ],
+		'config'   => [ 'sccss_file' => null ],
 		'expected' => false,
 	],
 	'shouldReturnTrueWhenSimpleCustomCssPresent'     => [
-		'config'   => [ 'define_sccss_file' => true ],
+		'config'   => [ 'sccss_file' => 'sccss.php' ],
 		'expected' => true,
 	],
 ];

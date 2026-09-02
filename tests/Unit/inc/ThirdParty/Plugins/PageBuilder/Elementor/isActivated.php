@@ -16,16 +16,14 @@ class Test_IsActivated extends TestCase {
 	/**
 	 * Tests Elementor::is_activated() against the presence/absence of ELEMENTOR_VERSION.
 	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 *
 	 * @param array $config   Test configuration.
 	 * @param bool  $expected Expected return value.
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		if ( $config['define_elementor_version'] ) {
-			define( 'ELEMENTOR_VERSION', '3.20.0' );
+		if ( null !== $config['elementor_version'] ) {
+			$this->constants['ELEMENTOR_VERSION'] = $config['elementor_version'];
 		}
 
 		$this->assertSame( $expected, Elementor::is_activated() );
