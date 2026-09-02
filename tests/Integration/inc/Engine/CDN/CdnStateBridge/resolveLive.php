@@ -22,6 +22,25 @@ class Test_ResolveLive extends AdminTestCase {
 		parent::set_up();
 
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+
+		// This test exercises resolve_live()'s own subscription/token logic in isolation.
+		// Without a valid license mocked, Render\Controller::maybe_pause_cdn_for_inactive_subscription()
+		// (an unrelated, separately-tested pre_get_rocket_option_cdn filter keyed off WP Rocket license
+		// validity, not RocketCDN subscription state) would short-circuit the 'cdn' read before
+		// legacy_to_state() ever sees it, for any case where the mocked subscription looks cancelled.
+		$container = apply_filters( 'rocket_container', null );
+		$user      = $container->get( 'user' );
+
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = false;
+		$licence->plugin_updates_ban_reason = '';
+
+		$user_data                     = new \stdClass();
+		$user_data->licence_expiration = time() + YEAR_IN_SECONDS;
+		$user_data->licence            = $licence;
+		$user_data->is_reseller        = false;
+
+		$user->set_user( $user_data );
 	}
 
 	public function tear_down() {
