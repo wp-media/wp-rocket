@@ -31,7 +31,7 @@ class WordFenceCompatibility implements Subscriber_Interface, PluginCompatibilit
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return defined( 'WORDFENCE_VERSION' );
+		return (bool) rocket_get_constant( 'WORDFENCE_VERSION' );
 	}
 
 	/**

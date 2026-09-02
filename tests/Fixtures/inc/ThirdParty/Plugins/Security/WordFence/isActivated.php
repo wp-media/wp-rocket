@@ -2,11 +2,11 @@
 
 return [
 	'shouldReturnFalseWhenWordFenceNotPresent' => [
-		'config'   => [ 'define_wordfence_version' => false ],
+		'config'   => [ 'wordfence_version' => null ],
 		'expected' => false,
 	],
 	'shouldReturnTrueWhenWordFencePresent'     => [
-		'config'   => [ 'define_wordfence_version' => true ],
+		'config'   => [ 'wordfence_version' => '7.11.0' ],
 		'expected' => true,
 	],
 ];

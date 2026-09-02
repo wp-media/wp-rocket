@@ -2,11 +2,11 @@
 
 return [
 	'shouldReturnFalseWhenInlineRelatedPostsNotPresent' => [
-		'config'   => [ 'define_irp_plugin_slug' => false ],
+		'config'   => [ 'irp_plugin_slug' => null ],
 		'expected' => false,
 	],
 	'shouldReturnTrueWhenInlineRelatedPostsPresent'     => [
-		'config'   => [ 'define_irp_plugin_slug' => true ],
+		'config'   => [ 'irp_plugin_slug' => 'inline-related-posts' ],
 		'expected' => true,
 	],
 ];

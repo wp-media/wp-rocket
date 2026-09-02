@@ -2,11 +2,11 @@
 
 return [
 	'shouldReturnFalseWhenUnlimitedElementsNotPresent' => [
-		'config'   => [ 'define_unlimited_elements_inc' => false ],
+		'config'   => [ 'unlimited_elements_inc' => null ],
 		'expected' => false,
 	],
 	'shouldReturnTrueWhenUnlimitedElementsPresent'     => [
-		'config'   => [ 'define_unlimited_elements_inc' => true ],
+		'config'   => [ 'unlimited_elements_inc' => '/path/to/unlimited-elements.php' ],
 		'expected' => true,
 	],
 ];

@@ -2,11 +2,11 @@
 
 return [
 	'shouldReturnFalseWhenElementorNotPresent' => [
-		'config'   => [ 'define_elementor_version' => false ],
+		'config'   => [ 'elementor_version' => null ],
 		'expected' => false,
 	],
 	'shouldReturnTrueWhenElementorPresent'     => [
-		'config'   => [ 'define_elementor_version' => true ],
+		'config'   => [ 'elementor_version' => '3.20.0' ],
 		'expected' => true,
 	],
 ];

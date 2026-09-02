@@ -17,7 +17,7 @@ class InlineRelatedPosts implements Subscriber_Interface, PluginCompatibilityInt
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return defined( 'IRP_PLUGIN_SLUG' );
+		return (bool) rocket_get_constant( 'IRP_PLUGIN_SLUG' );
 	}
 
 	/**
