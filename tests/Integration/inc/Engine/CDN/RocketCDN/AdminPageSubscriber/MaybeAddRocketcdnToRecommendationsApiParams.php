@@ -40,18 +40,25 @@ class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->white_label = $config['white_label'];
 
+		if ( $config['is_reseller'] ?? false ) {
+			$user_data             = new \stdClass();
+			$user_data->is_reseller = true;
+			$container             = apply_filters( 'rocket_container', null );
+			$container->get( 'user' )->set_user( $user_data );
+		}
+
 		if ( $config['has_customer_data'] ) {
 			set_transient( 'rocketcdn_customer_data', [ 'customer_id' => '123' ], HOUR_IN_SECONDS );
 		}
 
 		if ( isset( $config['subscription_status'] ) ) {
-			set_transient(
-				'rocketcdn_status',
-				[
-					'subscription_status' => $config['subscription_status'],
-				],
-				HOUR_IN_SECONDS
-			);
+			$status = [ 'subscription_status' => $config['subscription_status'] ];
+
+			if ( isset( $config['plan_type'] ) ) {
+				$status['plan_type'] = $config['plan_type'];
+			}
+
+			set_transient( 'rocketcdn_status', $status, HOUR_IN_SECONDS );
 		}
 
 		$result = wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $config['params'] );
