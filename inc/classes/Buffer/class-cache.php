@@ -112,16 +112,17 @@ class Cache extends Abstract_Buffer {
 			$this->serve_cache_file( $cache_filepath );
 		}
 
-		// Maybe we're looking for a webp file.
-		$cache_filename = basename( $cache_filepath );
+		// Maybe we're looking for a webp file. Compare the two paths rather than looking for the
+		// "-webp" marker in the name: once the basename is bounded the marker is inside the md5.
+		$non_webp_filepath = $this->get_cache_path( [ 'webp' => false ] );
 
-		if ( strpos( $cache_filename, '-webp' ) !== false ) {
+		if ( $non_webp_filepath !== $cache_filepath ) {
 			// We're looking for a webp file that doesn't exist: try to locate any `.no-webp` file.
 			$cache_dir_path = rtrim( dirname( $cache_filepath ), '/\\' ) . DIRECTORY_SEPARATOR;
 
 			if ( file_exists( $cache_dir_path . '.no-webp' ) ) {
 				// We have a `.no-webp` file: try to deliver a non-webp cache file.
-				$cache_filepath      = $cache_dir_path . str_replace( '-webp', '', $cache_filename );
+				$cache_filepath      = $non_webp_filepath;
 				$cache_filepath_gzip = $cache_filepath . '_gzip';
 
 				$this->log(
@@ -403,10 +404,73 @@ class Cache extends Abstract_Buffer {
 		$request_uri_path = preg_replace_callback( '/%[0-9A-F]{2}/', [ $this, 'reset_lowercase' ], $request_uri_path );
 		// Directories in Windows can't contain question marks.
 		$request_uri_path = str_replace( '?', '#', $request_uri_path );
-		// Limit filename max length to 255 characters.
-		$request_uri_path .= '/' . substr( $filename, 0, 250 ) . '.html';
+
+		// Bound every name in the path: an overlong directory fails the write as surely as a basename.
+		$request_uri_path  = $this->bound_cache_path( $request_uri_path );
+		$request_uri_path .= '/' . self::bound_path_component( $filename ) . '.html';
 
 		return $request_uri_path;
+	}
+
+	/**
+	 * Bounds every request derived component of the cache path.
+	 *
+	 * The cache root is left alone: it is server owned and already exists on disk.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $path Cache path starting with the cache root.
+	 * @return string Path with each component after the root bounded.
+	 */
+	private function bound_cache_path( $path ) {
+		$root = $this->cache_dir_path;
+
+		if ( '' === $root || 0 !== strpos( $path, $root ) ) {
+			return $path;
+		}
+
+		return $root . self::bound_path_components( substr( $path, strlen( $root ) ) );
+	}
+
+	/**
+	 * Bounds one cache path component to 240 bytes.
+	 *
+	 * An overlong component becomes "<first 207 bytes>~<md5 of the whole component>", so values
+	 * sharing a long prefix keep distinct names. 240 leaves room for ".html_gzip_temp", the longest
+	 * suffix the write path appends. Verbatim output is at most 239 bytes and bounded output always
+	 * 240, so the two branches cannot produce the same name.
+	 *
+	 * Static because purge needs the same rule and runs outside the advanced-cache context.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $component Path component, or the basename before ".html".
+	 * @return string Bounded component.
+	 */
+	public static function bound_path_component( $component ) {
+		if ( strlen( $component ) < 240 ) {
+			return $component;
+		}
+
+		return substr( $component, 0, 207 ) . '~' . md5( $component );
+	}
+
+	/**
+	 * Bounds every component of a path fragment.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $path Path fragment, for example "/shop/item/".
+	 * @return string Same fragment with each component bounded.
+	 */
+	public static function bound_path_components( $path ) {
+		$components = explode( '/', $path );
+
+		foreach ( $components as $i => $component ) {
+			$components[ $i ] = self::bound_path_component( $component );
+		}
+
+		return implode( '/', $components );
 	}
 
 	/** ----------------------------------------------------------------------------------------- */
