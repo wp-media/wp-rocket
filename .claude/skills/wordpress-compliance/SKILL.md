@@ -63,6 +63,7 @@ Using `manage_options` directly for WP Rocket–specific actions is incorrect an
 - Echoing raw variables
 - Introducing unescaped output
 - Storing sensitive values in plain text
+- Writing files containing secrets/credentials (API keys, tokens, license data) to a path under `wp-content/` without a real access-control mechanism. `.htaccess deny` alone does not block Nginx, and an `index.php` stub in the directory does not block direct requests to sibling static files (both web servers serve those straight from disk, bypassing PHP entirely) — neither is sufficient by itself. Store the data outside the web-served tree, or serve it only through an authenticated PHP handler (e.g. an admin-ajax/REST callback gated by `current_user_can()`) instead of a directly fetchable static file
 - Bypassing repository PHPCS configuration
 - Using jQuery in new or modified JS code
 

@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  WPCache
  */
-class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
+class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/noticeWpConfigPermissions.php';
 
 	protected function setUp(): void {
