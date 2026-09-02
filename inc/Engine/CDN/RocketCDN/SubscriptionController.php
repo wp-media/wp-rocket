@@ -123,6 +123,15 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Whether a RocketCDN user token has been saved.
+	 *
+	 * @return bool
+	 */
+	public function has_token(): bool {
+		return $this->options_manager->has_token();
+	}
+
+	/**
 	 * Get subscription data.
 	 *
 	 * @return array

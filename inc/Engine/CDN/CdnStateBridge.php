@@ -115,6 +115,14 @@ class CdnStateBridge implements Subscriber_Interface {
 			return Context::BYOCDN_TYPE;
 		}
 
+		/**No CDN token means no subscription was ever registered for this install.
+		 * The API client returns 'cancelled' as its hardcoded default when there is no token,
+		 * which would incorrectly block CDN activation. Skip subscription checks entirely.
+		*/
+		if ( ! $this->subscription_controller->has_token() ) {
+			return Context::ROCKETCDN_FREE_TYPE;
+		}
+
 		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
 			return Context::CDN_STATE_NOTHING;
 		}

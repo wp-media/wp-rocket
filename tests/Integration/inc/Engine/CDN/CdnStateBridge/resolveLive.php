@@ -27,6 +27,7 @@ class Test_ResolveLive extends AdminTestCase {
 	public function tear_down() {
 		update_option( 'wp_rocket_settings', $this->original_settings );
 		delete_transient( 'rocketcdn_status' );
+		delete_option( 'rocketcdn_user_token' );
 		remove_all_filters( 'pre_get_rocket_option_cdn' );
 		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
 
@@ -38,6 +39,10 @@ class Test_ResolveLive extends AdminTestCase {
 	 */
 	public function testShouldResolveCdnStateLive( array $config, string $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'] ?? [ 'subscription_status' => 'none' ], MINUTE_IN_SECONDS );
+
+		if ( ! empty( $config['token'] ) ) {
+			update_option( 'rocketcdn_user_token', $config['token'] );
+		}
 
 		$settings = array_merge( get_option( 'wp_rocket_settings', [] ), $config['stored'] );
 		update_option( 'wp_rocket_settings', $settings );

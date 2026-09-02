@@ -51,6 +51,7 @@ return [
 				'subscription_status' => 'running',
 				'plan_type'           => 'free',
 			],
+			'token'        => 'fake-cdn-token',
 			'write'        => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
@@ -73,6 +74,7 @@ return [
 				'subscription_status' => 'running',
 				'plan_type'           => 'paid',
 			],
+			'token'        => 'fake-cdn-token',
 			'write'        => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
@@ -95,6 +97,7 @@ return [
 				'subscription_status' => 'cancelled',
 				'website_status'      => 'active',
 			],
+			'token'        => 'fake-cdn-token',
 			'write'        => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
@@ -117,9 +120,36 @@ return [
 				'subscription_status' => 'cancelled',
 				'website_status'      => 'pending_deletion',
 			],
+			'token'        => 'fake-cdn-token',
 			'write'        => [
 				'cdn'      => 1,
 				'cdn_type' => 'rocketcdn',
+			],
+		],
+		'expected' => [
+			'cdn'       => 1,
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_free',
+		],
+	],
+	'testShouldSetRocketcdnFreeWhenNoTokenEvenIfSubscriptionShowsCancelled' => [
+		'config'   => [
+			'initial'      => [
+				'cdn'       => 0,
+				'cdn_type'  => 'rocketcdn',
+				'cdn_state' => 'nothing',
+			],
+			'subscription' => [
+				'subscription_status' => 'cancelled',
+				'website_status'      => 'active',
+			],
+			// No 'token' key: rocketcdn_user_token is absent, simulating a fresh install
+			// with no RocketCDN subscription. The bridge must not treat the APIClient's
+			// hardcoded 'cancelled' default as a real cancellation in this state.
+			'write'        => [
+				'cdn'       => 1,
+				'cdn_type'  => 'rocketcdn',
+				'cdn_state' => 'rocketcdn_free',
 			],
 		],
 		'expected' => [
