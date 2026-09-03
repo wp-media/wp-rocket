@@ -3,8 +3,18 @@
 namespace WP_Rocket\ThirdParty\Plugins\Optimization;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class RapidLoad implements Subscriber_Interface {
+class RapidLoad implements Subscriber_Interface, PluginCompatibilityInterface {
+
+	/**
+	 * Whether RapidLoad Power-Up for Autoptimize is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'UUCSS_VERSION' );
+	}
 
 	/**
 	 * Return an array of events that this subscriber listens to.

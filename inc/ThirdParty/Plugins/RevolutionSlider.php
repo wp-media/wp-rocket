@@ -6,13 +6,23 @@ use Smush\Core\Settings;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for compatibility with RevolutionSlider.
  *
  * @since  3.9.2
  */
-class RevolutionSlider implements Subscriber_Interface {
+class RevolutionSlider implements Subscriber_Interface, PluginCompatibilityInterface {
+
+	/**
+	 * Whether RevolutionSlider is active at a compatible version.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'RS_REVISION' ) && version_compare( RS_REVISION, '6.5.5', '>=' ); // @phpstan-ignore-line
+	}
 
 	/**
 	 * Subscribed events for RevolutionSlider.

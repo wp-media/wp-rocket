@@ -4,8 +4,9 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class AllInOneSEOPack implements Subscriber_Interface {
+class AllInOneSEOPack implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Option instance.
@@ -21,6 +22,15 @@ class AllInOneSEOPack implements Subscriber_Interface {
 	 */
 	public function __construct( Options_Data $option ) {
 		$this->option = $option;
+	}
+
+	/**
+	 * Whether All in One SEO Pack (v3 or v4) is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'AIOSEOP_VERSION' ) || ( defined( 'AIOSEO_VERSION' ) && function_exists( 'aioseo' ) );
 	}
 
 	/**
