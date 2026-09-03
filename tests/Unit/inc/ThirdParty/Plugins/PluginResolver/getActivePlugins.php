@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
-use WP_Rocket\Tests\Fixtures\classes\PluginResolverSlice1GatedIds;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
@@ -16,6 +16,20 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  * @group  ThirdParty
  */
 class Test_GetActivePlugins extends TestCase {
+	/**
+	 * PluginResolverGatedIds::IDS minus 'translatepress' for this Unit suite only.
+	 *
+	 * tests/Unit/bootstrap.php unconditionally preloads the TRP_Translate_Press
+	 * fixture class for every Unit test (needed by the pre-existing TranslatePress
+	 * callback tests, e.g. detectHomepage.php), unlike the Integration suite, which
+	 * only loads it under `--group TranslatePress`. So in this suite specifically,
+	 * TranslatePress::is_activated() always reports true regardless of the
+	 * "target plugin absent" assumption the rest of the gated-ids list relies on.
+	 *
+	 * @var array<string>
+	 */
+	private const UNIT_ENV_ALWAYS_ACTIVE_OVERRIDES = [ 'translatepress' ];
+
 	/**
 	 * Resets memoization before each test.
 	 *
@@ -41,9 +55,10 @@ class Test_GetActivePlugins extends TestCase {
 	/**
 	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
 	 * so every id defaults active — the registry's full id set is unchanged.
-	 * Issue #8789 slice 1 opts 7 ids into real detection; none of their target
-	 * plugins are present in this test environment, so those 7 are excluded
-	 * from the resolved active set while the rest still default active.
+	 * Issue #8789 slices 1-2 opt a growing set of ids into real detection; none
+	 * of their target plugins are present in this test environment, so those
+	 * ids are excluded from the resolved active set while the rest still
+	 * default active.
 	 *
 	 * @dataProvider configTestData
 	 *
@@ -54,7 +69,12 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->assertSame( $expected, array_keys( $registry ) );
 
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverSlice1GatedIds::IDS ) );
+		$expected_active_ids = array_values(
+			array_diff(
+				array_keys( $registry ),
+				array_diff( PluginResolverGatedIds::IDS, self::UNIT_ENV_ALWAYS_ACTIVE_OVERRIDES )
+			)
+		);
 
 		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
@@ -92,7 +112,12 @@ class Test_GetActivePlugins extends TestCase {
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
 		$registry            = ( new SubscriberFactory() )->get_registry();
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverSlice1GatedIds::IDS ) );
+		$expected_active_ids = array_values(
+			array_diff(
+				array_keys( $registry ),
+				array_diff( PluginResolverGatedIds::IDS, self::UNIT_ENV_ALWAYS_ACTIVE_OVERRIDES )
+			)
+		);
 
 		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
