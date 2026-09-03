@@ -75,7 +75,7 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 
 			// Populate the term's ID.
 			$expected = str_replace( 'term-1', "term-{$this->tag->term_id}", $expected );
-			$this->assertSame( $expected, $actions['rocket_purge'], 'tag: ' . var_export( $this->tag, true ) );
+			$this->assertSame( $expected, $actions['rocket_purge'] );
 		} else {
 			$this->assertArrayNotHasKey( 'rocket_purge', $actions );
 		}
