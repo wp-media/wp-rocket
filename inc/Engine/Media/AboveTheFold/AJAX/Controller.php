@@ -155,14 +155,30 @@ class Controller implements ControllerInterface {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
 
+		// Every branch below stores raw string data supplied via the unauthenticated
+		// `rocket_beacon` AJAX action. It must be sanitized/validated at storage time,
+		// independent of any render-time escaping — a future new `case` must not skip this.
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
-				$object->srcset = $image->srcset;
-				$object->sizes  = $image->sizes;
+
+				$raw_srcset       = ( isset( $image->srcset ) && is_string( $image->srcset ) ) ? $image->srcset : '';
+				$sanitized_srcset = $this->sanitize_srcset( $raw_srcset );
+
+				if ( empty( $sanitized_srcset ) ) {
+					// srcset is required for this type (no <img> fallback like `picture` has);
+					// reject the whole object, mirroring how array_filter() drops invalid
+					// `picture` sources below. Do not fall back to storing an empty string.
+					return null;
+				}
+
+				$object->srcset = $sanitized_srcset;
+
+				$raw_sizes     = ( isset( $image->sizes ) && is_string( $image->sizes ) ) ? $image->sizes : '';
+				$object->sizes = ! empty( $raw_sizes ) ? $this->sanitize_sizes( $raw_sizes ) : '';
 				break;
 			case 'picture':
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
@@ -187,10 +203,16 @@ class Controller implements ControllerInterface {
 						if ( is_array( $image->$key ) ) {
 							$sanitized_array = array_map(
 								function ( $item ) {
-									if ( ! empty( $item->src ) ) {
-										$item->src = $this->sanitize_image_url( $item->src );
-									}
-									return $item;
+									// Rebuild each item from a whitelist rather than mutating and
+									// returning the attacker-supplied object as-is, so unrecognized
+									// properties never ride through to the stored JSON.
+									$sanitized_item = new \stdClass();
+
+									$sanitized_item->src = ( is_object( $item ) && isset( $item->src ) && is_string( $item->src ) )
+										? $this->sanitize_image_url( $item->src )
+										: '';
+
+									return $sanitized_item;
 								},
 								$image->$key
 							);
