@@ -8,7 +8,8 @@ return [
 		'expected' => [
 			'remove_unused_css',
 			'async_css',
-			'cdn_type'
+			'cdn_type',
+			'cdn_state',
 		],
 	],
 ];

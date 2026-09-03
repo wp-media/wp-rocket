@@ -234,6 +234,22 @@
 	}
 }
 
+.wpr-cdn-active-label {
+	display: none;
+}
+.wpr-cdn-active-indicator {
+	.wpr-cdn-active-label {
+		display: inline;
+	}
+}
+
+.wpr-cdn-tabs__tab .wpr-cdn-active-label {
+	margin-left: 6px;
+	@include font-size(12, 16);
+	color: $cGreenDark1;
+	font-weight: 600;
+}
+
 .wpr-cdn-status--paused {
 	.wpr-cdn-indicator__dot {
 		background: #e5a800;

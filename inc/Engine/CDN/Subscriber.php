@@ -568,30 +568,30 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_clear_cache( $old_value, $value ) {
-		$cdn_changed      = Utils::did_setting_change( 'cdn', $old_value, $value );
-		$cdn_type_changed = Utils::did_setting_change( 'cdn_type', $old_value, $value );
+		$cdn_state_changed = Utils::did_setting_change( 'cdn_state', $old_value, $value );
 
-		// Detect cdn status for pause/resume and cdn_type change.
-		if ( ! $cdn_changed && ! $cdn_type_changed ) {
+		// Detect cdn status for cdn_state change.
+		if ( ! $cdn_state_changed ) {
 			return;
 		}
 
-		// Clear cache if cdn is paused/resumed or cdn_type is changed.
+		// Clear whole cache when moving from nothing to rocketcdn_paid OR from rocketcdn_paid to nothing.
+		// Clear whole cache when moving from nothing to byocdn OR from byocdn to nothing.
+		// Clear whole cache when moving from rocketcdn_paid to byocdn OR from byocdn to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_paid to rocketcdn_free OR from rocketcdn_free to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_free to byocdn OR from byocdn to rocketcdn_free.
+		// Clear free pages' cache when moving from nothing to rocketcdn_free OR from rocketcdn_free to nothing.
 
-		// CDN is paused/resumed.
-		if ( $cdn_changed ) {
-			// Clear specific pages' cache only when it's free rocketcdn.
-			if ( $this->subscription_controller->is_free() ) {
-				$this->cache->clear_rocketcdn_free_pages_cache();
-				return;
-			}
-
-			// Clear whole cache in case of paid rocketcdn.
-			$this->cache->clear_all_cache();
+		if (
+			( Context::CDN_STATE_NOTHING === $old_value['cdn_state'] && Context::ROCKETCDN_FREE_TYPE === $value['cdn_state'] )
+			||
+			( Context::ROCKETCDN_FREE_TYPE === $old_value['cdn_state'] && Context::CDN_STATE_NOTHING === $value['cdn_state'] )
+		) {
+			$this->cache->clear_rocketcdn_free_pages_cache();
 			return;
 		}
 
-		// CDN type is changed, Clear whole cache.
+		// Clear whole cache.
 		$this->cache->clear_all_cache();
 	}
 
