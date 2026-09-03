@@ -80,11 +80,16 @@ class SetOption implements AbilitiesInterface {
 	/**
 	 * Options that are readable via get-options but cannot be written through this ability.
 	 *
-	 * The option - cdn_state is one-way derived from the legacy cdn / cdn_type fields by CdnStateBridge -
-	 * nothing syncs the reverse direction. Setting it directly here would let it disagree with
-	 * cdn / cdn_type immediately, not just eventually, since no code writes cdn_state back into
-	 * the legacy fields. Supporting that would mean reintroducing a state -> legacy sync, the
-	 * exact bidirectional complexity this bridge was deliberately simplified away from.
+	 * The option - cdn_state has two internal writers, neither of which this ability should
+	 * bypass: CdnStateBridge derives it from the legacy cdn / cdn_type fields on settings
+	 * save, and CDNOptionsManager::set_cdn_state() writes it directly (via
+	 * DataManagerSubscriber::maybe_sync_cdn_state() and CdnStateBridge's own upgrade-time
+	 * backfill) when the RocketCDN subscription tier changes outside of a cdn / cdn_type
+	 * change. Neither writer syncs cdn_state back into the legacy fields. Setting it
+	 * directly here would let it disagree with both of its real sources of truth, not just
+	 * eventually but immediately - supporting that would mean reintroducing a state -> legacy
+	 * sync, the exact bidirectional complexity this bridge was deliberately simplified away
+	 * from.
 	 */
 	private const READ_ONLY_OPTIONS = [
 		'cdn_state',
