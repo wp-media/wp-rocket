@@ -103,7 +103,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
-			'transient_rocketcdn_status'             => [ 'maybe_sync_cdn_state', 10, 2 ],
+			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
 		];
 	}
 
@@ -414,11 +414,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * cname/zone resolution), and this callback writes an option + can trigger a cache
 	 * clear as a side effect - not something a front-end page view should ever do.
 	 *
-	 * @param mixed  $value     Transient value.
-	 * @param string $transient Transient name.
+	 * @param mixed $value Transient value.
 	 * @return mixed
 	 */
-	public function maybe_sync_cdn_state( $value, $transient ) {
+	public function maybe_sync_cdn_state( $value ) {
 		if ( ! is_admin() || ! current_user_can( 'rocket_manage_options' ) ) {
 			return $value;
 		}
