@@ -200,7 +200,7 @@ class Assets {
 	}
 
 	/**
-	 * Inserts in the HTML the script to replace the Youtube thumbnail by the iframe.
+	 * Inserts in the HTML the script to replace the YouTube thumbnail by the iframe.
 	 *
 	 * @param array<string, bool> $args Array of arguments to populate the script options.
 	 * @return void
@@ -210,7 +210,7 @@ class Assets {
 	}
 
 	/**
-	 * Returns the Youtube Thumbnail inline script
+	 * Returns the YouTube Thumbnail inline script
 	 *
 	 * @param array<string, bool> $args Array of arguments to populate the script options.
 	 * @return string
@@ -221,7 +221,7 @@ class Assets {
 			'lazy_image'        => false,
 			'native'            => true,
 			'extension'         => 'jpg',
-			'button_aria_label' => 'play Youtube video',
+			'button_aria_label' => 'play YouTube video',
 		];
 
 		$allowed_resolutions = [
@@ -287,7 +287,7 @@ class Assets {
 	}
 
 	/**
-	 * Inserts the CSS to style the Youtube thumbnail container
+	 * Inserts the CSS to style the YouTube thumbnail container
 	 *
 	 * @param array<string, bool> $args Array of arguments to populate the CSS.
 	 * @return void
@@ -299,7 +299,7 @@ class Assets {
 	}
 
 	/**
-	 * Returns the CSS for the Youtube Thumbnail
+	 * Returns the CSS for the YouTube Thumbnail
 	 *
 	 * @param array<string, bool> $args Array of arguments to populate the CSS.
 	 * @return string
