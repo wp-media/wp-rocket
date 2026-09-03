@@ -21,6 +21,24 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 		self::removeDBHooks();
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+	}
+
+	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
