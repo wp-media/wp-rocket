@@ -45,6 +45,16 @@ class PluginResolver {
 	 * @return array<string>
 	 */
 	private static function filter_active_registry( array $registry ): array {
+		// is_plugin_active() is only unconditionally available on the frontend from WP 6.8+
+		// (core requires wp-admin/includes/plugin.php in wp-settings.php as of that release);
+		// WP Rocket supports 5.8+. Guard once here, centrally — is_activated() is the only
+		// caller of is_plugin_active() among the registry classes and this is the only place
+		// is_activated() is invoked. Mirrors EWWW::is_active_for_network(), Imagify_Subscriber,
+		// and Mobile_Subscriber::get_subscribed_events().
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore-line
+		}
+
 		$active = [];
 
 		foreach ( $registry as $id => $class ) {

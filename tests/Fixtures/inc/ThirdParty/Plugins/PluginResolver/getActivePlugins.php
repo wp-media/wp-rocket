@@ -3,7 +3,8 @@
 return [
 	'test_data' => [
 		'testShouldReturnAllRegistryIdsByDefault' => [
-			'expected' => [
+			// The full registry, unaffected by gating (see Implementation Plan #8790).
+			'registry_ids'      => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',
 				'elementor_subscriber',
@@ -41,6 +42,52 @@ return [
 				'the_events_calendar',
 				'perfmatters',
 				'rapidload',
+				'weglot',
+				'translatepress',
+				'wpgeotargeting',
+				'contactform7',
+				'termly_subscriber',
+				'optimole_subscriber',
+			],
+			// Issue #8790 slice 1: revolution_slider_subscriber, optimus_webp_subscriber,
+			// rapidload and all_in_one_seo_pack now opt in to PluginCompatibilityInterface;
+			// none of their target plugins are defined in this test environment, so they
+			// are excluded here while every other id still defaults active (Phase 0
+			// behaviour, unchanged for the remaining registry entries).
+			'active_by_default' => [
+				'mobile_subscriber',
+				'syntaxhighlighter_subscriber',
+				'elementor_subscriber',
+				'woocommerce_subscriber',
+				'ngg_subscriber',
+				'smush_subscriber',
+				'imagify_webp_subscriber',
+				'shortpixel_webp_subscriber',
+				'ewww_webp_subscriber',
+				'bigcommerce_subscriber',
+				'beaverbuilder_subscriber',
+				'amp_subscriber',
+				'simple_custom_css',
+				'pdfembedder',
+				'adthrive',
+				'autoptimize',
+				'wp-meteor',
+				'wordfence_subscriber',
+				'thirstyaffiliates',
+				'pwa',
+				'yoast_seo',
+				'convertplug',
+				'unlimited_elements',
+				'inline_related_posts',
+				'wpml',
+				'cloudflare_plugin_subscriber',
+				'jetpack',
+				'rank_math_seo',
+				'seopress',
+				'the_seo_framework',
+				'rocket_lazy_load',
+				'the_events_calendar',
+				'perfmatters',
 				'weglot',
 				'translatepress',
 				'wpgeotargeting',

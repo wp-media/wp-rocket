@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for the WebP support with Optimus.
@@ -9,7 +10,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.4
  * @author Grégory Viguier
  */
-class Optimus_Subscriber implements Webp_Interface, Subscriber_Interface {
+class Optimus_Subscriber implements Webp_Interface, Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Optimus basename.
@@ -19,6 +20,15 @@ class Optimus_Subscriber implements Webp_Interface, Subscriber_Interface {
 	 * @author Grégory Viguier
 	 */
 	private $plugin_basename;
+
+	/**
+	 * Whether Optimus is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'OPTIMUS_FILE' );
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
