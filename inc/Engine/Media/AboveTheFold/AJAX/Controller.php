@@ -165,7 +165,7 @@ class Controller implements ControllerInterface {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
 
-				$raw_srcset       = ( isset( $image->srcset ) && is_string( $image->srcset ) ) ? $image->srcset : '';
+				$raw_srcset       = $this->get_string_prop( $image, 'srcset' );
 				$sanitized_srcset = $this->sanitize_srcset( $raw_srcset );
 
 				if ( empty( $sanitized_srcset ) ) {
@@ -177,7 +177,7 @@ class Controller implements ControllerInterface {
 
 				$object->srcset = $sanitized_srcset;
 
-				$raw_sizes     = ( isset( $image->sizes ) && is_string( $image->sizes ) ) ? $image->sizes : '';
+				$raw_sizes     = $this->get_string_prop( $image, 'sizes' );
 				$object->sizes = ! empty( $raw_sizes ) ? $this->sanitize_sizes( $raw_sizes ) : '';
 				break;
 			case 'picture':
@@ -208,9 +208,8 @@ class Controller implements ControllerInterface {
 									// properties never ride through to the stored JSON.
 									$sanitized_item = new \stdClass();
 
-									$sanitized_item->src = ( is_object( $item ) && isset( $item->src ) && is_string( $item->src ) )
-										? $this->sanitize_image_url( $item->src )
-										: '';
+									$item_src            = is_object( $item ) ? $this->get_string_prop( $item, 'src' ) : '';
+									$sanitized_item->src = '' !== $item_src ? $this->sanitize_image_url( $item_src ) : '';
 
 									return $sanitized_item;
 								},
@@ -241,6 +240,17 @@ class Controller implements ControllerInterface {
 		}
 
 		return $object;
+	}
+
+	/**
+	 * Safely read a string property from an untrusted, attacker-supplied object.
+	 *
+	 * @param object $data The object to read the property from.
+	 * @param string $key  The property name to read.
+	 * @return string The property value if it's set and is a string, empty string otherwise.
+	 */
+	private function get_string_prop( $data, string $key ): string {
+		return isset( $data->$key ) && is_string( $data->$key ) ? $data->$key : '';
 	}
 
 	/**
