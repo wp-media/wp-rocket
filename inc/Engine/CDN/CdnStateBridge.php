@@ -68,6 +68,8 @@ class CdnStateBridge implements Subscriber_Interface {
 			return;
 		}
 
+		$this->subscription_controller->reset_subscription_data();
+
 		$new_state = $this->legacy_to_state( $value );
 
 		if ( ( $value['cdn_state'] ?? null ) === $new_state ) {
@@ -89,10 +91,12 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function resolve_live( $value, $default ): string {
+		$settings = $this->options_api->get( 'settings', [] );
+
 		return $this->legacy_to_state(
 			[
-				'cdn'      => get_rocket_option( 'cdn' ),
-				'cdn_type' => get_rocket_option( 'cdn_type' ),
+				'cdn'      => $settings['cdn'] ?? 0,
+				'cdn_type' => $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE,
 			]
 		);
 	}
