@@ -248,7 +248,7 @@ class Rest extends WP_REST_Controller {
 	 * 'rocketcdn_free_inactive_confirm_required' error naming the currently active
 	 * mode when another mode is active — the caller re-submits with
 	 * 'confirm_activation' set to proceed anyway. Either way, activation is subject
-	 * to the same {@see Controller::should_reject_rocketcdn_activation()} gate
+	 * to the same {@see Controller::is_forced_off()} gate
 	 * `save_cdn_mode()` enforces, and is only actually applied once the page has
 	 * been validated and successfully persisted — never left switched on a
 	 * subsequent failure.
@@ -273,7 +273,7 @@ class Rest extends WP_REST_Controller {
 		$cdn_state            = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
 
 		if ( Context::ROCKETCDN_FREE_TYPE !== $cdn_state ) {
-			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
+			if ( $this->render_controller->is_forced_off() ) {
 				return new WP_Error(
 					'cdn_mode_forced_off',
 					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
@@ -552,7 +552,7 @@ class Rest extends WP_REST_Controller {
 
 		$rocketcdn_types = [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_PAID_TYPE ];
 
-		if ( in_array( $mode, $rocketcdn_types, true ) && $this->render_controller->should_reject_rocketcdn_activation() ) {
+		if ( in_array( $mode, $rocketcdn_types, true ) && $this->render_controller->is_forced_off() ) {
 			return new WP_Error(
 				'cdn_mode_forced_off',
 				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
