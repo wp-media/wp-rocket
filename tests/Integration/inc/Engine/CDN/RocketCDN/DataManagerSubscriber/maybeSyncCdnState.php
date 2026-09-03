@@ -47,7 +47,7 @@ class Test_MaybeSyncCdnState extends RocketCDNTestCase {
 		$settings['cdn_state'] = $config['initial_cdn_state'];
 		update_option( 'wp_rocket_settings', $settings );
 
-		$result = $this->subscriber->maybe_sync_cdn_state( $config['transient_value'], 'rocketcdn_status' );
+		$result = $this->subscriber->maybe_sync_cdn_state( $config['transient_value'] );
 
 		$this->assertSame( $config['transient_value'], $result );
 
@@ -73,7 +73,7 @@ class Test_MaybeSyncCdnState extends RocketCDNTestCase {
 			'status_code' => 200,
 		];
 
-		$result = $this->subscriber->maybe_sync_cdn_state( $transient_value, 'rocketcdn_status' );
+		$result = $this->subscriber->maybe_sync_cdn_state( $transient_value );
 
 		$this->assertSame( $transient_value, $result );
 
