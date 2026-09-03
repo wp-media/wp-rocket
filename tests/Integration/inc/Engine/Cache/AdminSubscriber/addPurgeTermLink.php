@@ -31,6 +31,10 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 	}
 
 	public function tear_down() {
+		if ( $this->tag instanceof \WP_Term ) {
+			wp_delete_term( $this->tag->term_id, 'post_tag' );
+		}
+
 		self::uninstallAtfTable();
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
