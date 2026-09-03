@@ -187,7 +187,7 @@ class Controller extends Abstract_Render {
 			'status_indicator'  => $status_indicator_data,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_forced_off'     => $this->is_forced_off(),
 			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
@@ -264,7 +264,7 @@ class Controller extends Abstract_Render {
 			'limit_reached'     => $limit_reached,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_forced_off'     => $this->is_forced_off(),
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
@@ -969,7 +969,7 @@ class Controller extends Abstract_Render {
 	 *
 	 * @return bool True if the CDN should be force-paused, false otherwise.
 	 */
-	private function is_forced_off(): bool {
+	public function is_forced_off(): bool {
 		// Force paused if paid plan cancelled but in grace period.
 		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return true;
