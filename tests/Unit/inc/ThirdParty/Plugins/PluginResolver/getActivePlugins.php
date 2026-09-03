@@ -16,6 +16,18 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetActivePlugins extends TestCase {
 	/**
+	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed.
+	 *
+	 * @var array<string>
+	 */
+	private const GATED_INACTIVE_IDS = [
+		'revolution_slider_subscriber',
+		'optimus_webp_subscriber',
+		'rapidload',
+		'all_in_one_seo_pack',
+	];
+
+	/**
 	 * Resets memoization before each test.
 	 *
 	 * @inheritDoc
@@ -38,18 +50,20 @@ class Test_GetActivePlugins extends TestCase {
 	}
 
 	/**
-	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so every id defaults active — the resolved set equals the full registry.
+	 * The full registry id set is returned as-is, while the resolved active
+	 * set excludes ids whose is_activated() reports inactive in this test
+	 * environment.
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array $expected Expected active plugin ids.
+	 * @param array $registry_ids      Expected full registry ids.
+	 * @param array $active_by_default Expected active-by-default ids.
 	 */
-	public function testShouldReturnAllRegistryIdsByDefault( $expected ) {
+	public function testShouldReturnAllRegistryIdsByDefault( $registry_ids, $active_by_default ) {
 		$registry = ( new SubscriberFactory() )->get_registry();
 
-		$this->assertSame( $expected, array_keys( $registry ) );
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+		$this->assertSame( $registry_ids, array_keys( $registry ) );
+		$this->assertSame( $active_by_default, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**
@@ -84,9 +98,10 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
-		$registry = ( new SubscriberFactory() )->get_registry();
+		$registry            = ( new SubscriberFactory() )->get_registry();
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::GATED_INACTIVE_IDS ) );
 
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**

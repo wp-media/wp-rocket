@@ -16,17 +16,30 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	/**
-	 * Baseline: the 43 factory-owned ids + the 2 statically-registered special
-	 * ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously hardcoded
-	 * in Plugin::$common_subscribers.
+	 * The number of plugin-compat subscribers the resolver reports active when
+	 * no third-party plugins are installed: the resolver's active registry ids
+	 * plus the 2 statically-registered ids (ezoic, mod_pagespeed).
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 45;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 41;
 
 	/**
-	 * Phase 0 defaults every registry id active, so the resolver's set is the
-	 * full registry, and the container must resolve every one of them.
+	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed.
+	 *
+	 * @var array<string>
+	 */
+	private const GATED_INACTIVE_IDS = [
+		'revolution_slider_subscriber',
+		'optimus_webp_subscriber',
+		'rapidload',
+		'all_in_one_seo_pack',
+	];
+
+	/**
+	 * The resolver's active set is the full registry minus the ids whose
+	 * target plugins aren't installed, and the container must resolve every
+	 * remaining one of them.
 	 */
 	public function testShouldResolveEveryActivePluginIdFromTheLiveContainer() {
 		$container = apply_filters( 'rocket_container', null );
@@ -36,8 +49,10 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$active_ids = PluginResolver::get_active_plugins( true );
 		$registry   = ( new SubscriberFactory() )->get_registry();
 
-		$this->assertSame( array_keys( $registry ), $active_ids, 'Phase 0 must resolve to the full 43-id registry.' );
-		$this->assertCount( 43, $active_ids );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::GATED_INACTIVE_IDS ) );
+
+		$this->assertSame( $expected_active_ids, $active_ids, 'The resolver must report the registry ids minus the gated-inactive ones.' );
+		$this->assertCount( 39, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
@@ -86,8 +101,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 43 resolver ids + ezoic + mod_pagespeed = the 45 plugin ids formerly
-		// hardcoded in Plugin::$common_subscribers.
+		// Adds 2 for the statically-registered ezoic and mod_pagespeed ids.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }
