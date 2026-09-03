@@ -6,18 +6,24 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 use RankMath\Helper;
 use RankMath\Sitemap\Router;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class RankMathSEO implements Subscriber_Interface {
+class RankMathSEO implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return (bool) rocket_get_constant( 'RANK_MATH_FILE' );
+	}
+
 	/**
 	 * Returns an array of events this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events(): array {
-		if ( ! defined( 'RANK_MATH_FILE' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_sitemap_preload_list' => [ 'add_sitemap', 15 ],
 		];
