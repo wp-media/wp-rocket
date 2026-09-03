@@ -28,6 +28,11 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 		self::installLrcTable();
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
+
+		$existing_tag = get_term_by( 'name', 'Ipseum', 'post_tag' );
+		if ( $existing_tag instanceof \WP_Term ) {
+			wp_delete_term( $existing_tag->term_id, 'post_tag' );
+		}
 	}
 
 	public function tear_down() {
