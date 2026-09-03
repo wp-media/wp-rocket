@@ -215,8 +215,6 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @param mixed $cdn_state CDN State Option.
-	 *
 	 * @return void
 	 */
 	public function maybe_turn_off_rocketcdn_for_inactive_subscription() {
