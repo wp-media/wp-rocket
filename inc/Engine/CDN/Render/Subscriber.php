@@ -43,14 +43,14 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'current_screen'                          => [ 'maybe_sync_forced_pause_tracking_state' ],
+			'current_screen'                          => [ 'maybe_sync_forced_off_tracking_state' ],
 			'rocket_cdn_free_page_list'               => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta'            => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
-			'pre_get_rocket_option_cdn'               => 'maybe_pause_cdn_for_inactive_subscription',
+			'admin_init'         => 'maybe_turn_off_rocketcdn_for_inactive_subscription',
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'render_expired_wpr_licence_notice', 9 ],
 				[ 'render_reseller_banned_notice', 9 ],
@@ -59,7 +59,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
-			'admin_init'                              => 'maybe_auto_create_rocketcdn_free_subscription',
 		];
 	}
 
@@ -207,8 +206,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function maybe_sync_forced_pause_tracking_state( \WP_Screen $screen ): void {
-		$this->controller->maybe_sync_forced_pause_tracking_state( $screen );
+	public function maybe_sync_forced_off_tracking_state( \WP_Screen $screen ): void {
+		$this->controller->maybe_sync_forced_off_tracking_state( $screen );
 	}
 
 	/**
@@ -216,12 +215,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @param mixed $cdn CDN Option.
+	 * @param mixed $cdn_state CDN State Option.
 	 *
-	 * @return mixed
+	 * @return void
 	 */
-	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
-		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
+	public function maybe_turn_off_rocketcdn_for_inactive_subscription() {
+		$this->controller->maybe_turn_off_rocketcdn_for_inactive_subscription();
 	}
 
 	/**
@@ -272,16 +271,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
 		return $this->controller->get_paid_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
-	}
-
-	/**
-	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
-	 *
-	 * @since 3.22.0.2
-	 *
-	 * @return void
-	 */
-	public function maybe_auto_create_rocketcdn_free_subscription(): void {
-		$this->controller->maybe_auto_create_rocketcdn_free_subscription();
 	}
 }

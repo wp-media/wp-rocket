@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_rocketcdn_checkout_parameter
@@ -11,6 +12,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group RocketCDN
  */
 class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
+	use DBTrait;
 
 	/**
 	 * Original $_GET superglobal.
@@ -25,6 +27,26 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	 * @var \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber
 	 */
 	private $subscriber;
+
+	/**
+	 * Installs the RocketCDN page-list table once for the class.
+	 *
+	 * @return void
+	 */
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installRocketCDNTable();
+	}
+
+	/**
+	 * Uninstalls the RocketCDN page-list table after the class.
+	 *
+	 * @return void
+	 */
+	public static function tear_down_after_class() {
+		self::uninstallRocketCDNTable();
+		parent::tear_down_after_class();
+	}
 
 	/**
 	 * Set up test fixtures.
@@ -42,6 +64,7 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		self::truncateRocketCDNTable();
 
 		// Get the subscriber from container.
 		$container        = apply_filters( 'rocket_container', null );
@@ -58,6 +81,13 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'wp_rocket_customer_data' );
 		remove_all_filters( 'pre_http_request' );
+		self::truncateRocketCDNTable();
+
+		// Reset any cdn_type/cdn a test case may have persisted, so it doesn't bleed
+		// into other tests.
+		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
+		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
 
 		parent::tear_down();
 	}
@@ -128,7 +158,7 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 
 					// Mock subscription endpoint.
 					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription' ) && isset( $config['api_subscription_data'] ) ) {
-						$subscription_data = $config['api_subscription_data'];
+						$subscription_data                                  = $config['api_subscription_data'];
 						$subscription_data['subscription_next_date_update'] = gmdate(
 							'Y-m-d H:i:s',
 							strtotime( $subscription_data['subscription_next_date_update'] )
@@ -146,13 +176,52 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			);
 		}
 
-		// Expect WPDieException for cases that trigger redirects.
-		if ( isset( $expected['expects_redirect'] ) && $expected['expects_redirect'] ) {
-			$this->expectException( \WPDieException::class );
+		// Set an initial cdn_type before checkout, if configured (Task 8.2 regression).
+		// Write straight through options_api (live get_option()/update_option()), not
+		// a request-scoped Options_Data snapshot, so it's reliably visible to the
+		// subscriber under test regardless of when its own instance was built.
+		if ( isset( $config['initial_cdn_type'] ) ) {
+			$options_api          = apply_filters( 'rocket_container', null )->get( 'options_api' );
+			$settings             = $options_api->get( 'settings', [] );
+			$settings['cdn_type'] = $config['initial_cdn_type'];
+			$options_api->set( 'settings', $settings );
 		}
 
-		// Execute the method.
-		$this->subscriber->handle_rocketcdn_checkout_parameter();
+		// Prefill the page-list table, if configured (page-list preservation regression).
+		if ( ! empty( $config['prefill_pages'] ) ) {
+			$query = apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' );
+
+			for ( $i = 1; $i <= $config['prefill_pages']; $i++ ) {
+				$query->add_item(
+					[
+						'url'           => "http://example.org/page-{$i}",
+						'title'         => "Page {$i}",
+						'modified'      => current_time( 'mysql' ),
+						'last_accessed' => current_time( 'mysql' ),
+					]
+				);
+			}
+		}
+
+		$page_count_before = ! empty( $config['prefill_pages'] )
+			? apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' )->get_total_count( false )
+			: null;
+
+		// Execute the method. Successful/redirecting paths call wp_die() (via
+		// WP_ROCKET_IS_TESTING) after persisting their side effects, so catch the
+		// exception ourselves instead of expectException() — this lets us keep
+		// asserting on the state left behind by the call.
+		$exception_thrown = false;
+
+		try {
+			$this->subscriber->handle_rocketcdn_checkout_parameter();
+		} catch ( \WPDieException $exception ) {
+			$exception_thrown = true;
+		}
+
+		if ( isset( $expected['expects_redirect'] ) ) {
+			$this->assertSame( $expected['expects_redirect'], $exception_thrown );
+		}
 
 		// Assert results based on expected outcome.
 		if ( isset( $expected['token_stored'] ) && false === $expected['token_stored'] ) {
@@ -167,8 +236,17 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			$settings = get_option( 'wp_rocket_settings' );
 			$this->assertArrayHasKey( 'cdn', $settings );
 			$this->assertEquals( 1, $settings['cdn'] );
-			$this->assertArrayHasKey( 'cdn_cnames', $settings );
-			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
+		}
+
+		if ( isset( $expected['cdn_type'] ) ) {
+			$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
+			$this->assertArrayHasKey( 'cdn_type', $settings );
+			$this->assertSame( $expected['cdn_type'], $settings['cdn_type'] );
+		}
+
+		if ( isset( $expected['page_count_unchanged'] ) && $expected['page_count_unchanged'] ) {
+			$page_count_after = apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' )->get_total_count( false );
+			$this->assertSame( $page_count_before, $page_count_after );
 		}
 	}
 }

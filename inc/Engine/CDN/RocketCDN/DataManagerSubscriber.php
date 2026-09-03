@@ -188,6 +188,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->cdn_options->save_token( $token );
 		$this->cdn_options->enable();
 
+		// Force cdn_type to rocketcdn so the live-resolved state actually becomes Pro,
+		// even if the site was previously on "Other CDN" (byocdn) when the purchase
+		// was made. Read-modify-write directly through the options API (not the
+		// request-scoped Options_Data snapshot) so this doesn't get clobbered by, or
+		// clobber, CDNOptionsManager::enable()'s own separate Options_Data instance.
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
+		$this->options_api->set( 'settings', $current_options );
+
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
 		$this->schedule_subscription_check( $subscription );
