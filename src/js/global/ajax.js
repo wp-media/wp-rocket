@@ -321,6 +321,16 @@ document.addEventListener('DOMContentLoaded', function() {
 		rocketInsightsIds = rocketInsightsIds.filter(x => parseInt(x, 10) !== idToRemove);
 	}
 
+	function disableAddUrlElements() {
+		$pageUrlInput.prop('disabled', true);
+
+		const addButton = document.getElementById('wpr-action-add_page_speed_radar');
+		if (addButton) {
+			addButton.classList.add('wpr-ri-action--disabled');
+			addButton.setAttribute('disabled', 'true');
+		}
+	}
+
 	function updateQuotaBanner(canAddPages) {
 		const $summaryInfo    = $('.wpr-ri-summary-info');
 		const isFree  = window.rocket_ajax_data?.is_free === '1';
