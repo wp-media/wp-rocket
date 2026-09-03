@@ -18,25 +18,34 @@
  *     @type string $page        Page section identifier.
  *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
  *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type string $forced_off_tooltip Tooltip copy explaining why the toggle is disabled, empty when not forced off.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
-$rocket_byocdn_active = $data['is_active'];
+$rocket_byocdn_active      = $data['is_active'];
+$rocket_forced_off_tooltip = $data['forced_off_tooltip'] ?? '';
 ?>
 
 <div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_byocdn_active ? ' wpr-cdn-active-indicator' : ''; ?>">
-	<label class="wpr-cdn-mode-toggle">
-		<input
-			type="checkbox"
-			class="wpr-cdn-mode-toggle__input"
-			id="wpr-byocdn-toggle"
-			data-cdn-mode="byocdn"
-			<?php checked( $rocket_byocdn_active ); ?>
-			<?php disabled( $data['is_forced_off'] ); ?>
-		/>
-		<span class="wpr-cdn-mode-toggle__slider"></span>
-	</label>
+	<div class="wpr-cdn-mode-toggle-wrap<?php echo '' !== $rocket_forced_off_tooltip ? ' wpr-btn-with-tool-tip' : ''; ?>">
+		<label class="wpr-cdn-mode-toggle">
+			<input
+				type="checkbox"
+				class="wpr-cdn-mode-toggle__input"
+				id="wpr-byocdn-toggle"
+				data-cdn-mode="byocdn"
+				<?php checked( $rocket_byocdn_active ); ?>
+				<?php disabled( $data['is_forced_off'] ); ?>
+			/>
+			<span class="wpr-cdn-mode-toggle__slider"></span>
+		</label>
+		<div class="wpr-tooltip<?php echo '' === $rocket_forced_off_tooltip ? ' wpr-isHidden' : ''; ?>">
+			<div class="wpr-tooltip-content">
+				<?php echo esc_html( $rocket_forced_off_tooltip ); ?>
+			</div>
+		</div>
+	</div>
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 		<span class="wpr-cdn-active-label"><?php esc_html_e( 'Active', 'rocket' ); ?></span>

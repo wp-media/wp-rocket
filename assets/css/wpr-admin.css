@@ -5285,6 +5285,38 @@ div.wpr-tutorial-item {
   pointer-events: none;
 }
 
+.wpr-cdn-mode-toggle-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.wpr-cdn-mode-toggle-wrap.wpr-btn-with-tool-tip {
+  pointer-events: auto;
+}
+.wpr-cdn-mode-toggle-wrap.wpr-btn-with-tool-tip .wpr-cdn-mode-toggle {
+  pointer-events: none;
+}
+.wpr-cdn-mode-toggle-wrap.wpr-btn-with-tool-tip .wpr-tooltip {
+  bottom: -40px;
+  top: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: none;
+}
+.wpr-cdn-mode-toggle-wrap.wpr-btn-with-tool-tip .wpr-tooltip.wpr-isHidden {
+  display: none;
+}
+.wpr-cdn-mode-toggle-wrap.wpr-btn-with-tool-tip .wpr-tooltip:before {
+  top: auto;
+  bottom: 33px;
+  left: 50%;
+  transform: translateX(-50%) rotate(180deg);
+  border-bottom: none;
+  border-top: 8px solid #0e1428;
+}
+
 /*-----------------------------------------------*\
 
     Table component style.

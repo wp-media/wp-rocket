@@ -140,4 +140,21 @@ return [
 			'free_activated' => false,
 		],
 	],
+	'shouldRejectActivationWhenResellerLicenseBanned' => [
+		'config'   => [
+			'url'             => 'post_url',
+			'prefill_count'   => 0,
+			'add_first'       => false,
+			'unauthenticated' => false,
+			'user'            => [
+				'is_reseller' => true,
+				'is_revoked'  => true,
+				'ban_reason'  => 'BANNED_WEBSITE',
+			],
+		],
+		'expected' => [
+			'code'   => 'cdn_mode_forced_off',
+			'status' => 403,
+		],
+	],
 ];

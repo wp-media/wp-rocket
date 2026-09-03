@@ -163,6 +163,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_account' )
 			->andReturn( false );
 
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
 		$pages = array_fill(
 			0,
 			$config['page_count'],
@@ -184,6 +187,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->assertArrayHasKey( 'limit_reached', $sections['rocketcdn_free_section']['cta_data'] );
 		$this->assertSame( $expected, $sections['rocketcdn_free_section']['cta_data']['limit_reached'] );
 		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertArrayHasKey( 'forced_off_tooltip', $sections['rocketcdn_free_section'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['forced_off_tooltip'] );
 	}
 
 	/**
@@ -239,6 +244,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_account' )
 			->andReturn( false );
 
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
 		$this->cdn_query->method( 'query' )
 			->willReturn( [] );
 
@@ -246,5 +254,75 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$sections   = $controller->add_rocketcdn_free_section( [] );
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['forced_off_tooltip'] );
+	}
+
+	/**
+	 * Tests that add_rocketcdn_free_section surfaces the expired-licence tooltip
+	 * alongside is_forced_off when the WP Rocket licence is invalid.
+	 *
+	 * @return void
+	 */
+	public function testShouldSurfaceExpiredLicenceTooltipWhenForcedOff(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )
+			->andReturn( 3 );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$this->cdn_query->method( 'query' )
+			->willReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_free_section( [] );
+
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
+		$this->assertSame(
+			'RocketCDN is currently paused because your WPRocket licence has expired.',
+			$sections['rocketcdn_free_section']['forced_off_tooltip']
+		);
 	}
 }

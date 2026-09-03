@@ -776,3 +776,42 @@
 	opacity: 0.5;
 	pointer-events: none;
 }
+
+// RocketCDN mode toggle tooltip wrapper (Free / Paid / Your Own CDN sections)
+// .wpr-cdn-mode-toggle itself is intentionally untouched here; see :522-560 for the pattern this mirrors.
+.wpr-cdn-mode-toggle-wrap {
+	position: relative;
+	display: inline-flex;
+
+	&.wpr-btn-with-tool-tip {
+		pointer-events: auto; // wrapper stays hoverable even though the toggle underneath is disabled
+
+		.wpr-cdn-mode-toggle {
+			pointer-events: none; // a disabled checkbox does not reliably fire :hover; let it pass through to the wrapper
+		}
+
+		.wpr-tooltip {
+			bottom: -40px;
+			top: auto;
+			left: 50%;
+			transform: translateX(-50%);
+			white-space: nowrap;
+			font-size: 14px;
+			font-weight: normal;
+			text-transform: none;
+
+			&.wpr-isHidden {
+				display: none;
+			}
+		}
+
+		.wpr-tooltip:before {
+			top: auto;
+			bottom: 33px;
+			left: 50%;
+			transform: translateX(-50%) rotate(180deg);
+			border-bottom: none;
+			border-top: 8px solid #0e1428;
+		}
+	}
+}

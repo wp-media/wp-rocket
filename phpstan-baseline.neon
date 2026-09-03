@@ -7,6 +7,30 @@ parameters:
 			path: inc/Engine/Plugin/Admin/NoticeSubscriber.php
 
 		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLiveCdnOrdering.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/autoResumeOnLicenceRenewal.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/autoResumeOnLicenceRenewal.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/Render/Controller/licenceExpiryForcesCdnStateNothing.php
+
+		-
 			rawMessage: 'Usage of apply_filters() is discouraged. Use wpm_apply_filters_typed() instead.'
 			identifier: custom.rules.discourageApplyFilters
 			count: 3

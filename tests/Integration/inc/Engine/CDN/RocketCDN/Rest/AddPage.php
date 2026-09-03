@@ -51,6 +51,18 @@ class Test_AddPage extends RESTfulTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// Force a known-clean CDN mode before every case runs. tear_down()'s own
+		// reset (below) can't be relied on alone: PHPUnit/WP's per-test DB
+		// transaction rollback (triggered by parent::tear_down(), which runs
+		// after our cleanup writes) reverts those writes right along with
+		// everything else the test did, so a mode persisted by one case's real
+		// apply_cdn_mode() call (see Rest::apply_cdn_mode()) reappears at the
+		// start of the next case despite tear_down() having "cleaned" it.
+		// Resetting again here, before this case's own request runs, means that
+		// reappearance is corrected before it can affect this case's assertions.
+		$this->reset_cdn_mode_settings();
+
 		self::setAdminCap();
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
@@ -84,13 +96,46 @@ class Test_AddPage extends RESTfulTestCase {
 		self::truncateRocketCDNTable();
 		delete_transient( 'rocketcdn_status' );
 
-		// Reset any CDN mode an AC5 test case's apply_cdn_mode() call persisted,
-		// so it doesn't bleed into other tests.
-		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
-		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
-		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
+		// Best-effort: reset any CDN mode this case's apply_cdn_mode() call
+		// persisted, in case a later test file in the same run relies on a
+		// clean cdn_state and isn't itself defensive about it the way set_up()
+		// above is for this class. See the comment on that call for why this
+		// alone isn't sufficient to protect the next case in *this* class.
+		$this->reset_cdn_mode_settings();
+
+		// Reset the shared User singleton so a banned-reseller scenario doesn't
+		// leak into the next test case.
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( new \stdClass() );
 
 		parent::tear_down();
+	}
+
+	/**
+	 * Clears the persisted cdn_state/cdn/cdn_type keys from wp_rocket_settings.
+	 *
+	 * @return void
+	 */
+	private function reset_cdn_mode_settings(): void {
+		$options_api = apply_filters( 'rocket_container', null )->get( 'options_api' );
+		$settings    = $options_api->get( 'settings', [] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
+		$options_api->set( 'settings', $settings );
+	}
+
+	/**
+	 * Configures the shared User singleton from fixture config, e.g.:
+	 * 'user' => [ 'is_reseller' => true, 'is_revoked' => true, 'ban_reason' => 'BANNED_WEBSITE' ].
+	 */
+	private function set_user_license( array $config ): void {
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = ! empty( $config['is_revoked'] );
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
+
+		$user_data              = new \stdClass();
+		$user_data->licence     = $licence;
+		$user_data->is_reseller = ! empty( $config['is_reseller'] );
+
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( $user_data );
 	}
 
 	public function mock_http_response( $pre, $args, $url ) {
@@ -165,6 +210,11 @@ class Test_AddPage extends RESTfulTestCase {
 		// Set unauthenticated if configured.
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
+		}
+
+		// Per-case licence/reseller override (e.g. a banned reseller licence).
+		if ( ! empty( $config['user'] ) ) {
+			$this->set_user_license( $config['user'] );
 		}
 
 		if ( 'post_url' === $config['url'] ) {
