@@ -3,11 +3,21 @@
 namespace WP_Rocket\ThirdParty\Plugins\I18n;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for compatibility with Weglot.
  */
-class Weglot implements Subscriber_Interface {
+class Weglot implements Subscriber_Interface, PluginCompatibilityInterface {
+
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'Context_Weglot' );
+	}
 
 	/**
 	 *  Returns an array of events that this subscriber wants to listen to.
@@ -15,10 +25,6 @@ class Weglot implements Subscriber_Interface {
 	 * @return array|string[]
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'Context_Weglot' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_admin_bar_referer' => 'add_langs_to_referer',
 		];
