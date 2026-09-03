@@ -386,11 +386,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	/**
 	 * Syncs cdn_state's RocketCDN tier when the cached subscription plan_type changes.
 	 *
-	 * Hooked to transient_rocketcdn_status, which WordPress fires on every
-	 * get_transient( 'rocketcdn_status' ) read (i.e. every time subscription data is
-	 * read, via SubscriptionController/APIClient). This catches a plan_type change
-	 * (e.g. a Pro subscription downgraded to Free) that happens outside the checkout
-	 * flow, without needing a dedicated cron re-check.
+	 * Hooked to set_transient_rocketcdn_status, which WordPress fires whenever the
+	 * rocketcdn_status transient is (re)written (i.e. every time fresh subscription
+	 * data is fetched and cached, via SubscriptionController/APIClient). This catches
+	 * a plan_type change (e.g. a Pro subscription downgraded to Free) that happens
+	 * outside the checkout flow, without needing a dedicated cron re-check.
 	 *
 	 * Also activates the tier from "nothing" - a genuine, API-confirmed plan_type here
 	 * (status_code 200, checked below) can only come from a live successful API call,
@@ -409,8 +409,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * check already passed, so status_code === 200 alone can't tell a confirmed free-tier
 	 * response apart from a malformed-but-200 one; success must be checked too.
 	 *
-	 * Restricted to admin requests: this subscriber is currently admin-only, but the
-	 * transient is also read from front-end requests (e.g. FrontendSubscriber's CDN
+	 * Restricted to admin requests: a fresh fetch (and therefore this transient being
+	 * set) can also be triggered from front-end requests (e.g. FrontendSubscriber's CDN
 	 * cname/zone resolution), and this callback writes an option + can trigger a cache
 	 * clear as a side effect - not something a front-end page view should ever do.
 	 *
