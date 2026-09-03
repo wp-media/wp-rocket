@@ -635,7 +635,8 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		$current_options             = $this->options_api->get( 'settings', [] );
+		// Set cdn_state to nothing when forced off detected.
+		$current_options              = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_state'] = Context::CDN_STATE_NOTHING;
 		$this->options_api->set( 'settings', $current_options );
 
