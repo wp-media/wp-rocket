@@ -9,7 +9,6 @@
  *    @type string $container_class Flex container CSS class.
  *    @type bool   $is_active       Boolean identifying the activation status.
  *    @type array  $items           List of plan info rows, each with 'label', 'value', and 'class'.
- *    @type string $upgrade_url     One Click Purchase URL, empty string when not available.
  * }
  */
 
@@ -33,7 +32,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 		</div>
 		<?php if ( ! $data['is_active'] ) : ?>
 		<div>
-			<a href="<?php echo esc_url( ! empty( $data['upgrade_url'] ) ? $data['upgrade_url'] : '#page_cdn' ); ?>" class="wpr-button"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
+			<a href="#" data-micromodal-trigger="wpr-rocketcdn-modal" class="wpr-button wpr-rocketcdn-open"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
 		</div>
 		<?php endif; ?>
 	</div>
