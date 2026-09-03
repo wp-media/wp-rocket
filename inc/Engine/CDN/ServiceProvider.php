@@ -144,6 +144,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
 					'cdn_context',
 					'options',
+					'options_api',
 					'rocketcdn_query',
 					'rocketcdn_subscription_controller',
 					'user',
