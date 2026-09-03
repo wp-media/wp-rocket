@@ -56,7 +56,7 @@ defined( 'ABSPATH' ) || exit;
 								<?php echo esc_html( $wpm_plugin['cta']['text'] ); ?>
 							</a>
 
-							<a target="_blank" href="<?php echo esc_html( $wpm_plugin['link'] ); ?>">
+							<a target="_blank" rel="noopener" href="<?php echo esc_html( $wpm_plugin['link'] ); ?>">
 								<?php esc_html_e( 'Learn More', 'rocket' ); ?>
 							</a>
 							<?php endif; ?>
