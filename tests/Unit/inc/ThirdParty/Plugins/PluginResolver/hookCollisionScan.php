@@ -16,6 +16,7 @@ use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\NGG;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
@@ -141,6 +142,7 @@ class Test_HookCollisionScan extends TestCase {
 		'admin_notices:10'                           => [
 			'autoptimize',
 			'cloudflare_plugin_subscriber',
+			'hummingbird_subscriber',
 		],
 	];
 
@@ -211,6 +213,7 @@ class Test_HookCollisionScan extends TestCase {
 			'all_in_one_seo_pack'          => AllInOneSEOPack::class,
 			'contactform7'                 => ContactForm7::class,
 			'cloudflare_plugin_subscriber' => Cloudflare::class,
+			'hummingbird_subscriber'       => Hummingbird::class,
 		];
 	}
 
