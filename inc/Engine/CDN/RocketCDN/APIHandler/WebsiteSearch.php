@@ -83,21 +83,23 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		$response = wp_remote_retrieve_body( $response );
-		if ( empty( $response ) ) {
+		$status_code = wp_remote_retrieve_response_code( $response );
+		$body        = wp_remote_retrieve_body( $response );
+
+		if ( empty( $body ) ) {
 			return false;
 		}
 
-		$response = json_decode( $response, true );
-		if ( ! is_array( $response ) ) {
+		$body = json_decode( $body, true );
+		if ( ! is_array( $body ) ) {
 			return false;
 		}
 
 		$final = [
-			'subscription_status' => $response['subscription_status'] ?? 'cancelled',
-			'plan_type'           => $response['subscription_plan_type'] ?? 'free',
-			'status_code'         => wp_remote_retrieve_response_code( $response ),
-			'website_status'      => $response['status'] ?? '',
+			'subscription_status' => $body['subscription_status'] ?? 'cancelled',
+			'plan_type'           => $body['subscription_plan_type'] ?? 'free',
+			'status_code'         => $status_code,
+			'website_status'      => $body['status'] ?? '',
 		];
 		set_transient( $this->get_transient_key(), $final, HOUR_IN_SECONDS );
 
