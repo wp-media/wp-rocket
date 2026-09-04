@@ -21,25 +21,27 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 * special ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously
 	 * hardcoded in Plugin::$common_subscribers.
 	 *
-	 * Issue #8789 slices 1-3 gate 18 of the 43 registry ids (slice 1: elementor_subscriber,
-	 * beaverbuilder_subscriber, simple_custom_css, pdfembedder, wordfence_subscriber,
-	 * unlimited_elements, inline_related_posts; slice 2: rank_math_seo, rocket_lazy_load,
-	 * the_events_calendar, perfmatters, weglot, translatepress, termly_subscriber,
-	 * optimole_subscriber, convertplug; slice 3: syntaxhighlighter_subscriber,
-	 * ngg_subscriber) behind PluginCompatibilityInterface; none of their
-	 * target plugins are installed in this test environment, so they drop out of
-	 * get_active_plugins(). 43 - 18 + 2 = 27. Later #8789 slices will lower this further
+	 * Issue #8789 slices 1-4 gate all 25 of the Easy-25 registry ids (slice 1:
+	 * elementor_subscriber, beaverbuilder_subscriber, simple_custom_css, pdfembedder,
+	 * wordfence_subscriber, unlimited_elements, inline_related_posts; slice 2:
+	 * rank_math_seo, rocket_lazy_load, the_events_calendar, perfmatters, weglot,
+	 * translatepress, termly_subscriber, optimole_subscriber, convertplug; slice 3:
+	 * syntaxhighlighter_subscriber, ngg_subscriber; slice 4: pwa, yoast_seo,
+	 * thirstyaffiliates, autoptimize, jetpack, seopress, the_seo_framework) behind
+	 * PluginCompatibilityInterface; none of their target plugins are installed in
+	 * this test environment, so they drop out of get_active_plugins().
+	 * 43 - 25 + 2 = 20. Later #8789 batches (Medium/Hard) will lower this further
 	 * as the remaining ids are gated.
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 27;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 20;
 
 	/**
-	 * Phase 0 defaults every registry id active; issue #8789 slices 1-3 opt 18 ids
-	 * into real detection, so the resolver's set is the full registry minus
-	 * those 18 (their target plugins are absent here), and the container must
-	 * still resolve every remaining one of them.
+	 * Phase 0 defaults every registry id active; issue #8789 slices 1-4 opt all 25
+	 * Easy-25 ids into real detection, so the resolver's set is the full registry
+	 * minus those 25 (their target plugins are absent here), and the container
+	 * must still resolve every remaining one of them.
 	 */
 	public function testShouldResolveEveryActivePluginIdFromTheLiveContainer() {
 		$container = apply_filters( 'rocket_container', null );
@@ -51,8 +53,8 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
-		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slices 1-3 must resolve to the 43-id registry minus the 18 gated-inactive ids.' );
-		$this->assertCount( 25, $active_ids );
+		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slices 1-4 must resolve to the 43-id registry minus the 25 gated-inactive ids.' );
+		$this->assertCount( 18, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
@@ -67,17 +69,14 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	}
 
 	/**
-	 * Drift/dedup proof: yoast_seo and thirstyaffiliates were previously
-	 * missing from $provides (drift), and convertplug was double-registered.
-	 * cloudflare_plugin_facade is the internal dependency of
-	 * cloudflare_plugin_subscriber. yoast_seo, thirstyaffiliates, and
-	 * cloudflare_plugin_facade are not yet gated (still un-migrated or a
-	 * `->add()` dependency, not a registry id) so they must still resolve.
+	 * Drift/dedup proof: cloudflare_plugin_facade is the internal `->add()`
+	 * dependency of cloudflare_plugin_subscriber, not a registry id, so it is
+	 * never gated and must still resolve regardless of #8789's progress.
 	 */
 	public function testShouldResolveThePreviouslyDriftingAndDependencyIds() {
 		$container = apply_filters( 'rocket_container', null );
 
-		foreach ( [ 'yoast_seo', 'thirstyaffiliates', 'cloudflare_plugin_facade' ] as $id ) {
+		foreach ( [ 'cloudflare_plugin_facade' ] as $id ) {
 			$this->assertTrue( $container->has( $id ), "Expected container to provide '{$id}'." );
 			$this->assertIsObject( $container->get( $id ) );
 		}
@@ -93,6 +92,23 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$container = apply_filters( 'rocket_container', null );
 
 		$this->assertFalse( $container->has( 'convertplug' ), 'Expected container to NOT provide "convertplug" when CP_VERSION is undefined.' );
+	}
+
+	/**
+	 * Correctness proof (was a drift-proof pre-#8789): yoast_seo and
+	 * thirstyaffiliates are gated by issue #8789 slice 4, and neither target
+	 * plugin (WPSEO_VERSION / thirstyaffiliates/thirstyaffiliates.php) is
+	 * installed in this test environment, so both must now correctly resolve
+	 * to absent instead of being force-registered regardless of activation
+	 * state — flipping their historical $provides-drift proof into a
+	 * gated-correctness proof.
+	 */
+	public function testShouldNotResolveYoastOrThirstyAffiliatesWhenAbsent() {
+		$container = apply_filters( 'rocket_container', null );
+
+		foreach ( [ 'yoast_seo', 'thirstyaffiliates' ] as $id ) {
+			$this->assertFalse( $container->has( $id ), "Expected container to NOT provide '{$id}' when its target plugin is absent." );
+		}
 	}
 
 	/**
@@ -115,7 +131,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 25 active resolver ids (43 - 18 slice-1/2/3-gated) + ezoic + mod_pagespeed = 27.
+		// 18 active resolver ids (43 - 25 slice-1/2/3/4-gated) + ezoic + mod_pagespeed = 20.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }
