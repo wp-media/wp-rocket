@@ -1075,6 +1075,18 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
 
 		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/backfillCdnStateOnUpgrade.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/backfillCdnStateOnUpgrade.php
+
+		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
 			count: 2
@@ -1169,6 +1181,18 @@ parameters:
 			identifier: custom.rules.discourageOptionUsage
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeSetRocketcdnAsCdnTypeOnUpgrade.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeSyncCdnState.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeSyncCdnState.php
 
 		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'

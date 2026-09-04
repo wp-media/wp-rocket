@@ -38,20 +38,60 @@ class CDNOptionsManager {
 	/**
 	 * Enable CDN option, save CDN URL & delete RocketCDN status transient
 	 *
+	 * Reads the current settings via $this->options_api rather than $this->options: see
+	 * the note on set_cdn_state() below - a stale Options_Data snapshot here can silently
+	 * clobber a write made elsewhere in the same request (e.g. maybe_retry_activation()
+	 * reading subscription data, which can trigger a set_cdn_state() write, before calling
+	 * this method later in the same request).
+	 *
+	 * Other classes reading 'cdn' straight off their own injected Options_Data instance
+	 * (CDN.php, Render/Controller.php, RocketCDN/Rest.php, Subscriber.php, Support/Meta.php)
+	 * still see a live value for the rest of the request: see
+	 * CdnStateBridge::resolve_live_cdn(), hooked on pre_get_rocket_option_cdn. Mutating
+	 * $this->options here would not help those readers anyway - the 'options' container
+	 * service is registered with add(), not addShared(), so every class gets its own
+	 * independently-resolved Options_Data instance; there is no single shared object to
+	 * mirror a write onto.
+	 *
 	 * @since 3.5
 	 *
 	 * @param bool $clear_cache Clear website whole cache.
 	 * @return void
 	 */
 	public function enable( bool $clear_cache = true ) {
-		$this->options->set( 'cdn', 1 );
+		$settings        = $this->options_api->get( 'settings', [] );
+		$settings['cdn'] = 1;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $settings );
 
 		delete_transient( 'rocketcdn_status' );
 		if ( $clear_cache ) {
 			rocket_clean_domain();
 		}
+	}
+
+	/**
+	 * Set the CDN state and persist it.
+	 *
+	 * Writing through Options::set( 'settings', ... ) triggers WP's
+	 * update_option_wp_rocket_settings action, which Subscriber::maybe_clear_cache()
+	 * already listens on to clear the right cache scope for the transition.
+	 *
+	 * Reads the current settings via $this->options_api rather than $this->options:
+	 * Options_Data is a per-request snapshot taken when the container built it, so it
+	 * won't reflect a write made elsewhere in the same request through a different path
+	 * (e.g. a raw update_option() call) - writing that stale snapshot back here would
+	 * silently clobber whatever changed since.
+	 *
+	 * @param string $state One of Context::CDN_STATE_NOTHING, Context::ROCKETCDN_FREE_TYPE,
+	 *                       Context::ROCKETCDN_PAID_TYPE, or Context::BYOCDN_TYPE.
+	 * @return void
+	 */
+	public function set_cdn_state( string $state ) {
+		$settings              = $this->options_api->get( 'settings', [] );
+		$settings['cdn_state'] = $state;
+
+		$this->options_api->set( 'settings', $settings );
 	}
 
 	/**
@@ -69,14 +109,18 @@ class CDNOptionsManager {
 	/**
 	 * Disable CDN option, remove CDN URL & user token, delete RocketCDN status transient
 	 *
+	 * Reads the current settings via $this->options_api rather than $this->options - see
+	 * the note on enable() above.
+	 *
 	 * @since 3.5
 	 *
 	 * @return void
 	 */
 	public function disable() {
-		$this->options->set( 'cdn', 0 );
+		$settings        = $this->options_api->get( 'settings', [] );
+		$settings['cdn'] = 0;
 
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$this->options_api->set( 'settings', $settings );
 
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
