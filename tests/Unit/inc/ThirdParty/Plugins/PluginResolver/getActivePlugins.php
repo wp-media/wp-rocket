@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -30,6 +31,18 @@ class Test_GetActivePlugins extends TestCase {
 	];
 
 	/**
+	 * Ids gated by issue #8790 slice 2 that report inactive in this test
+	 * environment (WPCF7_VERSION undefined; is_plugin_active() stubbed false
+	 * in setUp()), so they no longer default-active like the rest of the registry.
+	 *
+	 * @var array<string>
+	 */
+	private const SLICE_2_GATED_INACTIVE_IDS = [
+		'contactform7',
+		'cloudflare_plugin_subscriber',
+	];
+
+	/**
 	 * Resets memoization before each test.
 	 *
 	 * @inheritDoc
@@ -38,6 +51,10 @@ class Test_GetActivePlugins extends TestCase {
 		parent::setUp();
 
 		$this->reset_memoization();
+
+		// Cloudflare::is_activated() now calls the real global is_plugin_active();
+		// stub it so full-registry iteration doesn't fatal (issue #8790 slice 2).
+		Functions\when( 'is_plugin_active' )->justReturn( false );
 	}
 
 	/**
@@ -53,9 +70,9 @@ class Test_GetActivePlugins extends TestCase {
 
 	/**
 	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so the registry's full id set is unchanged. Issue #8790 slice 1 opts 4
+	 * so the registry's full id set is unchanged. Issue #8790 slices 1-2 opt 6
 	 * ids into real detection; none of their target plugins are present in
-	 * this test environment, so those 4 are excluded from the resolved
+	 * this test environment, so those 6 are excluded from the resolved
 	 * active set while the rest still default active.
 	 *
 	 * @dataProvider configTestData
@@ -103,7 +120,12 @@ class Test_GetActivePlugins extends TestCase {
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
 		$registry            = ( new SubscriberFactory() )->get_registry();
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::SLICE_1_GATED_INACTIVE_IDS ) );
+		$expected_active_ids = array_values(
+			array_diff(
+				array_keys( $registry ),
+				array_merge( self::SLICE_1_GATED_INACTIVE_IDS, self::SLICE_2_GATED_INACTIVE_IDS )
+			)
+		);
 
 		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}

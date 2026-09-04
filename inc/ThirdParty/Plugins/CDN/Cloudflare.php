@@ -8,11 +8,12 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Compatibility class for cloudflare.
  */
-class Cloudflare implements Subscriber_Interface, DeactivationInterface {
+class Cloudflare implements Subscriber_Interface, DeactivationInterface, PluginCompatibilityInterface {
 	/**
 	 * Options instance.
 	 *
@@ -81,6 +82,18 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			'rocket_cdn_helper_addons'            => 'add_cdn_helper_message',
 			'init'                                => 'unregister_cloudflare_clean_on_post',
 		];
+	}
+
+	/**
+	 * Whether the official Cloudflare plugin is active.
+	 *
+	 * Presence only — does not check saved credentials, unlike the private
+	 * is_plugin_active() method below (see issue #8790 architectural decision).
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return is_plugin_active( 'cloudflare/cloudflare.php' );
 	}
 
 	/**

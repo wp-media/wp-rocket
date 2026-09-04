@@ -52,8 +52,10 @@ return [
 			// Issue #8790 slice 1: revolution_slider_subscriber, optimus_webp_subscriber,
 			// rapidload and all_in_one_seo_pack now opt in to PluginCompatibilityInterface;
 			// none of their target plugins are defined in this test environment, so they
-			// are excluded here while every other id still defaults active (Phase 0
-			// behaviour, unchanged for the remaining registry entries).
+			// are excluded here. Slice 2 additionally opts in contactform7 (WPCF7_VERSION
+			// undefined here) and cloudflare_plugin_subscriber (is_plugin_active() unstubbed
+			// in this Unit test, defaults to inactive), also excluded. Every other id still
+			// defaults active (Phase 0 behaviour, unchanged for the remaining registry entries).
 			'active_by_default' => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',
@@ -80,7 +82,6 @@ return [
 				'unlimited_elements',
 				'inline_related_posts',
 				'wpml',
-				'cloudflare_plugin_subscriber',
 				'jetpack',
 				'rank_math_seo',
 				'seopress',
@@ -91,7 +92,6 @@ return [
 				'weglot',
 				'translatepress',
 				'wpgeotargeting',
-				'contactform7',
 				'termly_subscriber',
 				'optimole_subscriber',
 			],

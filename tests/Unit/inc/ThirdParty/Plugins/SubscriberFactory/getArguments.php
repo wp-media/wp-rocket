@@ -14,6 +14,19 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetArguments extends TestCase {
 	/**
+	 * Registry-iterating tests may enumerate classes implementing
+	 * PluginCompatibilityInterface; stub the real global is_plugin_active()
+	 * so any incidental call doesn't fatal (issue #8790 slice 2).
+	 *
+	 * @inheritDoc
+	 */
+	protected function setUp(): void {
+		parent::setUp();
+
+		Functions\when( 'is_plugin_active' )->justReturn( false );
+	}
+
+	/**
 	 * Get_arguments() returns non-empty args only for the documented ids, [] otherwise.
 	 *
 	 * @dataProvider configTestData
