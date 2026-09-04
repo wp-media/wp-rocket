@@ -43,6 +43,17 @@ class Test_GetActivePlugins extends TestCase {
 	];
 
 	/**
+	 * Id gated by issue #8790 slice 3 that reports inactive in this test
+	 * environment (is_admin() stubbed false in setUp()), so it no longer
+	 * defaults active like the rest of the registry.
+	 *
+	 * @var array<string>
+	 */
+	private const SLICE_3_GATED_INACTIVE_IDS = [
+		'hummingbird_subscriber',
+	];
+
+	/**
 	 * Resets memoization before each test.
 	 *
 	 * @inheritDoc
@@ -55,6 +66,10 @@ class Test_GetActivePlugins extends TestCase {
 		// Cloudflare::is_activated() now calls the real global is_plugin_active();
 		// stub it so full-registry iteration doesn't fatal (issue #8790 slice 2).
 		Functions\when( 'is_plugin_active' )->justReturn( false );
+
+		// Hummingbird::is_activated() now calls the real global is_admin();
+		// stub it so full-registry iteration doesn't fatal (issue #8790 slice 3).
+		Functions\when( 'is_admin' )->justReturn( false );
 	}
 
 	/**
@@ -70,10 +85,12 @@ class Test_GetActivePlugins extends TestCase {
 
 	/**
 	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so the registry's full id set is unchanged. Issue #8790 slices 1-2 opt 6
-	 * ids into real detection; none of their target plugins are present in
-	 * this test environment, so those 6 are excluded from the resolved
-	 * active set while the rest still default active.
+	 * so the registry's full id set is unchanged. Issue #8790 slice 3 adds
+	 * hummingbird_subscriber to the registry (previously wired outside it, via
+	 * Engine/Admin/ServiceProvider). Slices 1-3 opt 7 ids into real detection;
+	 * none of their target plugins are present, and is_admin() is stubbed
+	 * false, in this test environment, so those 7 are excluded from the
+	 * resolved active set while the rest still default active.
 	 *
 	 * @dataProvider configTestData
 	 *
@@ -123,7 +140,7 @@ class Test_GetActivePlugins extends TestCase {
 		$expected_active_ids = array_values(
 			array_diff(
 				array_keys( $registry ),
-				array_merge( self::SLICE_1_GATED_INACTIVE_IDS, self::SLICE_2_GATED_INACTIVE_IDS )
+				array_merge( self::SLICE_1_GATED_INACTIVE_IDS, self::SLICE_2_GATED_INACTIVE_IDS, self::SLICE_3_GATED_INACTIVE_IDS )
 			)
 		);
 

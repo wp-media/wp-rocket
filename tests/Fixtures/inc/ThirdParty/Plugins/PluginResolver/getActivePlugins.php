@@ -48,14 +48,17 @@ return [
 				'contactform7',
 				'termly_subscriber',
 				'optimole_subscriber',
+				'hummingbird_subscriber',
 			],
 			// Issue #8790 slice 1: revolution_slider_subscriber, optimus_webp_subscriber,
 			// rapidload and all_in_one_seo_pack now opt in to PluginCompatibilityInterface;
 			// none of their target plugins are defined in this test environment, so they
 			// are excluded here. Slice 2 additionally opts in contactform7 (WPCF7_VERSION
 			// undefined here) and cloudflare_plugin_subscriber (is_plugin_active() unstubbed
-			// in this Unit test, defaults to inactive), also excluded. Every other id still
-			// defaults active (Phase 0 behaviour, unchanged for the remaining registry entries).
+			// in this Unit test, defaults to inactive), also excluded. Slice 3 adds
+			// hummingbird_subscriber to the registry itself (previously wired outside it) and
+			// also excludes it here (is_admin() stubbed false in setUp()). Every other id
+			// still defaults active (Phase 0 behaviour, unchanged for the remaining entries).
 			'active_by_default' => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',

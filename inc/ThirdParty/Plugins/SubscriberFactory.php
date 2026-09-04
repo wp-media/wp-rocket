@@ -24,6 +24,7 @@ use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
@@ -111,6 +112,7 @@ class SubscriberFactory {
 			'contactform7'                 => ContactForm7::class,
 			'termly_subscriber'            => Termly::class,
 			'optimole_subscriber'          => Optimole::class,
+			'hummingbird_subscriber'       => Hummingbird::class,
 		];
 	}
 
@@ -136,6 +138,7 @@ class SubscriberFactory {
 			'the_seo_framework'            => [ 'options' ],
 			'amp_subscriber'               => [ 'cdn_subscriber' ],
 			'cloudflare_plugin_subscriber' => [ 'options', 'options_api', 'beacon', 'cloudflare_plugin_facade' ],
+			'hummingbird_subscriber'       => [ 'options' ],
 		];
 
 		if ( isset( $lazy_arguments[ $id ] ) ) {
