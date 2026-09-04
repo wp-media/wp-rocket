@@ -28,5 +28,6 @@ class PluginResolverGatedIds {
 		'all_in_one_seo_pack',
 		'contactform7',
 		'cloudflare_plugin_subscriber',
+		'hummingbird_subscriber',
 	];
 }
