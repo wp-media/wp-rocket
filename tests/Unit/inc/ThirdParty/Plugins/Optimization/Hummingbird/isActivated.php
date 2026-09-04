@@ -24,8 +24,14 @@ class Test_isActivated extends TestCase {
 	 * @param bool  $expected Expected return value.
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
+		$active_basenames = $config['active_basenames'];
+
 		Functions\when( 'is_admin' )->justReturn( $config['is_admin'] );
-		Functions\when( 'is_plugin_active' )->justReturn( $config['plugin_active'] );
+		Functions\when( 'is_plugin_active' )->alias(
+			function ( $basename ) use ( $active_basenames ) {
+				return in_array( $basename, $active_basenames, true );
+			}
+		);
 
 		$this->assertSame( $expected, Hummingbird::is_activated() );
 	}

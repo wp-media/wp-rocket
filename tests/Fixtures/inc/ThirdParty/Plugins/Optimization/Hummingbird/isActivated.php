@@ -1,31 +1,31 @@
 <?php
 
 return [
-	'shouldReturnTrueWhenAdminAndPluginActive'       => [
+	'shouldReturnTrueWhenAdminAndPerformanceBasenameActive' => [
 		'config'   => [
-			'is_admin'      => true,
-			'plugin_active' => true,
+			'is_admin'         => true,
+			'active_basenames' => [ 'hummingbird-performance/wp-hummingbird.php' ],
 		],
 		'expected' => true,
 	],
-	'shouldReturnFalseWhenAdminButPluginInactive'    => [
+	'shouldReturnTrueWhenAdminAndLegacyBasenameActive'      => [
 		'config'   => [
-			'is_admin'      => true,
-			'plugin_active' => false,
+			'is_admin'         => true,
+			'active_basenames' => [ 'wp-hummingbird/wp-hummingbird.php' ],
+		],
+		'expected' => true,
+	],
+	'shouldReturnFalseWhenAdminButNeitherBasenameActive'    => [
+		'config'   => [
+			'is_admin'         => true,
+			'active_basenames' => [],
 		],
 		'expected' => false,
 	],
-	'shouldReturnFalseWhenPluginActiveButNotAdmin'   => [
+	'shouldReturnFalseWhenPluginActiveButNotAdmin'          => [
 		'config'   => [
-			'is_admin'      => false,
-			'plugin_active' => true,
-		],
-		'expected' => false,
-	],
-	'shouldReturnFalseWhenNotAdminAndPluginInactive' => [
-		'config'   => [
-			'is_admin'      => false,
-			'plugin_active' => false,
+			'is_admin'         => false,
+			'active_basenames' => [ 'hummingbird-performance/wp-hummingbird.php' ],
 		],
 		'expected' => false,
 	],

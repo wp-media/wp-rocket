@@ -55,7 +55,7 @@ class ContactForm7 implements Subscriber_Interface, PluginCompatibilityInterface
 		}
 
 		// The wpcf7_shortcode_callback action was added in CF7 version 5.8.1.
-		if ( ! defined( 'WPCF7_VERSION' ) || version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '<' ) ) { // @phpstan-ignore-line
+		if ( ! defined( 'WPCF7_VERSION' ) || version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '<' ) ) {
 			return;
 		}
 
