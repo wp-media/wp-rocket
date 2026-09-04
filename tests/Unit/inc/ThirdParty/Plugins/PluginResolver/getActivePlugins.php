@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -16,7 +17,7 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetActivePlugins extends TestCase {
 	/**
-	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed.
+	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed/defined.
 	 *
 	 * @var array<string>
 	 */
@@ -25,6 +26,8 @@ class Test_GetActivePlugins extends TestCase {
 		'optimus_webp_subscriber',
 		'rapidload',
 		'all_in_one_seo_pack',
+		'contactform7',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -36,6 +39,10 @@ class Test_GetActivePlugins extends TestCase {
 		parent::setUp();
 
 		$this->reset_memoization();
+
+		// Cloudflare::is_activated() calls the real global is_plugin_active(),
+		// so stub it to avoid a fatal during full-registry iteration.
+		Functions\when( 'is_plugin_active' )->justReturn( false );
 	}
 
 	/**

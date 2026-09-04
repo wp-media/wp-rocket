@@ -50,7 +50,8 @@ return [
 				'optimole_subscriber',
 			],
 			// Every id defaults active except revolution_slider_subscriber, optimus_webp_subscriber,
-			// rapidload and all_in_one_seo_pack, whose target plugins aren't installed here.
+			// rapidload, all_in_one_seo_pack, contactform7 and cloudflare_plugin_subscriber,
+			// whose target plugins aren't installed/defined here.
 			'active_by_default' => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',
@@ -77,7 +78,6 @@ return [
 				'unlimited_elements',
 				'inline_related_posts',
 				'wpml',
-				'cloudflare_plugin_subscriber',
 				'jetpack',
 				'rank_math_seo',
 				'seopress',
@@ -88,7 +88,6 @@ return [
 				'weglot',
 				'translatepress',
 				'wpgeotargeting',
-				'contactform7',
 				'termly_subscriber',
 				'optimole_subscriber',
 			],
