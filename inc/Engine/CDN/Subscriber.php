@@ -628,7 +628,6 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
 	}
