@@ -67,7 +67,10 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 		delete_transient( 'wp_rocket_customer_data' );
 
-		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request' ] as $transient_key ) {
+		// 'wpr_user_information' is UserClient's own transient key (get_user_data()'s cache); it
+		// must be cleared too, otherwise a timeout lockout tripped by an unrelated/earlier test
+		// silently short-circuits every get_user_data() call here before it reaches mock_api().
+		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request', 'wpr_user_information' ] as $transient_key ) {
 			delete_transient( $transient_key );
 			delete_transient( $transient_key . '_timeout' );
 			delete_transient( $transient_key . '_timeout_active' );
