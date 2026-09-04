@@ -1,60 +1,102 @@
 <?php
 
 return [
-	'testShouldClearFreePagesWhenNothingToFree'    => [
-		[ [ 'nothing' ], [ 'rocketcdn_free' ] ],
-		[ 'free_pages' ],
+	'testShouldClearFreePagesWhenNothingToFree' => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'nothing' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+		],
+		'expected' => [ 'method' => 'free_pages' ],
 	],
-	'testShouldClearFreePagesWhenFreeToNothing'    => [
-		[ [ 'rocketcdn_free' ], [ 'nothing' ] ],
-		[ 'free_pages' ],
+	'testShouldClearFreePagesWhenFreeToNothing' => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+			'new_value' => [ 'cdn_state' => 'nothing' ],
+		],
+		'expected' => [ 'method' => 'free_pages' ],
 	],
-	'testShouldClearAllWhenNothingToPaid'          => [
-		[ [ 'nothing' ], [ 'rocketcdn_paid' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenNothingToPaid'       => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'nothing' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenPaidToNothing'          => [
-		[ [ 'rocketcdn_paid' ], [ 'nothing' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenPaidToNothing'       => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+			'new_value' => [ 'cdn_state' => 'nothing' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenNothingToByocdn'        => [
-		[ [ 'nothing' ], [ 'byocdn' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenNothingToByocdn'     => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'nothing' ],
+			'new_value' => [ 'cdn_state' => 'byocdn' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenByocdnToNothing'        => [
-		[ [ 'byocdn' ], [ 'nothing' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenByocdnToNothing'     => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'byocdn' ],
+			'new_value' => [ 'cdn_state' => 'nothing' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenPaidToByocdn'           => [
-		[ [ 'rocketcdn_paid' ], [ 'byocdn' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenPaidToByocdn'        => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+			'new_value' => [ 'cdn_state' => 'byocdn' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenByocdnToPaid'           => [
-		[ [ 'byocdn' ], [ 'rocketcdn_paid' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenByocdnToPaid'        => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'byocdn' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenPaidToFree'             => [
-		[ [ 'rocketcdn_paid' ], [ 'rocketcdn_free' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenPaidToFree'          => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenFreeToPaid'             => [
-		[ [ 'rocketcdn_free' ], [ 'rocketcdn_paid' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenFreeToPaid'          => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenFreeToByocdn'           => [
-		[ [ 'rocketcdn_free' ], [ 'byocdn' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenFreeToByocdn'        => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+			'new_value' => [ 'cdn_state' => 'byocdn' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldClearAllWhenByocdnToFree'           => [
-		[ [ 'byocdn' ], [ 'rocketcdn_free' ] ],
-		[ 'all' ],
+	'testShouldClearAllWhenByocdnToFree'        => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'byocdn' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_free' ],
+		],
+		'expected' => [ 'method' => 'all' ],
 	],
-	'testShouldNotClearWhenCdnStateUnchanged'      => [
-		[ [ 'rocketcdn_paid' ], [ 'rocketcdn_paid' ] ],
-		[ 'none' ],
+	'testShouldNotClearWhenCdnStateUnchanged'   => [
+		'config'   => [
+			'old_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+			'new_value' => [ 'cdn_state' => 'rocketcdn_paid' ],
+		],
+		'expected' => [ 'method' => 'none' ],
 	],
-	'testShouldNotClearWhenCdnStateKeyAbsent'      => [
-		[ [], [] ],
-		[ 'none' ],
+	'testShouldNotClearWhenCdnStateKeyAbsent'   => [
+		'config'   => [
+			'old_value' => [],
+			'new_value' => [],
+		],
+		'expected' => [ 'method' => 'none' ],
 	],
 ];

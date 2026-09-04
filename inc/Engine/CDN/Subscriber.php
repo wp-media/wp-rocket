@@ -605,19 +605,31 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_clear_cache( $old_value, $value ) {
-		if ( ! Utils::did_setting_change( 'cdn_state', $old_value, $value ) ) {
+		$cdn_state_changed = Utils::did_setting_change( 'cdn_state', $old_value, $value );
+
+		// Detect cdn status for cdn_state change.
+		if ( ! $cdn_state_changed ) {
 			return;
 		}
 
-		$old_state       = $old_value['cdn_state'] ?? '';
-		$new_state       = $value['cdn_state'] ?? '';
-		$free_only_pair  = [ Context::CDN_STATE_NOTHING, Context::ROCKETCDN_FREE_TYPE ];
+		// Clear whole cache when moving from nothing to rocketcdn_paid OR from rocketcdn_paid to nothing.
+		// Clear whole cache when moving from nothing to byocdn OR from byocdn to nothing.
+		// Clear whole cache when moving from rocketcdn_paid to byocdn OR from byocdn to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_paid to rocketcdn_free OR from rocketcdn_free to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_free to byocdn OR from byocdn to rocketcdn_free.
+		// Clear free pages' cache when moving from nothing to rocketcdn_free OR from rocketcdn_free to nothing.
 
-		if ( in_array( $old_state, $free_only_pair, true ) && in_array( $new_state, $free_only_pair, true ) ) {
+		if (
+			( Context::CDN_STATE_NOTHING === $old_value['cdn_state'] && Context::ROCKETCDN_FREE_TYPE === $value['cdn_state'] )
+			||
+			( Context::ROCKETCDN_FREE_TYPE === $old_value['cdn_state'] && Context::CDN_STATE_NOTHING === $value['cdn_state'] )
+		) {
 			$this->cache->clear_rocketcdn_free_pages_cache();
 			return;
 		}
 
+
+		// Clear whole cache.
 		$this->cache->clear_all_cache();
 	}
 

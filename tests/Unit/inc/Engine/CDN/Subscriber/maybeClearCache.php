@@ -43,18 +43,23 @@ class Test_MaybeClearCache extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldClearAsExpected( array $config, array $expected ): void {
-		$old = ! empty( $config[0] ) ? [ 'cdn_state' => $config[0][0] ] : [];
-		$new = ! empty( $config[1] ) ? [ 'cdn_state' => $config[1][0] ] : [];
-
-		switch ( $expected[0] ) {
+		switch ( $expected['method'] ) {
 			case 'free_pages':
 				$this->cache->expects()->clear_rocketcdn_free_pages_cache()->once();
+				$this->cache->expects()->clear_all_cache()->never();
 				break;
+
 			case 'all':
 				$this->cache->expects()->clear_all_cache()->once();
+				$this->cache->expects()->clear_rocketcdn_free_pages_cache()->never();
+				break;
+
+			case 'none':
+				$this->cache->expects()->clear_all_cache()->never();
+				$this->cache->expects()->clear_rocketcdn_free_pages_cache()->never();
 				break;
 		}
 
-		$this->subscriber->maybe_clear_cache( $old, $new );
+		$this->subscriber->maybe_clear_cache( $config['old_value'], $config['new_value'] );
 	}
 }
