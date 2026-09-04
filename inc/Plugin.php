@@ -213,7 +213,12 @@ class Plugin {
 			'beacon',
 			'settings_page_subscriber',
 			'deactivation_intent_subscriber',
-			'hummingbird_subscriber',
+			// hummingbird_subscriber is no longer hardcoded here: it moved into the
+			// resolver-gated Plugins\SubscriberFactory registry (issue #8790 slice 3)
+			// and is now sourced, when active, from init_common_subscribers() via
+			// PluginResolver::get_active_plugins(). Keeping it here too would either
+			// fatal (container no longer unconditionally provides the id) or double
+			// register the subscriber when Hummingbird is active.
 			'rocketcdn_admin_subscriber',
 			'rocketcdn_notices_subscriber',
 			'rocketcdn_data_manager_subscriber',

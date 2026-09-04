@@ -5,11 +5,12 @@ use WP_Hummingbird_Settings;
 use WP_Hummingbird_Utils;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Hummingbird compatibility class
  */
-class Hummingbird implements Subscriber_Interface {
+class Hummingbird implements Subscriber_Interface, PluginCompatibilityInterface {
 	/**
 	 * WP Rocket Options instance
 	 *
@@ -45,6 +46,23 @@ class Hummingbird implements Subscriber_Interface {
 		return [
 			'admin_notices' => 'warning_notice',
 		];
+	}
+
+	/**
+	 * Whether Hummingbird is active.
+	 *
+	 * Gated on is_admin() to preserve the pre-refactor construction timing: this
+	 * subscriber was only ever added inside Plugin::init_admin_subscribers(),
+	 * itself only invoked when is_admin() is true (issue #8790).
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return is_admin() && (
+			is_plugin_active( 'hummingbird-performance/wp-hummingbird.php' )
+			||
+			is_plugin_active( 'wp-hummingbird/wp-hummingbird.php' )
+		);
 	}
 
 	/**
