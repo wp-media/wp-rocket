@@ -261,7 +261,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$should_activate = $this->resolve_cdn_activation( $request );
+		$should_activate = $this->resolve_cdn_activation();
 		if ( is_wp_error( $should_activate ) ) {
 			return $should_activate;
 		}
@@ -323,52 +323,27 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Decides whether CDN Free mode should be activated when adding a page.
 	 *
-	 * @param WP_REST_Request $request Incoming REST request.
-	 *
 	 * @return bool|WP_Error True to activate, false to skip, WP_Error to abort.
 	 */
-	private function resolve_cdn_activation( WP_REST_Request $request ) {
+	private function resolve_cdn_activation() {
 		$cdn_state = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
 
 		if ( Context::ROCKETCDN_FREE_TYPE === $cdn_state ) {
 			return false;
 		}
 
-		if ( Context::CDN_STATE_NOTHING !== $cdn_state ) {
-			// BYOCDN or other active mode: reject check → confirmation prompt → switch.
-			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
-				return new WP_Error(
-					'cdn_mode_forced_off',
-					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
-					[ 'status' => 403 ]
-				);
-			}
-
-			if ( ! $request->get_param( 'confirm_activation' ) ) {
-				return new WP_Error(
-					'rocketcdn_free_inactive_confirm_required',
-					__( 'RocketCDN Free is currently inactive. Adding this page will activate it and turn off the current CDN mode. Add this page anyway?', 'rocket' ),
-					[
-						'status'       => 409,
-						'current_mode' => $cdn_state,
-					]
-				);
-			}
-
-			return true;
+		// Pages already exist — add without activating or prompting, regardless of current CDN mode.
+		if ( $this->query->get_total_count( false ) > 0 ) {
+			return false;
 		}
 
-		// CDN is off. Activate only for the very first page.
-		if ( 0 === $this->query->get_total_count( false ) ) {
-			if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
-				return new WP_Error(
-					'cdn_mode_forced_off',
-					__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
-					[ 'status' => 403 ]
-				);
-			}
-
-			return true;
+		// First page — activate if allowed.
+		if ( $this->render_controller->should_reject_rocketcdn_activation() ) {
+			return new WP_Error(
+				'cdn_mode_forced_off',
+				__( 'RocketCDN cannot be activated in its current state.', 'rocket' ),
+				[ 'status' => 403 ]
+			);
 		}
 
 		return false;
