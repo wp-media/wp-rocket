@@ -23,7 +23,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 41;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 39;
 
 	/**
 	 * The resolver's active set is the full registry minus the ids whose
@@ -41,7 +41,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
 		$this->assertSame( $expected_active_ids, $active_ids, 'The resolver must report the registry ids minus the gated-inactive ones.' );
-		$this->assertCount( 39, $active_ids );
+		$this->assertCount( 37, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(

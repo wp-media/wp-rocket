@@ -26,5 +26,7 @@ class PluginResolverGatedIds {
 		'optimus_webp_subscriber',
 		'rapidload',
 		'all_in_one_seo_pack',
+		'contactform7',
+		'cloudflare_plugin_subscriber',
 	];
 }
