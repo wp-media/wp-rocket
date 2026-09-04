@@ -19,7 +19,7 @@ namespace WP_Rocket\Tests\Fixtures\classes;
  */
 class PluginResolverGatedIds {
 	/**
-	 * Ids gated by issue #8789 (slices 1-2, so far) that report inactive in this
+	 * Ids gated by issue #8789 (slices 1-3, so far) that report inactive in this
 	 * test environment (none of their target plugins are installed/defined), so
 	 * they no longer default-active like the rest of the registry.
 	 *
@@ -44,5 +44,8 @@ class PluginResolverGatedIds {
 		'termly_subscriber',
 		'optimole_subscriber',
 		'convertplug',
+		// Slice 3.
+		'syntaxhighlighter_subscriber',
+		'ngg_subscriber',
 	];
 }
