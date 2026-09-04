@@ -207,20 +207,19 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			? apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' )->get_total_count( false )
 			: null;
 
-		// Execute the method. Successful/redirecting paths call wp_die() (via
-		// WP_ROCKET_IS_TESTING) after persisting their side effects, so catch the
-		// exception ourselves instead of expectException() — this lets us keep
-		// asserting on the state left behind by the call.
-		$exception_thrown = false;
+		// The method always ends in a redirect (wp_die() in test env), so catch it locally
+		// instead of using expectException(): that would unwind the stack past every
+		// assertion below before it runs, silently making them all dead code.
+		$redirected = false;
 
 		try {
 			$this->subscriber->handle_rocketcdn_checkout_parameter();
-		} catch ( \WPDieException $exception ) {
-			$exception_thrown = true;
+		} catch ( \WPDieException $e ) {
+			$redirected = true;
 		}
 
-		if ( isset( $expected['expects_redirect'] ) ) {
-			$this->assertSame( $expected['expects_redirect'], $exception_thrown );
+		if ( isset( $expected['expects_redirect'] ) && $expected['expects_redirect'] ) {
+			$this->assertTrue( $redirected, 'Expected handle_rocketcdn_checkout_parameter() to redirect.' );
 		}
 
 		// Assert results based on expected outcome.

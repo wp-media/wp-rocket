@@ -103,6 +103,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
+			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
 		];
 	}
 
@@ -385,6 +386,68 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$this->cdn_options->disable();
+	}
+
+	/**
+	 * Syncs cdn_state's RocketCDN tier when the cached subscription plan_type changes.
+	 *
+	 * Hooked to set_transient_rocketcdn_status, which WordPress fires whenever the
+	 * rocketcdn_status transient is (re)written (i.e. every time fresh subscription
+	 * data is fetched and cached, via SubscriptionController/APIClient). This catches
+	 * a plan_type change (e.g. a Pro subscription downgraded to Free) that happens
+	 * outside the checkout flow, without needing a dedicated cron re-check.
+	 *
+	 * Also activates the tier from "nothing" - a genuine, API-confirmed plan_type here
+	 * (status_code 200, checked below) can only come from a live successful API call,
+	 * which APIClient only fetches when a rocketcdn_user_token already exists for this
+	 * site (see APIClient::get_remote_subscription_data()), so a confirmed result always
+	 * means this site already went through a genuine per-site activation flow, never an
+	 * account-wide/incidental signal. Never touches "byocdn" though - that's an explicit
+	 * user choice this callback must not override, especially since a BYOCDN site can
+	 * still carry a leftover RocketCDN token from a past trial.
+	 *
+	 * The status_code and success checks matter: APIClient::get_remote_subscription_data()'s
+	 * own error/fallback default (network failure, non-200, empty body, decode failure, or
+	 * an explicit success:false from the API) also carries a non-empty plan_type ('free').
+	 * Some of those fallbacks - empty body, undecodable JSON, success:false - still carry a
+	 * genuine status_code of 200 because they're detected after the transport-level status
+	 * check already passed, so status_code === 200 alone can't tell a confirmed free-tier
+	 * response apart from a malformed-but-200 one; success must be checked too.
+	 *
+	 * Restricted to admin requests: a fresh fetch (and therefore this transient being
+	 * set) can also be triggered from front-end requests (e.g. FrontendSubscriber's CDN
+	 * cname/zone resolution), and this callback writes an option + can trigger a cache
+	 * clear as a side effect - not something a front-end page view should ever do.
+	 *
+	 * @param mixed $value Transient value.
+	 * @return mixed
+	 */
+	public function maybe_sync_cdn_state( $value ) {
+		if ( ! is_admin() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return $value;
+		}
+
+		if ( ! is_array( $value ) || empty( $value['plan_type'] ) || 200 !== ( $value['status_code'] ?? null ) || empty( $value['success'] ) ) {
+			return $value;
+		}
+
+		// Read the option directly rather than through $this->options: Options_Data is a
+		// per-request snapshot taken when the container built it, so it won't reflect a
+		// write CDNOptionsManager::set_cdn_state() made through its own separate instance.
+		$settings      = $this->options_api->get( 'settings', [] );
+		$current_state = (string) ( $settings['cdn_state'] ?? Context::CDN_STATE_NOTHING );
+
+		if ( Context::BYOCDN_TYPE === $current_state ) {
+			return $value;
+		}
+
+		$new_state = 'paid' === $value['plan_type'] ? Context::ROCKETCDN_PAID_TYPE : Context::ROCKETCDN_FREE_TYPE;
+
+		if ( $new_state !== $current_state ) {
+			$this->cdn_options->set_cdn_state( $new_state );
+		}
+
+		return $value;
 	}
 
 	/**
