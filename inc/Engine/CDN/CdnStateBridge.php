@@ -27,6 +27,13 @@ class CdnStateBridge implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * Guards against flushing the subscription cache more than once per REST request.
+	 *
+	 * @var bool
+	 */
+	private bool $subscription_flushed = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param SubscriptionController $subscription_controller Subscription controller.
@@ -68,8 +75,6 @@ class CdnStateBridge implements Subscriber_Interface {
 			return;
 		}
 
-		$this->subscription_controller->reset_subscription_data();
-
 		$new_state = $this->legacy_to_state( $value );
 
 		if ( ( $value['cdn_state'] ?? null ) === $new_state ) {
@@ -85,12 +90,27 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * Resolves cdn_state live from the legacy fields, instead of trusting whatever was last
 	 * written to the option.
 	 *
+	 * In REST context (React CDN CTA loading), flushes the subscription cache once per
+	 * request so that a stale rocketcdn_status transient — e.g. from before the user
+	 * upgraded their plan externally on rocketcdn.me — does not cause is_paid() to
+	 * return the wrong result. The flush triggers a fresh API call; the response is
+	 * re-cached for one day, so subsequent page loads within that window are cheap.
+	 *
+	 * Reads cdn/cdn_type from the raw options store to bypass get_rocket_option() and the
+	 * apply_pause_on_rocketcdn_only filter, which returns 1 for byocdn users when
+	 * is_admin() is false (e.g. REST context), making CDN appear active when it is not.
+	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
 	 * @return string
 	 */
 	public function resolve_live( $value, $default ): string {
+		if ( ! $this->subscription_flushed && rocket_get_constant( 'REST_REQUEST', false ) ) {
+			$this->subscription_controller->reset_subscription_data();
+			$this->subscription_flushed = true;
+		}
+
 		$settings = $this->options_api->get( 'settings', [] );
 
 		return $this->legacy_to_state(

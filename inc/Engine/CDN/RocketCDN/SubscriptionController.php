@@ -443,7 +443,7 @@ class SubscriptionController implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function reset_subscription_data(): void {
-		$this->subscription = null;
+		$this->subscription = [];
 		$this->options_manager->flush_subscription_cache();
 	}
 }
