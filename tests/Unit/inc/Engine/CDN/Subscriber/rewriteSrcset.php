@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -52,6 +53,7 @@ class Test_RewriteSrcset extends TestCase {
 			$subscription_controller,
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
+			Mockery::mock( CdnStateBridge::class ),
 			$driver
 		);
 

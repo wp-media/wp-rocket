@@ -121,6 +121,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_subscription_controller',
 					'cache_controller',
 					'rocketcdn_query',
+					'cdn_state_bridge',
 					'cdn_driver',
 					'cdn_cname_validator',
 				]

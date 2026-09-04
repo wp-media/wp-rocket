@@ -15,16 +15,17 @@ use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\Subscriber;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\Subscriber::on_update_add_cdn_type_option
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::on_update_add_cdn_state_option
  *
  * @group  CDN
  */
-class Test_UpgradeCDN extends TestCase {
+class Test_AddCdnStateOption extends TestCase {
 	private $cdn;
 	private $options;
 	private $options_api;
 	private $subscriber;
 	private $subscription_controller;
+	private $cdn_state_bridge;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -33,6 +34,7 @@ class Test_UpgradeCDN extends TestCase {
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->options_api             = Mockery::mock( Options::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+		$this->cdn_state_bridge        = Mockery::mock( CdnStateBridge::class );
 
 		$this->subscriber = new Subscriber(
 			$this->options,
@@ -41,14 +43,14 @@ class Test_UpgradeCDN extends TestCase {
 			$this->subscription_controller,
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
-			Mockery::mock( CdnStateBridge::class )
+			$this->cdn_state_bridge
 		);
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldSetExpectedCdnType( array $config, array $expected ) {
+	public function testShouldAddCdnStateAsExpected( array $config, ?array $expected ) {
 		Functions\when( 'rocket_get_constant' )
 			->alias(
 				function ( $constant ) {
@@ -59,22 +61,23 @@ class Test_UpgradeCDN extends TestCase {
 				}
 			);
 
-		$has_active = $config['has_active_subscription'] ?? false;
-		$this->subscription_controller->expects()->has_active_subscription()->andReturn( $has_active );
-
-		if ( ! $has_active ) {
-			$cdn_cnames = $config['cdn_cnames'] ?? [];
-			$this->options->expects()->get( 'cdn_cnames', [] )->andReturn( $cdn_cnames );
-
-			// is_cdn_enabled() is called only when cnames are present (&&-short-circuit).
-			if ( ! empty( $cdn_cnames ) ) {
-				$this->options->expects()->get( 'cdn', 0 )->andReturn( $config['cdn_enabled'] ?? 0 );
-			}
+		if ( null === $expected ) {
+			// Bail-out path: no DB reads or writes should happen.
+			$this->expectNotToPerformAssertions();
+			$this->subscriber->on_update_add_cdn_state_option( $config['new_version'], $config['old_version'] );
+			return;
 		}
 
 		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
-		$this->options_api->expects()->set( 'settings', $expected['options'] );
+		$this->cdn_state_bridge->shouldReceive( 'legacy_to_state' )->once()->andReturn( $config['cdn_state_from_bridge'] );
 
-		$this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
+		if ( ! empty( $expected['should_save'] ) || isset( $expected['options'] ) ) {
+			$this->options_api->expects()->set( 'settings', $expected['options'] );
+		} else {
+			// Guard path: cdn_state already correct — no write should occur.
+			$this->options_api->shouldNotReceive( 'set' );
+		}
+
+		$this->subscriber->on_update_add_cdn_state_option( $config['new_version'], $config['old_version'] );
 	}
 }

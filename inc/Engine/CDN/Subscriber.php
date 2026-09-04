@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\CDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\{
+	CdnStateBridge,
 	CNAMEValidator,
 	Drivers\DriverInterface,
 	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
@@ -78,6 +79,13 @@ class Subscriber implements Subscriber_Interface {
 	private $cname_validator;
 
 	/**
+	 * CDN state bridge instance.
+	 *
+	 * @var CdnStateBridge
+	 */
+	private $cdn_state_bridge;
+
+	/**
 	 * Constructor
 	 *
 	 * @param Options_Data           $options                 WP Rocket Options_Data instance.
@@ -86,6 +94,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param SubscriptionController $subscription_controller Subscription controller instance.
 	 * @param Cache                  $cache                   Cache instance.
 	 * @param RocketCDNQuery         $query                   RocketCDN pages query.
+	 * @param CdnStateBridge         $cdn_state_bridge        CDN state bridge instance.
 	 * @param DriverInterface|null   $driver                  CDN Driver instance, optional.
 	 * @param CNAMEValidator|null    $cname_validator         CNAME Validator instance, optional.
 	 */
@@ -96,6 +105,7 @@ class Subscriber implements Subscriber_Interface {
 		SubscriptionController $subscription_controller,
 		Cache $cache,
 		RocketCDNQuery $query,
+		CdnStateBridge $cdn_state_bridge,
 		?DriverInterface $driver = null,
 		?CNAMEValidator $cname_validator = null
 	) {
@@ -106,6 +116,7 @@ class Subscriber implements Subscriber_Interface {
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
+		$this->cdn_state_bridge        = $cdn_state_bridge;
 		$this->cname_validator         = $cname_validator;
 	}
 
@@ -135,6 +146,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_first_install_options'             => 'add_cdn_type_option',
 			'wp_rocket_upgrade'                        => [
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
+				[ 'on_update_add_cdn_state_option', 11, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
 			'update_option_wp_rocket_settings'         => [
@@ -483,7 +495,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Add cdn_type option when upgrading from a version older than 3.22
+	 * Add cdn_type option when upgrading from < 3.22.
 	 *
 	 * @since 3.22
 	 *
@@ -493,7 +505,6 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
-		// Bail early.
 		if ( version_compare( $old_version, '3.22', '>=' ) ) {
 			return;
 		}
@@ -515,6 +526,32 @@ class Subscriber implements Subscriber_Interface {
 			$current_options['cdn'] = 1;
 		}
 
+		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Add cdn_state option during plugin update when upgrading from < 3.23.4.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param string $_new_version New plugin version.
+	 * @param string $old_version  Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_state_option( string $_new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.23.4', '>=' ) ) {
+			return;
+		}
+
+		$current_options = $this->options_api->get( 'settings', [] );
+		$new_state       = $this->cdn_state_bridge->legacy_to_state( $current_options );
+
+		if ( ( $current_options['cdn_state'] ?? null ) === $new_state ) {
+			return;
+		}
+
+		$current_options['cdn_state'] = $new_state;
 		$this->options_api->set( 'settings', $current_options );
 	}
 
@@ -560,7 +597,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Clear cache when cdn_type (driver) is changed.
+	 * Clears the appropriate cache scope when the CDN state changes.
 	 *
 	 * @param mixed $old_value Old option value.
 	 * @param mixed $value     New option value.

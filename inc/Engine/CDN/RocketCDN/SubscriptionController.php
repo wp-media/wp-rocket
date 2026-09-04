@@ -436,4 +436,14 @@ class SubscriptionController implements LoggerAwareInterface {
 	public function is_cancelled_outside_grace_period(): bool {
 		return $this->is_cancelled() && ! $this->is_website_pending_deletion();
 	}
+
+	/**
+	 * Resets the in-request subscription data cache and flushes the persistent transient.
+	 *
+	 * @return void
+	 */
+	public function reset_subscription_data(): void {
+		$this->subscription = [];
+		$this->options_manager->flush_subscription_cache();
+	}
 }
