@@ -3,7 +3,7 @@
 return [
 	'test_data' => [
 		'testShouldReturnAllRegistryIdsByDefault' => [
-			// The full set of registered ids.
+			// The full registry, unaffected by gating.
 			'registry_ids'      => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',
@@ -48,10 +48,11 @@ return [
 				'contactform7',
 				'termly_subscriber',
 				'optimole_subscriber',
+				'hummingbird_subscriber',
 			],
 			// Every id defaults active except revolution_slider_subscriber, optimus_webp_subscriber,
-			// rapidload, all_in_one_seo_pack, contactform7 and cloudflare_plugin_subscriber,
-			// whose target plugins aren't installed/defined here.
+			// rapidload, all_in_one_seo_pack, contactform7, cloudflare_plugin_subscriber and
+			// hummingbird_subscriber, whose gate conditions aren't met in this test environment.
 			'active_by_default' => [
 				'mobile_subscriber',
 				'syntaxhighlighter_subscriber',

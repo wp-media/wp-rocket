@@ -18,6 +18,7 @@ return [
 				'all_in_one_seo_pack',
 				'seopress',
 				'the_seo_framework',
+				'hummingbird_subscriber',
 			],
 		],
 	],

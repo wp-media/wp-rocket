@@ -17,7 +17,8 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetActivePlugins extends TestCase {
 	/**
-	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed/defined.
+	 * Registry ids whose is_activated() reports inactive here: their target
+	 * plugin isn't installed/defined, or a gate such as is_admin() is not met.
 	 *
 	 * @var array<string>
 	 */
@@ -28,6 +29,7 @@ class Test_GetActivePlugins extends TestCase {
 		'all_in_one_seo_pack',
 		'contactform7',
 		'cloudflare_plugin_subscriber',
+		'hummingbird_subscriber',
 	];
 
 	/**
@@ -43,6 +45,10 @@ class Test_GetActivePlugins extends TestCase {
 		// Cloudflare::is_activated() calls the real global is_plugin_active(),
 		// so stub it to avoid a fatal during full-registry iteration.
 		Functions\when( 'is_plugin_active' )->justReturn( false );
+
+		// Hummingbird::is_activated() calls the real global is_admin(),
+		// so stub it to avoid a fatal during full-registry iteration.
+		Functions\when( 'is_admin' )->justReturn( false );
 	}
 
 	/**
