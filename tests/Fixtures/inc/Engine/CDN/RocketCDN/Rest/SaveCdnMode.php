@@ -49,6 +49,26 @@ return [
 			'cdn_type'           => 'byocdn',
 		],
 	],
+	// Issue #8707, Task 9.1/9.4: Pro pending cancellation (is_website_pending_deletion())
+	// must not block switching to BYOCDN — should_reject_rocketcdn_activation() is only
+	// ever applied to the rocketcdn_free/rocketcdn_paid modes, never to byocdn.
+	'shouldSaveByocdnModeWhenProPendingCancellation' => [
+		'config'   => [
+			'params'       => [ 'mode' => 'byocdn' ],
+			'unauthenticated' => false,
+			'subscription' => [
+				'subscription_status' => 'cancelled',
+				'website_status'      => 'pending_deletion',
+				'plan_type'           => 'paid',
+				'cdn_url'             => 'example1.org',
+			],
+		],
+		'expected' => [
+			'cdn_state_response' => 'byocdn',
+			'cdn'                => 1,
+			'cdn_type'           => 'byocdn',
+		],
+	],
 	'shouldSaveNothingMode'                   => [
 		'config'   => [
 			'params'          => [ 'mode' => 'nothing' ],

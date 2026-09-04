@@ -41,6 +41,13 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add CDN to the list of hidden settings fields.
 	 *
+	 * `cdn` is included alongside `cdn_type`/`cdn_state` so a hidden
+	 * `wp_rocket_settings[cdn]` field mirroring the live value is always
+	 * rendered on the classic settings form. Without it, `Settings::sanitize_callback()`
+	 * unconditionally resets `cdn` to 0 on every classic "Save Changes" click on
+	 * any tab, since the mode-toggle checkboxes are AJAX/REST-only and never
+	 * submit a `cdn` value themselves (see issue #8707).
+	 *
 	 * @param string[] $fields Hidden settings fields.
 	 *
 	 * @return string[]
@@ -48,6 +55,7 @@ class Subscriber implements Subscriber_Interface {
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
 		$fields[] = 'cdn_state';
+		$fields[] = 'cdn';
 
 		return $fields;
 	}

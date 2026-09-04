@@ -10,6 +10,7 @@ return [
 			'async_css',
 			'cdn_type',
 			'cdn_state',
+			'cdn',
 		],
 	],
 ];

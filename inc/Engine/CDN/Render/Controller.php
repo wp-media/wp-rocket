@@ -123,6 +123,10 @@ class Controller extends Abstract_Render {
 	 * compatibility subscribers (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()})
 	 * can override to `true` later in the same `rocket_cdn_driver_sections` filter chain.
 	 *
+	 * Also exposes `show_no_cname_warning`, true only when BYOCDN is the actually
+	 * applied mode (not merely tab-selected) and no CNAME has been configured yet
+	 * — the tab otherwise lets a user turn the driver on with nothing to rewrite.
+	 *
 	 * @since 3.23.3
 	 *
 	 * @param array $sections CDN driver sections.
@@ -136,9 +140,11 @@ class Controller extends Abstract_Render {
 
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
 
-		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
-		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
-		$sections['cdn_section']['is_forced_off']     = false;
+		$sections['cdn_section']['applied_cdn_state']     = $applied_cdn_state;
+		$sections['cdn_section']['is_active']             = Context::BYOCDN_TYPE === $applied_cdn_state;
+		$sections['cdn_section']['is_forced_off']         = false;
+		$sections['cdn_section']['show_no_cname_warning'] = Context::BYOCDN_TYPE === $applied_cdn_state
+			&& empty( $this->options->get( 'cdn_cnames', [] ) );
 
 		return $sections;
 	}
