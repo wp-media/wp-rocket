@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cache_notice
@@ -17,6 +18,16 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 	private static $contributer_user_id = 0;
 
 	protected $config;
+
+	/**
+	 * @var \WP_Rocket\Event_Management\Event_Manager
+	 */
+	private $event_manager;
+
+	/**
+	 * @var Cloudflare
+	 */
+	private $cloudflare;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -39,6 +50,21 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		add_filter('pre_option_automatic_platform_optimization_cache_by_device_type', [$this, 'automatic_platform_optimization_cache_by_device_type']);
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 
+		// PluginResolver gates cloudflare_plugin_subscriber out of the container at boot
+		// (the official Cloudflare plugin isn't installed in this test environment), so its
+		// display_apo_cache_notice callback was never wired to the event manager. Build the
+		// subscriber directly (same approach Test_ExcludeDelayJs uses for Termly) and wire
+		// it here, before isolating the hook, so the notice under test actually fires.
+		$container            = apply_filters( 'rocket_container', null );
+		$this->cloudflare     = new Cloudflare(
+			$container->get( 'options' ),
+			$container->get( 'options_api' ),
+			$container->get( 'beacon' ),
+			$container->get( 'cloudflare_plugin_facade' )
+		);
+		$this->event_manager = $container->get( 'event_manager' );
+		$this->event_manager->add_subscriber( $this->cloudflare );
+
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_apo_cache_notice' );
 	}
 
@@ -53,6 +79,8 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 
 		$this->restoreWpHook( 'admin_notices' );
+
+		$this->event_manager->remove_subscriber( $this->cloudflare );
 
 		parent::tear_down();
 	}

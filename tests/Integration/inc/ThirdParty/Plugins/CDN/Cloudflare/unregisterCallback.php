@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::unregister_callback
@@ -83,8 +84,20 @@ class TestUnregisterCallback extends TestCase {
 			'accepted_args' => 3,
 		];
 
+		// PluginResolver gates cloudflare_plugin_subscriber out of the container at boot
+		// (the official Cloudflare plugin isn't installed in this test environment), and
+		// that gate is decided once for the whole process, before this set_up() runs, so
+		// fetching it via $container->get( 'cloudflare_plugin_subscriber' ) throws a
+		// NotFoundException here. Build the subscriber directly instead — same approach
+		// Test_ExcludeDelayJs uses for Termly — since this test only needs a working
+		// instance, not the container's wiring.
 		$container  = apply_filters( 'rocket_container', null );
-		$cloudflare = $container->get( 'cloudflare_plugin_subscriber' );
+		$cloudflare = new Cloudflare(
+			$container->get( 'options' ),
+			$container->get( 'options_api' ),
+			$container->get( 'beacon' ),
+			$container->get( 'cloudflare_plugin_facade' )
+		);
 
 		// Prior to the fix, an int $key fatals here with:
 		// TypeError: substr(): Argument #1 ($string) must be of type string, int given.
