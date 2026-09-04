@@ -11,6 +11,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -42,6 +43,13 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options API mock instance.
+	 *
+	 * @var Mockery\MockInterface|Options
+	 */
+	private $options_api;
 
 	/**
 	 * RocketCDNQuery mock instance.
@@ -82,6 +90,7 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
+		$this->options_api             = Mockery::mock( Options::class );
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
@@ -99,6 +108,7 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 			'',
 			$this->context,
 			$this->options,
+			$this->options_api,
 			$this->cdn_query,
 			$this->subscription_controller,
 			$this->user,

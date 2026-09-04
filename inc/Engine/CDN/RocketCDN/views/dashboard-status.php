@@ -32,7 +32,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 		</div>
 		<?php if ( ! $data['is_active'] ) : ?>
 		<div>
-			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
+			<a href="#" data-micromodal-trigger="wpr-rocketcdn-modal" class="wpr-button wpr-rocketcdn-open"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
 		</div>
 		<?php endif; ?>
 	</div>

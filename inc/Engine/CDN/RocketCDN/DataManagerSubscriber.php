@@ -189,6 +189,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$this->cdn_options->save_token( $token );
 		$this->cdn_options->enable();
 
+		// Force cdn_type to rocketcdn.
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
+		$this->options_api->set( 'settings', $current_options );
+
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
 		$this->schedule_subscription_check( $subscription );
