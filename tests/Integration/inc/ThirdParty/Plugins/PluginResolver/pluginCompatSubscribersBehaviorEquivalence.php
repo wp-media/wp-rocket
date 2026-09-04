@@ -21,23 +21,24 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 * special ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously
 	 * hardcoded in Plugin::$common_subscribers.
 	 *
-	 * Issue #8789 slices 1-2 gate 16 of the 43 registry ids (slice 1: elementor_subscriber,
+	 * Issue #8789 slices 1-3 gate 18 of the 43 registry ids (slice 1: elementor_subscriber,
 	 * beaverbuilder_subscriber, simple_custom_css, pdfembedder, wordfence_subscriber,
 	 * unlimited_elements, inline_related_posts; slice 2: rank_math_seo, rocket_lazy_load,
 	 * the_events_calendar, perfmatters, weglot, translatepress, termly_subscriber,
-	 * optimole_subscriber, convertplug) behind PluginCompatibilityInterface; none of their
+	 * optimole_subscriber, convertplug; slice 3: syntaxhighlighter_subscriber,
+	 * ngg_subscriber) behind PluginCompatibilityInterface; none of their
 	 * target plugins are installed in this test environment, so they drop out of
-	 * get_active_plugins(). 43 - 16 + 2 = 29. Later #8789 slices will lower this further
+	 * get_active_plugins(). 43 - 18 + 2 = 27. Later #8789 slices will lower this further
 	 * as the remaining ids are gated.
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 29;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 27;
 
 	/**
-	 * Phase 0 defaults every registry id active; issue #8789 slices 1-2 opt 16 ids
+	 * Phase 0 defaults every registry id active; issue #8789 slices 1-3 opt 18 ids
 	 * into real detection, so the resolver's set is the full registry minus
-	 * those 16 (their target plugins are absent here), and the container must
+	 * those 18 (their target plugins are absent here), and the container must
 	 * still resolve every remaining one of them.
 	 */
 	public function testShouldResolveEveryActivePluginIdFromTheLiveContainer() {
@@ -50,8 +51,8 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
-		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slices 1-2 must resolve to the 43-id registry minus the 16 gated-inactive ids.' );
-		$this->assertCount( 27, $active_ids );
+		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slices 1-3 must resolve to the 43-id registry minus the 18 gated-inactive ids.' );
+		$this->assertCount( 25, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
@@ -114,7 +115,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 27 active resolver ids (43 - 16 slice-1/2-gated) + ezoic + mod_pagespeed = 29.
+		// 25 active resolver ids (43 - 18 slice-1/2/3-gated) + ezoic + mod_pagespeed = 27.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }

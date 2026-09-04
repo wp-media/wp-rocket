@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -11,7 +12,16 @@ defined( 'ABSPATH' ) || exit;
  * @since  3.3.1
  * @author Remy Perona
  */
-class NGG_Subscriber implements Subscriber_Interface {
+class NGG_Subscriber implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'C_NextGEN_Bootstrap' );
+	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -21,10 +31,6 @@ class NGG_Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'C_NextGEN_Bootstrap' ) ) {
-			return;
-		}
-
 		return [
 			'run_ngg_resource_manager' => 'deactivate_resource_manager',
 		];

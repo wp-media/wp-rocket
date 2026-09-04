@@ -2,6 +2,7 @@
 namespace WP_Rocket\Subscriber\Third_Party\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Compatibility class for SyntaxHighlighter plugin
@@ -9,7 +10,16 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.3.1
  * @author Remy Perona
  */
-class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
+class SyntaxHighlighter_Subscriber implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'SyntaxHighlighter' );
+	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
@@ -19,10 +29,6 @@ class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'SyntaxHighlighter' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_exclude_defer_js' => 'exclude_defer_js_syntaxhighlighter_scripts',
 			'rocket_exclude_js'       => 'exclude_minify_js_syntaxhighlighter_scripts',
