@@ -103,6 +103,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
 			],
 			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
+			'wp_rocket_first_install'                => [
+				[ 'auto_detect_pro_subscription', 12 ],
+			],
+			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
 			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
 		];
 	}
@@ -674,5 +678,23 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$current_options             = $this->options_api->get( 'settings', [] );
 		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
 		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Run the fresh-install Pro subscription detection.
+	 *
+	 * @return void
+	 */
+	public function auto_detect_pro_subscription() {
+		$this->subscription_controller->auto_detect_pro_subscription();
+	}
+
+	/**
+	 * Handles the manual retry of the fresh-install Pro subscription detection from admin notice.
+	 *
+	 * @return void
+	 */
+	public function handle_manual_retry_pro_detection(): void {
+		$this->subscription_controller->handle_manual_retry_pro_detection();
 	}
 }

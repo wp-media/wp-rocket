@@ -10,7 +10,9 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
 /**
  * Subscriber for RocketCDN frontend integration.
  *
- * Dynamically provides cdn_cnames and cdn_zone values from the RocketCDN subscription data.
+ * Dynamically provides cdn_cnames and cdn_zone values from the RocketCDN subscription data,
+ * and drives the fresh-install Pro subscription detection workflow. Registered as a common
+ * (not admin-only) subscriber because the Action Scheduler retry callback runs outside of wp-admin.
  *
  * @since 3.22
  */
@@ -57,6 +59,7 @@ class FrontendSubscriber implements Subscriber_Interface {
 		return [
 			'get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
 			'get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
+			'rocket_cdn_auto_detect'       => 'scheduled_auto_detect_pro_subscription',
 		];
 	}
 
@@ -161,5 +164,15 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 */
 	private function filter_rocketcdn_cname( $cname ) {
 		return $cname !== $this->get_raw_rocketcdn_url();
+	}
+
+	/**
+	 * Action Scheduler callback that retries the fresh-install Pro subscription detection.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 * @return void
+	 */
+	public function scheduled_auto_detect_pro_subscription( int $attempt ) {
+		$this->subscription_controller->scheduled_auto_detect_pro_subscription( $attempt );
 	}
 }
