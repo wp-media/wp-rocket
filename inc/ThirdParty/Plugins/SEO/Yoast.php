@@ -5,8 +5,18 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class Yoast implements Subscriber_Interface {
+class Yoast implements Subscriber_Interface, PluginCompatibilityInterface {
+
+	/**
+	 * Whether Yoast SEO is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return (bool) rocket_get_constant( 'WPSEO_VERSION' );
+	}
 
 	/**
 	 * Array of events this subscriber listens to
