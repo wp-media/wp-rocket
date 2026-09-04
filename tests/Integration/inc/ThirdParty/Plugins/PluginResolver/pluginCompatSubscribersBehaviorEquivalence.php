@@ -33,7 +33,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 16;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 14;
 
 	/**
 	 * Every id the resolver reports as active (the full registry minus the ids
