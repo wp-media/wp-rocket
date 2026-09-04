@@ -44,6 +44,14 @@ class Test_BackfillCdnStateOnUpgrade extends AdminTestCase {
 		$this->bridge = $container->get( 'cdn_state_bridge' );
 
 		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+
+		// If a subscription-creation test left this set (e.g. it's meant to persist
+		// across the request, only cleared on the next check), it makes
+		// is_subscription_creation_loading() short-circuit get_subscription_data() to
+		// [] here, silently breaking is_paid()/is_free() regardless of the transient
+		// this test sets below. Guard against it rather than trusting other tests'
+		// cleanup.
+		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 	}
 
 	/**
@@ -54,6 +62,8 @@ class Test_BackfillCdnStateOnUpgrade extends AdminTestCase {
 	public function tear_down() {
 		update_option( 'wp_rocket_settings', $this->original_settings );
 		delete_transient( 'rocketcdn_status' );
+		delete_option( 'rocketcdn_user_token' );
+		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
@@ -65,6 +75,10 @@ class Test_BackfillCdnStateOnUpgrade extends AdminTestCase {
 	 */
 	public function testShouldBackfillAsExpected( array $config, array $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'] ?? [ 'subscription_status' => 'none' ], MINUTE_IN_SECONDS );
+
+		if ( ! empty( $config['token'] ) ) {
+			update_option( 'rocketcdn_user_token', $config['token'] );
+		}
 
 		$settings = array_merge( get_option( 'wp_rocket_settings', [] ), $config['initial'] );
 		update_option( 'wp_rocket_settings', $settings );

@@ -346,7 +346,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		return false;
+		return true;
 	}
 
 	/**
