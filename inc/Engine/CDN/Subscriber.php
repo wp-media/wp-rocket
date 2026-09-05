@@ -137,7 +137,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'on_update_add_cdn_type_option', 10, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
-			'rocket_cdnfree_activated'                => 'clear_cache_on_free_activation',
+			'rocket_cdnfree_activated'                 => 'clear_cache_on_free_activation',
 			'update_option_wp_rocket_settings'         => [
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
