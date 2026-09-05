@@ -11,6 +11,7 @@ return [
 				'subscription_status' => 'running',
 				'plan_type'           => 'paid',
 			],
+			'token'        => 'fake-cdn-token',
 		],
 		'expected' => [
 			'cdn_state' => 'rocketcdn_paid',

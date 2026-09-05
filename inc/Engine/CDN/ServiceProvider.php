@@ -125,7 +125,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cdn_cname_validator',
 				]
 			);
-		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
+		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class )
+			->addArgument( 'options' );
 
 		// CDN state compatibility bridge (RocketCDN refactor epic #8693 - temporary, removed in Story 10).
 		$this->getContainer()->addShared( 'cdn_state_bridge', CdnStateBridge::class )
