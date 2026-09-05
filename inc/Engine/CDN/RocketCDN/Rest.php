@@ -309,6 +309,15 @@ class Rest extends WP_REST_Controller {
 
 		if ( $should_activate ) {
 			$this->finalize_cdn_activation( (int) $inserted );
+
+			/**
+			 * Fires after RocketCDN free mode is activated and the subscription is confirmed active.
+			 *
+			 * The page cache may have been rebuilt without CDN URL replacement in the window between
+			 * the admin settings save (which triggers an early cache clear) and this point where the
+			 * subscription is confirmed live.
+			 */
+			do_action( 'rocket_cdnfree_activated' );
 		}
 
 		$this->clean_url_cache( $url );
@@ -328,7 +337,7 @@ class Rest extends WP_REST_Controller {
 	private function resolve_cdn_activation() {
 		$cdn_state = $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
 
-		if ( Context::ROCKETCDN_FREE_TYPE === $cdn_state ) {
+		if ( Context::ROCKETCDN_FREE_TYPE === $cdn_state && $this->subscription_controller->has_active_subscription() ) {
 			return false;
 		}
 
