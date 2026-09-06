@@ -529,6 +529,9 @@ function rocket_create_options_hash( $value ) {
 		'heartbeat_admin_behavior'    => true,
 		'heartbeat_editor_behavior'   => true,
 		'varnish_auto_purge'          => true,
+		'maxcache'                    => true,
+		// A marker one write carries so that it is not taken for a form submission, never a setting.
+		'ignore'                      => true,
 		'analytics_enabled'           => true,
 		'sucury_waf_cache_sync'       => true,
 		'sucury_waf_api_key'          => true,

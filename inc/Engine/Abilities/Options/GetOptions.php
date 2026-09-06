@@ -397,6 +397,11 @@ class GetOptions implements AbilitiesInterface {
 				'description' => 'Enable Sucuri WAF cache sync.',
 				'enum'        => [ 0, 1 ],
 			],
+			'maxcache'                                  => [
+				'type'        => 'integer',
+				'description' => 'Let the MAx Cache server module deliver the page cache, where the host has it.',
+				'enum'        => [ 0, 1 ],
+			],
 
 			// Analytics.
 			'analytics_enabled'                         => [

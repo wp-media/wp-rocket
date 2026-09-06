@@ -84,6 +84,7 @@ class AllowedOptions {
 			'performance_monitoring_schedule_frequency',
 			// Add-ons / integrations.
 			'varnish_auto_purge',
+			'maxcache',
 			'sucury_waf_cache_sync',
 			// Misc.
 			'emoji',
