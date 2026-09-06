@@ -58,8 +58,21 @@ class Deactivation {
 		if ( ! isset( $_GET['rocket_nonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['rocket_nonce'] ), 'force_deactivation' ) ) {
 			$causes = [];
 
-			// .htaccess problem.
-			if ( $is_apache && ! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' ) ) {
+			// Reachable here off an admin page now: the filter below answers for cron and for a
+			// programmatic deactivation, where wp-admin/includes/file.php is not loaded.
+			if ( ! function_exists( 'get_home_path' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/file.php';
+			}
+
+			// .htaccess problem. Also off Apache, where something else reads the file: a removal
+			// that cannot be written leaves rules behind for a plugin that is no longer here. Not
+			// under WP-CLI or cron, where $is_apache is false for every server: there is nobody to
+			// read the notice this leads to, and the redirect that shows it would end the run.
+			if (
+				( $is_apache || ( ! rocket_get_constant( 'WP_CLI', false ) && ! wp_doing_cron() && rocket_htaccess_needed_without_apache( true ) ) )
+				&&
+				! rocket_direct_filesystem()->is_writable( get_home_path() . '.htaccess' )
+			) {
 				$causes[] = 'htaccess';
 			}
 

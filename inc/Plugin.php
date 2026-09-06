@@ -17,6 +17,7 @@ use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
+use WP_Rocket\Addon\MaxCache\ServiceProvider as MaxCacheServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
@@ -282,6 +283,7 @@ class Plugin {
 	private function init_common_subscribers() {
 		$this->container->addServiceProvider( new CapabilitiesServiceProvider() );
 		$this->container->addServiceProvider( new AddonServiceProvider() );
+		$this->container->addServiceProvider( new MaxCacheServiceProvider() );
 		$this->container->addServiceProvider( new VarnishServiceProvider() );
 		$this->container->addServiceProvider( new PreloadServiceProvider() );
 		$this->container->addServiceProvider( new PreloadLinksServiceProvider() );
@@ -338,6 +340,7 @@ class Plugin {
 			'plugin_notice_subscriber',
 			'options_backup_subscriber',
 			'capabilities_subscriber',
+			'maxcache_subscriber',
 			'varnish_subscriber',
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',

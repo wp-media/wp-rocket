@@ -3,6 +3,33 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Whether the .htaccess file is needed on a server that is not Apache.
+ *
+ * Some environments read this file with something other than the web server, for example a caching
+ * layer that compiles it into its own configuration. There the file still has to be written.
+ *
+ * Asked lazily: a listener may read the file or probe a socket to answer.
+ *
+ * @since 3.24
+ *
+ * @param bool $remove_rules Whether the caller takes the plugin's rules out of the file.
+ *
+ * @return bool
+ */
+function rocket_htaccess_needed_without_apache( $remove_rules = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	/**
+	 * Filters whether the .htaccess file is needed on a server that is not Apache.
+	 *
+	 * @since 3.24
+	 *
+	 * @param bool $needed       True when the file is needed even though the server is not Apache.
+	 * @param bool $remove_rules Whether this call takes the plugin's rules out of the file.
+	 */
+	// Read loosely: a listener answering 1 means the same as one answering true.
+	return (bool) wpm_apply_filters_typed( '?boolean|?integer|?string', 'rocket_htaccess_needed_without_apache', false, (bool) $remove_rules );
+}
+
+/**
  * Used to flush the .htaccess file.
  *
  * @since 1.0
@@ -22,7 +49,11 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 	 *
 	 * @param bool $disable True to disable, false otherwise.
 	 */
-	if ( ! $is_apache || ( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules ) ) {
+	if (
+		( ! $is_apache && ! rocket_htaccess_needed_without_apache( $remove_rules ) )
+		||
+		( apply_filters( 'rocket_disable_htaccess', false ) && ! $remove_rules )
+	) {
 		return false;
 	}
 
@@ -103,10 +134,37 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		}
 	}
 
-	// Check to see if there was a change.
-	if ( $existing_lines === $insertion ) {
+	// Check to see if there was a change. A removal is never "no change" while the markers are there:
+	// an empty block between them compares equal to the empty insertion.
+	if ( $existing_lines === $insertion && ! $remove_rules ) {
 		flock( $pointer, LOCK_UN );
 		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		/** This action is documented at the end of this function */
+		do_action( 'rocket_after_flush_htaccess', $filename, false );
+
+		return true;
+	}
+
+	if ( $found_marker && ! $found_end_marker ) {
+		flock( $pointer, LOCK_UN );
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		// The block opens and never closes, so where it ends cannot be told from where the rest of the
+		// file begins: writing here would take everything after the marker with it.
+
+		return false;
+	}
+
+	if ( ! $found_marker && $remove_rules ) {
+		flock( $pointer, LOCK_UN );
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		// Nothing of the plugin's is in the file, and taking it out is what was asked: writing the
+		// markers around an empty block would put something there instead of removing anything.
+
+		/** This action is documented at the end of this function */
+		do_action( 'rocket_after_flush_htaccess', $filename, false );
 
 		return true;
 	}
@@ -146,19 +204,50 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		);
 	}
 
+	// Kept for as long as the write is unfinished: what is in the file now is the only copy of it.
+	fseek( $pointer, 0 );
+	$original = stream_get_contents( $pointer );
+
 	// Write to the start of the file, and truncate it to that length.
 	fseek( $pointer, 0 );
-	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+	$bytes   = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+	$written = strlen( $new_file_data ) === $bytes;
 
-	if ( false !== $bytes ) {
+	if ( $written ) {
 		ftruncate( $pointer, ftell( $pointer ) );
+	} elseif ( false !== $original ) {
+		// A quota or a full disk stopped it partway. Cutting the file to what got through would take
+		// the rest of it away, so it goes back to the length it had, and its own contents back over it.
+		ftruncate( $pointer, strlen( $original ) );
+		fseek( $pointer, 0 );
+		fwrite( $pointer, $original ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
 	}
 
 	fflush( $pointer );
 	flock( $pointer, LOCK_UN );
 	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
 
-	return (bool) $bytes;
+	// Only a complete write leaves the rules in the file, and only that is announced.
+	if ( $written ) {
+		/**
+		 * Fires once the .htaccess file holds the current rules, whether or not this call changed it.
+		 *
+		 * A consumer that reads this file instead of the web server has no way to notice on its own.
+		 * The second argument says whether this call rewrote the file, so that such a consumer can
+		 * tell "the rules are in place" from "the rules have just changed" and act on the one it
+		 * cares about. A short or failed write announces nothing.
+		 *
+		 * @since 3.24
+		 *
+		 * @param string $filename Absolute path to the file.
+		 * @param bool   $changed  Whether this call rewrote the file.
+		 */
+		do_action( 'rocket_after_flush_htaccess', $filename, true );
+	}
+
+	// Only a file holding what this call meant to put in it: a write cut short by a quota or a full
+	// disk has been put back the way it was, and that is not a success either.
+	return $written;
 }
 
 /**
@@ -251,6 +340,28 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 }
 
 /**
+ * Rules that describe the compressed cache file to the web server.
+ *
+ * Its name says nothing about its type or its encoding, so both are declared, and the server is told
+ * not to compress it a second time.
+ *
+ * @since 3.24
+ *
+ * @return string
+ */
+function get_rocket_htaccess_gzip_mime() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$rules  = '<IfModule mod_mime.c>' . PHP_EOL;
+	$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
+	$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
+	$rules .= '</IfModule>' . PHP_EOL;
+	$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
+	$rules .= 'SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip' . PHP_EOL;
+	$rules .= '</IfModule>' . PHP_EOL;
+
+	return $rules;
+}
+
+/**
  * Rewrite rules to serve the cache file
  *
  * @since 1.0
@@ -302,7 +413,8 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	 *
 	 * @param bool true will force the path to be full.
 	 */
-	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '/kunden/' ) === 0 );
+	// Not always set: under WP-CLI and cron there is no request, and this is now reachable there.
+	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ?? '' ) ), '/kunden/' ) === 0 );
 
 	$rules      = '';
 	$gzip_rules = '';
@@ -323,13 +435,7 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	 * @param bool true will force to serve gzip cache file.
 	 */
 	if ( function_exists( 'gzencode' ) && apply_filters( 'rocket_force_gzip_htaccess_rules', true ) ) {
-		$rules = '<IfModule mod_mime.c>' . PHP_EOL;
-			$rules .= 'AddType text/html .html_gzip' . PHP_EOL;
-			$rules .= 'AddEncoding gzip .html_gzip' . PHP_EOL;
-		$rules .= '</IfModule>' . PHP_EOL;
-		$rules .= '<IfModule mod_setenvif.c>' . PHP_EOL;
-			$rules .= 'SetEnvIfNoCase Request_URI \.html_gzip$ no-gzip' . PHP_EOL;
-		$rules .= '</IfModule>' . PHP_EOL . PHP_EOL;
+		$rules = get_rocket_htaccess_gzip_mime() . PHP_EOL;
 
 		$gzip_rules .= 'RewriteCond %{HTTP:Accept-Encoding} gzip' . PHP_EOL;
 		$gzip_rules .= 'RewriteRule .* - [E=WPR_ENC:_gzip]' . PHP_EOL;

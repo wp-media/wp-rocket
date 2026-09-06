@@ -70,6 +70,7 @@ class SetOption implements AbilitiesInterface {
 		'performance_monitoring',
 		// Add-ons.
 		'varnish_auto_purge',
+		'maxcache',
 		'sucury_waf_cache_sync',
 		// Analytics.
 		'analytics_enabled',
