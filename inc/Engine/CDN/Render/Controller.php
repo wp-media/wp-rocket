@@ -139,6 +139,7 @@ class Controller extends Abstract_Render {
 		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
 		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
 		$sections['cdn_section']['is_forced_off']     = false;
+		$sections['cdn_section']['toggle_tooltip']    = $this->get_toggle_forced_off_tooltip();
 
 		return $sections;
 	}
@@ -177,6 +178,7 @@ class Controller extends Abstract_Render {
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'toggle_tooltip'    => $this->get_toggle_forced_off_tooltip(),
 			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
@@ -254,6 +256,7 @@ class Controller extends Abstract_Render {
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'toggle_tooltip'    => $this->get_toggle_forced_off_tooltip(),
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
@@ -675,6 +678,16 @@ class Controller extends Abstract_Render {
 	public function should_reject_rocketcdn_activation(): bool {
 		return $this->is_subscription_loading()
 			|| $this->should_display_licence_expired_notice();
+	}
+
+	/**
+	 * Tooltip shown on a CDN mode toggle when it's forced off (e.g. by a hosting
+	 * compatibility layer), explaining why the user can't switch it themselves.
+	 *
+	 * @return string
+	 */
+	private function get_toggle_forced_off_tooltip(): string {
+		return __( 'This option is managed by your host and can’t be changed here.', 'rocket' );
 	}
 
 	/**

@@ -18,6 +18,7 @@
  *     @type string $page        Page section identifier.
  *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
  *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */
 
@@ -25,6 +26,7 @@ defined( 'ABSPATH' ) || exit;
 $rocket_byocdn_active = $data['is_active'];
 ?>
 
+<?php // wpr-cdn-active-indicator is kept in sync with JS (cdn-driver.js), which reads it off .wpr-optionHeader to find the previously-active mode on a failed switch — it no longer drives any visible styling on this header itself. ?>
 <div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_byocdn_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
@@ -37,7 +39,7 @@ $rocket_byocdn_active = $data['is_active'];
 				'checked'       => $rocket_byocdn_active,
 				'is_forced_off' => $data['is_forced_off'],
 				'label'         => __( 'Enable Other CDN', 'rocket' ),
-				'tooltip'       => __( 'This option is managed by your host and can’t be changed here.', 'rocket' ),
+				'tooltip'       => $data['toggle_tooltip'],
 			]
 		);
 		?>

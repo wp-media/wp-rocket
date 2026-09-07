@@ -5287,7 +5287,6 @@ div.wpr-tutorial-item {
 
 .wpr-cdn-mode-toggle {
   flex-shrink: 0;
-  margin-bottom: 0;
   height: 22px;
 }
 .wpr-cdn-mode-toggle label {
