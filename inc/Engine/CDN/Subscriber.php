@@ -556,7 +556,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_cache_on_free_activation(): void {
-		$this->cache->clear_all_cache();
+		$this->cache->clear_rocketcdn_free_pages_cache();
 	}
 
 	/**
