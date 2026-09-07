@@ -776,3 +776,37 @@
 	opacity: 0.5;
 	pointer-events: none;
 }
+
+// CDN mode toggle (reuses the Addons/Analytics .wpr-radio component).
+.wpr-cdn-mode-toggle {
+	flex-shrink: 0;
+	margin-bottom: 0;
+	// No visible label text here, so give the wrapper an explicit height or it collapses to 0 and misaligns in the flex row.
+	height: 22px;
+
+	label {
+		display: block;
+		cursor: pointer;
+	}
+
+	[type="checkbox"]:disabled + label {
+		cursor: not-allowed;
+	}
+
+	.wpr-tooltip {
+		left: 50%;
+		top: calc(100% + #{$space});
+		transform: translateX(-50%);
+		white-space: nowrap;
+
+		&:before {
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	&:hover .wpr-tooltip {
+		visibility: visible;
+		opacity: 1;
+	}
+}
