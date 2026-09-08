@@ -109,6 +109,13 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 			$final['cdn_state'] ?? null,
 			'cdn_state mismatch after migration'
 		);
+		if ( isset( $expected['cdn'] ) ) {
+			$this->assertSame(
+				$expected['cdn'],
+				$final['cdn'] ?? null,
+				'cdn toggle mismatch after migration'
+			);
+		}
 		$this->assertSame(
 			$expected['write_count'],
 			$write_count,

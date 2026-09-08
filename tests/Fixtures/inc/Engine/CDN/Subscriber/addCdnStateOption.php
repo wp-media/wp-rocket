@@ -64,7 +64,7 @@ return [
 		],
 		'expected' => [
 			'options' => [
-				'cdn'        => 1,
+				'cdn'        => 0,
 				'cdn_type'   => 'rocketcdn',
 				'cdn_cnames' => [],
 				'cdn_state'  => 'nothing',

@@ -556,7 +556,8 @@ class Subscriber implements Subscriber_Interface {
 		// through to legacy_to_state so they remain in rocketcdn_free rather than nothing.
 		if ( $cdn_enabled && Context::ROCKETCDN_TYPE === $cdn_type && ! $has_cname
 			&& $this->subscription_controller->has_active_subscription() ) {
-			$new_state = Context::CDN_STATE_NOTHING;
+			$new_state              = Context::CDN_STATE_NOTHING;
+			$current_options['cdn'] = 0;
 		} else {
 			$new_state = $this->cdn_state_bridge->legacy_to_state( $current_options );
 		}

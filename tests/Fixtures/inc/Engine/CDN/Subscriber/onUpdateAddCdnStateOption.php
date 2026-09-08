@@ -50,7 +50,7 @@ return [
 	],
 
 	// CNAME guard: cdn=1, rocketcdn, no CNAME saved, paid subscription — CDN was never functional
-	// for this domain pre-update, so migration must land on nothing regardless of subscription.
+	// for this domain pre-update, so migration must land on nothing and the CDN toggle unchecked.
 	'shouldMigrateNothingWhenRocketcdnEnabledButNoCnameSaved'         => [
 		'config'   => [
 			'old_version'     => '3.22.0',
@@ -59,6 +59,7 @@ return [
 			'subscription'    => [ 'subscription_status' => 'running', 'plan_type' => 'paid' ],
 		],
 		'expected' => [
+			'cdn'         => 0,
 			'cdn_state'   => 'nothing',
 			'write_count' => 1,
 		],
