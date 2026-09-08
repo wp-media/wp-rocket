@@ -128,6 +128,23 @@ return [
 			'cdn_state' => 'rocketcdn_free',
 		],
 	],
+	'testShouldSetNothingWhenByocdnCdnIsUnchecked'                      => [
+		'config'   => [
+			'initial' => [
+				'cdn'       => 1,
+				'cdn_type'  => 'byocdn',
+				'cdn_state' => 'byocdn',
+			],
+			'write'   => [
+				'cdn' => 0,
+			],
+		],
+		'expected' => [
+			'cdn'       => 0,
+			'cdn_type'  => 'byocdn',
+			'cdn_state' => 'nothing',
+		],
+	],
 	'testShouldLeaveCdnStateUntouchedWhenOnlyUnrelatedFieldsChange'     => [
 		'config'   => [
 			'initial'      => [
