@@ -226,7 +226,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( $this->is_cdn_paused() ) {
+		if ( $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -975,7 +975,7 @@ class Controller extends Abstract_Render {
 			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
-		$is_paused = $this->is_cdn_paused();
+		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
 
 		if ( $is_paused ) {
 			$texts['status_text'] = $texts['paused_status_text'];
@@ -1004,7 +1004,7 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return ! (bool) $this->options->get( 'cdn' );
+		return Context::CDN_STATE_NOTHING === $this->context->get_applied_cdn_state();
 	}
 
 	/**

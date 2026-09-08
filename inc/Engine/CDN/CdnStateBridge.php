@@ -115,9 +115,9 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function resolve_live( $value, $default ): string {
+	public function resolve_live( $value, $default ): ?string {
 		return $this->legacy_to_state(
 			[
 				'cdn'      => get_rocket_option( 'cdn' ),
@@ -162,9 +162,9 @@ class CdnStateBridge implements Subscriber_Interface {
 	 *
 	 * @param array $settings Full wp_rocket_settings array (or any array carrying 'cdn' / 'cdn_type').
 	 *
-	 * @return string One of the Context::CDN_STATE_* / *_TYPE constants.
+	 * @return string|null One of the Context::CDN_STATE_* / *_TYPE constants.
 	 */
-	private function legacy_to_state( array $settings ): string {
+	private function legacy_to_state( array $settings ): ?string {
 		if ( empty( $settings['cdn'] ) ) {
 			return Context::CDN_STATE_NOTHING;
 		}
@@ -176,7 +176,7 @@ class CdnStateBridge implements Subscriber_Interface {
 		}
 
 		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
-			return Context::CDN_STATE_NOTHING;
+			return null;
 		}
 
 		if ( $this->subscription_controller->is_paid() ) {

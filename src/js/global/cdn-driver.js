@@ -331,6 +331,8 @@
 					'byocdn' === mode ? 'byocdn' : 'rocketcdn',
 					response.disable_rocket_cdn_elements
 				);
+
+				refreshUIElements(response);
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
@@ -538,13 +540,7 @@
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
-				// Set subscription loading state when first page is added.
-				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState();
-				}
-
-				// Update status indicator component.
-				updateStatusIndicatorComponent( response.status_indicator_html );
+				refreshUIElements(response);
 			} ).catch( () => {
 				button.disabled = false;
 
@@ -640,13 +636,7 @@
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
-				// Set subscription loading state when first page is added.
-				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState();
-				}
-
-				// Update status indicator component.
-				updateStatusIndicatorComponent( response.status_indicator_html );
+				refreshUIElements(response);
 			} ).catch( () => {
 				input.disabled = false;
 				button.disabled = false;
@@ -665,6 +655,16 @@
 				submitPage();
 			}
 		} );
+	}
+
+	function refreshUIElements( response ) {
+		// Set subscription loading state when first page is added.
+		if ( response.is_subscription_creation_loading ) {
+			setSubscriptionLoadingState();
+		}
+
+		// Update status indicator component.
+		updateStatusIndicatorComponent( response.status_indicator_html );
 	}
 
 	/**
