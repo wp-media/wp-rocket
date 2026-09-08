@@ -31,7 +31,7 @@ class Autoptimize implements Subscriber_Interface, PluginCompatibilityInterface 
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'AUTOPTIMIZE_PLUGIN_VERSION', false );
+		return rocket_has_constant( 'AUTOPTIMIZE_PLUGIN_VERSION' );
 	}
 
 	/**
