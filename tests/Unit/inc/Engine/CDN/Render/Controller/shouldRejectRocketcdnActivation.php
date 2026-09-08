@@ -15,13 +15,13 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_paid_section
+ * Test class covering \WP_Rocket\Engine\CDN\Render\Controller::should_reject_rocketcdn_activation
  *
- * @covers \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_paid_section
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::should_reject_rocketcdn_activation
  * @group  CDN
  * @group  RocketCDN
  */
-class Test_AddRocketcdnPaidSection extends TestCase {
+class Test_ShouldRejectRocketcdnActivation extends TestCase {
 
 	/**
 	 * Beacon mock instance.
@@ -80,8 +80,6 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	public function set_up(): void {
 		parent::set_up();
 
-		$this->stubTranslationFunctions();
-
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
@@ -110,85 +108,80 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	}
 
 	/**
-	 * Sets up the common stubs shared by both scenarios.
+	 * Tests that should_reject_rocketcdn_activation returns the expected value.
+	 *
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Test configuration.
+	 * @param bool  $expected Expected value.
 	 *
 	 * @return void
 	 */
-	private function stub_common_expectations(): void {
-		$this->context->shouldReceive( 'get_driver' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
-
-		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
-
-		$this->beacon->shouldReceive( 'get_suggest' )
-			->with( 'rocketcdn' )
-			->andReturn(
-				[
-					'id'  => 'beacon-id',
-					'url' => 'https://example.com',
-				]
-			);
-
+	public function testShouldDoAsExpected( array $config, bool $expected ): void {
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->andReturn( false );
-
-		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
-			->andReturn( false );
-
-		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
-			->andReturn( false );
-
-		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
-			->andReturn( true );
-
-		$this->subscription_controller->shouldReceive( 'is_free' )
-			->andReturn( false );
+			->andReturn( $config['is_subscription_loading'] );
 
 		$this->context->shouldReceive( 'is_rocketcdn' )
-			->andReturn( true );
+			->andReturn( $config['is_rocketcdn'] ?? true );
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn' )
-			->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( $config['is_free'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( $config['is_license_invalid'] ?? false );
 
 		$this->user->shouldReceive( 'is_reseller_license_banned' )
-			->andReturn( false );
+			->andReturn( $config['is_reseller_license_banned'] ?? false );
+
+		$controller = $this->get_controller();
+
+		$this->assertSame( $expected, $controller->should_reject_rocketcdn_activation() );
 	}
 
 	/**
-	 * Marks the section active when the applied RocketCDN state is the paid tier.
+	 * Data provider for testShouldDoAsExpected.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function testShouldMarkActiveWhenRocketcdnStateIsPaid(): void {
-		$this->stub_common_expectations();
-
-		$this->context->shouldReceive( 'get_rocketcdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
-
-		$controller = $this->get_controller();
-		$sections   = $controller->add_rocketcdn_paid_section( [] );
-
-		$this->assertArrayHasKey( 'rocketcdn_paid_section', $sections );
-		$this->assertTrue( $sections['rocketcdn_paid_section']['is_active'] );
-	}
-
-	/**
-	 * Marks the section inactive when the applied RocketCDN state isn't the paid tier.
-	 *
-	 * @return void
-	 */
-	public function testShouldMarkInactiveWhenRocketcdnStateIsNotPaid(): void {
-		$this->stub_common_expectations();
-
-		$this->context->shouldReceive( 'get_rocketcdn_state' )
-			->andReturn( Context::CDN_STATE_NOTHING );
-
-		$controller = $this->get_controller();
-		$sections   = $controller->add_rocketcdn_paid_section( [] );
-
-		$this->assertArrayHasKey( 'rocketcdn_paid_section', $sections );
-		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+	public function configTestData(): array {
+		return [
+			'rejects while subscription creation is loading' => [
+				[
+					'is_subscription_loading' => true,
+				],
+				true,
+			],
+			'rejects for an expired free-tier licence' => [
+				[
+					'is_subscription_loading' => false,
+					'is_rocketcdn'            => true,
+					'is_free'                 => true,
+					'is_license_invalid'      => true,
+				],
+				true,
+			],
+			'rejects for a reseller-banned licence'    => [
+				[
+					'is_subscription_loading'    => false,
+					'is_rocketcdn'               => true,
+					'is_free'                    => true,
+					// A ban implies is_revoked(), which is_license_invalid() already
+					// surfaces - but the ban term must independently reject too, so
+					// this asserts the OR branch itself, not just its overlap.
+					'is_license_invalid'         => false,
+					'is_reseller_license_banned' => true,
+				],
+				true,
+			],
+			'allows a healthy free user'               => [
+				[
+					'is_subscription_loading' => false,
+					'is_rocketcdn'            => true,
+					'is_free'                 => true,
+					'is_license_invalid'      => false,
+				],
+				false,
+			],
+		];
 	}
 }

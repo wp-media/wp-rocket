@@ -163,6 +163,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_account' )
 			->andReturn( false );
 
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
 		$pages = array_fill(
 			0,
 			$config['page_count'],
@@ -237,6 +240,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			->andReturn( true );
 
 		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( false );
 
 		$this->cdn_query->method( 'query' )

@@ -178,7 +178,7 @@ class Controller extends Abstract_Render {
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
-			'toggle_tooltip'    => $this->get_toggle_forced_off_tooltip(),
+			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
 			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
@@ -256,7 +256,7 @@ class Controller extends Abstract_Render {
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
-			'toggle_tooltip'    => $this->get_toggle_forced_off_tooltip(),
+			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
@@ -673,21 +673,64 @@ class Controller extends Abstract_Render {
 	 * correct for elements that legitimately stay disabled while paused (purge button,
 	 * exclusions, etc.).
 	 *
+	 * The banned-reseller term is added here specifically, and not to either of the
+	 * other two predicates that also touch licence validity:
+	 * - Not {@see should_display_licence_expired_notice()}: its own
+	 *   `! is_reseller_license_banned()` exclusion is deliberate, so the expired-licence
+	 *   banner never stacks on top of the banned-reseller one.
+	 * - Not {@see is_forced_paused()}: it already rejects banned resellers through its
+	 *   `is_free() && is_license_invalid()` branch, since `is_revoked()` is a strict
+	 *   superset of the ban condition — a redundant term there would incorrectly imply
+	 *   the two conditions are independent.
+	 *
 	 * @return bool True if activation should be rejected, false otherwise.
 	 */
 	public function should_reject_rocketcdn_activation(): bool {
 		return $this->is_subscription_loading()
-			|| $this->should_display_licence_expired_notice();
+			|| $this->should_display_licence_expired_notice()
+			|| $this->user->is_reseller_license_banned();
 	}
 
 	/**
-	 * Tooltip shown on a CDN mode toggle when it's forced off (e.g. by a hosting
-	 * compatibility layer), explaining why the user can't switch it themselves.
+	 * Tooltip shown on the BYOCDN mode toggle when it's forced off by a hosting
+	 * compatibility layer (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()}),
+	 * explaining why the user can't switch it themselves.
+	 *
+	 * RocketCDN's own Free/Paid toggles are never forced off for this reason - see
+	 * {@see get_rocketcdn_toggle_forced_off_tooltip()} for their (licence/subscription-based)
+	 * forced-off tooltip.
 	 *
 	 * @return string
 	 */
 	private function get_toggle_forced_off_tooltip(): string {
 		return __( 'This option is managed by your host and can’t be changed here.', 'rocket' );
+	}
+
+	/**
+	 * Tooltip copy explaining why the RocketCDN mode toggle (Free or Paid) is forced off.
+	 *
+	 * Mirrors the precedence order of {@see should_reject_rocketcdn_activation()}
+	 * exactly, so the toggle's disabled state and its tooltip text can never disagree:
+	 * 1. Subscription creation in progress.
+	 * 2. Expired/revoked WP Rocket licence (non-banned reseller).
+	 * 3. Banned reseller licence.
+	 *
+	 * @return string Tooltip copy, or an empty string when nothing forces the toggle off.
+	 */
+	private function get_rocketcdn_toggle_forced_off_tooltip(): string {
+		if ( $this->is_subscription_loading() ) {
+			return __( 'RocketCDN is currently being activated. Please wait, this should only take a moment.', 'rocket' );
+		}
+
+		if ( $this->should_display_licence_expired_notice() ) {
+			return __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
+		}
+
+		if ( $this->user->is_reseller_license_banned() ) {
+			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
+		}
+
+		return '';
 	}
 
 	/**
