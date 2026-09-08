@@ -492,7 +492,7 @@ class SubscriptionController implements LoggerAwareInterface {
 
 		$subscription_data = $this->fetch_subscription_data_with_fallback();
 
-		if ( 200 === $subscription_data['status_code'] ) {
+		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
 			return;
 		}
 
@@ -523,7 +523,7 @@ class SubscriptionController implements LoggerAwareInterface {
 
 		$subscription_data = $this->fetch_subscription_data_with_fallback();
 
-		if ( 200 === $subscription_data['status_code'] ) {
+		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
 			$this->resolve_conclusive_detection();
 			return;
 		}
