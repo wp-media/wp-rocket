@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldBackfillRocketcdnPaidFromLegacyFields' => [
+	'testShouldBackfillRocketcdnPaidFromLegacyFields'                 => [
 		'config'   => [
 			'initial'      => [
 				'cdn'      => 1,
@@ -17,7 +17,7 @@ return [
 			'cdn_state' => 'rocketcdn_paid',
 		],
 	],
-	'testShouldBackfillNothingWhenCdnDisabled'        => [
+	'testShouldBackfillNothingWhenCdnDisabled'                       => [
 		'config'   => [
 			'initial'      => [
 				'cdn'      => 0,

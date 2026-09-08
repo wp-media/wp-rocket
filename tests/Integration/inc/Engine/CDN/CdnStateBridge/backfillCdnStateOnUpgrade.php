@@ -76,12 +76,23 @@ class Test_BackfillCdnStateOnUpgrade extends AdminTestCase {
 	public function testShouldBackfillAsExpected( array $config, array $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'] ?? [ 'subscription_status' => 'none' ], MINUTE_IN_SECONDS );
 
+
 		if ( ! empty( $config['token'] ) ) {
 			update_option( 'rocketcdn_user_token', $config['token'] );
 		}
 
+		// Suspend reconcile during the initial write so it cannot pre-set cdn_state.
+		// This mirrors the real upgrade path: the DB held legacy settings written by
+		// the old plugin version, with no cdn_state key and no reconcile involved.
+		remove_action( 'update_option_wp_rocket_settings', [ $this->bridge, 'reconcile' ], 5 );
+
 		$settings = array_merge( get_option( 'wp_rocket_settings', [] ), $config['initial'] );
+		if ( ! array_key_exists( 'cdn_state', $config['initial'] ) ) {
+			unset( $settings['cdn_state'] );
+		}
 		update_option( 'wp_rocket_settings', $settings );
+
+		add_action( 'update_option_wp_rocket_settings', [ $this->bridge, 'reconcile' ], 5, 2 );
 
 		$this->bridge->backfill_cdn_state_on_upgrade();
 
