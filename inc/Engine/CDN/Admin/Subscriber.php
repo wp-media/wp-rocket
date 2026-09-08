@@ -3,27 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\Admin;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\CDN\Context;
 
 class Subscriber implements Subscriber_Interface {
-	/**
-	 * WP Rocket options.
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Options_Data $options WP Rocket options.
-	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
-	}
-
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
 	 *

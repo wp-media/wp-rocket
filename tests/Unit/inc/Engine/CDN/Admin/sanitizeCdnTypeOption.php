@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Admin;
 
 use Brain\Monkey\Functions;
-use Mockery;
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Admin\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -17,11 +15,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_SanitizeCdnTypeOption extends TestCase {
 	/**
-	 * @var Mockery\MockInterface|Options_Data
-	 */
-	private $options;
-
-	/**
 	 * @var Subscriber
 	 */
 	private $subscriber;
@@ -29,8 +22,7 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( $this->options );
+		$this->subscriber = new Subscriber();
 	}
 
 	/**
@@ -43,7 +35,7 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 
 		$this->assertSame( $expected['cdn_type'], $result['cdn_type'] );
 
-		if ( array_key_exists( 'cdn_state', $expected ) ) {
+		if ( \array_key_exists( 'cdn_state', $expected ) ) {
 			$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
 		}
 	}

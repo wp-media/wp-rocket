@@ -312,11 +312,6 @@ class SubscriptionController implements LoggerAwareInterface {
 	private function trigger_creation_failed(): void {
 		/**
 		 * Fires when async RocketCDN subscription creation definitively fails.
-		 *
-		 * Passes the page DB record ID that triggered the subscription attempt, or null
-		 * if no page was associated (e.g. CDN was already active before the failure).
-		 *
-		 * @param int|null $page_id Page record ID to roll back, or null.
 		 */
 		do_action( 'rocket_cdnfree_subscription_creation_failed' );
 	}

@@ -35,7 +35,7 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 
 		$this->assertSame( $expected['cdn_type'], $result['cdn_type'] );
 
-		if ( array_key_exists( 'cdn_state', $expected ) ) {
+		if ( \array_key_exists( 'cdn_state', $expected ) ) {
 			$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
 		}
 	}
