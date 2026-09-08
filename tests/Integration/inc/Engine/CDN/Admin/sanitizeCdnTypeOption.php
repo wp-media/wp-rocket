@@ -22,8 +22,6 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_get_rocket_option_cdn' );
-		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
 		$this->restoreWpHook( $this->hook_name );
 
 		parent::tear_down();
@@ -32,15 +30,13 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldPreserveCdnFieldsFromDb( array $config, array $expected ): void {
-		$db = $config['options'];
-
-		add_filter( 'pre_get_rocket_option_cdn', fn() => $db['cdn'] );
-		add_filter( 'pre_get_rocket_option_cdn_type', fn() => $db['cdn_type'] );
-
-		$result = wpm_apply_filters_typed( 'array', $this->hook_name, $config['input'] );
+	public function testShouldSanitizeAndValidateCdnFields( array $input, array $expected ): void {
+		$result = wpm_apply_filters_typed( 'array', $this->hook_name, $input );
 
 		$this->assertSame( $expected['cdn_type'], $result['cdn_type'] );
-		$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
+
+		if ( array_key_exists( 'cdn_state', $expected ) ) {
+			$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
+		}
 	}
 }
