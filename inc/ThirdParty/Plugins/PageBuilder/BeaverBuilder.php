@@ -11,7 +11,7 @@ class BeaverBuilder implements Subscriber_Interface, PluginCompatibilityInterfac
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'FL_BUILDER_VERSION' );
+		return rocket_has_constant( 'FL_BUILDER_VERSION' );
 	}
 
 	/**

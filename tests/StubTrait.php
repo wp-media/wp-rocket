@@ -61,6 +61,18 @@ trait StubTrait {
 		);
 	}
 
+	protected function stubRocketHasConstant() {
+		if ( ! $this->mock_rocket_get_constant ) {
+			return;
+		}
+
+		Functions\when( 'rocket_has_constant' )->alias(
+			function ( $constant_name ) {
+				return array_key_exists( $constant_name, $this->constants ) || defined( $constant_name );
+			}
+		);
+	}
+
 	protected function getConstant( $constant_name, $default = null ) {
 		switch ( $constant_name ) {
 			case 'ABSPATH':
