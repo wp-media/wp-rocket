@@ -146,6 +146,17 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * apply_pause_on_rocketcdn_only filter, which returns 1 for byocdn users when
 	 * is_admin() is false (e.g. REST context), making CDN appear active when it is not.
 	 *
+	 * Also mirrors Render\Controller::is_forced_paused()'s two remaining branches (its
+	 * cancelled-outside-grace-period branches are already covered by legacy_to_state()'s
+	 * own check, regardless of plan type) - a paid plan still in its grace period, or a
+	 * free plan with an invalid WP Rocket licence. This is deliberately only applied
+	 * here, on the live-read path, and not folded into legacy_to_state() itself:
+	 * legacy_to_state() is also the write-time helper reconcile() and the plugin-update
+	 * migrations use to persist cdn_state, and neither of those should have a momentary
+	 * licence-invalid state force a stored value to 'nothing' - only the live read
+	 * should reflect it, the same way maybe_pause_cdn_for_inactive_subscription() only
+	 * ever filters live 'cdn' reads and never writes to storage.
+	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
@@ -158,11 +169,22 @@ class CdnStateBridge implements Subscriber_Interface {
 		}
 
 		$settings = $this->options_api->get( 'settings', [] );
+		$cdn_type = (string) ( $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE );
+
+		if ( Context::ROCKETCDN_TYPE === $cdn_type ) {
+			if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+				return Context::CDN_STATE_NOTHING;
+			}
+
+			if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+				return Context::CDN_STATE_NOTHING;
+			}
+		}
 
 		return $this->legacy_to_state(
 			[
 				'cdn'      => $settings['cdn'] ?? 0,
-				'cdn_type' => $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE,
+				'cdn_type' => $cdn_type,
 			]
 		);
 	}
@@ -225,22 +247,6 @@ class CdnStateBridge implements Subscriber_Interface {
 		}
 
 		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
-			return Context::CDN_STATE_NOTHING;
-		}
-
-		// Mirrors Render\Controller::is_forced_paused()'s remaining two branches (the
-		// cancelled-outside-grace-period ones are already covered by the check above,
-		// regardless of plan type). Needed because resolve_live() reads cdn/cdn_type
-		// straight from the raw options store rather than through get_rocket_option(),
-		// so it never observes Render\Subscriber::maybe_pause_cdn_for_inactive_subscription()'s
-		// pre_get_rocket_option_cdn override - this is the only place left that can force
-		// cdn_state to nothing for a paid plan still in its grace period, or a free plan
-		// with an invalid WP Rocket licence.
-		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
-			return Context::CDN_STATE_NOTHING;
-		}
-
-		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
 			return Context::CDN_STATE_NOTHING;
 		}
 
