@@ -15,7 +15,7 @@ class RankMathSEO implements Subscriber_Interface, PluginCompatibilityInterface 
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'RANK_MATH_FILE' );
+		return rocket_has_constant( 'RANK_MATH_FILE' );
 	}
 
 	/**

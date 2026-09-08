@@ -16,7 +16,7 @@ class TheEventsCalendar implements Subscriber_Interface, PluginCompatibilityInte
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'TRIBE_EVENTS_FILE', false );
+		return rocket_has_constant( 'TRIBE_EVENTS_FILE' );
 	}
 
 	/**
