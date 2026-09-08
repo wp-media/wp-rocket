@@ -59,7 +59,7 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
  *   (already declares these guarded globally, no override needed).
  * - TheSEOFramework: needs `the_seo_framework()` to return an object with a
  *   truthy `$loaded` and a truthy `can_run_sitemap()`. Reuses the existing
- *   tests/Fixtures/inc/ThirdParty/Plugins/SEO/TheSEOFramework/Fixtures.php.
+ *   tests/Fixtures/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php.
  *
  * All 25 classes are otherwise driven with zero stubbing — a genuine capture
  * of their real, unconditional hook maps, not a guess.
@@ -152,7 +152,7 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	private static function load_deviation_marker_stubs(): void {
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/Jetpack.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/Fixtures.php';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
 	}
 
 	/**
