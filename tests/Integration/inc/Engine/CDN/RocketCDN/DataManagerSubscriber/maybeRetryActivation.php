@@ -215,16 +215,22 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 
 		set_current_screen( 'edit.php' );
 
+		$api_request_made = false;
+
 		add_filter(
 			'pre_http_request',
-			function () {
-				$this->fail( 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
+			function ( $preempt, $args, $url ) use ( &$api_request_made ) {
+				$api_request_made = true;
+
+				return $preempt;
 			},
 			10,
 			3
 		);
 
 		$this->subscriber->maybe_retry_activation();
+
+		$this->assertFalse( $api_request_made, 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
 
 		$settings    = get_option( 'wp_rocket_settings', [] );
 		$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
