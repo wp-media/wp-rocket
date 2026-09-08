@@ -38,6 +38,16 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		$this->options          = new Options( 'wp_rocket_' );
 		$this->original_settings = $this->options->get( 'settings', [] );
+
+		// This test fires the real wp_rocket_upgrade hook, so on_update_add_cdn_state_option's
+		// has_active_subscription()/legacy_to_state() checks go through the real
+		// SubscriptionController. If a prior test left this transient set, has_token()
+		// (true here since real subscribers may resolve a token) plus it makes
+		// get_subscription_data() short-circuit to [] via is_subscription_creation_loading(),
+		// silently collapsing every dataset here to the rocketcdn_free fallback regardless
+		// of the fixture's intended subscription state. Guard against it rather than
+		// trusting other tests' cleanup.
+		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 	}
 
 	public function tear_down() {
@@ -47,6 +57,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		remove_filter( 'pre_get_rocket_option_cdn', '__return_true', PHP_INT_MAX );
 		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'getCdnCnames' ], PHP_INT_MAX );
 		delete_transient( 'rocketcdn_status' );
+		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 
 		// Write original settings back without triggering reconcile cascade.
 		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
