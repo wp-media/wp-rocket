@@ -82,6 +82,14 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		$this->options->set( 'settings', array_merge( $base, $config['initial_options'] ) );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
+		// Re-seed the transient after DataManagerSubscriber::refresh_subscription_details_with_update
+		// (also prio 10, registered at plugin load) flushes it, so the subscription guard in
+		// on_update_add_cdn_state_option (prio 11) reads the fixture's intended subscription data.
+		$restore_transient = static function () use ( $config ) {
+			set_transient( 'rocketcdn_status', $config['subscription'], MINUTE_IN_SECONDS );
+		};
+		add_action( 'wp_rocket_upgrade', $restore_transient, 10, 0 );
+
 		// Count every update_option_wp_rocket_settings call triggered by wp_rocket_upgrade.
 		$write_count = 0;
 		$counter     = static function () use ( &$write_count ) {
@@ -91,6 +99,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		do_action( 'wp_rocket_upgrade', '3.23.4', $config['old_version'] );
 
+		remove_action( 'wp_rocket_upgrade', $restore_transient, 10 );
 		remove_action( 'update_option_wp_rocket_settings', $counter, PHP_INT_MAX );
 
 		$final = $this->options->get( 'settings', [] );
