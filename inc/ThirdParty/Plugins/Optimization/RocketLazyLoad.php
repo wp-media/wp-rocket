@@ -12,7 +12,7 @@ class RocketLazyLoad implements Subscriber_Interface, PluginCompatibilityInterfa
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'ROCKET_LL_VERSION' );
+		return rocket_has_constant( 'ROCKET_LL_VERSION' );
 	}
 
 	/**

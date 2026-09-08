@@ -16,7 +16,7 @@ class ConvertPlug implements Subscriber_Interface, PluginCompatibilityInterface 
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'CP_VERSION' );
+		return rocket_has_constant( 'CP_VERSION' );
 	}
 
 	/**
