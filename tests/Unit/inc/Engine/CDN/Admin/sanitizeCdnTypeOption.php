@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Admin;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Admin\Subscriber;
@@ -35,36 +36,25 @@ class Test_SanitizeCdnTypeOption extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldPreserveCdnFieldsFromDb( array $config, array $expected ): void {
-		$db = $config['options'];
+	public function testShouldSanitizeAndValidateCdnFields( array $input, array $expected ): void {
+		Functions\when( 'sanitize_text_field' )->returnArg();
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_type', 'rocketcdn' )
-			->andReturn( $db['cdn_type'] );
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_state', 'nothing' )
-			->andReturn( $db['cdn_state'] );
-
-		$result = $this->subscriber->sanitize_cdn_type_option( $config['input'] );
+		$result = $this->subscriber->sanitize_cdn_type_option( $input );
 
 		$this->assertSame( $expected['cdn_type'], $result['cdn_type'] );
-		$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
+
+		if ( array_key_exists( 'cdn_state', $expected ) ) {
+			$this->assertSame( $expected['cdn_state'], $result['cdn_state'] );
+		}
 	}
 
 	public function testShouldNotModifyOtherInputFields(): void {
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_type', 'rocketcdn' )
-			->andReturn( 'byocdn' );
-
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_state', 'nothing' )
-			->andReturn( 'byocdn' );
+		Functions\when( 'sanitize_text_field' )->returnArg();
 
 		$input  = [
 			'some_setting' => 'some_value',
-			'cdn_type'     => 'rocketcdn',
-			'cdn_state'    => 'nothing',
+			'cdn_type'     => 'byocdn',
+			'cdn_state'    => 'byocdn',
 		];
 		$result = $this->subscriber->sanitize_cdn_type_option( $input );
 
