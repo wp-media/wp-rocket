@@ -153,6 +153,18 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( true );
 
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( false );
 
@@ -231,6 +243,15 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
 
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );

@@ -666,29 +666,37 @@ class Controller extends Abstract_Render {
 	 * whether the mode toggle checkbox itself is disabled in the UI — the two must
 	 * agree, or the REST endpoint accepts a request the checkbox never lets a user send.
 	 *
-	 * Deliberately omits the current pause state that {@see should_disable_element_for_rocketcdn()}
-	 * includes: activating is by definition attempted while CDN is currently paused
-	 * (cdn option is 0), so including that check here would always reject the very
-	 * transition it's meant to allow. `should_disable_element_for_rocketcdn()` remains
-	 * correct for elements that legitimately stay disabled while paused (purge button,
-	 * exclusions, etc.).
+	 * Deliberately omits the mere fact that `cdn` is currently `0` — not yet turned
+	 * on, or previously turned off by the user themselves — since that's the normal
+	 * starting point for the very transition this method exists to gate; treating it
+	 * as a rejection reason would always reject activation. What it does reject is
+	 * {@see is_forced_paused()}'s narrower, involuntary-suppression conditions (a
+	 * cancelled paid subscription, an invalid free-tier licence): toggling the
+	 * checkbox can't fix either of those, so unlike the merely-off case there's no
+	 * legitimate activation path through the toggle to preserve.
 	 *
 	 * The banned-reseller term is added here specifically, and not to either of the
 	 * other two predicates that also touch licence validity:
 	 * - Not {@see should_display_licence_expired_notice()}: its own
 	 *   `! is_reseller_license_banned()` exclusion is deliberate, so the expired-licence
 	 *   banner never stacks on top of the banned-reseller one.
-	 * - Not {@see is_forced_paused()}: it already rejects banned resellers through its
-	 *   `is_free() && is_license_invalid()` branch, since `is_revoked()` is a strict
-	 *   superset of the ban condition — a redundant term there would incorrectly imply
-	 *   the two conditions are independent.
+	 * - Not {@see is_forced_paused()} (even though it's now also included below):
+	 *   keeping the ban term here as its own OR branch, rather than folding it into
+	 *   is_forced_paused(), matters because is_forced_paused() only catches a ban
+	 *   incidentally, via its `is_free() && is_license_invalid()` branch (a ban
+	 *   implies `is_revoked()`, a strict superset) - and that only fires for the
+	 *   free tier. A banned reseller on an active *paid* plan has no guarantee
+	 *   RocketCDN's own billing-subscription status has flipped to reflect it, so
+	 *   is_forced_paused() can miss it entirely there. The explicit term here is
+	 *   what makes a paid-tier ban reject activation regardless.
 	 *
 	 * @return bool True if activation should be rejected, false otherwise.
 	 */
 	public function should_reject_rocketcdn_activation(): bool {
 		return $this->is_subscription_loading()
 			|| $this->should_display_licence_expired_notice()
-			|| $this->user->is_reseller_license_banned();
+			|| $this->user->is_reseller_license_banned()
+			|| $this->is_forced_paused();
 	}
 
 	/**
@@ -714,6 +722,8 @@ class Controller extends Abstract_Render {
 	 * 1. Subscription creation in progress.
 	 * 2. Expired/revoked WP Rocket licence (non-banned reseller).
 	 * 3. Banned reseller licence.
+	 * 4. Subscription forced-paused - a cancelled paid plan, or another involuntary
+	 *    suppression {@see is_forced_paused()} covers that isn't already caught above.
 	 *
 	 * @return string Tooltip copy, or an empty string when nothing forces the toggle off.
 	 */
@@ -728,6 +738,10 @@ class Controller extends Abstract_Render {
 
 		if ( $this->user->is_reseller_license_banned() ) {
 			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
+		}
+
+		if ( $this->is_forced_paused() ) {
+			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
 		}
 
 		return '';

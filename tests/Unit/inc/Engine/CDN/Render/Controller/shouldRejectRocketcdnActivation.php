@@ -133,6 +133,15 @@ class Test_ShouldRejectRocketcdnActivation extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( $config['is_reseller_license_banned'] ?? false );
 
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( $config['is_paid'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( $config['is_in_grace_period'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( $config['is_cancelled_outside_grace_period'] ?? false );
+
 		$controller = $this->get_controller();
 
 		$this->assertSame( $expected, $controller->should_reject_rocketcdn_activation() );
@@ -181,6 +190,49 @@ class Test_ShouldRejectRocketcdnActivation extends TestCase {
 					'is_license_invalid'      => false,
 				],
 				false,
+			],
+			'allows a healthy paid user'               => [
+				[
+					'is_subscription_loading' => false,
+					'is_rocketcdn'            => true,
+					'is_free'                 => false,
+					'is_license_invalid'      => false,
+					'is_paid'                 => true,
+				],
+				false,
+			],
+			'rejects a paid plan cancelled within its grace period' => [
+				[
+					'is_subscription_loading' => false,
+					'is_rocketcdn'            => true,
+					'is_free'                 => false,
+					'is_license_invalid'      => false,
+					'is_paid'                 => true,
+					'is_in_grace_period'      => true,
+				],
+				true,
+			],
+			'rejects a paid plan cancelled outside its grace period' => [
+				[
+					'is_subscription_loading'           => false,
+					'is_rocketcdn'                      => true,
+					'is_free'                           => false,
+					'is_license_invalid'                => false,
+					'is_paid'                           => true,
+					'is_cancelled_outside_grace_period' => true,
+				],
+				true,
+			],
+			'rejects a cancelled subscription with an invalid licence' => [
+				[
+					'is_subscription_loading'           => false,
+					'is_rocketcdn'                      => true,
+					'is_free'                           => false,
+					'is_license_invalid'                => true,
+					'is_paid'                           => false,
+					'is_cancelled_outside_grace_period' => true,
+				],
+				true,
 			],
 		];
 	}
