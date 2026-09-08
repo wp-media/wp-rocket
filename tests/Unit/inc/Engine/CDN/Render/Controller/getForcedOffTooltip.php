@@ -148,6 +148,15 @@ class Test_GetForcedOffTooltip extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( $config['is_reseller_license_banned'] ?? false );
 
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( $config['is_paid'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( $config['is_in_grace_period'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( $config['is_cancelled_outside_grace_period'] ?? false );
+
 		$this->options->shouldReceive( 'get' )->with( 'cdn' )->andReturn( true );
 
 		$this->cdn_query->method( 'query' )->willReturn( [] );
@@ -238,6 +247,17 @@ class Test_GetForcedOffTooltip extends TestCase {
 					'is_reseller_license_banned' => true,
 				],
 				'RocketCDN is currently paused because your WPRocket licence has been banned.',
+			],
+			'forced-paused copy fourth, for a cancelled paid plan' => [
+				[
+					'is_subscription_loading' => false,
+					'is_rocketcdn'            => true,
+					'is_free'                 => false,
+					'is_license_invalid'      => false,
+					'is_paid'                 => true,
+					'is_in_grace_period'      => true,
+				],
+				'RocketCDN is currently paused because your subscription is no longer active.',
 			],
 		];
 	}
