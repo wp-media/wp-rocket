@@ -582,21 +582,6 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Flushes the cached user and subscription data, then fetches fresh subscription data.
-	 *
-	 * Flushing the user data cache forces a fresh call to the user endpoint, which (via the
-	 * `set_transient_wp_rocket_customer_data` hook) triggers saving the RocketCDN token if the
-	 * account now has one. The fresh subscription data call similarly re-caches `rocketcdn_status`.
-	 *
-	 * @return array Fresh subscription data, as returned by APIClient::get_subscription_data().
-	 */
-	private function flush_caches_and_get_subscription_data(): array {
-		$this->refresh_user_data();
-
-		return $this->fetch_subscription_data_with_fallback();
-	}
-
-	/**
 	 * Flushes the cached user data and fetches it fresh from the user endpoint.
 	 *
 	 * Also triggers cache clearing of rocketcdn_status via the
