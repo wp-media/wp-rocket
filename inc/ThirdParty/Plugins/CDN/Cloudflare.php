@@ -557,6 +557,10 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 
 		$original_wp_filter = $wp_filter[ $hook ]->callbacks;
 
+		if ( ! is_array( $original_wp_filter ) ) {
+			return;
+		}
+
 		if ( ! key_exists( $priority, $original_wp_filter ) ) {
 			return;
 		}

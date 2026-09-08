@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group HostFontsLocally
  */
 class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
-	use HttpCallTrait;
+	use HTTPCallTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFontsForOptimizations.php';
 
