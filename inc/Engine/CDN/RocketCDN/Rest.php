@@ -308,7 +308,7 @@ class Rest extends WP_REST_Controller {
 		}
 
 		if ( $should_activate ) {
-			$this->finalize_cdn_activation( (int) $inserted );
+			$this->finalize_cdn_activation();
 
 			/**
 			 * Fires after RocketCDN free mode is activated and the subscription is confirmed active.
@@ -391,18 +391,12 @@ class Rest extends WP_REST_Controller {
 	}
 
 	/**
-	 * Switches CDN to Free mode and registers the page for rollback if the async subscription job fails.
+	 * Switches CDN to Free mode after a page is successfully registered.
 	 *
-	 * @param int $page_id Inserted page DB record ID.
 	 * @return void
 	 */
-	private function finalize_cdn_activation( int $page_id ): void {
+	private function finalize_cdn_activation(): void {
 		$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE );
-
-		$async_task_id = $this->subscription_controller->get_last_async_task_id();
-		if ( null !== $async_task_id ) {
-			set_transient( 'rocket_cdnfree_pending_page_' . $async_task_id, $page_id, DAY_IN_SECONDS );
-		}
 	}
 
 	/**
@@ -491,16 +485,13 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Rolls back a failed async subscription creation.
 	 *
-	 * Deletes the page record (if one was associated) and resets CDN mode to 'nothing'.
+	 * Deletes all page records and resets CDN mode to 'nothing'.
 	 * Called by RESTSubscriber when rocket_cdnfree_subscription_creation_failed fires.
 	 *
-	 * @param int|null $page_id Page DB record ID to remove, or null if none was recorded.
 	 * @return void
 	 */
-	public function rollback_failed_subscription( ?int $page_id ): void {
-		if ( null !== $page_id ) {
-			$this->query->delete_item( $page_id );
-		}
+	public function rollback_failed_subscription(): void {
+		$this->query->delete_all_rows();
 
 		$this->apply_cdn_mode( Context::CDN_STATE_NOTHING );
 	}

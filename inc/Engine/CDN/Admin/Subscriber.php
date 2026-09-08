@@ -79,8 +79,35 @@ class Subscriber implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function sanitize_cdn_type_option( array $input ) {
-		$input['cdn_type']  = (string) $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE );
-		$input['cdn_state'] = (string) $this->options->get( 'cdn_state', Context::CDN_STATE_NOTHING );
+		// Set default value if empty.
+		if ( empty( $input['cdn_type'] ) ) {
+			$input['cdn_type'] = Context::ROCKETCDN_TYPE;
+		}
+
+		$allowed_drivers = [ Context::ROCKETCDN_TYPE, Context::BYOCDN_TYPE ];
+
+		// Validate that the value is one of the allowed drivers.
+		if ( ! in_array( $input['cdn_type'], $allowed_drivers, true ) ) {
+			$input['cdn_type'] = Context::ROCKETCDN_TYPE;
+		}
+
+		// Sanitize the value.
+		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
+
+		if ( isset( $input['cdn_state'] ) ) {
+			$allowed_states = [
+				Context::CDN_STATE_NOTHING,
+				Context::ROCKETCDN_FREE_TYPE,
+				Context::ROCKETCDN_PAID_TYPE,
+				Context::BYOCDN_TYPE,
+			];
+
+			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
+				$input['cdn_state'] = Context::CDN_STATE_NOTHING;
+			}
+
+			$input['cdn_state'] = sanitize_text_field( $input['cdn_state'] );
+		}
 
 		return $input;
 	}

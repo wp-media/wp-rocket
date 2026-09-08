@@ -243,10 +243,9 @@ class RESTSubscriber implements Subscriber_Interface {
 	 *
 	 * Fires when rocket_cdnfree_subscription_creation_failed is triggered by SubscriptionController.
 	 *
-	 * @param int|null $page_id Page DB record ID to remove, or null.
 	 * @return void
 	 */
-	public function handle_subscription_creation_failed( ?int $page_id ): void {
-		$this->rest->rollback_failed_subscription( $page_id );
+	public function handle_subscription_creation_failed(): void {
+		$this->rest->rollback_failed_subscription();
 	}
 }
