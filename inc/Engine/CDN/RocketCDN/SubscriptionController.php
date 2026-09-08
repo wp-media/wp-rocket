@@ -609,4 +609,14 @@ class SubscriptionController implements LoggerAwareInterface {
 	private function has_no_rocketcdn_token( $user_data ): bool {
 		return false !== $user_data && empty( $user_data->rocketcdn->cdn_token );
 	}
+
+	/**
+	 * Resets the in-request subscription data cache and flushes the persistent transient.
+	 *
+	 * @return void
+	 */
+	public function reset_subscription_data(): void {
+		$this->subscription = [];
+		$this->options_manager->flush_subscription_cache();
+	}
 }
