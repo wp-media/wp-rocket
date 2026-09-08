@@ -31,7 +31,7 @@ return [
 		],
 	],
 
-	'testShouldClearFailedTransientAndRunSyncCheckWhenConclusive'               => [
+	'testShouldClearFailedTransientAndScheduleJobWhenConclusive'                => [
 		'config'   => [
 			'user_role'                      => 'administrator',
 			'nonce'                          => 'valid',
@@ -42,11 +42,11 @@ return [
 		'expected' => [
 			'can_manage_options'       => true,
 			'failed_transient_cleared' => true,
-			'job_scheduled'            => false,
+			'job_scheduled'            => true,
 		],
 	],
 
-	'testShouldClearFailedTransientAndRunSyncCheckWhenInconclusive'             => [
+	'testShouldClearFailedTransientAndScheduleJobWhenInconclusive'              => [
 		'config'   => [
 			'user_role'                      => 'administrator',
 			'nonce'                          => 'valid',
@@ -56,10 +56,10 @@ return [
 		],
 		'expected' => [
 			'can_manage_options'       => true,
-			// handle_manual_retry_pro_detection() unconditionally clears the transient and never
-			// re-schedules a job — it's a one-shot sync check, not part of the retry/backoff chain.
+			// handle_manual_retry_pro_detection() unconditionally clears the transient and
+			// schedules a fresh detection job, regardless of the eventual API answer.
 			'failed_transient_cleared' => true,
-			'job_scheduled'            => false,
+			'job_scheduled'            => true,
 		],
 	],
 ];
