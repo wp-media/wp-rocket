@@ -52,7 +52,7 @@ class Elementor implements Subscriber_Interface, PluginCompatibilityInterface {
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'ELEMENTOR_VERSION' );
+		return rocket_has_constant( 'ELEMENTOR_VERSION' );
 	}
 
 	/**

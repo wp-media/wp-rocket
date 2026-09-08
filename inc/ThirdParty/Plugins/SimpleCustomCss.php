@@ -55,7 +55,7 @@ class SimpleCustomCss implements Subscriber_Interface, PluginCompatibilityInterf
 	 * @return bool
 	 */
 	public static function is_activated(): bool {
-		return (bool) rocket_get_constant( 'SCCSS_FILE' );
+		return rocket_has_constant( 'SCCSS_FILE' );
 	}
 
 	/**
