@@ -59,7 +59,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
-			'admin_init'                              => 'maybe_auto_create_rocketcdn_free_subscription',
 		];
 	}
 
@@ -272,16 +271,5 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
 		return $this->controller->get_paid_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
-	}
-
-	/**
-	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
-	 *
-	 * @since 3.22.0.2
-	 *
-	 * @return void
-	 */
-	public function maybe_auto_create_rocketcdn_free_subscription(): void {
-		$this->controller->maybe_auto_create_rocketcdn_free_subscription();
 	}
 }

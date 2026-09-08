@@ -523,6 +523,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
 		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
 			return;
 		}
