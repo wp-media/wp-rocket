@@ -12,6 +12,12 @@ use WP_Rocket\Tests\Integration\TestCase;
  * scaffolding must reach the event manager with the identical set of
  * plugin-compat subscriber ids as the pre-refactor static list.
  *
+ * Issue #8789 (all 5 slices) gates the complete Easy-25 batch behind
+ * PluginCompatibilityInterface; this is the final, structural update to this
+ * harness (see the "resolves every registry id" assertion below, which is now
+ * fully diff-derived so later batches don't need to touch this file's
+ * assertions again, only PluginResolverGatedIds::IDS).
+ *
  * @group ThirdParty
  * @group Plugins
  */
@@ -21,25 +27,28 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 * special ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously
 	 * hardcoded in Plugin::$common_subscribers.
 	 *
-	 * Issue #8789 slices 1-4 gate all 25 of the Easy-25 registry ids (slice 1:
-	 * elementor_subscriber, beaverbuilder_subscriber, simple_custom_css, pdfembedder,
-	 * wordfence_subscriber, unlimited_elements, inline_related_posts; slice 2:
-	 * rank_math_seo, rocket_lazy_load, the_events_calendar, perfmatters, weglot,
-	 * translatepress, termly_subscriber, optimole_subscriber, convertplug; slice 3:
-	 * syntaxhighlighter_subscriber, ngg_subscriber; slice 4: pwa, yoast_seo,
-	 * thirstyaffiliates, autoptimize, jetpack, seopress, the_seo_framework) behind
-	 * PluginCompatibilityInterface; none of their target plugins are installed in
-	 * this test environment, so they drop out of get_active_plugins().
-	 * 43 - 25 + 2 = 20. Later #8789 batches (Medium/Hard) will lower this further
-	 * as the remaining ids are gated.
+	 * Issue #8789 (slices 1-5, now COMPLETE) gates all 25 of the Easy-25 registry
+	 * ids (slice 1: elementor_subscriber, beaverbuilder_subscriber, simple_custom_css,
+	 * pdfembedder, wordfence_subscriber, unlimited_elements, inline_related_posts;
+	 * slice 2: rank_math_seo, rocket_lazy_load, the_events_calendar, perfmatters,
+	 * weglot, translatepress, termly_subscriber, optimole_subscriber, convertplug;
+	 * slice 3: syntaxhighlighter_subscriber, ngg_subscriber; slice 4: pwa, yoast_seo,
+	 * thirstyaffiliates, autoptimize, jetpack, seopress, the_seo_framework; slice 5:
+	 * no further gating, only this harness's own finalization + the AC-required
+	 * hook-collision scan) behind PluginCompatibilityInterface; none of their target
+	 * plugins are installed in this test environment, so they drop out of
+	 * get_active_plugins().
+	 * 43 - 25 + 2 = 20. This is a deliberate perf-baseline (not a tautology): later
+	 * #8789 batches (Medium/Hard) will lower this further as the remaining ids are
+	 * gated, at which point this constant must be updated again.
 	 *
 	 * @var int
 	 */
 	private const EXPECTED_PLUGIN_SUBSCRIBERS = 20;
 
 	/**
-	 * Phase 0 defaults every registry id active; issue #8789 slices 1-4 opt all 25
-	 * Easy-25 ids into real detection, so the resolver's set is the full registry
+	 * Phase 0 defaults every registry id active; issue #8789 (slices 1-5) opts all
+	 * 25 Easy-25 ids into real detection, so the resolver's set is the full registry
 	 * minus those 25 (their target plugins are absent here), and the container
 	 * must still resolve every remaining one of them.
 	 */
@@ -53,8 +62,8 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
-		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 slices 1-4 must resolve to the 43-id registry minus the 25 gated-inactive ids.' );
-		$this->assertCount( 18, $active_ids );
+		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 (issue #8789, slices 1-5) must resolve to the 43-id registry minus the 25 gated-inactive ids.' );
+		$this->assertCount( count( $expected_active_ids ), $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
@@ -131,7 +140,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 18 active resolver ids (43 - 25 slice-1/2/3/4-gated) + ezoic + mod_pagespeed = 20.
+		// 18 active resolver ids (43 - the complete 25-id Easy-25 batch, issue #8789 slices 1-5) + ezoic + mod_pagespeed = 20.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }
