@@ -318,5 +318,12 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.23', '<' ) ) {
 		flush_rewrite_rules();
 	}
+
+	// The front end reads the list of dynamic cookies from a generated file, and that list used to
+	// come back short. Pages cached from the short one carry names this release gives other requests.
+	if ( version_compare( $actual_version, '3.24', '<' ) ) {
+		rocket_generate_config_file();
+		rocket_clean_domain();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
