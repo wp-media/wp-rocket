@@ -49,6 +49,21 @@ return [
 		],
 	],
 
+	// CNAME guard: cdn=1, rocketcdn, no CNAME saved, paid subscription — CDN was never functional
+	// for this domain pre-update, so migration must land on nothing regardless of subscription.
+	'shouldMigrateNothingWhenRocketcdnEnabledButNoCnameSaved'         => [
+		'config'   => [
+			'old_version'     => '3.22.0',
+			'initial_options' => [ 'cdn' => 1, 'cdn_type' => 'rocketcdn', 'cdn_cnames' => [] ],
+			'cdn_enabled'     => true,
+			'subscription'    => [ 'subscription_status' => 'running', 'plan_type' => 'paid' ],
+		],
+		'expected' => [
+			'cdn_state'   => 'nothing',
+			'write_count' => 1,
+		],
+	],
+
 	// < 3.22 with byocdn: cdn=1, cnames present, cdn enabled → cdn_type='byocdn',
 	// cdn_state='byocdn'.
 	'shouldMigrateByocdnStateForPreThreeTwentyTwoUpgrade'            => [

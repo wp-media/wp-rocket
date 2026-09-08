@@ -53,7 +53,7 @@ class CdnStateBridge implements Subscriber_Interface {
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
 			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', 10, 2 ],
-			'wp_rocket_upgrade'                => 'backfill_cdn_state_on_upgrade',
+			'wp_rocket_upgrade'                => [ 'backfill_cdn_state_on_upgrade', 12 ],
 		];
 	}
 
@@ -78,18 +78,7 @@ class CdnStateBridge implements Subscriber_Interface {
 			return;
 		}
 
-		$cdn_enabled  = ! empty( $settings['cdn'] );
-		$cdn_type     = (string) ( $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE );
-		$is_rocketcdn = Context::ROCKETCDN_TYPE === $cdn_type;
-		$has_cname    = ! empty( array_filter( (array) ( $settings['cdn_cnames'] ?? [] ) ) );
-
-		// A RocketCDN site was only genuinely active pre-update if the CDN toggle was on AND
-		// a CNAME had been saved — either missing means CDN was not functional for this domain.
-		if ( $cdn_enabled && $is_rocketcdn && ! $has_cname ) {
-			$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
-		} else {
-			$settings['cdn_state'] = $this->resolve_live( null, Context::CDN_STATE_NOTHING );
-		}
+		$settings['cdn_state'] = $this->resolve_live( null, Context::CDN_STATE_NOTHING );
 
 		$this->options_api->set( 'settings', $settings );
 	}

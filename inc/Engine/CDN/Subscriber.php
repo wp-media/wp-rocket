@@ -6,6 +6,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\{
 	CdnStateBridge,
 	CNAMEValidator,
+	Context,
 	Drivers\DriverInterface,
 	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
 	RocketCDN\SubscriptionController
@@ -545,7 +546,20 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		$current_options = $this->options_api->get( 'settings', [] );
-		$new_state       = $this->cdn_state_bridge->legacy_to_state( $current_options );
+		$cdn_enabled     = ! empty( $current_options['cdn'] );
+		$cdn_type        = (string) ( $current_options['cdn_type'] ?? Context::ROCKETCDN_TYPE );
+		$has_cname       = ! empty( array_filter( (array) ( $current_options['cdn_cnames'] ?? [] ) ) );
+
+		// A RocketCDN site was only genuinely active pre-update if the CDN toggle was on AND
+		// a CNAME had been saved — either missing means CDN was not functional for this domain.
+		// Only applies when a subscription is active: free/inactive users with no CNAME fall
+		// through to legacy_to_state so they remain in rocketcdn_free rather than nothing.
+		if ( $cdn_enabled && Context::ROCKETCDN_TYPE === $cdn_type && ! $has_cname
+			&& $this->subscription_controller->has_active_subscription() ) {
+			$new_state = Context::CDN_STATE_NOTHING;
+		} else {
+			$new_state = $this->cdn_state_bridge->legacy_to_state( $current_options );
+		}
 
 		if ( ( $current_options['cdn_state'] ?? null ) === $new_state ) {
 			return;
