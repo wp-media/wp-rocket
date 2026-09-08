@@ -5,6 +5,28 @@
 		document.dispatchEvent( new CustomEvent( 'wpr-cdn-state-change' ) );
 	}
 
+	/**
+	 * Keeps the hidden cdn_type and cdn_state form inputs in sync after a REST-driven
+	 * mode change so a subsequent form save doesn't send stale values and trigger
+	 * CdnStateBridge::reconcile() to recompute the wrong state.
+	 *
+	 * Mirrors the mapping in Rest::apply_cdn_mode():
+	 *   byocdn → cdn_type=byocdn; everything else → cdn_type=rocketcdn.
+	 *
+	 * @param {string} mode New cdn_state value ('rocketcdn_free', 'byocdn', 'nothing', etc.).
+	 */
+	function syncCdnHiddenInputs( mode ) {
+		const stateInput = document.getElementById( 'cdn_state' );
+		if ( stateInput ) {
+			stateInput.value = mode;
+		}
+
+		const typeInput = document.getElementById( 'cdn_type' );
+		if ( typeInput ) {
+			typeInput.value = 'byocdn' === mode ? 'byocdn' : 'rocketcdn';
+		}
+	}
+
 	document.addEventListener( 'DOMContentLoaded', () => {
 		initCdnDriverTabs();
 		initCdnModeToggle();
@@ -271,6 +293,7 @@
 		toggleDriverSections( 'rocketcdn' );
 		setActiveTab( 'rocketcdn' );
 		notifyCdnStateChange();
+		syncCdnHiddenInputs( 'rocketcdn_free' );
 	}
 
 	/**
@@ -331,6 +354,7 @@
 					'byocdn' === mode ? 'byocdn' : 'rocketcdn',
 					response.disable_rocket_cdn_elements
 				);
+				syncCdnHiddenInputs( requestedMode );
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
