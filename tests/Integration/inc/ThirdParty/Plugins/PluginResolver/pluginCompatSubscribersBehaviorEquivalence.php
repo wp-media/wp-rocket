@@ -18,6 +18,17 @@ use WP_Rocket\Tests\Integration\TestCase;
  * fully diff-derived so later batches don't need to touch this file's
  * assertions again, only PluginResolverGatedIds::IDS).
  *
+ * This class stays the id-set-equivalence half of AC #3 (needs the live
+ * container, so it stays in Integration). The other half — the AC-required
+ * hook-collision scan — lives in the Unit suite instead:
+ * tests/Unit/inc/ThirdParty/Plugins/PluginResolver/easy25HookCollisionScan.php
+ * (moved out of Integration in a slice 5 regression fix: its
+ * `@runInSeparateProcess` isolation, needed to simulate 3 deviation classes'
+ * markers, corrupted shared DB/option state when forked from an Integration
+ * test process). `get_subscribed_events()` is a static method with no
+ * WordPress dependency, so no coverage is lost by running that scan from
+ * Unit instead.
+ *
  * @group ThirdParty
  * @group Plugins
  */
@@ -63,7 +74,6 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
 		$this->assertSame( $expected_active_ids, $active_ids, 'Phase 1 (issue #8789, slices 1-5) must resolve to the 43-id registry minus the 25 gated-inactive ids.' );
-		$this->assertCount( count( $expected_active_ids ), $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(

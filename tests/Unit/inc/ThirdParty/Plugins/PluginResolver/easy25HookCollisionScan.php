@@ -1,11 +1,12 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PluginResolver;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Cookie\Termly;
 use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
@@ -35,34 +36,63 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
  * proves that the 25 migrated classes don't accidentally clash on the same
  * WordPress hook + priority once they're all resolver-gated.
  *
- * Methodology: `get_subscribed_events()` is a *static* method on every one of
- * the 25 classes, so it is called directly (`Class::get_subscribed_events()`),
- * with no container/instantiation involved. 22 of the 25 classes already
- * return their hook map unconditionally — issue #8789 slices 1-4 moved their
- * presence guard out of `get_subscribed_events()` and into `is_activated()`
- * (Implementation Plan §1 step 3 / §2's "leave get_subscribed_events()
- * untouched" rule for the 7 deviation classes), so no "target plugin present"
- * simulation is needed for them at all: the guard that used to gate the
- * return value is simply gone.
+ * Moved here from tests/Integration/inc/ThirdParty/Plugins/PluginResolver/
+ * easy25HookCollisionScan.php (slice 5 regression fix): `get_subscribed_events()`
+ * is a *static* method with zero WordPress/container dependency, so its output
+ * is byte-identical whether captured from the Unit or the Integration suite —
+ * no coverage is lost by moving it. It was originally written against the
+ * Integration suite and used `@runInSeparateProcess` there to simulate 3
+ * deviation classes' internal guards; forking a *WordPress integration* test
+ * process re-runs the full WP integration bootstrap in the child, which
+ * corrupted shared DB/option state for the parent process and deterministically
+ * broke an unrelated test (Test_GetRocketOption's `cdn` dataset) on every CI
+ * matrix job. `@runInSeparateProcess` has an established, non-disruptive
+ * precedent in the *Unit* suite only (see Jetpack/isActivated.php,
+ * PDFEmbedder/isActivated.php) — the Unit bootstrap is a lightweight,
+ * file-based one with no WordPress DB/options layer to corrupt.
+ *
+ * Methodology (unchanged): `get_subscribed_events()` is called directly
+ * (`Class::get_subscribed_events()`), with no container/instantiation involved.
+ * 22 of the 25 classes already return their hook map unconditionally — issue
+ * #8789 slices 1-4 moved their presence guard out of `get_subscribed_events()`
+ * and into `is_activated()`, so no "target plugin present" simulation is
+ * needed for them at all: the guard that used to gate the return value is
+ * simply gone.
  *
  * Only 3 of the 7 deviation classes still have a guard *inside*
  * `get_subscribed_events()` itself (their business/feature-toggle checks,
- * deliberately left untouched per §2), so only these 3 need their markers
- * simulated to reveal their real (maximal) hook set:
- * - Jetpack: needs a real `\Jetpack` class + `is_module_active('sitemaps')`
- *   truthy. Stubbed via tests/Fixtures/classes/Jetpack.php (new fixture,
- *   mirrors the TRP_Translate_Press.php stub-class convention already in
- *   that directory).
+ * deliberately left untouched per the Implementation Plan), so only these 3
+ * need their markers simulated to reveal their real (maximal) hook set:
  * - SEOPress: needs `seopress_get_toggle_option('xml-sitemap')` to return 1
  *   AND `seopress_get_service('SitemapOption')->isEnabled()` to return 1.
- *   Reuses the existing tests/Fixtures/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php
- *   (already declares these guarded globally, no override needed).
+ *   Simulated with Brain\Monkey `Functions\when()` — no process isolation
+ *   needed for this: `seopress_get_toggle_option`/`seopress_get_service` are
+ *   plain functions with no class to declare.
  * - TheSEOFramework: needs `the_seo_framework()` to return an object with a
- *   truthy `$loaded` and a truthy `can_run_sitemap()`. Reuses the existing
- *   tests/Fixtures/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php.
+ *   truthy `$loaded` and a truthy `can_run_sitemap()`. Needs zero stubbing
+ *   here: tests/Unit/bootstrap.php unconditionally preloads
+ *   tests/Fixtures/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php
+ *   for every Unit test (needed by the pre-existing addTsfSitemapToPreload.php
+ *   callback test), which already declares a real global the_seo_framework()
+ *   returning a Sitemap stub whose $loaded/can_run_sitemap() are truthy — see
+ *   the same reasoning documented in the pre-existing
+ *   SEO/TheSEOFramework/isActivated.php and PluginResolver/getActivePlugins.php.
+ * - Jetpack: needs a real `\Jetpack` class + `is_module_active('sitemaps')`
+ *   truthy. Stubbed via the pre-existing tests/Fixtures/classes/Jetpack.php
+ *   (mirrors the TRP_Translate_Press.php stub-class convention already in
+ *   that directory; kept/reused as-is from the Integration version of this
+ *   scan). Unlike the other two, this requires a real global *class*
+ *   declaration, which — same as the pre-existing Jetpack/isActivated.php
+ *   precedent — must be isolated (`@runInSeparateProcess`) so the declared
+ *   class doesn't leak into the rest of the Unit suite. Since the main
+ *   collision assertion needs Jetpack's contribution captured alongside the
+ *   other 24 classes to check for cross-class collisions, the whole capture +
+ *   assertion is done in one isolated method rather than splitting Jetpack out
+ *   on its own (both are threaded through the same shared, throwaway forked
+ *   process, so nothing declared here reaches any other Unit test).
  *
- * All 25 classes are otherwise driven with zero stubbing — a genuine capture
- * of their real, unconditional hook maps, not a guess.
+ * All 25 classes are otherwise driven with zero stubbing beyond the above — a
+ * genuine capture of their real, unconditional hook maps, not a guess.
  *
  * @group ThirdParty
  * @group Plugins
@@ -130,29 +160,25 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	];
 
 	/**
-	 * Loads the marker stubs needed by the 3 deviation classes whose
+	 * Simulates the markers needed by the 3 deviation classes whose
 	 * `get_subscribed_events()` still has its own internal guard.
 	 *
-	 * Deliberately NOT wired into set_up_before_class(): that hook only ever
-	 * runs once, in the main (non-isolated) PHPUnit process, even for test
-	 * methods annotated `@runInSeparateProcess` below. These stubs declare
-	 * real global classes/functions (`Jetpack`, `seopress_get_toggle_option()`,
-	 * `the_seo_framework()`) that PHP can never "undeclare" afterwards, so
-	 * loading them there would leak into every other test that shares this
-	 * suite's single PHP process for the rest of the run — e.g. it would
-	 * silently flip PluginResolver::get_active_plugins()'s jetpack/seopress/
-	 * the_seo_framework detection to "active" for the remainder of the suite,
-	 * breaking Test_PluginCompatSubscribersBehaviorEquivalence's absence
-	 * assertions (confirmed locally: this exact leak was caught by a full
-	 * --group ThirdParty run before this method was isolated). Called instead
-	 * from inside each `@runInSeparateProcess` test method that needs it, so
-	 * the pollution is contained to that method's own forked, throwaway
-	 * process.
+	 * Only called from inside `@runInSeparateProcess` test methods: the
+	 * Jetpack class declaration below is a real global that PHP can never
+	 * "undeclare", so it must stay contained to its own forked, throwaway
+	 * process rather than leaking into the rest of the Unit suite.
 	 */
 	private static function load_deviation_marker_stubs(): void {
+		Functions\when( 'seopress_get_toggle_option' )->justReturn( 1 );
+		Functions\when( 'seopress_get_service' )->justReturn(
+			new class() {
+				public function isEnabled() {
+					return 1;
+				}
+			}
+		);
+
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/Jetpack.php';
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
-		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
 	}
 
 	/**
@@ -230,8 +256,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	 * pairs in self::ACCEPTED_COLLISIONS.
 	 *
 	 * Isolated (see load_deviation_marker_stubs()'s docblock): capturing
-	 * Jetpack/SEOPress/TheSEOFramework's real hook maps requires declaring
-	 * real global markers that must not leak into the rest of the suite.
+	 * Jetpack's real hook map requires declaring a real global class that
+	 * must not leak into the rest of the suite.
 	 *
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
