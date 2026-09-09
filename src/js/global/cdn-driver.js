@@ -331,6 +331,8 @@
 					'byocdn' === mode ? 'byocdn' : 'rocketcdn',
 					response.disable_rocket_cdn_elements
 				);
+
+				refreshUIElements(response);
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
@@ -424,8 +426,12 @@
 	 * Initializes CDN driver tab switching behavior.
 	 *
 	 * Tabs are navigation only — no backend call on click.
-	 * Initial driver is derived from the PHP-rendered checked toggle (cdn_state),
-	 * not from cdn_type.
+	 * Initial driver is derived from the PHP-rendered active-state header
+	 * (wpr-cdn-active-indicator), which reflects cdn_state even when the mode
+	 * toggle itself is hidden (e.g. rocket_display_cdn_mode_toggle returning
+	 * false for a hosting compatibility layer). Falls back to whichever
+	 * toggle is checked when no header is marked active (e.g. cdn_state is
+	 * 'nothing').
 	 */
 	function initCdnDriverTabs() {
 		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
@@ -448,11 +454,17 @@
 			} );
 		} );
 
-		// Derive initial driver from whichever toggle is checked (set by PHP from cdn_state).
-		const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
-		const initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
-			? 'your-own-cdn'
-			: 'rocketcdn';
+		const activeHeader = document.querySelector( '.wpr-optionHeader.wpr-cdn-active-indicator' );
+		let initialDriver;
+
+		if ( activeHeader ) {
+			initialDriver = activeHeader.classList.contains( 'your-own-cdn' ) ? 'your-own-cdn' : 'rocketcdn';
+		} else {
+			const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
+			initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
+				? 'your-own-cdn'
+				: 'rocketcdn';
+		}
 
 		setActiveTab( initialDriver );
 		toggleDriverSections( initialDriver );
@@ -538,13 +550,7 @@
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
-				// Set subscription loading state when first page is added.
-				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState();
-				}
-
-				// Update status indicator component.
-				updateStatusIndicatorComponent( response.status_indicator_html );
+				refreshUIElements(response);
 			} ).catch( () => {
 				button.disabled = false;
 
@@ -640,13 +646,7 @@
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoExpanded' ) );
 				}
 
-				// Set subscription loading state when first page is added.
-				if ( response.is_subscription_creation_loading ) {
-					setSubscriptionLoadingState();
-				}
-
-				// Update status indicator component.
-				updateStatusIndicatorComponent( response.status_indicator_html );
+				refreshUIElements(response);
 			} ).catch( () => {
 				input.disabled = false;
 				button.disabled = false;
@@ -665,6 +665,16 @@
 				submitPage();
 			}
 		} );
+	}
+
+	function refreshUIElements( response ) {
+		// Set subscription loading state when first page is added.
+		if ( response.is_subscription_creation_loading ) {
+			setSubscriptionLoadingState();
+		}
+
+		// Update status indicator component.
+		updateStatusIndicatorComponent( response.status_indicator_html );
 	}
 
 	/**
