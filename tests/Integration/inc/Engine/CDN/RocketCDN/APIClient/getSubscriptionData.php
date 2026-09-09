@@ -183,7 +183,12 @@ class Test_GetSubscriptionData extends TestCase {
 		);
 
 		// Simulate a concurrent request that is already fetching the same data.
-		add_option( APIClient::SUBSCRIPTION_FETCH_LOCK, time(), '', false );
+		// Deliberately a few seconds in the past (not time() exactly): a same-second
+		// value would mask the add_option()-based bug this guards against, since
+		// MySQL's "INSERT ... ON DUPLICATE KEY UPDATE" reports no rows changed - and
+		// so correctly refuses to "acquire" - when the new value equals the old one,
+		// which happens to be true whenever both timestamps land in the same second.
+		add_option( APIClient::SUBSCRIPTION_FETCH_LOCK, time() - 5, '', false );
 
 		$data = $this->api_client->get_subscription_data();
 
@@ -207,8 +212,9 @@ class Test_GetSubscriptionData extends TestCase {
 		// get_subscription_data() short-circuits on the transient before the lock is
 		// even considered, so call the fetch method directly to prove that the
 		// lock-held fallback itself prefers a freshly populated transient over the
-		// generic default.
-		add_option( APIClient::SUBSCRIPTION_FETCH_LOCK, time(), '', false );
+		// generic default. A few seconds in the past, not time() exactly - see the
+		// comment in testShouldNotFireDuplicateRequestWhenAnotherFetchIsInFlight().
+		add_option( APIClient::SUBSCRIPTION_FETCH_LOCK, time() - 5, '', false );
 
 		$this->assertSame( $cached, $this->invoke_get_remote_subscription_data() );
 		$this->assertSame( 0, $this->request_count );
