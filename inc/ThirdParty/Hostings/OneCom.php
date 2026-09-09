@@ -38,7 +38,7 @@ class OneCom implements Subscriber_Interface {
 			'rocket_hide_rocketcdn_notices'           => 'return_true',
 			'pre_get_rocket_option_cdn_type'          => 'disable_rocketcdn_tab',
 			'pre_get_rocket_option_cdn_state'         => 'maybe_set_cdn_state',
-			'rocket_display_cdn_mode_toggle'          => 'maybe_hide_cdn_mode_toggle',
+			'rocket_display_cdn_mode_toggle'          => [ 'maybe_display_cdn_mode_toggle', 10, 2 ],
 		];
 	}
 
@@ -202,9 +202,11 @@ class OneCom implements Subscriber_Interface {
 	/**
 	 * Show the CDN mode toggles only when one.com's own CDN handling is active.
 	 *
+	 * @param bool   $show CDN mode toggle would be displayed.
+	 * @param string $mode CDN mode identifier (rocketcdn_free|rocketcdn_paid|byocdn).
 	 * @return bool
 	 */
-	public function maybe_hide_cdn_mode_toggle(): bool {
-		return $this->is_oc_cdn_enabled();
+	public function maybe_display_cdn_mode_toggle( $show, $mode ): bool {
+		return ! $this->is_oc_cdn_enabled();
 	}
 }

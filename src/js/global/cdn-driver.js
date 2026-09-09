@@ -426,8 +426,12 @@
 	 * Initializes CDN driver tab switching behavior.
 	 *
 	 * Tabs are navigation only — no backend call on click.
-	 * Initial driver is derived from the PHP-rendered checked toggle (cdn_state),
-	 * not from cdn_type.
+	 * Initial driver is derived from the PHP-rendered active-state header
+	 * (wpr-cdn-active-indicator), which reflects cdn_state even when the mode
+	 * toggle itself is hidden (e.g. rocket_display_cdn_mode_toggle returning
+	 * false for a hosting compatibility layer). Falls back to whichever
+	 * toggle is checked when no header is marked active (e.g. cdn_state is
+	 * 'nothing').
 	 */
 	function initCdnDriverTabs() {
 		const tabs = document.querySelectorAll( '.wpr-cdn-tabs__tab' );
@@ -450,11 +454,17 @@
 			} );
 		} );
 
-		// Derive initial driver from whichever toggle is checked (set by PHP from cdn_state).
-		const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
-		const initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
-			? 'your-own-cdn'
-			: 'rocketcdn';
+		const activeHeader = document.querySelector( '.wpr-optionHeader.wpr-cdn-active-indicator' );
+		let initialDriver;
+
+		if ( activeHeader ) {
+			initialDriver = activeHeader.classList.contains( 'your-own-cdn' ) ? 'your-own-cdn' : 'rocketcdn';
+		} else {
+			const checkedToggle = document.querySelector( '.wpr-cdn-mode-toggle__input:checked' );
+			initialDriver = checkedToggle && 'byocdn' === checkedToggle.getAttribute( 'data-cdn-mode' )
+				? 'your-own-cdn'
+				: 'rocketcdn';
+		}
 
 		setActiveTab( initialDriver );
 		toggleDriverSections( initialDriver );

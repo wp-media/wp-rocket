@@ -6,11 +6,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_hide_cdn_mode_toggle
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_display_cdn_mode_toggle
  * @group OneCom
  * @group ThirdParty
  */
-class Test_MaybeHideCdnModeToggle extends TestCase {
+class Test_MaybeDisplayCdnModeToggle extends TestCase {
     private $onecom;
 
 	public function setUp() : void {
@@ -39,6 +39,9 @@ class Test_MaybeHideCdnModeToggle extends TestCase {
 				);
 		}
 
-        $this->assertSame( $expected['return'], $this->onecom->maybe_hide_cdn_mode_toggle() );
+        $this->assertSame(
+			$expected['return'],
+			$this->onecom->maybe_display_cdn_mode_toggle( $config['show'], $config['mode'] )
+		);
 	}
 }
