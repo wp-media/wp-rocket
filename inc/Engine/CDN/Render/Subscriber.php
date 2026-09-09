@@ -50,7 +50,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta'            => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
-			'admin_init'                              => 'maybe_turn_off_rocketcdn_for_inactive_subscription',
+			'pre_get_rocket_option_cdn'               => 'maybe_turn_off_rocketcdn_for_inactive_subscription',
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'render_expired_wpr_licence_notice', 9 ],
 				[ 'render_reseller_banned_notice', 9 ],
@@ -215,10 +215,12 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.22
 	 *
-	 * @return void
+	 * @param mixed $cdn CDN Option.
+	 *
+	 * @return mixed
 	 */
-	public function maybe_turn_off_rocketcdn_for_inactive_subscription() {
-		$this->controller->maybe_turn_off_rocketcdn_for_inactive_subscription();
+	public function maybe_turn_off_rocketcdn_for_inactive_subscription( $cdn ) {
+		return $this->controller->maybe_turn_off_rocketcdn_for_inactive_subscription( $cdn );
 	}
 
 	/**

@@ -187,7 +187,7 @@ class Controller extends Abstract_Render {
 			'status_indicator'  => $status_indicator_data,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->is_forced_off(),
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
 			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
@@ -264,7 +264,7 @@ class Controller extends Abstract_Render {
 			'limit_reached'     => $limit_reached,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->is_forced_off(),
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
@@ -623,25 +623,32 @@ class Controller extends Abstract_Render {
 	 *
 	 * @since 3.22
 	 *
-	 * @return void
+	 * @param mixed $cdn Current value of the CDN option.
+	 *
+	 * @return mixed False if the user has an inactive subscription, original value otherwise.
 	 */
-	public function maybe_turn_off_rocketcdn_for_inactive_subscription() {
+	public function maybe_turn_off_rocketcdn_for_inactive_subscription( $cdn ) {
 		// Bail early if not on RocketCDN driver to avoid unnecessary checks.
-		if ( Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state() ) {
-			return;
+		if ( ! $this->context->is_rocketcdn() ) {
+			return $cdn;
 		}
 
-		if ( ! $this->is_forced_off() ) {
-			return;
+		if ( $this->is_forced_off() ) {
+			$stored = $this->get_forced_pause_tracking();
+
+			// Prevent unnecessary DB write on every request.
+			if ( empty( $stored['persistent'] ) ) {
+				$stored['persistent'] = true;
+				update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+
+				// Clear whole cache.
+				$this->cache->clear_all_cache();
+			}
+
+			return false;
 		}
 
-		// Set cdn_state to nothing when forced off detected.
-		$current_options              = $this->options_api->get( 'settings', [] );
-		$current_options['cdn_state'] = Context::CDN_STATE_NOTHING;
-		$this->options_api->set( 'settings', $current_options );
-
-		// Clear whole cache.
-		$this->cache->clear_all_cache();
+		return $cdn;
 	}
 
 	/**
@@ -658,6 +665,27 @@ class Controller extends Abstract_Render {
 			|| $this->is_cdn_paused()
 			|| $this->should_display_licence_expired_notice()
 			|| ! $this->subscription_controller->has_active_subscription();
+	}
+
+	/**
+	 * Determines whether activating RocketCDN (free or paid) should be rejected.
+	 *
+	 * Used both to gate the `save_cdn_mode()` REST activation request and to decide
+	 * whether the mode toggle checkbox itself is disabled in the UI — the two must
+	 * agree, or the REST endpoint accepts a request the checkbox never lets a user send.
+	 *
+	 * Deliberately omits the current pause state that {@see should_disable_element_for_rocketcdn()}
+	 * includes: activating is by definition attempted while CDN is currently paused
+	 * (cdn option is 0), so including that check here would always reject the very
+	 * transition it's meant to allow. `should_disable_element_for_rocketcdn()` remains
+	 * correct for elements that legitimately stay disabled while paused (purge button,
+	 * exclusions, etc.).
+	 *
+	 * @return bool True if activation should be rejected, false otherwise.
+	 */
+	public function should_reject_rocketcdn_activation(): bool {
+		return $this->is_subscription_loading()
+			|| $this->should_display_licence_expired_notice();
 	}
 
 	/**
