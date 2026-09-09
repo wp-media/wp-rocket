@@ -976,7 +976,7 @@ class Controller extends Abstract_Render {
 	 *
 	 * @return bool True if the CDN should be force-paused, false otherwise.
 	 */
-	public function is_forced_off(): bool {
+	private function is_forced_off(): bool {
 		// Force paused if paid plan cancelled but in grace period.
 		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
 			return true;
