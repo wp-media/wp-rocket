@@ -25,10 +25,8 @@ class Optimole implements Subscriber_Interface, PluginCompatibilityInterface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		$events = [];
-
-		$events['wpmedia_plugin_family_show_imagify_banner'] = 'return_false';
-
-		return $events;
+		return [
+			'wpmedia_plugin_family_show_imagify_banner' => 'return_false',
+		];
 	}
 }
