@@ -86,10 +86,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'admin_init'                             => [
-				[ 'handle_rocketcdn_checkout_parameter' ],
-				[ 'maybe_retry_activation' ],
-			],
+			'admin_init'                             => 'handle_rocketcdn_checkout_parameter',
+			'current_screen'                         => 'maybe_retry_activation',
 			'wp_ajax_save_rocketcdn_token'           => 'update_user_token',
 			'wp_ajax_rocketcdn_enable'               => 'enable',
 			'wp_ajax_rocketcdn_disable'              => 'disable',
