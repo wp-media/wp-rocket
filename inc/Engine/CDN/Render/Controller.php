@@ -156,7 +156,7 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_paid_section( array $sections ): array {
-		if ( Context::ROCKETCDN_PAID_TYPE !== $this->context->get_driver() ) {
+		if ( ! $this->subscription_controller->is_paid() ) {
 			return $sections;
 		}
 
@@ -197,7 +197,7 @@ class Controller extends Abstract_Render {
 	 * @return array
 	 */
 	public function add_rocketcdn_free_section( array $sections ): array {
-		if ( Context::ROCKETCDN_PAID_TYPE === $this->context->get_driver() ) {
+		if ( $this->subscription_controller->is_paid() ) {
 			return $sections;
 		}
 

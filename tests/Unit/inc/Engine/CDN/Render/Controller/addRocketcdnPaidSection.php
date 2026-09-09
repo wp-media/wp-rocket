@@ -119,7 +119,10 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
 
 		$this->beacon->shouldReceive( 'get_suggest' )
 			->with( 'rocketcdn' )
