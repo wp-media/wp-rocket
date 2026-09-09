@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
@@ -10,7 +10,7 @@ use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
  * @since 3.3.1
  * @author Remy Perona
  */
-class SyntaxHighlighter_Subscriber implements Subscriber_Interface, PluginCompatibilityInterface {
+class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInterface {
 	/**
 	 * Whether the target third-party plugin is active.
 	 *
