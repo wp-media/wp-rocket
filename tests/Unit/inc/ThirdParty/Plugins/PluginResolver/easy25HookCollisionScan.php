@@ -3,8 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
@@ -13,6 +11,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\ThirdParty\Plugins\I18n\Weglot;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
+use WP_Rocket\ThirdParty\Plugins\NGG;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
@@ -27,6 +26,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
+use WP_Rocket\ThirdParty\Plugins\SyntaxHighlighter;
 use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
@@ -212,8 +212,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 			'translatepress'               => TranslatePress::class,
 			'termly_subscriber'            => Termly::class,
 			'optimole_subscriber'          => Optimole::class,
-			'syntaxhighlighter_subscriber' => SyntaxHighlighter_Subscriber::class,
-			'ngg_subscriber'               => NGG_Subscriber::class,
+			'syntaxhighlighter_subscriber' => SyntaxHighlighter::class,
+			'ngg_subscriber'               => NGG::class,
 			'autoptimize'                  => Autoptimize::class,
 		];
 	}
