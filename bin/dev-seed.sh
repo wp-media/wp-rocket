@@ -30,11 +30,11 @@ if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
 
   # Set WP_ROCKET_EMAIL and WP_ROCKET_KEY as wp-config constants for dual validation.
   # Always set the key constant if we have a license key
-  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}" --raw
+  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}"
 
   # Only set the email constant if explicitly provided
   if [[ -n "${WP_ROCKET_EMAIL:-}" ]]; then
-    $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL" --raw
+    $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL"
   fi
   echo "  wp-config constants set."
 fi
