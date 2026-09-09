@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
@@ -17,18 +18,22 @@ use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
  */
 class Test_GetActivePlugins extends TestCase {
 	/**
-	 * PluginResolverGatedIds::IDS minus 'translatepress' for this Unit suite only.
+	 * PluginResolverGatedIds::IDS minus 'translatepress' and 'the_seo_framework' for
+	 * this Unit suite only.
 	 *
 	 * tests/Unit/bootstrap.php unconditionally preloads the TRP_Translate_Press
-	 * fixture class for every Unit test (needed by the pre-existing TranslatePress
-	 * callback tests, e.g. detectHomepage.php), unlike the Integration suite, which
-	 * only loads it under `--group TranslatePress`. So in this suite specifically,
-	 * TranslatePress::is_activated() always reports true regardless of the
+	 * fixture class and the TheSEOFramework fixtures.php (a real global
+	 * the_seo_framework() function returning a Sitemap stub with a truthy
+	 * $loaded) for every Unit test (needed by the pre-existing TranslatePress
+	 * and addTsfSitemapToPreload.php callback tests), unlike the Integration
+	 * suite, which only loads TRP_Translate_Press under `--group TranslatePress`.
+	 * So in this suite specifically, TranslatePress::is_activated() and
+	 * TheSEOFramework::is_activated() always report true regardless of the
 	 * "target plugin absent" assumption the rest of the gated-ids list relies on.
 	 *
 	 * @var array<string>
 	 */
-	private const UNIT_ENV_ALWAYS_ACTIVE_OVERRIDES = [ 'translatepress' ];
+	private const UNIT_ENV_ALWAYS_ACTIVE_OVERRIDES = [ 'translatepress', 'the_seo_framework' ];
 
 	/**
 	 * Resets memoization before each test.
@@ -39,6 +44,11 @@ class Test_GetActivePlugins extends TestCase {
 		parent::setUp();
 
 		$this->reset_memoization();
+
+		// ThirstyAffiliates::is_activated() calls is_plugin_active() directly; stub it
+		// absent by default to match every other gated id's "target plugin not
+		// installed" assumption in this test environment.
+		Functions\when( 'is_plugin_active' )->justReturn( false );
 	}
 
 	/**
