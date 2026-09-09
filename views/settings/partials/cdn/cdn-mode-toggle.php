@@ -20,6 +20,24 @@
  */
 
 defined( 'ABSPATH' ) || exit;
+
+/**
+ * Filters whether a CDN mode toggle should be displayed at all.
+ *
+ * Unlike $is_forced_off (which keeps the toggle visible but disabled), this
+ * lets a hosting compatibility layer remove the toggle entirely when that
+ * CDN mode is not a relevant choice at all on that host (e.g. One.com,
+ * which manages its own CDN and forces the BYOCDN state regardless of what
+ * WP Rocket's settings say).
+ *
+ * @since 3.23.4
+ *
+ * @param bool   $display  Whether to display the toggle. Default true.
+ * @param string $cdn_mode CDN mode identifier (rocketcdn_free|rocketcdn_paid|byocdn).
+ */
+if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_display_cdn_mode_toggle', true, $data['cdn_mode'] ) ) {
+	return;
+}
 ?>
 
 <div class="wpr-radio wpr-cdn-mode-toggle">

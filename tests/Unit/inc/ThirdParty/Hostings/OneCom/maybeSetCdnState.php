@@ -6,11 +6,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_set_cdn_state
  * @group OneCom
  * @group ThirdParty
  */
-class Test_MaybeEnableCDNOption extends TestCase {
+class Test_MaybeSetCdnState extends TestCase {
     private $onecom;
 
 	public function setUp() : void {
@@ -39,6 +39,6 @@ class Test_MaybeEnableCDNOption extends TestCase {
 				);
 		}
 
-        $this->assertSame( $expected['return'], $this->onecom->maybe_enable_cdn_option( $config['cdn'] ) );
+        $this->assertSame( $expected['return'], $this->onecom->maybe_set_cdn_state( $config['cdn_state'] ) );
 	}
 }

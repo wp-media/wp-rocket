@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
@@ -22,7 +23,6 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'pre_get_rocket_option_cdn'               => 'maybe_enable_cdn_option',
 			'pre_get_rocket_option_cdn_cnames'        => 'maybe_update_cdn_cname',
 			'pre_get_rocket_option_cdn_zone'          => 'maybe_update_cdn_zone',
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
@@ -37,6 +37,8 @@ class OneCom implements Subscriber_Interface {
 			'rocket_show_rocketcdn_banner'            => 'return_false',
 			'rocket_hide_rocketcdn_notices'           => 'return_true',
 			'pre_get_rocket_option_cdn_type'          => 'disable_rocketcdn_tab',
+			'pre_get_rocket_option_cdn_state'         => 'maybe_set_cdn_state',
+			'rocket_display_cdn_mode_toggle'          => 'maybe_hide_cdn_mode_toggle',
 		];
 	}
 
@@ -47,16 +49,6 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public function is_oc_cdn_enabled(): bool {
 		return rocket_get_constant( 'vcaching', false ) && rest_sanitize_boolean( get_option( 'oc_cdn_enabled' ) );
-	}
-
-	/**
-	 * Enable CDN option.
-	 *
-	 * @param string|null $cdn CDN Option.
-	 * @return bool|null
-	 */
-	public function maybe_enable_cdn_option( ?string $cdn ) {
-		return $this->is_oc_cdn_enabled() ? true : $cdn;
 	}
 
 	/**
@@ -195,5 +187,24 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public function disable_rocketcdn_tab() {
 		return 'byocdn';
+	}
+
+	/**
+	 * Force the CDN state to BYOCDN when one.com's own CDN handling is active.
+	 *
+	 * @param string|null $cdn_state CDN state.
+	 * @return string|null
+	 */
+	public function maybe_set_cdn_state( ?string $cdn_state ) {
+		return $this->is_oc_cdn_enabled() ? Context::BYOCDN_TYPE : $cdn_state;
+	}
+
+	/**
+	 * Show the CDN mode toggles only when one.com's own CDN handling is active.
+	 *
+	 * @return bool
+	 */
+	public function maybe_hide_cdn_mode_toggle(): bool {
+		return $this->is_oc_cdn_enabled();
 	}
 }
