@@ -8,7 +8,6 @@ use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
  * Compatibility class for SyntaxHighlighter plugin
  *
  * @since 3.3.1
- * @author Remy Perona
  */
 class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInterface {
 	/**
@@ -24,7 +23,6 @@ class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInte
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
@@ -39,7 +37,6 @@ class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInte
 	 * Adds SyntaxHighlighter scripts to defer JS exclusion
 	 *
 	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array
@@ -58,7 +55,6 @@ class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInte
 	 * Adds SyntaxHighlighter scripts to minify/combine JS exclusion
 	 *
 	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array
