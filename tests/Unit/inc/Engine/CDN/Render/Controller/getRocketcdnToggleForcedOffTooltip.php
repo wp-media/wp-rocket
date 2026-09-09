@@ -16,10 +16,15 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering the private \WP_Rocket\Engine\CDN\Render\Controller::get_rocketcdn_toggle_forced_off_tooltip
- * method, exercised through add_rocketcdn_free_section() since it has no public
- * accessor of its own.
+ * method, which has no public accessor of its own. Exercised through
+ * add_rocketcdn_free_section() for free-tier scenarios and
+ * add_rocketcdn_paid_section() for paid-tier ones (e.g. a cancelled paid
+ * plan) - is_paid() gates which of the two builders actually sets a
+ * 'toggle_tooltip' key at all, so the scenario being tested decides which
+ * builder can be used to observe it.
  *
  * @covers \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_free_section
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_paid_section
  * @group  CDN
  * @group  RocketCDN
  */
@@ -112,8 +117,11 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 	}
 
 	/**
-	 * Runs add_rocketcdn_free_section() with the given scenario stubbed and
-	 * returns the resulting section array.
+	 * Runs the section builder matching the scenario's tier - add_rocketcdn_paid_section()
+	 * when is_paid is true, add_rocketcdn_free_section() otherwise - since is_paid()
+	 * gates which of the two ever sets a 'toggle_tooltip' key: each returns its
+	 * input untouched for the tier it doesn't handle (see is_paid() checks in
+	 * Controller::add_rocketcdn_free_section() / add_rocketcdn_paid_section()).
 	 *
 	 * @param array $config Scenario configuration.
 	 *
@@ -135,6 +143,15 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 				]
 			);
 
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( $config['is_subscription_loading'] ?? false );
 
@@ -147,8 +164,10 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( $config['has_active_subscription'] ?? false );
 
+		$is_paid = $config['is_paid'] ?? false;
+
 		$this->subscription_controller->shouldReceive( 'is_paid' )
-			->andReturn( $config['is_paid'] ?? false );
+			->andReturn( $is_paid );
 
 		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
 			->andReturn( $config['is_in_grace_period'] ?? false );
@@ -163,6 +182,10 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 		$this->options->shouldReceive( 'get' )->with( 'cdn' )->andReturn( true );
 
 		$this->cdn_query->method( 'query' )->willReturn( [] );
+
+		if ( $is_paid ) {
+			return $this->get_controller()->add_rocketcdn_paid_section( [] )['rocketcdn_paid_section'];
+		}
 
 		return $this->get_controller()->add_rocketcdn_free_section( [] )['rocketcdn_free_section'];
 	}
