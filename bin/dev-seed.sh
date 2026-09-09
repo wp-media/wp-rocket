@@ -9,6 +9,16 @@ WP="npx @wordpress/env run cli wp"
 
 echo "Seeding test data..."
 
+# Fall back to the local PHPUnit credentials file if no env vars were passed in.
+LICENSE_FILE="tests/env/local/license.php"
+if [[ -z "${WP_ROCKET_TESTS_LICENSE_KEY:-}" && -f "$LICENSE_FILE" ]]; then
+  WP_ROCKET_TESTS_LICENSE_KEY="$(php -r "require '$LICENSE_FILE'; echo defined('ROCKET_KEY') ? ROCKET_KEY : '';")"
+  WP_ROCKET_EMAIL="${WP_ROCKET_EMAIL:-$(php -r "require '$LICENSE_FILE'; echo defined('ROCKET_EMAIL') ? ROCKET_EMAIL : '';")}"
+  if [[ -n "$WP_ROCKET_TESTS_LICENSE_KEY" ]]; then
+    echo "  Using credentials from $LICENSE_FILE."
+  fi
+fi
+
 # Set a dummy license key if provided via env var (enables PRO features).
 if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
   $WP eval "
