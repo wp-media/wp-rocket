@@ -2,19 +2,19 @@
 
 return [
 	'shouldNotExcludeTermlyResources' => [
-		'config' => [
-			'excluded' => [],
-			'termly_display_auto_blocker' => 'off'
+		'config'   => [
+			'excluded'                    => [],
+			'termly_display_auto_blocker' => 'off',
 		],
-		'expected' => []
+		'expected' => [],
 	],
-	'shouldExcludeTermlyResources' => [
-		'config' => [
-			'excluded' => [],
-			'termly_display_auto_blocker' => 'on'
+	'shouldExcludeTermlyResources'    => [
+		'config'   => [
+			'excluded'                    => [],
+			'termly_display_auto_blocker' => 'on',
 		],
 		'expected' => [
 			'app.termly.io/resource-blocker/(.*)',
-		]
-	]
+		],
+	],
 ];
