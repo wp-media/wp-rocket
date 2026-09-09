@@ -634,12 +634,12 @@ class Controller extends Abstract_Render {
 		}
 
 		if ( $this->is_forced_off() ) {
-			$stored = $this->get_forced_pause_tracking();
+			$stored = $this->get_forced_off_tracking();
 
 			// Prevent unnecessary DB write on every request.
 			if ( empty( $stored['persistent'] ) ) {
 				$stored['persistent'] = true;
-				update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
+				update_option( self::FORCED_OFF_TRACKING_OPTION, $stored, false );
 
 				// Clear whole cache.
 				$this->cache->clear_all_cache();
