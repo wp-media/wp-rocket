@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  * @since  3.3.1
  * @author Remy Perona
  */
-class NGG_Subscriber implements Subscriber_Interface, PluginCompatibilityInterface {
+class NGG implements Subscriber_Interface, PluginCompatibilityInterface {
 	/**
 	 * Whether the target third-party plugin is active.
 	 *

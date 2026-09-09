@@ -1,25 +1,25 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\NGG_Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\NGG;
 
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
+use WP_Rocket\ThirdParty\Plugins\NGG;
 
 /**
- * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber::is_activated
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\NGG::is_activated
  *
  * @group NGG
  * @group ThirdParty
  */
 class Test_IsActivated extends TestCase {
 	/**
-	 * Tests NGG_Subscriber::is_activated() against the presence/absence of the
+	 * Tests NGG::is_activated() against the presence/absence of the
 	 * C_NextGEN_Bootstrap class.
 	 *
 	 * A namespaced class_exists() override was evaluated and rejected here, same as
 	 * tests/Unit/inc/ThirdParty/Plugins/PDFEmbedder/isActivated.php: this legacy
 	 * WP_Rocket\Subscriber\Third_Party\Plugins namespace already contains a production
 	 * class_exists( 'Jetpack' ) guard (inc/classes/subscriber/third-party/plugins/class-mobile-subscriber.php),
-	 * and SyntaxHighlighter_Subscriber::is_activated() (this same slice) adds another.
+	 * and SyntaxHighlighter::is_activated() (this same slice) adds another.
 	 * Declaring a namespaced class_exists() override anywhere in the analyzed fileset
 	 * would make PHPStan resolve every unqualified class_exists() call in the
 	 * namespace to the override instead of the builtin, breaking its class-exists
@@ -39,6 +39,6 @@ class Test_IsActivated extends TestCase {
 			eval( 'class C_NextGEN_Bootstrap {}' );
 		}
 
-		$this->assertSame( $expected, NGG_Subscriber::is_activated() );
+		$this->assertSame( $expected, NGG::is_activated() );
 	}
 }
