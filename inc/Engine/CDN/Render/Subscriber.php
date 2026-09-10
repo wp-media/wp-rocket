@@ -273,7 +273,6 @@ class Subscriber implements Subscriber_Interface {
 	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
 		return $this->controller->get_paid_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
 	}
-<<<<<<< HEAD
 
 	/**
 	 * Disables RocketCDN for paid subscriptions after cancellation.
@@ -285,6 +284,4 @@ class Subscriber implements Subscriber_Interface {
 	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
 		$this->controller->maybe_disable_rocketcdn_paid_after_cancellation();
 	}
-=======
->>>>>>> enhancement/8693-rocketcdn-free-tiers-refactor
 }
