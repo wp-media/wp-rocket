@@ -62,6 +62,7 @@ use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
 use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
 use WP_Rocket\Engine\Fleet\ServiceProvider as FleetServiceProvider;
+use WPMedia\FleetBridge\Bridge;
 
 /**
  * Plugin Manager.
@@ -466,20 +467,30 @@ class Plugin {
 	private function init_abilities_subscribers(): array {
 		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
 
-		// Registered here rather than with the other providers because the
-		// Fleet route resolves `abilities_get_options` and
-		// `abilities_set_option` out of the container, so it cannot be built
-		// before the provider that defines them.
-		$this->container->addServiceProvider( new FleetServiceProvider() );
-
 		$subscribers = [
 			'abilities_subscriber',
 			'ri_abilities_subscriber',
 			'cache_abilities_subscriber',
 			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
-			'fleet_subscriber',
 		];
+
+		// Registered here rather than with the other providers because the
+		// Fleet route resolves `abilities_get_options` and
+		// `abilities_set_option` out of the container, so it cannot be built
+		// before the provider that defines them.
+		//
+		// Guarded on the verifier being present because the alternative is a
+		// fatal in the whole plugin. `fleet_subscriber` is resolved on every
+		// request and building it constructs the verifier, so a build that
+		// shipped without `vendor/wp-media/fleet-bridge` would not lose the
+		// Fleet route — it would lose WP Rocket. A site with no Fleet route
+		// answers 404 there and caches pages exactly as before.
+		if ( class_exists( Bridge::class ) ) {
+			$this->container->addServiceProvider( new FleetServiceProvider() );
+
+			$subscribers[] = 'fleet_subscriber';
+		}
 
 		return $subscribers;
 	}
