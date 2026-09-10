@@ -230,6 +230,9 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 				]
 			);
 
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
+
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( false );
 
