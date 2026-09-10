@@ -61,6 +61,7 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as Preconne
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
 use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
+use WP_Rocket\Engine\Fleet\ServiceProvider as FleetServiceProvider;
 
 /**
  * Plugin Manager.
@@ -465,12 +466,19 @@ class Plugin {
 	private function init_abilities_subscribers(): array {
 		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
 
+		// Registered here rather than with the other providers because the
+		// Fleet route resolves `abilities_get_options` and
+		// `abilities_set_option` out of the container, so it cannot be built
+		// before the provider that defines them.
+		$this->container->addServiceProvider( new FleetServiceProvider() );
+
 		$subscribers = [
 			'abilities_subscriber',
 			'ri_abilities_subscriber',
 			'cache_abilities_subscriber',
 			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
+			'fleet_subscriber',
 		];
 
 		return $subscribers;
