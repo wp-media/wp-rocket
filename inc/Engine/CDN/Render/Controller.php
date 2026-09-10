@@ -430,14 +430,25 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the status indicator HTML for the RocketCDN free section.
+	 * Gets the status indicator HTML for the current RocketCDN tier.
+	 *
+	 * Used to refresh the indicator after a REST action (mode toggle, add/delete page),
+	 * so it must reflect whichever tier the site is actually on - not just the free tier,
+	 * since the mode-toggle endpoint is shared by both.
 	 *
 	 * @param int $pages_count            Number of pages currently using RocketCDN.
 	 *
 	 * @return string The rendered status indicator HTML.
 	 */
 	public function get_status_indicator_html( int $pages_count ): string {
-		$data = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading() );
+		$is_paid = $this->subscription_controller->is_paid();
+		$data    = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading(), ! $is_paid );
+
+		if ( $is_paid ) {
+			// Mirrors the modifier classes add_rocketcdn_paid_section() adds, so a
+			// REST-refreshed indicator keeps the same "boxed" paid-tier styling.
+			$data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
+		}
 
 		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
 	}
