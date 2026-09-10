@@ -140,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_check_status_api_client',
 					'user',
 					'rocketcdn_website_search_api_client',
+					'user_client',
 				]
 				);
 

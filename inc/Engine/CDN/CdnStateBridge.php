@@ -9,7 +9,8 @@ use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Mirrors the legacy `cdn` / `cdn_type` fields into `cdn_state` whenever they change.
+ * Mirrors the legacy `cdn` / `cdn_type` fields into `cdn_state` whenever they change, and
+ * resolves `cdn` itself live (see resolve_live_cdn()).
  */
 class CdnStateBridge implements Subscriber_Interface {
 	/**
@@ -25,6 +26,13 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * @var Options
 	 */
 	private $options_api;
+
+	/**
+	 * Guards against flushing the subscription cache more than once per REST request.
+	 *
+	 * @var bool
+	 */
+	private bool $subscription_flushed = false;
 
 	/**
 	 * Constructor.
@@ -44,7 +52,43 @@ class CdnStateBridge implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
+			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', 10, 2 ],
+			'wp_rocket_upgrade'                => [ 'backfill_cdn_state_on_upgrade', 12 ],
 		];
+	}
+
+	/**
+	 * Backfills cdn_state for sites upgrading from a version where the key never existed.
+	 *
+	 * Utils::did_setting_change() requires the key to already exist in the old value to
+	 * report a change, so on any site where cdn_state has never been written, the first
+	 * real cdn/cdn_type transition after this ships would silently fail to trigger
+	 * Subscriber::maybe_clear_cache(). Writing the key here first - reflecting whatever
+	 * state is already live - means that first real transition afterward compares against
+	 * a properly-populated old value. This write itself doesn't touch cdn/cdn_type, so it
+	 * doesn't trigger reconcile() or a cache clear - nothing about the site's active CDN
+	 * behavior actually changed, only the tracking field catching up to it.
+	 *
+	 * @return void
+	 */
+	public function backfill_cdn_state_on_upgrade(): void {
+		$settings = $this->options_api->get( 'settings', [] );
+
+		if ( isset( $settings['cdn_state'] ) ) {
+			return;
+		}
+
+		// Uses legacy_to_state() directly, not resolve_live(): this writes the backfilled
+		// value to the DB, and resolve_live()'s null return means "don't override" - the
+		// right semantics for a read-time filter, but not a value that belongs in the option.
+		$settings['cdn_state'] = $this->legacy_to_state(
+			[
+				'cdn'      => get_rocket_option( 'cdn' ),
+				'cdn_type' => get_rocket_option( 'cdn_type' ),
+			]
+		);
+
+		$this->options_api->set( 'settings', $settings );
 	}
 
 	/**
@@ -83,18 +127,80 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * Resolves cdn_state live from the legacy fields, instead of trusting whatever was last
 	 * written to the option.
 	 *
+	 * In REST context (React CDN CTA loading), flushes the subscription cache once per
+	 * request so that a stale rocketcdn_status transient — e.g. from before the user
+	 * upgraded their plan externally on rocketcdn.me — does not cause is_paid() (or the
+	 * cancelled-outside-grace-period check below) return the wrong result. The flush
+	 * triggers a fresh API call; the response is re-cached for one day, so subsequent
+	 * page loads within that window are cheap.
+	 *
+	 * Returns null (declining to override) when the subscription is cancelled outside its
+	 * grace period, rather than forcing CDN_STATE_NOTHING: a cancelled-looking subscription
+	 * can also mean no token/subscription has been created yet (e.g. RocketCDN Free just
+	 * activated), in which case the persisted cdn_state is the correct value and must be
+	 * allowed to flow through Options_Data::get() unmodified. legacy_to_state() itself still
+	 * returns CDN_STATE_NOTHING for this case - reconcile() and the plugin-update migration
+	 * in Subscriber::on_update_add_cdn_state_option() both rely on that literal string value
+	 * when they actually need to persist the "cancelled" state to the DB.
+	 *
+	 * Reads cdn/cdn_type from the raw options store to bypass get_rocket_option() and the
+	 * apply_pause_on_rocketcdn_only filter, which returns 1 for byocdn users when
+	 * is_admin() is false (e.g. REST context), making CDN appear active when it is not.
+	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function resolve_live( $value, $default ): string {
+	public function resolve_live( $value, $default ): ?string {
+		if ( ! $this->subscription_flushed && rocket_get_constant( 'REST_REQUEST', false ) ) {
+			$this->subscription_controller->reset_subscription_data();
+			$this->subscription_flushed = true;
+		}
+
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return null;
+		}
+
+		$settings = $this->options_api->get( 'settings', [] );
+
 		return $this->legacy_to_state(
 			[
-				'cdn'      => get_rocket_option( 'cdn' ),
-				'cdn_type' => get_rocket_option( 'cdn_type' ),
+				'cdn'      => $settings['cdn'] ?? 0,
+				'cdn_type' => $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE,
 			]
 		);
+	}
+
+	/**
+	 * Resolves 'cdn' live from $this->options_api, instead of trusting whatever
+	 * Options_Data snapshot the caller's instance happens to hold.
+	 *
+	 * The 'options' container service is registered with add(), not addShared() (see
+	 * class-options.php), so every class gets its own independently-resolved Options_Data
+	 * instance, frozen with whatever 'settings' looked like when that instance was built.
+	 * A write made through one instance (e.g. CDNOptionsManager::enable()/disable()) is
+	 * therefore never visible to another class's instance for the rest of the request -
+	 * there is no single shared object a write could propagate through. This filter makes
+	 * every 'cdn' read live instead, the same way pre_get_rocket_option_cdn_state already
+	 * does for cdn_state.
+	 *
+	 * Always returning a non-null value here short-circuits Options_Data::get() before it
+	 * ever reaches its own get_rocket_option_cdn post-filter application - which would
+	 * silently stop Subscriber::apply_pause_on_rocketcdn_only() (forces 'cdn' on for a
+	 * BYOCDN driver on the front end) from ever running. Re-apply that same post-filter
+	 * here so it still fires against the live value instead of being bypassed.
+	 *
+	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
+	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
+	 *
+	 * @return mixed
+	 */
+	public function resolve_live_cdn( $value, $default ) {
+		$settings = $this->options_api->get( 'settings', [] );
+		$live     = $settings['cdn'] ?? $default;
+
+		return wpm_apply_filters_typed( 'boolean|integer|string', 'get_rocket_option_cdn', $live, $default );
 	}
 
 	/**
@@ -104,7 +210,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 *
 	 * @return string One of the Context::CDN_STATE_* / *_TYPE constants.
 	 */
-	private function legacy_to_state( array $settings ): string {
+	public function legacy_to_state( array $settings ): string {
 		if ( empty( $settings['cdn'] ) ) {
 			return Context::CDN_STATE_NOTHING;
 		}
