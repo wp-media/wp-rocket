@@ -20,7 +20,7 @@ return [
 		[
 			'option'   => 'cdn',
 			'default'  => 0,
-			'expected' => (bool) 1,
+			'expected' => 1,
 		],
 		[
 			'option'   => 'cdn_cnames',

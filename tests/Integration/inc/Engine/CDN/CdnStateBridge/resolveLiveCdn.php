@@ -57,6 +57,7 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 		delete_transient( 'rocketcdn_status' );
 		remove_all_filters( 'pre_get_rocket_option_cdn' );
 		remove_all_filters( 'pre_get_rocket_option_cdn_type' );
+		remove_all_filters( 'get_rocket_option_cdn' );
 		set_current_screen( 'front' );
 
 		parent::tear_down();
@@ -110,28 +111,31 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 	/**
 	 * Resolve_live_cdn() always returns a non-null value, which short-circuits
 	 * Options_Data::get() before it would normally apply the get_rocket_option_cdn
-	 * post-filter to whatever it found in its internal array. Subscriber::apply_pause_on_rocketcdn_only()
-	 * is registered on that exact post-filter and must still run against the live value -
-	 * proves resolve_live_cdn() re-applies it explicitly instead of silently bypassing it.
+	 * post-filter to whatever it found in its internal array. Registers our own
+	 * callback on that exact post-filter and asserts it still runs against the live
+	 * value - proves resolve_live_cdn() re-applies it explicitly instead of silently
+	 * bypassing it.
+	 *
+	 * Used to instead assert Subscriber::apply_pause_on_rocketcdn_only() (which was
+	 * registered on this same post-filter) forced 'cdn' truthy on the front end for a
+	 * BYOCDN driver - that behavior was intentionally removed (issue #8707) since it
+	 * masked a BYOCDN user's explicit "off" state, so this test now proves the
+	 * post-filter mechanism itself with a filter of its own instead.
 	 */
 	public function testShouldStillApplyGetRocketOptionCdnPostFilterOnTheFrontEnd() {
-		// apply_pause_on_rocketcdn_only() only overrides on the front end (its own
-		// is_admin() guard is a no-op pass-through in admin context).
 		set_current_screen( 'front' );
-
-		add_filter(
-			'pre_get_rocket_option_cdn_type',
-			function () {
-				return 'byocdn';
-			}
-		);
 
 		$settings        = $this->options_api->get( 'settings', [] );
 		$settings['cdn'] = 0;
 		$this->options_api->set( 'settings', $settings );
 
-		// apply_pause_on_rocketcdn_only() forces 'cdn' truthy on the front end whenever the
-		// driver isn't rocketcdn, regardless of the stored value.
+		add_filter(
+			'get_rocket_option_cdn',
+			function ( $value ) {
+				return ! $value;
+			}
+		);
+
 		$this->assertTrue( get_rocket_option( 'cdn' ) );
 	}
 }
