@@ -11,8 +11,8 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 /**
  * AC1 regression lock: the live read-filter chain forces RocketCDN off on an
  * invalid WP Rocket licence, on both admin and front end, without ever writing
- * to 'cdn' / 'cdn_type' - proving the path is non-destructive and that the
- * renewal path (AutoResumeOnLicenceRenewal) has nothing to restore.
+ * to 'cdn' / 'cdn_type' - proving the path is non-destructive and there is
+ * nothing left to restore once the licence becomes valid again.
  *
  * Exercises the real hook chain end-to-end - never calls
  * Controller::maybe_pause_cdn_for_inactive_subscription() or
