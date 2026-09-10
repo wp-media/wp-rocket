@@ -108,6 +108,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			],
 			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
 			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
+			'rocket_license_expired_or_revoked'      => 'disable_rocketcdn_free_with_rocket_license_expired',
 		];
 	}
 
@@ -645,14 +646,15 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_refresh_rocketcdn_details( $user_data ) {
-		if ( ! empty( $user_data->rocketcdn->cdn_token ) && ! $this->cdn_options->has_token() ) {
-			$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
-			if ( 40 !== strlen( $token ) ) {
-				return;
-			}
-			$this->cdn_options->save_token( $token );
+		if ( empty( $user_data->rocketcdn->cdn_token ) || $this->cdn_options->has_token() ) {
+			return;
 		}
 
+		$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
+		if ( 40 !== strlen( $token ) ) {
+			return;
+		}
+		$this->cdn_options->save_token( $token );
 		$this->cdn_options->flush_subscription_cache();
 	}
 
@@ -696,5 +698,25 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 */
 	public function handle_manual_retry_pro_detection(): void {
 		$this->subscription_controller->handle_manual_retry_pro_detection();
+	}
+
+	/**
+	 * Disables RocketCDN Free when the WP Rocket licence expires or is revoked.
+	 *
+	 * Only resets the state when RocketCDN Free is the state actually applied - is_free()
+	 * alone reflects the RocketCDN subscription's plan type, not which CDN driver is
+	 * currently active, so relying on it alone would also reset an unrelated BYOCDN (or
+	 * paid) configuration for an account that happens to have a dormant free subscription.
+	 *
+	 * @return void
+	 */
+	public function disable_rocketcdn_free_with_rocket_license_expired(): void {
+		$settings = $this->options_api->get( 'settings', [] );
+
+		if ( Context::ROCKETCDN_FREE_TYPE !== ( $settings['cdn_state'] ?? '' ) ) {
+			return;
+		}
+
+		$this->cdn_options->set_cdn_state( Context::CDN_STATE_NOTHING );
 	}
 }
