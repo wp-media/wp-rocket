@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Fleet;
 
 use WPMedia\FleetBridge\Bridge;
+use WPMedia\FleetBridge\Contract\Verifier;
 use WPMedia\FleetBridge\Exception\NotAuthorised;
 use WP_Error;
 use WP_REST_Request;
@@ -81,7 +82,7 @@ class Route {
 	/**
 	 * Verification, from the shared package.
 	 *
-	 * @var Bridge
+	 * @var Verifier
 	 */
 	private $bridge;
 
@@ -109,13 +110,13 @@ class Route {
 	/**
 	 * Instantiate the class.
 	 *
-	 * @param Bridge         $bridge          Verification.
+	 * @param Verifier       $bridge          Verification.
 	 * @param GetOptions     $get_options     The read ability.
 	 * @param SetOption      $set_option      The write ability.
 	 * @param AllowedOptions $allowed_options The allowlist.
 	 */
 	public function __construct(
-		Bridge $bridge,
+		Verifier $bridge,
 		GetOptions $get_options,
 		SetOption $set_option,
 		AllowedOptions $allowed_options

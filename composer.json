@@ -40,7 +40,7 @@
 			"url": "https://wpackagist.org"
 		},
 		{
-			"//": "Private, so composer has to be told where it lives: it is not on Packagist and never will be.",
+			"//": "Not on Packagist yet, so composer is told where it lives. Public, so this resolves with no credentials, which the release build has none of. Remove once it is submitted.",
 			"type": "vcs",
 			"url": "https://github.com/wp-media/fleet-bridge"
 		}
@@ -51,7 +51,7 @@
 		"composer/installers": "^1.0 || ^2.0",
 		"voku/simple_html_dom": "^4.8",
 		"wp-media/apply-filters-typed": "^1.0",
-		"wp-media/fleet-bridge": "^1.0",
+		"wp-media/fleet-bridge": "^1.1",
 		"wp-media/mcp-oauth": "1.1.1",
 		"wp-media/plugin-family": "1.0.8",
 		"wp-media/wp-mixpanel": "^1.4.4"
