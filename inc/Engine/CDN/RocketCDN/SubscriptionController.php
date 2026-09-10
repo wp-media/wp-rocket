@@ -120,6 +120,15 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Whether a RocketCDN user token has been saved.
+	 *
+	 * @return bool
+	 */
+	public function has_token(): bool {
+		return $this->options_manager->has_token();
+	}
+
+	/**
 	 * Get subscription data.
 	 *
 	 * @return array
@@ -292,11 +301,13 @@ class SubscriptionController implements LoggerAwareInterface {
 		$this->check_status_api_client->set_task_id( $task_id );
 		$status = $this->check_status_api_client->check();
 		if ( ! $status ) {
+			$this->trigger_creation_failed();
 			$this->stop_subscription_creation_loader();
 			return;
 		}
 
 		if ( ! $status['success'] ) {
+			$this->trigger_creation_failed();
 			$this->stop_subscription_creation_loader();
 			$this->logger::error(
 				'RocketCDN: Failed to check creation status.',
@@ -321,12 +332,25 @@ class SubscriptionController implements LoggerAwareInterface {
 				do_action( 'rocket_cdnfree_website_created' );
 				break;
 			default:
+				$this->trigger_creation_failed();
 				$this->stop_subscription_creation_loader();
 				$this->logger::error(
 					'RocketCDN: Received not known response code when check subscription\'s status.',
 					$status
 				);
 		}
+	}
+
+	/**
+	 * Fires the subscription-creation-failed action.
+	 *
+	 * @return void
+	 */
+	private function trigger_creation_failed(): void {
+		/**
+		 * Fires when async RocketCDN subscription creation definitively fails.
+		 */
+		do_action( 'rocket_cdnfree_subscription_creation_failed' );
 	}
 
 	/**

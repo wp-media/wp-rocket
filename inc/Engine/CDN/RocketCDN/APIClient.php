@@ -10,6 +10,25 @@ class APIClient {
 	const ROCKETCDN_API = 'https://rocketcdn.me/api/';
 
 	/**
+	 * Option name used as a short-lived lock to guard against firing duplicate,
+	 * near-simultaneous requests to the RocketCDN subscription endpoint (e.g.
+	 * two subscribers both reacting to the same current_screen call before the
+	 * rocketcdn_status transient has been (re)populated).
+	 *
+	 * @var string
+	 */
+	const SUBSCRIPTION_FETCH_LOCK = 'rocketcdn_status_fetch_lock';
+
+	/**
+	 * Maximum time, in seconds, a fetch lock is honored before being considered
+	 * stale (e.g. left behind by a request that crashed or timed out) and
+	 * reclaimable by a later caller.
+	 *
+	 * @var int
+	 */
+	const SUBSCRIPTION_FETCH_LOCK_TTL = 30;
+
+	/**
 	 * Gets current RocketCDN subscription data from cache if it exists
 	 *
 	 * Else do a request to the API to get fresh data
@@ -56,65 +75,114 @@ class APIClient {
 			return $default;
 		}
 
-		$args = [
-			'headers' => [
-				'Authorization' => 'Token ' . $token,
-			],
-		];
+		if ( ! $this->acquire_subscription_fetch_lock() ) {
+			// Another (possibly concurrent) request is already fetching this same
+			// data - reuse whatever it leaves behind instead of firing a duplicate
+			// request against the RocketCDN API.
+			$status = get_transient( 'rocketcdn_status' );
 
-		$parsed_home = wp_parse_url( home_url() );
-		if ( empty( $parsed_home['host'] ) ) {
-			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
-
-			return $default;
+			return false !== $status ? $status : $default;
 		}
 
-		$response = wp_remote_get(
-			sprintf( '%1$ssubscription/%2$s/status', self::ROCKETCDN_API, $parsed_home['host'] ),
-			$args
-		);
+		try {
+			$args = [
+				'headers' => [
+					'Authorization' => 'Token ' . $token,
+				],
+			];
 
-		$status_code            = wp_remote_retrieve_response_code( $response );
-		$default['status_code'] = $status_code;
+			$parsed_home = wp_parse_url( home_url() );
+			if ( empty( $parsed_home['host'] ) ) {
+				$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
 
-		if ( 200 !== $status_code ) {
-			$this->set_status_transient( $default, 404 !== $status_code ? 3 * MINUTE_IN_SECONDS : DAY_IN_SECONDS );
+				return $default;
+			}
 
-			return $default;
+			$response = wp_remote_get(
+				sprintf( '%1$ssubscription/%2$s/status', self::ROCKETCDN_API, $parsed_home['host'] ),
+				$args
+			);
+
+			$status_code            = wp_remote_retrieve_response_code( $response );
+			$default['status_code'] = $status_code;
+
+			if ( 200 !== $status_code ) {
+				$this->set_status_transient( $default, 404 !== $status_code ? 3 * MINUTE_IN_SECONDS : DAY_IN_SECONDS );
+
+				return $default;
+			}
+
+			$data = wp_remote_retrieve_body( $response );
+
+			if ( empty( $data ) ) {
+				$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+
+				return $default;
+			}
+
+			$data = json_decode( $data, true );
+			if ( empty( $data['success'] ) ) {
+				$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+				return $default;
+			}
+
+			// Map the data.
+			$final_data = [
+				'id'                            => $data['subscription_id'] ?? 0,
+				'is_active'                     => $data['website_activated'] ?? false,
+				'cdn_url'                       => $data['cdn_url'] ?? '',
+				'subscription_next_date_update' => $data['next_date_update'] ?? 0,
+				'subscription_status'           => $data['status'] ?? 'cancelled',
+				'website_attached'              => $data['website_attached'] ?? false,
+				'plan_type'                     => $data['plan_type'] ?? 'free',
+				'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
+				'website_id'                    => $data['website_id'] ?? 0,
+				'status_code'                   => $status_code,
+				'success'                       => true,
+			];
+
+			$this->set_status_transient( $final_data, DAY_IN_SECONDS );
+
+			return $final_data;
+		} finally {
+			$this->release_subscription_fetch_lock();
+		}
+	}
+
+	/**
+	 * Attempts to acquire the short-lived subscription fetch lock.
+	 *
+	 * Relies on add_option()'s atomicity (a unique index on option_name in the
+	 * options table) to guarantee only one concurrent caller can win the lock,
+	 * which a plain get/set transient check-then-act cannot guarantee.
+	 *
+	 * @return bool True if the lock was acquired, false if another request already holds it.
+	 */
+	private function acquire_subscription_fetch_lock(): bool {
+		if ( add_option( self::SUBSCRIPTION_FETCH_LOCK, time(), '', false ) ) {
+			return true;
 		}
 
-		$data = wp_remote_retrieve_body( $response );
+		$locked_at = get_option( self::SUBSCRIPTION_FETCH_LOCK );
 
-		if ( empty( $data ) ) {
-			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
+		// Reclaim a stale lock left behind by a request that crashed or timed out
+		// before it could release it.
+		if ( is_numeric( $locked_at ) && ( time() - (int) $locked_at ) > self::SUBSCRIPTION_FETCH_LOCK_TTL ) {
+			delete_option( self::SUBSCRIPTION_FETCH_LOCK );
 
-			return $default;
+			return add_option( self::SUBSCRIPTION_FETCH_LOCK, time(), '', false );
 		}
 
-		$data = json_decode( $data, true );
-		if ( empty( $data['success'] ) ) {
-			$this->set_status_transient( $default, 3 * MINUTE_IN_SECONDS );
-			return $default;
-		}
+		return false;
+	}
 
-		// Map the data.
-		$final_data = [
-			'id'                            => $data['subscription_id'] ?? 0,
-			'is_active'                     => $data['website_activated'] ?? false,
-			'cdn_url'                       => $data['cdn_url'] ?? '',
-			'subscription_next_date_update' => $data['next_date_update'] ?? 0,
-			'subscription_status'           => $data['status'] ?? 'cancelled',
-			'website_attached'              => $data['website_attached'] ?? false,
-			'plan_type'                     => $data['plan_type'] ?? 'free',
-			'plan_page_limit'               => $data['plan_page_limit'] ?? 0,
-			'website_id'                    => $data['website_id'] ?? 0,
-			'status_code'                   => $status_code,
-			'success'                       => true,
-		];
-
-		$this->set_status_transient( $final_data, DAY_IN_SECONDS );
-
-		return $final_data;
+	/**
+	 * Releases the subscription fetch lock.
+	 *
+	 * @return void
+	 */
+	private function release_subscription_fetch_lock(): void {
+		delete_option( self::SUBSCRIPTION_FETCH_LOCK );
 	}
 
 	/**
