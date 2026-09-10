@@ -38,11 +38,6 @@
 		{
 			"type": "composer",
 			"url": "https://wpackagist.org"
-		},
-		{
-			"//": "Not on Packagist yet, so composer is told where it lives. Public, so this resolves with no credentials, which the release build has none of. Remove once it is submitted.",
-			"type": "vcs",
-			"url": "https://github.com/wp-media/fleet-bridge"
 		}
 	],
 	"require": {
