@@ -63,6 +63,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Sanitize the CDN type option.
 	 *
+	 * Ensure a form save doesn't overwrite toggle REST API.
+	 *
 	 * @param array $input Input array.
 	 *
 	 * @return array

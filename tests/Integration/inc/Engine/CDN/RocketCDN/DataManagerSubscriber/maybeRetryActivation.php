@@ -55,6 +55,10 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		$this->subscription_api_call_count = 0;
 		$this->activation_api_called       = false;
 
+		// This method only runs on the WP Rocket settings page; scenarios that need a
+		// different screen (e.g. the screen-guard test) override this explicitly.
+		set_current_screen( 'settings_page_wprocket' );
+
 		// Get the subscriber from container.
 		$container        = apply_filters( 'rocket_container', null );
 		$this->subscriber = $container->get( 'rocketcdn_data_manager_subscriber' );
@@ -195,5 +199,41 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			$this->assertNotEmpty( $saved_token, 'Token should be saved after successful activation' );
 			$this->assertSame( $config['user_data']->rocketcdn->cdn_token, $saved_token );
 		}
+	}
+
+	/**
+	 * The method must bail before touching the API or CDN state when the current
+	 * screen isn't the WP Rocket settings page, even with an otherwise-valid,
+	 * would-succeed configuration.
+	 */
+	public function testShouldBailWhenNotOnRocketSettingsPage() {
+		$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		$user    = wp_set_current_user( $user_id );
+		$user->add_cap( 'rocket_manage_options' );
+
+		update_option( 'rocketcdn_user_token', '1234567890123456789012345678901234567890' );
+
+		set_current_screen( 'edit.php' );
+
+		$api_request_made = false;
+
+		add_filter(
+			'pre_http_request',
+			function ( $preempt, $args, $url ) use ( &$api_request_made ) {
+				$api_request_made = true;
+
+				return $preempt;
+			},
+			10,
+			3
+		);
+
+		$this->subscriber->maybe_retry_activation();
+
+		$this->assertFalse( $api_request_made, 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
+
+		$settings    = get_option( 'wp_rocket_settings', [] );
+		$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
+		$this->assertFalse( $cdn_enabled, 'CDN should not be enabled when the guard bails on a non-WP Rocket screen' );
 	}
 }
