@@ -71,10 +71,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Schedule the identifier housekeeping, once.
 	 *
-	 * Every command Fleet sends carries a one-time identifier, and the site
-	 * records it so the same command cannot be replayed. Those records are rows
-	 * in the options table, one per honoured command, and without this they
-	 * accumulate for the life of the install.
+	 * Every request from Fleet carries two one-time identifiers — one on the
+	 * command, one on the consent grant — and the site records both so neither
+	 * can be replayed. Those records are rows in the options table, two per
+	 * honoured request, and without this they accumulate for the life of the
+	 * install.
 	 *
 	 * Scheduled unconditionally rather than only when Fleet is allowed: a site
 	 * that switches Fleet off still has whatever rows it already wrote, and a

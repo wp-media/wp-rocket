@@ -115,10 +115,11 @@ class WPRocketUninstall {
 	 * @var array
 	 */
 	private $option_prefixes = [
-		// One row per command Fleet has sent, named for a hash of its one-time
-		// identifier. {@see \WP_Rocket\Engine\Fleet\Subscriber} keeps these
-		// pruned while the plugin is installed; uninstalling has to take the
-		// rest, and there is no fixed name to list them under.
+		// Two rows per request Fleet has made: the command and the consent
+		// grant each carry their own one-time identifier, and each is recorded
+		// under a hash of it. {@see \WP_Rocket\Engine\Fleet\Subscriber} keeps
+		// these pruned while the plugin is installed; uninstalling has to take
+		// the rest, and there is no fixed name to list them under.
 		'fleet_bridge_jti_',
 	];
 
