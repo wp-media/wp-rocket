@@ -147,7 +147,13 @@ parameters:
 		-
 			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 3
+			count: 4
+			path: inc/Engine/CDN/RocketCDN/APIClient.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
 			path: inc/Engine/CDN/RocketCDN/APIClient.php
 
 		-
@@ -159,7 +165,13 @@ parameters:
 		-
 			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 1
+			count: 2
+			path: inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 2
 			path: inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch.php
 
 		-
@@ -1059,7 +1071,13 @@ parameters:
 		-
 			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 3
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
 			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/reconcile.php
 
 		-
@@ -1071,7 +1089,13 @@ parameters:
 		-
 			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 2
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
 			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/resolveLive.php
 
 		-
@@ -1083,7 +1107,13 @@ parameters:
 		-
 			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 2
+			count: 3
+			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/backfillCdnStateOnUpgrade.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
 			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/backfillCdnStateOnUpgrade.php
 
 		-
@@ -1121,6 +1151,42 @@ parameters:
 			identifier: custom.rules.discourageOptionUsage
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/Render/Controller/shouldDisableElementForRocketcdn.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIClient/getSubscriptionData.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 6
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIClient/getSubscriptionData.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIClient/getSubscriptionData.php
+
+		-
+			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 4
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch/find.php
+
+		-
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 6
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch/find.php
+
+		-
+			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			identifier: custom.rules.discourageOptionUsage
+			count: 1
+			path: tests/Integration/inc/Engine/CDN/RocketCDN/APIHandler/WebsiteSearch/find.php
 
 		-
 			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
@@ -1185,13 +1251,13 @@ parameters:
 		-
 			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 3
+			count: 4
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
 
 		-
 			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 2
+			count: 3
 			path: tests/Integration/inc/Engine/CDN/RocketCDN/DataManagerSubscriber/maybeRetryActivation.php
 
 		-

@@ -99,32 +99,31 @@ return [
 			'cdn_state'      => 'rocketcdn_free',
 		],
 	],
-	'shouldRequireConfirmationWhenAnotherModeActive' => [
+	'shouldActivateFreeWhenAnotherModeActiveAndFirstPage' => [
 		'config'   => [
-			'url'              => 'post_url',
-			'prefill_count'    => 0,
-			'add_first'        => false,
-			'unauthenticated'  => false,
+			'url'               => 'post_url',
+			'prefill_count'     => 0,
+			'add_first'         => false,
+			'unauthenticated'   => false,
 			'initial_cdn_state' => 'byocdn',
-		],
-		'expected' => [
-			'code'   => 'rocketcdn_free_inactive_confirm_required',
-			'status' => 409,
-		],
-	],
-	'shouldActivateFreeAfterConfirmation'        => [
-		'config'   => [
-			'url'                => 'post_url',
-			'prefill_count'      => 0,
-			'add_first'          => false,
-			'unauthenticated'    => false,
-			'initial_cdn_state'   => 'byocdn',
-			'confirm_activation' => true,
 		],
 		'expected' => [
 			'count'          => 1,
 			'free_activated' => true,
 			'cdn_state'      => 'rocketcdn_free',
+		],
+	],
+	'shouldAddPageWithoutActivatingWhenPagesAlreadyExistAndAnotherModeActive' => [
+		'config'   => [
+			'url'               => 'post_url',
+			'prefill_count'     => 1,
+			'add_first'         => false,
+			'unauthenticated'   => false,
+			'initial_cdn_state' => 'byocdn',
+		],
+		'expected' => [
+			'count'          => 2,
+			'free_activated' => false,
 		],
 	],
 	'shouldNotReactivateWhenFreeAlreadyActive'   => [
