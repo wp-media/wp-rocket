@@ -54,6 +54,58 @@
 	}
 
 	/**
+	 * Updates the "Other CDN" (BYOCDN) status indicator with new HTML content.
+	 *
+	 * Scoped to the "Your CDN" section container rather than the shared
+	 * #wpr_cdn_status_indicator id, since that id can also be present (hidden)
+	 * in the RocketCDN section markup at the same time - a global lookup would
+	 * risk updating the wrong one. Unlike RocketCDN's indicator, an empty
+	 * `html` here means "no status message at all", so the element is removed
+	 * rather than left untouched - along with its adjacent separator, which
+	 * the initial PHP render (your-own-cdn.php) only draws while the message
+	 * is showing.
+	 *
+	 * @param {string} html - The status indicator HTML to show, or an empty string to show none.
+	 * @returns {void}
+	 */
+	function updateByocdnStatusIndicator( html ) {
+		const container = document.querySelector( '.wpr-fieldsContainer-fieldset.your-own-cdn' );
+
+		if ( ! container ) {
+			return;
+		}
+
+		const existing = container.querySelector( '#wpr_cdn_status_indicator' );
+		const separator = container.querySelector( '.wpr-cdn-built-in__separator' );
+
+		if ( existing ) {
+			if ( html ) {
+				existing.outerHTML = html;
+			} else {
+				existing.remove();
+			}
+		} else if ( html ) {
+			container.insertAdjacentHTML( 'afterbegin', html );
+		}
+
+		if ( ! html ) {
+			if ( separator ) {
+				separator.remove();
+			}
+
+			return;
+		}
+
+		if ( ! separator ) {
+			const indicator = container.querySelector( '#wpr_cdn_status_indicator' );
+
+			if ( indicator ) {
+				indicator.insertAdjacentHTML( 'afterend', '<div class="wpr-cdn-built-in__separator"></div>' );
+			}
+		}
+	}
+
+	/**
 	 * Toggles the disabled state of CDN-related UI elements based on the active driver.
 	 *
 	 * For the 'rocketcdn' driver, targets both shared CDN and RocketCDN sections.
@@ -319,55 +371,67 @@
 				return;
 			}
 
-			// Capture the previously active toggle for rollback on failure.
-			// Read from wpr-cdn-active-indicator (maintained by PHP + this function) rather than
-			// :checked, because the change event fires after the checkbox state has already flipped.
-			const previouslyActiveHeader = document.querySelector( '.wpr-optionHeader.wpr-cdn-active-indicator' );
-			const previouslyActive = previouslyActiveHeader
-				? previouslyActiveHeader.querySelector( '.wpr-cdn-mode-toggle__input' )
-				: null;
+			// The checkbox has already flipped by the time `change` fires - capture the
+			// requested state, then hold the toggle at its previous state and disabled
+			// until the request resolves, so nothing about it changes prematurely.
+			const requestedChecked = toggle.checked;
+			const requestedMode    = requestedChecked ? mode : 'nothing';
+			const sectionDriver    = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+			const toggleWrapper    = toggle.closest( '.wpr-cdn-mode-toggle' );
 
-			// mode sent to the server: the toggle's mode when checking, 'nothing' when unchecking.
-			const requestedMode = toggle.checked ? mode : 'nothing';
-			const sectionDriver = 'byocdn' === mode ? 'your-own-cdn' : 'rocketcdn';
+			toggle.checked  = ! requestedChecked;
+			toggle.disabled = true;
 
-			if ( toggle.checked ) {
-				// Uncheck all other mode toggles (mutually exclusive).
-				document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
-					if ( other !== toggle ) {
-						other.checked = false;
-					}
-				} );
-				toggleDriverSections( sectionDriver );
-				setActiveTab( sectionDriver );
+			if ( toggleWrapper ) {
+				toggleWrapper.classList.add( 'wpr-cdn-mode-toggle--loading' );
 			}
-
-			// Optimistically update the active indicator before the request completes.
-			updateCdnActiveIndicator( toggle.checked ? toggle : null );
-
-			notifyCdnStateChange();
 
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/mode',
 				method: 'POST',
 				data: { mode: requestedMode },
 			} ).then( ( response ) => {
+				toggle.checked  = requestedChecked;
+				toggle.disabled = false;
+
+				if ( toggleWrapper ) {
+					toggleWrapper.classList.remove( 'wpr-cdn-mode-toggle--loading' );
+				}
+
+				if ( requestedChecked ) {
+					// Uncheck all other mode toggles (mutually exclusive).
+					document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( other ) => {
+						if ( other !== toggle ) {
+							other.checked = false;
+						}
+					} );
+					toggleDriverSections( sectionDriver );
+					setActiveTab( sectionDriver );
+				}
+
+				updateCdnActiveIndicator( requestedChecked ? toggle : null );
+				notifyCdnStateChange();
+
 				updateRocketCDNElementsState(
 					'byocdn' === mode ? 'byocdn' : 'rocketcdn',
 					response.disable_rocket_cdn_elements
 				);
 				syncCdnHiddenInputs( requestedMode );
-				refreshUIElements( response );
-			} ).catch( () => {
-				// Revert to previous state on failure.
-				toggle.checked = ! toggle.checked;
-				updateCdnActiveIndicator( previouslyActive );
 
-				if ( previouslyActive && previouslyActive !== toggle ) {
-					previouslyActive.checked = true;
-					const prevMode   = previouslyActive.getAttribute( 'data-cdn-mode' );
-					const prevDriver = 'byocdn' === prevMode ? 'your-own-cdn' : 'rocketcdn';
-					toggleDriverSections( prevDriver );
+				// The "Other CDN" toggle only ever shows the static "Your CDN is active on
+				// your website" message or nothing - it must not reuse RocketCDN's tiered
+				// status_indicator_html, so it's updated separately here.
+				if ( 'byocdn' === mode ) {
+					updateByocdnStatusIndicator( response.byocdn_status_indicator_html );
+				} else {
+					refreshUIElements( response );
+				}
+			} ).catch( () => {
+				// Request failed - the toggle still reflects its pre-click state, just re-enable it.
+				toggle.disabled = false;
+
+				if ( toggleWrapper ) {
+					toggleWrapper.classList.remove( 'wpr-cdn-mode-toggle--loading' );
 				}
 			} );
 		} );

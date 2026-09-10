@@ -123,6 +123,13 @@ class Controller extends Abstract_Render {
 	 * compatibility subscribers (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()})
 	 * can override to `true` later in the same `rocket_cdn_driver_sections` filter chain.
 	 *
+	 * Also overrides the section's `status_indicator.is_active` (initially set from
+	 * whether CNAMEs are configured, in {@see \WP_Rocket\Engine\Admin\Settings\Page::cdn_section()})
+	 * to instead match the mode toggle's own on/off state, so the "Your CDN is active
+	 * on your website" message only shows on page load when the toggle is actually on -
+	 * matching {@see get_byocdn_status_indicator_html()}, which drives the same message
+	 * after an AJAX toggle.
+	 *
 	 * @since 3.23.3
 	 *
 	 * @param array $sections CDN driver sections.
@@ -135,11 +142,16 @@ class Controller extends Abstract_Render {
 		}
 
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
+		$is_active         = Context::BYOCDN_TYPE === $applied_cdn_state;
 
 		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
-		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
+		$sections['cdn_section']['is_active']         = $is_active;
 		$sections['cdn_section']['is_forced_off']     = false;
 		$sections['cdn_section']['toggle_tooltip']    = $this->get_toggle_forced_off_tooltip();
+
+		if ( isset( $sections['cdn_section']['status_indicator'] ) ) {
+			$sections['cdn_section']['status_indicator']['is_active'] = $is_active;
+		}
 
 		return $sections;
 	}
@@ -449,6 +461,29 @@ class Controller extends Abstract_Render {
 			// REST-refreshed indicator keeps the same "boxed" paid-tier styling.
 			$data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 		}
+
+		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
+	}
+
+	/**
+	 * Gets the status indicator HTML for the "Other CDN" (BYOCDN) section.
+	 *
+	 * Unlike RocketCDN's indicator, BYOCDN only has two states: active - showing
+	 * the same "Your CDN is active on your website" message displayed on page
+	 * load - or inactive, showing no status message at all. There is no
+	 * paused/loading/tiered text to account for, so this deliberately doesn't
+	 * reuse {@see get_status_indicator_data()}, which is RocketCDN-specific.
+	 *
+	 * @param bool $is_active Whether BYOCDN is the currently applied CDN mode.
+	 *
+	 * @return string The rendered status indicator HTML, or an empty string when inactive.
+	 */
+	public function get_byocdn_status_indicator_html( bool $is_active ): string {
+		$data = [
+			'is_active'   => $is_active,
+			'status_text' => __( 'Your CDN is active on your website', 'rocket' ),
+			'class'       => '',
+		];
 
 		return $this->render_parts_with_data( 'cdn/cdn-status-indicator', $data, true );
 	}

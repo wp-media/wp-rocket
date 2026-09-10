@@ -602,12 +602,15 @@ class Rest extends WP_REST_Controller {
 
 		$this->apply_cdn_mode( $mode );
 
+		$applied_cdn_state = $this->context->get_applied_cdn_state( $mode );
+
 		$response = array_merge(
 			$this->get_pages_data(),
 			[
-				'applied_cdn_state'           => $this->context->get_applied_cdn_state( $mode ),
-				'rocketcdn_state'             => $this->context->get_rocketcdn_state( $mode ),
-				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
+				'applied_cdn_state'            => $applied_cdn_state,
+				'rocketcdn_state'              => $this->context->get_rocketcdn_state( $mode ),
+				'disable_rocket_cdn_elements'  => $this->render_controller->should_disable_element_for_rocketcdn(),
+				'byocdn_status_indicator_html' => $this->render_controller->get_byocdn_status_indicator_html( Context::BYOCDN_TYPE === $applied_cdn_state ),
 			]
 		);
 

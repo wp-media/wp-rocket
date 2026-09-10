@@ -808,4 +808,16 @@
 		visibility: visible;
 		opacity: 1;
 	}
+
+	// Loading state while a mode-toggle request is in flight (added/removed in cdn-driver.js).
+	// Only targets :disabled so a permanently forced-off toggle (is_forced_off, no loading
+	// class) is left with its plain disabled look instead.
+	&--loading [type="checkbox"]:disabled + label {
+		cursor: wait;
+
+		&:before,
+		&:after {
+			opacity: 0.5;
+		}
+	}
 }

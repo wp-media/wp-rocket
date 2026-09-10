@@ -5310,6 +5310,12 @@ div.wpr-tutorial-item {
   visibility: visible;
   opacity: 1;
 }
+.wpr-cdn-mode-toggle--loading [type=checkbox]:disabled + label {
+  cursor: wait;
+}
+.wpr-cdn-mode-toggle--loading [type=checkbox]:disabled + label:before, .wpr-cdn-mode-toggle--loading [type=checkbox]:disabled + label:after {
+  opacity: 0.5;
+}
 
 /*-----------------------------------------------*\
 
