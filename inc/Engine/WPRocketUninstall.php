@@ -46,6 +46,8 @@ class WPRocketUninstall {
 		'wp_rocket_rocketcdn_old_url',
 		'plugin_family_dismiss_promote_imagify',
 		'rocket_mixpanel_optin',
+		'rocketcdn_status_fetch_lock',
+		'rocket_cdn_website_search_fetch_lock',
 	];
 
 	/**

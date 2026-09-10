@@ -815,42 +815,6 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
-	 *
-	 * @since 3.22.0.2
-	 *
-	 * @return void
-	 */
-	public function maybe_auto_create_rocketcdn_free_subscription() {
-		// Bail out if there is an active subscription.
-		if ( $this->subscription_controller->has_active_subscription() ) {
-			return;
-		}
-
-		// Bail out if the subscription is paid and is still within the cancellation grace period — too early to auto-resume.
-		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
-			return;
-		}
-
-		if ( $this->subscription_controller->is_license_invalid() ) {
-			return;
-		}
-
-		// Update the forced pause tracking option to indicate the forced pause has been resolved.
-		$stored               = $this->get_forced_pause_tracking();
-		$stored['persistent'] = false;
-		update_option( self::FORCED_PAUSE_TRACKING_OPTION, $stored, false );
-
-		// Bail out if there are no add pages in the free plan — no need to auto create, allow normal flow.
-		if ( empty( $this->get_items() ) ) {
-			return;
-		}
-
-		// Auto-create a new subscription to resume free RocketCDN service.
-		$this->subscription_controller->create_subscription();
-	}
-
-	/**
 	 * Reads the forced pause tracking option, migrating the legacy bool format to the current array format.
 	 *
 	 * @return array
