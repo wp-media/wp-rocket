@@ -74,11 +74,10 @@ return [
 		'expected' => true,
 	],
 
-	// Paid CDN cancelled and grace period elapsed (no longer pending_deletion): CdnStateBridge's live resolver
-	// already returns 'nothing' for this case (is_cancelled_outside_grace_period() short-circuits legacy_to_state
-	// before is_paid() is even checked), so applied_cdn_state is never 'rocketcdn' and the method bails on its
-	// very first check -- it never reaches is_forced_off() or writes anything itself for this transition.
-	'testPaidCancelledOutsideGracePeriodBailsOnDriverCheck'       => [
+	// Paid CDN cancelled and grace period elapsed (no longer pending_deletion): is_cancelled_outside_grace_period()
+	// is true and is_paid() is true, so is_forced_off()'s second branch (is_paid() && is_cancelled_outside_grace_period())
+	// fires -> forced off, writes the persistent tracking flag.
+	'testPaidCancelledOutsideGracePeriodForcedOff'                => [
 		'config'   => [
 			'cdn_type'            => 'rocketcdn',
 			'cdn_option'          => 1,
@@ -88,7 +87,7 @@ return [
 			'license_expired'     => false,
 			'license_revoked'     => false,
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 
 	// Active, healthy paid subscription -> not forced off -> no write.

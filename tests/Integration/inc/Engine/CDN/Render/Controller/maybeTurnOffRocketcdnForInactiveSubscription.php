@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render\Controller;
 
-use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
@@ -21,58 +20,33 @@ class Test_MaybeTurnOffRocketcdnForInactiveSubscription extends TestCase {
 	private $user;
 
 	/**
-	 * @var \WP_Rocket\Admin\Options
-	 */
-	private $options_api;
-
-	/**
 	 * Per-test cdn_type filter closure, removed in tear_down().
 	 *
 	 * @var callable|null
 	 */
 	private $cdn_type_filter_callback = null;
 
-	/**
-	 * Per-test cdn filter closure, removed in tear_down().
-	 *
-	 * @var callable|null
-	 */
-	private $cdn_filter_callback = null;
-
 	public function set_up() {
 		parent::set_up();
 
-		$container         = apply_filters( 'rocket_container', null );
-		$this->user        = $container->get( 'user' );
-		$this->options_api = $container->get( 'options_api' );
+		$container  = apply_filters( 'rocket_container', null );
+		$this->user = $container->get( 'user' );
 
 		delete_transient( 'rocketcdn_status' );
+		delete_option( 'rocket_rocketcdn_forced_pause_state' );
 
-		// Pre-seed the tracking option with a 'persistent' key: is_forced_off()'s
-		// fallthrough branch reads $stored['persistent'] unconditionally, and a
-		// genuinely fresh/never-forced-off install has no such key, which throws
-		// under this suite's convertNoticesToExceptions setting.
-		update_option( 'rocket_rocketcdn_forced_pause_state', [ 'persistent' => false ] );
-
-		$this->options_api->set( 'settings', array_merge( $this->options_api->get( 'settings', [] ), [ 'cdn_state' => Context::ROCKETCDN_PAID_TYPE ] ) );
-
-		// Isolate admin_init to only the Subscriber method under test, so firing the
-		// hook doesn't also run the rest of the admin_init surface (some of which
-		// redirects or wp_die()s). Restored via restoreWpHook() in tear_down().
-		$this->unregisterAllCallbacksExcept( 'admin_init', 'maybe_turn_off_rocketcdn_for_inactive_subscription' );
+		// Isolate pre_get_rocket_option_cdn to only the method under test, so firing the
+		// filter doesn't also run whatever else any other subscriber has hooked onto the
+		// same filter. Restored via restoreWpHook() in tear_down().
+		$this->unregisterAllCallbacksExcept( 'pre_get_rocket_option_cdn', 'maybe_turn_off_rocketcdn_for_inactive_subscription' );
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'admin_init' );
+		$this->restoreWpHook( 'pre_get_rocket_option_cdn' );
 
 		if ( null !== $this->cdn_type_filter_callback ) {
 			remove_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
 			$this->cdn_type_filter_callback = null;
-		}
-
-		if ( null !== $this->cdn_filter_callback ) {
-			remove_filter( 'pre_get_rocket_option_cdn', $this->cdn_filter_callback );
-			$this->cdn_filter_callback = null;
 		}
 
 		delete_transient( 'rocketcdn_status' );
@@ -84,31 +58,26 @@ class Test_MaybeTurnOffRocketcdnForInactiveSubscription extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( array $config, bool $expected_write ): void {
-		$cdn_type = $config['cdn_type'];
-		$cdn      = $config['cdn_option'];
-
+	public function testShouldDoAsExpected( array $config, bool $expected_forced_off ): void {
+		$cdn_type                       = $config['cdn_type'];
 		$this->cdn_type_filter_callback = static function () use ( $cdn_type ) {
 			return $cdn_type;
 		};
-		$this->cdn_filter_callback = static function () use ( $cdn ) {
-			return $cdn;
-		};
 		add_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
-		add_filter( 'pre_get_rocket_option_cdn', $this->cdn_filter_callback );
 
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
 
-		do_action( 'admin_init' );
+		$result = apply_filters( 'pre_get_rocket_option_cdn', $config['cdn_option'] );
 
-		$persisted_cdn_state = $this->options_api->get( 'settings', [] )['cdn_state'] ?? null;
+		$forced_off_tracking = get_option( 'rocket_rocketcdn_forced_pause_state', [] );
 
-		if ( $expected_write ) {
-			$this->assertSame( Context::CDN_STATE_NOTHING, $persisted_cdn_state );
+		if ( $expected_forced_off ) {
+			$this->assertFalse( $result );
+			$this->assertTrue( $forced_off_tracking['persistent'] ?? false );
 		} else {
-			// set_up() seeds 'cdn_state' => ROCKETCDN_PAID_TYPE; unchanged means no write occurred.
-			$this->assertSame( Context::ROCKETCDN_PAID_TYPE, $persisted_cdn_state );
+			$this->assertSame( $config['cdn_option'], $result );
+			$this->assertArrayNotHasKey( 'persistent', $forced_off_tracking );
 		}
 	}
 
@@ -140,7 +109,7 @@ class Test_MaybeTurnOffRocketcdnForInactiveSubscription extends TestCase {
 	private function set_user_license( array $config ): void {
 		$licence                            = new \stdClass();
 		$licence->is_revoked                = ! empty( $config['license_revoked'] );
-		$licence->plugin_updates_ban_reason  = $config['ban_reason'] ?? '';
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
 
 		$user_data                     = new \stdClass();
 		$user_data->licence_expiration = ! empty( $config['license_expired'] )
