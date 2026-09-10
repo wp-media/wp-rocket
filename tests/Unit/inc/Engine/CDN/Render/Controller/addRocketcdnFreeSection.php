@@ -202,8 +202,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->assertArrayHasKey( 'limit_reached', $sections['rocketcdn_free_section']['cta_data'] );
 		$this->assertSame( $expected, $sections['rocketcdn_free_section']['cta_data']['limit_reached'] );
 		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
-		$this->assertArrayHasKey( 'forced_off_tooltip', $sections['rocketcdn_free_section'] );
-		$this->assertSame( '', $sections['rocketcdn_free_section']['forced_off_tooltip'] );
+		$this->assertArrayHasKey( 'toggle_tooltip', $sections['rocketcdn_free_section'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['toggle_tooltip'] );
 	}
 
 	/**
@@ -281,7 +281,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$sections   = $controller->add_rocketcdn_free_section( [] );
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_active'] );
-		$this->assertSame( '', $sections['rocketcdn_free_section']['forced_off_tooltip'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['toggle_tooltip'] );
 	}
 
 	/**
@@ -348,8 +348,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WPRocket licence has expired.',
-			$sections['rocketcdn_free_section']['forced_off_tooltip']
+			'RocketCDN is currently paused because your WP Rocket licence has expired.',
+			$sections['rocketcdn_free_section']['toggle_tooltip']
 		);
 	}
 }

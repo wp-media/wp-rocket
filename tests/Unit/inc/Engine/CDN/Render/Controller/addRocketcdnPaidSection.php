@@ -184,8 +184,8 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertArrayHasKey( 'rocketcdn_paid_section', $sections );
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_active'] );
-		$this->assertArrayHasKey( 'forced_off_tooltip', $sections['rocketcdn_paid_section'] );
-		$this->assertSame( '', $sections['rocketcdn_paid_section']['forced_off_tooltip'] );
+		$this->assertArrayHasKey( 'toggle_tooltip', $sections['rocketcdn_paid_section'] );
+		$this->assertSame( '', $sections['rocketcdn_paid_section']['toggle_tooltip'] );
 	}
 
 	/**
@@ -260,15 +260,15 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WPRocket licence has been banned.',
-			$sections['rocketcdn_paid_section']['forced_off_tooltip']
+			'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 	}
 
 	/**
 	 * Forces the paid toggle off, with the forced-paused tooltip, when the paid
-	 * subscription itself is cancelled - a case should_reject_rocketcdn_activation()
-	 * missed before it also checked is_forced_paused().
+	 * subscription itself is cancelled - should_reject_rocketcdn_activation() missed
+	 * this until it also checked is_forced_paused().
 	 *
 	 * @return void
 	 */
@@ -331,7 +331,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
 			'RocketCDN is currently paused because your subscription is no longer active.',
-			$sections['rocketcdn_paid_section']['forced_off_tooltip']
+			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 	}
 }

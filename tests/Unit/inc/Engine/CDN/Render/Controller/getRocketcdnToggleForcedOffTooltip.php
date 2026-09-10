@@ -15,15 +15,20 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering the private \WP_Rocket\Engine\CDN\Render\Controller::get_forced_off_tooltip
- * method, exercised through add_rocketcdn_free_section() since it has no public
- * accessor of its own.
+ * Test class covering the private \WP_Rocket\Engine\CDN\Render\Controller::get_rocketcdn_toggle_forced_off_tooltip
+ * method, which has no public accessor of its own. Exercised through
+ * add_rocketcdn_free_section() for free-tier scenarios and
+ * add_rocketcdn_paid_section() for paid-tier ones (e.g. a cancelled paid
+ * plan) - is_paid() gates which of the two builders actually sets a
+ * 'toggle_tooltip' key at all, so the scenario being tested decides which
+ * builder can be used to observe it.
  *
  * @covers \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_free_section
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::add_rocketcdn_paid_section
  * @group  CDN
  * @group  RocketCDN
  */
-class Test_GetForcedOffTooltip extends TestCase {
+class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 
 	/**
 	 * Beacon mock instance.
@@ -112,8 +117,11 @@ class Test_GetForcedOffTooltip extends TestCase {
 	}
 
 	/**
-	 * Runs add_rocketcdn_free_section() with the given scenario stubbed and
-	 * returns the resulting section array.
+	 * Runs the section builder matching the scenario's tier - add_rocketcdn_paid_section()
+	 * when is_paid is true, add_rocketcdn_free_section() otherwise - since is_paid()
+	 * gates which of the two ever sets a 'toggle_tooltip' key: each returns its
+	 * input untouched for the tier it doesn't handle (see is_paid() checks in
+	 * Controller::add_rocketcdn_free_section() / add_rocketcdn_paid_section()).
 	 *
 	 * @param array $config Scenario configuration.
 	 *
@@ -133,7 +141,16 @@ class Test_GetForcedOffTooltip extends TestCase {
 					'id'  => 'beacon-id',
 					'url' => 'https://example.com',
 				]
-				);
+			);
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
 
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( $config['is_subscription_loading'] ?? false );
@@ -144,12 +161,13 @@ class Test_GetForcedOffTooltip extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
 			->andReturn( $config['is_license_invalid'] ?? false );
 
-		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )
-			->andReturn( $config['is_reseller_license_banned'] ?? false );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( $config['has_active_subscription'] ?? false );
+
+		$is_paid = $config['is_paid'] ?? false;
 
 		$this->subscription_controller->shouldReceive( 'is_paid' )
-			->andReturn( $config['is_paid'] ?? false );
+			->andReturn( $is_paid );
 
 		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
 			->andReturn( $config['is_in_grace_period'] ?? false );
@@ -157,30 +175,38 @@ class Test_GetForcedOffTooltip extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( $config['is_cancelled_outside_grace_period'] ?? false );
 
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( $config['is_reseller_license_banned'] ?? false );
+
 		$this->options->shouldReceive( 'get' )->with( 'cdn' )->andReturn( true );
 
 		$this->cdn_query->method( 'query' )->willReturn( [] );
+
+		if ( $is_paid ) {
+			return $this->get_controller()->add_rocketcdn_paid_section( [] )['rocketcdn_paid_section'];
+		}
 
 		return $this->get_controller()->add_rocketcdn_free_section( [] )['rocketcdn_free_section'];
 	}
 
 	/**
-	 * Tests that get_forced_off_tooltip returns the expected copy for each scenario.
+	 * Tests that the toggle_tooltip key holds the expected copy for each scenario.
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array  $config            Scenario configuration.
-	 * @param string $expected_tooltip  Expected tooltip string.
+	 * @param array  $config           Scenario configuration.
+	 * @param string $expected_tooltip Expected tooltip string.
 	 *
 	 * @return void
 	 */
 	public function testShouldReturnExpectedTooltip( array $config, string $expected_tooltip ): void {
 		$section = $this->build_section( $config );
 
-		$this->assertSame( $expected_tooltip, $section['forced_off_tooltip'] );
+		$this->assertSame( $expected_tooltip, $section['toggle_tooltip'] );
 
-		// The invariant this story depends on: the tooltip and is_forced_off can
-		// never disagree, because both are derived from the same precedence chain.
+		// The invariant this depends on: the tooltip and is_forced_off can never
+		// disagree, because both are derived from the same precedence chain.
 		$this->assertSame( '' !== $expected_tooltip, $section['is_forced_off'] );
 	}
 
@@ -213,7 +239,7 @@ class Test_GetForcedOffTooltip extends TestCase {
 					'is_free'                 => true,
 					'is_license_invalid'      => true,
 				],
-				'RocketCDN is currently paused because your WPRocket licence has expired.',
+				'RocketCDN is currently paused because your WP Rocket licence has expired.',
 			],
 			'banned-reseller copy third'            => [
 				[
@@ -223,7 +249,7 @@ class Test_GetForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => false,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WPRocket licence has been banned.',
+				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
 			],
 			'loading takes precedence over expired' => [
 				[
@@ -237,7 +263,7 @@ class Test_GetForcedOffTooltip extends TestCase {
 			// should_display_licence_expired_notice() deliberately excludes banned
 			// resellers (`! is_reseller_license_banned()`), so a banned + invalid
 			// licence always falls through to the banned copy, never the expired
-			// one - this is the same precedent as should_reject_rocketcdn_activation().
+			// one - same precedent as should_reject_rocketcdn_activation().
 			'banned wins even when licence is also invalid' => [
 				[
 					'is_subscription_loading'    => false,
@@ -246,7 +272,7 @@ class Test_GetForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => true,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WPRocket licence has been banned.',
+				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
 			],
 			'forced-paused copy fourth, for a cancelled paid plan' => [
 				[

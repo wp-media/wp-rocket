@@ -21,39 +21,33 @@
  *     @type bool   $active_subscription Whether the user has an active subscription or not.
  *     @type bool   $is_active    Whether RocketCDN Free is the currently applied CDN mode.
  *     @type bool   $is_forced_off Whether the mode toggle must be disabled (subscription loading, expired/banned licence).
- *     @type string $forced_off_tooltip Tooltip copy explaining why the toggle is disabled, empty when not forced off.
+ *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $rocket_rocketcdn_free_active = $data['is_active'];
-$rocket_forced_off_tooltip    = $data['forced_off_tooltip'] ?? '';
 ?>
 
+<?php // wpr-cdn-active-indicator is kept in sync with JS (cdn-driver.js), which reads it off .wpr-optionHeader to find the previously-active mode on a failed switch — it no longer drives any visible styling on this header itself. ?>
 <div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_rocketcdn_free_active ? ' wpr-cdn-active-indicator' : ''; ?>">
-	<div class="wpr-cdn-mode-toggle-wrap<?php echo '' !== $rocket_forced_off_tooltip ? ' wpr-btn-with-tool-tip' : ''; ?>">
-		<label class="wpr-cdn-mode-toggle">
-			<input
-				type="checkbox"
-				class="wpr-cdn-mode-toggle__input"
-				id="wpr-rocketcdn-free-toggle"
-				data-cdn-mode="rocketcdn_free"
-				<?php checked( $rocket_rocketcdn_free_active ); ?>
-				<?php disabled( $data['is_forced_off'] ); ?>
-			/>
-			<span class="wpr-cdn-mode-toggle__slider"></span>
-		</label>
-		<div class="wpr-tooltip<?php echo '' === $rocket_forced_off_tooltip ? ' wpr-isHidden' : ''; ?>">
-			<div class="wpr-tooltip-content">
-				<?php echo esc_html( $rocket_forced_off_tooltip ); ?>
-			</div>
-		</div>
-	</div>
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2 wpr-title2--orange"><?php echo esc_html( $data['title'] ); ?></h3>
 		<span class="wpr-badge wpr-badge--grey"><?php esc_html_e( 'Free', 'rocket' ); ?></span>
-		<span class="wpr-cdn-active-label"><?php esc_html_e( 'Active', 'rocket' ); ?></span>
+		<?php
+		$this->render_parts_with_data(
+			'cdn/cdn-mode-toggle',
+			[
+				'id'            => 'wpr-rocketcdn-free-toggle',
+				'cdn_mode'      => 'rocketcdn_free',
+				'checked'       => $rocket_rocketcdn_free_active,
+				'is_forced_off' => $data['is_forced_off'],
+				'label'         => __( 'Enable RocketCDN Free', 'rocket' ),
+				'tooltip'       => $data['toggle_tooltip'],
+			]
+		);
+		?>
 	</div>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>

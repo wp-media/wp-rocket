@@ -119,11 +119,9 @@ class Controller extends Abstract_Render {
 	/**
 	 * Adds the applied CDN state to the "Your CDN" (BYOCDN) section, when present.
 	 *
-	 * Also seeds `is_forced_off => false` and `forced_off_tooltip => ''` as the
-	 * defaults — the keys hosting compatibility subscribers (e.g.
-	 * {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()})
-	 * can override later in the same `rocket_cdn_driver_sections` filter chain, so
-	 * all three CDN driver sections share one data contract.
+	 * Also seeds `is_forced_off => false` as the default — the key hosting
+	 * compatibility subscribers (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()})
+	 * can override to `true` later in the same `rocket_cdn_driver_sections` filter chain.
 	 *
 	 * @since 3.23.3
 	 *
@@ -138,10 +136,10 @@ class Controller extends Abstract_Render {
 
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
 
-		$sections['cdn_section']['applied_cdn_state']  = $applied_cdn_state;
-		$sections['cdn_section']['is_active']          = Context::BYOCDN_TYPE === $applied_cdn_state;
-		$sections['cdn_section']['is_forced_off']      = false;
-		$sections['cdn_section']['forced_off_tooltip'] = '';
+		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
+		$sections['cdn_section']['is_active']         = Context::BYOCDN_TYPE === $applied_cdn_state;
+		$sections['cdn_section']['is_forced_off']     = false;
+		$sections['cdn_section']['toggle_tooltip']    = $this->get_toggle_forced_off_tooltip();
 
 		return $sections;
 	}
@@ -168,20 +166,20 @@ class Controller extends Abstract_Render {
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
 
 		$sections['rocketcdn_paid_section'] = [
-			'title'              => __( 'RocketCDN', 'rocket' ),
-			'type'               => 'rocketcdn_paid',
-			'class'              => [ 'rocketcdn' ],
-			'page'               => 'page_cdn',
-			'help'               => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_paid',
+			'class'             => [ 'rocketcdn' ],
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'   => $status_indicator_data,
-			'applied_cdn_state'  => $this->context->get_applied_cdn_state(),
-			'rocketcdn_state'    => $rocketcdn_state,
-			'is_forced_off'      => $this->should_reject_rocketcdn_activation(),
-			'forced_off_tooltip' => $this->get_forced_off_tooltip(),
-			'is_active'          => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
+			'status_indicator'  => $status_indicator_data,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
+			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;
@@ -228,7 +226,7 @@ class Controller extends Abstract_Render {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
-		if ( $this->is_cdn_paused() ) {
+		if ( $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription() ) {
 			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
@@ -237,16 +235,16 @@ class Controller extends Abstract_Render {
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
 
 		$sections['rocketcdn_free_section'] = [
-			'title'              => __( 'RocketCDN', 'rocket' ),
-			'type'               => 'rocketcdn_free',
-			'class'              => $classes,
-			'page'               => 'page_cdn',
-			'help'               => [
+			'title'             => __( 'RocketCDN', 'rocket' ),
+			'type'              => 'rocketcdn_free',
+			'class'             => $classes,
+			'page'              => 'page_cdn',
+			'help'              => [
 				'id'  => $cdn_beacon['id'],
 				'url' => $cdn_beacon['url'],
 			],
-			'status_indicator'   => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
-			'cta_data'           => [
+			'status_indicator'  => $this->get_status_indicator_data( $this->page_count, $is_subscription_loading ),
+			'cta_data'          => [
 				'cta_heading'           => $cta_heading,
 				'cta_heading_max_limit' => $cta_heading_max_limit,
 				'cta_description'       => $cta_description,
@@ -254,12 +252,12 @@ class Controller extends Abstract_Render {
 				'is_expanded'           => $limit_reached,
 				'limit_reached'         => $limit_reached,
 			],
-			'limit_reached'      => $limit_reached,
-			'applied_cdn_state'  => $this->context->get_applied_cdn_state(),
-			'rocketcdn_state'    => $rocketcdn_state,
-			'is_forced_off'      => $this->should_reject_rocketcdn_activation(),
-			'forced_off_tooltip' => $this->get_forced_off_tooltip(),
-			'is_active'          => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
+			'limit_reached'     => $limit_reached,
+			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
+			'rocketcdn_state'   => $rocketcdn_state,
+			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
+			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
 
 		return $sections;
@@ -678,12 +676,10 @@ class Controller extends Abstract_Render {
 	 * legitimate activation path through the toggle to preserve.
 	 *
 	 * The banned-reseller term is added here specifically, and not to either of the
-	 * two other predicates that also touch licence validity:
-	 * - Not {@see should_display_licence_expired_notice()}: that method's own
-	 *   `! is_reseller_license_banned()` exclusion is deliberate, so the *expired*
-	 *   licence banner never stacks on top of the *banned* banner
-	 *   {@see render_reseller_banned_notice()}. Adding the ban term there would
-	 *   reintroduce that stacking.
+	 * other two predicates that also touch licence validity:
+	 * - Not {@see should_display_licence_expired_notice()}: its own
+	 *   `! is_reseller_license_banned()` exclusion is deliberate, so the expired-licence
+	 *   banner never stacks on top of the banned-reseller one.
 	 * - Not {@see is_forced_paused()} (even though it's now also included below):
 	 *   keeping the ban term here as its own OR branch, rather than folding it into
 	 *   is_forced_paused(), matters because is_forced_paused() only catches a ban
@@ -704,7 +700,22 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the tooltip copy explaining why the mode toggle is forced off, if at all.
+	 * Tooltip shown on the BYOCDN mode toggle when it's forced off by a hosting
+	 * compatibility layer (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()}),
+	 * explaining why the user can't switch it themselves.
+	 *
+	 * RocketCDN's own Free/Paid toggles are never forced off for this reason - see
+	 * {@see get_rocketcdn_toggle_forced_off_tooltip()} for their (licence/subscription-based)
+	 * forced-off tooltip.
+	 *
+	 * @return string
+	 */
+	private function get_toggle_forced_off_tooltip(): string {
+		return __( 'This option is managed by your host and can’t be changed here.', 'rocket' );
+	}
+
+	/**
+	 * Tooltip copy explaining why the RocketCDN mode toggle (Free or Paid) is forced off.
 	 *
 	 * Mirrors the precedence order of {@see should_reject_rocketcdn_activation()}
 	 * exactly, so the toggle's disabled state and its tooltip text can never disagree:
@@ -716,17 +727,17 @@ class Controller extends Abstract_Render {
 	 *
 	 * @return string Tooltip copy, or an empty string when nothing forces the toggle off.
 	 */
-	private function get_forced_off_tooltip(): string {
+	private function get_rocketcdn_toggle_forced_off_tooltip(): string {
 		if ( $this->is_subscription_loading() ) {
 			return __( 'RocketCDN is currently being activated. Please wait, this should only take a moment.', 'rocket' );
 		}
 
 		if ( $this->should_display_licence_expired_notice() ) {
-			return __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+			return __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
-			return __( 'RocketCDN is currently paused because your WPRocket licence has been banned.', 'rocket' );
+			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
 		}
 
 		if ( $this->is_forced_paused() ) {
@@ -1021,7 +1032,7 @@ class Controller extends Abstract_Render {
 			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
-		$is_paused = $this->is_cdn_paused();
+		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
 
 		if ( $is_paused ) {
 			$texts['status_text'] = $texts['paused_status_text'];
@@ -1050,7 +1061,7 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return ! (bool) $this->options->get( 'cdn' );
+		return Context::CDN_STATE_NOTHING === $this->context->get_applied_cdn_state();
 	}
 
 	/**

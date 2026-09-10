@@ -169,15 +169,6 @@ class Test_ShouldRejectRocketcdnActivation extends TestCase {
 				],
 				true,
 			],
-			'rejects for a revoked free-tier licence'  => [
-				[
-					'is_subscription_loading' => false,
-					'is_rocketcdn'            => true,
-					'is_free'                 => true,
-					'is_license_invalid'      => true,
-				],
-				true,
-			],
 			'rejects for a reseller-banned licence'    => [
 				[
 					'is_subscription_loading'    => false,

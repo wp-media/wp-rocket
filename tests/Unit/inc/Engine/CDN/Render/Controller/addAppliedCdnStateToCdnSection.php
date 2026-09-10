@@ -79,6 +79,8 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 	public function set_up(): void {
 		parent::set_up();
 
+		$this->stubTranslationFunctions();
+
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
@@ -128,7 +130,7 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 		$this->assertSame( Context::BYOCDN_TYPE, $sections['cdn_section']['applied_cdn_state'] );
 		$this->assertTrue( $sections['cdn_section']['is_active'] );
 		$this->assertFalse( $sections['cdn_section']['is_forced_off'] );
-		$this->assertSame( '', $sections['cdn_section']['forced_off_tooltip'] );
+		$this->assertSame( 'This option is managed by your host and can’t be changed here.', $sections['cdn_section']['toggle_tooltip'] );
 	}
 
 	/**

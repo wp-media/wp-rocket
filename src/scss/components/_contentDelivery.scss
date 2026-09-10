@@ -777,41 +777,35 @@
 	pointer-events: none;
 }
 
-// RocketCDN mode toggle tooltip wrapper (Free / Paid / Your Own CDN sections)
-// .wpr-cdn-mode-toggle itself is intentionally untouched here; see :522-560 for the pattern this mirrors.
-.wpr-cdn-mode-toggle-wrap {
-	position: relative;
-	display: inline-flex;
+// CDN mode toggle (reuses the Addons/Analytics .wpr-radio component).
+.wpr-cdn-mode-toggle {
+	flex-shrink: 0;
+	// No visible label text here, so give the wrapper an explicit height or it collapses to 0 and misaligns in the flex row.
+	height: $wpr-radio-track-height;
 
-	&.wpr-btn-with-tool-tip {
-		pointer-events: auto; // wrapper stays hoverable even though the toggle underneath is disabled
+	label {
+		display: block;
+		cursor: pointer;
+	}
 
-		.wpr-cdn-mode-toggle {
-			pointer-events: none; // a disabled checkbox does not reliably fire :hover; let it pass through to the wrapper
-		}
+	[type="checkbox"]:disabled + label {
+		cursor: not-allowed;
+	}
 
-		.wpr-tooltip {
-			bottom: -40px;
-			top: auto;
+	.wpr-tooltip {
+		left: 50%;
+		top: calc(100% + #{$space});
+		transform: translateX(-50%);
+		white-space: nowrap;
+
+		&:before {
 			left: 50%;
 			transform: translateX(-50%);
-			white-space: nowrap;
-			font-size: 14px;
-			font-weight: normal;
-			text-transform: none;
-
-			&.wpr-isHidden {
-				display: none;
-			}
 		}
+	}
 
-		.wpr-tooltip:before {
-			top: auto;
-			bottom: 33px;
-			left: 50%;
-			transform: translateX(-50%) rotate(180deg);
-			border-bottom: none;
-			border-top: 8px solid #0e1428;
-		}
+	&:hover .wpr-tooltip {
+		visibility: visible;
+		opacity: 1;
 	}
 }
