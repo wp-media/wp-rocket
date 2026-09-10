@@ -147,10 +147,9 @@ class Test_AddExcludeCdnSection extends TestCase {
 			$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 				->andReturn( false );
 
-			// is_cdn_paused() checks options->get('cdn').
-			$this->options->shouldReceive( 'get' )
-				->with( 'cdn' )
-				->andReturn( true );
+			// is_cdn_paused() checks context->get_applied_cdn_state().
+			$this->context->shouldReceive( 'get_applied_cdn_state' )
+				->andReturn( Context::ROCKETCDN_TYPE );
 
 			// has_active_subscription() is called directly in should_disable_element_for_rocketcdn.
 			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
