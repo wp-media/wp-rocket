@@ -187,9 +187,9 @@ class CdnStateBridge implements Subscriber_Interface {
 	 *
 	 * Always returning a non-null value here short-circuits Options_Data::get() before it
 	 * ever reaches its own get_rocket_option_cdn post-filter application - which would
-	 * silently stop Subscriber::apply_pause_on_rocketcdn_only() (forces 'cdn' on for a
-	 * BYOCDN driver on the front end) from ever running. Re-apply that same post-filter
-	 * here so it still fires against the live value instead of being bypassed.
+	 * silently stop any callback registered on that post-filter from ever running.
+	 * Re-apply that same post-filter here so it still fires against the live value
+	 * instead of being bypassed.
 	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
