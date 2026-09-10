@@ -220,7 +220,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	/**
 	 * Forces the paid toggle off, with the forced-paused tooltip, when the paid
 	 * subscription itself is cancelled - should_reject_rocketcdn_activation() missed
-	 * this until it also checked is_forced_paused().
+	 * this until it also checked is_forced_off().
 	 *
 	 * @return void
 	 */

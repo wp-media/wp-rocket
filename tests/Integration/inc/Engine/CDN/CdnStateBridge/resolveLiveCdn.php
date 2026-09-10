@@ -76,7 +76,7 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 		// Context::is_rocketcdn() (used by Render\Subscriber::maybe_pause_cdn_for_inactive_subscription,
 		// also hooked on pre_get_rocket_option_cdn) reads 'cdn_type' off its own Options_Data
 		// snapshot, which is subject to the exact same DI-container staleness this test isn't
-		// exercising - there's no license/subscription set up here for is_forced_paused() to
+		// exercising - there's no license/subscription set up here for is_forced_off() to
 		// behave predictably. Force 'cdn_type' live so that code path bails out early via its
 		// own !is_rocketcdn() guard, isolating this test to 'cdn' liveness only.
 		add_filter(
