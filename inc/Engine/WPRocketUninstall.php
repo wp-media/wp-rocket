@@ -110,6 +110,19 @@ class WPRocketUninstall {
 	];
 
 	/**
+	 * Prefixes of WP Rocket options with dynamic suffixes.
+	 *
+	 * @var array
+	 */
+	private $option_prefixes = [
+		// One row per command Fleet has sent, named for a hash of its one-time
+		// identifier. {@see \WP_Rocket\Engine\Fleet\Subscriber} keeps these
+		// pruned while the plugin is installed; uninstalling has to take the
+		// rest, and there is no fixed name to list them under.
+		'fleet_bridge_jti_',
+	];
+
+	/**
 	 * WP Rocket scheduled events.
 	 *
 	 * @var array
@@ -130,6 +143,7 @@ class WPRocketUninstall {
 		'rocket_preload_clean_rows_time_event',
 		'rocket_preload_process_pending',
 		'rocket_preload_revert_old_failed_rows',
+		'rocket_fleet_purge_nonces',
 	];
 
 	/**
@@ -254,6 +268,7 @@ class WPRocketUninstall {
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
+		array_walk( $this->option_prefixes, [ $this, 'delete_options_by_prefix' ] );
 
 		foreach ( $this->events as $event ) {
 			if ( ! wp_next_scheduled( $event ) ) {
@@ -280,6 +295,26 @@ class WPRocketUninstall {
 				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
 				$wpdb->esc_like( '_transient_' . $prefix ) . '%',
 				$wpdb->esc_like( '_transient_timeout_' . $prefix ) . '%'
+			)
+		);
+	}
+
+	/**
+	 * Deletes all options whose names start with the given prefix.
+	 *
+	 * Used for options with a dynamic suffix (e.g. fleet_bridge_jti_<hash>).
+	 *
+	 * @param string $prefix Option name prefix.
+	 * @return void
+	 */
+	private function delete_options_by_prefix( string $prefix ): void {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				$wpdb->esc_like( $prefix ) . '%'
 			)
 		);
 	}
