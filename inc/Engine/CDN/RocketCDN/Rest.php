@@ -558,6 +558,7 @@ class Rest extends WP_REST_Controller {
 			'items_html'                       => $this->render_controller->get_built_in_page_list(),
 			'status_indicator_html'            => $this->render_controller->get_status_indicator_html( $pages_count ),
 			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
+			'no_pages'                         => 0 === $pages_count && ! $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
 
@@ -601,6 +602,10 @@ class Rest extends WP_REST_Controller {
 		}
 
 		$this->apply_cdn_mode( $mode );
+
+		if ( Context::ROCKETCDN_FREE_TYPE === $mode && ! $this->subscription_controller->has_active_subscription() ) {
+			$this->subscription_controller->schedule_subscription_creation();
+		}
 
 		$response = array_merge(
 			$this->get_pages_data(),

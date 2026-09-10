@@ -27,11 +27,37 @@ class Queue extends AbstractASQueue {
 	private $create_status_job = 'rocket_cdnfree_website_create_status';
 
 	/**
+	 * Free subscription creation task hook.
+	 *
+	 * @var string
+	 */
+	private $free_creation_job = 'rocket_cdnfree_create_subscription';
+
+	/**
 	 * Pro detection task hook.
 	 *
 	 * @var string
 	 */
 	private $pro_detect_job = 'rocket_cdn_auto_detect';
+
+	/**
+	 * Schedule the free subscription creation job.
+	 *
+	 * Guards against duplicate scheduling if a job is already pending.
+	 *
+	 * @return void
+	 */
+	public function schedule_free_creation_job(): void {
+		if ( $this->is_scheduled( $this->free_creation_job ) ) {
+			return;
+		}
+
+		$this->schedule_single(
+			time(),
+			$this->free_creation_job,
+			[]
+		);
+	}
 
 	/**
 	 * Cancel create job.

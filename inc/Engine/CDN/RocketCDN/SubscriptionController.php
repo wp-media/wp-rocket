@@ -214,6 +214,23 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Set the loading transient and schedule an async job to create the subscription.
+	 *
+	 * Returns immediately so the REST response is not blocked by the external API call.
+	 * The scheduled job runs create_subscription() and handles success/failure asynchronously.
+	 *
+	 * @return void
+	 */
+	public function schedule_subscription_creation(): void {
+		if ( $this->is_subscription_creation_loading() ) {
+			return;
+		}
+
+		$this->start_subscription_creation_loader();
+		$this->queue->schedule_free_creation_job();
+	}
+
+	/**
 	 * Create RocketCDN subscription if it doesn't have an active one, and handle the response.
 	 *
 	 * @param bool $skip_active_check Skip checking if the website has active subscription or not, default is false.
