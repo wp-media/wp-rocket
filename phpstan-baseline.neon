@@ -1087,7 +1087,7 @@ parameters:
 			path: tests/Integration/inc/Engine/CDN/CdnStateBridge/backfillCdnStateOnUpgrade.php
 
 		-
-			rawMessage: 'Usage of update_option() is discouraged. Use the Option object instead.'
+			rawMessage: 'Usage of get_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
 			count: 1
 			path: tests/Integration/inc/Engine/CDN/Render/Controller/maybeTurnOffRocketcdnForInactiveSubscription.php
@@ -1095,7 +1095,7 @@ parameters:
 		-
 			rawMessage: 'Usage of delete_option() is discouraged. Use the Option object instead.'
 			identifier: custom.rules.discourageOptionUsage
-			count: 1
+			count: 2
 			path: tests/Integration/inc/Engine/CDN/Render/Controller/maybeTurnOffRocketcdnForInactiveSubscription.php
 
 		-
