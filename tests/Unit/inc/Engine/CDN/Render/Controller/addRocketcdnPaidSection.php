@@ -119,7 +119,10 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
 
 		$this->beacon->shouldReceive( 'get_suggest' )
 			->with( 'rocketcdn' )
@@ -145,12 +148,24 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn' )
 			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
 	}
 
 	/**
@@ -187,5 +202,75 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertArrayHasKey( 'rocketcdn_paid_section', $sections );
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+	}
+
+	/**
+	 * Forces the paid toggle off, with the forced-paused tooltip, when the paid
+	 * subscription itself is cancelled - should_reject_rocketcdn_activation() missed
+	 * this until it also checked is_forced_paused().
+	 *
+	 * @return void
+	 */
+	public function testShouldForceOffWhenPaidSubscriptionCancelled(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_paid_section( [] );
+
+		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
+		$this->assertSame(
+			'RocketCDN is currently paused because your subscription is no longer active.',
+			$sections['rocketcdn_paid_section']['toggle_tooltip']
+		);
 	}
 }

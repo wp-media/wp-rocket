@@ -28,6 +28,13 @@ class CdnStateBridge implements Subscriber_Interface {
 	private $options_api;
 
 	/**
+	 * Guards against flushing the subscription cache more than once per REST request.
+	 *
+	 * @var bool
+	 */
+	private bool $subscription_flushed = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param SubscriptionController $subscription_controller Subscription controller.
@@ -46,7 +53,7 @@ class CdnStateBridge implements Subscriber_Interface {
 			'update_option_wp_rocket_settings' => [ 'reconcile', 5, 2 ],
 			'pre_get_rocket_option_cdn_state'  => [ 'resolve_live', 10, 2 ],
 			'pre_get_rocket_option_cdn'        => [ 'resolve_live_cdn', 10, 2 ],
-			'wp_rocket_upgrade'                => 'backfill_cdn_state_on_upgrade',
+			'wp_rocket_upgrade'                => [ 'backfill_cdn_state_on_upgrade', 12 ],
 		];
 	}
 
@@ -71,7 +78,15 @@ class CdnStateBridge implements Subscriber_Interface {
 			return;
 		}
 
-		$settings['cdn_state'] = $this->resolve_live( null, Context::CDN_STATE_NOTHING );
+		// Uses legacy_to_state() directly, not resolve_live(): this writes the backfilled
+		// value to the DB, and resolve_live()'s null return means "don't override" - the
+		// right semantics for a read-time filter, but not a value that belongs in the option.
+		$settings['cdn_state'] = $this->legacy_to_state(
+			[
+				'cdn'      => get_rocket_option( 'cdn' ),
+				'cdn_type' => get_rocket_option( 'cdn_type' ),
+			]
+		);
 
 		$this->options_api->set( 'settings', $settings );
 	}
@@ -112,16 +127,47 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * Resolves cdn_state live from the legacy fields, instead of trusting whatever was last
 	 * written to the option.
 	 *
+	 * In REST context (React CDN CTA loading), flushes the subscription cache once per
+	 * request so that a stale rocketcdn_status transient — e.g. from before the user
+	 * upgraded their plan externally on rocketcdn.me — does not cause is_paid() (or the
+	 * cancelled-outside-grace-period check below) return the wrong result. The flush
+	 * triggers a fresh API call; the response is re-cached for one day, so subsequent
+	 * page loads within that window are cheap.
+	 *
+	 * Returns null (declining to override) when the subscription is cancelled outside its
+	 * grace period, rather than forcing CDN_STATE_NOTHING: a cancelled-looking subscription
+	 * can also mean no token/subscription has been created yet (e.g. RocketCDN Free just
+	 * activated), in which case the persisted cdn_state is the correct value and must be
+	 * allowed to flow through Options_Data::get() unmodified. legacy_to_state() itself still
+	 * returns CDN_STATE_NOTHING for this case - reconcile() and the plugin-update migration
+	 * in Subscriber::on_update_add_cdn_state_option() both rely on that literal string value
+	 * when they actually need to persist the "cancelled" state to the DB.
+	 *
+	 * Reads cdn/cdn_type from the raw options store to bypass get_rocket_option() and the
+	 * apply_pause_on_rocketcdn_only filter, which returns 1 for byocdn users when
+	 * is_admin() is false (e.g. REST context), making CDN appear active when it is not.
+	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
 	 * @param mixed $default Default value the caller passed to get_rocket_option()/Options_Data::get().
 	 *
-	 * @return string
+	 * @return string|null
 	 */
-	public function resolve_live( $value, $default ): string {
+	public function resolve_live( $value, $default ): ?string {
+		if ( ! $this->subscription_flushed && rocket_get_constant( 'REST_REQUEST', false ) ) {
+			$this->subscription_controller->reset_subscription_data();
+			$this->subscription_flushed = true;
+		}
+
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			return null;
+		}
+
+		$settings = $this->options_api->get( 'settings', [] );
+
 		return $this->legacy_to_state(
 			[
-				'cdn'      => get_rocket_option( 'cdn' ),
-				'cdn_type' => get_rocket_option( 'cdn_type' ),
+				'cdn'      => $settings['cdn'] ?? 0,
+				'cdn_type' => $settings['cdn_type'] ?? Context::ROCKETCDN_TYPE,
 			]
 		);
 	}
@@ -164,7 +210,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 *
 	 * @return string One of the Context::CDN_STATE_* / *_TYPE constants.
 	 */
-	private function legacy_to_state( array $settings ): string {
+	public function legacy_to_state( array $settings ): string {
 		if ( empty( $settings['cdn'] ) ) {
 			return Context::CDN_STATE_NOTHING;
 		}
