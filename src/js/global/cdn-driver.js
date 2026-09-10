@@ -23,7 +23,9 @@
 	 * @returns {void}
 	 */
 	function updateStatusIndicatorComponent( html ) {
-		const statusIndicator = document.querySelector( '.wpr-cdn-built-in .wpr-cdn-status' );
+		// #wpr_cdn_status_indicator is shared by the free and paid templates - the free
+		// tier additionally wraps it in .wpr-cdn-built-in, the paid tier does not.
+		const statusIndicator = document.getElementById( 'wpr_cdn_status_indicator' );
 		if ( statusIndicator && html ) {
 			statusIndicator.outerHTML = html;
 		}
