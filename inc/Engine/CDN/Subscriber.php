@@ -150,6 +150,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'on_update_add_cdn_state_option', 11, 2 ],
 			],
 			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
+			'rocket_cdnfree_activated'                 => 'clear_cache_on_free_activation',
 			'update_option_wp_rocket_settings'         => [
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
@@ -594,6 +595,20 @@ class Subscriber implements Subscriber_Interface {
 
 			rocket_clean_files( [ $page->url ] );
 		}
+	}
+
+	/**
+	 * Clears all page cache when RocketCDN free mode is first activated.
+	 *
+	 * The page cache may have been rebuilt without CDN URL replacement during the window
+	 * between the admin settings save (which clears the cache early) and when the
+	 * subscription is confirmed active. Clearing here ensures all pages rebuild with
+	 * the CDN URL injected.
+	 *
+	 * @return void
+	 */
+	public function clear_cache_on_free_activation(): void {
+		$this->cache->clear_rocketcdn_free_pages_cache();
 	}
 
 	/**

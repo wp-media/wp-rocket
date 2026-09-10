@@ -40,6 +40,7 @@ class Test_Reconcile extends AdminTestCase {
 	public function tear_down() {
 		update_option( 'wp_rocket_settings', $this->original_settings );
 		delete_transient( 'rocketcdn_status' );
+		delete_option( 'rocketcdn_user_token' );
 
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
@@ -51,6 +52,10 @@ class Test_Reconcile extends AdminTestCase {
 	 */
 	public function testShouldReconcileAsExpected( array $config, array $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'] ?? [ 'subscription_status' => 'none' ], MINUTE_IN_SECONDS );
+
+		if ( ! empty( $config['token'] ) ) {
+			update_option( 'rocketcdn_user_token', $config['token'] );
+		}
 
 		// Seed a self-consistent baseline. Whichever side the bridge reconciles against here,
 		// the two sides already agree, so this write settles without correcting anything.

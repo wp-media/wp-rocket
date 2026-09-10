@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
-use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
