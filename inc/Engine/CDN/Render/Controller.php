@@ -567,12 +567,11 @@ class Controller extends Abstract_Render {
 		$driver            = $this->context->get_driver();
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
 		$data              = [
-			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $driver,
-			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
-			'display_tabs'      => ! $this->is_cdn_type_filtered(),
-			'rocketcdn_mode'    => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
-			'rocketcdn_active'  => Context::ROCKETCDN_TYPE === $applied_cdn_state,
-			'byocdn_active'     => Context::BYOCDN_TYPE === $applied_cdn_state,
+			'cdn_type'         => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
+			'display_tabs'     => ! $this->is_cdn_type_filtered(),
+			'rocketcdn_mode'   => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
+			'rocketcdn_active' => Context::ROCKETCDN_TYPE === $applied_cdn_state,
+			'byocdn_active'    => Context::BYOCDN_TYPE === $applied_cdn_state,
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
