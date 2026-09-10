@@ -201,13 +201,16 @@ class Route {
 	/**
 	 * Every allowlisted option, with its current value and its type.
 	 *
-	 * @since 3.23.4
+	 * Takes no argument. WordPress calls a route callback with the request and
+	 * PHP passes extra arguments to a non-variadic function harmlessly, so
+	 * declaring one we do not read would only be a parameter every static
+	 * analyser correctly reports as unused.
 	 *
-	 * @param WP_REST_Request $request The request.
+	 * @since 3.23.4
 	 *
 	 * @return WP_REST_Response
 	 */
-	public function read( WP_REST_Request $request ): WP_REST_Response { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- Required by the REST callback signature; a read takes nothing from the request.
+	public function read(): WP_REST_Response {
 		$schema  = $this->get_options->schema();
 		$allowed = $this->allowed_options->get();
 

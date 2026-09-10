@@ -268,7 +268,14 @@ class WPRocketUninstall {
 		array_walk( $this->transients, 'delete_transient' );
 		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
-		array_walk( $this->option_prefixes, [ $this, 'delete_options_by_prefix' ] );
+
+		// A loop rather than array_walk: passing a method as a callable makes it
+		// invisible to static analysis, which then reports it as an unused
+		// private method. `delete_transients_by_prefix` above is called that way
+		// and is grandfathered in; there is no reason to add a second one.
+		foreach ( $this->option_prefixes as $option_prefix ) {
+			$this->delete_options_by_prefix( $option_prefix );
+		}
 
 		foreach ( $this->events as $event ) {
 			if ( ! wp_next_scheduled( $event ) ) {
