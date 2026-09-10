@@ -581,9 +581,20 @@ class Controller extends Abstract_Render {
 
 		$driver            = $this->context->get_driver();
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
-		$data              = [
+		$cdn_type          = $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE );
+
+		// should_reject_rocketcdn_activation() only says whether RocketCDN itself can run -
+		// it says nothing about which driver is actually selected, so it must only blank the
+		// tab highlight when RocketCDN is that selected driver. Applying it unconditionally
+		// would also clear the "Other CDN" tab's highlight for a site on BYOCDN that merely
+		// has an unrelated, forced-off RocketCDN subscription.
+		if ( Context::ROCKETCDN_TYPE === $cdn_type && $this->should_reject_rocketcdn_activation() ) {
+			$cdn_type = Context::CDN_STATE_NOTHING;
+		}
+
+		$data = [
 			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $driver,
-			'cdn_type'          => $this->options->get( 'cdn_type', Context::ROCKETCDN_TYPE ),
+			'cdn_type'          => $cdn_type,
 			'display_tabs'      => ! $this->is_cdn_type_filtered(),
 			'rocketcdn_mode'    => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
 			'rocketcdn_active'  => Context::ROCKETCDN_TYPE === $applied_cdn_state,
