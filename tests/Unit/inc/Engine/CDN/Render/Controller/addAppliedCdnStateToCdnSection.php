@@ -87,6 +87,8 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 	public function set_up(): void {
 		parent::set_up();
 
+		$this->stubTranslationFunctions();
+
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );

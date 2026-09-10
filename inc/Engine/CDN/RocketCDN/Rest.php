@@ -570,14 +570,16 @@ class Rest extends WP_REST_Controller {
 
 		$this->apply_cdn_mode( $mode );
 
-		return new WP_REST_Response(
+		$response = array_merge(
+			$this->get_pages_data(),
 			[
 				'applied_cdn_state'           => $this->context->get_applied_cdn_state( $mode ),
 				'rocketcdn_state'             => $this->context->get_rocketcdn_state( $mode ),
 				'disable_rocket_cdn_elements' => $this->render_controller->should_disable_element_for_rocketcdn(),
-			],
-			200
+			]
 		);
+
+		return new WP_REST_Response( $response, 200 );
 	}
 
 	/**
@@ -590,9 +592,9 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function apply_cdn_mode( string $mode ): void {
-		$this->options->set( 'cdn_state', $mode );
 		$this->options->set( 'cdn', (int) ( Context::CDN_STATE_NOTHING !== $mode ) );
 		$this->options->set( 'cdn_type', Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn' );
+		$this->options->set( 'cdn_state', $mode );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 
 		/**

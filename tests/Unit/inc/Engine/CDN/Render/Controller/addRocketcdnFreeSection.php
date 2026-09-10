@@ -133,9 +133,6 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	 * @return void
 	 */
 	public function testShouldSetLimitReachedCorrectly( array $config, bool $expected ): void {
-		$this->context->shouldReceive( 'get_driver' )
-			->andReturn( Context::ROCKETCDN_TYPE );
-
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
 			->andReturn( Context::CDN_STATE_NOTHING );
 
@@ -145,6 +142,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->context->shouldReceive( 'get_free_page_limit' )
 			->andReturn( 3 );
 
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
 		$this->beacon->shouldReceive( 'get_suggest' )
 			->with( 'rocketcdn_free' )
 			->andReturn(
@@ -153,6 +153,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 					'url' => 'https://example.com',
 				]
 			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
 
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( false );
@@ -186,6 +189,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			->andReturn( true );
 
 		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( false );
 
 		$pages = array_fill(
@@ -239,6 +245,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 				]
 			);
 
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( false );
 
@@ -271,6 +280,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			->andReturn( true );
 
 		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( false );
 
 		$this->cdn_query->method( 'query' )
