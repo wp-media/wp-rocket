@@ -355,4 +355,75 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			$sections['rocketcdn_free_section']['toggle_tooltip']
 		);
 	}
+
+	/**
+	 * Tests that add_rocketcdn_free_section shows the toggle off, not checked-but-disabled,
+	 * when the stored state is still 'rocketcdn_free' but activation is forced off - the
+	 * front end already stops serving via maybe_pause_cdn_for_inactive_subscription(), so
+	 * the toggle would otherwise misleadingly look active.
+	 *
+	 * @return void
+	 */
+	public function testShouldShowToggleOffWhenForcedOffEvenIfStateIsStillActive(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )
+			->andReturn( 3 );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$this->cdn_query->method( 'query' )
+			->willReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_free_section( [] );
+
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
+		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
+	}
 }

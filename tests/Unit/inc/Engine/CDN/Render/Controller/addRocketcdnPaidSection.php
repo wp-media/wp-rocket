@@ -336,5 +336,9 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			'RocketCDN is currently paused because your subscription is no longer active.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
+		// The stored state is still 'rocketcdn_paid', but the toggle must show off rather than
+		// checked-but-disabled - is_forced_paused() already stops CDN delivery on the front end
+		// via maybe_pause_cdn_for_inactive_subscription().
+		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
 	}
 }
