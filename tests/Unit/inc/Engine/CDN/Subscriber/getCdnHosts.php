@@ -8,6 +8,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
@@ -36,7 +37,8 @@ class Test_GetCdnHosts extends TestCase {
 			Mockery::mock( Options::class ),
 			$this->subscription_controller,
 			Mockery::mock( Cache::class ),
-			$query
+			$query,
+			Mockery::mock( CdnStateBridge::class )
 		);
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {

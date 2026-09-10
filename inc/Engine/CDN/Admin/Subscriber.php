@@ -47,12 +47,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
+		$fields[] = 'cdn_state';
 
 		return $fields;
 	}
 
 	/**
 	 * Sanitize the CDN type option.
+	 *
+	 * Ensure a form save doesn't overwrite toggle REST API.
 	 *
 	 * @param array $input Input array.
 	 *
@@ -73,6 +76,21 @@ class Subscriber implements Subscriber_Interface {
 
 		// Sanitize the value.
 		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
+
+		if ( isset( $input['cdn_state'] ) ) {
+			$allowed_states = [
+				Context::CDN_STATE_NOTHING,
+				Context::ROCKETCDN_FREE_TYPE,
+				Context::ROCKETCDN_PAID_TYPE,
+				Context::BYOCDN_TYPE,
+			];
+
+			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
+				$input['cdn_state'] = Context::CDN_STATE_NOTHING;
+			}
+
+			$input['cdn_state'] = sanitize_text_field( $input['cdn_state'] );
+		}
 
 		return $input;
 	}

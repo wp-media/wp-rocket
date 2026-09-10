@@ -3,17 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\Rest;
 
-use WP_Rocket\Tests\Integration\ApiTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_pause_state
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_cdn_mode
  * @group  RocketCDN
  * @group AdminOnly
  */
-class Test_SaveState extends RESTfulTestCase {
+class Test_SaveCdnMode extends RESTfulTestCase {
 	use CapTrait, DBTrait;
 
 	private $admin_id;
@@ -42,14 +41,28 @@ class Test_SaveState extends RESTfulTestCase {
 		$container          = apply_filters( 'rocket_container', null );
 		$this->options_data = $container->get( 'options' );
 		$this->options_api  = $container->get( 'options_api' );
+
+		// Default transient: active free subscription (running, no plan_type=paid).
+		// Tests that need a paid subscription override this via config['subscription'].
+		set_transient(
+			'rocketcdn_status',
+			[
+				'subscription_status' => 'running',
+				'cdn_url'             => 'example1.org',
+			],
+			HOUR_IN_SECONDS
+		);
 	}
 
 	public function tear_down() {
 		wp_set_current_user( 0 );
 
 		$settings = $this->options_api->get( 'settings', [] );
-		unset( $settings['cdn'] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
 		$this->options_api->set( 'settings', $settings );
+
+		delete_transient( 'rocketcdn_status' );
+
 		parent::tear_down();
 	}
 
@@ -74,31 +87,40 @@ class Test_SaveState extends RESTfulTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
-		if ( ! empty( $config['preset_options'] ) ) {
-			$settings = $this->options_api->get( 'settings', [] );
-
-			foreach ( $config['preset_options'] as $key => $value ) {
-				$settings[ $key ] = $value;
-			}
-			$this->options_api->set( 'settings', $settings );
-		}
-
-		// Set unauthenticated if configured.
 		if ( ! empty( $config['unauthenticated'] ) ) {
 			wp_set_current_user( 0 );
 		}
 
-		$response = $this->doRestRequest( 'POST', '/wp-rocket/v1/rocketcdn/pause', $config['params'] );
+		// Per-case subscription override (e.g. paid plan requires plan_type=paid).
+		if ( ! empty( $config['subscription'] ) ) {
+			set_transient( 'rocketcdn_status', $config['subscription'], HOUR_IN_SECONDS );
+		}
+
+		$response = $this->doRestRequest(
+			'POST',
+			'/wp-rocket/v1/rocketcdn/mode',
+			$config['params']
+		);
+
+		$settings = $this->options_api->get( 'settings', [] );
 
 		foreach ( $expected as $key => $value ) {
 			switch ( $key ) {
-				case 'paused_response':
-					$settings = $this->options_api->get( 'settings', [] );
-					$this->assertSame( $value, $response['paused'] );
-					$this->assertSame( $value, (int) ( $settings['cdn'] ?? 0 ) );
+				case 'cdn_state_response':
+					$this->assertSame( $value, $response['applied_cdn_state'] );
+					$this->assertSame( $config['params']['mode'], $settings['cdn_state'] ?? null );
+					break;
+				case 'cdn':
+					$this->assertSame( $value, $settings['cdn'] ?? null );
+					break;
+				case 'cdn_type':
+					$this->assertSame( $value, $settings['cdn_type'] ?? null );
 					break;
 				case 'code':
 					$this->assertSame( $value, $response['code'] );
+					break;
+				case 'status':
+					$this->assertSame( $value, $response['data']['status'] );
 					break;
 			}
 		}

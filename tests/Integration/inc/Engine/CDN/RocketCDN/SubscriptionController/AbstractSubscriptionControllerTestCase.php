@@ -67,7 +67,10 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 		delete_transient( 'wp_rocket_customer_data' );
 
-		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request' ] as $transient_key ) {
+		// 'wpr_user_information' is UserClient's own transient key (get_user_data()'s cache); it
+		// must be cleared too, otherwise a timeout lockout tripped by an unrelated/earlier test
+		// silently short-circuits every get_user_data() call here before it reaches mock_api().
+		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request', 'wpr_user_information' ] as $transient_key ) {
 			delete_transient( $transient_key );
 			delete_transient( $transient_key . '_timeout' );
 			delete_transient( $transient_key . '_timeout_active' );
@@ -146,11 +149,22 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	 *   create_free_error        (string) — returns WP_Error instead of an HTTP response
 	 *   task_code                (int, default 404)
 	 *   task_body                (array, used when code is 200)
+	 *   user_data_code           (int, default 404)
+	 *   user_data_body           (array, used when code is 200)
 	 */
 	protected function mock_api( array $config ): void {
 		add_filter(
 			'pre_http_request',
 			function ( $preempt, $_args, $url ) use ( $config ) {
+				if ( false !== strpos( $url, 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
+					if ( 200 === ( $config['user_data_code'] ?? 404 ) ) {
+						return [
+							'response' => [ 'code' => 200, 'message' => 'OK' ],
+							'body'     => json_encode( $config['user_data_body'] ?? [] ),
+						];
+					}
+					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
+				}
 				if ( preg_match( '#https://rocketcdn\.me/api/subscription/[^/]+/status#', $url ) ) {
 					if ( 200 === ( $config['subscription_status_code'] ?? 404 ) ) {
 						return [
