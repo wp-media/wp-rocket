@@ -363,7 +363,6 @@
 				);
 				syncCdnHiddenInputs( requestedMode );
 				refreshUIElements( response );
-
 				if ( 'ongoing_activation_free' === response.rocketcdn_state ) {
 					setSubscriptionLoadingState();
 				} else {
