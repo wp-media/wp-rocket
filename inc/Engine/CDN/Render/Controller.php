@@ -175,6 +175,7 @@ class Controller extends Abstract_Render {
 		$status_indicator_data['class'] .= ' wpr-cdn-status-pronounced rocketcdn';
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
+		$is_forced_off   = $this->should_reject_rocketcdn_activation();
 
 		$sections['rocketcdn_paid_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -188,9 +189,9 @@ class Controller extends Abstract_Render {
 			'status_indicator'  => $status_indicator_data,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_forced_off'     => $is_forced_off,
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
-			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state,
+			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state && ! $is_forced_off,
 		];
 
 		return $sections;
@@ -244,6 +245,7 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
+		$is_forced_off   = $this->should_reject_rocketcdn_activation();
 
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -266,9 +268,9 @@ class Controller extends Abstract_Render {
 			'limit_reached'     => $limit_reached,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_forced_off'     => $is_forced_off,
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
-			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
+			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state && ! $is_forced_off,
 		];
 
 		return $sections;
@@ -681,7 +683,7 @@ class Controller extends Abstract_Render {
 	 * on, or previously turned off by the user themselves — since that's the normal
 	 * starting point for the very transition this method exists to gate; treating it
 	 * as a rejection reason would always reject activation. What it does reject is
-	 * {@see is_forced_paused()}'s narrower, involuntary-suppression conditions (a
+	 * {@see is_forced_off()}'s narrower, involuntary-suppression conditions (a
 	 * cancelled paid subscription, an invalid free-tier licence): toggling the
 	 * checkbox can't fix either of those, so unlike the merely-off case there's no
 	 * legitimate activation path through the toggle to preserve.
@@ -691,14 +693,14 @@ class Controller extends Abstract_Render {
 	 * - Not {@see should_display_licence_expired_notice()}: its own
 	 *   `! is_reseller_license_banned()` exclusion is deliberate, so the expired-licence
 	 *   banner never stacks on top of the banned-reseller one.
-	 * - Not {@see is_forced_paused()} (even though it's now also included below):
+	 * - Not {@see is_forced_off()} (even though it's now also included below):
 	 *   keeping the ban term here as its own OR branch, rather than folding it into
-	 *   is_forced_paused(), matters because is_forced_paused() only catches a ban
+	 *   is_forced_off(), matters because is_forced_off() only catches a ban
 	 *   incidentally, via its `is_free() && is_license_invalid()` branch (a ban
 	 *   implies `is_revoked()`, a strict superset) - and that only fires for the
 	 *   free tier. A banned reseller on an active *paid* plan has no guarantee
 	 *   RocketCDN's own billing-subscription status has flipped to reflect it, so
-	 *   is_forced_paused() can miss it entirely there. The explicit term here is
+	 *   is_forced_off() can miss it entirely there. The explicit term here is
 	 *   what makes a paid-tier ban reject activation regardless.
 	 *
 	 * @return bool True if activation should be rejected, false otherwise.
@@ -707,7 +709,7 @@ class Controller extends Abstract_Render {
 		return $this->is_subscription_loading()
 			|| $this->should_display_licence_expired_notice()
 			|| $this->user->is_reseller_license_banned()
-			|| $this->is_forced_paused();
+			|| $this->is_forced_off();
 	}
 
 	/**
@@ -734,7 +736,7 @@ class Controller extends Abstract_Render {
 	 * 2. Expired/revoked WP Rocket licence (non-banned reseller).
 	 * 3. Banned reseller licence.
 	 * 4. Subscription forced-paused - a cancelled paid plan, or another involuntary
-	 *    suppression {@see is_forced_paused()} covers that isn't already caught above.
+	 *    suppression {@see is_forced_off()} covers that isn't already caught above.
 	 *
 	 * @return string Tooltip copy, or an empty string when nothing forces the toggle off.
 	 */
@@ -751,11 +753,49 @@ class Controller extends Abstract_Render {
 			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
 		}
 
-		if ( $this->is_forced_paused() ) {
+		if ( $this->is_forced_off() ) {
 			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
 		}
 
 		return '';
+	}
+
+	/**
+	 * Disables RocketCDN for paid subscriptions after cancellation.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @return void
+	 */
+	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
+		// Bail out if there is an active subscription.
+		if ( $this->subscription_controller->has_active_subscription() ) {
+			return;
+		}
+
+		// Bail out if the subscription is paid and is still within the cancellation grace period.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		if ( $this->subscription_controller->is_license_invalid() ) {
+			return;
+		}
+
+		$forced_off_cache_status = $this->get_forced_off_tracking();
+
+		// Bail out if forced pause status has been reset.
+		if ( empty( $forced_off_cache_status['persistent'] ) ) {
+			return;
+		}
+
+		// Update the forced pause tracking option to indicate the forced pause has been resolved.
+		$forced_off_cache_status['persistent'] = false;
+		update_option( self::FORCED_OFF_TRACKING_OPTION, $forced_off_cache_status, false );
+
+		// Set new CDN state to "nothing".
+		$this->options->set( 'cdn_state', Context::CDN_STATE_NOTHING );
+		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
 
 	/**

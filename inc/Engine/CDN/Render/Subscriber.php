@@ -59,6 +59,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
+			'admin_init'                              => 'maybe_disable_rocketcdn_paid_after_cancellation',
 		];
 	}
 
@@ -271,5 +272,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function get_paid_status_indicator_texts( array $texts, int $pages_count, bool $is_subscription_loading, bool $free ): array {
 		return $this->controller->get_paid_status_indicator_texts( $texts, $pages_count, $is_subscription_loading, $free );
+	}
+
+	/**
+	 * Disables RocketCDN for paid subscriptions after cancellation.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @return void
+	 */
+	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
+		$this->controller->maybe_disable_rocketcdn_paid_after_cancellation();
 	}
 }
