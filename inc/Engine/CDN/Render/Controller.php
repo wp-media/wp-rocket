@@ -220,9 +220,10 @@ class Controller extends Abstract_Render {
 		$cta_description = __( 'Upgrade to RocketCDN Pro to extend faster content delivery across all your pages from 100+ edge locations worldwide.', 'rocket' );
 
 		$limit_reached = $this->page_count >= $this->context->get_free_page_limit();
+		$is_forced_off = $this->should_reject_rocketcdn_activation();
 
-		// Disable input field and buttons when 3 pages are added.
-		if ( $limit_reached || $is_subscription_loading ) {
+		// Disable input field and buttons when 3 pages are added, a subscription is being created, or activation is forced off (e.g. an expired licence).
+		if ( $limit_reached || $is_subscription_loading || $is_forced_off ) {
 			$classes[] = 'wpr-cdn-built-in--disabled';
 		}
 
@@ -255,7 +256,7 @@ class Controller extends Abstract_Render {
 			'limit_reached'     => $limit_reached,
 			'applied_cdn_state' => $this->context->get_applied_cdn_state(),
 			'rocketcdn_state'   => $rocketcdn_state,
-			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
+			'is_forced_off'     => $is_forced_off,
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state,
 		];
