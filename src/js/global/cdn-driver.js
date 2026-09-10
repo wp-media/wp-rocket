@@ -762,6 +762,18 @@
 			setSubscriptionLoadingState();
 		}
 
+		// Only the mode-toggle response carries this - keeps the add-page controls
+		// (homepage/add buttons, URL input) in sync with the server's authoritative
+		// disabled state (limit reached / subscription loading / forced off) right
+		// after enabling or disabling RocketCDN, instead of only on a page reload.
+		if ( 'free_add_page_disabled' in response ) {
+			const builtIn = document.querySelector( '.wpr-cdn-built-in' );
+
+			if ( builtIn ) {
+				builtIn.classList.toggle( 'wpr-cdn-built-in--disabled', response.free_add_page_disabled );
+			}
+		}
+
 		// Update status indicator component.
 		updateStatusIndicatorComponent( response.status_indicator_html );
 	}

@@ -611,6 +611,7 @@ class Rest extends WP_REST_Controller {
 				'rocketcdn_state'              => $this->context->get_rocketcdn_state( $mode ),
 				'disable_rocket_cdn_elements'  => $this->render_controller->should_disable_element_for_rocketcdn(),
 				'byocdn_status_indicator_html' => $this->render_controller->get_byocdn_status_indicator_html( Context::BYOCDN_TYPE === $applied_cdn_state ),
+				'free_add_page_disabled'       => $this->render_controller->should_disable_free_add_page(),
 			]
 		);
 

@@ -240,12 +240,10 @@ class Controller extends Abstract_Render {
 		$is_forced_off = $this->should_reject_rocketcdn_activation();
 
 		// Disable input field and buttons when 3 pages are added, a subscription is being created, or activation is forced off (e.g. an expired licence).
+		// Deliberately not disabled merely for being paused (CDN toggled off) - add_page() supports
+		// adding pages while paused (leaving the CDN off), so the UI must allow it too.
 		if ( $limit_reached || $is_subscription_loading || $is_forced_off ) {
 			$classes[] = 'wpr-cdn-built-in--disabled';
-		}
-
-		if ( $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription() ) {
-			$classes[] = 'wpr-cdn-built-in--paused';
 		}
 
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
@@ -708,6 +706,26 @@ class Controller extends Abstract_Render {
 		}
 
 		return $cdn;
+	}
+
+	/**
+	 * Determines whether the RocketCDN Free "add page" controls (homepage button,
+	 * URL input, add button) should be disabled.
+	 *
+	 * Mirrors the condition {@see add_rocketcdn_free_section()} uses for the
+	 * `wpr-cdn-built-in--disabled` class, so the REST mode-toggle response
+	 * ({@see \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_cdn_mode()}) can keep the
+	 * add-page controls in sync without a page reload. Deliberately excludes
+	 * being merely paused (CDN toggled off) - add_page() supports adding pages
+	 * while paused, so pausing alone must not disable these controls.
+	 *
+	 * @return bool True if the add-page controls should be disabled, false otherwise.
+	 */
+	public function should_disable_free_add_page(): bool {
+		$page_count    = count( $this->get_items() );
+		$limit_reached = $page_count >= $this->context->get_free_page_limit();
+
+		return $limit_reached || $this->is_subscription_loading() || $this->should_reject_rocketcdn_activation();
 	}
 
 	/**

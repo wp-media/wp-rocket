@@ -382,7 +382,9 @@
 		background: $cGreyLighter1;
 	}
 
-	&--paused, &--disabled {
+	// Only --disabled blocks the add-page controls - being merely paused (CDN toggled
+	// off) must not, since add_page() supports adding pages while paused.
+	&--disabled {
 		.wpr-cdn-add-page {
 			pointer-events: none;
 
