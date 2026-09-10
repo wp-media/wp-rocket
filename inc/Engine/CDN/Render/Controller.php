@@ -784,12 +784,12 @@ class Controller extends Abstract_Render {
 
 		$forced_off_cache_status = $this->get_forced_off_tracking();
 
-		// Bail out if forced pause status has been reset.
+		// Bail out if forced off status has been reset.
 		if ( empty( $forced_off_cache_status['persistent'] ) ) {
 			return;
 		}
 
-		// Update the forced pause tracking option to indicate the forced pause has been resolved.
+		// Update the forced off tracking option to indicate the forced off has been resolved.
 		$forced_off_cache_status['persistent'] = false;
 		update_option( self::FORCED_OFF_TRACKING_OPTION, $forced_off_cache_status, false );
 
