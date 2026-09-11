@@ -73,6 +73,10 @@ $rocket_rocketcdn_free_active = $data['is_active'];
 
 	<div class="wpr-cdn-built-in__separator"></div>
 
+	<p class="wpr-cdn-no-pages-notice<?php echo empty( $data['no_pages'] ) ? ' wpr-isHidden' : ''; ?>">
+		<?php esc_html_e( 'No pages added yet. Enter a page URL below to start delivering content faster with RocketCDN.', 'rocket' ); ?>
+	</p>
+
 	<?php
 	/**
 	 * Fires to render the built-in CDN page list table.

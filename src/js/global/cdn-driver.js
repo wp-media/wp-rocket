@@ -241,6 +241,11 @@
 			submitButton.classList.add( 'wpr-cdn-disabled' );
 		}
 
+		// Disable mode toggles to prevent state changes during subscription creation.
+		document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( modeToggle ) => {
+			modeToggle.disabled = true;
+		} );
+
 		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
 		document.dispatchEvent(new CustomEvent('rocketCDNSubscriptionLoading', {}));
 	}
@@ -345,6 +350,8 @@
 
 			notifyCdnStateChange();
 
+			toggle.disabled = true;
+
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/mode',
 				method: 'POST',
@@ -356,9 +363,15 @@
 				);
 				syncCdnHiddenInputs( requestedMode );
 				refreshUIElements( response );
+				if ( 'ongoing_activation_free' === response.rocketcdn_state ) {
+					setSubscriptionLoadingState();
+				} else {
+					toggle.disabled = false;
+				}
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
+				toggle.disabled = false;
 				updateCdnActiveIndicator( previouslyActive );
 
 				if ( previouslyActive && previouslyActive !== toggle ) {
@@ -628,6 +641,12 @@
 				input.disabled = false;
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
+
+				const noPageNotice = document.querySelector( '.wpr-cdn-no-pages-notice' );
+				if ( noPageNotice ) {
+					noPageNotice.classList.add( 'wpr-isHidden' );
+				}
+
 				updateRocketCtaState( response.count, response.limit );
 
 				if ( builtIn ) {
@@ -748,7 +767,7 @@
 					}
 				}
 
-				// Show re-add HOMEPAGE button when all pages are deleted.
+				// Show re-add HOMEPAGE button and no-page notice when all pages are deleted.
 				if ( 0 === response.count ) {
 					// Remove table list component.
 					document.querySelector( '.wpr-cdn-built-in .wpr-table-list' ).remove();
@@ -758,6 +777,11 @@
 					if ( homepageBtn ) {
 						homepageBtn.classList.remove( 'wpr-isHidden' );
 						homepageBtn.disabled = false;
+					}
+
+					const noPageNotice = document.querySelector( '.wpr-cdn-no-pages-notice' );
+					if ( noPageNotice ) {
+						noPageNotice.classList.remove( 'wpr-isHidden' );
 					}
 				}
 

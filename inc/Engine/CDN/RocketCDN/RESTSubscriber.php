@@ -67,6 +67,7 @@ class RESTSubscriber implements Subscriber_Interface {
 				[ 'register_disable_route' ],
 				[ 'register_routes' ],
 			],
+			'rocket_cdnfree_create_subscription'          => 'handle_create_subscription',
 			'rocket_cdnfree_website_create_status'        => 'check_status',
 			'rocket_cdnfree_subscription_creation_failed' => [ 'handle_subscription_creation_failed', 10, 1 ],
 		];
@@ -236,6 +237,22 @@ class RESTSubscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->subscription_controller->check_status( $task_id );
+	}
+
+	/**
+	 * Create the RocketCDN free subscription asynchronously.
+	 *
+	 * Fired by the Action Scheduler job scheduled in schedule_subscription_creation().
+	 * On failure, delegates to handle_subscription_creation_failed() to roll back cdn_state.
+	 *
+	 * @return void
+	 */
+	public function handle_create_subscription(): void {
+		$result = $this->subscription_controller->create_subscription( true );
+
+		if ( is_wp_error( $result ) || false === $result ) {
+			$this->handle_subscription_creation_failed();
+		}
 	}
 
 	/**

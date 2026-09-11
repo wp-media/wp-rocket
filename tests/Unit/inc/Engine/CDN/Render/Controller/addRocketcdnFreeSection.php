@@ -205,6 +205,93 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	}
 
 	/**
+	 * Sets up mocks common to the no_pages variant tests.
+	 *
+	 * @param int  $page_count Number of pages to simulate.
+	 * @param bool $is_loading Whether subscription creation is in progress.
+	 *
+	 * @return void
+	 */
+	private function setup_no_pages_mocks( int $page_count, bool $is_loading ): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )->andReturn( 3 );
+		$this->context->shouldReceive( 'is_rocketcdn' )->andReturn( true );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn( [ 'id' => 'beacon-id', 'url' => 'https://example.com' ] );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )->andReturn( $is_loading );
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_free' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )->andReturn( false );
+
+		$this->options->shouldReceive( 'get' )->with( 'cdn' )->andReturn( true );
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
+		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
+
+		$pages = array_fill(
+			0,
+			$page_count,
+			(object) [ 'id' => 1, 'url' => 'http://example.org/', 'title' => 'Page' ]
+		);
+
+		$this->cdn_query->method( 'query' )->willReturn( $pages );
+	}
+
+	/**
+	 * Tests that no_pages is true when there are no pages and subscription is not loading.
+	 *
+	 * @return void
+	 */
+	public function testShouldSetNoPagesToTrueWhenNoPagesAndNotLoading(): void {
+		$this->setup_no_pages_mocks( 0, false );
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertArrayHasKey( 'rocketcdn_free_section', $sections );
+		$this->assertTrue( $sections['rocketcdn_free_section']['no_pages'] );
+	}
+
+	/**
+	 * Tests that no_pages is false when pages exist.
+	 *
+	 * @return void
+	 */
+	public function testShouldSetNoPagesToFalseWhenPagesExist(): void {
+		$this->setup_no_pages_mocks( 1, false );
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertArrayHasKey( 'rocketcdn_free_section', $sections );
+		$this->assertFalse( $sections['rocketcdn_free_section']['no_pages'] );
+	}
+
+	/**
+	 * Tests that no_pages is false while subscription creation is in progress,
+	 * even when there are no pages yet.
+	 *
+	 * @return void
+	 */
+	public function testShouldSetNoPagesToFalseWhenSubscriptionIsLoading(): void {
+		$this->setup_no_pages_mocks( 0, true );
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertArrayHasKey( 'rocketcdn_free_section', $sections );
+		$this->assertFalse( $sections['rocketcdn_free_section']['no_pages'] );
+	}
+
+	/**
 	 * Tests that add_rocketcdn_free_section marks the section active when the
 	 * applied RocketCDN state is the free tier.
 	 *
