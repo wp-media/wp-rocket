@@ -665,15 +665,18 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_refresh_rocketcdn_details( $user_data ) {
-		if ( empty( $user_data->rocketcdn->cdn_token ) || $this->cdn_options->has_token() ) {
+		if ( empty( $user_data->rocketcdn->cdn_token ) ) {
 			return;
 		}
 
-		$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
-		if ( 40 !== strlen( $token ) ) {
-			return;
+		if ( ! $this->cdn_options->has_token() ) {
+			$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
+			if ( 40 !== strlen( $token ) ) {
+				return;
+			}
+			$this->cdn_options->save_token( $token );
 		}
-		$this->cdn_options->save_token( $token );
+
 		$this->cdn_options->flush_subscription_cache();
 	}
 
