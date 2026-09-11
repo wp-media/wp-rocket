@@ -768,6 +768,20 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
+		// Read fresh rather than through the per-request Options_Data snapshot, which can be
+		// stale relative to another admin_init callback's same-request write (e.g.
+		// DataManagerSubscriber::handle_rocketcdn_checkout_parameter()) - Context's own
+		// get_applied_cdn_state() would otherwise classify a frozen, possibly-outdated value.
+		$settings = $this->options_api->get( 'settings', [] );
+
+		// Bail out early on every other admin request: this only matters on the WP Rocket
+		// settings page, while on the RocketCDN driver (and not BYOCDN, which
+		// get_applied_cdn_state() collapses rocketcdn_free/rocketcdn_paid away from).
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id || Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state( $settings['cdn_state'] ?? null ) ) {
+			return;
+		}
+
 		// Bail out if there is an active subscription.
 		if ( $this->subscription_controller->has_active_subscription() ) {
 			return;
@@ -794,8 +808,8 @@ class Controller extends Abstract_Render {
 		update_option( self::FORCED_OFF_TRACKING_OPTION, $forced_off_cache_status, false );
 
 		// Set new CDN state to "nothing".
-		$this->options->set( 'cdn_state', Context::CDN_STATE_NOTHING );
-		$this->options_api->set( 'settings', $this->options->get_options() );
+		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
+		$this->options_api->set( 'settings', $settings );
 	}
 
 	/**
