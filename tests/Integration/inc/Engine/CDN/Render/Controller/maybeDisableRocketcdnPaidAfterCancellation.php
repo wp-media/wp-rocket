@@ -34,8 +34,6 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 
 		delete_transient( 'rocketcdn_status' );
 
-		$this->options_api->set( 'settings', array_merge( $this->options_api->get( 'settings', [] ), [ 'cdn_state' => Context::ROCKETCDN_PAID_TYPE ] ) );
-
 		// Isolate admin_init to only the Subscriber method under test, so firing the
 		// hook doesn't also run the rest of the admin_init surface (some of which
 		// redirects or wp_die()s). Restored via restoreWpHook() in tear_down().
@@ -54,7 +52,10 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( array $config, bool $expected_write ): void {
+	public function testShouldDoAsExpected( array $config, array $expected ): void {
+		$initial_cdn_state = $config['initial_cdn_state'] ?? Context::ROCKETCDN_PAID_TYPE;
+
+		$this->options_api->set( 'settings', array_merge( $this->options_api->get( 'settings', [] ), [ 'cdn_state' => $initial_cdn_state ] ) );
 		update_option( 'rocket_rocketcdn_forced_pause_state', [ 'persistent' => ! empty( $config['forced_off_persistent'] ) ] );
 
 		$this->set_subscription_transient( $config );
@@ -65,13 +66,15 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 		$persisted_cdn_state = $this->options_api->get( 'settings', [] )['cdn_state'] ?? null;
 		$forced_off_tracking = get_option( 'rocket_rocketcdn_forced_pause_state', [] );
 
-		if ( $expected_write ) {
-			$this->assertSame( Context::CDN_STATE_NOTHING, $persisted_cdn_state );
-			$this->assertFalse( $forced_off_tracking['persistent'] );
-		} else {
-			// set_up() seeds 'cdn_state' => ROCKETCDN_PAID_TYPE; unchanged means no write occurred.
-			$this->assertSame( Context::ROCKETCDN_PAID_TYPE, $persisted_cdn_state );
-			$this->assertSame( ! empty( $config['forced_off_persistent'] ), $forced_off_tracking['persistent'] );
+		$this->assertSame( $expected['cdn_state'] ?? $initial_cdn_state, $persisted_cdn_state );
+		$this->assertSame( $expected['persistent'], $forced_off_tracking['persistent'] );
+
+		if ( Context::CDN_STATE_NOTHING === ( $expected['cdn_state'] ?? null ) ) {
+			// Confirm the write actually sticks through CdnStateBridge::resolve_live(): once
+			// is_cancelled_outside_grace_period() is true (both write-path scenarios reach it),
+			// resolve_live() returns null rather than recomputing from live subscription state,
+			// so the persisted value above is read back unchanged instead of being overridden.
+			$this->assertSame( Context::CDN_STATE_NOTHING, get_rocket_option( 'cdn_state' ) );
 		}
 	}
 
