@@ -142,17 +142,22 @@ class Controller implements ControllerInterface {
 		}
 
 		$html = $this->replace_html_comments( $html );
-		// Decode first, then escape: any percent-encoded byte (including %23 => '#', the pattern's own
-		// delimiter) must be turned into its literal character before preg_quote() escapes it, otherwise
-		// a decoded metacharacter is injected into $pattern unescaped. The delimiter passed to preg_quote()
-		// must match the delimiter used to build $pattern below ('#'), not '/'.
-		$url     = preg_quote( urldecode( $lcp->src ), '#' );
+		// Decode only the non-ASCII percent-encoded bytes in $lcp->src (e.g. %E2%80%94 for an em dash),
+		// not a legitimately percent-encoded ASCII reserved character (e.g. %23 for '#'). $lcp->src is
+		// the browser's own normalized URL serialization, which always percent-encodes non-ASCII bytes -
+		// the rendered HTML can still contain that same character raw (un-encoded UTF-8) if the theme
+		// output it that way, so matching needs the decoded form there. An ASCII reserved character that
+		// is meaningfully percent-encoded, however, stays percent-encoded in the HTML too (decoding it
+		// would change the URL's meaning), so decoding it here would make the pattern search for a
+		// literal character that never appears in $html, silently failing to match - a regression an
+		// earlier version of this fix introduced (see #8735 comments). preg_quote() must use the same
+		// delimiter as $pattern below ('#'), not '/': that mismatch is what let an unescaped '#' from
+		// $lcp->src reach $pattern unescaped and corrupt it, causing the original crash.
+		$url     = preg_quote( $this->decode_non_ascii_percent_encoding( $lcp->src ), '#' );
 		$pattern = '#<img(?:[^>]*?\s+)?src=["\']' . $url . '["\'](?:\s+[^>]*?)?>#';
 		if ( wp_http_validate_url( $lcp->src ) && ! $this->is_external_file( $lcp->src ) ) {
-			// This branch only ever receives a PHP_URL_PATH (no urldecode()), so it can't contain a
-			// literal '#' today; the delimiter is aligned to '#' for consistency with $pattern below.
 			$url = preg_quote(
-				wp_parse_url( $lcp->src, PHP_URL_PATH ),
+				$this->decode_non_ascii_percent_encoding( (string) wp_parse_url( $lcp->src, PHP_URL_PATH ) ),
 			'#'
 				);
 
@@ -182,6 +187,42 @@ class Controller implements ControllerInterface {
 		);
 
 		return $this->restore_html_comments( $html );
+	}
+
+	/**
+	 * Decodes only the non-ASCII percent-encoded byte sequences in a URL, leaving any
+	 * legitimately percent-encoded ASCII reserved character (e.g. %23 for a literal '#'
+	 * in a query value) untouched.
+	 *
+	 * Consecutive %XX sequences are decoded together as one run so a multi-byte UTF-8
+	 * character (e.g. %E2%80%94, three bytes for an em dash) is decoded as a whole; the
+	 * run is only accepted if every resulting byte is non-ASCII (>= 0x80), so a run mixing
+	 * an encoded ASCII byte with adjacent non-ASCII bytes is conservatively left untouched
+	 * rather than partially decoded.
+	 *
+	 * @param string $url URL to selectively decode.
+	 *
+	 * @return string
+	 */
+	private function decode_non_ascii_percent_encoding( string $url ): string {
+		$decoded = preg_replace_callback(
+			'/(?:%[0-9A-Fa-f]{2})+/',
+			function ( $matches ) {
+				$decoded_run = urldecode( $matches[0] );
+				$length      = strlen( $decoded_run );
+
+				for ( $i = 0; $i < $length; $i++ ) {
+					if ( ord( $decoded_run[ $i ] ) < 0x80 ) {
+						return $matches[0];
+					}
+				}
+
+				return $decoded_run;
+			},
+			$url
+		);
+
+		return null === $decoded ? $url : $decoded;
 	}
 
 	/**
