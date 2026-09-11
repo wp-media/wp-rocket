@@ -257,7 +257,7 @@ class Controller extends Abstract_Render {
 			'rocketcdn_state'   => $rocketcdn_state,
 			'is_forced_off'     => $this->should_reject_rocketcdn_activation(),
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
-			'is_active'         => \in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ),
+			'is_active'         => in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ),
 			'no_pages'          => 0 === $this->page_count && ! $is_subscription_loading,
 		];
 
