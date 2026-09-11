@@ -2,8 +2,9 @@
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class ContactForm7 implements Subscriber_Interface {
+class ContactForm7 implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Required CF6 version.
@@ -31,6 +32,15 @@ class ContactForm7 implements Subscriber_Interface {
 	}
 
 	/**
+	 * Whether Contact Form 7 (>= REQUIRED_CF7_VERSION) is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return defined( 'WPCF7_VERSION' ) && version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '>=' ); // @phpstan-ignore-line
+	}
+
+	/**
 	 * Optimize ContactForm7 scripts.
 	 */
 	public function maybe_optimize_contact_form_7() {
@@ -45,7 +55,7 @@ class ContactForm7 implements Subscriber_Interface {
 		}
 
 		// The wpcf7_shortcode_callback action was added in CF7 version 5.8.1.
-		if ( ! defined( 'WPCF7_VERSION' ) || version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '<' ) ) {
+		if ( ! defined( 'WPCF7_VERSION' ) || version_compare( WPCF7_VERSION, self::REQUIRED_CF7_VERSION, '<' ) ) { // @phpstan-ignore-line
 			return;
 		}
 

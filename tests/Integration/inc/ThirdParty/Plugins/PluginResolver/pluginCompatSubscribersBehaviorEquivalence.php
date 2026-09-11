@@ -22,7 +22,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 41;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 39;
 
 	/**
 	 * Registry ids whose is_activated() reports inactive when their target plugin isn't installed.
@@ -34,6 +34,8 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		'optimus_webp_subscriber',
 		'rapidload',
 		'all_in_one_seo_pack',
+		'contactform7',
+		'cloudflare_plugin_subscriber',
 	];
 
 	/**
@@ -52,7 +54,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$expected_active_ids = array_values( array_diff( array_keys( $registry ), self::GATED_INACTIVE_IDS ) );
 
 		$this->assertSame( $expected_active_ids, $active_ids, 'The resolver must report the registry ids minus the gated-inactive ones.' );
-		$this->assertCount( 39, $active_ids );
+		$this->assertCount( 37, $active_ids );
 
 		foreach ( $active_ids as $id ) {
 			$this->assertTrue(
