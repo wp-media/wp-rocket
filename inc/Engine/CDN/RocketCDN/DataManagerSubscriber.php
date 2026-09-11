@@ -19,21 +19,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
 	/**
-	 * Unprefixed name of the option tracking whether disable_rocketcdn_free_with_rocket_license_expired()
-	 * force-set cdn_state to 'nothing'. Read/written via $this->options_api (see e.g. its
-	 * existing 'rocketcdn_old_url' usage below), which prefixes it to 'wp_rocket_forced_off_by_licence_expiry'
-	 * in the database - that's the name WPRocketUninstall.php must reference.
-	 *
-	 * Needed because that write is otherwise indistinguishable from a user genuinely
-	 * choosing 'nothing' themselves - restore_rocketcdn_free_with_rocket_license_active()
-	 * checks this before restoring, so it never overrides a deliberate user choice made
-	 * while the licence was expired.
-	 *
-	 * @var string
-	 */
-	const FORCED_OFF_BY_LICENCE_EXPIRY_OPTION = 'forced_off_by_licence_expiry';
-
-	/**
 	 * RocketCDN API Client instance.
 	 *
 	 * @var APIClient
@@ -122,7 +107,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
 			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
 			'rocket_license_expired_or_revoked'      => 'disable_rocketcdn_free_with_rocket_license_expired',
-			'rocket_license_active'                  => 'restore_rocketcdn_free_with_rocket_license_active',
 		];
 	}
 
@@ -730,16 +714,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * currently active, so relying on it alone would also reset an unrelated BYOCDN (or
 	 * paid) configuration for an account that happens to have a dormant free subscription.
 	 *
-	 * This write is persisted (rather than left to the non-destructive pre_get_rocket_option_cdn_state
-	 * live filter that already makes cdn_state read as 'nothing' while the licence is
-	 * invalid) specifically so the resulting cdn_state change fires Subscriber::maybe_clear_cache()
-	 * (on update_option_wp_rocket_settings), clearing already-cached pages' CDN-rewritten
-	 * URLs as soon as expiry is detected - not only whenever an admin next visits the WP
-	 * Rocket settings screen (which is all the other, screen-gated forced-pause tracking
-	 * in Render\Controller::maybe_sync_forced_pause_tracking_state() achieves). The tracking
-	 * flag set here is what lets restore_rocketcdn_free_with_rocket_license_active() undo
-	 * this specific write on renewal, rather than leaving it permanent.
-	 *
 	 * @return void
 	 */
 	public function disable_rocketcdn_free_with_rocket_license_expired(): void {
@@ -749,37 +723,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->options_api->set( self::FORCED_OFF_BY_LICENCE_EXPIRY_OPTION, true );
-
 		$this->cdn_options->set_cdn_state( Context::CDN_STATE_NOTHING );
-	}
-
-	/**
-	 * Restores RocketCDN Free once the WP Rocket licence becomes active again - the
-	 * symmetric counterpart to disable_rocketcdn_free_with_rocket_license_expired().
-	 *
-	 * Only restores when the tracking option confirms this subscriber is what forced
-	 * cdn_state to 'nothing', and only while cdn_state is still 'nothing' - if the user
-	 * deliberately changed it themselves while the licence was expired, that choice is
-	 * left untouched. Restoring changes cdn_state back to 'rocketcdn_free', which fires
-	 * the same update_option_wp_rocket_settings cache-clearing path in reverse, so
-	 * already-cached pages pick the CDN URLs back up.
-	 *
-	 * @return void
-	 */
-	public function restore_rocketcdn_free_with_rocket_license_active(): void {
-		if ( ! $this->options_api->get( self::FORCED_OFF_BY_LICENCE_EXPIRY_OPTION, false ) ) {
-			return;
-		}
-
-		$this->options_api->delete( self::FORCED_OFF_BY_LICENCE_EXPIRY_OPTION );
-
-		$settings = $this->options_api->get( 'settings', [] );
-
-		if ( Context::CDN_STATE_NOTHING !== ( $settings['cdn_state'] ?? '' ) ) {
-			return;
-		}
-
-		$this->cdn_options->set_cdn_state( Context::ROCKETCDN_FREE_TYPE );
 	}
 }
