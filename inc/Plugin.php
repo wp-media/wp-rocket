@@ -213,7 +213,7 @@ class Plugin {
 			'beacon',
 			'settings_page_subscriber',
 			'deactivation_intent_subscriber',
-			'hummingbird_subscriber',
+			// Hummingbird is sourced from the resolver-gated registry (admin-gated in its is_activated()), not hardcoded here.
 			'rocketcdn_admin_subscriber',
 			'rocketcdn_notices_subscriber',
 			'rocketcdn_data_manager_subscriber',
