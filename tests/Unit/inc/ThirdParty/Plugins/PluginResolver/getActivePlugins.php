@@ -63,12 +63,10 @@ class Test_GetActivePlugins extends TestCase {
 	}
 
 	/**
-	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so every id defaults active — the registry's full id set is unchanged.
-	 * Issue #8789 slices 1-2 opt a growing set of ids into real detection; none
-	 * of their target plugins are present in this test environment, so those
-	 * ids are excluded from the resolved active set while the rest still
-	 * default active.
+	 * Registry ids that do not implement PluginCompatibilityInterface default
+	 * active. The ids gated behind that interface are excluded from the
+	 * resolved active set, since none of their target plugins are present in
+	 * this test environment.
 	 *
 	 * @dataProvider configTestData
 	 *

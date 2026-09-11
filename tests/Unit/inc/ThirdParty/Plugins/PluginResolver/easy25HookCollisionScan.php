@@ -32,64 +32,27 @@ use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 
 /**
- * AC-required hook-collision scan for issue #8789's Easy-25 batch (slices 1-4):
- * proves that the 25 migrated classes don't accidentally clash on the same
- * WordPress hook + priority once they're all resolver-gated.
+ * Verifies that none of the Easy-25 plugin-compat classes accidentally clash
+ * on the same WordPress hook + priority.
  *
- * Moved here from tests/Integration/inc/ThirdParty/Plugins/PluginResolver/
- * easy25HookCollisionScan.php (slice 5 regression fix): `get_subscribed_events()`
- * is a *static* method with zero WordPress/container dependency, so its output
- * is byte-identical whether captured from the Unit or the Integration suite —
- * no coverage is lost by moving it. It was originally written against the
- * Integration suite and used `@runInSeparateProcess` there to simulate 3
- * deviation classes' internal guards; forking a *WordPress integration* test
- * process re-runs the full WP integration bootstrap in the child, which
- * corrupted shared DB/option state for the parent process and deterministically
- * broke an unrelated test (Test_GetRocketOption's `cdn` dataset) on every CI
- * matrix job. `@runInSeparateProcess` has an established, non-disruptive
- * precedent in the *Unit* suite only (see Jetpack/isActivated.php,
- * PDFEmbedder/isActivated.php) — the Unit bootstrap is a lightweight,
- * file-based one with no WordPress DB/options layer to corrupt.
- *
- * Methodology (unchanged): `get_subscribed_events()` is called directly
- * (`Class::get_subscribed_events()`), with no container/instantiation involved.
- * 22 of the 25 classes already return their hook map unconditionally — issue
- * #8789 slices 1-4 moved their presence guard out of `get_subscribed_events()`
- * and into `is_activated()`, so no "target plugin present" simulation is
- * needed for them at all: the guard that used to gate the return value is
- * simply gone.
- *
- * Only 3 of the 7 deviation classes still have a guard *inside*
- * `get_subscribed_events()` itself (their business/feature-toggle checks,
- * deliberately left untouched per the Implementation Plan), so only these 3
- * need their markers simulated to reveal their real (maximal) hook set:
- * - SEOPress: needs `seopress_get_toggle_option('xml-sitemap')` to return 1
- *   AND `seopress_get_service('SitemapOption')->isEnabled()` to return 1.
- *   Simulated with Brain\Monkey `Functions\when()` — no process isolation
- *   needed for this: `seopress_get_toggle_option`/`seopress_get_service` are
- *   plain functions with no class to declare.
+ * `get_subscribed_events()` is a static method with no WordPress/container
+ * dependency, so it is called directly (`Class::get_subscribed_events()`) with
+ * no instantiation involved. Most of the 25 classes return their hook map
+ * unconditionally. Only 3 deviation classes still guard their hook map with a
+ * business/feature-toggle check *inside* `get_subscribed_events()` itself, so
+ * only these 3 need their "target plugin present" markers simulated to reveal
+ * their real (maximal) hook set:
+ * - SEOPress: needs `seopress_get_toggle_option('xml-sitemap')` and
+ *   `seopress_get_service('SitemapOption')->isEnabled()` to both return 1,
+ *   simulated with Brain\Monkey `Functions\when()`.
  * - TheSEOFramework: needs `the_seo_framework()` to return an object with a
- *   truthy `$loaded` and a truthy `can_run_sitemap()`. Needs zero stubbing
- *   here: tests/Unit/bootstrap.php unconditionally preloads
- *   tests/Fixtures/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php
- *   for every Unit test (needed by the pre-existing addTsfSitemapToPreload.php
- *   callback test), which already declares a real global the_seo_framework()
- *   returning a Sitemap stub whose $loaded/can_run_sitemap() are truthy — see
- *   the same reasoning documented in the pre-existing
- *   SEO/TheSEOFramework/isActivated.php and PluginResolver/getActivePlugins.php.
- * - Jetpack: needs a real `\Jetpack` class + `is_module_active('sitemaps')`
- *   truthy. Stubbed via the pre-existing tests/Fixtures/classes/Jetpack.php
- *   (mirrors the TRP_Translate_Press.php stub-class convention already in
- *   that directory; kept/reused as-is from the Integration version of this
- *   scan). Unlike the other two, this requires a real global *class*
- *   declaration, which — same as the pre-existing Jetpack/isActivated.php
- *   precedent — must be isolated (`@runInSeparateProcess`) so the declared
- *   class doesn't leak into the rest of the Unit suite. Since the main
- *   collision assertion needs Jetpack's contribution captured alongside the
- *   other 24 classes to check for cross-class collisions, the whole capture +
- *   assertion is done in one isolated method rather than splitting Jetpack out
- *   on its own (both are threaded through the same shared, throwaway forked
- *   process, so nothing declared here reaches any other Unit test).
+ *   truthy `$loaded` and `can_run_sitemap()`; tests/Unit/bootstrap.php already
+ *   preloads a fixture that declares this global with truthy values.
+ * - Jetpack: needs a real `\Jetpack` class with `is_module_active('sitemaps')`
+ *   truthy, stubbed via tests/Fixtures/classes/Jetpack.php. Declaring that
+ *   global class requires `@runInSeparateProcess` isolation so it doesn't leak
+ *   into the rest of the Unit suite; the Unit bootstrap has no WordPress
+ *   DB/options layer for a forked process to corrupt.
  *
  * All 25 classes are otherwise driven with zero stubbing beyond the above — a
  * genuine capture of their real, unconditional hook maps, not a guess.
@@ -100,30 +63,23 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 class Test_Easy25HookCollisionScan extends TestCase {
 
 	/**
-	 * Pre-existing (hook, priority) pairs registered by 2+ of the Easy-25
-	 * classes, reviewed and accepted as intentional. Keyed by "hook:priority".
+	 * (hook, priority) pairs registered by 2+ of the Easy-25 classes, reviewed
+	 * and accepted as intentional. Keyed by "hook:priority".
 	 *
 	 * Only the `rocket_exclude_js:10` pair (elementor_subscriber vs
-	 * syntaxhighlighter_subscriber) is documented today by the
-	 * `SubscriberFactory` registry-order comment. This scan additionally
-	 * found 4 more pre-existing pairs that were not previously documented
-	 * anywhere: they are unrelated to this migration (hook maps are
-	 * byte-identical before/after issue #8789 slices 1-4 — only the presence
-	 * guard moved, per the Implementation Plan) and are all instances of the
-	 * same benign pattern: a WP Rocket "collector" filter (an exclusions or
-	 * preload-list array that callbacks *append* to) that several
-	 * plugin-compat classes legitimately contribute to. None of them mutate
-	 * shared state in a way where registration order matters, unlike the
-	 * documented pair. Flagged here for visibility per the AC, not because
-	 * they are bugs.
+	 * syntaxhighlighter_subscriber) is documented elsewhere, by the
+	 * `SubscriberFactory` registry-order comment. The remaining pairs are all
+	 * instances of the same benign pattern: a WP Rocket "collector" filter (an
+	 * exclusions or preload-list array that callbacks *append* to) that
+	 * several plugin-compat classes legitimately contribute to. None of them
+	 * mutate shared state in a way where registration order matters, unlike
+	 * the documented pair.
 	 *
 	 * @var array<string,array<string>>
 	 */
 	private const ACCEPTED_COLLISIONS = [
-		// Documented by SubscriberFactory::get_registry()'s own comment (order
-		// preserved intentionally); this scan additionally found pdfembedder
-		// also on the same hook + priority, which that comment does not
-		// mention.
+		// Documented by SubscriberFactory's registry-order comment; this scan
+		// also found pdfembedder on the same hook + priority (not mentioned there).
 		'rocket_exclude_js:10'                      => [
 			'elementor_subscriber',
 			'pdfembedder',
@@ -183,8 +139,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 
 	/**
 	 * Authoritative id => FQCN map for the Easy-25 batch, reconciled against
-	 * PluginResolverGatedIds::IDS (the single source of truth for this issue's
-	 * gated ids, shared with the baseline equivalence test).
+	 * PluginResolverGatedIds::IDS (the single source of truth for the gated
+	 * ids, shared with the baseline equivalence test).
 	 *
 	 * @return array<string,string>
 	 */
@@ -220,8 +176,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 
 	/**
 	 * Sanity-check the enumeration itself: this scan must cover exactly the
-	 * 25 ids issue #8789 gates, no more, no less, so a future slice can't
-	 * silently drift out of sync with PluginResolverGatedIds::IDS.
+	 * ids gated behind PluginCompatibilityInterface, no more, no less, so it
+	 * can't silently drift out of sync with PluginResolverGatedIds::IDS.
 	 */
 	public function testShouldEnumerateExactlyTheEasy25GatedIds() {
 		$ids = array_keys( $this->easy_25_classes() );
@@ -251,9 +207,9 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	}
 
 	/**
-	 * The AC-required assertion: no WordPress hook is registered by 2+ of the
-	 * Easy-25 classes at the same priority, except the reviewed, documented
-	 * pairs in self::ACCEPTED_COLLISIONS.
+	 * The core assertion: no WordPress hook is registered by 2+ of the Easy-25
+	 * classes at the same priority, except the reviewed, documented pairs in
+	 * self::ACCEPTED_COLLISIONS.
 	 *
 	 * Isolated (see load_deviation_marker_stubs()'s docblock): capturing
 	 * Jetpack's real hook map requires declaring a real global class that
@@ -274,9 +230,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 				foreach ( self::priorities_for_callback( $callback ) as $priority ) {
 					$key = $hook . ':' . $priority;
 
-					// Keyed by id to dedupe a class registering the same
-					// hook+priority twice with itself (e.g. Autoptimize's two
-					// admin_notices callbacks) - that's not a cross-class collision.
+					// Keyed by id to dedupe a class registering the same hook+priority
+					// twice with itself (not a cross-class collision).
 					$hook_priority_to_ids[ $key ][ $id ] = true;
 				}
 			}
