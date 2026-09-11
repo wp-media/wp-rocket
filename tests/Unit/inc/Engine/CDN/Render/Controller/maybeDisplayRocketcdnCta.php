@@ -11,6 +11,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -55,6 +56,7 @@ class Test_MaybeDisplayRocketcdnCta extends TestCase {
 		$beacon         = Mockery::mock( Beacon::class );
 		$context        = Mockery::mock( Context::class );
 		$options        = Mockery::mock( Options_Data::class );
+		$options_api    = Mockery::mock( Options::class );
 		$cdn_query      = $this->createMock( RocketCDNQuery::class );
 		$cache          = Mockery::mock( Cache::class );
 
@@ -66,6 +68,7 @@ class Test_MaybeDisplayRocketcdnCta extends TestCase {
 			'',
 			$context,
 			$options,
+			$options_api,
 			$cdn_query,
 			$this->subscription_controller,
 			$this->user,

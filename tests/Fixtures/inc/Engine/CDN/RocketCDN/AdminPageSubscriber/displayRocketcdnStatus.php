@@ -113,7 +113,7 @@ return [
 							</div>
 						</div>
 						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
+							<a href="#" data-micromodal-trigger="wpr-rocketcdn-modal" class="wpr-button wpr-rocketcdn-open">Get RocketCDN Pro</a>
 						</div>
 					</div>
 				</div>',
@@ -160,7 +160,7 @@ return [
 							</div>
 						</div>
 						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
+							<a href="#" data-micromodal-trigger="wpr-rocketcdn-modal" class="wpr-button wpr-rocketcdn-open">Get RocketCDN Pro</a>
 						</div>
 					</div>
 				</div>',
