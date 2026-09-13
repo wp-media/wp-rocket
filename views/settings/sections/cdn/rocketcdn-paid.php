@@ -17,7 +17,7 @@
  *     @type string $page        Page section identifier.
  *     @type array  $status_indicator Data for the CDN status indicator partial.
  *     @type bool   $is_active    Whether RocketCDN Pro is the currently applied CDN mode.
- *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type bool   $is_forced_off Whether the mode toggle must be disabled (subscription loading, expired/banned licence).
  *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */

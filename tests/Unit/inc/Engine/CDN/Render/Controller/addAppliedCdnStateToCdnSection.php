@@ -129,6 +129,8 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 
 		$this->assertSame( Context::BYOCDN_TYPE, $sections['cdn_section']['applied_cdn_state'] );
 		$this->assertTrue( $sections['cdn_section']['is_active'] );
+		$this->assertFalse( $sections['cdn_section']['is_forced_off'] );
+		$this->assertSame( 'This option is managed by your host and can’t be changed here.', $sections['cdn_section']['toggle_tooltip'] );
 	}
 
 	/**
