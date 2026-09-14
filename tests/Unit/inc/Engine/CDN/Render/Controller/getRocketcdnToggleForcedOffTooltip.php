@@ -230,7 +230,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 				[
 					'is_subscription_loading' => true,
 				],
-				'RocketCDN is currently being activated. Please wait, this should only take a moment.',
+				'RocketCDN is being activated. This should only take a moment.',
 			],
 			'expired-licence copy second'           => [
 				[
@@ -239,7 +239,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_free'                 => true,
 					'is_license_invalid'      => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has expired.',
+				'RocketCDN is off because your WP Rocket license has expired.',
 			],
 			'banned-reseller copy third'            => [
 				[
@@ -249,7 +249,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => false,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+				'RocketCDN is off because your WP Rocket license has been banned.',
 			],
 			'loading takes precedence over expired' => [
 				[
@@ -258,7 +258,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_free'                 => true,
 					'is_license_invalid'      => true,
 				],
-				'RocketCDN is currently being activated. Please wait, this should only take a moment.',
+				'RocketCDN is being activated. This should only take a moment.',
 			],
 			// should_display_licence_expired_notice() deliberately excludes banned
 			// resellers (`! is_reseller_license_banned()`), so a banned + invalid
@@ -272,7 +272,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => true,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+				'RocketCDN is off because your WP Rocket license has been banned.',
 			],
 			'forced-paused copy fourth, for a cancelled paid plan' => [
 				[
@@ -283,7 +283,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_paid'                 => true,
 					'is_in_grace_period'      => true,
 				],
-				'RocketCDN is currently paused because your subscription is no longer active.',
+				'RocketCDN is off because your Pro subscription is no longer active.',
 			],
 		];
 	}

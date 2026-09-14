@@ -474,10 +474,18 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'rocket_retry_pro_detection'
 		);
 
+		$support_url = rocket_get_external_url(
+			'support',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			]
+		);
+
 		$message = sprintf(
 			'<strong>%1$s</strong><br><br>%2$s',
-			esc_html__( 'RocketCDN subscription detection failed', 'rocket' ),
-			esc_html__( 'We couldn’t determine your RocketCDN subscription status. Please refresh your customer data or try again later.', 'rocket' )
+			esc_html__( 'RocketCDN subscription check failed', 'rocket' ),
+			esc_html__( 'We couldn’t confirm your RocketCDN subscription status. Refresh your customer data or contact support if the problem continues.', 'rocket' )
 		);
 
 		rocket_notice_html(
@@ -487,9 +495,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'dismissible' => false,
 				'id'          => 'rocketcdn_pro_detection_failed_notice',
 				'action'      => sprintf(
-					'<a href="%1$s" class="wpr-button" id="wpr-rocketcdn-retry-pro-detection">%2$s</a>',
+					'<a href="%1$s" class="wpr-button" id="wpr-rocketcdn-retry-pro-detection">%2$s</a> <a href="%3$s" target="_blank" rel="noopener" id="wpr-rocketcdn-pro-detection-support">%4$s</a>',
 					esc_url( $retry_url ),
-					esc_html__( 'Refresh customer data', 'rocket' )
+					esc_html__( 'Refresh customer data', 'rocket' ),
+					esc_url( $support_url ),
+					esc_html__( 'Contact support', 'rocket' )
 				),
 			]
 		);

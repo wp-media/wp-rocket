@@ -31,9 +31,9 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 	 * @var array
 	 */
 	private $base_texts = [
-		'paused_status_text' => 'RocketCDN is paused',
+		'paused_status_text' => 'RocketCDN is off',
 		'active_status_text' => 'RocketCDN is active',
-		'paused_details'     => 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.',
+		'paused_details'     => 'RocketCDN is currently off. Turn on the toggle to start delivering your content from the CDN.',
 		'status_text'        => '',
 		'details'            => 'Start with your homepage...',
 		'class'              => '',

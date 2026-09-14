@@ -1,9 +1,9 @@
 <?php
 
 $base_texts = [
-	'paused_status_text' => 'RocketCDN is paused',
+	'paused_status_text' => 'RocketCDN is off',
 	'active_status_text' => 'RocketCDN is active',
-	'paused_details'     => 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.',
+	'paused_details'     => 'RocketCDN is currently off. Turn on the toggle to start delivering your content from the CDN.',
 	'status_text'        => '',
 	'details'            => 'Start with your homepage...',
 	'class'              => '',
@@ -78,7 +78,7 @@ return [
 		],
 	],
 
-	// Reseller + banned (BANNED_WEBSITE) → distinct copy: paused_details does not mention "licence has expired" (cleared).
+	// Reseller + banned (BANNED_WEBSITE) → distinct copy: paused_details does not mention "license has expired" (cleared).
 	'testDistinctCopyForResellerBannedLicense'                    => [
 		'config'   => [
 			'subscription_status' => 'running',
@@ -94,7 +94,7 @@ return [
 		],
 		'expected' => [
 			'class_contains'              => 'wpr-cdn-status--expired',
-			'paused_details_not_contains' => 'licence has expired',
+			'paused_details_not_contains' => 'license has expired',
 		],
 	],
 
@@ -114,7 +114,7 @@ return [
 		],
 		'expected' => [
 			'class_contains'          => 'wpr-cdn-status--expired',
-			'paused_details_contains' => 'licence has expired',
+			'paused_details_contains' => 'license has expired',
 		],
 	],
 
@@ -133,7 +133,7 @@ return [
 		],
 		'expected' => [
 			'class_contains'          => 'wpr-cdn-status--expired',
-			'paused_details_contains' => 'licence has expired',
+			'paused_details_contains' => 'license has expired',
 		],
 	],
 
@@ -153,7 +153,7 @@ return [
 		],
 		'expected' => [
 			'class_contains'          => 'wpr-cdn-status--expired',
-			'paused_details_contains' => 'licence has expired',
+			'paused_details_contains' => 'license has expired',
 		],
 	],
 ];

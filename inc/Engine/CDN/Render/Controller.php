@@ -734,19 +734,19 @@ class Controller extends Abstract_Render {
 	 */
 	private function get_rocketcdn_toggle_forced_off_tooltip(): string {
 		if ( $this->is_subscription_loading() ) {
-			return __( 'RocketCDN is currently being activated. Please wait, this should only take a moment.', 'rocket' );
+			return __( 'RocketCDN is being activated. This should only take a moment.', 'rocket' );
 		}
 
 		if ( $this->should_display_licence_expired_notice() ) {
-			return __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
+			return __( 'RocketCDN is off because your WP Rocket license has expired.', 'rocket' );
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
-			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
+			return __( 'RocketCDN is off because your WP Rocket license has been banned.', 'rocket' );
 		}
 
 		if ( $this->is_forced_paused() ) {
-			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
+			return __( 'RocketCDN is off because your Pro subscription is no longer active.', 'rocket' );
 		}
 
 		return '';
@@ -778,7 +778,7 @@ class Controller extends Abstract_Render {
 
 		if ( $this->subscription_controller->is_license_invalid() ) {
 			$texts['class']         .= ' wpr-cdn-status--expired';
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WPRocket licence has expired.', 'rocket' );
+			$texts['paused_details'] = __( 'RocketCDN is currently off because your WP Rocket license has expired.', 'rocket' );
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
@@ -812,7 +812,7 @@ class Controller extends Abstract_Render {
 		$texts['status_text']        = $texts['active_status_text'];
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your RocketCDN subscription was cancelled. Please wait up to two days before resuming.', 'rocket' );
+			$texts['paused_details'] = __( 'RocketCDN is currently off because your RocketCDN subscription was cancelled. It can take up to two days to complete.', 'rocket' );
 			$texts['class']         .= ' wpr-cdn-status--expired';
 		}
 
@@ -958,9 +958,9 @@ class Controller extends Abstract_Render {
 	 */
 	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ): array {
 		$texts = [
-			'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+			'paused_status_text' => __( 'RocketCDN is off', 'rocket' ),
 			'active_status_text' => __( 'RocketCDN is active', 'rocket' ),
-			'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
+			'paused_details'     => __( 'RocketCDN is currently off. Turn on the toggle to start delivering your content from the CDN.', 'rocket' ),
 			'status_text'        => '',
 			'details'            => sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
