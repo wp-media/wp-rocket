@@ -684,12 +684,4 @@ class Subscriber implements Subscriber_Interface {
 
 		$this->cname_validator->clear_validation_cache( $all_cnames );
 	}
-
-	// Note: this class used to hook a `get_rocket_option_cdn` filter here
-	// (`apply_pause_on_rocketcdn_only()`, bug #932 / PR #8431) that force-reported
-	// the `cdn` option as enabled whenever `cdn_type` was 'byocdn', regardless of
-	// the actual `cdn` value. That protection is now handled architecturally by
-	// `Rest::apply_cdn_mode()`, which keeps `cdn`/`cdn_type` in sync on every
-	// toggle-driven transition, so the override was removed (issue #8707) rather
-	// than patched — it was actively masking a BYOCDN user's explicit "off" state.
 }
