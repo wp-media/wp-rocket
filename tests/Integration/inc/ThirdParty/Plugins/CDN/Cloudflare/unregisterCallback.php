@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::unregister_callback
@@ -83,8 +84,15 @@ class TestUnregisterCallback extends TestCase {
 			'accepted_args' => 3,
 		];
 
+		// The gated Cloudflare subscriber isn't registered in the test container, so
+		// build it directly instead of fetching it via $container->get().
 		$container  = apply_filters( 'rocket_container', null );
-		$cloudflare = $container->get( 'cloudflare_plugin_subscriber' );
+		$cloudflare = new Cloudflare(
+			$container->get( 'options' ),
+			$container->get( 'options_api' ),
+			$container->get( 'beacon' ),
+			$container->get( 'cloudflare_plugin_facade' )
+		);
 
 		// Prior to the fix, an int $key fatals here with:
 		// TypeError: substr(): Argument #1 ($string) must be of type string, int given.

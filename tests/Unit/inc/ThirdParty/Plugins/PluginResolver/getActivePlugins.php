@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
@@ -25,6 +26,10 @@ class Test_GetActivePlugins extends TestCase {
 		parent::setUp();
 
 		$this->reset_memoization();
+
+		// Cloudflare::is_activated() calls the real global is_plugin_active(),
+		// so stub it to avoid a fatal during full-registry iteration.
+		Functions\when( 'is_plugin_active' )->justReturn( false );
 	}
 
 	/**
