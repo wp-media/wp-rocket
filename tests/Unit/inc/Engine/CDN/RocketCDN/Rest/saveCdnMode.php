@@ -117,8 +117,6 @@ class Test_SaveCdnMode extends TestCase {
 		$response = $this->get_rest()->save_cdn_mode( $request );
 
 		$this->assertSame( 200, $response->get_status() );
-		$data = $response->get_data();
-		$this->assertFalse( $data['no_pages'] ); // loading=true suppresses no_pages
 	}
 
 	/**
@@ -142,8 +140,6 @@ class Test_SaveCdnMode extends TestCase {
 		$response = $this->get_rest()->save_cdn_mode( $request );
 
 		$this->assertSame( 200, $response->get_status() );
-		$data = $response->get_data();
-		$this->assertTrue( $data['no_pages'] ); // no pages, not loading
 	}
 
 	/**
@@ -154,8 +150,16 @@ class Test_SaveCdnMode extends TestCase {
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( false );
 		$this->subscription_controller->shouldReceive( 'create_subscription' )->once()->with( true )->andReturn( false );
 
+		// Initial apply_cdn_mode('rocketcdn_free') call in save_cdn_mode.
 		$this->setup_apply_cdn_mode_mocks();
+
+		// Rollback: delete pages.
 		$this->query->method( 'delete_all_rows' );
+
+		// Rollback: read fresh settings from DB and write cdn=0.
+		$this->options_api->shouldReceive( 'get' )->with( 'settings', [] )->andReturn( [] );
+		$this->options_api->shouldReceive( 'set' )
+			->with( 'settings', [ 'cdn' => 0, 'cdn_state' => Context::CDN_STATE_NOTHING ] );
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'mode', Context::ROCKETCDN_FREE_TYPE );

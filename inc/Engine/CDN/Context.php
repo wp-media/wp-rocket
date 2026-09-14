@@ -36,6 +36,14 @@ class Context {
 	public const ROCKETCDN_PAID_TYPE = 'rocketcdn_paid';
 
 	/**
+	 * RocketCDN state: free subscription creation is in progress.
+	 *
+	 * The only state that isn't a CDN_STATE_* value — it's a live transient,
+	 * never persisted in the cdn_state option.
+	 */
+	public const ROCKETCDN_STATE_ONGOING_FREE = 'ongoing_activation_free';
+
+	/**
 	 * WP Rocket options.
 	 *
 	 * @var Options_Data

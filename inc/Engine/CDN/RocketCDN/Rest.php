@@ -492,7 +492,10 @@ class Rest extends WP_REST_Controller {
 	public function rollback_failed_subscription(): void {
 		$this->query->delete_all_rows();
 
-		$this->apply_cdn_mode( Context::CDN_STATE_NOTHING );
+		$settings              = $this->options_api->get( 'settings', [] );
+		$settings['cdn']       = 0;
+		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
+		$this->options_api->set( 'settings', $settings );
 	}
 
 	/**

@@ -97,7 +97,7 @@ class Test_RemovePage extends TestCase {
 	}
 
 	/**
-	 * When the last page is removed, the response must include no_pages=true.
+	 * When the last page is removed, the response must include count=0.
 	 */
 	public function testShouldReturnNoPagesWhenLastPageRemoved(): void {
 		$item      = new \stdClass();
@@ -119,11 +119,11 @@ class Test_RemovePage extends TestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data();
-		$this->assertTrue( $data['no_pages'] );
+		$this->assertSame( 0, $data['count'] );
 	}
 
 	/**
-	 * When pages still remain after removal, no_pages must be false.
+	 * When pages still remain after removal, count must be greater than zero.
 	 */
 	public function testShouldReturnNoPagesAsFalseWhenPagesRemain(): void {
 		$remaining = (object) [ 'id' => 2, 'url' => 'http://example.org/blog', 'title' => 'Blog' ];
@@ -146,6 +146,6 @@ class Test_RemovePage extends TestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data();
-		$this->assertFalse( $data['no_pages'] );
+		$this->assertGreaterThan( 0, $data['count'] );
 	}
 }
