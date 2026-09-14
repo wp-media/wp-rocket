@@ -1554,7 +1554,7 @@ class Page extends Abstract_Render {
 					// This prevents incorrect BYOCDN status display when CDN is enabled but no CNAMEs are configured.
 					'is_active'          => ! empty( ( (array) $this->options->get_options() )['cdn_cnames'] ?? [] ),
 					'status_text'        => __( 'Your CDN is active on your website', 'rocket' ),
-					'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
+					'paused_status_text' => __( 'RocketCDN is off', 'rocket' ),
 					'hide_pause_btn'     => true,
 				],
 			],

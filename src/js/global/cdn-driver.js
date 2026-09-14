@@ -496,7 +496,7 @@
 	}
 
 	/**
-	 * Initializes the "Use RocketCDN Free instead" CTA in the BYOCDN missing-CNAME
+	 * Initializes the "Switch to RocketCDN Free" CTA in the BYOCDN missing-CNAME
 	 * warning notice.
 	 *
 	 * Clicking it switches to the RocketCDN tab by delegating to the existing
