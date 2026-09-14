@@ -557,7 +557,6 @@ class Rest extends WP_REST_Controller {
 			'items_html'                       => $this->render_controller->get_built_in_page_list(),
 			'status_indicator_html'            => $this->render_controller->get_status_indicator_html( $pages_count ),
 			'is_subscription_creation_loading' => $this->subscription_controller->is_subscription_creation_loading(),
-			'no_pages'                         => 0 === $pages_count && ! $this->subscription_controller->is_subscription_creation_loading(),
 		];
 	}
 
