@@ -64,13 +64,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'rocketcdn_query' );
 		$this->getContainer()->addShared( 'cdn_cname_validator', CNAMEValidator::class );
 		$this->getContainer()->addShared( 'cdn', CDN::class )
-			->addArguments(
-				[
-					'options',
-					'cdn_cname_validator',
-					'cdn_context',
-				]
-				);
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'cdn_context', Context::class )
 			->addArguments(
 				[

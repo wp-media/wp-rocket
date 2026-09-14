@@ -130,6 +130,10 @@ class Controller extends Abstract_Render {
 	 * matching {@see get_byocdn_status_indicator_html()}, which drives the same message
 	 * after an AJAX toggle.
 	 *
+	 * Also exposes `show_no_cname_warning`, true only when BYOCDN is the actually
+	 * applied mode (not merely tab-selected) and no CNAME has been configured yet
+	 * — the tab otherwise lets a user turn the driver on with nothing to rewrite.
+	 *
 	 * @since 3.23.3
 	 *
 	 * @param array $sections CDN driver sections.
@@ -144,10 +148,12 @@ class Controller extends Abstract_Render {
 		$applied_cdn_state = $this->context->get_applied_cdn_state();
 		$is_active         = Context::BYOCDN_TYPE === $applied_cdn_state;
 
-		$sections['cdn_section']['applied_cdn_state'] = $applied_cdn_state;
-		$sections['cdn_section']['is_active']         = $is_active;
-		$sections['cdn_section']['is_forced_off']     = false;
-		$sections['cdn_section']['toggle_tooltip']    = $this->get_toggle_forced_off_tooltip();
+		$sections['cdn_section']['applied_cdn_state']     = $applied_cdn_state;
+		$sections['cdn_section']['is_active']             = $is_active;
+		$sections['cdn_section']['is_forced_off']         = false;
+		$sections['cdn_section']['toggle_tooltip']        = $this->get_toggle_forced_off_tooltip();
+		$sections['cdn_section']['show_no_cname_warning'] = $is_active
+			&& empty( $this->options->get( 'cdn_cnames', [] ) );
 
 		if ( isset( $sections['cdn_section']['status_indicator'] ) ) {
 			$sections['cdn_section']['status_indicator']['is_active'] = $is_active;
@@ -626,12 +632,11 @@ class Controller extends Abstract_Render {
 		}
 
 		$data = [
-			'disable_other_cdn' => Context::ROCKETCDN_PAID_TYPE === $driver,
-			'cdn_type'          => $cdn_type,
-			'display_tabs'      => ! $this->is_cdn_type_filtered(),
-			'rocketcdn_mode'    => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
-			'rocketcdn_active'  => Context::ROCKETCDN_TYPE === $applied_cdn_state,
-			'byocdn_active'     => Context::BYOCDN_TYPE === $applied_cdn_state,
+			'cdn_type'         => $cdn_type,
+			'display_tabs'     => ! $this->is_cdn_type_filtered(),
+			'rocketcdn_mode'   => Context::ROCKETCDN_PAID_TYPE === $driver ? 'RocketCDN Paid' : 'RocketCDN Free',
+			'rocketcdn_active' => Context::ROCKETCDN_TYPE === $applied_cdn_state,
+			'byocdn_active'    => Context::BYOCDN_TYPE === $applied_cdn_state,
 		];
 
 		echo $this->generate( 'partials/cdn/cdn-driver-tabs', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
