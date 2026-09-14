@@ -483,10 +483,9 @@ class Rest extends WP_REST_Controller {
 	}
 
 	/**
-	 * Rolls back a failed async subscription creation.
+	 * Rolls back a failed subscription creation.
 	 *
 	 * Deletes all page records and resets CDN mode to 'nothing'.
-	 * Called by RESTSubscriber when rocket_cdnfree_subscription_creation_failed fires.
 	 *
 	 * @return void
 	 */
@@ -604,7 +603,17 @@ class Rest extends WP_REST_Controller {
 		$this->apply_cdn_mode( $mode );
 
 		if ( Context::ROCKETCDN_FREE_TYPE === $mode && ! $this->subscription_controller->has_active_subscription() ) {
-			$this->subscription_controller->schedule_subscription_creation();
+			$result = $this->subscription_controller->create_subscription( true );
+
+			if ( is_wp_error( $result ) || false === $result ) {
+				$this->rollback_failed_subscription();
+
+				return new WP_Error(
+					'rocketcdn_subscription_creation_failed',
+					__( 'Failed to create RocketCDN subscription.', 'rocket' ),
+					[ 'status' => 500 ]
+				);
+			}
 		}
 
 		$response = array_merge(

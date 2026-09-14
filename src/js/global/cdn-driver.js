@@ -211,6 +211,35 @@
 	 *
 	 * Disables the built-in CDN section, purge and exclude sections.
 	 */
+	function revertSubscriptionLoadingState() {
+		const builtIn = document.querySelector( '.wpr-cdn-built-in' );
+		if ( builtIn ) {
+			builtIn.classList.remove( 'wpr-cdn-built-in--disabled' );
+		}
+
+		const purgeSection = document.querySelector( '.wpr-cdn-purge.rocketcdn' );
+		if ( purgeSection ) {
+			purgeSection.classList.remove( 'wpr-cdn-disabled' );
+		}
+
+		document.querySelectorAll( '.wpr-cdn-exclusions' ).forEach( ( el ) => {
+			el.classList.remove( 'wpr-cdn-disabled' );
+			const textarea = el.querySelector( 'textarea' );
+			if ( textarea ) {
+				textarea.disabled = false;
+			}
+		} );
+
+		const submitButton = document.querySelector( '#wpr-options-submit' );
+		if ( submitButton ) {
+			submitButton.classList.remove( 'wpr-cdn-disabled' );
+		}
+
+		document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( modeToggle ) => {
+			modeToggle.disabled = false;
+		} );
+	}
+
 	function setSubscriptionLoadingState() {
 		const builtIn = document.querySelector( '.wpr-cdn-built-in' );
 
@@ -352,6 +381,10 @@
 
 			toggle.disabled = true;
 
+			if ( 'rocketcdn_free' === requestedMode ) {
+				setSubscriptionLoadingState();
+			}
+
 			window.wp.apiFetch( {
 				path: '/wp-rocket/v1/rocketcdn/mode',
 				method: 'POST',
@@ -363,15 +396,21 @@
 				);
 				syncCdnHiddenInputs( requestedMode );
 				refreshUIElements( response );
-				if ( 'ongoing_activation_free' === response.rocketcdn_state ) {
-					setSubscriptionLoadingState();
+				if ( response.is_subscription_creation_loading ) {
+					// Loading state confirmed — poller started by refreshUIElements.
 				} else {
+					if ( 'rocketcdn_free' === requestedMode ) {
+						revertSubscriptionLoadingState();
+					}
 					toggle.disabled = false;
 				}
 			} ).catch( () => {
 				// Revert to previous state on failure.
 				toggle.checked = ! toggle.checked;
 				toggle.disabled = false;
+				if ( 'rocketcdn_free' === requestedMode ) {
+					revertSubscriptionLoadingState();
+				}
 				updateCdnActiveIndicator( previouslyActive );
 
 				if ( previouslyActive && previouslyActive !== toggle ) {

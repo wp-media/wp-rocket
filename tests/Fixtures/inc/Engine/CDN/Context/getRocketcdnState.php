@@ -1,12 +1,6 @@
 <?php
 
 return [
-	'testShouldReturnOngoingActivationFreeWhenLoading' => [
-		'config'   => [
-			'is_subscription_creation_loading' => true,
-		],
-		'expected' => 'ongoing_activation_free',
-	],
 	'testShouldReturnProWhenCdnStateIsRocketcdnPro'     => [
 		'config'   => [
 			'cdn_state' => 'rocketcdn_paid',

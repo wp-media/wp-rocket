@@ -97,18 +97,18 @@ class Test_SaveCdnMode extends TestCase {
 	}
 
 	/**
-	 * When mode is free and no active subscription, schedule_subscription_creation must be called.
+	 * When mode is free and no active subscription, create_subscription must be called.
 	 */
-	public function testShouldScheduleCreationWhenFreeWithNoActiveSubscription(): void {
+	public function testShouldCallCreateSubscriptionWhenFreeWithNoActiveSubscription(): void {
 		$this->render_controller->shouldReceive( 'should_reject_rocketcdn_activation' )->andReturn( false );
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( false );
-		$this->subscription_controller->shouldReceive( 'schedule_subscription_creation' )->once();
+		$this->subscription_controller->shouldReceive( 'create_subscription' )->once()->with( true )->andReturn( true );
 
 		$this->setup_apply_cdn_mode_mocks();
 		$this->setup_get_pages_data_mocks( 0, true );
 
 		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
-		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::ROCKETCDN_STATE_ONGOING_FREE );
+		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->render_controller->shouldReceive( 'should_disable_element_for_rocketcdn' )->andReturn( false );
 
 		$request = new \WP_REST_Request();
@@ -118,16 +118,16 @@ class Test_SaveCdnMode extends TestCase {
 
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data();
-		$this->assertTrue( $data['no_pages'] === false ); // loading=true means no_pages=false
+		$this->assertFalse( $data['no_pages'] ); // loading=true suppresses no_pages
 	}
 
 	/**
-	 * When mode is free and an active subscription exists, no scheduling must occur.
+	 * When mode is free and an active subscription exists, create_subscription must not be called.
 	 */
-	public function testShouldNotScheduleCreationWhenFreeWithActiveSubscription(): void {
+	public function testShouldNotCallCreateSubscriptionWhenFreeWithActiveSubscription(): void {
 		$this->render_controller->shouldReceive( 'should_reject_rocketcdn_activation' )->andReturn( false );
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( true );
-		$this->subscription_controller->shouldNotReceive( 'schedule_subscription_creation' );
+		$this->subscription_controller->shouldNotReceive( 'create_subscription' );
 
 		$this->setup_apply_cdn_mode_mocks();
 		$this->setup_get_pages_data_mocks( 0, false );
@@ -144,5 +144,25 @@ class Test_SaveCdnMode extends TestCase {
 		$this->assertSame( 200, $response->get_status() );
 		$data = $response->get_data();
 		$this->assertTrue( $data['no_pages'] ); // no pages, not loading
+	}
+
+	/**
+	 * When create_subscription fails, rollback must be called and a 500 error returned.
+	 */
+	public function testShouldRollbackAndReturnErrorWhenCreateSubscriptionFails(): void {
+		$this->render_controller->shouldReceive( 'should_reject_rocketcdn_activation' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'create_subscription' )->once()->with( true )->andReturn( false );
+
+		$this->setup_apply_cdn_mode_mocks();
+		$this->query->method( 'delete_all_rows' );
+
+		$request = new \WP_REST_Request();
+		$request->set_param( 'mode', Context::ROCKETCDN_FREE_TYPE );
+
+		$response = $this->get_rest()->save_cdn_mode( $request );
+
+		$this->assertInstanceOf( \WP_Error::class, $response );
+		$this->assertSame( 'rocketcdn_subscription_creation_failed', $response->get_error_code() );
 	}
 }
