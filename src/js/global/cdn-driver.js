@@ -681,11 +681,6 @@
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
 
-				const noPageNotice = document.querySelector( '.wpr-cdn-no-pages-notice' );
-				if ( noPageNotice ) {
-					noPageNotice.classList.add( 'wpr-isHidden' );
-				}
-
 				updateRocketCtaState( response.count, response.limit );
 
 				if ( builtIn ) {
@@ -818,10 +813,6 @@
 						homepageBtn.disabled = false;
 					}
 
-					const noPageNotice = document.querySelector( '.wpr-cdn-no-pages-notice' );
-					if ( noPageNotice ) {
-						noPageNotice.classList.remove( 'wpr-isHidden' );
-					}
 				}
 
 				if ( response.limit > response.count ) {
