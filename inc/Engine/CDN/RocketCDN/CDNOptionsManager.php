@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Context;
 
 /**
  * Manager for WP Rocket CDN options
@@ -117,8 +118,9 @@ class CDNOptionsManager {
 	 * @return void
 	 */
 	public function disable() {
-		$settings        = $this->options_api->get( 'settings', [] );
-		$settings['cdn'] = 0;
+		$settings              = $this->options_api->get( 'settings', [] );
+		$settings['cdn']       = 0;
+		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
 
 		$this->options_api->set( 'settings', $settings );
 

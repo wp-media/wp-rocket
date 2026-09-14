@@ -723,6 +723,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$this->cdn_options->set_cdn_state( Context::CDN_STATE_NOTHING );
+		$this->cdn_options->disable();
 	}
 }
