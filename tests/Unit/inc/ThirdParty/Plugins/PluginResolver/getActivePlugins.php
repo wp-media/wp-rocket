@@ -30,6 +30,10 @@ class Test_GetActivePlugins extends TestCase {
 		// Cloudflare::is_activated() calls the real global is_plugin_active(),
 		// so stub it to avoid a fatal during full-registry iteration.
 		Functions\when( 'is_plugin_active' )->justReturn( false );
+
+		// Hummingbird::is_activated() calls the real global is_admin(),
+		// so stub it to avoid a fatal during full-registry iteration.
+		Functions\when( 'is_admin' )->justReturn( false );
 	}
 
 	/**
@@ -50,16 +54,14 @@ class Test_GetActivePlugins extends TestCase {
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array $expected Expected full registry ids.
+	 * @param array $registry_ids      Expected full registry ids.
+	 * @param array $active_by_default Expected active-by-default ids.
 	 */
-	public function testShouldReturnAllRegistryIdsByDefault( $expected ) {
+	public function testShouldReturnAllRegistryIdsByDefault( $registry_ids, $active_by_default ) {
 		$registry = ( new SubscriberFactory() )->get_registry();
 
-		$this->assertSame( $expected, array_keys( $registry ) );
-
-		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
-
-		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
+		$this->assertSame( $registry_ids, array_keys( $registry ) );
+		$this->assertSame( $active_by_default, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**
