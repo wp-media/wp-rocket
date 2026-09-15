@@ -155,7 +155,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
 			],
-			'get_rocket_option_cdn'                    => 'apply_pause_on_rocketcdn_only',
 		];
 	}
 
@@ -684,20 +683,5 @@ class Subscriber implements Subscriber_Interface {
 		$all_cnames = array_filter( array_unique( array_merge( $old_cnames, $new_cnames ) ), 'is_string' );
 
 		$this->cname_validator->clear_validation_cache( $all_cnames );
-	}
-
-	/**
-	 * Apply the pause of CDN on RocketCDN only.
-	 *
-	 * @param bool $cdn The current CDN status.
-	 *
-	 * @return bool
-	 */
-	public function apply_pause_on_rocketcdn_only( $cdn ) {
-		if ( is_admin() ) {
-			return $cdn;
-		}
-
-		return $cdn || 'rocketcdn' !== $this->options->get( 'cdn_type' );
 	}
 }
