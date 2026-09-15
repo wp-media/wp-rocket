@@ -369,7 +369,6 @@ class Plugin {
 			'wp-meteor',
 			'revolution_slider_subscriber',
 			'wordfence_subscriber',
-			'ezoic',
 			'thirstyaffiliates',
 			'pwa',
 			'yoast_seo',
