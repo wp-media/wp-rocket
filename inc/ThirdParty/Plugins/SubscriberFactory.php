@@ -31,6 +31,8 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
 use WP_Rocket\ThirdParty\Plugins\Optimole;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\ThriveVisualEditor;
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\VisualComposer;
 use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
 use WP_Rocket\ThirdParty\Plugins\PWA;
 use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
@@ -113,6 +115,8 @@ class SubscriberFactory {
 			'termly_subscriber'            => Termly::class,
 			'optimole_subscriber'          => Optimole::class,
 			'premium_seo_pack'             => PremiumSEOPack::class,
+			'thrive_visual_editor'         => ThriveVisualEditor::class,
+			'visual_composer'              => VisualComposer::class,
 		];
 	}
 
