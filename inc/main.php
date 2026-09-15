@@ -12,6 +12,10 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
 }
 
+// Resolves bundled dependencies from disk when the Composer map in memory predates them.
+require_once WP_ROCKET_FUNCTIONS_PATH . 'autoload-fallback.php';
+rocket_register_vendor_autoload_fallback();
+
 $rocket_can_boot_mcp_adapter =
 	class_exists( McpAdapter::class )
 	&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
