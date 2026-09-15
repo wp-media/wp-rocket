@@ -1,28 +1,32 @@
 <?php
-namespace WP_Rocket\Subscriber\Third_Party\Plugins;
+namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Compatibility class for SyntaxHighlighter plugin
  *
  * @since 3.3.1
- * @author Remy Perona
  */
-class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
+class SyntaxHighlighter implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'SyntaxHighlighter' );
+	}
+
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @since  3.3.1
-	 * @author Remy Perona
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'SyntaxHighlighter' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_exclude_defer_js' => 'exclude_defer_js_syntaxhighlighter_scripts',
 			'rocket_exclude_js'       => 'exclude_minify_js_syntaxhighlighter_scripts',
@@ -33,7 +37,6 @@ class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	 * Adds SyntaxHighlighter scripts to defer JS exclusion
 	 *
 	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array
@@ -52,7 +55,6 @@ class SyntaxHighlighter_Subscriber implements Subscriber_Interface {
 	 * Adds SyntaxHighlighter scripts to minify/combine JS exclusion
 	 *
 	 * @since 3.3.1
-	 * @author Remy Perona
 	 *
 	 * @param array $excluded_scripts Array of scripts to exclude.
 	 * @return array

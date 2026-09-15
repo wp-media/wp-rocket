@@ -7,8 +7,6 @@ use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WP_Rocket\ThirdParty\Plugins\ContactForm7;
@@ -22,6 +20,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\Weglot;
 use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\Jetpack;
+use WP_Rocket\ThirdParty\Plugins\NGG;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
@@ -43,6 +42,7 @@ use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\ShortPixel;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 use WP_Rocket\ThirdParty\Plugins\Smush;
+use WP_Rocket\ThirdParty\Plugins\SyntaxHighlighter;
 use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
@@ -69,10 +69,10 @@ class SubscriberFactory {
 			// syntaxhighlighter_subscriber is ordered before elementor_subscriber: both hook
 			// `rocket_exclude_js` at the default priority (hook-collision scan, issue #6418
 			// Phase 0); this preserves their pre-refactor relative registration order.
-			'syntaxhighlighter_subscriber' => SyntaxHighlighter_Subscriber::class,
+			'syntaxhighlighter_subscriber' => SyntaxHighlighter::class,
 			'elementor_subscriber'         => Elementor::class,
 			'woocommerce_subscriber'       => WooCommerceSubscriber::class,
-			'ngg_subscriber'               => NGG_Subscriber::class,
+			'ngg_subscriber'               => NGG::class,
 			'smush_subscriber'             => Smush::class,
 			'imagify_webp_subscriber'      => Imagify_Subscriber::class,
 			'shortpixel_webp_subscriber'   => ShortPixel::class,
