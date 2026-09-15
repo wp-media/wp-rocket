@@ -52,6 +52,8 @@ return [
 				'visual_composer',
 				'kk_star_ratings',
 				'wp_postratings',
+				'metaslider',
+				'soliloquy',
 			],
 		],
 	],

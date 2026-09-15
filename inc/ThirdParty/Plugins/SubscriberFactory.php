@@ -47,6 +47,8 @@ use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
 use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
 use WP_Rocket\ThirdParty\Plugins\ShortPixel;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
+use WP_Rocket\ThirdParty\Plugins\Slider\MetaSlider;
+use WP_Rocket\ThirdParty\Plugins\Slider\Soliloquy;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
 use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
@@ -121,6 +123,8 @@ class SubscriberFactory {
 			'visual_composer'              => VisualComposer::class,
 			'kk_star_ratings'              => KKStarRatings::class,
 			'wp_postratings'               => WPPostRatings::class,
+			'metaslider'                   => MetaSlider::class,
+			'soliloquy'                    => Soliloquy::class,
 		];
 	}
 
