@@ -134,8 +134,8 @@
 	"scripts": {
 		"test-unit": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist",
 		"test-unit-coverage": "\"vendor/bin/phpunit\" --testsuite unit --colors=always --configuration tests/Unit/phpunit.xml.dist --coverage-php tests/report/unit.cov",
-		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints,GeneratePress",
-		"test-integration-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Pressidium,PerformanceHints,GeneratePress --coverage-php tests/report/integration.cov",
+		"test-integration": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Termly,Pressidium,PerformanceHints,GeneratePress",
+		"test-integration-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --exclude-group AdminOnly,BeaverBuilder,Elementor,Hummingbird,WithSmush,WithWoo,WithAmp,WithAmpAndCloudflare,WithSCCSS,Cloudways,Dreampress,Cloudflare,CloudflareAdmin,Multisite,WPEngine,SpinUpWP,WordPressCom,O2Switch,PDFEmbedder,PDFEmbedderPremium,PDFEmbedderSecure,Godaddy,LiteSpeed,RevolutionSlider,WordFence,ConvertPlug,Kinsta,Jetpack,RankMathSEO,AllInOneSeoPack,SEOPress,TheSEOFramework,OneCom,RocketLazyLoad,WPXCloud,TheEventsCalendar,Perfmatters,RapidLoad,ProIsp,TranslatePress,WPGeotargeting,Weglot,Termly,Pressidium,PerformanceHints,GeneratePress --coverage-php tests/report/integration.cov",
 		"test-integration-adminonly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly",
 		"test-integration-adminonly-coverage": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group AdminOnly --coverage-php tests/report/integration-adminonly.cov",
 		"test-integration-performancehints": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group PerformanceHints",
@@ -181,6 +181,7 @@
 	    "test-integration-wp-geotargeting": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group WPGeotargeting",
         "test-integration-translatepress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group TranslatePress",
         "test-integration-weglot": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Weglot",
+        "test-integration-termly": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Termly",
 		"test-integration-pressidium": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group Pressidium",
 		"test-integration-generatepress": "\"vendor/bin/phpunit\" --testsuite integration --colors=always --configuration tests/Integration/phpunit.xml.dist --group GeneratePress",
 		"run-tests": [
@@ -236,6 +237,7 @@
 			"@test-integration-wp-geotargeting",
       "@test-integration-translatepress",
       "@test-integration-weglot",
+      "@test-integration-termly",
 			"@test-integration-pressidium",
 			"@test-integration-generatepress"
 		],

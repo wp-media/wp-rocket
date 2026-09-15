@@ -123,6 +123,10 @@ tests_add_filter(
 			define( 'CP_VERSION', '1.0' );
 		}
 
+		if ( BootstrapManager::isGroup( 'Termly' ) ) {
+			define( 'TERMLY_VERSION', '1.0' );
+		}
+
 		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
 			define( 'TRIBE_EVENTS_FILE', true );
 		}
