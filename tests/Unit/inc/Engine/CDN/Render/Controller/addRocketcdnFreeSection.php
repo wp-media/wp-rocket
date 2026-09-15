@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Render\Controller;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\Cache;
@@ -11,6 +12,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -43,6 +45,13 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options API mock instance.
+	 *
+	 * @var Mockery\MockInterface|Options
+	 */
+	private $options_api;
 
 	/**
 	 * RocketCDNQuery mock instance.
@@ -85,10 +94,13 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
+		$this->options_api             = Mockery::mock( Options::class );
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
 		$this->cache                   = Mockery::mock( Cache::class );
+
+		Functions\when( 'get_option' )->justReturn( [ 'persistent' => false ] );
 	}
 
 	/**
@@ -102,6 +114,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			'',
 			$this->context,
 			$this->options,
+			$this->options_api,
 			$this->cdn_query,
 			$this->subscription_controller,
 			$this->user,
@@ -202,6 +215,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->assertArrayHasKey( 'limit_reached', $sections['rocketcdn_free_section']['cta_data'] );
 		$this->assertSame( $expected, $sections['rocketcdn_free_section']['cta_data']['limit_reached'] );
 		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertArrayHasKey( 'toggle_tooltip', $sections['rocketcdn_free_section'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['toggle_tooltip'] );
 	}
 
 	/**
@@ -279,5 +294,149 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$sections   = $controller->add_rocketcdn_free_section( [] );
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertSame( '', $sections['rocketcdn_free_section']['toggle_tooltip'] );
+	}
+
+	/**
+	 * Tests that add_rocketcdn_free_section surfaces the expired-licence tooltip
+	 * alongside is_forced_off when the WP Rocket licence is invalid.
+	 *
+	 * @return void
+	 */
+	public function testShouldSurfaceExpiredLicenceTooltipWhenForcedOff(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::CDN_STATE_NOTHING );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )
+			->andReturn( 3 );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$this->cdn_query->method( 'query' )
+			->willReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_free_section( [] );
+
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
+		$this->assertSame(
+			'RocketCDN is currently paused because your WP Rocket licence has expired.',
+			$sections['rocketcdn_free_section']['toggle_tooltip']
+		);
+	}
+
+	/**
+	 * Tests that add_rocketcdn_free_section shows the toggle off, not checked-but-disabled,
+	 * when the stored state is still 'rocketcdn_free' but activation is forced off - the
+	 * front end already stops serving via maybe_pause_cdn_for_inactive_subscription(), so
+	 * the toggle would otherwise misleadingly look active.
+	 *
+	 * @return void
+	 */
+	public function testShouldShowToggleOffWhenForcedOffEvenIfStateIsStillActive(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )
+			->andReturn( 3 );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$this->cdn_query->method( 'query' )
+			->willReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_free_section( [] );
+
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
+		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
 	}
 }

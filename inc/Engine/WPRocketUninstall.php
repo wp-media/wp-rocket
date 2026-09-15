@@ -101,6 +101,8 @@ class WPRocketUninstall {
 		'rocket_cdn_website_search',
 		'rocket_mixpanel_reseller_synced',
 		'rocket_cdn_pro_detection_failed',
+		'rocket_cdn_check_status_request_timeout',
+		'rocket_cdn_check_status_request_timeout_active',
 	];
 
 	/**

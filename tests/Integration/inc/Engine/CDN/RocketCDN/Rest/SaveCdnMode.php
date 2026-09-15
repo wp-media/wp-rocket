@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\Rest;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_cdn_mode
@@ -13,7 +14,7 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class Test_SaveCdnMode extends RESTfulTestCase {
-	use CapTrait, DBTrait;
+	use CapTrait, DBTrait, IsolateHookTrait;
 
 	private $admin_id;
 
@@ -34,6 +35,13 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// Enabling the CDN updates the settings, firing every `update_option_wp_rocket_settings`
+		// subscriber. Some of them query tables that check_status() never touches (e.g. the
+		// Preconnect External Domains subscriber truncates its table). Isolate the whole hook so
+		// no current or future incidental subscriber leaks a side effect into this test.
+		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
+
 		self::setAdminCap();
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
@@ -63,7 +71,27 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 
 		delete_transient( 'rocketcdn_status' );
 
+		// Reset the shared User singleton so a banned-reseller scenario doesn't
+		// leak into the next test case.
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( new \stdClass() );
+
 		parent::tear_down();
+	}
+
+	/**
+	 * Configures the shared User singleton from fixture config, e.g.:
+	 * 'user' => [ 'is_reseller' => true, 'is_revoked' => true, 'ban_reason' => 'BANNED_WEBSITE' ].
+	 */
+	private function set_user_license( array $config ): void {
+		$licence                            = new \stdClass();
+		$licence->is_revoked                = ! empty( $config['is_revoked'] );
+		$licence->plugin_updates_ban_reason = $config['ban_reason'] ?? '';
+
+		$user_data              = new \stdClass();
+		$user_data->licence     = $licence;
+		$user_data->is_reseller = ! empty( $config['is_reseller'] );
+
+		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( $user_data );
 	}
 
 	public function configTestData() {
@@ -94,6 +122,11 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 		// Per-case subscription override (e.g. paid plan requires plan_type=paid).
 		if ( ! empty( $config['subscription'] ) ) {
 			set_transient( 'rocketcdn_status', $config['subscription'], HOUR_IN_SECONDS );
+		}
+
+		// Per-case licence/reseller override (e.g. a banned reseller licence).
+		if ( ! empty( $config['user'] ) ) {
+			$this->set_user_license( $config['user'] );
 		}
 
 		$response = $this->doRestRequest(

@@ -3,22 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render\Controller;
 
-use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_turn_off_rocketcdn_for_inactive_subscription
  * @group  CDN
  * @group  RocketCDN
  * @group  AdminOnly
  */
-class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
-
-	/**
-	 * @var Controller
-	 */
-	private $controller;
+class Test_MaybeTurnOffRocketcdnForInactiveSubscription extends TestCase {
 
 	/**
 	 * @var User
@@ -35,15 +29,21 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$container        = apply_filters( 'rocket_container', null );
-		$this->controller = $container->get( 'cdn_render_controller' );
-		$this->user       = $container->get( 'user' );
+		$container  = apply_filters( 'rocket_container', null );
+		$this->user = $container->get( 'user' );
 
 		delete_transient( 'rocketcdn_status' );
 		delete_option( 'rocket_rocketcdn_forced_pause_state' );
+
+		// Isolate pre_get_rocket_option_cdn to only the method under test, so firing the
+		// filter doesn't also run whatever else any other subscriber has hooked onto the
+		// same filter. Restored via restoreWpHook() in tear_down().
+		$this->unregisterAllCallbacksExcept( 'pre_get_rocket_option_cdn', 'maybe_turn_off_rocketcdn_for_inactive_subscription' );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'pre_get_rocket_option_cdn' );
+
 		if ( null !== $this->cdn_type_filter_callback ) {
 			remove_filter( 'pre_get_rocket_option_cdn_type', $this->cdn_type_filter_callback );
 			$this->cdn_type_filter_callback = null;
@@ -58,7 +58,7 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( array $config, $expected ): void {
+	public function testShouldDoAsExpected( array $config, bool $expected_forced_off ): void {
 		$cdn_type                       = $config['cdn_type'];
 		$this->cdn_type_filter_callback = static function () use ( $cdn_type ) {
 			return $cdn_type;
@@ -68,9 +68,17 @@ class Test_MaybePauseCdnForInactiveSubscription extends TestCase {
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
 
-		$result = $this->controller->maybe_pause_cdn_for_inactive_subscription( $config['cdn_option'] );
+		$result = apply_filters( 'pre_get_rocket_option_cdn', $config['cdn_option'] );
 
-		$this->assertSame( $expected, $result );
+		$forced_off_tracking = get_option( 'rocket_rocketcdn_forced_pause_state', [] );
+
+		if ( $expected_forced_off ) {
+			$this->assertFalse( $result );
+			$this->assertTrue( $forced_off_tracking['persistent'] ?? false );
+		} else {
+			$this->assertSame( $config['cdn_option'], $result );
+			$this->assertArrayNotHasKey( 'persistent', $forced_off_tracking );
+		}
 	}
 
 	/**

@@ -11,6 +11,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -42,6 +43,13 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options API mock instance.
+	 *
+	 * @var Mockery\MockInterface|Options
+	 */
+	private $options_api;
 
 	/**
 	 * RocketCDNQuery mock instance.
@@ -84,6 +92,7 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
+		$this->options_api             = Mockery::mock( Options::class );
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
@@ -101,6 +110,7 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 			'',
 			$this->context,
 			$this->options,
+			$this->options_api,
 			$this->cdn_query,
 			$this->subscription_controller,
 			$this->user,
@@ -118,6 +128,10 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 			->once()
 			->andReturn( Context::BYOCDN_TYPE );
 
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [ 'cdn.example.org' ] );
+
 		$controller = $this->get_controller();
 		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
 			[
@@ -129,6 +143,8 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 
 		$this->assertSame( Context::BYOCDN_TYPE, $sections['cdn_section']['applied_cdn_state'] );
 		$this->assertTrue( $sections['cdn_section']['is_active'] );
+		$this->assertFalse( $sections['cdn_section']['is_forced_off'] );
+		$this->assertSame( 'This option is managed by your host and can’t be changed here.', $sections['cdn_section']['toggle_tooltip'] );
 	}
 
 	/**
@@ -165,5 +181,79 @@ class Test_AddAppliedCdnStateToCdnSection extends TestCase {
 		$sections   = $controller->add_applied_cdn_state_to_cdn_section( [ 'other_section' => [] ] );
 
 		$this->assertSame( [ 'other_section' => [] ], $sections );
+	}
+
+	/**
+	 * Shows the no-CNAME warning when BYOCDN is active and no CNAME is configured.
+	 *
+	 * @return void
+	 */
+	public function testShouldShowNoCnameWarningWhenByocdnActiveWithoutCnames(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::BYOCDN_TYPE );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertTrue( $sections['cdn_section']['show_no_cname_warning'] );
+	}
+
+	/**
+	 * Hides the no-CNAME warning when BYOCDN is active but a CNAME is already configured.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotShowNoCnameWarningWhenByocdnActiveWithCnames(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::BYOCDN_TYPE );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_cnames', [] )
+			->andReturn( [ 'cdn.example.org' ] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertFalse( $sections['cdn_section']['show_no_cname_warning'] );
+	}
+
+	/**
+	 * Hides the no-CNAME warning when BYOCDN isn't the applied mode, regardless of CNAMEs.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotShowNoCnameWarningWhenByocdnNotActive(): void {
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->once()
+			->andReturn( Context::ROCKETCDN_FREE_TYPE );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_applied_cdn_state_to_cdn_section(
+			[
+				'cdn_section' => [
+					'title' => 'Your CDN',
+				],
+			]
+		);
+
+		$this->assertFalse( $sections['cdn_section']['show_no_cname_warning'] );
 	}
 }

@@ -25,7 +25,8 @@ class Test_SanitizeCallback extends TestCase {
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->options->shouldReceive( 'get' )
-		              ->withAnyArgs();
+		              ->withAnyArgs()
+		              ->byDefault();
 
 		$this->settings = new Settings( $this->options );
 	}
@@ -123,5 +124,42 @@ class Test_SanitizeCallback extends TestCase {
 
 	public function addCriticalCSSProvider() {
 		return $this->getTestData( __DIR__, 'sanitizeCallback' );
+	}
+
+	/**
+	 * Regression test: a caller that explicitly sets 'cdn' on the array passed to
+	 * update_option() (e.g. CDNOptionsManager::disable()/enable(), whose write triggers
+	 * this callback via register_setting()'s sanitize_option_wp_rocket_settings filter)
+	 * must have that value respected, not silently reverted to the stale Options_Data
+	 * snapshot's current value.
+	 */
+	public function testShouldPreserveExplicitlySubmittedCdnValue() {
+		// Stale snapshot deliberately disagrees with the submitted value, so the
+		// assertion can only pass if the submitted value actually wins.
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$output = $this->settings->sanitize_callback( [ 'cdn' => 0 ] );
+
+		$this->assertSame( 0, $output['cdn'] );
+	}
+
+	/**
+	 * When 'cdn' isn't part of the submitted array at all (e.g. a general settings-form
+	 * save, which has no 'cdn' field), the current stored value must be preserved.
+	 */
+	public function testShouldFallBackToStoredCdnValueWhenNotSubmitted() {
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$output = $this->settings->sanitize_callback( [] );
+
+		$this->assertSame( 1, $output['cdn'] );
 	}
 }
