@@ -14,17 +14,12 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
  * Wires the Fleet route.
  *
  * Verification comes from `wp-media/fleet-bridge` rather than living here, per
- * wp-media/fleet#55: the two-credential protocol is security-critical, and
- * assertion verification written twice is assertion verification wrong once.
- * WP Rocket is the first plugin to install it and will not be the last.
+ * wp-media/fleet#55. What stays here is where trust comes from and what a
+ * command may do once believed.
  *
- * What stays here is the part that is genuinely ours: where trust comes from,
- * and what a command is allowed to do once it has been believed.
- *
- * The two abilities are pulled from the container rather than constructed, so
- * the route calls the very same objects the MCP surface does. Building a second
- * `SetOption` would be a second place for the allowlist and the sanitisation
- * to live.
+ * The abilities are pulled from the container rather than constructed, so the
+ * route calls the same objects the MCP surface does and the allowlist and
+ * sanitisation keep one home.
  *
  * @since 3.23.4
  */
@@ -68,10 +63,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					$this->getContainer()->get( 'fleet_trust_store' ),
 					new HttpKeySets( [ Route::class, 'log' ] ),
 					new WpdbNonceStore(),
-					// Port free: `home_url()` may carry one, and wp-rocket.me
-					// stores the domain without it. Both sides derive the
-					// subject from this string, so a port in one and not the
-					// other is a refusal that looks like a signature problem.
+					// Port free: `home_url()` may carry one, wp-rocket.me stores
+					// the domain without it, and both sides derive the subject
+					// from this string.
 					new Config( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ),
 					new SystemClock()
 				);

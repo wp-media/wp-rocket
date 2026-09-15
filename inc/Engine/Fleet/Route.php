@@ -16,31 +16,14 @@ use WP_Rocket\Engine\Abilities\Options\SetOption;
 /**
  * The route Fleet calls.
  *
- * Authenticates through `wp-media/fleet-bridge` — see that package for why a
- * command and a consent grant are both required and why they must be signed by
- * different parties — and then calls the abilities this plugin already ships.
- * It does **not** reimplement them, so there is one definition of what may be
- * written and what a value means.
+ * Authenticates through `wp-media/fleet-bridge`, then calls the abilities this
+ * plugin already ships rather than reimplementing them.
  *
- * ## Why this calls `execute()` directly, and does not go through MCP
- *
- * `permission_callback` on both abilities is
- * `current_user_can( 'rocket_manage_options' )`. That gate is for a human
- * caller holding a WordPress session. Fleet holds no WordPress credential and
- * never will — a design decision, not an omission — so it could never satisfy
- * it.
- *
- * This route's authorisation is the verified pair instead: licence scoped,
- * because the owner opted in; site scoped, because the tokens name this host;
- * single use, because both identifiers are burned; and body bound, because the
- * command's digest covers the exact bytes. That is a stronger claim than a
- * logged-in administrator makes, not a weaker one.
- *
- * Calling `execute()` also means this route has **no WordPress version floor**.
- * `wp_register_ability()` is 6.9 core and only `register()` uses it; the
- * `execute()` methods touch nothing from the Abilities API, and the service
- * provider that builds them is registered unconditionally. An agency fleet full
- * of older sites therefore works, which the MCP surface could not do.
+ * Calls `execute()` directly instead of going through MCP. The abilities'
+ * `permission_callback` expects a logged-in administrator, which Fleet is not;
+ * the verified command and consent pair is the authorisation here. It also
+ * keeps the route free of any WordPress version floor, since only `register()`
+ * touches the 6.9 Abilities API.
  *
  * @since 3.23.4
  */
@@ -58,10 +41,8 @@ class Route {
 	/**
 	 * The header carrying wp-rocket.me's consent grant.
 	 *
-	 * A header of its own rather than a second value in `Authorization`,
-	 * because the two credentials come from different parties and prove
-	 * different things. Sharing one header would invite code that checks
-	 * whichever it happens to find first.
+	 * Its own header, not a second value in `Authorization`: the two
+	 * credentials come from different parties and prove different things.
 	 */
 	const CONSENT_HEADER = 'X-WP-Rocket-Fleet-Consent';
 
@@ -73,9 +54,8 @@ class Route {
 	/**
 	 * The capability a write needs.
 	 *
-	 * Separate from the read scope so a licence can allow Fleet to show a
-	 * customer their settings without allowing it to change them — a position
-	 * plenty of agencies will want to start from.
+	 * Separate from the read scope, so a licence can allow Fleet to show
+	 * settings without allowing it to change them.
 	 */
 	const SCOPE_WRITE = 'settings:write';
 
@@ -148,11 +128,9 @@ class Route {
 					'methods'             => 'PATCH',
 					'callback'            => [ $this, 'write' ],
 					'permission_callback' => [ $this, 'is_fleet' ],
-					// Deliberately not declaring `args`. The REST validator
-					// would reject a bad option name with its own message
-					// before SetOption ever saw it, which would make an option
-					// outside the allowlist indistinguishable from a malformed
-					// request. SetOption's own refusal is the one Fleet needs.
+					// No `args` on purpose: the REST validator would reject an
+					// option outside the allowlist as a malformed request.
+					// SetOption's own refusal is the one Fleet needs.
 				],
 			]
 		);
@@ -161,8 +139,8 @@ class Route {
 	/**
 	 * Two proofs, from two parties, before anything happens.
 	 *
-	 * The scope is derived from the method rather than read from the request,
-	 * so a caller cannot nominate the permission it is checked against.
+	 * The scope comes from the method, not the request, so a caller cannot
+	 * nominate the permission it is checked against.
 	 *
 	 * @since 3.23.4
 	 *
@@ -178,9 +156,8 @@ class Route {
 		try {
 			$this->bridge->verifyCommand(
 				(string) $request->get_header( 'authorization' ),
-				// The raw body, not the parsed parameters. The digest covers
-				// the bytes that travelled, and re-encoding a parsed array
-				// would produce different ones.
+				// The raw body, not the parsed parameters: the digest covers
+				// the bytes that travelled.
 				(string) $request->get_body()
 			);
 
@@ -201,10 +178,8 @@ class Route {
 	/**
 	 * Every allowlisted option, with its current value and its type.
 	 *
-	 * Takes no argument. WordPress calls a route callback with the request and
-	 * PHP passes extra arguments to a non-variadic function harmlessly, so
-	 * declaring one we do not read would only be a parameter every static
-	 * analyser correctly reports as unused.
+	 * Takes no argument: PHP passes the request harmlessly, and declaring a
+	 * parameter we never read would only read as unused.
 	 *
 	 * @since 3.23.4
 	 *
@@ -214,9 +189,8 @@ class Route {
 		$schema  = $this->get_options->schema();
 		$allowed = $this->allowed_options->get();
 
-		// The ability answers first, and answers for the options this site has
-		// actually written. It applies the plugin's own read filters, so its
-		// value for a stored option is the one to report.
+		// The ability answers first, for the options this site has actually
+		// written, with the plugin's own read filters applied.
 		$stored = $this->get_options->execute();
 
 		$settings = [];
@@ -229,12 +203,9 @@ class Route {
 				continue;
 			}
 
-			// An option nobody has ever saved is missing from the stored array
-			// entirely, so a caller shown only that array sees a fraction of
-			// the settings and cannot tell the rest exist. It is reported with
-			// the value the plugin itself acts on for it — an unwritten
-			// `minify_css` behaves as off, so saying "off" is accurate rather
-			// than invented.
+			// An option nobody has saved is absent from the stored array, so
+			// report it with the value the plugin itself acts on: an unwritten
+			// `minify_css` behaves as off.
 			$settings[ $option ] = get_rocket_option( $option, $this->blank_for( $schema[ $option ] ?? [] ) );
 			$unset[]             = $option;
 		}
@@ -242,21 +213,15 @@ class Route {
 		return new WP_REST_Response(
 			[
 				'site'     => (string) wp_parse_url( home_url(), PHP_URL_HOST ),
-				// Cast, so the shape does not change with the contents. An
-				// empty PHP array encodes as `[]` and a populated one as an
-				// object, which means a site with nothing saved yet answers
-				// with a different type from every other site — and the reader
-				// at the other end is not PHP and has no reason to forgive it.
+				// Cast, so the shape does not change with the contents: an
+				// empty PHP array would encode as `[]` and a populated one as
+				// an object.
 				'settings' => (object) $settings,
-				// The type of each one, so a caller can render a checkbox for a
-				// toggle and a list for a list rather than a text box for
-				// everything. Without this a caller has only the value to go
-				// on, and an unset toggle is indistinguishable from empty text.
+				// The type of each one, so a caller can render a checkbox for
+				// a toggle rather than a text box for everything.
 				'schema'   => (object) $schema,
-				// Which of those have never been written on this site.
-				// Reported rather than hidden: "off" and "never configured" are
-				// the same behaviour but not the same fact, and only one of
-				// them is worth a customer's attention.
+				// Which of those have never been written on this site: "off"
+				// and "never configured" behave alike but are not the same fact.
 				'unset'    => $unset,
 				// What Fleet is allowed to write, so it can render a form
 				// without hardcoding a copy of our allowlist.
@@ -269,15 +234,11 @@ class Route {
 	/**
 	 * Change one option, or several.
 	 *
-	 * One request carrying many options rather than many requests carrying one:
-	 * applying a saved set of settings across an agency's sites would otherwise
-	 * be one signed round trip **per option per site**, and a forty-option set
-	 * across fifty sites is two thousand of them. Batched it is fifty.
+	 * Batched, so applying a settings set across an agency's sites is one
+	 * signed round trip per site rather than one per option per site.
 	 *
-	 * A batch reports **per option** and always answers 200 when it ran. One
-	 * option outside the allowlist must not fail the other thirty-nine, and
-	 * must not be silently dropped either — so the caller gets an outcome for
-	 * each and decides what to do about it.
+	 * A batch reports per option and answers 200 when it ran: one refused
+	 * option must neither fail the rest nor be dropped silently.
 	 *
 	 * @since 3.23.4
 	 *
@@ -308,8 +269,8 @@ class Route {
 			$results[] = $this->apply( $change );
 		}
 
-		// A single change keeps the shape it has always had, so a caller that
-		// asks for one option is not made to unwrap a list of one.
+		// A single change keeps its original shape, so a caller asking for one
+		// option is not made to unwrap a list of one.
 		if ( ! isset( $body['options'] ) && 1 === count( $results ) ) {
 			$only = $results[0];
 
@@ -344,8 +305,7 @@ class Route {
 	/**
 	 * Record something worth reading in a log.
 	 *
-	 * Static so the key set fetcher in the bridge can be handed it without
-	 * being handed this whole object.
+	 * Static, so the bridge's key set fetcher can be handed it alone.
 	 *
 	 * @since 3.23.4
 	 *
@@ -365,9 +325,8 @@ class Route {
 	/**
 	 * The changes a request is asking for, validated.
 	 *
-	 * Accepts one option at the top level, or many under `options`. Bounded by
-	 * the allowlist's own size: a caller cannot ask to write more distinct
-	 * options than exist, so the limit is derived rather than invented.
+	 * Accepts one option at the top level, or many under `options`, bounded by
+	 * the allowlist's own size rather than an invented limit.
 	 *
 	 * @since 3.23.4
 	 *
@@ -406,7 +365,7 @@ class Route {
 			}
 
 			// `array_key_exists` rather than `isset`, so setting an option to
-			// null is a request we answer rather than one we call malformed.
+			// null is answered rather than called malformed.
 			if ( ! array_key_exists( 'option_value', $change ) ) {
 				return new WP_Error(
 					'rocket_fleet_bad_request',
@@ -439,8 +398,8 @@ class Route {
 		);
 
 		if ( empty( $result['success'] ) ) {
-			// A refusal, not a failure. The option exists as a concept and the
-			// request was well formed; this site will not write it.
+			// A refusal, not a failure: the request was well formed, this site
+			// will not write it.
 			return [
 				'option_name' => $name,
 				'success'     => false,
@@ -459,10 +418,8 @@ class Route {
 	/**
 	 * The value an option of a given type has when nothing has been saved.
 	 *
-	 * Typed rather than a bare empty string, because the reader at the other
-	 * end is not PHP: `""` for a list option would arrive as text where every
-	 * other site sends an array, and a caller would have to guess which it
-	 * meant.
+	 * Typed rather than a bare empty string, so a list option never arrives as
+	 * text where every other site sends an array.
 	 *
 	 * @since 3.23.4
 	 *

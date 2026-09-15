@@ -115,11 +115,9 @@ class WPRocketUninstall {
 	 * @var array
 	 */
 	private $option_prefixes = [
-		// Two rows per request Fleet has made: the command and the consent
-		// grant each carry their own one-time identifier, and each is recorded
-		// under a hash of it. {@see \WP_Rocket\Engine\Fleet\Subscriber} keeps
-		// these pruned while the plugin is installed; uninstalling has to take
-		// the rest, and there is no fixed name to list them under.
+		// Two rows per honoured Fleet request, each recorded under a hash of a
+		// one-time identifier. {@see \WP_Rocket\Engine\Fleet\Subscriber} prunes
+		// these while installed; uninstalling takes the rest.
 		'fleet_bridge_jti_',
 	];
 
@@ -270,10 +268,8 @@ class WPRocketUninstall {
 		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
 
-		// A loop rather than array_walk: passing a method as a callable makes it
-		// invisible to static analysis, which then reports it as an unused
-		// private method. `delete_transients_by_prefix` above is called that way
-		// and is grandfathered in; there is no reason to add a second one.
+		// A loop rather than array_walk: a method passed as a callable reads as
+		// an unused private method to static analysis.
 		foreach ( $this->option_prefixes as $option_prefix ) {
 			$this->delete_options_by_prefix( $option_prefix );
 		}
