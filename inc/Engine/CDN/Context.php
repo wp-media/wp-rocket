@@ -163,6 +163,10 @@ class Context {
 	 * @return string One of the ROCKETCDN_STATE_* constants.
 	 */
 	public function get_rocketcdn_state( ?string $cdn_state = null ): string {
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return self::ROCKETCDN_STATE_ONGOING_FREE;
+		}
+
 		$cdn_state = $this->get_cdn_state( $cdn_state );
 
 		if ( self::ROCKETCDN_PAID_TYPE === $cdn_state ) {
