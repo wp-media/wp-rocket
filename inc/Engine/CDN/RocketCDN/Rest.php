@@ -483,10 +483,9 @@ class Rest extends WP_REST_Controller {
 	}
 
 	/**
-	 * Rolls back a failed async subscription creation.
+	 * Rolls back a failed subscription creation.
 	 *
 	 * Deletes all page records and resets CDN mode to 'nothing'.
-	 * Called by RESTSubscriber when rocket_cdnfree_subscription_creation_failed fires.
 	 *
 	 * @return void
 	 */
@@ -602,6 +601,20 @@ class Rest extends WP_REST_Controller {
 
 		$this->apply_cdn_mode( $mode );
 
+		if ( Context::ROCKETCDN_FREE_TYPE === $mode && ! $this->subscription_controller->has_active_subscription() ) {
+			$result = $this->subscription_controller->create_subscription( true );
+
+			if ( is_wp_error( $result ) || false === $result ) {
+				$this->rollback_failed_subscription();
+
+				return new WP_Error(
+					'rocketcdn_subscription_creation_failed',
+					__( 'Failed to create RocketCDN subscription.', 'rocket' ),
+					[ 'status' => 500 ]
+				);
+			}
+		}
+
 		$applied_cdn_state = $this->context->get_applied_cdn_state( $mode );
 
 		$response = array_merge(
@@ -628,11 +641,11 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function apply_cdn_mode( string $mode ): void {
-		$this->options->set( 'cdn', (int) ( Context::CDN_STATE_NOTHING !== $mode ) );
-		$this->options->set( 'cdn_type', Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn' );
-		$this->options->set( 'cdn_state', $mode );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
+		$settings              = $this->options_api->get( 'settings', [] );
+		$settings['cdn']       = (int) ( Context::CDN_STATE_NOTHING !== $mode );
+		$settings['cdn_type']  = Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn';
+		$settings['cdn_state'] = $mode;
+		$this->options_api->set( 'settings', $settings );
 		/**
 		 * Fires after the CDN mode is changed via the toggle.
 		 *

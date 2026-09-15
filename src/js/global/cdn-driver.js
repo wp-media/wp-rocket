@@ -261,11 +261,6 @@
 		} );
 	}
 
-	/**
-	 * Sets the subscription loading state on the CDN UI.
-	 *
-	 * Disables the built-in CDN section, purge and exclude sections.
-	 */
 	function setSubscriptionLoadingState() {
 		const builtIn = document.querySelector( '.wpr-cdn-built-in' );
 
@@ -295,6 +290,11 @@
 		if ( submitButton ) {
 			submitButton.classList.add( 'wpr-cdn-disabled' );
 		}
+
+		// Disable mode toggles to prevent state changes during subscription creation.
+		document.querySelectorAll( '.wpr-cdn-mode-toggle__input' ).forEach( ( modeToggle ) => {
+			modeToggle.disabled = true;
+		} );
 
 		// Create polling mechanism to send a request every 10 seconds to get the subscription status and once the subscription is active, we will refresh the page for now.
 		document.dispatchEvent(new CustomEvent('rocketCDNSubscriptionLoading', {}));
@@ -392,8 +392,7 @@
 				method: 'POST',
 				data: { mode: requestedMode },
 			} ).then( ( response ) => {
-				toggle.checked  = requestedChecked;
-				toggle.disabled = false;
+				toggle.checked = requestedChecked;
 
 				if ( toggleWrapper ) {
 					toggleWrapper.classList.remove( 'wpr-cdn-mode-toggle--loading' );
@@ -424,8 +423,18 @@
 				// status_indicator_html, so it's updated separately here.
 				if ( 'byocdn' === mode ) {
 					updateByocdnStatusIndicator( response.byocdn_status_indicator_html );
-				} else {
-					refreshUIElements( response );
+					toggle.disabled = false;
+
+					return;
+				}
+
+				refreshUIElements( response );
+
+				// refreshUIElements() calls setSubscriptionLoadingState() above when the async
+				// subscription creation is still in progress, which disables every mode toggle -
+				// leave this one disabled too until the poller confirms it's live.
+				if ( ! response.is_subscription_creation_loading ) {
+					toggle.disabled = false;
 				}
 			} ).catch( () => {
 				// Request failed - the toggle still reflects its pre-click state, just re-enable it.
@@ -720,6 +729,7 @@
 				input.disabled = false;
 				button.disabled = false;
 				addHomeButton.classList.add( 'wpr-isHidden' );
+
 				updateRocketCtaState( response.count, response.limit );
 
 				if ( builtIn ) {
@@ -852,7 +862,7 @@
 					}
 				}
 
-				// Show re-add HOMEPAGE button when all pages are deleted.
+				// Show re-add HOMEPAGE button and no-page notice when all pages are deleted.
 				if ( 0 === response.count ) {
 					// Remove table list component.
 					document.querySelector( '.wpr-cdn-built-in .wpr-table-list' ).remove();
@@ -863,6 +873,7 @@
 						homepageBtn.classList.remove( 'wpr-isHidden' );
 						homepageBtn.disabled = false;
 					}
+
 				}
 
 				if ( response.limit > response.count ) {
