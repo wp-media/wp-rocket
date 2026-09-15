@@ -9,23 +9,13 @@ use WP_Rocket\Engine\License\API\RemoteSettingsClient;
 /**
  * Who this install trusts, read from the licence channel it already polls.
  *
- * The only part of the Fleet exchange that is WP Rocket's business rather than
- * the bridge's: where trust comes from. Everything about *checking* a token
- * lives in `wp-media/fleet-bridge`, so a second plugin adopting Fleet writes a
- * class like this one and nothing else.
+ * Identity and key locations only, deliberately no consent. This channel is
+ * cached for a day, so consent read from here would take a day to withdraw.
+ * Key locations are safe to cache that long, because a rotation publishes two
+ * keys at once. Whether the owner allows a command arrives with the command.
  *
- * **Identity and key locations only. Deliberately no consent.**
- *
- * Consent used to be read from here, and it was wrong: this channel is cached
- * for a day, so a customer revoking access left their sites accepting commands
- * for up to twenty four hours. A permission that takes a day to withdraw is not
- * a permission. What is cached now is *where the keys are*, which is safe to
- * hold for a day because a rotation publishes two keys at once for exactly that
- * reason. Whether the owner allows a given command arrives with the command.
- *
- * Two issuers, because there are two things to verify. Fleet's key proves a
- * command came from Fleet; wp-rocket.me's proves the owner allows it — the half
- * Fleet must not be able to assert about itself.
+ * Two issuers, because there are two things to verify: Fleet's key proves a
+ * command came from Fleet, wp-rocket.me's proves the owner allows it.
  *
  * @since 3.23.4
  */
@@ -98,12 +88,10 @@ class TrustStore implements TrustStoreContract {
 	/**
 	 * The `fleet` block from the remote settings response.
 	 *
-	 * Normalises the two shapes `get_remote_settings_data()` returns, which are
-	 * not the same: on a cache miss it returns the whole decoded response, so
-	 * the settings live under `->data`, and on a cache hit it returns what was
-	 * stored, which is already the inner `data`. Reading one shape only works
-	 * for half the calls, and which half depends on transient expiry — so it
-	 * looks intermittent rather than wrong.
+	 * Normalises the two shapes `get_remote_settings_data()` returns: the whole
+	 * decoded response on a cache miss, where settings live under `->data`, and
+	 * the inner `data` itself on a hit. Reading one shape works for half the
+	 * calls, depending on transient expiry.
 	 *
 	 * @since 3.23.4
 	 *

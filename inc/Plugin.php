@@ -475,17 +475,14 @@ class Plugin {
 			'abilities_cli_subscriber',
 		];
 
-		// Registered here rather than with the other providers because the
-		// Fleet route resolves `abilities_get_options` and
-		// `abilities_set_option` out of the container, so it cannot be built
-		// before the provider that defines them.
+		// Registered here rather than with the other providers: the Fleet route
+		// resolves `abilities_get_options` and `abilities_set_option` out of
+		// the container, so it cannot be built before they are defined.
 		//
-		// Guarded on the verifier being present because the alternative is a
-		// fatal in the whole plugin. `fleet_subscriber` is resolved on every
-		// request and building it constructs the verifier, so a build that
-		// shipped without `vendor/wp-media/fleet-bridge` would not lose the
-		// Fleet route — it would lose WP Rocket. A site with no Fleet route
-		// answers 404 there and caches pages exactly as before.
+		// Guarded on the verifier being present because `fleet_subscriber` is
+		// resolved on every request, so a build shipped without
+		// `vendor/wp-media/fleet-bridge` would fatal the whole plugin instead
+		// of merely losing the Fleet route.
 		if ( class_exists( Bridge::class ) ) {
 			$this->container->addServiceProvider( new FleetServiceProvider() );
 

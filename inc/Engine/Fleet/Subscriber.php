@@ -9,11 +9,9 @@ use WPMedia\FleetBridge\WordPress\WpdbNonceStore;
 /**
  * Hooks the Fleet route into WordPress.
  *
- * Nothing here decides whether Fleet is allowed. The route is registered
- * unconditionally and refuses on its own, because the alternative — not
- * registering it when consent is off — makes a site with Fleet switched off
- * answer 404 where a site that has simply never polled answers 401, and the
- * difference tells an outsider which licences have opted in.
+ * Nothing here decides whether Fleet is allowed: the route is registered
+ * unconditionally and refuses on its own. Registering it only when consent is
+ * on would make 404 against 401 leak which licences have opted in.
  *
  * @since 3.23.4
  */
@@ -71,16 +69,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Schedule the identifier housekeeping, once.
 	 *
-	 * Every request from Fleet carries two one-time identifiers — one on the
-	 * command, one on the consent grant — and the site records both so neither
-	 * can be replayed. Those records are rows in the options table, two per
-	 * honoured request, and without this they accumulate for the life of the
-	 * install.
+	 * Each honoured request records two one-time identifiers, one for the
+	 * command and one for the consent grant, as rows in the options table.
+	 * Without this they accumulate for the life of the install.
 	 *
-	 * Scheduled unconditionally rather than only when Fleet is allowed: a site
-	 * that switches Fleet off still has whatever rows it already wrote, and a
-	 * site that has never used Fleet purges nothing at a cost of one query a
-	 * day.
+	 * Scheduled unconditionally: a site that switches Fleet off still holds
+	 * the rows it wrote, and one that never used it purges nothing.
 	 *
 	 * @since 3.23.4
 	 *
@@ -109,9 +103,7 @@ class Subscriber implements Subscriber_Interface {
 	 * Delete spent identifiers that have expired anyway.
 	 *
 	 * Housekeeping only. An expired command is refused on its own expiry claim
-	 * whether or not its row is still here, so nothing about this is load
-	 * bearing for security — running it late, or not at all, costs table size
-	 * and never permission.
+	 * either way, so running this late costs table size and never permission.
 	 *
 	 * @since 3.23.4
 	 *
