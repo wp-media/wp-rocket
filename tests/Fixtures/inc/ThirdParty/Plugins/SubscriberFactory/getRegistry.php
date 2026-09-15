@@ -54,6 +54,8 @@ return [
 				'wp_postratings',
 				'metaslider',
 				'soliloquy',
+				'wp_offload_s3',
+				'wp_offload_s3_assets',
 			],
 		],
 	],

@@ -11,6 +11,8 @@ use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
 use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\CDN\WPOffloadS3;
+use WP_Rocket\ThirdParty\Plugins\CDN\WPOffloadS3Assets;
 use WP_Rocket\ThirdParty\Plugins\ContactForm7;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Cookie\Termly;
@@ -125,6 +127,8 @@ class SubscriberFactory {
 			'wp_postratings'               => WPPostRatings::class,
 			'metaslider'                   => MetaSlider::class,
 			'soliloquy'                    => Soliloquy::class,
+			'wp_offload_s3'                => WPOffloadS3::class,
+			'wp_offload_s3_assets'         => WPOffloadS3Assets::class,
 		];
 	}
 
