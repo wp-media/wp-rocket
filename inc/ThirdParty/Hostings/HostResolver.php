@@ -131,6 +131,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
+			self::$hostname = 'presslabs';
+			return 'presslabs';
+		}
+
 		return '';
 	}
 
