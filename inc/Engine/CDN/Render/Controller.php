@@ -266,7 +266,6 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
-		$is_forced_off   = $this->should_reject_rocketcdn_activation();
 
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -1150,7 +1149,7 @@ class Controller extends Abstract_Render {
 			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
-		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
+		$is_paused = ( $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription() ) || $this->should_reject_rocketcdn_activation();
 
 		if ( $is_paused ) {
 			$texts['status_text'] = $texts['paused_status_text'];

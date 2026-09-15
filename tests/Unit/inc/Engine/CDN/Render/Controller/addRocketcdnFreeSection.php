@@ -295,6 +295,8 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_active'] );
 		$this->assertSame( '', $sections['rocketcdn_free_section']['toggle_tooltip'] );
+		// Genuinely active: status text must not read as paused (green circle/active text).
+		$this->assertFalse( $sections['rocketcdn_free_section']['status_indicator']['is_paused'] );
 	}
 
 	/**
@@ -367,6 +369,11 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 			'RocketCDN is currently paused because your WP Rocket licence has expired.',
 			$sections['rocketcdn_free_section']['toggle_tooltip']
 		);
+		$this->assertTrue( $sections['rocketcdn_free_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_free_section']['status_indicator']['status_text']
+		);
 	}
 
 	/**
@@ -374,6 +381,12 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	 * when the stored state is still 'rocketcdn_free' but activation is forced off - the
 	 * front end already stops serving via maybe_pause_cdn_for_inactive_subscription(), so
 	 * the toggle would otherwise misleadingly look active.
+	 *
+	 * Also covers Test Findings: the status text must match the toggle - previously
+	 * is_paused only checked is_cdn_paused() && has_active_subscription(), so a stored
+	 * state of 'rocketcdn_free' with get_applied_cdn_state() still resolving away from
+	 * CDN_STATE_NOTHING kept the status text reading "active" even though the toggle
+	 * was already forced off.
 	 *
 	 * @return void
 	 */
@@ -438,5 +451,10 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
 		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_free_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_free_section']['status_indicator']['status_text']
+		);
 	}
 }

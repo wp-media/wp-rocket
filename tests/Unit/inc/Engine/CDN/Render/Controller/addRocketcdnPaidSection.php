@@ -199,6 +199,8 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_active'] );
 		$this->assertArrayHasKey( 'toggle_tooltip', $sections['rocketcdn_paid_section'] );
 		$this->assertSame( '', $sections['rocketcdn_paid_section']['toggle_tooltip'] );
+		// Genuinely active: status text must not read as paused (green circle/active text).
+		$this->assertFalse( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
 	}
 
 	/**
@@ -221,6 +223,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 	/**
 	 * Surfaces the banned-reseller tooltip alongside is_forced_off for the paid section.
+	 *
+	 * Also covers the Test Findings doc's "Green circle and active text is there for Pro
+	 * while being in grace period"-style reports: the status indicator must show as paused
+	 * rather than active whenever the toggle itself is forced off, even though is_forced_off()
+	 * alone misses a paid-tier ban (see should_reject_rocketcdn_activation()'s docblock).
 	 *
 	 * @return void
 	 */
@@ -279,12 +286,21 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			'RocketCDN is currently paused because your WP Rocket licence has been banned.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 
 	/**
 	 * Forces the paid toggle off, with the forced-paused tooltip, when the paid
 	 * subscription itself is cancelled - should_reject_rocketcdn_activation() missed
 	 * this until it also checked is_forced_off().
+	 *
+	 * Also covers Test Findings: "After cancel Paid and delete website, free status in
+	 * cdn tab is active while it shouldn't" - the status indicator must flip to paused
+	 * once the subscription is cancelled outside the grace period, not just the toggle.
 	 *
 	 * @return void
 	 */
@@ -353,12 +369,20 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		// checked-but-disabled - is_forced_paused() already stops CDN delivery on the front end
 		// via maybe_pause_cdn_for_inactive_subscription().
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 
 	/**
 	 * Forces the paid toggle off while the cancelled subscription is still within its
 	 * grace period - is_forced_paused()'s first branch (is_paid() && is_in_grace_period())
 	 * covers this before the subscription is fully cancelled outside the grace period.
+	 *
+	 * Directly covers Test Findings: "Green circle and active text is there for Pro while
+	 * being in grace period" - expected an orange circle / paused text instead.
 	 *
 	 * @return void
 	 */
@@ -424,5 +448,10 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 }
