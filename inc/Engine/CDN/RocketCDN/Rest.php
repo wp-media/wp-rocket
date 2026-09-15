@@ -492,10 +492,7 @@ class Rest extends WP_REST_Controller {
 	public function rollback_failed_subscription(): void {
 		$this->query->delete_all_rows();
 
-		$settings              = $this->options_api->get( 'settings', [] );
-		$settings['cdn']       = 0;
-		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
-		$this->options_api->set( 'settings', $settings );
+		$this->apply_cdn_mode( Context::CDN_STATE_NOTHING );
 	}
 
 	/**
@@ -640,11 +637,11 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function apply_cdn_mode( string $mode ): void {
-		$this->options->set( 'cdn', (int) ( Context::CDN_STATE_NOTHING !== $mode ) );
-		$this->options->set( 'cdn_type', Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn' );
-		$this->options->set( 'cdn_state', $mode );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
+		$settings              = $this->options_api->get( 'settings', [] );
+		$settings['cdn']       = (int) ( Context::CDN_STATE_NOTHING !== $mode );
+		$settings['cdn_type']  = Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn';
+		$settings['cdn_state'] = $mode;
+		$this->options_api->set( 'settings', $settings );
 		/**
 		 * Fires after the CDN mode is changed via the toggle.
 		 *
