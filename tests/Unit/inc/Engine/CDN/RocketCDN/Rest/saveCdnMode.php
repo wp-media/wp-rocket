@@ -107,6 +107,8 @@ class Test_SaveCdnMode extends TestCase {
 		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->render_controller->shouldReceive( 'should_disable_element_for_rocketcdn' )->andReturn( false );
+		$this->render_controller->shouldReceive( 'get_byocdn_status_indicator_html' )->with( false )->andReturn( '' );
+		$this->render_controller->shouldReceive( 'should_disable_free_add_page' )->andReturn( false );
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'mode', Context::ROCKETCDN_FREE_TYPE );
@@ -130,6 +132,8 @@ class Test_SaveCdnMode extends TestCase {
 		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->render_controller->shouldReceive( 'should_disable_element_for_rocketcdn' )->andReturn( false );
+		$this->render_controller->shouldReceive( 'get_byocdn_status_indicator_html' )->with( false )->andReturn( '' );
+		$this->render_controller->shouldReceive( 'should_disable_free_add_page' )->andReturn( false );
 
 		$request = new \WP_REST_Request();
 		$request->set_param( 'mode', Context::ROCKETCDN_FREE_TYPE );

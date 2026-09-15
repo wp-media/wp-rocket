@@ -412,7 +412,7 @@ class APIClient {
 	 * @return array
 	 */
 	public function preserve_authorization_token( $args, $url ) {
-		if ( strpos( $url, self::ROCKETCDN_API ) === false ) {
+		if ( empty( $url ) || strpos( $url, self::ROCKETCDN_API ) === false ) {
 			return $args;
 		}
 
