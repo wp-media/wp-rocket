@@ -47,6 +47,7 @@ return [
 				'contactform7',
 				'termly_subscriber',
 				'optimole_subscriber',
+				'premium_seo_pack',
 			],
 		],
 	],
