@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\Rest;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\Rest::save_cdn_mode
@@ -13,7 +14,7 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class Test_SaveCdnMode extends RESTfulTestCase {
-	use CapTrait, DBTrait;
+	use CapTrait, DBTrait, IsolateHookTrait;
 
 	private $admin_id;
 
@@ -34,6 +35,13 @@ class Test_SaveCdnMode extends RESTfulTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// Enabling the CDN updates the settings, firing every `update_option_wp_rocket_settings`
+		// subscriber. Some of them query tables that check_status() never touches (e.g. the
+		// Preconnect External Domains subscriber truncates its table). Isolate the whole hook so
+		// no current or future incidental subscriber leaks a side effect into this test.
+		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
+
 		self::setAdminCap();
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );

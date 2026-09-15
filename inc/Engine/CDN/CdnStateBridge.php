@@ -19,7 +19,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * This callback discards whatever `$value` it receives (see its docblock) and acts
 	 * as the seeder for the entire live `cdn` resolution chain, so it must run before
 	 * any callback that expects to observe or override its result - specifically
-	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription()}
+	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_turn_off_rocketcdn_for_inactive_subscription()}
 	 * and {@see \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option()}, both
 	 * registered at the default priority 10. Pinning this to an earlier priority makes
 	 * that ordering explicit instead of relying on `inc/Plugin.php`'s subscriber
@@ -164,7 +164,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * apply_pause_on_rocketcdn_only filter, which returns 1 for byocdn users when
 	 * is_admin() is false (e.g. REST context), making CDN appear active when it is not.
 	 *
-	 * Also mirrors Render\Controller::is_forced_paused()'s two remaining branches (its
+	 * Also mirrors Render\Controller::is_forced_off()'s two remaining branches (its
 	 * cancelled-outside-grace-period branches are already covered by legacy_to_state()'s
 	 * own check, regardless of plan type) - a paid plan still in its grace period, or a
 	 * free plan with an invalid WP Rocket licence. This is deliberately only applied
@@ -172,7 +172,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * legacy_to_state() is also the write-time helper reconcile() and the plugin-update
 	 * migrations use to persist cdn_state, and neither of those should have a momentary
 	 * licence-invalid state force a stored value to 'nothing' - only the live read
-	 * should reflect it, the same way maybe_pause_cdn_for_inactive_subscription() only
+	 * should reflect it, the same way maybe_turn_off_rocketcdn_for_inactive_subscription() only
 	 * ever filters live 'cdn' reads and never writes to storage.
 	 *
 	 * @param mixed $value   Value returned by an earlier callback on this filter, or null.
@@ -234,7 +234,7 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * seeder for the whole `cdn` resolution chain, not an overrider, so it is registered
 	 * at {@see self::CDN_SEEDER_PRIORITY} (an explicit early priority) rather than the
 	 * default 10. Any callback that needs to override the live value it seeds (e.g.
-	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription()})
+	 * {@see \WP_Rocket\Engine\CDN\Render\Controller::maybe_turn_off_rocketcdn_for_inactive_subscription()})
 	 * must run at a later priority so it observes this method's return value as its own
 	 * `$value` argument.
 	 *
