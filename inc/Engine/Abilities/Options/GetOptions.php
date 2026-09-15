@@ -36,21 +36,15 @@ class GetOptions implements AbilitiesInterface {
 	}
 
 	/**
-	 * The type of every option Fleet or an MCP client may be shown.
+	 * Returns the type schema of every readable option, keyed by option name.
 	 *
-	 * Extracted from register() so it has one definition and two readers.
-	 * The ability advertises it as its output schema; the Fleet route serves
-	 * it so a remote caller can render a real control per option instead of
-	 * guessing a type from whatever value happens to be stored — an unset
-	 * boolean and an unset text field both arrive empty, and only this says
-	 * which is which.
-	 *
-	 * Intersected with the allowlist, so an option that may not be read has
-	 * no schema entry either and cannot be rendered as though it did.
+	 * Shared by register() as the ability output schema and by the Fleet route,
+	 * so a caller knows each option's type instead of inferring it from a stored
+	 * value. Intersected with the allowlist.
 	 *
 	 * @since 3.23.4
 	 *
-	 * @return array Keyed by option name.
+	 * @return array
 	 */
 	public function schema(): array {
 		$schema_definitions = [
