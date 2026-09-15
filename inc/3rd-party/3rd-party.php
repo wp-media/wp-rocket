@@ -42,8 +42,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/uk-cookie-consent.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/eu-cookie-law.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/weepie-cookie-allow.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/cookies/gdpr.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/rating/kk-star-ratings.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/rating/wp-postratings.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-print.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/buddypress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/disqus.php';

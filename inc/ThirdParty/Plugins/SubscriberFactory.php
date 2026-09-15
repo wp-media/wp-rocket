@@ -35,6 +35,8 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\ThriveVisualEditor;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\VisualComposer;
 use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
 use WP_Rocket\ThirdParty\Plugins\PWA;
+use WP_Rocket\ThirdParty\Plugins\Rating\KKStarRatings;
+use WP_Rocket\ThirdParty\Plugins\Rating\WPPostRatings;
 use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
@@ -117,6 +119,8 @@ class SubscriberFactory {
 			'premium_seo_pack'             => PremiumSEOPack::class,
 			'thrive_visual_editor'         => ThriveVisualEditor::class,
 			'visual_composer'              => VisualComposer::class,
+			'kk_star_ratings'              => KKStarRatings::class,
+			'wp_postratings'               => WPPostRatings::class,
 		];
 	}
 
