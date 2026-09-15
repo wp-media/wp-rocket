@@ -15,10 +15,10 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * nothing left to restore once the licence becomes valid again.
  *
  * Exercises the real hook chain end-to-end - never calls
- * Controller::maybe_pause_cdn_for_inactive_subscription() or
+ * Controller::maybe_turn_off_rocketcdn_for_inactive_subscription() or
  * CdnStateBridge::resolve_live()/resolve_live_cdn() directly.
  *
- * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_pause_cdn_for_inactive_subscription
+ * @covers \WP_Rocket\Engine\CDN\Render\Controller::maybe_turn_off_rocketcdn_for_inactive_subscription
  * @covers \WP_Rocket\Engine\CDN\CdnStateBridge::resolve_live
  * @covers \WP_Rocket\Engine\CDN\CdnStateBridge::resolve_live_cdn
  *

@@ -210,8 +210,8 @@ class Controller extends Abstract_Render {
 			'is_forced_off'     => $is_forced_off,
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
 			// Forced off means RocketCDN can't actually be running (expired/banned licence,
-			// cancelled subscription) - is_forced_paused() already stops CDN delivery on the
-			// front end via maybe_pause_cdn_for_inactive_subscription(), so the toggle should
+			// cancelled subscription) - is_forced_off() already stops CDN delivery on the
+			// front end via maybe_turn_off_rocketcdn_for_inactive_subscription(), so the toggle should
 			// show off rather than checked-but-disabled.
 			'is_active'         => Context::ROCKETCDN_PAID_TYPE === $rocketcdn_state && ! $is_forced_off,
 		];
@@ -292,8 +292,8 @@ class Controller extends Abstract_Render {
 			'is_forced_off'     => $is_forced_off,
 			'toggle_tooltip'    => $this->get_rocketcdn_toggle_forced_off_tooltip(),
 			// Forced off means RocketCDN can't actually be running (expired/banned licence,
-			// cancelled subscription) - is_forced_paused() already stops CDN delivery on the
-			// front end via maybe_pause_cdn_for_inactive_subscription(), so the toggle should
+			// cancelled subscription) - is_forced_off() already stops CDN delivery on the
+			// front end via maybe_turn_off_rocketcdn_for_inactive_subscription(), so the toggle should
 			// show off rather than checked-but-disabled.
 			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state && ! $is_forced_off,
 		];
