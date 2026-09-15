@@ -68,7 +68,7 @@ class RESTSubscriber implements Subscriber_Interface {
 				[ 'register_routes' ],
 			],
 			'rocket_cdnfree_website_create_status'        => 'check_status',
-			'rocket_cdnfree_subscription_creation_failed' => [ 'handle_subscription_creation_failed', 10, 1 ],
+			'rocket_cdnfree_subscription_creation_failed' => 'handle_subscription_creation_failed',
 		];
 	}
 
@@ -226,6 +226,18 @@ class RESTSubscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Rolls back a failed CDN provisioning attempt.
+	 *
+	 * Fired by rocket_cdnfree_subscription_creation_failed, which SubscriptionController
+	 * triggers when check_status() receives a non-success response from the CDN API.
+	 *
+	 * @return void
+	 */
+	public function handle_subscription_creation_failed(): void {
+		$this->rest->rollback_failed_subscription();
+	}
+
+	/**
 	 * Check subscription creation status.
 	 *
 	 * @param string $task_id Task ID to check.
@@ -236,16 +248,5 @@ class RESTSubscriber implements Subscriber_Interface {
 			return;
 		}
 		$this->subscription_controller->check_status( $task_id );
-	}
-
-	/**
-	 * Rollback a failed async subscription creation via the REST controller.
-	 *
-	 * Fires when rocket_cdnfree_subscription_creation_failed is triggered by SubscriptionController.
-	 *
-	 * @return void
-	 */
-	public function handle_subscription_creation_failed(): void {
-		$this->rest->rollback_failed_subscription();
 	}
 }

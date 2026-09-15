@@ -20,7 +20,7 @@
  *     @type string $renewal_url    URL for renewing the license.
  *     @type bool   $active_subscription Whether the user has an active subscription or not.
  *     @type bool   $is_active    Whether RocketCDN Free is the currently applied CDN mode.
- *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type bool   $is_forced_off Whether the mode toggle must be disabled (subscription loading, expired/banned licence).
  *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */

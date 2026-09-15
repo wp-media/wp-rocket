@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldReturnOngoingActivationFreeWhenLoading' => [
+	'testShouldReturnOngoingActivationFreeWhenLoading'  => [
 		'config'   => [
 			'is_subscription_creation_loading' => true,
 		],
