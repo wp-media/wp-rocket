@@ -275,19 +275,50 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 }
 
 /**
+ * Gets the name of the logged-in cookie as the pattern it is listed under.
+ *
+ * The hash inside the name is whatever the site is, so the parts around it are what names the
+ * cookie. WordPress leaves the hash empty when it cannot read the site address, and the name is
+ * then the whole cookie.
+ *
+ * @since 3.24
+ *
+ * @return string
+ */
+function rocket_get_logged_in_cookie_pattern() {
+	$hash   = (string) rocket_get_constant( 'COOKIEHASH', '' );
+	$cookie = (string) rocket_get_constant( 'LOGGED_IN_COOKIE', '' );
+
+	// LOGGED_IN_COOKIE can be undefined or empty; fall back to the prefix WordPress builds it from,
+	// so the list never comes out naming no logged-in cookie at all.
+	if ( '' === $cookie ) {
+		$cookie = 'wordpress_logged_in_';
+	}
+
+	$parts = '' === $hash ? [ $cookie ] : explode( $hash, $cookie );
+
+	return implode( '.+', array_map( 'preg_quote', $parts ) );
+}
+
+/**
  * Get all cookie names we don't cache.
  *
+ * A caller that caches pages for logged-in visitors asks for the list without LOGGED_IN_COOKIE in
+ * it, since such a page is cached under a per-user path rather than refused.
+ *
  * @since 2.0
+ * @since 3.24 Added the $include_logged_in parameter.
+ *
+ * @param bool $include_logged_in Whether the logged-in cookie is one of the cookies to reject.
  *
  * @return string A pipe separated list of rejected cookies.
  */
-function get_rocket_cache_reject_cookies() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
-	$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
-	$logged_in_cookie = implode( '.+', $logged_in_cookie );
+function get_rocket_cache_reject_cookies( $include_logged_in = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$cookies = get_rocket_option( 'cache_reject_cookies', [] );
 
-	$cookies   = get_rocket_option( 'cache_reject_cookies', [] );
-	$cookies[] = $logged_in_cookie;
+	if ( $include_logged_in ) {
+		$cookies[] = rocket_get_logged_in_cookie_pattern();
+	}
 	$cookies[] = 'wp-postpass_';
 	$cookies[] = 'wptouch_switch_toggle';
 	$cookies[] = 'comment_author_';

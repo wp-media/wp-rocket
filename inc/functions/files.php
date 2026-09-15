@@ -131,16 +131,10 @@ function get_rocket_config_file() { // phpcs:ignore WordPress.NamingConventions.
 		}
 
 		if ( 'cache_reject_cookies' === $option ) {
-			$cookies = get_rocket_cache_reject_cookies();
-
-			if ( $cookies && get_rocket_option( 'cache_logged_user' ) ) {
-				// Make sure the "logged-in cookies" are not rejected.
-				$logged_in_cookie = explode( COOKIEHASH, LOGGED_IN_COOKIE );
-				$logged_in_cookie = array_map( 'preg_quote', $logged_in_cookie );
-				$logged_in_cookie = implode( '[^|]*', $logged_in_cookie );
-				$cookies          = preg_replace( '/\|' . $logged_in_cookie . '\|/', '|', '|' . $cookies . '|' );
-				$cookies          = trim( $cookies, '|' );
-			}
+			// With cache_logged_user on, a logged-in page is cached under a per-user path, so
+			// LOGGED_IN_COOKIE is not a reason to refuse one and is left out of the list.
+			$include_logged_in = ! get_rocket_option( 'cache_logged_user' );
+			$cookies           = get_rocket_cache_reject_cookies( $include_logged_in );
 
 			$buffer .= '$rocket_' . $option . ' = \'' . $cookies . "';\n";
 		}
