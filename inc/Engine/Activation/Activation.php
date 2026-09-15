@@ -58,6 +58,14 @@ class Activation {
 		$container->addServiceProvider( new PerformanceHintsActivationServiceProvider() );
 		$event_manager->add_subscriber( $container->get( 'performance_hints_warmup_subscriber' ) );
 
+		/**
+		 * Load options.php before resolving the host: HostResolver::get_host_service() may reach the
+		 * SiteGround branch, which calls rocket_is_plugin_active() (defined in options.php). During
+		 * activation rocket_init() does not run, so options.php would otherwise not be loaded yet and
+		 * activation would fatal on most sites. Keep this require above the get_host_service() call. See #8768.
+		 */
+		require_once WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+
 		$host_type = HostResolver::get_host_service();
 
 		if ( ! empty( $host_type ) ) {
@@ -80,7 +88,7 @@ class Activation {
 			require WP_ROCKET_INC_PATH . 'domain-mapping.php';
 		}
 
-		require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+		// options.php is required earlier (before HostResolver::get_host_service()); see the note above (#8768).
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
