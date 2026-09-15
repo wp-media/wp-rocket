@@ -15,6 +15,7 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCS
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Hostings\Nginx;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
@@ -433,6 +434,10 @@ class Plugin {
 
 		if ( ! empty( $host_type ) ) {
 			$common_subscribers[] = $host_type;
+		}
+
+		if ( Nginx::is_active() ) {
+			$common_subscribers[] = 'nginx';
 		}
 
 		if ( ! empty( $theme ) ) {
