@@ -303,6 +303,90 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	}
 
 	/**
+	 * Keeps the toggle checked while a Free subscription is still being created.
+	 *
+	 * Cdn/cdn_type/cdn_state are already persisted as on by the time create_subscription()
+	 * starts (apply_cdn_mode() runs first in Rest::save_cdn_mode()), but
+	 * get_rocketcdn_state() reports ROCKETCDN_STATE_ONGOING_FREE rather than
+	 * ROCKETCDN_FREE_TYPE while is_subscription_creation_loading() is true - any render
+	 * during that window (a reload, another tab) must not show the toggle as off just
+	 * because of that marker.
+	 *
+	 * @return void
+	 */
+	public function testShouldMarkActiveWhileSubscriptionCreationIsOngoing(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_STATE_ONGOING_FREE );
+
+		$this->context->shouldReceive( 'get_free_page_limit' )
+			->andReturn( 3 );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_account' )
+			->andReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$this->cdn_query->method( 'query' )
+			->willReturn( [] );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_free_section( [] );
+
+		// Checked (this fix) and disabled (is_forced_off, via
+		// should_reject_rocketcdn_activation()'s own is_subscription_loading() term) at the
+		// same time is the correct state while creation is still in progress.
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
+	}
+
+	/**
 	 * Tests that add_rocketcdn_free_section surfaces the expired-licence tooltip
 	 * alongside is_forced_off when the WP Rocket licence is invalid.
 	 *

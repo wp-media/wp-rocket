@@ -294,7 +294,18 @@ class Controller extends Abstract_Render {
 			// cancelled subscription) - is_forced_off() already stops CDN delivery on the
 			// front end via maybe_turn_off_rocketcdn_for_inactive_subscription(), so the toggle should
 			// show off rather than checked-but-disabled.
-			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state && ! $is_forced_off,
+			//
+			// ROCKETCDN_STATE_ONGOING_FREE (a subscription still being created) counts as
+			// active too - cdn/cdn_type/cdn_state are already persisted as on by the time
+			// create_subscription() starts, so any render during the ~30s+ creation window
+			// (a reload, another tab) must keep the toggle checked rather than showing it
+			// as off just because get_rocketcdn_state() reports the ongoing marker instead
+			// of the tier itself. $is_forced_off is true throughout that same window too
+			// (should_reject_rocketcdn_activation() treats is_subscription_loading() as a
+			// reason to reject/disable, correctly disabling the toggle here), so it can't
+			// gate is_active() as-is without also masking this case - "loading" is the one
+			// forced-off reason that means "checked and disabled", not "off and disabled".
+			'is_active'         => in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ) && ( ! $is_forced_off || $is_subscription_loading ),
 		];
 
 		return $sections;
