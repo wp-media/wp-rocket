@@ -49,6 +49,8 @@ $rocket_rocketcdn_free_active = $data['is_active'];
 		);
 		?>
 	</div>
+	<button type="button" class="rocketcdn--upgrade_btn wpr-rocketcdn-open"<?php echo empty( $data['upgrade_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>><?php esc_html_e( 'Upgrade to PRO', 'rocket' ); ?></button>
+
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
@@ -70,8 +72,9 @@ $rocket_rocketcdn_free_active = $data['is_active'];
 	<?php
 	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 	?>
-
+	<?php if ( ! $data['status_indicator']['no_status_indicator'] ) : ?>
 	<div class="wpr-cdn-built-in__separator"></div>
+	<?php endif; ?>
 
 	<?php
 	/**
