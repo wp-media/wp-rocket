@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PluginResolver;
 
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -20,13 +21,22 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 * ids (ezoic, mod_pagespeed) = the 45 plugin-compat ids previously hardcoded
 	 * in Plugin::$common_subscribers.
 	 *
+	 * Issue #8795 adds 9 newly-ported registry ids and gates them behind
+	 * PluginCompatibilityInterface. Because they are NEW ids (not existing ones
+	 * being gated), and none of their target plugins are installed here, the
+	 * active count is unchanged: each of the 9 is removed from the resolved set by
+	 * array_diff() against PluginResolverGatedIds::IDS, leaving the original 43
+	 * still active. 43 + 2 = 45.
+	 *
 	 * @var int
 	 */
 	private const EXPECTED_PLUGIN_SUBSCRIBERS = 45;
 
 	/**
-	 * Phase 0 defaults every registry id active, so the resolver's set is the
-	 * full registry, and the container must resolve every one of them.
+	 * Phase 0 defaulted every registry id active; issue #8795 opts 9 newly-ported
+	 * ids into real detection, so the resolver's set is the registry minus those 9
+	 * (their target plugins are absent here), which equals the original 43 ids, and
+	 * the container must still resolve every one of them.
 	 */
 	public function testShouldResolveEveryActivePluginIdFromTheLiveContainer() {
 		$container = apply_filters( 'rocket_container', null );
@@ -36,7 +46,9 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		$active_ids = PluginResolver::get_active_plugins( true );
 		$registry   = ( new SubscriberFactory() )->get_registry();
 
-		$this->assertSame( array_keys( $registry ), $active_ids, 'Phase 0 must resolve to the full 43-id registry.' );
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
+
+		$this->assertSame( $expected_active_ids, $active_ids, 'Resolver must return the registry minus the 9 gated-inactive #8795 ids.' );
 		$this->assertCount( 43, $active_ids );
 
 		foreach ( $active_ids as $id ) {
@@ -86,8 +98,8 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	public function testShouldMatchThePluginSubscriberCountBaseline() {
 		$active_ids = PluginResolver::get_active_plugins( true );
 
-		// 43 resolver ids + ezoic + mod_pagespeed = the 45 plugin ids formerly
-		// hardcoded in Plugin::$common_subscribers.
+		// 43 active resolver ids (the 9 newly-ported #8795 ids are gated-inactive
+		// here) + ezoic + mod_pagespeed = 45.
 		$this->assertSame( self::EXPECTED_PLUGIN_SUBSCRIBERS, count( $active_ids ) + 2 );
 	}
 }

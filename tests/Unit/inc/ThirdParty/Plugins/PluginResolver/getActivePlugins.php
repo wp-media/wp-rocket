@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverActivePlugin;
+use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverInactivePlugin;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
@@ -38,18 +39,23 @@ class Test_GetActivePlugins extends TestCase {
 	}
 
 	/**
-	 * Phase 0: no registry class implements PluginCompatibilityInterface yet,
-	 * so every id defaults active — the resolved set equals the full registry.
+	 * Phase 0 defaulted every registry id active. Issue #8795 opts 9 newly-ported
+	 * ids into real detection (PluginCompatibilityInterface); none of their target
+	 * plugins are present in this test environment, so those 9 are excluded from the
+	 * resolved active set while the rest still default active.
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array $expected Expected active plugin ids.
+	 * @param array $expected Expected full registry ids.
 	 */
 	public function testShouldReturnAllRegistryIdsByDefault( $expected ) {
 		$registry = ( new SubscriberFactory() )->get_registry();
 
 		$this->assertSame( $expected, array_keys( $registry ) );
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
+
+		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**
@@ -84,9 +90,10 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->assertSame( [ 'stale_id' ], PluginResolver::get_active_plugins() );
 
-		$registry = ( new SubscriberFactory() )->get_registry();
+		$registry            = ( new SubscriberFactory() )->get_registry();
+		$expected_active_ids = array_values( array_diff( array_keys( $registry ), PluginResolverGatedIds::IDS ) );
 
-		$this->assertSame( array_keys( $registry ), PluginResolver::get_active_plugins( true ) );
+		$this->assertSame( $expected_active_ids, PluginResolver::get_active_plugins( true ) );
 	}
 
 	/**
