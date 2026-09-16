@@ -50,6 +50,8 @@ return [
 				'premium_seo_pack',
 				'thrive_visual_editor',
 				'visual_composer',
+				'kk_star_ratings',
+				'wp_postratings',
 			],
 		],
 	],
