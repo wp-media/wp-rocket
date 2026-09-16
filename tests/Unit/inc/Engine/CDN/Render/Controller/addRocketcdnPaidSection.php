@@ -222,6 +222,79 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	}
 
 	/**
+	 * While a subscription is being created and nothing else is forcing the section off,
+	 * show_pause_state() (unlike should_reject_rocketcdn_activation()) doesn't treat
+	 * is_subscription_loading() as a pause reason on its own, so the "Creating your
+	 * subscription..." text set earlier in get_status_indicator_data() must survive rather
+	 * than being overwritten by the generic paused text.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotOverwriteLoadingTextWithPausedTextWhileSubscriptionLoading(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_paid_section( [] );
+
+		$status_indicator = $sections['rocketcdn_paid_section']['status_indicator'];
+
+		$this->assertFalse( $status_indicator['is_paused'] );
+		$this->assertSame( 'Creating your subscription...', $status_indicator['status_text'] );
+		$this->assertSame( 'Please wait, RocketCDN will be ready in about 30s.', $status_indicator['details'] );
+		$this->assertStringNotContainsString( 'wpr-cdn-status--paused', $status_indicator['class'] );
+	}
+
+	/**
 	 * Surfaces the banned-reseller tooltip alongside is_forced_off for the paid section.
 	 *
 	 * Also covers the Test Findings doc's "Green circle and active text is there for Pro
