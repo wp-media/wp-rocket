@@ -235,8 +235,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
@@ -308,8 +311,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
@@ -390,8 +396,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );

@@ -1178,7 +1178,7 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return Context::CDN_STATE_NOTHING === $this->context->get_applied_cdn_state();
+		return Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state();
 	}
 
 	/**
