@@ -53,8 +53,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/varnish-http-purge.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/thrive-leads.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mailchimp.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/advanced-custom-fields.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-offload-s3-assets.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/s2member.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/sumome.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/nginx-helper.php';
