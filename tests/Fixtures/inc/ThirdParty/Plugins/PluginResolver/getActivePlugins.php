@@ -48,6 +48,8 @@ return [
 				'termly_subscriber',
 				'optimole_subscriber',
 				'premium_seo_pack',
+				'thrive_visual_editor',
+				'visual_composer',
 			],
 		],
 	],

@@ -50,8 +50,6 @@ require WP_ROCKET_3RD_PARTY_PATH . 'plugins/disqus.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/custom-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/mobile/wp-appkit.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/wp-rest-api.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/thrive-visual-editor.php';
-require WP_ROCKET_3RD_PARTY_PATH . 'plugins/page-builder/visual-composer.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/secupress.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/sf-move-login.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'plugins/security/wps-hide-login.php';

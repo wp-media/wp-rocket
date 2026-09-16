@@ -27,6 +27,15 @@ trait ReturnTypesTrait {
 	}
 
 	/**
+	 * Returns zero.
+	 *
+	 * @return int
+	 */
+	public function return_zero() {
+		return 0;
+	}
+
+	/**
 	 * Returns an empty string.
 	 *
 	 * @since 3.6.1
