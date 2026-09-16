@@ -36,6 +36,7 @@ use WP_Rocket\ThirdParty\Plugins\PWA;
 use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
+use WP_Rocket\ThirdParty\Plugins\SEO\PremiumSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
@@ -111,6 +112,7 @@ class SubscriberFactory {
 			'contactform7'                 => ContactForm7::class,
 			'termly_subscriber'            => Termly::class,
 			'optimole_subscriber'          => Optimole::class,
+			'premium_seo_pack'             => PremiumSEOPack::class,
 		];
 	}
 
