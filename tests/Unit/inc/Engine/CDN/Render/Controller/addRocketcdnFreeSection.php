@@ -181,6 +181,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( false );
 
@@ -274,6 +277,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -343,6 +349,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( true );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -364,7 +373,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WP Rocket licence has expired.',
+			'Renew to use RocketCDN Free.',
 			$sections['rocketcdn_free_section']['toggle_tooltip']
 		);
 	}
@@ -416,6 +425,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
 
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
