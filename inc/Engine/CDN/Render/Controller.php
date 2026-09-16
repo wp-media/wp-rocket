@@ -844,7 +844,7 @@ class Controller extends Abstract_Render {
 		}
 
 		if ( $this->is_forced_off() ) {
-			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
+			return __( 'Renew to use RocketCDN Free.', 'rocket' );
 		}
 
 		return '';
@@ -924,7 +924,7 @@ class Controller extends Abstract_Render {
 		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
 
 		if ( $is_paused ) {
-			$texts['details']     = sprintf(
+			$texts['details'] = sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 				__( '%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
 				'<strong>',
@@ -933,7 +933,7 @@ class Controller extends Abstract_Render {
 		}
 
 		if ( $pages_count < 0 && ! $is_paused ) {
-			$texts['details']     = sprintf(
+			$texts['details'] = sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
 				'<strong>',
@@ -943,17 +943,16 @@ class Controller extends Abstract_Render {
 
 		if ( $pages_count > 0 ) {
 			$texts['details']             = '';
-			$texts['paused_details']      = '';
 			$texts['no_status_indicator'] = true;
 		}
 
 		if ( $this->subscription_controller->is_license_invalid() ) {
-			$texts['class']         .= ' wpr-cdn-status--expired';
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
+			$texts['class']  .= ' wpr-cdn-status--expired';
+			$texts['details'] = __( 'Renew now to keep using RocketCDN Free.', 'rocket' );
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
-			$texts['paused_details'] = '';
+			$texts['details'] = '';
 		}
 
 		return $texts;
@@ -978,12 +977,11 @@ class Controller extends Abstract_Render {
 			return $texts;
 		}
 
-		$texts['details']            = __( 'Serving files from 100+ edge locations', 'rocket' );
-		$texts['active_status_text'] = __( 'RocketCDN is active on your website', 'rocket' );
-		$texts['status_text']        = $texts['active_status_text'];
+		$texts['details']     = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
+		$texts['status_text'] = $texts['active_status_text'];
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
-			$texts['paused_details'] = sprintf(
+			$texts['details'] = sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 				__( '%1$sRocketCDN Pro subscription is being cancelled.%2$s RocketCDN Pro can\'t be reactivated until the process is complete.', 'rocket' ),
 				'<strong>',
@@ -1134,7 +1132,6 @@ class Controller extends Abstract_Render {
 	 */
 	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ): array {
 		$texts = [
-			'active_status_text'  => __( 'RocketCDN is active', 'rocket' ),
 			'status_text'         => '',
 			'details'             => sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag, %3$s = line breaking <br /> tag.
@@ -1180,7 +1177,7 @@ class Controller extends Abstract_Render {
 		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
 
 		if ( $is_paused ) {
-			$texts['class']      .= ' wpr-cdn-status--paused';
+			$texts['class'] .= ' wpr-cdn-status--paused';
 		}
 
 		return [
@@ -1188,8 +1185,6 @@ class Controller extends Abstract_Render {
 			'is_active'               => true,
 			'status_text'             => $texts['status_text'],
 			'details'                 => $texts['details'],
-			'active_status_text'      => $texts['active_status_text'],
-			'paused_details'          => $texts['paused_details'],
 			'is_paused'               => $is_paused,
 			'pages_count'             => $pages_count,
 			'is_subscription_loading' => $is_subscription_loading,
