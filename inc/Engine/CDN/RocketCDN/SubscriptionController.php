@@ -11,11 +11,20 @@ use WP_Rocket\Engine\License\API\{
 	User,
 	UserClient
 };
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class SubscriptionController implements LoggerAwareInterface {
 	use LoggerAware;
+	use TrackingTrait;
+
+	/**
+	 * Option name used to store the cumulative count of manual Pro-detection retry attempts.
+	 *
+	 * @var string
+	 */
+	private const RETRY_PRO_DETECTION_ATTEMPTS_OPTION = 'rocket_cdn_retry_pro_detection_attempts';
 
 	/**
 	 * API Client instance.
@@ -239,6 +248,12 @@ class SubscriptionController implements LoggerAwareInterface {
 
 			$this->stop_subscription_creation_loader();
 
+			$reason = sprintf( '%s: %s', $created['data']['code'] ?? 'Unknown', $created['data']['message'] ?? 'Unknown' );
+			$this->track_event(
+				'RocketCDN Free Activation Failed',
+				[ 'reason' => $reason ]
+			);
+
 			return new WP_Error( $created['data']['code'] ?? 'rocketcdn_account_notcreated', $created['data']['message'] ?? 'Unknown' );
 		}
 
@@ -334,10 +349,18 @@ class SubscriptionController implements LoggerAwareInterface {
 			default:
 				$this->trigger_creation_failed();
 				$this->stop_subscription_creation_loader();
+
+				$reason = 'RocketCDN: Received not known response code when check subscription\'s status.';
+
 				$this->logger::error(
-					'RocketCDN: Received not known response code when check subscription\'s status.',
+					$reason,
 					$status
 				);
+				
+				$this->track_event(
+				'RocketCDN Free Activation Failed',
+				[ 'reason' => $reason ]
+			);
 		}
 	}
 
@@ -584,6 +607,17 @@ class SubscriptionController implements LoggerAwareInterface {
 
 		delete_transient( 'rocket_cdn_pro_detection_failed' );
 		$this->queue->schedule_pro_detection_job( 3 );
+
+		$attempts_used = (int) get_option( self::RETRY_PRO_DETECTION_ATTEMPTS_OPTION, 0 ) + 3;
+		update_option( self::RETRY_PRO_DETECTION_ATTEMPTS_OPTION, $attempts_used, false );
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'        => 'rocket cdn retry pro detection',
+				'attempts_used' => $attempts_used,
+			]
+		);
 
 		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
