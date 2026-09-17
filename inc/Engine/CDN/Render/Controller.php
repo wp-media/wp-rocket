@@ -936,15 +936,13 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
-	 * Adds the `cdn_mode`/`cdn_status` tracking axis properties to the data localized
-	 * for JS-side Mixpanel tracking.
+	 * Localizes the `cdn_mode`/`cdn_status` tracking axis properties for JS-side
+	 * Mixpanel tracking, independently of {@see \WP_Rocket\Engine\Tracking\Tracking::localize_optin_status()}.
 	 *
-	 * @param array $data Data to localize.
-	 *
-	 * @return array
+	 * @return void
 	 */
-	public function add_tracking_data( array $data ): array {
-		return array_merge( $data, $this->get_tracking_data() );
+	public function localize_tracking_data(): void {
+		wp_localize_script( 'wpr-admin-common', 'rocket_cdn_mixpanel_data', $this->get_tracking_data() );
 	}
 
 	/**
