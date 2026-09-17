@@ -105,76 +105,55 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 	}
 
 	/**
-	 * When $free is false the method returns the texts unchanged without touching context or subscription.
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Scenario inputs and mock return values.
+	 * @param array $expected Assertions to make against the returned texts.
 	 */
-	public function testShouldReturnUnchangedWhenNotFree(): void {
-		$texts = $this->default_texts();
+	public function testShouldReturnExpectedTexts( array $config, array $expected ): void {
+		if ( $config['free'] ) {
+			$this->context->shouldReceive( 'get_applied_cdn_state' )
+				->andReturn( $config['applied_cdn_state'] );
 
-		$result = $this->get_controller()->get_free_status_indicator_texts( $texts, 0, false, false );
+			// has_active_subscription is only called when CDN is paused (short-circuit &&).
+			if ( Context::CDN_STATE_NOTHING === $config['applied_cdn_state'] ) {
+				$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+					->andReturn( $config['has_active_subscription'] ?? false );
+			}
 
-		$this->assertSame( $texts, $result );
-	}
+			$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+				->andReturn( $config['is_license_invalid'] );
 
-	/**
-	 * When CDN Free is active with no pages added and CDN is not paused,
-	 * the default details text is kept unchanged.
-	 */
-	public function testShouldKeepDefaultDetailsWhenActiveAndNoPagesAdded(): void {
-		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
-		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( false );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
+			$this->user->shouldReceive( 'is_reseller_license_banned' )
+				->andReturn( $config['is_reseller_license_banned'] );
+		}
 
-		$result = $this->get_controller()->get_free_status_indicator_texts( $this->default_texts(), 0, false, true );
-
-		$this->assertSame( 'Start with your homepage.', $result['details'] );
-		$this->assertArrayNotHasKey( 'no_status_indicator', $result );
-	}
-
-	/**
-	 * When pages have been added, details is cleared and no_status_indicator is set so the
-	 * status badge is hidden — the page list takes its place.
-	 */
-	public function testShouldSetNoStatusIndicatorAndClearDetailsWhenPagesExist(): void {
-		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
-		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( false );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
-
-		$result = $this->get_controller()->get_free_status_indicator_texts( $this->default_texts(), 2, false, true );
-
-		$this->assertTrue( $result['no_status_indicator'] );
-		$this->assertSame( '', $result['details'] );
-	}
-
-	/**
-	 * When the CDN is paused (applied state = CDN_STATE_NOTHING) and the user has an active
-	 * subscription, the paused onboarding copy replaces the default details.
-	 */
-	public function testShouldSetPausedDetailsWhenCdnIsPaused(): void {
-		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::CDN_STATE_NOTHING );
-		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( true );
-		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( false );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
-
-		$result = $this->get_controller()->get_free_status_indicator_texts( $this->default_texts(), 0, false, true );
-
-		$this->assertSame(
-			'<strong>Start with your homepages and add up to 2 more key pages.</strong> Includes unlimited traffic across 10 edge locations.',
-			$result['details']
+		$result = $this->get_controller()->get_free_status_indicator_texts(
+			$this->default_texts(),
+			$config['pages_count'],
+			$config['is_subscription_loading'],
+			$config['free']
 		);
-	}
 
-	/**
-	 * When the WP Rocket licence is invalid, the expired CSS class is added and the details
-	 * prompt the user to renew.
-	 */
-	public function testShouldSetExpiredClassAndDetailsWhenLicenceInvalid(): void {
-		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
-		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( true );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
+		if ( ! empty( $expected['same_as_input'] ) ) {
+			$this->assertSame( $this->default_texts(), $result );
+			return;
+		}
 
-		$result = $this->get_controller()->get_free_status_indicator_texts( $this->default_texts(), 0, false, true );
+		if ( isset( $expected['details'] ) ) {
+			$this->assertSame( $expected['details'], $result['details'] );
+		}
 
-		$this->assertStringContainsString( 'wpr-cdn-status--expired', $result['class'] );
-		$this->assertSame( 'Renew now to keep using RocketCDN Free.', $result['details'] );
+		if ( isset( $expected['no_status_indicator'] ) ) {
+			if ( $expected['no_status_indicator'] ) {
+				$this->assertTrue( $result['no_status_indicator'] );
+			} else {
+				$this->assertArrayNotHasKey( 'no_status_indicator', $result );
+			}
+		}
+
+		if ( isset( $expected['class_contains'] ) ) {
+			$this->assertStringContainsString( $expected['class_contains'], $result['class'] );
+		}
 	}
 }

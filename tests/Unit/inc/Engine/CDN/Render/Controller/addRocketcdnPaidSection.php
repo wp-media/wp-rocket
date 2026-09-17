@@ -276,7 +276,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+			'Contact support to find out how to restore access.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 	}
@@ -346,7 +346,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your subscription is no longer active.',
+			'Renew to use RocketCDN Free.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		// The stored state is still 'rocketcdn_paid', but the toggle must show off rather than
@@ -420,7 +420,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your subscription is no longer active.',
+			'Renew to use RocketCDN Free.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
