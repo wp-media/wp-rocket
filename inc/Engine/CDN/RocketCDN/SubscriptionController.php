@@ -356,11 +356,11 @@ class SubscriptionController implements LoggerAwareInterface {
 					$reason,
 					$status
 				);
-				
+
 				$this->track_event(
-				'RocketCDN Free Activation Failed',
-				[ 'reason' => $reason ]
-			);
+					'RocketCDN Free Activation Failed',
+					[ 'reason' => $reason ]
+				);
 		}
 	}
 
