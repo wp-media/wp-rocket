@@ -21,7 +21,6 @@ defined( 'ABSPATH' ) || exit;
 
 $rocket_details                 = isset( $data['details'] ) ? $data['details'] : '';
 $rocket_class                   = isset( $data['class'] ) ? $data['class'] : '';
-$rocket_paused_status_text      = isset( $data['paused_status_text'] ) ? $data['paused_status_text'] : '';
 $rocket_is_subscription_loading = isset( $data['is_subscription_loading'] ) ? $data['is_subscription_loading'] : false;
 
 if ( ! $data['is_active'] ) {
@@ -30,7 +29,6 @@ if ( ! $data['is_active'] ) {
 ?>
 
 <div class="wpr-cdn-status <?php echo esc_attr( $rocket_class ); ?>"
-	data-paused-text="<?php echo esc_attr( $rocket_paused_status_text ); ?>"
 	data-active-details="<?php echo esc_attr( $rocket_details ); ?>"
 	data-long-details="<?php echo strlen( $rocket_details ) > 120 ? '1' : '0'; ?>"
 	id="wpr_cdn_status_indicator"
