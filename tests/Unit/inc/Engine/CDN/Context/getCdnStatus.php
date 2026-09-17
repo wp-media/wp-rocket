@@ -61,11 +61,9 @@ class Test_GetCdnStatus extends TestCase {
 		$this->user->shouldReceive( 'is_revoked' )
 			->andReturn( $config['is_revoked'] ?? false );
 
-		if ( isset( $config['cdn_state'] ) ) {
-			$this->options->shouldReceive( 'get' )
-				->with( 'cdn_state', Context::CDN_STATE_NOTHING )
-				->andReturn( $config['cdn_state'] );
-		}
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn_state', Context::CDN_STATE_NOTHING )
+			->andReturn( $config['cdn_state'] ?? Context::CDN_STATE_NOTHING );
 
 		$this->assertSame( $expected, $this->context->get_cdn_status() );
 	}

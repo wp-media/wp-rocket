@@ -28,11 +28,13 @@ return [
 		],
 		'expected' => 'forced_off',
 	],
-	'testShouldReturnForcedOffWhenResellerLicenseBanned'            => [
+	// Context::is_forced_off() doesn't check is_reseller_license_banned() — Controller
+	// handles a banned reseller as its own, separate precedence tier ahead of is_forced_off().
+	'testShouldReturnInactiveWhenResellerLicenseBannedAlone'        => [
 		'config'   => [
 			'is_reseller_license_banned' => true,
 		],
-		'expected' => 'forced_off',
+		'expected' => 'inactive',
 	],
 	'testShouldReturnActiveWhenModeAppliedAndNotForcedOff'          => [
 		'config'   => [
