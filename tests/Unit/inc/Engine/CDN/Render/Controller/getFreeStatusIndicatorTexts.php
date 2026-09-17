@@ -95,12 +95,10 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 
 	private function default_texts(): array {
 		return [
-			'paused_status_text' => 'RocketCDN is paused',
-			'active_status_text' => 'RocketCDN is active',
-			'paused_details'     => 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.',
-			'status_text'        => '',
-			'details'            => 'Start with your homepage.',
-			'class'              => '',
+			'status_text'         => '',
+			'details'             => 'Start with your homepage.',
+			'class'               => '',
+			'no_status_indicator' => false,
 		];
 	}
 
@@ -131,7 +129,7 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 		$result = $this->get_controller()->get_free_status_indicator_texts(
 			$this->default_texts(),
 			$config['pages_count'],
-			$config['is_subscription_loading'],
+			$config['is_loading'],
 			$config['free']
 		);
 
@@ -145,11 +143,7 @@ class Test_GetFreeStatusIndicatorTexts extends TestCase {
 		}
 
 		if ( isset( $expected['no_status_indicator'] ) ) {
-			if ( $expected['no_status_indicator'] ) {
-				$this->assertTrue( $result['no_status_indicator'] );
-			} else {
-				$this->assertArrayNotHasKey( 'no_status_indicator', $result );
-			}
+			$this->assertSame( $expected['no_status_indicator'], $result['no_status_indicator'] );
 		}
 
 		if ( isset( $expected['class_contains'] ) ) {

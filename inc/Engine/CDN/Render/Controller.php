@@ -977,8 +977,8 @@ class Controller extends Abstract_Render {
 			return $texts;
 		}
 
-		$texts['details']     = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
-		$texts['status_text'] = $texts['active_status_text'];
+		$texts['details']     = '';
+		$texts['status_text'] = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
 			$texts['details'] = sprintf(
