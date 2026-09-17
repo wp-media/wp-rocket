@@ -26,11 +26,15 @@ class MaybeDisplayRevokedBanner extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'maybe_display_revoked_banner', 13 );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'current_screen' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 

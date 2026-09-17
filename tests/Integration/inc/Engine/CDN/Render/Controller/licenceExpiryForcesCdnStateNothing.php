@@ -62,6 +62,9 @@ class Test_LicenceExpiryForcesCdnStateNothing extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		$container = apply_filters( 'rocket_container', null );
 
 		$this->options_api       = new Options( 'wp_rocket_' );
@@ -88,6 +91,8 @@ class Test_LicenceExpiryForcesCdnStateNothing extends TestCase {
 		remove_all_filters( 'get_rocket_option_cdn' );
 		$this->user->set_user( new \stdClass() );
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

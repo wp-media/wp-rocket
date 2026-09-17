@@ -54,6 +54,9 @@ class Test_ResolveLiveCdnOrdering extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		// Explicitly pin admin context rather than depending on ambient screen state -
 		// Subscriber::apply_pause_on_rocketcdn_only() (also hooked on this same 'cdn'
 		// read path) behaves differently in admin vs. front end.
@@ -83,6 +86,8 @@ class Test_ResolveLiveCdnOrdering extends AdminTestCase {
 		remove_all_filters( 'get_rocket_option_cdn' );
 		$this->user->set_user( new \stdClass() );
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

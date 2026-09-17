@@ -38,6 +38,9 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 
 		$this->reset_frontend_subscriber_memo( $container );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
@@ -50,6 +53,8 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		$this->clear_rocketcdn_options();
 
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

@@ -27,9 +27,18 @@ class Test_ShowAdminNotice extends TestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'bypass_request'] );
 		delete_transient( 'rocket_mod_pagespeed_enabled' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
