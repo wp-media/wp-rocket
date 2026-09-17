@@ -121,16 +121,15 @@ class Test_ShowPauseState extends TestCase {
 	/**
 	 * Invokes the private show_pause_state() method under test.
 	 *
-	 * @param Controller $controller  Controller instance.
-	 * @param int        $pages_count Number of pages currently tracked for RocketCDN.
+	 * @param Controller $controller Controller instance.
 	 *
 	 * @return bool
 	 */
-	private function invoke_show_pause_state( Controller $controller, int $pages_count ): bool {
+	private function invoke_show_pause_state( Controller $controller ): bool {
 		$show_pause_state = new ReflectionMethod( Controller::class, 'show_pause_state' );
 		$show_pause_state->setAccessible( true );
 
-		return $show_pause_state->invoke( $controller, $pages_count );
+		return $show_pause_state->invoke( $controller );
 	}
 
 	/**
@@ -173,10 +172,7 @@ class Test_ShowPauseState extends TestCase {
 
 		$controller = $this->get_controller();
 
-		$this->assertSame(
-			$expected,
-			$this->invoke_show_pause_state( $controller, $config['pages_count'] ?? 0 )
-		);
+		$this->assertSame( $expected, $this->invoke_show_pause_state( $controller ) );
 	}
 
 	/**
@@ -197,21 +193,8 @@ class Test_ShowPauseState extends TestCase {
 					'applied_cdn_state'       => Context::CDN_STATE_NOTHING,
 					'has_active_subscription' => false,
 					'is_in_grace_period'      => false,
-					'pages_count'             => 0,
 				],
 				false,
-			],
-			'subscription deleted outright (outside any grace period): every subscription-state check goes false, but a leftover tracked page proves this wasn\'t a fresh install' => [
-				[
-					'applied_cdn_state'                 => Context::CDN_STATE_NOTHING,
-					'has_active_subscription'           => false,
-					'is_in_grace_period'                => false,
-					'is_cancelled_outside_grace_period' => false,
-					'is_free'                           => false,
-					'is_license_invalid'                => false,
-					'pages_count'                       => 1,
-				],
-				true,
 			],
 			'user deliberately paused an active subscription' => [
 				[
