@@ -46,9 +46,16 @@
 	 * @returns {void}
 	 */
 	function updateStatusIndicatorComponent( html ) {
-		// #wpr_cdn_status_indicator is shared by the free and paid templates - the free
-		// tier additionally wraps it in .wpr-cdn-built-in, the paid tier does not.
-		const statusIndicator = document.getElementById( 'wpr_cdn_status_indicator' );
+		// #wpr_cdn_status_indicator is shared by the free, paid AND "Your CDN" (BYOCDN)
+		// templates - the free tier additionally wraps it in .wpr-cdn-built-in, the paid
+		// tier does not, and both tab panels stay in the DOM at once (one merely hidden),
+		// so a plain getElementById() can silently grab the BYOCDN copy instead and inject
+		// RocketCDN's message into the "Other CDN" tab. Explicitly skip any match under
+		// .your-own-cdn - see updateByocdnStatusIndicator(), which excludes RocketCDN's
+		// copy the same way in reverse.
+		const statusIndicator = Array.from( document.querySelectorAll( '#wpr_cdn_status_indicator' ) )
+			.find( ( el ) => ! el.closest( '.your-own-cdn' ) );
+
 		if ( statusIndicator && html ) {
 			statusIndicator.outerHTML = html;
 		}
@@ -418,17 +425,22 @@
 				);
 				syncCdnHiddenInputs( requestedMode );
 
-				// The "Other CDN" toggle only ever shows the static "Your CDN is active on
-				// your website" message or nothing - it must not reuse RocketCDN's tiered
-				// status_indicator_html, so it's updated separately here.
+				// Enabling either driver changes the other's paused/active status too - e.g.
+				// switching to Other CDN pauses RocketCDN, and vice versa - so refresh both
+				// status indicators regardless of which toggle was just flipped, instead of
+				// only the one matching `mode`. Safe to call unconditionally: both update
+				// functions now scope themselves to their own tab (each explicitly excludes
+				// the other's copy of #wpr_cdn_status_indicator), and every save_cdn_mode()
+				// response already carries both HTML fragments, freshly rendered from the
+				// just-persisted state.
+				updateByocdnStatusIndicator( response.byocdn_status_indicator_html );
+				refreshUIElements( response );
+
 				if ( 'byocdn' === mode ) {
-					updateByocdnStatusIndicator( response.byocdn_status_indicator_html );
 					toggle.disabled = false;
 
 					return;
 				}
-
-				refreshUIElements( response );
 
 				// refreshUIElements() calls setSubscriptionLoadingState() above when the async
 				// subscription creation is still in progress, which disables every mode toggle -
