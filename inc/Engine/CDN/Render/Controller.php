@@ -610,20 +610,40 @@ class Controller extends Abstract_Render {
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
-		// Don't track if the user is not forced off.
+		// Resume leg: the forced-off condition has just cleared.
 		if ( ! $is_forced ) {
+			$cdn_mode = $this->context->get_cdn_state();
+
+			// A switch-away, not a recovery. subscription was cancelled.
+			if ( Context::CDN_STATE_NOTHING === $cdn_mode || Context::BYOCDN_TYPE === $cdn_mode ) {
+				return;
+			}
+
+			// An active paid subscription means it was renewed/reactivated; 
+			// otherwise the WP Rocket license itself must be what got fixed.
+			$trigger = $this->subscription_controller->is_paid() ? 'pro_purchase' : 'license_renewal';
+
+			$this->track_event(
+				'RocketCDN Mode Changed',
+				[
+					'cdn_mode'   => $cdn_mode,
+					'cdn_status' => $this->context->get_cdn_status(),
+					'trigger'    => $trigger,
+				]
+			);
+
 			return;
 		}
 
 		$settings        = $this->options_api->get( 'settings', [] );
 		$pre_expiry_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
 
-		$this->track_event( 
-			'RocketCDN Forced Off', 
+		$this->track_event(
+			'RocketCDN Forced Off',
 			[
 				'reason'          => $this->context->get_forced_off_reason(),
 				'pre_expiry_mode' => $pre_expiry_mode,
-			] 
+			]
 		);
 	}
 

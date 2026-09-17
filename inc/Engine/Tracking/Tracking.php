@@ -236,19 +236,31 @@ class Tracking extends Abstract_Render {
 		$consumer_email = $this->options->get( 'consumer_email', '' );
 		$hashed_email   = ! empty( $consumer_email ) ? $this->mixpanel->hash( $consumer_email ) : '';
 
-		wp_localize_script(
-			'wpr-admin-common',
+		$data = [
+			'optin_enabled' => $this->optin->is_enabled() ? true : false,
+			'plugin'        => 'wp rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+			'brand'         => 'wp media',
+			'app'           => 'wp rocket',
+			'context'       => 'wp_plugin',
+			'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
+			'user_id'       => $hashed_email,
+		];
+
+		/**
+		 * Filters the data localized for JS-side Mixpanel tracking.
+		 *
+		 * Lets other features (e.g. CDN) attach their own tracking-axis properties
+		 * without this generic class needing to know about them.
+		 *
+		 * @param array $data Data to localize.
+		 */
+		$data = wpm_apply_filters_typed(
+			'array',
 			'rocket_mixpanel_data',
-			[
-				'optin_enabled' => $this->optin->is_enabled() ? true : false,
-				'plugin'        => 'wp rocket ' . rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
-				'brand'         => 'wp media',
-				'app'           => 'wp rocket',
-				'context'       => 'wp_plugin',
-				'path'          => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
-				'user_id'       => $hashed_email,
-			]
+			$data
 		);
+
+		wp_localize_script( 'wpr-admin-common', 'rocket_mixpanel_data', $data );
 	}
 
 	/**
@@ -408,16 +420,7 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocketcdn_activation_failed_banner_viewed(): void {
-		if ( ! $this->optin->can_track() ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'RocketCDN Activation Failed Banner Viewed',
-			[
-				'context' => 'wp_plugin',
-			]
-		);
+		$this->track_event( 'RocketCDN Activation Failed Banner Viewed' );
 	}
 
 	/**
@@ -460,29 +463,6 @@ class Tracking extends Abstract_Render {
 				'button'  => 'rocket cdn add homepage',
 				'context' => 'wp_plugin',
 				'source'  => $source,
-			]
-		);
-	}
-
-	/**
-	 * Track when the RocketCDN pause status is changed.
-	 *
-	 * @param string $status  The new status of the CDN (e.g., 'paused', 'active').
-	 * @param string $trigger The trigger for the status change (e.g., 'user_paused', 'user_resume').
-	 *
-	 * @return void
-	 */
-	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
-		if ( ! $this->optin->can_track() ) {
-			return;
-		}
-
-		$this->track_event(
-			'Button Clicked',
-			[
-				'status'  => $status,
-				'trigger' => $trigger,
-				'button'  => 'rocket cdn pause',
 			]
 		);
 	}
