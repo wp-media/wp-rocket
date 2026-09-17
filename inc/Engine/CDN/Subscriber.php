@@ -157,7 +157,20 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
 			],
+			'rocket_mixpanel_tracked_options'          => [ 'remove_cdn_from_tracked_options', 11 ],
 		];
+	}
+
+	/**
+	 * Removes the deprecated `cdn` key, replaced by `RocketCDN Mode Changed`. Filtered here
+	 * rather than in dynamic-lists.json, which is overwritten by a remote sync.
+	 *
+	 * @param array $options Tracked option keys.
+	 *
+	 * @return array
+	 */
+	public function remove_cdn_from_tracked_options( array $options ): array {
+		return array_values( array_diff( $options, [ 'cdn' ] ) );
 	}
 
 	/**
