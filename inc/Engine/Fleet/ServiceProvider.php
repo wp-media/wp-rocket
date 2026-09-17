@@ -11,15 +11,7 @@ use WPMedia\FleetBridge\WordPress\WpdbNonceStore;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Wires the Fleet route.
- *
- * Verification comes from `wp-media/fleet-bridge` rather than living here, per
- * wp-media/fleet#55. What stays here is where trust comes from and what a
- * command may do once believed.
- *
- * The abilities are pulled from the container rather than constructed, so the
- * route calls the same objects the MCP surface does and the allowlist and
- * sanitisation keep one home.
+ * Service provider for the Fleet route.
  *
  * @since 3.23.4
  */
@@ -56,21 +48,17 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'fleet_trust_store', TrustStore::class )
 			->addArgument( 'remote_settings_client' );
 
-		$this->getContainer()->addShared(
-			'fleet_bridge',
-			function () {
-				return new Bridge(
-					$this->getContainer()->get( 'fleet_trust_store' ),
+		$this->getContainer()->addShared( 'fleet_bridge', Bridge::class )
+			->addArguments(
+				[
+					'fleet_trust_store',
 					new HttpKeySets( [ Route::class, 'log' ] ),
 					new WpdbNonceStore(),
-					// Port free: `home_url()` may carry one, wp-rocket.me stores
-					// the domain without it, and both sides derive the subject
-					// from this string.
+					// Host only: wp-rocket.me stores the domain without a port, and both sides derive the subject from this string.
 					new Config( (string) wp_parse_url( home_url(), PHP_URL_HOST ) ),
-					new SystemClock()
-				);
-			}
-		);
+					new SystemClock(),
+				]
+			);
 
 		$this->getContainer()->addShared( 'fleet_route', Route::class )
 			->addArguments(

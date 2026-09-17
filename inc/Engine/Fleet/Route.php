@@ -314,7 +314,7 @@ class Route {
 	 * @return void
 	 */
 	public static function log( string $message ): void {
-		if ( ! rocket_get_constant( 'WP_DEBUG' ) ) {
+		if ( ! rocket_get_constant( 'WP_DEBUG' ) || ! rocket_get_constant( 'WP_DEBUG_LOG' ) ) {
 			return;
 		}
 
