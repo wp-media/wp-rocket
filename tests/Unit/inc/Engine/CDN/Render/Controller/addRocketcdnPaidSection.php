@@ -128,6 +128,9 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	 * @return void
 	 */
 	private function stub_common_expectations(): void {
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( false );
+
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
@@ -289,6 +292,9 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	 * @return void
 	 */
 	public function testShouldForceOffWhenPaidSubscriptionCancelled(): void {
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( true );
+
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
@@ -363,6 +369,9 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	 * @return void
 	 */
 	public function testShouldForceOffWhenPaidSubscriptionCancelledWithinGracePeriod(): void {
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( true );
+
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
