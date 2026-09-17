@@ -820,21 +820,28 @@ class Controller extends Abstract_Render {
 	 *
 	 * is_cdn_paused() alone only means the toggle itself is off; it's paired here with
 	 * has_active_subscription() (the user deliberately paused an otherwise-active
-	 * subscription) or is_in_grace_period() (a cancelled subscription still resolves the
-	 * toggle to off live, but should read as paused rather than blank while it winds down).
+	 * subscription), is_in_grace_period() (a cancelled subscription still resolves the
+	 * toggle to off live, but should read as paused rather than blank while it winds down),
+	 * or $pages_count > 0 (once the subscription is deleted outright rather than merely
+	 * cancelled, the API has nothing left to return - has_active_subscription(),
+	 * is_in_grace_period() and is_forced_off() all go quietly false, since they're gated on
+	 * now-empty subscription data - but nothing clears the locally-tracked page rows, so a
+	 * leftover page is reliable local evidence this wasn't a fresh, never-configured site).
 	 *
 	 * @since 3.22
 	 *
+	 * @param int $pages_count Number of pages currently tracked for RocketCDN.
+	 *
 	 * @return bool True if the status indicator should show as paused, false otherwise.
 	 */
-	private function show_pause_state(): bool {
+	private function show_pause_state( int $pages_count ): bool {
 		return (
 				$this->is_cdn_paused()
 				&&
 				(
-					$this->subscription_controller->has_active_subscription()
-					||
-					$this->subscription_controller->is_in_grace_period()
+					$pages_count > 0
+					|| $this->subscription_controller->has_active_subscription()
+					|| $this->subscription_controller->is_in_grace_period()
 				)
 			)
 			|| (
@@ -1193,7 +1200,7 @@ class Controller extends Abstract_Render {
 			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
-		$is_paused = $this->show_pause_state();
+		$is_paused = $this->show_pause_state( $pages_count );
 
 		if ( $is_paused ) {
 			$texts['status_text'] = $texts['paused_status_text'];
