@@ -62,6 +62,7 @@ class CDNOptionsManager {
 	public function enable( bool $clear_cache = true ) {
 		$settings        = $this->options_api->get( 'settings', [] );
 		$settings['cdn'] = 1;
+		$settings['cdn_type'] = Context::ROCKETCDN_TYPE;
 
 		$this->options_api->set( 'settings', $settings );
 
