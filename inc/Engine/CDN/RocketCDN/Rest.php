@@ -396,7 +396,7 @@ class Rest extends WP_REST_Controller {
 	 * @return void
 	 */
 	private function finalize_cdn_activation(): void {
-		$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE );
+		$this->apply_cdn_mode( Context::ROCKETCDN_FREE_TYPE, 'auto_activate_first_page' );
 	}
 
 	/**
@@ -599,7 +599,7 @@ class Rest extends WP_REST_Controller {
 			);
 		}
 
-		$this->apply_cdn_mode( $mode );
+		$this->apply_cdn_mode( $mode, 'user_toggle' );
 
 		if ( Context::ROCKETCDN_FREE_TYPE === $mode && ! $this->subscription_controller->has_active_subscription() ) {
 			$result = $this->subscription_controller->create_subscription( true );
@@ -634,18 +634,31 @@ class Rest extends WP_REST_Controller {
 	/**
 	 * Persists a CDN mode and fires the associated change action.
 	 *
-	 * Shared by {@see save_cdn_mode()} and the activation-prompt/auto-activation
-	 * flow in {@see add_page()}, so both paths apply a mode change identically.
+	 * @param string      $mode    The CDN mode to apply ('rocketcdn_free', 'rocketcdn_paid', 'byocdn', or 'nothing').
+	 * @param string|null $trigger What caused this mode change, or null to skip firing the action.
 	 *
-	 * @param string $mode The CDN mode to apply ('rocketcdn_free', 'rocketcdn_paid', 'byocdn', or 'nothing').
 	 * @return void
 	 */
-	private function apply_cdn_mode( string $mode ): void {
+	private function apply_cdn_mode( string $mode, ?string $trigger = null ): void {
 		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn']       = (int) ( Context::CDN_STATE_NOTHING !== $mode );
 		$settings['cdn_type']  = Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn';
 		$settings['cdn_state'] = $mode;
 		$this->options_api->set( 'settings', $settings );
+
+		if ( null === $trigger ) {
+			return;
+		}
+
+		$this->track_event( 
+			'RocketCDN Mode Changed', 
+			[
+				'cdn_mode'   => $this->context->get_cdn_state( $mode ),
+				'cdn_status' => $this->context->get_cdn_status(),
+				'trigger'    => $trigger,
+			]
+		);
+
 		/**
 		 * Fires after the CDN mode is changed via the toggle.
 		 *
