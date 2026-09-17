@@ -650,8 +650,8 @@ class Rest extends WP_REST_Controller {
 			return;
 		}
 
-		$this->track_event( 
-			'RocketCDN Mode Changed', 
+		$this->track_event(
+			'RocketCDN Mode Changed',
 			[
 				'cdn_mode'   => $this->context->get_cdn_state( $mode ),
 				'cdn_status' => $this->context->get_cdn_status(),

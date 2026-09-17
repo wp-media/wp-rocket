@@ -619,7 +619,7 @@ class Controller extends Abstract_Render {
 				return;
 			}
 
-			// An active paid subscription means it was renewed/reactivated; 
+			// An active paid subscription means it was renewed/reactivated;
 			// otherwise the WP Rocket license itself must be what got fixed.
 			$trigger = $this->subscription_controller->is_paid() ? 'pro_purchase' : 'license_renewal';
 
