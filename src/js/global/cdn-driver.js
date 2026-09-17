@@ -42,6 +42,15 @@
 	/**
 	 * Updates the status indicator component with new HTML content.
 	 *
+	 * The paid tier's indicator carries the same `.rocketcdn` class its section
+	 * header uses, since it has no separate content wrapper of its own - see
+	 * add_rocketcdn_paid_section() in Controller.php. That's what lets
+	 * toggleDriverSections() hide it while "Other CDN" is the active tab, by
+	 * toggling `wpr-isHidden` directly on it. The server-rendered replacement
+	 * markup has no notion of that client-only tab state, so a plain outerHTML
+	 * swap would drop the class and make it pop up outside its tab - carry it
+	 * over explicitly when present.
+	 *
 	 * @param {string} html - The HTML string to replace the status indicator with.
 	 * @returns {void}
 	 */
@@ -56,8 +65,24 @@
 		const statusIndicator = Array.from( document.querySelectorAll( '#wpr_cdn_status_indicator' ) )
 			.find( ( el ) => ! el.closest( '.your-own-cdn' ) );
 
-		if ( statusIndicator && html ) {
-			statusIndicator.outerHTML = html;
+		if ( ! statusIndicator || ! html ) {
+			return;
+		}
+
+		const wasHidden = statusIndicator.classList.contains( 'wpr-isHidden' );
+
+		statusIndicator.outerHTML = html;
+
+		if ( wasHidden ) {
+			// Same duplicate-id caveat as above - re-run the same exclusion instead of
+			// getElementById(), which would return the "Your CDN" copy if it precedes
+			// this one in document order.
+			const refreshed = Array.from( document.querySelectorAll( '#wpr_cdn_status_indicator' ) )
+				.find( ( el ) => ! el.closest( '.your-own-cdn' ) );
+
+			if ( refreshed ) {
+				refreshed.classList.add( 'wpr-isHidden' );
+			}
 		}
 	}
 
