@@ -906,14 +906,37 @@ class Controller extends Abstract_Render {
 		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
 		$this->options_api->set( 'settings', $settings );
 
-		$this->track_event( 
-			'RocketCDN Mode Changed', 
-			[
-				'cdn_mode'   => $this->context->get_cdn_state(),
-				'cdn_status' => $this->context->get_cdn_status(),
-				'trigger'    => 'pro_cancellation',
-			]
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			array_merge(
+				$this->get_tracking_data(),
+				[ 'trigger' => 'pro_cancellation' ]
+			)
 		);
+	}
+
+	/**
+	 * Adds the `cdn_mode`/`cdn_status` tracking axis properties to the data localized
+	 * for JS-side Mixpanel tracking.
+	 *
+	 * @param array $data Data to localize.
+	 *
+	 * @return array
+	 */
+	public function add_tracking_data( array $data ): array {
+		return array_merge( $data, $this->get_tracking_data() );
+	}
+
+	/**
+	 * Gets the `cdn_mode` and `cdn_status` tracking axis values together.
+	 *
+	 * @return array{cdn_mode: string, cdn_status: string}
+	 */
+	private function get_tracking_data(): array {
+		return [
+			'cdn_mode'   => $this->context->get_cdn_state(),
+			'cdn_status' => $this->context->get_cdn_status(),
+		];
 	}
 
 	/**
