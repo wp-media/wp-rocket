@@ -45,13 +45,6 @@ class CdnStateBridge implements Subscriber_Interface {
 	private $options_api;
 
 	/**
-	 * Guards against flushing the subscription cache more than once per REST request.
-	 *
-	 * @var bool
-	 */
-	private bool $subscription_flushed = false;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param SubscriptionController $subscription_controller Subscription controller.
@@ -144,13 +137,6 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * Resolves cdn_state live from the legacy fields, instead of trusting whatever was last
 	 * written to the option.
 	 *
-	 * In REST context (React CDN CTA loading), flushes the subscription cache once per
-	 * request so that a stale rocketcdn_status transient — e.g. from before the user
-	 * upgraded their plan externally on rocketcdn.me — does not cause is_paid() (or the
-	 * cancelled-outside-grace-period check below) return the wrong result. The flush
-	 * triggers a fresh API call; the response is re-cached for one day, so subsequent
-	 * page loads within that window are cheap.
-	 *
 	 * Returns null (declining to override) when the subscription is cancelled outside its
 	 * grace period, rather than forcing CDN_STATE_NOTHING: a cancelled-looking subscription
 	 * can also mean no token/subscription has been created yet (e.g. RocketCDN Free just
@@ -181,11 +167,6 @@ class CdnStateBridge implements Subscriber_Interface {
 	 * @return string|null
 	 */
 	public function resolve_live( $value, $default ): ?string {
-		if ( ! $this->subscription_flushed && rocket_get_constant( 'REST_REQUEST', false ) ) {
-			$this->subscription_controller->reset_subscription_data();
-			$this->subscription_flushed = true;
-		}
-
 		if ( $this->subscription_controller->is_cancelled_outside_grace_period() ) {
 			return null;
 		}
