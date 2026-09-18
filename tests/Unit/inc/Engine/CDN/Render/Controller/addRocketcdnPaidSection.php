@@ -199,6 +199,8 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_active'] );
 		$this->assertArrayHasKey( 'toggle_tooltip', $sections['rocketcdn_paid_section'] );
 		$this->assertSame( '', $sections['rocketcdn_paid_section']['toggle_tooltip'] );
+		// Genuinely active: status text must not read as paused (green circle/active text).
+		$this->assertFalse( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
 	}
 
 	/**
@@ -220,7 +222,85 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	}
 
 	/**
+	 * While a subscription is being created and nothing else is forcing the section off,
+	 * show_pause_state() (unlike should_reject_rocketcdn_activation()) doesn't treat
+	 * is_subscription_loading() as a pause reason on its own, so the "Creating your
+	 * subscription..." text set earlier in get_status_indicator_data() must survive rather
+	 * than being overwritten by the generic paused text.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotOverwriteLoadingTextWithPausedTextWhileSubscriptionLoading(): void {
+		$this->context->shouldReceive( 'get_driver' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( Context::ROCKETCDN_TYPE );
+
+		$this->context->shouldReceive( 'get_rocketcdn_state' )
+			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn' )
+			->andReturn(
+				[
+					'id'  => 'beacon-id',
+					'url' => 'https://example.com',
+				]
+			);
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'is_free' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
+			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
+			->andReturn( false );
+
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( true );
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn' )
+			->andReturn( true );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( false );
+
+		$controller = $this->get_controller();
+		$sections   = $controller->add_rocketcdn_paid_section( [] );
+
+		$status_indicator = $sections['rocketcdn_paid_section']['status_indicator'];
+
+		$this->assertFalse( $status_indicator['is_paused'] );
+		$this->assertSame( 'Creating your subscription...', $status_indicator['status_text'] );
+		$this->assertSame( 'Please wait, RocketCDN will be ready in about 30s.', $status_indicator['details'] );
+		$this->assertStringNotContainsString( 'wpr-cdn-status--paused', $status_indicator['class'] );
+	}
+
+	/**
 	 * Surfaces the banned-reseller tooltip alongside is_forced_off for the paid section.
+	 *
+	 * Also covers the Test Findings doc's "Green circle and active text is there for Pro
+	 * while being in grace period"-style reports: the status indicator must show as paused
+	 * rather than active whenever the toggle itself is forced off, even though is_forced_off()
+	 * alone misses a paid-tier ban (see should_reject_rocketcdn_activation()'s docblock).
 	 *
 	 * @return void
 	 */
@@ -228,8 +308,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
@@ -279,6 +362,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			'Contact support to find out how to restore access.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 
 	/**
@@ -286,14 +374,21 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	 * subscription itself is cancelled - should_reject_rocketcdn_activation() missed
 	 * this until it also checked is_forced_off().
 	 *
+	 * Also covers Test Findings: "After cancel Paid and delete website, free status in
+	 * cdn tab is active while it shouldn't" - the status indicator must flip to paused
+	 * once the subscription is cancelled outside the grace period, not just the toggle.
+	 *
 	 * @return void
 	 */
 	public function testShouldForceOffWhenPaidSubscriptionCancelled(): void {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
@@ -353,6 +448,11 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		// checked-but-disabled - is_forced_paused() already stops CDN delivery on the front end
 		// via maybe_pause_cdn_for_inactive_subscription().
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 
 	/**
@@ -360,14 +460,20 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 	 * grace period - is_forced_paused()'s first branch (is_paid() && is_in_grace_period())
 	 * covers this before the subscription is fully cancelled outside the grace period.
 	 *
+	 * Directly covers Test Findings: "Green circle and active text is there for Pro while
+	 * being in grace period" - expected an orange circle / paused text instead.
+	 *
 	 * @return void
 	 */
 	public function testShouldForceOffWhenPaidSubscriptionCancelledWithinGracePeriod(): void {
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
 
+		// get_applied_cdn_state() only ever resolves to CDN_STATE_NOTHING, ROCKETCDN_TYPE or
+		// BYOCDN_TYPE (see Context::get_applied_cdn_state()) - the free/paid tier is
+		// get_rocketcdn_state()'s job.
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
-			->andReturn( Context::ROCKETCDN_PAID_TYPE );
+			->andReturn( Context::ROCKETCDN_TYPE );
 
 		$this->context->shouldReceive( 'get_rocketcdn_state' )
 			->andReturn( Context::ROCKETCDN_PAID_TYPE );
@@ -424,5 +530,10 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
+		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
+		$this->assertSame(
+			'RocketCDN is paused',
+			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
+		);
 	}
 }
