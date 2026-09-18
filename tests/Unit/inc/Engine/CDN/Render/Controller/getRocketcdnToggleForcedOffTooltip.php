@@ -296,7 +296,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_paid'                 => true,
 					'is_in_grace_period'      => true,
 				],
-				'Renew to use RocketCDN Free.',
+				'Cancelling your subscription.',
 			],
 		];
 	}

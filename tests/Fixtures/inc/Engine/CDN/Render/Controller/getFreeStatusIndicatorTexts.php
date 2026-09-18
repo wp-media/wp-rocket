@@ -15,7 +15,7 @@ return [
 
 	'defaultDetailsKeptWhenActiveAndNoPagesAdded'         => [
 		'config'   => [
-			'applied_cdn_state'          => 'rocketcdn_free',
+			'applied_cdn_state'          => 'rocketcdn',
 			'pages_count'                => 0,
 			'is_loading'                 => false,
 			'free'                       => true,
@@ -35,7 +35,7 @@ return [
 
 	'noStatusIndicatorSetAndDetailsClearedWhenPagesExist' => [
 		'config'   => [
-			'applied_cdn_state'          => 'rocketcdn_free',
+			'applied_cdn_state'          => 'rocketcdn',
 			'pages_count'                => 2,
 			'is_loading'                 => false,
 			'free'                       => true,
@@ -75,7 +75,7 @@ return [
 
 	'expiredClassAndRenewalPromptSetWhenLicenceInvalid'   => [
 		'config'   => [
-			'applied_cdn_state'          => 'rocketcdn_free',
+			'applied_cdn_state'          => 'rocketcdn',
 			'pages_count'                => 0,
 			'is_loading'                 => false,
 			'free'                       => true,
