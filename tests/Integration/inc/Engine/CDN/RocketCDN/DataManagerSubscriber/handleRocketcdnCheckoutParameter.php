@@ -231,10 +231,17 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			$this->assertSame( $expected['token_value'], get_option( 'rocketcdn_user_token' ) );
 		}
 
-		if ( isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
+		if ( isset( $expected['cdn_enabled'] ) ) {
 			$settings = get_option( 'wp_rocket_settings' );
-			$this->assertArrayHasKey( 'cdn', $settings );
-			$this->assertEquals( 1, $settings['cdn'] );
+
+			if ( $expected['cdn_enabled'] ) {
+				$this->assertArrayHasKey( 'cdn', $settings );
+				$this->assertEquals( 1, $settings['cdn'] );
+			} else {
+				// enable() is only called from the activation-success branch, so its absence
+				// here proves is_wp_error( $activation_result ) correctly short-circuited.
+				$this->assertArrayNotHasKey( 'cdn', (array) $settings );
+			}
 		}
 
 		if ( isset( $expected['cdn_type'] ) ) {

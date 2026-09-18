@@ -82,7 +82,12 @@ return [
     ],
 
     // Regression lock: a failed activate_subscription() API call (e.g. a 500 from RocketCDN)
-    // must not save the token or enable the CDN - only a confirmed activation may do that.
+    // must not enable the CDN - only a confirmed activation may do that. Doesn't assert
+    // token_stored: false here - maybe_refresh_rocketcdn_details() (hooked on
+    // set_transient_wp_rocket_customer_data, fired by this test's own set_transient() call
+    // below) auto-saves the token whenever none is set yet, independently of whether
+    // activation itself succeeds. cdn_enabled is the actual signal for this code path,
+    // since enable() only runs from the activation-success branch.
     'shouldNotEnableCdnWhenActivationApiFails' => [
         'config'   => [
             'parameter_set' => true,
@@ -97,7 +102,7 @@ return [
             'api_activation_success' => false,
         ],
         'expected' => [
-            'token_stored'     => false,
+            'cdn_enabled'      => false,
             'expects_redirect' => true,
         ],
     ],
