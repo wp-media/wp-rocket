@@ -843,8 +843,12 @@ class Controller extends Abstract_Render {
 			return __( 'Contact support to find out how to restore access.', 'rocket' );
 		}
 
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return __( 'Cancelling your subscription.', 'rocket' );
+		}
+
 		if ( $this->is_forced_off() ) {
-			return __( 'Renew to use RocketCDN Free.', 'rocket' );
+			return __( 'Renew to use RocketCDN Free.', 'rocket' ); // This copy needs to be updated.
 		}
 
 		return '';
@@ -981,16 +985,27 @@ class Controller extends Abstract_Render {
 		$texts['status_text'] = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
-			$texts['details'] = sprintf(
-			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sRocketCDN Pro subscription is being cancelled.%2$s RocketCDN Pro can\'t be reactivated until the process is complete.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-			$texts['class'] .= ' wpr-cdn-status--expired';
+			$texts['status_text']         = '';
+			$texts['no_status_indicator'] = true;
 		}
 
 		return $texts;
+	}
+
+
+	/**
+	 * Renders the cancelled-banned notice.
+	 *
+	 * @since 3.23.1
+	 *
+	 * @return void
+	 */
+	public function render_cancelled_banner_notice(): void {
+		if ( ! $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		echo $this->generate( 'partials/cdn/wpr-cancelled-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
