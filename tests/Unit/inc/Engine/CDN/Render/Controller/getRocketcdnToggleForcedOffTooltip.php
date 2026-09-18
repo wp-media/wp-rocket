@@ -197,6 +197,9 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 			return $this->get_controller()->add_rocketcdn_paid_section( [] )['rocketcdn_paid_section'];
 		}
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		return $this->get_controller()->add_rocketcdn_free_section( [] )['rocketcdn_free_section'];
 	}
 
@@ -249,7 +252,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_free'                 => true,
 					'is_license_invalid'      => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has expired.',
+				'Renew to use RocketCDN Free.',
 			],
 			'banned-reseller copy third'            => [
 				[
@@ -259,7 +262,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => false,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+				'Contact support to find out how to restore access.',
 			],
 			'loading takes precedence over expired' => [
 				[
@@ -282,7 +285,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_license_invalid'         => true,
 					'is_reseller_license_banned' => true,
 				],
-				'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+				'Contact support to find out how to restore access.',
 			],
 			'forced-paused copy fourth, for a cancelled paid plan' => [
 				[
@@ -293,7 +296,7 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 					'is_paid'                 => true,
 					'is_in_grace_period'      => true,
 				],
-				'RocketCDN is currently paused because your subscription is no longer active.',
+				'Cancelling your subscription.',
 			],
 		];
 	}

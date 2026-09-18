@@ -708,6 +708,7 @@
 
 				// Track banner view when first page is added and banner becomes visible.
 				if ( 1 === response.count ) {
+					document.querySelector( '.wpr-cdn-built-in .wpr-cdn-built-in__separator' )?.remove();
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
@@ -790,6 +791,7 @@
 
 				// Track banner view when first page is added and banner becomes visible.
 				if ( 1 === response.count ) {
+					document.querySelector( '.wpr-cdn-built-in .wpr-cdn-built-in__separator' )?.remove();
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
@@ -911,6 +913,11 @@
 						homepageBtn.disabled = false;
 					}
 
+					// Restore separator between the status indicator and the add-page section.
+					const indicator = document.querySelector( '.wpr-cdn-built-in #wpr_cdn_status_indicator' );
+					if ( indicator ) {
+						indicator.insertAdjacentHTML( 'afterend', '<div class="wpr-cdn-built-in__separator"></div>' );
+					}
 				}
 
 				if ( response.limit > response.count ) {

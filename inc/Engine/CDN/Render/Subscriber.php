@@ -55,6 +55,9 @@ class Subscriber implements Subscriber_Interface {
 				[ 'render_expired_wpr_licence_notice', 9 ],
 				[ 'render_reseller_banned_notice', 9 ],
 			],
+			'rocket_cdn_paid_before_status_indicator' => [
+				[ 'render_cancelled_banner_notice', 9 ],
+			],
 			'rocket_rocketcdn_status_indicator_texts' => [
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
@@ -283,5 +286,14 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
 		$this->controller->maybe_disable_rocketcdn_paid_after_cancellation();
+	}
+
+	/**
+	 * Display notice when cancelled or in grace period.
+	 *
+	 * @return void
+	 */
+	public function render_cancelled_banner_notice() {
+		$this->controller->render_cancelled_banner_notice();
 	}
 }

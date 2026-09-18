@@ -476,8 +476,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$message = sprintf(
 			'<strong>%1$s</strong><br><br>%2$s',
-			esc_html__( 'RocketCDN subscription detection failed', 'rocket' ),
-			esc_html__( 'We couldn’t determine your RocketCDN subscription status. Please refresh your customer data or try again later.', 'rocket' )
+			esc_html__( 'Oops, we couldn\'t confirm your RocketCDN Pro subscription.', 'rocket' ),
+			esc_html__( 'No worries: let\'s do a manual check.', 'rocket' )
 		);
 
 		rocket_notice_html(
@@ -489,7 +489,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'action'      => sprintf(
 					'<a href="%1$s" class="wpr-button" id="wpr-rocketcdn-retry-pro-detection">%2$s</a>',
 					esc_url( $retry_url ),
-					esc_html__( 'Refresh customer data', 'rocket' )
+					esc_html__( 'Retry', 'rocket' )
 				),
 			]
 		);
