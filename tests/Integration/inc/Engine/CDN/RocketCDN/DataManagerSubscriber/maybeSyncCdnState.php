@@ -32,11 +32,20 @@ class Test_MaybeSyncCdnState extends RocketCDNTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		$container        = apply_filters( 'rocket_container', null );
 		$this->subscriber = $container->get( 'rocketcdn_data_manager_subscriber' );
 
 		get_role( 'administrator' )->add_cap( 'rocket_manage_options' );
 		wp_set_current_user( self::factory()->user->create( [ 'role' => 'administrator' ] ) );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	/**

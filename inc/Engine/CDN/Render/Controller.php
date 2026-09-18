@@ -13,6 +13,7 @@ use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Handles business logic for CDN driver sections, exclusion fields,
@@ -21,6 +22,8 @@ use WP_Rocket\Engine\License\API\User;
  * @since 3.22
  */
 class Controller extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Option name used to store forced pause tracking state.
 	 *
@@ -602,7 +605,7 @@ class Controller extends Abstract_Render {
 		if ( 'settings_page_wprocket' !== $screen->id || ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
-		$is_forced  = $this->is_forced_off();
+		$is_forced  = $this->context->is_forced_off();
 		$stored     = $this->get_forced_off_tracking();
 		$was_forced = (bool) ( $stored['tracking'] ?? false );
 
@@ -617,17 +620,40 @@ class Controller extends Abstract_Render {
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
-		/**
-		 * Fires when the CDN state changes between paused and active.
-		 *
-		 * @param string $new_state The new state of the CDN: 'paused' or 'active'.
-		 * @param string $reason    'wpr_forced_pause' when pausing, 'wpr_forced_resume' when resuming.
-		 * @since 3.22
-		 */
-		do_action(
-			'rocket_rocketcdn_cdn_state_changed',
-			$is_forced ? 'paused' : 'active',
-			$is_forced ? 'wpr_forced_pause' : 'wpr_forced_resume'
+		// Resume leg: the forced-off condition has just cleared.
+		if ( ! $is_forced ) {
+			$cdn_mode = $this->context->get_cdn_state();
+
+			// A switch-away, not a recovery. subscription was cancelled.
+			if ( Context::CDN_STATE_NOTHING === $cdn_mode || Context::BYOCDN_TYPE === $cdn_mode ) {
+				return;
+			}
+
+			// An active paid subscription means it was renewed/reactivated;
+			// otherwise the WP Rocket license itself must be what got fixed.
+			$trigger = $this->subscription_controller->is_paid() ? 'pro_purchase' : 'license_renewal';
+
+			$this->track_event(
+				'RocketCDN Mode Changed',
+				[
+					'cdn_mode'   => $cdn_mode,
+					'cdn_status' => $this->context->get_cdn_status(),
+					'trigger'    => $trigger,
+				]
+			);
+
+			return;
+		}
+
+		$settings        = $this->options_api->get( 'settings', [] );
+		$pre_expiry_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
+
+		$this->track_event(
+			'RocketCDN Forced Off',
+			[
+				'reason'          => $this->context->get_forced_off_reason(),
+				'pre_expiry_mode' => $pre_expiry_mode,
+			]
 		);
 	}
 
@@ -717,7 +743,7 @@ class Controller extends Abstract_Render {
 			return $cdn;
 		}
 
-		if ( $this->is_forced_off() ) {
+		if ( $this->context->is_forced_off() ) {
 			$stored = $this->get_forced_off_tracking();
 
 			// Prevent unnecessary DB write on every request.
@@ -808,7 +834,7 @@ class Controller extends Abstract_Render {
 		return $this->is_subscription_loading()
 			|| $this->should_display_licence_expired_notice()
 			|| $this->user->is_reseller_license_banned()
-			|| $this->is_forced_off();
+			|| $this->context->is_forced_off();
 	}
 
 	/**
@@ -840,7 +866,7 @@ class Controller extends Abstract_Render {
 			|| (
 				$this->should_display_licence_expired_notice()
 				|| $this->user->is_reseller_license_banned()
-				|| $this->is_forced_off()
+				|| $this->context->is_forced_off()
 			);
 	}
 
@@ -885,7 +911,7 @@ class Controller extends Abstract_Render {
 			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
 		}
 
-		if ( $this->is_forced_off() ) {
+		if ( $this->context->is_forced_off() ) {
 			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
 		}
 
@@ -942,6 +968,40 @@ class Controller extends Abstract_Render {
 		// Set new CDN state to "nothing".
 		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
 		$this->options_api->set( 'settings', $settings );
+
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			array_merge(
+				$this->get_tracking_data( $settings['cdn_state'] ),
+				[ 'trigger' => 'pro_cancellation' ]
+			)
+		);
+	}
+
+	/**
+	 * Localizes the `cdn_mode`/`cdn_status` tracking axis properties for JS-side
+	 * Mixpanel tracking, independently of {@see \WP_Rocket\Engine\Tracking\Tracking::localize_optin_status()}.
+	 *
+	 * @return void
+	 */
+	public function localize_tracking_data(): void {
+		wp_localize_script( 'wpr-admin-common', 'rocket_cdn_mixpanel_data', $this->get_tracking_data() );
+	}
+
+	/**
+	 * Gets the `cdn_mode` and `cdn_status` tracking axis values together.
+	 *
+	 * @param string|null $cdn_state Optional. Overrides the persisted `cdn_state`, for a caller
+	 *                               that just wrote a new mode and needs the values computed
+	 *                               against it rather than the stale, per-request options snapshot.
+	 *
+	 * @return array{cdn_mode: string, cdn_status: string}
+	 */
+	private function get_tracking_data( ?string $cdn_state = null ): array {
+		return [
+			'cdn_mode'   => $this->context->get_cdn_state( $cdn_state ),
+			'cdn_status' => $this->context->get_cdn_status( $cdn_state ),
+		];
 	}
 
 	/**
@@ -1223,35 +1283,5 @@ class Controller extends Abstract_Render {
 	 */
 	private function is_cdn_paused(): bool {
 		return Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state();
-	}
-
-	/**
-	 * Determines whether the CDN should be force-paused due to an inactive or invalid subscription state.
-	 *
-	 * @since 3.22
-	 *
-	 * @return bool True if the CDN should be force-paused, false otherwise.
-	 */
-	private function is_forced_off(): bool {
-		// Force paused if paid plan cancelled but in grace period.
-		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
-			return true;
-		}
-
-		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
-			return true;
-		}
-
-		// Force paused if free plan with an invalid WP Rocket licence.
-		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
-			return true;
-		}
-
-		// Force paused if subscription cancelled beyond the grace period and WP Rocket licence is invalid.
-		if ( $this->subscription_controller->is_cancelled_outside_grace_period() && $this->subscription_controller->is_license_invalid() ) {
-			return true;
-		}
-
-		return false;
 	}
 }

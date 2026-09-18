@@ -37,6 +37,8 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		add_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		add_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down()
@@ -48,6 +50,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		remove_filter('pre_option_cloudflare_api_email', [$this, 'cloudflare_api_email']);
 		remove_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		remove_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
+		$this->restoreWpHook( 'current_screen' );
 		parent::tear_down();
 	}
 
