@@ -10,7 +10,15 @@ use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
-class Test_GetCdnStatus extends TestCase {
+/**
+ * Test class covering \WP_Rocket\Engine\CDN\Context::is_forced_off and ::get_forced_off_reason
+ *
+ * @covers \WP_Rocket\Engine\CDN\Context::is_forced_off
+ * @covers \WP_Rocket\Engine\CDN\Context::get_forced_off_reason
+ * @group  CDN
+ * @group  RocketCDN
+ */
+class Test_IsForcedOff extends TestCase {
 	/**
 	 * @var Mockery\MockInterface|Options_Data
 	 */
@@ -43,9 +51,7 @@ class Test_GetCdnStatus extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpectedCdnStatus( array $config, string $expected ) {
-		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->andReturn( $config['is_subscription_creation_loading'] ?? false );
+	public function testShouldReturnExpected( array $config, array $expected ): void {
 		$this->subscription_controller->shouldReceive( 'is_paid' )
 			->andReturn( $config['is_paid'] ?? false );
 		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )
@@ -56,15 +62,10 @@ class Test_GetCdnStatus extends TestCase {
 			->andReturn( $config['is_free'] ?? false );
 		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
 			->andReturn( $config['is_license_invalid'] ?? false );
-		$this->user->shouldReceive( 'is_reseller_license_banned' )
-			->andReturn( $config['is_reseller_license_banned'] ?? false );
 		$this->user->shouldReceive( 'is_revoked' )
 			->andReturn( $config['is_revoked'] ?? false );
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn_state', Context::CDN_STATE_NOTHING )
-			->andReturn( $config['cdn_state'] ?? Context::CDN_STATE_NOTHING );
-
-		$this->assertSame( $expected, $this->context->get_cdn_status( $config['cdn_state_override'] ?? null ) );
+		$this->assertSame( $expected['is_forced_off'], $this->context->is_forced_off() );
+		$this->assertSame( $expected['reason'], $this->context->get_forced_off_reason() );
 	}
 }

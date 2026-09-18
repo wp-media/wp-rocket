@@ -1,108 +1,77 @@
 <?php
 
+use WP_Rocket\Engine\CDN\Context;
+
 return [
-	// Active subscription -> bails on the very first check -> no write.
-	'testActiveSubscriptionNotAffected'                    => [
+	'wrong screen, does nothing'                     => [
 		'config'   => [
-			'subscription_status'   => 'running',
-			'plan_type'             => 'paid',
-			'license_expired'       => false,
-			'license_revoked'       => false,
-			'forced_off_persistent' => true,
+			'screen_id' => 'options-general',
 		],
 		'expected' => [
-			'persistent' => true,
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
 		],
 	],
-
-	// Paid + still within the cancellation grace period -> bails -> no write.
-	'testPaidGracePeriodNotAffected'                       => [
+	'not on rocketcdn driver, does nothing'          => [
 		'config'   => [
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'paid',
-			'website_status'        => 'pending_deletion',
-			'license_expired'       => false,
-			'license_revoked'       => false,
-			'forced_off_persistent' => true,
+			'applied_cdn_state' => Context::CDN_STATE_NOTHING,
 		],
 		'expected' => [
-			'persistent' => true,
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
 		],
 	],
-
-	// WP Rocket licence invalid -> bails regardless of subscription state -> no write.
-	'testInvalidLicenseNotAffected'                        => [
+	'active subscription, does nothing'              => [
 		'config'   => [
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'paid',
-			'license_expired'       => true,
-			'license_revoked'       => false,
-			'forced_off_persistent' => true,
+			'has_active_subscription' => true,
 		],
 		'expected' => [
-			'persistent' => true,
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
 		],
 	],
-
-	// Grace period elapsed, licence valid, but forced-off tracking was never persistent (nothing to resolve) -> no write.
-	'testPersistentFlagNotSetNotAffected'                  => [
+	'paid still in grace period, does nothing'       => [
 		'config'   => [
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'paid',
-			'license_expired'       => false,
-			'license_revoked'       => false,
+			'is_paid'            => true,
+			'is_in_grace_period' => true,
+		],
+		'expected' => [
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
+		],
+	],
+	'license invalid, does nothing'                  => [
+		'config'   => [
+			'is_license_invalid' => true,
+		],
+		'expected' => [
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
+		],
+	],
+	'not persistently forced off, does nothing'      => [
+		'config'   => [
 			'forced_off_persistent' => false,
 		],
 		'expected' => [
-			'persistent' => false,
+			'update_option_called' => false,
+			'settings_saved'       => false,
+			'event_fired'          => false,
 		],
 	],
-
-	// Grace period elapsed (cancelled, not pending_deletion), licence valid, forced-off tracking was persistent
-	// -> writes cdn_state = nothing and resets the persistent tracking flag.
-	'testPaidCancelledOutsideGracePeriodResolvesForcedOff' => [
+	'cancelled outside grace period, disables paid CDN and tracks with fresh state' => [
 		'config'   => [
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'paid',
-			'license_expired'       => false,
-			'license_revoked'       => false,
 			'forced_off_persistent' => true,
 		],
 		'expected' => [
-			'cdn_state'  => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
-			'persistent' => false,
-		],
-	],
-
-	// Free tier, no active subscription, licence valid, forced-off tracking was persistent -> writes cdn_state = nothing.
-	'testFreeSubscriptionInactiveResolvesForcedOff'        => [
-		'config'   => [
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'free',
-			'license_expired'       => false,
-			'license_revoked'       => false,
-			'forced_off_persistent' => true,
-		],
-		'expected' => [
-			'cdn_state'  => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
-			'persistent' => false,
-		],
-	],
-
-	// The user has since switched to BYOCDN: bails out immediately (before touching the
-	// persistent tracking flag or cdn_state), so neither is affected by this stale RocketCDN
-	// cleanup, regardless of what the underlying subscription state would otherwise resolve to.
-	'testByocdnStateNotOverwritten'                        => [
-		'config'   => [
-			'initial_cdn_state'     => \WP_Rocket\Engine\CDN\Context::BYOCDN_TYPE,
-			'subscription_status'   => 'cancelled',
-			'plan_type'             => 'paid',
-			'license_expired'       => false,
-			'license_revoked'       => false,
-			'forced_off_persistent' => true,
-		],
-		'expected' => [
-			'persistent' => true,
+			'update_option_called' => true,
+			'settings_saved'       => true,
+			'event_fired'          => true,
 		],
 	],
 ];

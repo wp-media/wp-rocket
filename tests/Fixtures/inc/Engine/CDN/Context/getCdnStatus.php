@@ -48,4 +48,13 @@ return [
 		],
 		'expected' => 'inactive',
 	],
+	// The override lets a caller that just wrote a new mode compute status against it
+	// instead of the stale, per-request Options_Data snapshot (still 'nothing' here).
+	'testShouldReturnActiveWhenOverrideModeAppliedDespiteStalePersistedNothing' => [
+		'config'   => [
+			'cdn_state'          => 'nothing',
+			'cdn_state_override' => 'rocketcdn_free',
+		],
+		'expected' => 'active',
+	],
 ];

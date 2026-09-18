@@ -81,6 +81,27 @@ return [
         ],
     ],
 
+    // Regression lock: a failed activate_subscription() API call (e.g. a 500 from RocketCDN)
+    // must not save the token or enable the CDN - only a confirmed activation may do that.
+    'shouldNotEnableCdnWhenActivationApiFails' => [
+        'config'   => [
+            'parameter_set' => true,
+            'user_role'     => 'administrator',
+            'user_data'     => [
+                'rocketcdn' => [
+                    'cdn_token'            => '1234567890123456789012345678901234567890',
+                    'cdn_url'              => 'https://example.rocketcdn.me',
+                    'rocketcdn_website_id' => 12345,
+                ],
+            ],
+            'api_activation_success' => false,
+        ],
+        'expected' => [
+            'token_stored'     => false,
+            'expects_redirect' => true,
+        ],
+    ],
+
     // Task 8.2: purchasing Pro from the Dashboard while "Other CDN" (byocdn) was
     // previously selected must force cdn_type back to rocketcdn so the live-resolved
     // state actually becomes Pro, instead of silently staying on byocdn.
