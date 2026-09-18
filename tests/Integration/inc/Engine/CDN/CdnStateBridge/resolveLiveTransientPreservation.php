@@ -59,7 +59,7 @@ class Test_ResolveLiveTransientPreservation extends AdminTestCase {
 			update_option( 'rocketcdn_user_token', $config['token'] );
 		}
 
-		$settings = [ ...$this->options_api->get( 'settings', [] ), ...$config['stored'] ];
+		$settings = array_merge( $this->options_api->get( 'settings', [] ), $config['stored'] );
 		$this->options_api->set( 'settings', $settings );
 
 		get_rocket_option( 'cdn_state' );
