@@ -60,7 +60,12 @@ class Test_ClearUserCacheCookie extends TestCase {
 
 		$this->subscriber->clear_user_cache_cookie();
 
-		$this->assertCount( 2, $this->subscriber->calls );
+		// COOKIEPATH/SITECOOKIEPATH are process-wide constants that may already have been
+		// defined (with different values) by another test file, so the expected number of
+		// calls is derived from their actual values rather than assumed.
+		$expected_calls = COOKIEPATH === SITECOOKIEPATH ? 1 : 2;
+
+		$this->assertCount( $expected_calls, $this->subscriber->calls );
 
 		foreach ( $this->subscriber->calls as $call ) {
 			$this->assertSame( 'wp_rocket_ucc_' . COOKIEHASH, $call['name'] );
@@ -71,6 +76,8 @@ class Test_ClearUserCacheCookie extends TestCase {
 		$paths = array_column( $this->subscriber->calls, 'path' );
 
 		$this->assertContains( COOKIEPATH, $paths );
-		$this->assertContains( SITECOOKIEPATH, $paths );
+		if ( COOKIEPATH !== SITECOOKIEPATH ) {
+			$this->assertContains( SITECOOKIEPATH, $paths );
+		}
 	}
 }
