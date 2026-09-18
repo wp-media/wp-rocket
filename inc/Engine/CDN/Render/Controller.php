@@ -266,7 +266,6 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
-		$is_forced_off   = $this->should_reject_rocketcdn_activation();
 
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -295,7 +294,18 @@ class Controller extends Abstract_Render {
 			// cancelled subscription) - is_forced_off() already stops CDN delivery on the
 			// front end via maybe_turn_off_rocketcdn_for_inactive_subscription(), so the toggle should
 			// show off rather than checked-but-disabled.
-			'is_active'         => Context::ROCKETCDN_FREE_TYPE === $rocketcdn_state && ! $is_forced_off,
+			//
+			// ROCKETCDN_STATE_ONGOING_FREE (a subscription still being created) counts as
+			// active too - cdn/cdn_type/cdn_state are already persisted as on by the time
+			// create_subscription() starts, so any render during the ~30s+ creation window
+			// (a reload, another tab) must keep the toggle checked rather than showing it
+			// as off just because get_rocketcdn_state() reports the ongoing marker instead
+			// of the tier itself. $is_forced_off is true throughout that same window too
+			// (should_reject_rocketcdn_activation() treats is_subscription_loading() as a
+			// reason to reject/disable, correctly disabling the toggle here), so it can't
+			// gate is_active() as-is without also masking this case - "loading" is the one
+			// forced-off reason that means "checked and disabled", not "off and disabled".
+			'is_active'         => in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ) && ( ! $is_forced_off || $is_subscription_loading ),
 		];
 
 		return $sections;
@@ -802,6 +812,39 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Determines whether the RocketCDN status indicator should show as paused.
+	 *
+	 * Mirrors should_reject_rocketcdn_activation() but omits is_subscription_loading():
+	 * a subscription being created shouldn't show as paused, its own "Creating your
+	 * subscription..." status text already covers that case.
+	 *
+	 * is_cdn_paused() alone only means the toggle itself is off; it's paired here with
+	 * has_active_subscription() (the user deliberately paused an otherwise-active
+	 * subscription) or is_in_grace_period() (a cancelled subscription still resolves the
+	 * toggle to off live, but should read as paused rather than blank while it winds down).
+	 *
+	 * @since 3.22
+	 *
+	 * @return bool True if the status indicator should show as paused, false otherwise.
+	 */
+	private function show_pause_state(): bool {
+		return (
+				$this->is_cdn_paused()
+				&&
+				(
+					$this->subscription_controller->has_active_subscription()
+					||
+					$this->subscription_controller->is_in_grace_period()
+				)
+			)
+			|| (
+				$this->should_display_licence_expired_notice()
+				|| $this->user->is_reseller_license_banned()
+				|| $this->is_forced_off()
+			);
+	}
+
+	/**
 	 * Tooltip shown on the BYOCDN mode toggle when it's forced off by a hosting
 	 * compatibility layer (e.g. {@see \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_mode_toggle()}),
 	 * explaining why the user can't switch it themselves.
@@ -1150,7 +1193,7 @@ class Controller extends Abstract_Render {
 			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
 		}
 
-		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
+		$is_paused = $this->show_pause_state();
 
 		if ( $is_paused ) {
 			$texts['status_text'] = $texts['paused_status_text'];
@@ -1179,7 +1222,7 @@ class Controller extends Abstract_Render {
 	 * @return bool
 	 */
 	private function is_cdn_paused(): bool {
-		return Context::CDN_STATE_NOTHING === $this->context->get_applied_cdn_state();
+		return Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state();
 	}
 
 	/**
