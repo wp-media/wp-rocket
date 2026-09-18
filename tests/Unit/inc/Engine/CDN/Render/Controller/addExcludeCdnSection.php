@@ -11,6 +11,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -42,6 +43,13 @@ class Test_AddExcludeCdnSection extends TestCase {
 	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options API mock instance.
+	 *
+	 * @var Mockery\MockInterface|Options
+	 */
+	private $options_api;
 
 	/**
 	 * RocketCDNQuery mock instance.
@@ -84,6 +92,7 @@ class Test_AddExcludeCdnSection extends TestCase {
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
+		$this->options_api             = Mockery::mock( Options::class );
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
@@ -101,6 +110,7 @@ class Test_AddExcludeCdnSection extends TestCase {
 			'',
 			$this->context,
 			$this->options,
+			$this->options_api,
 			$this->cdn_query,
 			$this->subscription_controller,
 			$this->user,
@@ -147,10 +157,9 @@ class Test_AddExcludeCdnSection extends TestCase {
 			$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 				->andReturn( false );
 
-			// is_cdn_paused() checks options->get('cdn').
-			$this->options->shouldReceive( 'get' )
-				->with( 'cdn' )
-				->andReturn( true );
+			// is_cdn_paused() checks context->get_applied_cdn_state().
+			$this->context->shouldReceive( 'get_applied_cdn_state' )
+				->andReturn( Context::ROCKETCDN_TYPE );
 
 			// has_active_subscription() is called directly in should_disable_element_for_rocketcdn.
 			$this->subscription_controller->shouldReceive( 'has_active_subscription' )
