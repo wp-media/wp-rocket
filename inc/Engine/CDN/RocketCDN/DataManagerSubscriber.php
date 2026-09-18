@@ -200,6 +200,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		// Activate the subscription via RocketCDN API.
 		$activation_result = $this->api_client->activate_subscription( $token, $website_id );
 
+		if ( is_wp_error( $activation_result ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
 		$this->cdn_options->enable();

@@ -929,7 +929,7 @@ class Controller extends Abstract_Render {
 		$this->track_event(
 			'RocketCDN Mode Changed',
 			array_merge(
-				$this->get_tracking_data(),
+				$this->get_tracking_data( $settings['cdn_state'] ),
 				[ 'trigger' => 'pro_cancellation' ]
 			)
 		);
@@ -948,12 +948,16 @@ class Controller extends Abstract_Render {
 	/**
 	 * Gets the `cdn_mode` and `cdn_status` tracking axis values together.
 	 *
+	 * @param string|null $cdn_state Optional. Overrides the persisted `cdn_state`, for a caller
+	 *                               that just wrote a new mode and needs the values computed
+	 *                               against it rather than the stale, per-request options snapshot.
+	 *
 	 * @return array{cdn_mode: string, cdn_status: string}
 	 */
-	private function get_tracking_data(): array {
+	private function get_tracking_data( ?string $cdn_state = null ): array {
 		return [
-			'cdn_mode'   => $this->context->get_cdn_state(),
-			'cdn_status' => $this->context->get_cdn_status(),
+			'cdn_mode'   => $this->context->get_cdn_state( $cdn_state ),
+			'cdn_status' => $this->context->get_cdn_status( $cdn_state ),
 		];
 	}
 

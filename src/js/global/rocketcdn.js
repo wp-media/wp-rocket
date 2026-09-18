@@ -310,8 +310,10 @@
 		postData += '&nonce=' + rocket_ajax_data.nonce;
 		// Only set when the iframe was opened via checkButtonUrlAndOpen() - absent when the modal
 		// was auto-reopened (maybeOpenModal(), maybeOpenModalFromURL()) with no click to attribute.
+		// Cleared immediately after reading so a later call with no fresh click doesn't reuse it.
 		if ( window.rocketcdnIframeSource ) {
 			postData += '&source=' + window.rocketcdnIframeSource;
+			delete window.rocketcdnIframeSource;
 		}
 
 		const request = sendHTTPRequest( postData );
@@ -486,12 +488,10 @@
 			return;
 		}
 
-		// Identify user if available.
-		if ( ! rocket_mixpanel_data.user_id || typeof mixpanel.identify !== 'function' ) {
-			return;
+		// Identify user if available - best-effort only, absence shouldn't block tracking.
+		if ( rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function' ) {
+			mixpanel.identify( rocket_mixpanel_data.user_id );
 		}
-
-		mixpanel.identify( rocket_mixpanel_data.user_id );
 
 		var cdnData = typeof rocket_cdn_mixpanel_data !== 'undefined' ? rocket_cdn_mixpanel_data : {};
 

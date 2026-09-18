@@ -60,7 +60,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
 			'admin_init'                              => 'maybe_disable_rocketcdn_paid_after_cancellation',
-			'admin_enqueue_scripts'                   => 'localize_tracking_data',
+			'admin_enqueue_scripts'                   => [ 'localize_tracking_data', 15 ],
 		];
 	}
 

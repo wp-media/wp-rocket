@@ -68,7 +68,8 @@ class Context {
 	/**
 	 * Which condition matched on the most recent {@see is_forced_off()} call.
 	 *
-	 * @var string|null One of 'pro_cancelled_outside_grace', 'license_expired', 'license_banned', or null.
+	 * @var string|null One of 'pro_cancelled_in_grace_period', 'pro_cancelled_outside_grace', 'license_expired',
+	 *                   'license_banned', or null.
 	 */
 	private $forced_off_reason;
 
@@ -200,9 +201,13 @@ class Context {
 	/**
 	 * Gets the canonical `cdn_status` tracking axis value.
 	 *
+	 * @param string|null $cdn_state Optional. Overrides the persisted `cdn_state`, for a caller
+	 *                               that just wrote a new mode and needs the status computed
+	 *                               against it rather than the stale, per-request options snapshot.
+	 *
 	 * @return string One of 'active', 'inactive', 'forced_off' or 'ongoing_activation'.
 	 */
-	public function get_cdn_status(): string {
+	public function get_cdn_status( ?string $cdn_state = null ): string {
 		switch ( true ) {
 			case $this->is_forced_off():
 				return 'forced_off';
@@ -210,7 +215,7 @@ class Context {
 			case $this->subscription_controller->is_subscription_creation_loading():
 				return 'ongoing_activation';
 
-			case self::CDN_STATE_NOTHING !== $this->get_cdn_state():
+			case self::CDN_STATE_NOTHING !== $this->get_cdn_state( $cdn_state ):
 				return 'active';
 
 			default:
@@ -230,6 +235,8 @@ class Context {
 
 		// Force paused if paid plan cancelled but in grace period.
 		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			$this->forced_off_reason = 'pro_cancelled_in_grace_period';
+
 			return true;
 		}
 
@@ -265,8 +272,8 @@ class Context {
 	/**
 	 * Gets which condition matched on the most recent {@see is_forced_off()} call.
 	 *
-	 * @return string|null One of 'pro_cancelled_outside_grace', 'license_expired', 'license_banned', or null when
-	 *                      RocketCDN isn't (or wasn't last checked as) forced off.
+	 * @return string|null One of 'pro_cancelled_in_grace_period', 'pro_cancelled_outside_grace', 'license_expired',
+	 *                      'license_banned', or null when RocketCDN isn't (or wasn't last checked as) forced off.
 	 */
 	public function get_forced_off_reason(): ?string {
 		return $this->forced_off_reason;

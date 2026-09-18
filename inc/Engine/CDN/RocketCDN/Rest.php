@@ -654,7 +654,7 @@ class Rest extends WP_REST_Controller {
 			'RocketCDN Mode Changed',
 			[
 				'cdn_mode'   => $this->context->get_cdn_state( $mode ),
-				'cdn_status' => $this->context->get_cdn_status(),
+				'cdn_status' => $this->context->get_cdn_status( $mode ),
 				'trigger'    => $trigger,
 			]
 		);
