@@ -4663,14 +4663,13 @@ div.wpr-tutorial-item {
 
 .wpr-cdn-tabs {
   display: flex;
-  gap: 8px;
   align-items: center;
-  padding: 8px;
   border: 1px solid #E2E5E9;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .wpr-cdn-tabs__tab {
+  margin: 4px;
   display: flex;
   align-items: center;
   padding: 6px 8px;
@@ -4684,7 +4683,7 @@ div.wpr-tutorial-item {
   color: #738191;
 }
 .wpr-cdn-tabs__tab--active {
-  background: #F9FAFB;
+  background: #F0F0F1;
   color: #121116;
   font-weight: 600;
 }
@@ -4823,8 +4822,10 @@ div.wpr-tutorial-item {
   margin-left: 6px;
   font-size: 0.75rem;
   line-height: 1.3333333333;
-  color: #00A66B;
+  color: #fff;
   font-weight: 600;
+  background-color: #31A670;
+  padding: 5px 10px;
 }
 
 .wpr-cdn-status--paused .wpr-cdn-indicator__dot {

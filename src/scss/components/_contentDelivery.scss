@@ -66,14 +66,13 @@
 // CDN driver tabs
 .wpr-cdn-tabs {
 	display: flex;
-	gap: $space;
 	align-items: center;
-	padding: $space;
 	border: 1px solid $cGreyLighter1;
 	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
 	&__tab {
+		margin: 0.5 * $space;
 		display: flex;
 		align-items: center;
 		padding: 6px $space;
@@ -86,7 +85,7 @@
 		color: $cGreyLighter3;
 
 		&--active {
-			background: $cGreyLight3;
+			background: $cGreyDark5;
 			color: $cBlack;
 			font-weight: 600;
 		}
@@ -246,8 +245,10 @@
 .wpr-cdn-tabs__tab .wpr-cdn-active-label {
 	margin-left: 6px;
 	@include font-size(12, 16);
-	color: $cGreenDark1;
+	color: $cWhite;
 	font-weight: 600;
+	background-color: $cGreenDark2;
+	padding: 5px 10px;
 }
 
 .wpr-cdn-status--paused {
