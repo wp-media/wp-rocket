@@ -46,6 +46,18 @@ class Test_polylangVariesByCookie extends TestCase {
 	}
 
 	/**
+	 * A stored option can hold a plain object, which cannot be read by key at all.
+	 *
+	 * @return void
+	 */
+	public function testShouldAnswerNoForSettingsThatCannotBeReadByKey() {
+		$this->assertFalse(
+			rocket_polylang_varies_by_cookie( new \stdClass() ),
+			'A stored option holding a plain object is read by key elsewhere, which is a fatal, so it answers no here instead.'
+		);
+	}
+
+	/**
 	 * From Polylang 3.7 the settings are an object that answers like an array, and it has to be
 	 * read the same way.
 	 *
