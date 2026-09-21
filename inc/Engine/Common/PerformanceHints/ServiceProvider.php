@@ -137,7 +137,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					$factories,
 				]
 			);
-		$this->getContainer()->add( 'performance_hints_admin_bar', Adminbar::class )
+		$this->getContainer()->add( 'performance_hints_admin_bar', AdminBar::class )
 			->addArguments(
 				[
 					$factories,

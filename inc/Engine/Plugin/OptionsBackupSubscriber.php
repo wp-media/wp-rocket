@@ -28,17 +28,21 @@ class OptionsBackupSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'wp_rocket_upgrade' => [ 'backup_options', 1, 2 ],
+			'wp_rocket_upgrade' => [ 'purge_backups', 1, 2 ],
 		];
 	}
 
 	/**
-	 * Triggers the backup before the upgrade routines run.
+	 * Deletes existing settings backups once, when updating to 3.23.3.3 or later.
 	 *
 	 * @param string $new_version Incoming plugin version.
 	 * @param string $old_version Currently installed plugin version.
 	 */
-	public function backup_options( string $new_version, string $old_version ): void {
-		$this->backup->backup( $new_version, $old_version );
+	public function purge_backups( string $new_version, string $old_version ): void {
+		if ( version_compare( $old_version, '3.23.3.3', '>=' ) ) {
+			return;
+		}
+
+		$this->backup->delete_all();
 	}
 }

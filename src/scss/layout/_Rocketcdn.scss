@@ -5,6 +5,27 @@
     RocketCDN Banners & CTA
 
 \*-----------------------------------------------*/
+.wpr-rocketcdn-notice{
+	border-radius: 0;
+	margin: 15px 0 0 0;
+	border-left: 4px solid;
+	.wpr-notice-container{
+		padding: 10px 20px 10px 15px;
+	}
+	&__warning{
+		background:#FFF8E6;
+		border-color:#E8AE13;
+	}
+	p{
+		margin: 0;
+	}
+}
+.rocketcdn--upgrade_btn{
+	margin-right:30px;
+	color:#464F59;
+	font-weight: 500;
+	text-decoration: none;
+}
 .wpr-rocketcdn-cta-small {
 	border-radius: 5px;
 	margin: $space * 3 0;

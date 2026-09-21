@@ -21,6 +21,33 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 		self::removeDBHooks();
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
+		$existing_tag = get_term_by( 'name', 'Ipseum', 'post_tag' );
+		if ( $existing_tag instanceof \WP_Term ) {
+			wp_delete_term( $existing_tag->term_id, 'post_tag' );
+		}
+	}
+
+	public function tear_down() {
+		if ( $this->tag instanceof \WP_Term ) {
+			wp_delete_term( $this->tag->term_id, 'post_tag' );
+		}
+
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

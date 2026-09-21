@@ -263,6 +263,41 @@ return [
 				],
 				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
 			],
-		]
+		],
+
+		// cdn is the only field that differs from the base 'settings' (Subscriber::maybe_clear_cache()
+		// already owns deciding the correct clearing scope for a cdn/cdn_state transition on this same
+		// update_option_wp_rocket_settings hook - rocket_after_save_options() must not redundantly force
+		// a full clear on top of that via its own hash, or the free-pages-only scoped clear is pointless).
+		'cdnAloneShouldNotTriggerFullClearing' => [
+			'settings' => [
+				'cache_mobile'        => true,
+				'purge_cron_interval' => true,
+				'purge_cron_unit'     => true,
+				'minify_css'          => false,
+				'exclude_css'         => '',
+				'minify_js'           => false,
+				'exclude_js'          => '',
+				'analytics_enabled'   => '',
+				'cdn'                 => true,
+				'cdn_cnames'          => false,
+				'version'             => '3.15',
+			],
+			'expected' => [
+				'rocket_clean_minify'         => $rocket_clean_minify,
+				'flush_rocket_htaccess'       => [
+					$htaccess['start'],
+					$htaccess['FileETag'],
+					$htaccess['CORS'],
+					$htaccess['mod_alias'],
+					$htaccess['wp_rules_start'],
+					$htaccess['end'],
+				],
+				'rocket_generate_config_file' => '<?php $var = "Some contents.";',
+			],
+			'config' => [
+				'force_pre_get_cdn' => true,
+			],
+		],
 	],
 ];

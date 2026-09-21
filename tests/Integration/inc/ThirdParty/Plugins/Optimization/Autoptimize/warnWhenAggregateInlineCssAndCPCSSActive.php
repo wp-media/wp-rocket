@@ -33,10 +33,14 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 		Functions\expect( 'wp_create_nonce' )
 			->with( 'warn_when_aggregate_inline_css_and_cpcss_active' )
 			->andReturn( '123456' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 		parent::tear_down();
 	}
 

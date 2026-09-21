@@ -33,6 +33,9 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 		Functions\expect( 'wp_create_nonce' )
 			->with( 'warn_when_js_aggregation_and_delay_js_active' )
 			->andReturn( '123456' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
@@ -40,6 +43,7 @@ class Test_WarnWhenJsAggregationAndDelayJsActive extends TestCase {
 
 		unset ($current_screen);
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 		parent::tear_down();
 	}
 

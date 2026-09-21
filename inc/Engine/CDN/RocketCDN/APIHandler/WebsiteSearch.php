@@ -13,6 +13,25 @@ use WP_Rocket\Engine\License\API\User;
 class WebsiteSearch extends AbstractSafeAPIClient {
 
 	/**
+	 * Option name used as a short-lived lock to guard against firing duplicate,
+	 * near-simultaneous requests to the RocketCDN website-search endpoint (e.g.
+	 * two callers both racing to resolve a 404 from the subscription status
+	 * endpoint before the transient cache has been (re)populated).
+	 *
+	 * @var string
+	 */
+	const WEBSITE_SEARCH_FETCH_LOCK = 'rocket_cdn_website_search_fetch_lock';
+
+	/**
+	 * Maximum time, in seconds, a fetch lock is honored before being considered
+	 * stale (e.g. left behind by a request that crashed or timed out) and
+	 * reclaimable by a later caller.
+	 *
+	 * @var int
+	 */
+	const WEBSITE_SEARCH_FETCH_LOCK_TTL = 30;
+
+	/**
 	 * The site URL to search for in the RocketCDN API.
 	 *
 	 * @var string
@@ -71,37 +90,88 @@ class WebsiteSearch extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		$args = [
-			'headers' => [
-				'Authorization' => 'Token ' . $token,
-			],
-		];
+		if ( ! $this->acquire_website_search_fetch_lock() ) {
+			// Another (possibly concurrent) request is already fetching this same
+			// data - reuse whatever it leaves behind instead of firing a duplicate
+			// request against the RocketCDN API.
+			$cached = get_transient( $this->get_transient_key() );
 
-		$response = $this->send_get_request( $args, true );
-
-		if ( is_wp_error( $response ) ) {
-			return false;
+			return false !== $cached ? $cached : false;
 		}
 
-		$response = wp_remote_retrieve_body( $response );
-		if ( empty( $response ) ) {
-			return false;
+		try {
+			$args = [
+				'headers' => [
+					'Authorization' => 'Token ' . $token,
+				],
+			];
+
+			$response = $this->send_get_request( $args, true );
+
+			if ( is_wp_error( $response ) ) {
+				return false;
+			}
+
+			$status_code = wp_remote_retrieve_response_code( $response );
+			$body        = wp_remote_retrieve_body( $response );
+
+			if ( empty( $body ) ) {
+				return false;
+			}
+
+			$body = json_decode( $body, true );
+			if ( ! is_array( $body ) ) {
+				return false;
+			}
+
+			$final = [
+				'subscription_status' => $body['subscription_status'] ?? 'cancelled',
+				'plan_type'           => $body['subscription_plan_type'] ?? 'free',
+				'status_code'         => $status_code,
+				'website_status'      => $body['status'] ?? '',
+			];
+			set_transient( $this->get_transient_key(), $final, HOUR_IN_SECONDS );
+
+			return $final;
+		} finally {
+			$this->release_website_search_fetch_lock();
+		}
+	}
+
+	/**
+	 * Attempts to acquire the short-lived website-search fetch lock.
+	 *
+	 * Relies on add_option()'s pre-existence check (a fresh, non-cached
+	 * get_option() read for this non-autoloaded option) to keep sequential
+	 * callers from re-fetching once another has already populated the cache.
+	 *
+	 * @return bool True if the lock was acquired, false if another request already holds it.
+	 */
+	private function acquire_website_search_fetch_lock(): bool {
+		if ( add_option( self::WEBSITE_SEARCH_FETCH_LOCK, time(), '', false ) ) {
+			return true;
 		}
 
-		$response = json_decode( $response, true );
-		if ( ! is_array( $response ) ) {
-			return false;
+		$locked_at = get_option( self::WEBSITE_SEARCH_FETCH_LOCK );
+
+		// Reclaim a stale lock left behind by a request that crashed or timed out
+		// before it could release it.
+		if ( is_numeric( $locked_at ) && ( time() - (int) $locked_at ) > self::WEBSITE_SEARCH_FETCH_LOCK_TTL ) {
+			delete_option( self::WEBSITE_SEARCH_FETCH_LOCK );
+
+			return add_option( self::WEBSITE_SEARCH_FETCH_LOCK, time(), '', false );
 		}
 
-		$final = [
-			'subscription_status' => $response['subscription_status'] ?? 'cancelled',
-			'plan_type'           => $response['subscription_plan_type'] ?? 'free',
-			'status_code'         => wp_remote_retrieve_response_code( $response ),
-			'website_status'      => $response['status'] ?? '',
-		];
-		set_transient( $this->get_transient_key(), $final, HOUR_IN_SECONDS );
+		return false;
+	}
 
-		return $final;
+	/**
+	 * Releases the website-search fetch lock.
+	 *
+	 * @return void
+	 */
+	private function release_website_search_fetch_lock(): void {
+		delete_option( self::WEBSITE_SEARCH_FETCH_LOCK );
 	}
 
 	/**

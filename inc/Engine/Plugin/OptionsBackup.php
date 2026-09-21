@@ -93,6 +93,23 @@ class OptionsBackup {
 	}
 
 	/**
+	 * Deletes all existing settings backup files.
+	 */
+	public function delete_all(): void {
+		$files = glob( $this->config_path . 'wp_rocket_settings_backup_*.json' );
+
+		if ( ! $files ) {
+			return;
+		}
+
+		$filesystem = rocket_direct_filesystem();
+
+		foreach ( $files as $file ) {
+			$filesystem->delete( $file );
+		}
+	}
+
+	/**
 	 * Deletes oldest backup files beyond KEEP_COUNT, sorted by modification time.
 	 */
 	private function garbage_collect(): void {

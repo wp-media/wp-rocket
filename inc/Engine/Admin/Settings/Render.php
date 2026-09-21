@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.0
  */
-class Render extends Abstract_render {
+class Render extends Abstract_Render {
 	/**
 	 * Settings array.
 	 *
