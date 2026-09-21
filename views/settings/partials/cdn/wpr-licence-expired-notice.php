@@ -23,11 +23,11 @@
 			<h3 class="wpr-cdn-expired__notice-title">
 				<?php esc_html_e( 'Your WP Rocket license has expired', 'rocket' ); ?>
 			</h3>
-			<p><?php esc_html_e( 'Please renew it to keep using RocketCDN.', 'rocket' ); ?></p>
+			<p><?php esc_html_e( 'Renew now to keep using RocketCDN Free.', 'rocket' ); ?></p>
 		</div>
 		<?php if ( empty( $data['is_reseller'] ) ) : ?>
 			<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
-				<?php esc_html_e( 'Renew Licence', 'rocket' ); ?>
+				<?php esc_html_e( 'Renew', 'rocket' ); ?>
 			</a>
 		<?php endif; ?>
 	</div>

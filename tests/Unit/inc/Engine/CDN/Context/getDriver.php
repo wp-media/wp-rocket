@@ -7,6 +7,7 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 class Test_GetDriver extends TestCase {
@@ -21,6 +22,11 @@ class Test_GetDriver extends TestCase {
 	private $subscription_controller;
 
 	/**
+	 * @var Mockery\MockInterface|User
+	 */
+	private $user;
+
+	/**
 	 * @var Context
 	 */
 	private $context;
@@ -30,7 +36,8 @@ class Test_GetDriver extends TestCase {
 
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
-		$this->context                 = new Context( $this->options, $this->subscription_controller );
+		$this->user                    = Mockery::mock( User::class );
+		$this->context                 = new Context( $this->options, $this->subscription_controller, $this->user );
 	}
 
 	/**

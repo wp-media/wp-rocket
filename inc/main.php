@@ -2,6 +2,7 @@
 
 use WP\MCP\Core\McpAdapter;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
@@ -65,7 +66,7 @@ function rocket_init() {
 
 	$wp_rocket = new Plugin(
 		WP_ROCKET_PATH . 'views',
-		new Container()
+		new Container( new IndexedDefinitionAggregate() )
 	);
 	$wp_rocket->load();
 

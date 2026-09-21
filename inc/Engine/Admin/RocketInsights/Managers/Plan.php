@@ -99,8 +99,6 @@ class Plan {
 		$new_plan = $this->user->get_rocket_insights_addon_sku_active();
 		$old_plan = $this->get_current_plan();
 		if ( $old_plan === $new_plan ) {
-			$this->validate_plan_expiration();
-
 			return;
 		}
 
@@ -122,24 +120,6 @@ class Plan {
 	 */
 	public function remove_current_plan() {
 		$this->options->delete( self::CURRENT_PLAN_OPTION_NAME );
-	}
-
-	/**
-	 * Validate plan expiration.
-	 *
-	 * @return void
-	 */
-	private function validate_plan_expiration() {
-		$expiration = $this->user->get_license_expiration();
-		if ( empty( $expiration ) ) {
-			return;
-		}
-
-		if ( $expiration >= time() ) {
-			return;
-		}
-
-		$this->remove_customer_data_cache();
 	}
 
 	/**

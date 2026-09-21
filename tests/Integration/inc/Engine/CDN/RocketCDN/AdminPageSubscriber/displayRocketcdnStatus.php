@@ -29,6 +29,15 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
+		// AdminPageSubscriber is only wired onto rocket_dashboard_after_account_data at
+		// bootstrap when is_admin() was true at Plugin::__construct() time -- evaluated
+		// once, before this (or any) test's set_current_screen() call can influence it.
+		// Register it explicitly here so unregisterAllCallbacksExcept() always has a
+		// matching callback to isolate, regardless of that one-time bootstrap timing.
+		$container  = apply_filters( 'rocket_container', null );
+		$subscriber = $container->get( 'rocketcdn_admin_subscriber' );
+		add_action( 'rocket_dashboard_after_account_data', [ $subscriber, 'display_rocketcdn_status' ] );
+
 		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_after_account_data', 'display_rocketcdn_status' );
 	}
 
