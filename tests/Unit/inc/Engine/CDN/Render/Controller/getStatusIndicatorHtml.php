@@ -128,6 +128,9 @@ class Test_GetStatusIndicatorHtml extends TestCase {
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( false );
 
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( false );
+
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
 			->andReturn( false )->byDefault();
 

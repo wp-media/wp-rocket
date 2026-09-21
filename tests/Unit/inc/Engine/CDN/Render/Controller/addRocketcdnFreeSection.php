@@ -581,6 +581,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::CDN_STATE_NOTHING );
 		$this->context->shouldReceive( 'get_free_page_limit' )->andReturn( 3 );
 		$this->context->shouldReceive( 'is_rocketcdn' )->andReturn( true );
+		$this->context->shouldReceive( 'is_forced_off' )->andReturn( false );
 
 		$this->beacon->shouldReceive( 'get_suggest' )
 			->with( 'rocketcdn_free' )
