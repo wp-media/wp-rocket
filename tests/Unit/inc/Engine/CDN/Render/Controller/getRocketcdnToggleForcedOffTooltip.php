@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Render\Controller;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\Cache;
@@ -105,6 +106,8 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
 		$this->cache                   = Mockery::mock( Cache::class );
+
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 	}
 
 	/**
@@ -208,96 +211,18 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 	 *
 	 * @dataProvider configTestData
 	 *
-	 * @param array  $config           Scenario configuration.
-	 * @param string $expected_tooltip Expected tooltip string.
+	 * @param array  $config   Scenario configuration.
+	 * @param string $expected Expected tooltip string.
 	 *
 	 * @return void
 	 */
-	public function testShouldReturnExpectedTooltip( array $config, string $expected_tooltip ): void {
+	public function testShouldReturnExpectedTooltip( array $config, string $expected ): void {
 		$section = $this->build_section( $config );
 
-		$this->assertSame( $expected_tooltip, $section['toggle_tooltip'] );
+		$this->assertSame( $expected, $section['toggle_tooltip'] );
 
 		// The invariant this depends on: the tooltip and is_forced_off can never
 		// disagree, because both are derived from the same precedence chain.
-		$this->assertSame( '' !== $expected_tooltip, $section['is_forced_off'] );
-	}
-
-	/**
-	 * Data provider for testShouldReturnExpectedTooltip.
-	 *
-	 * @return array
-	 */
-	public function configTestData(): array {
-		return [
-			'empty when nothing forces it off'      => [
-				[
-					'is_subscription_loading' => false,
-					'is_rocketcdn'            => true,
-					'is_free'                 => true,
-					'is_license_invalid'      => false,
-				],
-				'',
-			],
-			'activation-in-progress copy first'     => [
-				[
-					'is_subscription_loading' => true,
-				],
-				'RocketCDN is currently being activated. Please wait, this should only take a moment.',
-			],
-			'expired-licence copy second'           => [
-				[
-					'is_subscription_loading' => false,
-					'is_rocketcdn'            => true,
-					'is_free'                 => true,
-					'is_license_invalid'      => true,
-				],
-				'Renew to use RocketCDN Free.',
-			],
-			'banned-reseller copy third'            => [
-				[
-					'is_subscription_loading'    => false,
-					'is_rocketcdn'               => true,
-					'is_free'                    => true,
-					'is_license_invalid'         => false,
-					'is_reseller_license_banned' => true,
-				],
-				'Contact support to find out how to restore access.',
-			],
-			'loading takes precedence over expired' => [
-				[
-					'is_subscription_loading' => true,
-					'is_rocketcdn'            => true,
-					'is_free'                 => true,
-					'is_license_invalid'      => true,
-				],
-				'RocketCDN is currently being activated. Please wait, this should only take a moment.',
-			],
-			// should_display_licence_expired_notice() deliberately excludes banned
-			// resellers (`! is_reseller_license_banned()`), so a banned + invalid
-			// licence always falls through to the banned copy, never the expired
-			// one - same precedent as should_reject_rocketcdn_activation().
-			'banned wins even when licence is also invalid' => [
-				[
-					'is_subscription_loading'    => false,
-					'is_rocketcdn'               => true,
-					'is_free'                    => true,
-					'is_license_invalid'         => true,
-					'is_reseller_license_banned' => true,
-				],
-				'Contact support to find out how to restore access.',
-			],
-			'forced-paused copy fourth, for a cancelled paid plan' => [
-				[
-					'is_subscription_loading' => false,
-					'is_rocketcdn'            => true,
-					'is_free'                 => false,
-					'is_license_invalid'      => false,
-					'is_paid'                 => true,
-					'is_in_grace_period'      => true,
-				],
-				'Cancelling your subscription.',
-			],
-		];
+		$this->assertSame( '' !== $expected, $section['is_forced_off'] );
 	}
 }

@@ -266,6 +266,12 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
+		$is_white_label  = (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+
+		$upgrade_url = '';
+		if ( ! $is_white_label && ! $this->user->is_reseller_account() && rocket_is_live_site() ) {
+			$upgrade_url = $this->subscription_controller->get_express_checkout_url();
+		}
 
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -306,7 +312,7 @@ class Controller extends Abstract_Render {
 			// gate is_active() as-is without also masking this case - "loading" is the one
 			// forced-off reason that means "checked and disabled", not "off and disabled".
 			'is_active'         => in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ) && ( ! $is_forced_off || $is_subscription_loading ),
-			'upgrade_url'       => $this->subscription_controller->get_express_checkout_url(),
+			'upgrade_url'       => $upgrade_url,
 		];
 
 		return $sections;
@@ -482,6 +488,10 @@ class Controller extends Abstract_Render {
 	public function get_status_indicator_html( int $pages_count ): string {
 		$is_paid = $this->subscription_controller->is_paid();
 		$data    = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading(), ! $is_paid );
+
+		if ( $data['no_status_indicator'] ) {
+			return '';
+		}
 
 		if ( $is_paid ) {
 			// Mirrors the modifier classes add_rocketcdn_paid_section() adds, so a
@@ -979,23 +989,15 @@ class Controller extends Abstract_Render {
 			);
 		}
 
-		if ( $pages_count < 0 && ! $is_paused ) {
-			$texts['details'] = sprintf(
-			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
-				'<strong>',
-				'</strong>'
-			);
-		}
-
 		if ( $pages_count > 0 ) {
 			$texts['details']             = '';
 			$texts['no_status_indicator'] = true;
 		}
 
 		if ( $this->subscription_controller->is_license_invalid() ) {
-			$texts['class']  .= ' wpr-cdn-status--expired';
-			$texts['details'] = __( 'Renew now to keep using RocketCDN Free.', 'rocket' );
+			$texts['class']              .= ' wpr-cdn-status--expired';
+			$texts['details']             = __( 'Renew now to keep using RocketCDN Free.', 'rocket' );
+			$texts['no_status_indicator'] = false;
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
@@ -1039,7 +1041,7 @@ class Controller extends Abstract_Render {
 	/**
 	 * Renders the cancelled-banned notice.
 	 *
-	 * @since 3.23.1
+	 * @since 3.23.4
 	 *
 	 * @return void
 	 */

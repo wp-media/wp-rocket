@@ -1,15 +1,15 @@
 <?php
 /**
- * Reseller-banned licence notice partial.
+ * Pro user cancelled notice.
  *
- * Renders a notice banner informing the user that RocketCDN is being cancelled
+ * Renders a notice banner informing the user that RocketCDN is being cancelled.
  *
  * @since 3.23.3
  */
 
 ?>
 
-<div class="wpr-rocketcdn-notice wpr-rocketcdn-notice__danger wpr-cdn-expired__notice wpr-cdn-banned__notice" id="wpr-cdn-banned-banner">
+<div class="wpr-rocketcdn-notice wpr-cdn-expired__notice" id="wpr-cdn-cancelled-banner">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-70">
 			<p>

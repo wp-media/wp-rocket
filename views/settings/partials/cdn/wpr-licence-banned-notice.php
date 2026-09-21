@@ -12,7 +12,7 @@
 
 ?>
 
-<div class="wpr-rocketcdn-notice wpr-rocketcdn-notice__danger wpr-cdn-expired__notice wpr-cdn-banned__notice" id="wpr-cdn-banned-banner">
+<div class="wpr-rocketcdn-notice wpr-cdn-expired__notice wpr-cdn-banned__notice" id="wpr-cdn-banned-banner">
 	<div class="wpr-notice-container">
 		<div class="wpr-notice-70">
 			<p><?php esc_html_e( 'Your WP Rocket license has been banned. Contact support for more information.', 'rocket' ); ?></p>

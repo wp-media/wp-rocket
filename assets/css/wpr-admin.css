@@ -900,10 +900,6 @@ a:focus, button:focus {
   background: #FFF8E6;
   border-color: #E8AE13;
 }
-.wpr-rocketcdn-notice__danger {
-  border-color: #E23A3A;
-  background: #FDE9E9;
-}
 .wpr-rocketcdn-notice p {
   margin: 0;
 }
