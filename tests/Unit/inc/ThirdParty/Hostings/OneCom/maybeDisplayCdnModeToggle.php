@@ -6,11 +6,11 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::disable_cdn_pause_option
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_display_cdn_mode_toggle
  * @group OneCom
  * @group ThirdParty
  */
-class Test_DisableCdnPauseOption extends TestCase {
+class Test_MaybeDisplayCdnModeToggle extends TestCase {
     private $onecom;
 
 	public function setUp() : void {
@@ -39,9 +39,9 @@ class Test_DisableCdnPauseOption extends TestCase {
 				);
 		}
 
-		$this->assertSame(
-			$expected['sections'],
-			$this->onecom->disable_cdn_pause_option( $config['sections'] )
+        $this->assertSame(
+			$expected['return'],
+			$this->onecom->maybe_display_cdn_mode_toggle( $config['show'], $config['mode'] )
 		);
 	}
 }

@@ -1,34 +1,34 @@
 <?php
 
 return [
-    'testShouldReturnTrueWithOneDotComCDNEnabled' => [
+    'testShouldReturnByocdnWithOneDotComCDNEnabled' => [
         'config' => [
 			'onecom_performance_plugin_enabled' => true,
-            'cdn' => null,
+            'cdn_state' => null,
             'oc_cdn_enabled' => true,
         ],
         'expected' => [
-            'return' => true,
+            'return' => 'byocdn',
         ],
     ],
-    'testShouldReturnNullWithOneDotComCDNDisabled' => [
+    'testShouldReturnUnchangedWithOneDotComCDNDisabled' => [
 	    'config' => [
 		    'onecom_performance_plugin_enabled' => true,
-		    'cdn' => null,
+		    'cdn_state' => 'nothing',
 		    'oc_cdn_enabled' => false,
 	    ],
 	    'expected' => [
-		    'return' => null,
+		    'return' => 'nothing',
 	    ],
     ],
-    'testShouldReturnNullWithOneDotComCDNEnabledAndPluginDisabled' => [
+    'testShouldReturnUnchangedWithOneDotComCDNEnabledAndPluginDisabled' => [
 	    'config' => [
 		    'onecom_performance_plugin_enabled' => false,
-		    'cdn' => null,
+		    'cdn_state' => 'nothing',
 		    'oc_cdn_enabled' => false,
 	    ],
 	    'expected' => [
-		    'return' => null,
+		    'return' => 'nothing',
 	    ],
     ],
 ];

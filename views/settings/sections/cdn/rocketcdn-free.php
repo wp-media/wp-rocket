@@ -19,18 +19,42 @@
  *     @type array  $cta_data    Data for the CTA banner.
  *     @type string $renewal_url    URL for renewing the license.
  *     @type bool   $active_subscription Whether the user has an active subscription or not.
+ *     @type bool   $is_active    Whether RocketCDN Free is the currently applied CDN mode.
+ *     @type bool   $is_forced_off Whether the mode toggle must be disabled (subscription loading, expired/banned licence).
+ *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_rocketcdn_free_active = $data['is_active'];
 ?>
 
-<div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?>">
+<?php // wpr-cdn-active-indicator is kept in sync with JS (cdn-driver.js), which reads it off .wpr-optionHeader to find the previously-active mode on a failed switch — it no longer drives any visible styling on this header itself. ?>
+<div class="wpr-optionHeader wpr-optionHeader--cdn-driver <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_rocketcdn_free_active ? ' wpr-cdn-active-indicator' : ''; ?>">
 	<div class="wpr-optionHeader__title-group">
 		<h3 class="wpr-title2 wpr-title2--orange"><?php echo esc_html( $data['title'] ); ?></h3>
 		<span class="wpr-badge wpr-badge--grey"><?php esc_html_e( 'Free', 'rocket' ); ?></span>
+		<?php
+		$this->render_parts_with_data(
+			'cdn/cdn-mode-toggle',
+			[
+				'id'            => 'wpr-rocketcdn-free-toggle',
+				'cdn_mode'      => 'rocketcdn_free',
+				'checked'       => $rocket_rocketcdn_free_active,
+				'is_forced_off' => $data['is_forced_off'],
+				'label'         => __( 'Enable RocketCDN Free', 'rocket' ),
+				'tooltip'       => $data['toggle_tooltip'],
+			]
+		);
+		?>
 	</div>
+	<?php if ( ! empty( $data['upgrade_url'] ) ) : ?>
+		<button type="button" class="rocketcdn--upgrade_btn wpr-rocketcdn-open"<?php echo empty( $data['upgrade_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
+			<?php esc_html_e( 'Upgrade to PRO', 'rocket' ); ?>
+		</button>
+	<?php endif; ?>
+
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
@@ -52,9 +76,10 @@ defined( 'ABSPATH' ) || exit;
 	<?php
 	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
 	?>
-
+	<?php if ( ! $data['status_indicator']['no_status_indicator'] ) : ?>
 	<div class="wpr-cdn-built-in__separator"></div>
-	
+	<?php endif; ?>
+
 	<?php
 	/**
 	 * Fires to render the built-in CDN page list table.
