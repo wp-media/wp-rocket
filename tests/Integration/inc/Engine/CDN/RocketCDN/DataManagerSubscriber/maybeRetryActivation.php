@@ -43,6 +43,9 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		$this->original_user_id = get_current_user_id();
 
 		// Clean state.
@@ -71,6 +74,8 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		remove_all_filters( 'pre_http_request' );
 		$this->reset_wp_rocket_settings();
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

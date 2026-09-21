@@ -15,7 +15,16 @@ class Test_SanitizeCallback extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 	/**
 	 * @dataProvider addDNSPrefetchProvider

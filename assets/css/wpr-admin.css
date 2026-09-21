@@ -1956,7 +1956,6 @@ div.wpr-upgrade-websites.notstacked {
 .wpr-optionHeader .wpr-title2 {
   line-height: 24px;
   color: #F56640;
-  padding-right: 40px;
 }
 .wpr-optionHeader .wpr-infoAction {
   margin-right: 8px;
@@ -4636,8 +4635,8 @@ div.wpr-tutorial-item {
   white-space: nowrap;
 }
 .wpr-badge--grey {
-  background: #f6f7f8;
-  color: #738191;
+  background: #E8F1FD;
+  color: #0D5EC3;
 }
 .wpr-badge--blue {
   background: #d4e6fc;
@@ -4663,14 +4662,13 @@ div.wpr-tutorial-item {
 
 .wpr-cdn-tabs {
   display: flex;
-  gap: 8px;
   align-items: center;
-  padding: 8px;
   border: 1px solid #E2E5E9;
   border-radius: 4px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 .wpr-cdn-tabs__tab {
+  margin: 4px;
   display: flex;
   align-items: center;
   padding: 6px 8px;
@@ -4684,7 +4682,7 @@ div.wpr-tutorial-item {
   color: #738191;
 }
 .wpr-cdn-tabs__tab--active {
-  background: #F9FAFB;
+  background: #F0F0F1;
   color: #121116;
   font-weight: 600;
 }
@@ -4823,8 +4821,10 @@ div.wpr-tutorial-item {
   margin-left: 6px;
   font-size: 0.75rem;
   line-height: 1.3333333333;
-  color: #00A66B;
+  color: #fff;
   font-weight: 600;
+  background-color: #31A670;
+  padding: 5px 10px;
 }
 
 .wpr-cdn-status--paused .wpr-cdn-indicator__dot {
@@ -5283,6 +5283,12 @@ div.wpr-tutorial-item {
 .wpr-cdn-disabled a {
   opacity: 0.5;
   pointer-events: none;
+}
+
+.wpr-cdn-title-divider {
+  border-left: 1px solid #E2E5E9;
+  height: 16px;
+  margin: 0 8px;
 }
 
 .wpr-cdn-mode-toggle {

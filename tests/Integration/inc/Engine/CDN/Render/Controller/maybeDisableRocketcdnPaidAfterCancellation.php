@@ -61,13 +61,36 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 		$this->set_subscription_transient( $config );
 		$this->set_user_license( $config );
 
+		// Regression guard: the tracked 'RocketCDN Mode Changed' event's cdn_mode/cdn_status
+		// must reflect the freshly-written cdn_state, not the stale pre-write snapshot. Filtered
+		// to this one event name because a resolving scenario also legitimately fires
+		// 'RocketCDN Cache Cleared' (Subscriber::maybe_clear_cache(), on the same settings write).
+		$mode_changed_events = [];
+		$tracking_listener   = function ( $event, $properties ) use ( &$mode_changed_events ) {
+			if ( 'RocketCDN Mode Changed' === $event ) {
+				$mode_changed_events[] = [
+					'event'      => $event,
+					'properties' => $properties,
+				];
+			}
+		};
+		add_action( 'rocket_mixpanel_track_event', $tracking_listener, 10, 2 );
+
 		do_action( 'admin_init' );
+
+		remove_action( 'rocket_mixpanel_track_event', $tracking_listener, 10 );
 
 		$persisted_cdn_state = $this->options_api->get( 'settings', [] )['cdn_state'] ?? null;
 		$forced_off_tracking = get_option( 'rocket_rocketcdn_forced_pause_state', [] );
 
 		$this->assertSame( $expected['cdn_state'] ?? $initial_cdn_state, $persisted_cdn_state );
 		$this->assertSame( $expected['persistent'], $forced_off_tracking['persistent'] );
+
+		if ( isset( $expected['tracked_event'] ) ) {
+			$this->assertSame( [ $expected['tracked_event'] ], $mode_changed_events );
+		} else {
+			$this->assertSame( [], $mode_changed_events );
+		}
 
 		if ( Context::CDN_STATE_NOTHING === ( $expected['cdn_state'] ?? null ) ) {
 			// Confirm the write actually sticks through CdnStateBridge::resolve_live(): once

@@ -133,6 +133,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	 * @return void
 	 */
 	public function testShouldSetLimitReachedCorrectly( array $config, bool $expected ): void {
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( false );
+
 		$this->context->shouldReceive( 'get_applied_cdn_state' )
 			->andReturn( Context::CDN_STATE_NOTHING );
 
@@ -226,6 +229,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 	 * @return void
 	 */
 	public function testShouldMarkActiveWhenRocketcdnStateIsFree(): void {
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( false );
+
 		$this->context->shouldReceive( 'get_driver' )
 			->andReturn( Context::ROCKETCDN_TYPE );
 
@@ -362,6 +368,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
+
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( false );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'cdn' )

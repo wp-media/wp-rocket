@@ -79,6 +79,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options_api',
 					'user_client',
 					'rocketcdn_subscription_controller',
+					'rocketcdn_query',
 				]
 			);
 		// RocketCDN Frontend subscriber.

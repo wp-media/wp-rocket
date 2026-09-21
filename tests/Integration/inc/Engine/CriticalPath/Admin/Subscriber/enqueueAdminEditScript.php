@@ -34,6 +34,9 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
@@ -42,6 +45,8 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
 		unset( $GLOBALS['pagenow'] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
