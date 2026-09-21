@@ -4,9 +4,11 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page
@@ -15,6 +17,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class DataManagerSubscriber implements Subscriber_Interface {
 	use RegexTrait;
+	use TrackingTrait;
 
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
@@ -61,6 +64,13 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private $subscription_controller;
 
 	/**
+	 * RocketCDNQuery instance.
+	 *
+	 * @var RocketCDNQuery
+	 */
+	private $query;
+
+	/**
 	 * Constructor
 	 *
 	 * @param APIClient              $api_client  RocketCDN API Client instance.
@@ -69,14 +79,16 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @param Options                $options_api Options API instance.
 	 * @param UserClient             $user_client UserClient instance.
 	 * @param SubscriptionController $subscription_controller SubscriptionController instance.
+	 * @param RocketCDNQuery         $query RocketCDNQuery instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client, SubscriptionController $subscription_controller ) {
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client, SubscriptionController $subscription_controller, RocketCDNQuery $query ) {
 		$this->api_client              = $api_client;
 		$this->cdn_options             = $cdn_options;
 		$this->options                 = $options;
 		$this->options_api             = $options_api;
 		$this->user_client             = $user_client;
 		$this->subscription_controller = $subscription_controller;
+		$this->query                   = $query;
 	}
 
 	/**
@@ -188,14 +200,35 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		// Activate the subscription via RocketCDN API.
 		$activation_result = $this->api_client->activate_subscription( $token, $website_id );
 
+		if ( is_wp_error( $activation_result ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
 		$this->cdn_options->enable();
 
-		// Force cdn_type to rocketcdn.
-		$current_options             = $this->options_api->get( 'settings', [] );
-		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
-		$this->options_api->set( 'settings', $current_options );
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => Context::ROCKETCDN_PAID_TYPE,
+				'cdn_status' => 'active',
+				'trigger'    => 'pro_purchase',
+			]
+		);
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading a checkout-flow URL parameter for tracking, not processing form data.
+		$source_raw = isset( $_GET['rocketcdn_source'] ) ? sanitize_key( wp_unslash( $_GET['rocketcdn_source'] ) ) : '';
+		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
+
+		$this->track_event(
+			'RocketCDN Pro Activated',
+			[
+				'source'                     => $source,
+				'preserved_free_pages_count' => $this->query->get_total_count(),
+			]
+		);
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -257,6 +290,26 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		$this->schedule_subscription_check( $subscription );
 		$this->delete_process();
+
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => Context::ROCKETCDN_PAID_TYPE,
+				'cdn_status' => 'active',
+				'trigger'    => 'pro_purchase',
+			]
+		);
+
+		$source_raw = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
+		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
+
+		$this->track_event(
+			'RocketCDN Pro Activated',
+			[
+				'source'                     => $source,
+				'preserved_free_pages_count' => $this->query->get_total_count(),
+			]
+		);
 
 		$data['message'] = 'rocketcdn_enabled';
 

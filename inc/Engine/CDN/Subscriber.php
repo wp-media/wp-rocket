@@ -13,6 +13,7 @@ use WP_Rocket\Engine\CDN\{
 };
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -22,6 +23,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class Subscriber implements Subscriber_Interface {
 	use UrlTrait;
+	use TrackingTrait;
 
 	/**
 	 * WP Rocket Options instance
@@ -155,7 +157,20 @@ class Subscriber implements Subscriber_Interface {
 				[ 'maybe_clear_cache', 10, 2 ],
 				[ 'maybe_clear_cname_cache', 10, 2 ],
 			],
+			'rocket_mixpanel_tracked_options'          => [ 'remove_cdn_from_tracked_options', 11 ],
 		];
+	}
+
+	/**
+	 * Removes the deprecated `cdn` key, replaced by `RocketCDN Mode Changed`. Filtered here
+	 * rather than in dynamic-lists.json, which is overwritten by a remote sync.
+	 *
+	 * @param array $options Tracked option keys.
+	 *
+	 * @return array
+	 */
+	public function remove_cdn_from_tracked_options( array $options ): array {
+		return array_values( array_diff( $options, [ 'cdn' ] ) );
 	}
 
 	/**
@@ -654,11 +669,29 @@ class Subscriber implements Subscriber_Interface {
 			( Context::ROCKETCDN_FREE_TYPE === $old_value['cdn_state'] && Context::CDN_STATE_NOTHING === $value['cdn_state'] )
 		) {
 			$this->cache->clear_rocketcdn_free_pages_cache();
+
+			$this->track_event(
+				'RocketCDN Cache Cleared',
+				[
+					'scope'       => 'free_pages',
+					'trigger'     => 'cdn_state_changed',
+					'pages_count' => $this->query->get_total_count(),
+				]
+			);
 			return;
 		}
 
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
+
+		$this->track_event(
+			'RocketCDN Cache Cleared',
+			[
+				'scope'       => 'site_wide',
+				'trigger'     => 'cdn_state_changed',
+				'pages_count' => 0,
+			]
+		);
 	}
 
 	/**

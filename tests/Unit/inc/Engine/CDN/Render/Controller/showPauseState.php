@@ -164,11 +164,8 @@ class Test_ShowPauseState extends TestCase {
 		$this->user->shouldReceive( 'is_reseller_license_banned' )
 			->andReturn( $config['is_reseller_license_banned'] ?? false );
 
-		$this->subscription_controller->shouldReceive( 'is_paid' )
-			->andReturn( $config['is_paid'] ?? false );
-
-		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
-			->andReturn( $config['is_cancelled_outside_grace_period'] ?? false );
+		$this->context->shouldReceive( 'is_forced_off' )
+			->andReturn( $config['is_forced_off'] ?? false );
 
 		$controller = $this->get_controller();
 
@@ -234,11 +231,10 @@ class Test_ShowPauseState extends TestCase {
 				],
 				true,
 			],
-			'forced off via is_forced_off(): paid plan cancelled outside its grace period' => [
+			'forced off via Context::is_forced_off(): e.g. paid plan cancelled outside its grace period' => [
 				[
-					'applied_cdn_state'                 => Context::ROCKETCDN_TYPE,
-					'is_paid'                           => true,
-					'is_cancelled_outside_grace_period' => true,
+					'applied_cdn_state' => Context::ROCKETCDN_TYPE,
+					'is_forced_off'     => true,
 				],
 				true,
 			],

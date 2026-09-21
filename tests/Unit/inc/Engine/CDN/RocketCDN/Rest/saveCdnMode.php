@@ -82,6 +82,8 @@ class Test_SaveCdnMode extends TestCase {
 	private function setup_apply_cdn_mode_mocks(): void {
 		$this->options_api->shouldReceive( 'get' )->with( 'settings', [] )->andReturn( [] );
 		$this->options_api->shouldReceive( 'set' )->with( 'settings', Mockery::type( 'array' ) );
+		$this->context->shouldReceive( 'get_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
+		$this->context->shouldReceive( 'get_cdn_status' )->andReturn( 'active' );
 	}
 
 	private function setup_get_pages_data_mocks( int $count = 0, bool $is_loading = false ): void {

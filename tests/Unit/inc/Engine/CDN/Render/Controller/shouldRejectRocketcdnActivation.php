@@ -128,6 +128,15 @@ class Test_ShouldRejectRocketcdnActivation extends TestCase {
 	 * @return void
 	 */
 	public function testShouldDoAsExpected( array $config, bool $expected ): void {
+		// Mirrors Context::is_forced_off()'s branches, so the mock reflects what the
+		// real implementation would resolve to for this scenario's config.
+		$is_forced_off = ( ( $config['is_paid'] ?? false ) && ( $config['is_in_grace_period'] ?? false ) )
+			|| ( ( $config['is_paid'] ?? false ) && ( $config['is_cancelled_outside_grace_period'] ?? false ) )
+			|| ( ( $config['is_free'] ?? false ) && ( $config['is_license_invalid'] ?? false ) )
+			|| ( ( $config['is_cancelled_outside_grace_period'] ?? false ) && ( $config['is_license_invalid'] ?? false ) );
+
+		$this->context->shouldReceive( 'is_forced_off' )->andReturn( $is_forced_off );
+
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
 			->andReturn( $config['is_subscription_loading'] );
 

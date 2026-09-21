@@ -534,6 +534,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 						[
 							'page'               => WP_ROCKET_PLUGIN_SLUG,
 							'rocketcdn_checkout' => 'true',
+							'rocketcdn_source'   => 'banner_cta',
 						],
 						admin_url( 'options-general.php' )
 					)

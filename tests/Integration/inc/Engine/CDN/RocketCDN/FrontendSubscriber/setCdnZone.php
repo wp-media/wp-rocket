@@ -41,6 +41,9 @@ class Test_SetCdnZone extends TestCase {
 		$this->memoized_url_prop = new ReflectionProperty( FrontendSubscriber::class, 'rocketcdn_url' );
 		$this->memoized_url_prop->setAccessible( true );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
 
 		delete_transient( 'rocketcdn_status' );
@@ -54,6 +57,8 @@ class Test_SetCdnZone extends TestCase {
 		$this->options_api->set( 'settings', $settings );
 
 		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
