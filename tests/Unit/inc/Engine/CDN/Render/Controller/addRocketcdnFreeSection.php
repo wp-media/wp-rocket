@@ -101,6 +101,7 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->cache                   = Mockery::mock( Cache::class );
 
 		Functions\when( 'get_option' )->justReturn( [ 'persistent' => false ] );
+		Functions\when( 'rocket_is_live_site' )->justReturn( true );
 	}
 
 	/**
@@ -183,6 +184,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
 
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( false );
@@ -283,6 +287,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -366,6 +373,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )
 			->andReturn( false );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -441,6 +451,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( true );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -462,12 +475,12 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_free_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WP Rocket licence has expired.',
+			'Renew to use RocketCDN Free.',
 			$sections['rocketcdn_free_section']['toggle_tooltip']
 		);
 		$this->assertTrue( $sections['rocketcdn_free_section']['status_indicator']['is_paused'] );
 		$this->assertSame(
-			'RocketCDN is paused',
+			'',
 			$sections['rocketcdn_free_section']['status_indicator']['status_text']
 		);
 	}
@@ -526,6 +539,9 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->subscription_controller->shouldReceive( 'is_free' )
 			->andReturn( true );
 
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->andReturn( '' );
+
 		$this->context->shouldReceive( 'is_rocketcdn' )
 			->andReturn( true );
 
@@ -549,8 +565,120 @@ class Test_AddRocketcdnFreeSection extends TestCase {
 		$this->assertFalse( $sections['rocketcdn_free_section']['is_active'] );
 		$this->assertTrue( $sections['rocketcdn_free_section']['status_indicator']['is_paused'] );
 		$this->assertSame(
-			'RocketCDN is paused',
+			'',
 			$sections['rocketcdn_free_section']['status_indicator']['status_text']
 		);
 	}
+
+	/**
+	 * Shared mock setup used by upgrade_url guard tests.
+	 *
+	 * @return void
+	 */
+	private function set_up_upgrade_url_mocks(): void {
+		$this->context->shouldReceive( 'get_driver' )->andReturn( Context::ROCKETCDN_TYPE );
+		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::CDN_STATE_NOTHING );
+		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::CDN_STATE_NOTHING );
+		$this->context->shouldReceive( 'get_free_page_limit' )->andReturn( 3 );
+		$this->context->shouldReceive( 'is_rocketcdn' )->andReturn( true );
+		$this->context->shouldReceive( 'is_forced_off' )->andReturn( false );
+
+		$this->beacon->shouldReceive( 'get_suggest' )
+			->with( 'rocketcdn_free' )
+			->andReturn( [ 'id' => 'beacon-id', 'url' => 'https://example.com' ] );
+
+		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'has_inactive_subscription' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_license_invalid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_free' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_in_grace_period' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_cancelled_outside_grace_period' )->andReturn( false );
+
+		$this->options->shouldReceive( 'get' )->with( 'cdn' )->andReturn( true );
+		$this->user->shouldReceive( 'is_reseller_license_banned' )->andReturn( false );
+
+		$this->cdn_query->method( 'query' )->willReturn( [] );
+	}
+
+	/**
+	 * Tests that upgrade_url is populated with the express checkout URL for an eligible account
+	 * on a live site.
+	 *
+	 * @return void
+	 */
+	public function testShouldPopulateUpgradeUrlForEligibleAccount(): void {
+		$this->set_up_upgrade_url_mocks();
+
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )
+			->once()
+			->andReturn( 'https://checkout.example.com/?dashboard_url=...' );
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertSame(
+			'https://checkout.example.com/?dashboard_url=...',
+			$sections['rocketcdn_free_section']['upgrade_url']
+		);
+	}
+
+	/**
+	 * Tests that upgrade_url is empty for white-label accounts so they can't trigger the
+	 * checkout flow (which the modal guard in add_subscription_modal() also prevents).
+	 *
+	 * @return void
+	 */
+	public function testShouldNotPopulateUpgradeUrlForWhiteLabelAccount(): void {
+		$this->set_up_upgrade_url_mocks();
+
+		$this->white_label = true;
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->never();
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertSame( '', $sections['rocketcdn_free_section']['upgrade_url'] );
+	}
+
+	/**
+	 * Tests that upgrade_url is empty for reseller accounts.
+	 *
+	 * @return void
+	 */
+	public function testShouldNotPopulateUpgradeUrlForResellerAccount(): void {
+		$this->set_up_upgrade_url_mocks();
+
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( true );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->never();
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertSame( '', $sections['rocketcdn_free_section']['upgrade_url'] );
+	}
+
+	/**
+	 * Tests that upgrade_url is empty for non-live (staging) sites; the express checkout
+	 * is intended for live sites only, matching the guard in add_subscription_modal().
+	 *
+	 * @return void
+	 */
+	public function testShouldNotPopulateUpgradeUrlForNonLiveSite(): void {
+		$this->set_up_upgrade_url_mocks();
+
+		Functions\when( 'rocket_is_live_site' )->justReturn( false );
+
+		$this->user->shouldReceive( 'is_reseller_account' )->andReturn( false );
+
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->never();
+
+		$sections = $this->get_controller()->add_rocketcdn_free_section( [] );
+
+		$this->assertSame( '', $sections['rocketcdn_free_section']['upgrade_url'] );
+	}
+
 }

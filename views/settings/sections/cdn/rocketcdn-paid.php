@@ -51,6 +51,19 @@ $rocket_rocketcdn_paid_active = $data['is_active'];
 	<?php endif; ?>
 </div>
 
+<div class="<?php echo esc_attr( $data['class'] ); ?>">
+	<?php
+	/**
+	 * Fires before the RocketCDN paid status indicator is displayed.
+	 *
+	 * @since 3.23.3
+	 */
+	do_action( 'rocket_cdn_paid_before_status_indicator' );
+	?>
+</div>
+
 <?php
-$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
+if ( ! $data['status_indicator']['no_status_indicator'] ) {
+	$this->render_parts_with_data( 'cdn/cdn-status-indicator', $data['status_indicator'] );
+}
 ?>

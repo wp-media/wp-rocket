@@ -461,6 +461,39 @@ class SubscriptionController implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Returns the express-checkout URL for upgrading to RocketCDN Pro.
+	 *
+	 * Reads the button URL from the user data returned by the RocketCDN API and
+	 * appends a dashboard_url query arg so the checkout flow can redirect back to the
+	 * WP Rocket settings page on completion. Returns an empty string when the API
+	 * data is unavailable or the URL is not set.
+	 *
+	 * @return string Express-checkout URL, or empty string when not available.
+	 */
+	public function get_express_checkout_url(): string {
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
+			return '';
+		}
+
+		return add_query_arg(
+			[
+				'dashboard_url' => rawurlencode(
+					add_query_arg(
+						[
+							'page'               => WP_ROCKET_PLUGIN_SLUG,
+							'rocketcdn_checkout' => 'true',
+						],
+						admin_url( 'options-general.php' )
+					)
+				),
+			],
+			esc_url_raw( $user_data->rocketcdn->button->url )
+		);
+	}
+
+	/**
 	 * Get rocketcdn transient status
 	 *
 	 * @return mixed

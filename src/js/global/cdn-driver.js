@@ -33,7 +33,6 @@
 		initAddHomepage();
 		initAddPage();
 		initDeletePage();
-		initNoCnameWarningCta();
 		updateSubmitButtonStateOnSubscriptionLoading();
 	} );
 
@@ -608,31 +607,6 @@
 	}
 
 	/**
-	 * Initializes the "Use RocketCDN Free instead" CTA in the BYOCDN missing-CNAME
-	 * warning notice.
-	 *
-	 * Clicking it switches to the RocketCDN tab by delegating to the existing
-	 * RocketCDN tab element, rather than duplicating tab-switch logic.
-	 */
-	function initNoCnameWarningCta() {
-		document.addEventListener( 'click', ( event ) => {
-			const cta = event.target.closest( '.wpr-cdn-no-cname-warning__cta' );
-
-			if ( ! cta ) {
-				return;
-			}
-
-			event.preventDefault();
-
-			const rocketCdnTab = document.querySelector( '.wpr-cdn-tabs__tab[data-cdn-driver="rocketcdn"]' );
-
-			if ( rocketCdnTab ) {
-				rocketCdnTab.click();
-			}
-		} );
-	}
-
-	/**
 	 * Adds a page (or the homepage) to RocketCDN free-tier delivery, transparently
 	 * handling the "RocketCDN Free is inactive" activation prompt: on a 409
 	 * confirm-required error, shows a native confirmation dialog and retries with
@@ -708,6 +682,7 @@
 
 				// Track banner view when first page is added and banner becomes visible.
 				if ( 1 === response.count ) {
+					document.querySelector( '.wpr-cdn-built-in .wpr-cdn-built-in__separator' )?.remove();
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
@@ -790,6 +765,7 @@
 
 				// Track banner view when first page is added and banner becomes visible.
 				if ( 1 === response.count ) {
+					document.querySelector( '.wpr-cdn-built-in .wpr-cdn-built-in__separator' )?.remove();
 					document.dispatchEvent( new CustomEvent( 'rocketCDNBannerFirstVisible' ) );
 				}
 
@@ -911,6 +887,11 @@
 						homepageBtn.disabled = false;
 					}
 
+					// Restore separator between the status indicator and the add-page section.
+					const indicator = document.querySelector( '.wpr-cdn-built-in #wpr_cdn_status_indicator' );
+					if ( indicator ) {
+						indicator.insertAdjacentHTML( 'afterend', '<div class="wpr-cdn-built-in__separator"></div>' );
+					}
 				}
 
 				if ( response.limit > response.count ) {

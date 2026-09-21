@@ -6,7 +6,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
@@ -32,13 +31,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @var Beacon
 	 */
 	private $beacon;
-
-	/**
-	 * UserClient instance
-	 *
-	 * @var UserClient
-	 */
-	private $user_client;
 
 	/**
 	 * Tracking instance
@@ -73,7 +65,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @param APIClient              $api_client              RocketCDN API Client instance.
 	 * @param Beacon                 $beacon                  Beacon instance.
-	 * @param UserClient             $user_client             UserClient instance.
 	 * @param Tracking               $tracking                Tracking instance.
 	 * @param string                 $template_path           Path to the templates.
 	 * @param Options_Data           $options                 WP Rocket options instance.
@@ -83,7 +74,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function __construct(
 		APIClient $api_client,
 		Beacon $beacon,
-		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
 		Options_Data $options,
@@ -94,7 +84,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$this->api_client              = $api_client;
 		$this->beacon                  = $beacon;
-		$this->user_client             = $user_client;
 		$this->tracking                = $tracking;
 		$this->options                 = $options;
 		$this->subscription_controller = $subscription_controller;
@@ -182,7 +171,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		];
 
 		// Get button URL for one-click checkout.
-		$button_url = $this->get_express_checkout_url();
+		$button_url = $this->subscription_controller->get_express_checkout_url();
 
 		if ( is_wp_error( $pricing ) ) {
 			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
@@ -420,7 +409,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$express_checkout_url = $this->get_express_checkout_url();
+		$express_checkout_url = $this->subscription_controller->get_express_checkout_url();
 
 		if ( empty( $express_checkout_url ) ) {
 			return;
@@ -476,8 +465,8 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$message = sprintf(
 			'<strong>%1$s</strong><br><br>%2$s',
-			esc_html__( 'RocketCDN subscription detection failed', 'rocket' ),
-			esc_html__( 'We couldn’t determine your RocketCDN subscription status. Please refresh your customer data or try again later.', 'rocket' )
+			esc_html__( 'Oops, we couldn\'t confirm your RocketCDN Pro subscription.', 'rocket' ),
+			esc_html__( 'No worries: let\'s do a manual check.', 'rocket' )
 		);
 
 		rocket_notice_html(
@@ -489,7 +478,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'action'      => sprintf(
 					'<a href="%1$s" class="wpr-button" id="wpr-rocketcdn-retry-pro-detection">%2$s</a>',
 					esc_url( $retry_url ),
-					esc_html__( 'Refresh customer data', 'rocket' )
+					esc_html__( 'Retry', 'rocket' )
 				),
 			]
 		);
@@ -513,35 +502,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		// Show notice when webiste is not attached.
 		return ! $this->subscription_controller->is_website_attached() && $this->subscription_controller->has_active_subscription();
-	}
-
-	/**
-	 * Gets the express checkout URL for RocketCDN.
-	 *
-	 * @return string Express checkout URL or empty string if not available.
-	 */
-	private function get_express_checkout_url(): string {
-		$user_data = $this->user_client->get_user_data();
-
-		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
-			return '';
-		}
-
-		return add_query_arg(
-			[
-				'dashboard_url' => rawurlencode(
-					add_query_arg(
-						[
-							'page'               => WP_ROCKET_PLUGIN_SLUG,
-							'rocketcdn_checkout' => 'true',
-							'rocketcdn_source'   => 'banner_cta',
-						],
-						admin_url( 'options-general.php' )
-					)
-				),
-			],
-			esc_url_raw( $user_data->rocketcdn->button->url )
-		);
 	}
 
 	/**

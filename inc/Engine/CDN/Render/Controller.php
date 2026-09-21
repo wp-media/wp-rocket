@@ -269,6 +269,12 @@ class Controller extends Abstract_Render {
 		$cdn_beacon = $this->beacon->get_suggest( 'rocketcdn_free' );
 
 		$rocketcdn_state = $this->context->get_rocketcdn_state();
+		$is_white_label  = (bool) rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' );
+
+		$upgrade_url = '';
+		if ( ! $is_white_label && ! $this->user->is_reseller_account() && rocket_is_live_site() ) {
+			$upgrade_url = $this->subscription_controller->get_express_checkout_url();
+		}
 
 		$sections['rocketcdn_free_section'] = [
 			'title'             => __( 'RocketCDN', 'rocket' ),
@@ -309,6 +315,7 @@ class Controller extends Abstract_Render {
 			// gate is_active() as-is without also masking this case - "loading" is the one
 			// forced-off reason that means "checked and disabled", not "off and disabled".
 			'is_active'         => in_array( $rocketcdn_state, [ Context::ROCKETCDN_FREE_TYPE, Context::ROCKETCDN_STATE_ONGOING_FREE ], true ) && ( ! $is_forced_off || $is_subscription_loading ),
+			'upgrade_url'       => $upgrade_url,
 		];
 
 		return $sections;
@@ -484,6 +491,10 @@ class Controller extends Abstract_Render {
 	public function get_status_indicator_html( int $pages_count ): string {
 		$is_paid = $this->subscription_controller->is_paid();
 		$data    = $this->get_status_indicator_data( $pages_count, $this->is_subscription_loading(), ! $is_paid );
+
+		if ( $data['no_status_indicator'] ) {
+			return '';
+		}
 
 		if ( $is_paid ) {
 			// Mirrors the modifier classes add_rocketcdn_paid_section() adds, so a
@@ -904,15 +915,19 @@ class Controller extends Abstract_Render {
 		}
 
 		if ( $this->should_display_licence_expired_notice() ) {
-			return __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
+			return __( 'Renew to use RocketCDN Free.', 'rocket' );
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
-			return __( 'RocketCDN is currently paused because your WP Rocket licence has been banned.', 'rocket' );
+			return __( 'Contact support to find out how to restore access.', 'rocket' );
+		}
+
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			return __( 'Cancelling your subscription.', 'rocket' );
 		}
 
 		if ( $this->context->is_forced_off() ) {
-			return __( 'RocketCDN is currently paused because your subscription is no longer active.', 'rocket' );
+			return __( 'Renew to use RocketCDN.', 'rocket' ); // This copy needs to be updated.
 		}
 
 		return '';
@@ -1023,18 +1038,30 @@ class Controller extends Abstract_Render {
 			return $texts;
 		}
 
+		$is_paused = $this->is_cdn_paused() && $this->subscription_controller->has_active_subscription();
+
+		if ( $is_paused ) {
+			$texts['details'] = sprintf(
+			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+				__( '%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				'<strong>',
+				'</strong>'
+			);
+		}
+
 		if ( $pages_count > 0 ) {
-			$texts['status_text'] = $texts['active_status_text'];
-			$texts['details']     = __( 'Serving files from 10 edge locations. Covering up to 3 pages.', 'rocket' );
+			$texts['details']             = '';
+			$texts['no_status_indicator'] = true;
 		}
 
 		if ( $this->subscription_controller->is_license_invalid() ) {
-			$texts['class']         .= ' wpr-cdn-status--expired';
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your WP Rocket licence has expired.', 'rocket' );
+			$texts['class']              .= ' wpr-cdn-status--expired';
+			$texts['details']             = __( 'Renew now to keep using RocketCDN Free.', 'rocket' );
+			$texts['no_status_indicator'] = false;
 		}
 
 		if ( $this->user->is_reseller_license_banned() ) {
-			$texts['paused_details'] = '';
+			$texts['details'] = '';
 		}
 
 		return $texts;
@@ -1059,16 +1086,31 @@ class Controller extends Abstract_Render {
 			return $texts;
 		}
 
-		$texts['details']            = __( 'Serving files from 100+ edge locations', 'rocket' );
-		$texts['active_status_text'] = __( 'RocketCDN is active on your website', 'rocket' );
-		$texts['status_text']        = $texts['active_status_text'];
+		$texts['details']     = '';
+		$texts['status_text'] = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
-			$texts['paused_details'] = __( 'RocketCDN is currently paused because your RocketCDN subscription was cancelled. Please wait up to two days before resuming.', 'rocket' );
-			$texts['class']         .= ' wpr-cdn-status--expired';
+			$texts['status_text']         = '';
+			$texts['no_status_indicator'] = true;
 		}
 
 		return $texts;
+	}
+
+
+	/**
+	 * Renders the cancelled-banned notice.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @return void
+	 */
+	public function render_cancelled_banner_notice(): void {
+		if ( ! $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		echo $this->generate( 'partials/cdn/wpr-cancelled-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -1201,7 +1243,7 @@ class Controller extends Abstract_Render {
 	 *     @type string $details                Details text describing the current status.
 	 *     @type string $active_status_text     Text to display when RocketCDN is active.
 	 *     @type string $paused_status_text     Text to display when RocketCDN is paused.
-	 *     @type string $paused_details         Details text to display when RocketCDN is paused.
+	 *     @type string $paused_details.        Details text to display when RocketCDN is not active.
 	 *     @type bool   $is_paused              Whether RocketCDN is currently paused.
 	 *     @type int    $pages_count            Number of pages currently using RocketCDN.
 	 *     @type bool   $is_subscription_loading Whether the subscription is currently being processed.
@@ -1210,17 +1252,16 @@ class Controller extends Abstract_Render {
 	 */
 	private function get_status_indicator_data( int $pages_count, bool $is_subscription_loading, bool $free = true ): array {
 		$texts = [
-			'paused_status_text' => __( 'RocketCDN is paused', 'rocket' ),
-			'active_status_text' => __( 'RocketCDN is active', 'rocket' ),
-			'paused_details'     => __( 'RocketCDN is currently paused. Click Resume CDN to re-enable content delivery.', 'rocket' ),
-			'status_text'        => '',
-			'details'            => sprintf(
-			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+			'status_text'         => '',
+			'details'             => sprintf(
+			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag, %3$s = line breaking <br /> tag.
+				__( '%1$sOne more step to a faster website.%2$s%3$sAdd your most important page, and RocketCDN Free will speed it up for your visitors everywhere.', 'rocket' ),
 				'<strong>',
-				'</strong>'
+				'</strong>',
+				'<br/>'
 			),
-			'class'              => '',
+			'class'               => '',
+			'no_status_indicator' => false,
 		];
 
 		/**
@@ -1250,15 +1291,13 @@ class Controller extends Abstract_Render {
 
 		if ( $is_subscription_loading ) {
 			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
-			$texts['details']     = __( 'Please wait, RocketCDN will be ready in about 30s.', 'rocket' );
+			$texts['details']     = __( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', 'rocket' );
 		}
 
 		$is_paused = $this->show_pause_state();
 
 		if ( $is_paused ) {
-			$texts['status_text'] = $texts['paused_status_text'];
-			$texts['details']     = $texts['paused_details'];
-			$texts['class']      .= ' wpr-cdn-status--paused';
+			$texts['class'] .= ' wpr-cdn-status--paused';
 		}
 
 		return [
@@ -1266,13 +1305,11 @@ class Controller extends Abstract_Render {
 			'is_active'               => true,
 			'status_text'             => $texts['status_text'],
 			'details'                 => $texts['details'],
-			'active_status_text'      => $texts['active_status_text'],
-			'paused_status_text'      => $texts['paused_status_text'],
-			'paused_details'          => $texts['paused_details'],
 			'is_paused'               => $is_paused,
 			'pages_count'             => $pages_count,
 			'is_subscription_loading' => $is_subscription_loading,
 			'hide_pause_btn'          => ( $is_subscription_loading || 0 === $pages_count ) && ! $is_paused,
+			'no_status_indicator'     => $texts['no_status_indicator'],
 		];
 	}
 

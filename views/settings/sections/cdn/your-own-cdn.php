@@ -65,17 +65,11 @@ $rocket_byocdn_active = $data['is_active'];
 	</div>
 	<?php endif; ?>
 	<?php if ( ! empty( $data['show_no_cname_warning'] ) ) : ?>
-	<div class="wpr-notice wpr-ri-notice wpr-cdn-no-cname-warning">
+	<div class="wpr-rocketcdn-notice wpr-rocketcdn-notice__warning">
 		<div class="wpr-notice-container">
-			<div class="wpr-notice-description wpr-notice-70">
-				<p><?php esc_html_e( 'Other CDN is active, but no CNAME has been configured yet — your assets will not be delivered through a CDN until you add one.', 'rocket' ); ?></p>
+			<div class="wpr-notice-70">
+				<p><?php esc_html_e( "Add the CNAME provided by your CDN service to configure your own CDN, then save to apply it. If you don't have a CNAME, you can use RocketCDN Free without any setup.", 'rocket' ); ?></p>
 			</div>
-			<a
-				href="#"
-				class="wpr-notice-close wpr-cdn-no-cname-warning__cta"
-			>
-				<?php esc_html_e( 'Use RocketCDN Free instead', 'rocket' ); ?>
-			</a>
 		</div>
 	</div>
 	<?php endif; ?>

@@ -296,7 +296,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertFalse( $status_indicator['is_paused'] );
 		$this->assertSame( 'Creating your subscription...', $status_indicator['status_text'] );
-		$this->assertSame( 'Please wait, RocketCDN will be ready in about 30s.', $status_indicator['details'] );
+		$this->assertSame( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', $status_indicator['details'] );
 		$this->assertStringNotContainsString( 'wpr-cdn-status--paused', $status_indicator['class'] );
 	}
 
@@ -365,12 +365,12 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your WP Rocket licence has been banned.',
+			'Contact support to find out how to restore access.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
 		$this->assertSame(
-			'RocketCDN is paused',
+			'',
 			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
 		);
 	}
@@ -450,7 +450,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your subscription is no longer active.',
+			'Renew to use RocketCDN.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		// The stored state is still 'rocketcdn_paid', but the toggle must show off rather than
@@ -459,7 +459,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
 		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
 		$this->assertSame(
-			'RocketCDN is paused',
+			'',
 			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
 		);
 	}
@@ -538,13 +538,13 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'RocketCDN is currently paused because your subscription is no longer active.',
+			'Cancelling your subscription.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		$this->assertFalse( $sections['rocketcdn_paid_section']['is_active'] );
 		$this->assertTrue( $sections['rocketcdn_paid_section']['status_indicator']['is_paused'] );
 		$this->assertSame(
-			'RocketCDN is paused',
+			'',
 			$sections['rocketcdn_paid_section']['status_indicator']['status_text']
 		);
 	}

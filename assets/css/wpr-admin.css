@@ -888,6 +888,29 @@ a:focus, button:focus {
     RocketCDN Banners & CTA
 
 \*-----------------------------------------------*/
+.wpr-rocketcdn-notice {
+  border-radius: 0;
+  margin: 15px 0 0 0;
+  border-left: 4px solid;
+}
+.wpr-rocketcdn-notice .wpr-notice-container {
+  padding: 10px 20px 10px 15px;
+}
+.wpr-rocketcdn-notice__warning {
+  background: #FFF8E6;
+  border-color: #E8AE13;
+}
+.wpr-rocketcdn-notice p {
+  margin: 0;
+}
+
+.rocketcdn--upgrade_btn {
+  margin-right: 30px;
+  color: #464F59;
+  font-weight: 500;
+  text-decoration: none;
+}
+
 .wpr-rocketcdn-cta-small {
   border-radius: 5px;
   margin: 24px 0;
@@ -4857,8 +4880,8 @@ div.wpr-tutorial-item {
 
 .wpr-cdn-expired__notice {
   color: #0C0F1F;
-  background: #FFF7E1;
-  border-left: 4px solid #FED055;
+  background: #FDE9E9;
+  border-left: 4px solid #E23A3A;
   font-size: 14px;
   margin-bottom: 15px;
 }
