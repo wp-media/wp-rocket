@@ -450,7 +450,7 @@ class Test_AddRocketcdnPaidSection extends TestCase {
 
 		$this->assertTrue( $sections['rocketcdn_paid_section']['is_forced_off'] );
 		$this->assertSame(
-			'Renew to use RocketCDN Free.',
+			'Renew to use RocketCDN.',
 			$sections['rocketcdn_paid_section']['toggle_tooltip']
 		);
 		// The stored state is still 'rocketcdn_paid', but the toggle must show off rather than
