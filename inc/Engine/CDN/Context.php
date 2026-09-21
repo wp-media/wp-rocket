@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\CDN;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
+use WP_Rocket\Engine\License\API\User;
 
 /**
  * Handles the CDN driver context.
@@ -58,14 +59,31 @@ class Context {
 	private $subscription_controller;
 
 	/**
+	 * License User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
+	 * Which condition matched on the most recent {@see is_forced_off()} call.
+	 *
+	 * @var string|null One of 'pro_cancelled_in_grace_period', 'pro_cancelled_outside_grace', 'license_expired',
+	 *                   'license_banned', or null.
+	 */
+	private $forced_off_reason;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Options_Data           $options                 WP Rocket options.
 	 * @param SubscriptionController $subscription_controller Subscription controller.
+	 * @param User                   $user                    License User instance.
 	 */
-	public function __construct( Options_Data $options, SubscriptionController $subscription_controller ) {
+	public function __construct( Options_Data $options, SubscriptionController $subscription_controller, User $user ) {
 		$this->options                 = $options;
 		$this->subscription_controller = $subscription_controller;
+		$this->user                    = $user;
 	}
 
 	/**
@@ -178,6 +196,87 @@ class Context {
 		}
 
 		return self::CDN_STATE_NOTHING;
+	}
+
+	/**
+	 * Gets the canonical `cdn_status` tracking axis value.
+	 *
+	 * @param string|null $cdn_state Optional. Overrides the persisted `cdn_state`, for a caller
+	 *                               that just wrote a new mode and needs the status computed
+	 *                               against it rather than the stale, per-request options snapshot.
+	 *
+	 * @return string One of 'active', 'inactive', 'forced_off' or 'ongoing_activation'.
+	 */
+	public function get_cdn_status( ?string $cdn_state = null ): string {
+		switch ( true ) {
+			case $this->is_forced_off():
+				return 'forced_off';
+
+			case $this->subscription_controller->is_subscription_creation_loading():
+				return 'ongoing_activation';
+
+			case self::CDN_STATE_NOTHING !== $this->get_cdn_state( $cdn_state ):
+				return 'active';
+
+			default:
+				return 'inactive';
+		}
+	}
+
+	/**
+	 * Determines whether the CDN should be force-paused due to an inactive or invalid subscription state.
+	 *
+	 * @since 3.22
+	 *
+	 * @return bool True if the CDN should be force-paused, false otherwise.
+	 */
+	public function is_forced_off(): bool {
+		$this->forced_off_reason = null;
+
+		// Force paused if paid plan cancelled but in grace period.
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_in_grace_period() ) {
+			$this->forced_off_reason = 'pro_cancelled_in_grace_period';
+
+			return true;
+		}
+
+		if ( $this->subscription_controller->is_paid() && $this->subscription_controller->is_cancelled_outside_grace_period() ) {
+			$this->forced_off_reason = 'pro_cancelled_outside_grace';
+
+			return true;
+		}
+
+		// Force paused if free plan with an invalid WP Rocket licence.
+		if ( $this->subscription_controller->is_free() && $this->subscription_controller->is_license_invalid() ) {
+
+			$this->forced_off_reason = 'license_expired';
+
+			// Distinquish between a revoked licence and an expired licence, so the correct reason can be tracked.
+			if ( $this->user->is_revoked() ) {
+				$this->forced_off_reason = 'license_banned';
+			}
+
+			return true;
+		}
+
+		// Force paused if subscription cancelled beyond the grace period and WP Rocket licence is invalid.
+		if ( $this->subscription_controller->is_cancelled_outside_grace_period() && $this->subscription_controller->is_license_invalid() ) {
+			$this->forced_off_reason = 'pro_cancelled_outside_grace';
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Gets which condition matched on the most recent {@see is_forced_off()} call.
+	 *
+	 * @return string|null One of 'pro_cancelled_in_grace_period', 'pro_cancelled_outside_grace', 'license_expired',
+	 *                      'license_banned', or null when RocketCDN isn't (or wasn't last checked as) forced off.
+	 */
+	public function get_forced_off_reason(): ?string {
+		return $this->forced_off_reason;
 	}
 
 	/**

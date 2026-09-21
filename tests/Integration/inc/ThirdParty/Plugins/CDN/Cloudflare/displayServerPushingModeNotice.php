@@ -29,10 +29,20 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 		self::$contributer_user_id = static::factory()->user->create( [ 'role' => 'contributor' ] );
 	}
 
+	public function set_up()
+	{
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
 	public function tear_down()
 	{
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
         remove_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

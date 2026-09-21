@@ -70,6 +70,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'options',
 					'rocketcdn_subscription_controller',
+					'user',
 				]
 			);
 

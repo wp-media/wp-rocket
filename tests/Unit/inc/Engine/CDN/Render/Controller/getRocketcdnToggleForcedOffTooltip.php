@@ -141,6 +141,15 @@ class Test_GetRocketcdnToggleForcedOffTooltip extends TestCase {
 	 * @return array
 	 */
 	private function build_section( array $config ): array {
+		// Mirrors Context::is_forced_off()'s branches, so the mock reflects what the
+		// real implementation would resolve to for this scenario's config.
+		$is_forced_off = ( ( $config['is_paid'] ?? false ) && ( $config['is_in_grace_period'] ?? false ) )
+			|| ( ( $config['is_paid'] ?? false ) && ( $config['is_cancelled_outside_grace_period'] ?? false ) )
+			|| ( ( $config['is_free'] ?? false ) && ( $config['is_license_invalid'] ?? false ) )
+			|| ( ( $config['is_cancelled_outside_grace_period'] ?? false ) && ( $config['is_license_invalid'] ?? false ) );
+
+		$this->context->shouldReceive( 'is_forced_off' )->andReturn( $is_forced_off );
+
 		$this->context->shouldReceive( 'get_driver' )->andReturn( Context::ROCKETCDN_TYPE );
 		$this->context->shouldReceive( 'get_applied_cdn_state' )->andReturn( Context::CDN_STATE_NOTHING );
 		$this->context->shouldReceive( 'get_rocketcdn_state' )->andReturn( Context::CDN_STATE_NOTHING );

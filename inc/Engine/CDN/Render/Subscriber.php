@@ -63,6 +63,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
 			'admin_init'                              => 'maybe_disable_rocketcdn_paid_after_cancellation',
+			'admin_enqueue_scripts'                   => [ 'localize_tracking_data', 15 ],
 		];
 	}
 
@@ -295,5 +296,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function render_cancelled_banner_notice() {
 		$this->controller->render_cancelled_banner_notice();
+	}
+
+	/**
+	 * Localizes the `cdn_mode`/`cdn_status` tracking axis properties for JS-side
+	 * Mixpanel tracking.
+	 *
+	 * @return void
+	 */
+	public function localize_tracking_data(): void {
+		$this->controller->localize_tracking_data();
 	}
 }

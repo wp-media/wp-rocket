@@ -69,8 +69,20 @@ return [
 			'forced_off_persistent' => true,
 		],
 		'expected' => [
-			'cdn_state'  => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
-			'persistent' => false,
+			'cdn_state'     => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
+			'persistent'    => false,
+			// is_forced_off() is still true here regardless of cdn_state (paid + cancelled outside
+			// grace period), so cdn_status short-circuits to 'forced_off' before ever consulting
+			// the freshly-written cdn_state - this scenario doesn't by itself prove the
+			// stale-snapshot fix, see testFreeSubscriptionInactiveResolvesForcedOff for that.
+			'tracked_event' => [
+				'event'      => 'RocketCDN Mode Changed',
+				'properties' => [
+					'cdn_mode'   => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
+					'cdn_status' => 'forced_off',
+					'trigger'    => 'pro_cancellation',
+				],
+			],
 		],
 	],
 
@@ -84,8 +96,20 @@ return [
 			'forced_off_persistent' => true,
 		],
 		'expected' => [
-			'cdn_state'  => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
-			'persistent' => false,
+			'cdn_state'     => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
+			'persistent'    => false,
+			// Regression lock: is_forced_off() is false here (free plan, valid license), so
+			// cdn_status must be derived from the freshly-written 'nothing' cdn_state
+			// ('inactive'). Before the stale-snapshot fix this read the pre-write cdn_state
+			// (defaults to rocketcdn_paid) instead, wrongly reporting 'active'.
+			'tracked_event' => [
+				'event'      => 'RocketCDN Mode Changed',
+				'properties' => [
+					'cdn_mode'   => \WP_Rocket\Engine\CDN\Context::CDN_STATE_NOTHING,
+					'cdn_status' => 'inactive',
+					'trigger'    => 'pro_cancellation',
+				],
+			],
 		],
 	],
 
