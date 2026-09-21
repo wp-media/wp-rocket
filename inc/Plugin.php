@@ -61,6 +61,8 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as Preconne
 use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
 use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
 use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
+use WP_Rocket\Engine\Fleet\ServiceProvider as FleetServiceProvider;
+use WPMedia\FleetBridge\Bridge;
 
 /**
  * Plugin Manager.
@@ -472,6 +474,20 @@ class Plugin {
 			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
 		];
+
+		// Registered here rather than with the other providers: the Fleet route
+		// resolves `abilities_get_options` and `abilities_set_option` out of
+		// the container, so it cannot be built before they are defined.
+		//
+		// Guarded on the verifier being present because `fleet_subscriber` is
+		// resolved on every request, so a build shipped without
+		// `vendor/wp-media/fleet-bridge` would fatal the whole plugin instead
+		// of merely losing the Fleet route.
+		if ( class_exists( Bridge::class ) ) {
+			$this->container->addServiceProvider( new FleetServiceProvider() );
+
+			$subscribers[] = 'fleet_subscriber';
+		}
 
 		return $subscribers;
 	}
