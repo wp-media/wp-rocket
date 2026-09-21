@@ -40,6 +40,7 @@ if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_display_cdn_mode_toggle', tru
 }
 ?>
 
+<div class="wpr-cdn-title-divider"></div>
 <div class="wpr-radio wpr-cdn-mode-toggle">
 	<input
 		type="checkbox"
