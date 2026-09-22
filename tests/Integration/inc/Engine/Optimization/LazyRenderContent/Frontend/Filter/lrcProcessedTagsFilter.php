@@ -26,7 +26,10 @@ class Test_lrcProcessedTagsFilter extends TestCase
 		$instance = new ReflectionClass( $dom );
 		$method   = $instance->getMethod( 'get_processed_tags' );
 
-		$method->setAccessible(true);
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible(true);
+		}
 		$result = $method->invoke( $dom );
 
 		$expected = [ 'DIV', 'MAIN', 'FOOTER', 'SECTION', 'ARTICLE', 'HEADER', 'H2', 'H1', 'LI' ];

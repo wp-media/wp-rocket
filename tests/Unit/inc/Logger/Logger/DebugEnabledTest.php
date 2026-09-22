@@ -37,7 +37,11 @@ class DebugEnabledTest extends TestCase {
 
 		if ( $reflection->hasProperty( 'debug_enabled_cache' ) ) {
 			$cache_property = $reflection->getProperty( 'debug_enabled_cache' );
-			$cache_property->setAccessible( true );
+
+			// PHP 8.1+: setAccessible() is not needed and is deprecated.
+			if ( PHP_VERSION_ID < 80100 ) {
+				$cache_property->setAccessible( true );
+			}
 			$cache_property->setValue( null, null );
 		}
 	}

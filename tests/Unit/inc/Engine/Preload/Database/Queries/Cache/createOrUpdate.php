@@ -78,7 +78,11 @@ class Test_CreateOrUpdate extends TestCase {
 	{
 		$reflection = new ReflectionClass($object);
 		$reflection_property = $reflection->getProperty($property);
-		$reflection_property->setAccessible(true);
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$reflection_property->setAccessible(true);
+		}
 		$reflection_property->setValue($object, $value);
 	}
 }

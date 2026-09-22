@@ -46,7 +46,11 @@ class Test_SetCdnCnames extends TestCase {
 		$this->options_api = $container->get( 'options_api' );
 
 		$this->memoized_url_prop = new ReflectionProperty( FrontendSubscriber::class, 'rocketcdn_url' );
-		$this->memoized_url_prop->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$this->memoized_url_prop->setAccessible( true );
+		}
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );

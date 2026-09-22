@@ -84,7 +84,11 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		// Use reflection to mock private property.
 		$reflection = new ReflectionClass( $remoteSettings );
 		$property = $reflection->getProperty( 'remote_settings' );
-		$property->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$property->setAccessible( true );
+		}
 		$property->setValue( $remoteSettings, $remote_settings_data );
 
 		$post_id = null;

@@ -35,7 +35,11 @@ Trait IsolateHookTrait {
 			$wp_hooks = $wp_filter[ $event_name ];
 			$reflection = new ReflectionClass($wp_hooks);
 			$priorities_property = $reflection->getProperty('priorities');
-			$priorities_property->setAccessible(true);
+
+			// PHP 8.1+: setAccessible() is not needed and is deprecated.
+			if ( PHP_VERSION_ID < 80100 ) {
+				$priorities_property->setAccessible(true);
+			}
 			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
 			$priorities = $priorities_property->getValue($wp_hooks);
 		} catch (ReflectionException $e) {

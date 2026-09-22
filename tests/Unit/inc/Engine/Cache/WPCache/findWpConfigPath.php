@@ -39,7 +39,11 @@ class Test_FindWpConfigPath extends FilesystemTestCase {
         }
 
 		$find_wpconfig_path = new ReflectionMethod( 'WP_Rocket\Engine\Cache\WPCache', 'find_wpconfig_path' );
-		$find_wpconfig_path->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$find_wpconfig_path->setAccessible( true );
+		}
 
         $actual = $find_wpconfig_path->invoke( new WPCache( $this->filesystem ) );
 

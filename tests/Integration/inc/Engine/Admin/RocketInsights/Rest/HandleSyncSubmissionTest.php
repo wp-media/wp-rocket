@@ -62,7 +62,11 @@ class HandleSyncSubmissionTest extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		// Use reflection to access the private method
 		$method = new ReflectionMethod( Rest::class, 'handle_sync_submission' );
-		$method->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
 
 		// Call the method
 		$result = $method->invoke(

@@ -27,10 +27,18 @@ abstract class TestCase extends BaseTestCase {
 	protected static function resetConditionalValue() {
 		$class    = new ReflectionClass( IEConditionalSubscriber::class );
 		$property = $class->getProperty( 'conditionals' );
-		$property->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$property->setAccessible( true );
+		}
 
 		$property->setValue( self::$subscriber, [] );
-		$property->setAccessible( false );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$property->setAccessible( false );
+		}
 	}
 
 	protected function setConditionalsValue( $value ) {

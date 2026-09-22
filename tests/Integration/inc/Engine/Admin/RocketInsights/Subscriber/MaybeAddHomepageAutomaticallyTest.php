@@ -68,7 +68,11 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 		// It might be $data, $user_data, etc.
 		if ( $reflection->hasProperty( 'user' ) ) {
 			$property = $reflection->getProperty( 'user' );
-			$property->setAccessible( true );
+
+			// PHP 8.1+: setAccessible() is not needed and is deprecated.
+			if ( PHP_VERSION_ID < 80100 ) {
+				$property->setAccessible( true );
+			}
 
 			// Set the new license data
 			$property->setValue( $user, (object) [

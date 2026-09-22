@@ -94,7 +94,11 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	protected function reset_frontend_subscriber_memo( $container ): void {
 		$frontend = $container->get( 'rocketcdn_frontend_subscriber' );
 		$prop     = new ReflectionProperty( $frontend, 'rocketcdn_url' );
-		$prop->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$prop->setAccessible( true );
+		}
 		$prop->setValue( $frontend, null );
 	}
 

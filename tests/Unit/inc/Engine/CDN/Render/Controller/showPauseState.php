@@ -127,7 +127,11 @@ class Test_ShowPauseState extends TestCase {
 	 */
 	private function invoke_show_pause_state( Controller $controller ): bool {
 		$show_pause_state = new ReflectionMethod( Controller::class, 'show_pause_state' );
-		$show_pause_state->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$show_pause_state->setAccessible( true );
+		}
 
 		return $show_pause_state->invoke( $controller );
 	}

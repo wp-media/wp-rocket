@@ -22,7 +22,11 @@ class Test_ShouldDisableElementForRocketcdn extends AbstractSubscriptionControll
 		$this->render_controller = $container->get( 'cdn_render_controller' );
 
 		$prop = new ReflectionProperty( $this->render_controller, 'options' );
-		$prop->setAccessible( true );
+
+		// PHP 8.1+: setAccessible() is not needed and is deprecated.
+		if ( PHP_VERSION_ID < 80100 ) {
+			$prop->setAccessible( true );
+		}
 		$prop->getValue( $this->render_controller )->set_values( [ 
 			'cdn'      => 1, 
 			'cdn_type' => 'rocketcdn' 
