@@ -464,7 +464,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		);
 
 		$message = sprintf(
-			'<strong>%1$s</strong><br><br>%2$s',
+			'<strong>%1$s</strong>%2$s',
 			esc_html__( 'Oops, we couldn\'t confirm your RocketCDN Pro subscription.', 'rocket' ),
 			esc_html__( 'No worries: let\'s do a manual check.', 'rocket' )
 		);

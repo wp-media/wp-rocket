@@ -1087,7 +1087,7 @@ class Controller extends Abstract_Render {
 		}
 
 		$texts['details']     = '';
-		$texts['status_text'] = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
+		$texts['status_text'] = __( 'RocketCDN delivers every page of your site from 100+ edge locations worldwide.', 'rocket' );
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
 			$texts['status_text']         = '';
@@ -1255,10 +1255,9 @@ class Controller extends Abstract_Render {
 			'status_text'         => '',
 			'details'             => sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag, %3$s = line breaking <br /> tag.
-				__( '%1$sOne more step to a faster website.%2$s%3$sAdd your most important page, and RocketCDN Free will speed it up for your visitors everywhere.', 'rocket' ),
+				__( '%1$sOne more step to a faster website:%2$s add your most important page, and RocketCDN Free will speed it up for your visitors everywhere.', 'rocket' ),
 				'<strong>',
-				'</strong>',
-				'<br/>'
+				'</strong>'
 			),
 			'class'               => '',
 			'no_status_indicator' => false,
