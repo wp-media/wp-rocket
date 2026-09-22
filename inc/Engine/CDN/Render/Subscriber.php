@@ -57,6 +57,7 @@ class Subscriber implements Subscriber_Interface {
 			],
 			'rocket_cdn_paid_before_status_indicator' => [
 				[ 'render_cancelled_banner_notice', 9 ],
+				[ 'render_pro_detection_failure_notice', 9 ],
 			],
 			'rocket_rocketcdn_status_indicator_texts' => [
 				[ 'get_free_status_indicator_texts', 10, 4 ],
@@ -296,6 +297,15 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function render_cancelled_banner_notice() {
 		$this->controller->render_cancelled_banner_notice();
+	}
+
+	/**
+	 * Displays an admin notice when fresh-install Pro subscription detection failed after all retries.
+	 *
+	 * @return void
+	 */
+	public function render_pro_detection_failure_notice() {
+		$this->controller->render_pro_detection_failure_notice();
 	}
 
 	/**

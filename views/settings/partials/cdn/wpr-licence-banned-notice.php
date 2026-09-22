@@ -23,7 +23,7 @@
 					'<strong>',
 					'</strong>'
 				);
-			?>
+				?>
 			</p>
 		</div>
 	</div>

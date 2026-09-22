@@ -932,6 +932,12 @@ a:focus, button:focus {
   transform: translateY(-2px);
   box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
 }
+.wpr-rocketcdn-btn_retry {
+  display: inline-flex;
+}
+.wpr-rocketcdn-btn_retry::before {
+  background-image: url("../img/wpr-purge.svg");
+}
 
 .rocketcdn--upgrade_btn {
   margin-right: 30px;

@@ -1114,6 +1114,36 @@ class Controller extends Abstract_Render {
 	}
 
 	/**
+	 * Displays an admin notice when fresh-install Pro subscription detection failed after all retries.
+	 *
+	 * @return void
+	 */
+	public function render_pro_detection_failure_notice(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		if ( ! get_transient( 'rocket_cdn_pro_detection_failed' ) ) {
+			return;
+		}
+
+		$retry_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_retry_pro_detection' ),
+			'rocket_retry_pro_detection'
+		);
+
+		$notice_data = [
+			'retry_url' => $retry_url,
+		];
+
+		echo $this->generate( 'partials/cdn/cdn-pro-retry-notice', $notice_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
 	 * Reads the forced off tracking option, migrating the legacy bool format to the current array format.
 	 *
 	 * @return array

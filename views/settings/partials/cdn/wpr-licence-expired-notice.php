@@ -28,7 +28,7 @@
 						'<strong>',
 						'</strong>'
 					);
-				?>
+					?>
 			</p>
 		</div>
 		<?php if ( empty( $data['is_reseller'] ) ) : ?>
