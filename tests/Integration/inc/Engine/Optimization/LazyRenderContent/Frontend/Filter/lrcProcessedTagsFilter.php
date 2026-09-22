@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\LazyRenderContent\
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\Dom;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\Processor\HelperTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use ReflectionClass;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\LazyRenderContent\Frontend\ProcessorHelperTrait::get_processed_tags()
@@ -23,14 +22,8 @@ class Test_lrcProcessedTagsFilter extends TestCase
 		});
 
 		$dom      = new Dom();
-		$instance = new ReflectionClass( $dom );
-		$method   = $instance->getMethod( 'get_processed_tags' );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible(true);
-		}
-		$result = $method->invoke( $dom );
+		$method   = $this->get_reflective_method( 'get_processed_tags', $dom );
+		$result   = $method->invoke( $dom );
 
 		$expected = [ 'DIV', 'MAIN', 'FOOTER', 'SECTION', 'ARTICLE', 'HEADER', 'H2', 'H1', 'LI' ];
 

@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListin
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
 use Brain\Monkey\Functions;
-use ReflectionClass;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -82,14 +81,7 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		$remoteSettings = $container->get( 'remote_settings' );
     
 		// Use reflection to mock private property.
-		$reflection = new ReflectionClass( $remoteSettings );
-		$property = $reflection->getProperty( 'remote_settings' );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$property->setAccessible( true );
-		}
-		$property->setValue( $remoteSettings, $remote_settings_data );
+		$this->set_reflective_property( $remote_settings_data, 'remote_settings', $remoteSettings );
 
 		$post_id = null;
 

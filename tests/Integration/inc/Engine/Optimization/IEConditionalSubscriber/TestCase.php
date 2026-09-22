@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\IEConditionalSubscriber;
 
-use ReflectionClass;
 use WP_Rocket\Engine\Optimization\IEConditionalSubscriber;
 use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
@@ -15,30 +14,22 @@ abstract class TestCase extends BaseTestCase {
 
 		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'ie_conditionals_subscriber' );
-		self::resetConditionalValue();
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->resetConditionalValue();
 	}
 
 	public function tear_down() {
 		parent::tear_down();
 
-		self::resetConditionalValue();
+		$this->resetConditionalValue();
 	}
 
-	protected static function resetConditionalValue() {
-		$class    = new ReflectionClass( IEConditionalSubscriber::class );
-		$property = $class->getProperty( 'conditionals' );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$property->setAccessible( true );
-		}
-
-		$property->setValue( self::$subscriber, [] );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$property->setAccessible( false );
-		}
+	protected function resetConditionalValue() {
+		$this->set_reflective_property( [], 'conditionals', self::$subscriber );
 	}
 
 	protected function setConditionalsValue( $value ) {

@@ -66,14 +66,7 @@ class RocketInsightsSectionTest extends TestCase {
 
 		// Clear existing sections
 		$settings = $container->get( 'settings' );
-		$reflection = new \ReflectionClass( $settings );
-		$property = $reflection->getProperty( 'settings' );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$property->setAccessible( true );
-		}
-		$property->setValue( $settings, [] );
+		$this->set_reflective_property( [], 'settings', $settings );
 
 		// Call the method
 		$page->rocket_insights_section();

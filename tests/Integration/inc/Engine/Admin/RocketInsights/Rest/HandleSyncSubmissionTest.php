@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
-use ReflectionMethod;
 use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
@@ -61,12 +60,7 @@ class HandleSyncSubmissionTest extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		// Use reflection to access the private method
-		$method = new ReflectionMethod( Rest::class, 'handle_sync_submission' );
-
-		// PHP 8.1+: setAccessible() is not needed and is deprecated.
-		if ( PHP_VERSION_ID < 80100 ) {
-			$method->setAccessible( true );
-		}
+		$method = $this->get_reflective_method( 'handle_sync_submission', Rest::class );
 
 		// Call the method
 		$result = $method->invoke(

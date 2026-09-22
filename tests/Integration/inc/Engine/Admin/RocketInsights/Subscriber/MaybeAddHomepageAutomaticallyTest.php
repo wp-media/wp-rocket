@@ -61,24 +61,20 @@ class MaybeAddHomepageAutomaticallyTest extends TestCase {
 		// Get the User instance
 		$user = $container->get( 'user' );
 
-		// Use reflection to replace the internal data
-		$reflection = new \ReflectionClass( $user );
-
+		// Use reflection to replace the internal data.
 		// Find the property that stores user data (check User class)
 		// It might be $data, $user_data, etc.
-		if ( $reflection->hasProperty( 'user' ) ) {
-			$property = $reflection->getProperty( 'user' );
-
-			// PHP 8.1+: setAccessible() is not needed and is deprecated.
-			if ( PHP_VERSION_ID < 80100 ) {
-				$property->setAccessible( true );
-			}
-
-			// Set the new license data
-			$property->setValue( $user, (object) [
-				'licence_expiration' => $config['license_expiration'],
-				'auto_renew'         => false,
-			]);
+		try {
+			$this->set_reflective_property(
+				(object) [
+					'licence_expiration' => $config['license_expiration'],
+					'auto_renew'         => false,
+				],
+				'user',
+				$user
+			);
+		} catch ( \ReflectionException $e ) {
+			// Property not present on this version; nothing to set.
 		}
 
 		// Setup: Handle Rocket Insights enabled/disabled state.
