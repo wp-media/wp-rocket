@@ -1319,8 +1319,9 @@ class Controller extends Abstract_Render {
 		$texts = wpm_apply_filters_typed( 'array', 'rocket_rocketcdn_status_indicator_texts', $texts, $pages_count, $is_subscription_loading, $free );
 
 		if ( $is_subscription_loading ) {
-			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
-			$texts['details']     = __( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', 'rocket' );
+			$texts['status_text']         = __( 'Creating your subscription...', 'rocket' );
+			$texts['details']             = __( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', 'rocket' );
+			$texts['no_status_indicator'] = false;
 		}
 
 		$is_paused = $this->show_pause_state();
