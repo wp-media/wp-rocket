@@ -13,6 +13,49 @@ define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 
+/**
+ * Whether the WordPress test bootstrap is still running, i.e. no test case class has been loaded yet.
+ *
+ * @return bool
+ */
+function is_bootstrapping() {
+	return ! class_exists( 'WP_UnitTestCase_Base', false );
+}
+
+// Opt-in log of the HTTP requests that reach the network (short-circuited ones never fire http_api_debug).
+// Enable with WP_ROCKET_TESTS_HTTP_LOG=/path/to/file.
+if ( getenv( 'WP_ROCKET_TESTS_HTTP_LOG' ) ) {
+	tests_add_filter(
+		'http_api_debug',
+		function ( $response, $context, $transport, $args, $url ) {
+			$caller = is_bootstrapping() ? 'bootstrap' : 'unknown';
+
+			foreach ( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS ) as $frame ) { // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
+				if ( isset( $frame['object'] ) && $frame['object'] instanceof \PHPUnit\Framework\TestCase ) {
+					$caller = $frame['object']->toString();
+					break;
+				}
+			}
+
+			file_put_contents( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
+				getenv( 'WP_ROCKET_TESTS_HTTP_LOG' ),
+				implode(
+					"\t",
+					[
+						$caller,
+						$args['method'] ?? '',
+						is_wp_error( $response ) ? $response->get_error_code() : wp_remote_retrieve_response_code( $response ),
+						$url,
+					]
+				) . PHP_EOL,
+				FILE_APPEND
+			);
+		},
+		10,
+		5
+	);
+}
+
 // Manually load the plugin being tested.
 tests_add_filter(
 	'muplugins_loaded',
