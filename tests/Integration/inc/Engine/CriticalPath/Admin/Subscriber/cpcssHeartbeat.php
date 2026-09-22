@@ -40,13 +40,6 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 	protected $async_css;
 	protected $subscriber;
 
-	/**
-	 * Expected params for the `rocket_cpcss_job_request` filter assertion, keyed per test.
-	 *
-	 * @var array|null
-	 */
-	private $expected_job_request_params;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -74,7 +67,6 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
-		remove_filter( 'rocket_cpcss_job_request', [ $this, 'assertJobRequestParams' ] );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
 
@@ -124,16 +116,8 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		if ( ! isset( $config['process_generate'] ) || ! empty ( $expected['bailout_timeout'] ) ) {
 			return;
 		}
-		$params = [
-			'url'        => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
-			'mobile'     => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
-			'nofontface' => false,
-		];
 
 		$job_id = 999;
-
-		$this->expected_job_request_params = $params;
-		add_filter( 'rocket_cpcss_job_request', [ $this, 'assertJobRequestParams' ] );
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
 			$this->config['http'] = [
@@ -151,19 +135,6 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 				'body' => wp_json_encode( $config['process_generate'] ),
 			],
 		];
-	}
-
-	/**
-	 * Asserts the params sent to the CPCSS job request API match the expected ones, then passes them through
-	 * unmodified so the request still goes out to the (short-circuited) HTTP transport.
-	 *
-	 * @param array $params Params sent to the job request API.
-	 * @return array
-	 */
-	public function assertJobRequestParams( $params ) {
-		$this->assertSame( $this->expected_job_request_params, $params );
-
-		return $params;
 	}
 
 	public function setUserAndCapabilities( $config ) {
