@@ -92,6 +92,7 @@ class CDNOptionsManager {
 	public function set_cdn_state( string $state ) {
 		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn_state'] = $state;
+		$settings['ignore']    = 1;
 
 		$this->options_api->set( 'settings', $settings );
 	}
