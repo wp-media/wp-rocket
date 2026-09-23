@@ -25,10 +25,14 @@ class TestSaveCloudflareOldSettings extends TestCase {
 
 		$this->setup_http();
 
+		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$this->unregisterAllCallbacksExcept( 'pre_update_option_wp_rocket_settings', 'save_cloudflare_old_settings' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
@@ -38,15 +42,17 @@ class TestSaveCloudflareOldSettings extends TestCase {
 		parent::tear_down();
 	}
 
+	/** Forces the Cloudflare zone ID option to a fixed value for the mocked HTTP fixtures. */
+	public function mock_cloudflare_zone_id() {
+		return '12345';
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$container = apply_filters( 'rocket_container', null );
-		$zone_id   = $container->get( 'options' )->get( 'cloudflare_zone_id', '' );
-
 		$this->config['http'] = [
-			Client::CLOUDFLARE_API . "zones/{$zone_id}/settings" => $config['response'],
+			Client::CLOUDFLARE_API . 'zones/12345/settings' => $config['response'],
 		];
 
 		set_transient( 'rocket_cloudflare_is_api_keys_valid', 1 );

@@ -26,26 +26,32 @@ class TestPurgeCloudflare extends TestCase {
 
 		$this->setup_http();
 
+		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$container = apply_filters( 'rocket_container', null );
 
 		$this->cloudflare = $container->get( 'cloudflare' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$this->tear_down_http();
 
 		parent::tear_down();
+	}
+
+	/** Forces the Cloudflare zone ID option to a fixed value for the mocked HTTP fixtures. */
+	public function mock_cloudflare_zone_id() {
+		return '12345';
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$container = apply_filters( 'rocket_container', null );
-		$zone_id   = $container->get( 'options' )->get( 'cloudflare_zone_id', '' );
-
 		$this->config['http'] = [
-			Client::CLOUDFLARE_API . "zones/{$zone_id}/purge_cache" => $config['response'],
+			Client::CLOUDFLARE_API . 'zones/12345/purge_cache' => $config['response'],
 		];
 
 		$result = $this->cloudflare->purge_cloudflare();

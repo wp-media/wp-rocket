@@ -26,25 +26,32 @@ class TestGetSettings extends TestCase {
 
 		$this->setup_http();
 
+		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$container = apply_filters( 'rocket_container', null );
 
 		$this->cloudflare = $container->get( 'cloudflare' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		$this->tear_down_http();
 
 		parent::tear_down();
+	}
+
+	/** Forces the Cloudflare zone ID option to a fixed value for the mocked HTTP fixtures. */
+	public function mock_cloudflare_zone_id() {
+		return '12345';
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$zone_id = $this->getCloudflareZoneId();
-
 		$this->config['http'] = [
-			Client::CLOUDFLARE_API . "zones/{$zone_id}/settings" => $config['response'],
+			Client::CLOUDFLARE_API . 'zones/12345/settings' => $config['response'],
 		];
 
 		$result = $this->cloudflare->get_settings();
@@ -60,16 +67,5 @@ class TestGetSettings extends TestCase {
 				$result
 			);
 		}
-	}
-
-	/**
-	 * Reads the Cloudflare zone ID the container's Options_Data currently holds.
-	 *
-	 * @return string
-	 */
-	private function getCloudflareZoneId() {
-		$container = apply_filters( 'rocket_container', null );
-
-		return $container->get( 'options' )->get( 'cloudflare_zone_id', '' );
 	}
 }

@@ -28,6 +28,8 @@ class TestPurgeUrl extends TestCase {
 
 		$this->setup_http();
 
+		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
+
 		set_transient( 'rocket_cloudflare_is_api_keys_valid', 1 );
 
 		$role = get_role( 'administrator' );
@@ -35,6 +37,7 @@ class TestPurgeUrl extends TestCase {
 	}
 
 	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
 		remove_filter( 'pre_http_request', [ $this, 'record_purge_request' ], 5 );
 
 		if ( $this->hook ) {
@@ -51,15 +54,18 @@ class TestPurgeUrl extends TestCase {
 		parent::tear_down();
 	}
 
+	/** Forces the Cloudflare zone ID option to a fixed value for the mocked HTTP fixtures. */
+	public function mock_cloudflare_zone_id() {
+		return '12345';
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$this->hook = $config['hook'];
 
-		$container = apply_filters( 'rocket_container', null );
-		$zone_id   = $container->get( 'options' )->get( 'cloudflare_zone_id', '' );
-		$base      = Client::CLOUDFLARE_API . "zones/{$zone_id}/";
+		$base = Client::CLOUDFLARE_API . 'zones/12345/';
 
 		$this->config['http'] = [
 			$base . 'pagerules?status=active' => $config['page_rule_response'],
