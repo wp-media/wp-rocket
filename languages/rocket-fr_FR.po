@@ -3545,11 +3545,11 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:918
 msgid "Renew to use RocketCDN Free."
-msgstr "Renouvelez votre abonnement pour continuer à utiliser RocketCDN Free."
+msgstr "Renouvelez pour utiliser RocketCDN Free."
 
 #: inc/Engine/CDN/Render/Controller.php:922
 msgid "Contact support to find out how to restore access."
-msgstr "Contactez le support pour savoir comment rétablir votre accès."
+msgstr "Contactez le support pour savoir comment rétablir l'accès."
 
 #: inc/Engine/CDN/Render/Controller.php:926
 msgid "Cancelling your subscription."
