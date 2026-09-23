@@ -15,46 +15,19 @@ define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 
 /**
- * Whether the WordPress test bootstrap is still running, i.e. no test case class has been loaded yet.
+ * Blocks outbound HTTP requests while the WordPress test bootstrap is still running.
  *
- * @return bool
+ * @param mixed  $preempt A preemptive return value, or false to let the request proceed.
+ * @param array  $args    HTTP request arguments.
+ * @param string $url     The request URL.
+ * @return mixed
  */
-function is_bootstrapping() {
-	return ! class_exists( 'WP_UnitTestCase_Base', false );
-}
+function block_bootstrap_http_request( $preempt, $args, $url ) {
+	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
+		return $preempt;
+	}
 
-// Opt-in log of the HTTP requests that reach the network (short-circuited ones never fire http_api_debug).
-// Enable with WP_ROCKET_TESTS_HTTP_LOG=/path/to/file.
-if ( getenv( 'WP_ROCKET_TESTS_HTTP_LOG' ) ) {
-	tests_add_filter(
-		'http_api_debug',
-		function ( $response, $context, $transport, $args, $url ) {
-			$caller = is_bootstrapping() ? 'bootstrap' : 'unknown';
-
-			foreach ( debug_backtrace( DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS ) as $frame ) { // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
-				if ( isset( $frame['object'] ) && $frame['object'] instanceof \PHPUnit\Framework\TestCase ) {
-					$caller = $frame['object']->toString();
-					break;
-				}
-			}
-
-			file_put_contents( // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents
-				getenv( 'WP_ROCKET_TESTS_HTTP_LOG' ),
-				implode(
-					"\t",
-					[
-						$caller,
-						$args['method'] ?? '',
-						is_wp_error( $response ) ? $response->get_error_code() : wp_remote_retrieve_response_code( $response ),
-						$url,
-					]
-				) . PHP_EOL,
-				FILE_APPEND
-			);
-		},
-		10,
-		5
-	);
+	return new WP_Error( 'wp_rocket_tests_bootstrap_http', 'HTTP request blocked during the test bootstrap: ' . $url );
 }
 
 // Manually load the plugin being tested.
@@ -374,18 +347,7 @@ tests_add_filter(
 		// Nothing may reach the network while WordPress bootstraps: WP Rocket calls its pricing and user APIs
 		// while its container is built, and _delete_all_posts() fires the hosting purges. Tests mock their own
 		// requests, so the guard steps aside once the test case classes are loaded.
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $args, $url ) {
-				if ( false !== $preempt || ! is_bootstrapping() ) {
-					return $preempt;
-				}
-
-				return new WP_Error( 'wp_rocket_tests_bootstrap_http', 'HTTP request blocked during the test bootstrap: ' . $url );
-			},
-			PHP_INT_MAX,
-			3
-		);
+		add_filter( 'pre_http_request', __NAMESPACE__ . '\block_bootstrap_http_request', PHP_INT_MAX, 3 );
 
 		// Serve PricingClient a fixture instead of the live API. The License tests delete it to exercise the fetch.
 		set_transient( 'wp_rocket_pricing', json_decode( file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/License/API/pricing.json' ) ), 12 * HOUR_IN_SECONDS );
