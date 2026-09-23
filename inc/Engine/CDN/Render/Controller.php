@@ -1043,7 +1043,7 @@ class Controller extends Abstract_Render {
 		if ( $is_paused ) {
 			$texts['details'] = sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
