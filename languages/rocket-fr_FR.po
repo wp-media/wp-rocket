@@ -3566,8 +3566,8 @@ msgid ""
 "%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes "
 "unlimited traffic across 10 edge locations."
 msgstr ""
-"%1$sCommencez par vos pages d'accueil et ajoutez jusqu'à 2 pages clés supplémentaires.\n"
-"%2$sComprend un trafic illimité sur 10 sites périphériques."
+"%1$sCommencez par votre page d'accueil et ajoutez jusqu'à 2 pages clés "
+"supplémentaires.%2$s Trafic illimité depuis 10 emplacements edge."
 
 #: inc/Engine/CDN/Render/Controller.php:1059
 msgid "Renew now to keep using RocketCDN Free."
