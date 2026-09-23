@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cookies_notice
@@ -12,6 +13,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group CloudflarePlugin
  */
 class Test_displayApoCookiesNotice extends AdminTestCase {
+	use HttpRequestTrait;
 
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
@@ -29,6 +31,9 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 	public function set_up()
 	{
 		parent::set_up();
+
+		$this->setup_http();
+
 		add_filter('pre_option_automatic_platform_optimization', [$this, 'automatic_platform_optimization']);
 		add_filter('rocket_cache_mandatory_cookies', [$this, 'mandatory_cookies']);
 		add_filter('rocket_cache_dynamic_cookies', [$this, 'dynamic_cookies']);
@@ -51,6 +56,14 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		remove_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		remove_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 		$this->restoreWpHook( 'current_screen' );
+
+		// admin_notices fires every registered subscriber, not just Cloudflare's; ModPagespeed's
+		// detection ping (also mocked below) caches its result for a day, so clear that cache
+		// rather than leak a stale value into whichever test runs it next in this process.
+		delete_transient( 'rocket_mod_pagespeed_enabled' );
+
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
@@ -60,6 +73,26 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
     public function testShouldDoAsExpected( $config, $expected )
     {
 		$this->config = $config;
+
+		// admin_notices fires every registered subscriber, not just Cloudflare's; these URLs
+		// belong to RocketCDN's subscription check (a non-404 status avoids its website-search
+		// fallback call) and ModPagespeed's detection ping, both of which run unconditionally on
+		// that hook for an admin on the wprocket settings screen.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => wp_json_encode( [ 'success' => false ] ),
+				'response' => [ 'code' => 200 ],
+				'cookies'  => [],
+			],
+			'http://example.org' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => 200 ],
+				'cookies'  => [],
+			],
+		];
+
 		set_current_screen( $config['screen']->id );
 
 		if ( $config['can'] ) {

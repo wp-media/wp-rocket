@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
@@ -13,6 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group CloudflarePlugin
  */
 class Test_DisplayServerPushingModeNotice extends TestCase{
+	use HttpRequestTrait;
 
 	protected $rucss;
     protected $combine_css;
@@ -33,6 +35,8 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	{
 		parent::set_up();
 
+		$this->setup_http();
+
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 	}
@@ -43,6 +47,13 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
         remove_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
 
 		$this->restoreWpHook( 'current_screen' );
+
+		// admin_notices fires every registered subscriber, not just Cloudflare's; ModPagespeed's
+		// detection ping (also mocked below) caches its result for a day, so clear that cache
+		// rather than leak a stale value into whichever test runs it next in this process.
+		delete_transient( 'rocket_mod_pagespeed_enabled' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -56,6 +67,25 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 
 		$this->constants['CLOUDFLARE_PLUGIN_DIR'] = true;
         $this->constants['CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE'] = $config['server_push'];
+
+		// admin_notices fires every registered subscriber, not just Cloudflare's; these URLs
+		// belong to RocketCDN's subscription check (a non-404 status avoids its website-search
+		// fallback call) and ModPagespeed's detection ping, both of which run unconditionally on
+		// that hook for an admin on the wprocket settings screen.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => wp_json_encode( [ 'success' => false ] ),
+				'response' => [ 'code' => 200 ],
+				'cookies'  => [],
+			],
+			'http://example.org' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => 200 ],
+				'cookies'  => [],
+			],
+		];
 
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;
