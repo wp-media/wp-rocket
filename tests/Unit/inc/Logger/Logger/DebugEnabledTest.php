@@ -33,12 +33,10 @@ class DebugEnabledTest extends TestCase {
 	 * Reset Logger static cache properties using reflection
 	 */
 	private function reset_logger_cache() {
-		$reflection = new \ReflectionClass( Logger::class );
-
-		if ( $reflection->hasProperty( 'debug_enabled_cache' ) ) {
-			$cache_property = $reflection->getProperty( 'debug_enabled_cache' );
-			$cache_property->setAccessible( true );
-			$cache_property->setValue( null, null );
+		try {
+			$this->set_reflective_property( null, 'debug_enabled_cache', Logger::class );
+		} catch ( \ReflectionException $e ) {
+			// Property not present on this version; nothing to reset.
 		}
 	}
 

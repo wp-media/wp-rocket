@@ -64,7 +64,20 @@
 		const statusIndicator = Array.from( document.querySelectorAll( '#wpr_cdn_status_indicator' ) )
 			.find( ( el ) => ! el.closest( '.your-own-cdn' ) );
 
-		if ( ! statusIndicator || ! html ) {
+		if ( ! statusIndicator ) {
+			if ( html ) {
+				// Re-insert when the element was removed (e.g. count dropped back to 0 after
+				// all pages were deleted, and the indicator was removed when count first hit 1).
+				const addPageSection = document.querySelector( '.wpr-cdn-built-in .wpr-cdn-add-page' );
+				if ( addPageSection ) {
+					addPageSection.insertAdjacentHTML( 'beforebegin', html );
+				}
+			}
+			return;
+		}
+
+		if ( ! html ) {
+			statusIndicator.remove();
 			return;
 		}
 
@@ -861,6 +874,10 @@
 			} ).then( ( response ) => {
 				updateRocketCtaState( response.count, response.limit );
 
+				// Update status indicator before the zero-count block so the separator
+				// logic below can find the freshly-inserted element when count hits 0.
+				updateStatusIndicatorComponent( response.status_indicator_html );
+
 				if ( response.items_html ) {
 					const existing = container.parentElement.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
 
@@ -912,9 +929,6 @@
 						document.dispatchEvent( new CustomEvent( 'rocketCDNBannerAutoCollapsed' ) );
 					}
 				}
-
-				// Update status indicator component.
-				updateStatusIndicatorComponent( response.status_indicator_html );
 
 			} ).catch( () => {
 				button.disabled = false;

@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Render\Controller;
 
 use Mockery;
-use ReflectionMethod;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\Context;
@@ -126,8 +125,7 @@ class Test_ShowPauseState extends TestCase {
 	 * @return bool
 	 */
 	private function invoke_show_pause_state( Controller $controller ): bool {
-		$show_pause_state = new ReflectionMethod( Controller::class, 'show_pause_state' );
-		$show_pause_state->setAccessible( true );
+		$show_pause_state = $this->get_reflective_method( 'show_pause_state', Controller::class );
 
 		return $show_pause_state->invoke( $controller );
 	}
