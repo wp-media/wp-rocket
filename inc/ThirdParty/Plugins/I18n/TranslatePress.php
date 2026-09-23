@@ -31,6 +31,7 @@ class TranslatePress implements Subscriber_Interface {
 			'post_updated'                                 => 'clear_post_languages',
 			'trp_save_editor_translations_regular_strings' => [ 'clear_post_after_updating_translation', 10, 2 ],
 			'rocket_current_url'                           => 'adjust_current_url',
+			'rocket_buffer'                                => [ 'clean_hreflang_query_strings', 1000 ],
 		];
 	}
 
@@ -320,5 +321,103 @@ class TranslatePress implements Subscriber_Interface {
 		$language       = $converter->get_lang_from_url_string( $current_url );
 
 		return str_replace( '#TRPLINKPROCESSED', '', $converter->get_url_for_language( $language, $current_url ) );
+	}
+
+	/**
+	 * Removes ignored query strings from hreflang tags in the HTML output.
+	 *
+	 * When TranslatePress generates hreflang tags, it may include query parameters
+	 * that should be ignored during caching. This method cleans those parameters
+	 * from the href attributes in hreflang link tags.
+	 *
+	 * @param string $buffer HTML content to process.
+	 * @return string Processed HTML content with clean hreflang URLs.
+	 */
+	public function clean_hreflang_query_strings( $buffer ) {
+		$ignored_params = rocket_get_ignored_parameters();
+
+		if ( empty( $ignored_params ) ) {
+			return $buffer;
+		}
+
+		$pattern = '/<link\s+[^>]*hreflang=["\'][^>]*>/i';
+
+		return preg_replace_callback(
+			$pattern,
+			function ( $matches ) use ( $ignored_params ) {
+				$tag     = $matches[0];
+				$cleaned = $this->remove_ignored_params_from_href( $tag, $ignored_params );
+				return $cleaned;
+			},
+			$buffer
+		);
+	}
+
+	/**
+	 * Removes ignored query parameters from the href attribute in a link tag.
+	 *
+	 * @param string $tag            The complete link tag.
+	 * @param array  $ignored_params Array of query parameter names to ignore.
+	 * @return string The link tag with cleaned href attribute.
+	 */
+	private function remove_ignored_params_from_href( $tag, $ignored_params ) {
+		$href_pattern = '/href=["\']([^"\']+)["\']/i';
+
+		return preg_replace_callback(
+			$href_pattern,
+			function ( $matches ) use ( $ignored_params ) {
+				$url       = $matches[1];
+				$cleaned_url = $this->clean_url_query_string( $url, $ignored_params );
+				return 'href="' . esc_attr( $cleaned_url ) . '"';
+			},
+			$tag
+		);
+	}
+
+	/**
+	 * Removes ignored query parameters from a URL.
+	 *
+	 * @param string $url            The URL to clean.
+	 * @param array  $ignored_params Array of query parameter names to ignore.
+	 * @return string The cleaned URL.
+	 */
+	private function clean_url_query_string( $url, $ignored_params ) {
+		$parsed_url = wp_parse_url( $url );
+
+		if ( ! isset( $parsed_url['query'] ) ) {
+			return $url;
+		}
+
+		wp_parse_str( $parsed_url['query'], $query_params );
+
+		$query_params = array_diff_key( $query_params, array_flip( $ignored_params ) );
+
+		$cleaned_query = http_build_query( $query_params );
+
+		if ( empty( $cleaned_query ) ) {
+			// Remove the query string entirely.
+			$base_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+			if ( isset( $parsed_url['port'] ) ) {
+				$base_url .= ':' . $parsed_url['port'];
+			}
+			$base_url .= $parsed_url['path'];
+			if ( isset( $parsed_url['fragment'] ) ) {
+				$base_url .= '#' . $parsed_url['fragment'];
+			}
+			return $base_url;
+		}
+
+		// Rebuild URL with cleaned query string.
+		$new_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+		if ( isset( $parsed_url['port'] ) ) {
+			$new_url .= ':' . $parsed_url['port'];
+		}
+		$new_url .= $parsed_url['path'];
+		$new_url .= '?' . $cleaned_query;
+		if ( isset( $parsed_url['fragment'] ) ) {
+			$new_url .= '#' . $parsed_url['fragment'];
+		}
+
+		return $new_url;
 	}
 }
