@@ -27,6 +27,7 @@
 	var supportsIntersectionObserver = runningOnBrowser && "IntersectionObserver" in window;
 	var supportsClassList = runningOnBrowser && "classList" in document.createElement("p");
 	var isHiDpi = runningOnBrowser && window.devicePixelRatio > 1;
+	var isWebKit = runningOnBrowser && /AppleWebKit/.test(navigator.userAgent) && !/Chrome|Chromium/.test(navigator.userAgent);
 
 	var defaultSettings = {
 		elements_selector: ".lazy",
@@ -370,6 +371,8 @@
 			setImageAttributes(sourceTag, settings);
 		});
 		setOriginalsObject(imgEl, attrsSrcSrcsetSizes);
+		// Remove decoding="async" before setting sources to prevent render stall
+		imgEl.removeAttribute('decoding');
 		setImageAttributes(imgEl, settings);
 	};
 	var setSourcesIframe = function setSourcesIframe(iframe, settings) {
@@ -516,6 +519,15 @@
 		doneHandler(element, settings, instance);
 		addClass(element, settings.class_loaded);
 		setStatus(element, statusLoaded);
+
+		if (element.tagName === 'IMG' && isWebKit) {
+			element.removeAttribute('decoding');
+			element.style.opacity = '0.99';
+			requestAnimationFrame(function () {
+				element.style.opacity = '';
+			});
+		}
+
 		safeCallback(settings.callback_loaded, element, instance);
 		if (!goingNative) checkFinish(settings, instance);
 	};
