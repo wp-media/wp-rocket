@@ -611,6 +611,17 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_major_release_notice( string $major_version ): void {
+		/**
+		 * Filters showing rocketcdn admin notices
+		 *
+		 * @since 3.22
+		 *
+		 * @param bool $show_rocketcdn_notices Show rocketcdn notices, by default it's shown.
+		 */
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_hide_rocketcdn_notices', false ) ) {
+			return;
+		}
+
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
 		if ( ! empty( $rocket_cdn_token ) ) {
