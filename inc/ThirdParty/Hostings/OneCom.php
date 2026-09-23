@@ -119,11 +119,7 @@ class OneCom implements Subscriber_Interface {
 
 			$sections[ $cdn_section_key ]['is_forced_off'] = true;
 
-			// One.com's own CDN handling drives the applied cdn_state to BYOCDN
-			// (see maybe_set_cdn_state()), which otherwise leaves the "Your CDN is
-			// active on your website" status indicator + green circle showing even
-			// though the mode toggle itself is hidden (maybe_display_cdn_mode_toggle())
-			// and there is nothing the merchant can act on here - one.com manages it.
+			// Hide the "Your CDN is active" status indicator; one.com manages the CDN.
 			if ( isset( $sections[ $cdn_section_key ]['status_indicator'] ) ) {
 				$sections[ $cdn_section_key ]['status_indicator']['is_active'] = false;
 			}
