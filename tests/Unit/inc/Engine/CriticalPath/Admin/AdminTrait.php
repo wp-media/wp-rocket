@@ -36,6 +36,12 @@ trait AdminTrait {
 				->with( 'async_css_mobile', 0 )
 				->andReturn( $config['options']['async_css_mobile'] );
 		}
+		if ( isset( $config['options']['remove_unused_css'] ) ) {
+			$this->options
+				->shouldReceive( 'get' )
+				->with( 'remove_unused_css', 0 )
+				->andReturn( $config['options']['remove_unused_css'] );
+		}
 		Functions\when( 'get_post_meta' )->justReturn( $config['is_option_excluded'] );
 	}
 }
