@@ -3571,17 +3571,15 @@ msgstr ""
 
 #: inc/Engine/CDN/Render/Controller.php:1059
 msgid "Renew now to keep using RocketCDN Free."
-msgstr ""
-"Renouvelez dès maintenant votre abonnement pour continuer à utiliser "
-"RocketCDN Free."
+msgstr "Renouvelez pour utiliser RocketCDN Free"
 
 #: inc/Engine/CDN/Render/Controller.php:1090
 msgid ""
 "RocketCDN delivers every page of your site from 100+ edge locations "
 "worldwide."
 msgstr ""
-"RocketCDN diffuse chaque page de votre site à partir de plus de 100 points "
-"de présence répartis dans le monde entier."
+"RocketCDN diffuse chaque page de votre site depuis +100 emplacements edge "
+"mondialement."
 
 #: inc/Engine/CDN/Render/Controller.php:1173
 msgid "Remove page"
@@ -3595,9 +3593,8 @@ msgid ""
 "%1$sOne more step to a faster website:%2$s add your most important page, and"
 " RocketCDN Free will speed it up for your visitors everywhere."
 msgstr ""
-"%1$sEncore une étape pour accélérer votre site web : %2$sajoutez votre page "
-"la plus importante, et RocketCDN Free l'accélérera pour vos visiteurs, où "
-"qu'ils se trouvent."
+"%1$sÉtape suivante pour accélérer votre site web :%2$s ajoutez votre page "
+"clé, et RocketCDN Free l'accélérera pour vos visiteurs, partout."
 
 #: inc/Engine/CDN/Render/Controller.php:1322
 msgid "Creating your subscription..."
