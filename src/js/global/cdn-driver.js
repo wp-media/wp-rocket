@@ -25,6 +25,11 @@
 		if ( typeInput ) {
 			typeInput.value = 'byocdn' === mode ? 'byocdn' : 'rocketcdn';
 		}
+
+		const cdnInput = document.querySelector( 'input[type="hidden"][name="wp_rocket_settings[cdn]"]' );
+		if ( cdnInput ) {
+			cdnInput.value = 'nothing' === mode ? '0' : '1';
+		}
 	}
 
 	document.addEventListener( 'DOMContentLoaded', () => {
