@@ -1043,7 +1043,7 @@ class Controller extends Abstract_Render {
 		if ( $is_paused ) {
 			$texts['details'] = sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-				__( '%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
+				__( '%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations.', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);
@@ -1087,7 +1087,7 @@ class Controller extends Abstract_Render {
 		}
 
 		$texts['details']     = '';
-		$texts['status_text'] = __( 'RocketCDN is serving files from 100+ edge locations', 'rocket' );
+		$texts['status_text'] = __( 'RocketCDN delivers every page of your site from 100+ edge locations worldwide.', 'rocket' );
 
 		if ( $this->subscription_controller->is_in_grace_period() ) {
 			$texts['status_text']         = '';
@@ -1111,6 +1111,36 @@ class Controller extends Abstract_Render {
 		}
 
 		echo $this->generate( 'partials/cdn/wpr-cancelled-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays an admin notice when fresh-install Pro subscription detection failed after all retries.
+	 *
+	 * @return void
+	 */
+	public function render_pro_detection_failure_notice(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
+			return;
+		}
+
+		if ( ! get_transient( 'rocket_cdn_pro_detection_failed' ) ) {
+			return;
+		}
+
+		$retry_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_retry_pro_detection' ),
+			'rocket_retry_pro_detection'
+		);
+
+		$notice_data = [
+			'retry_url' => $retry_url,
+		];
+
+		echo $this->generate( 'partials/cdn/cdn-pro-retry-notice', $notice_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**
@@ -1255,10 +1285,9 @@ class Controller extends Abstract_Render {
 			'status_text'         => '',
 			'details'             => sprintf(
 			// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag, %3$s = line breaking <br /> tag.
-				__( '%1$sOne more step to a faster website.%2$s%3$sAdd your most important page, and RocketCDN Free will speed it up for your visitors everywhere.', 'rocket' ),
+				__( '%1$sOne more step to a faster website:%2$s add your most important page, and RocketCDN Free will speed it up for your visitors everywhere.', 'rocket' ),
 				'<strong>',
-				'</strong>',
-				'<br/>'
+				'</strong>'
 			),
 			'class'               => '',
 			'no_status_indicator' => false,
@@ -1290,8 +1319,9 @@ class Controller extends Abstract_Render {
 		$texts = wpm_apply_filters_typed( 'array', 'rocket_rocketcdn_status_indicator_texts', $texts, $pages_count, $is_subscription_loading, $free );
 
 		if ( $is_subscription_loading ) {
-			$texts['status_text'] = __( 'Creating your subscription...', 'rocket' );
-			$texts['details']     = __( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', 'rocket' );
+			$texts['status_text']         = __( 'Creating your subscription...', 'rocket' );
+			$texts['details']             = __( 'Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds.', 'rocket' );
+			$texts['no_status_indicator'] = false;
 		}
 
 		$is_paused = $this->show_pause_state();

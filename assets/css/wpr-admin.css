@@ -904,6 +904,41 @@ a:focus, button:focus {
   margin: 0;
 }
 
+.wpr-rocketcdn-btn {
+  background-color: #fff;
+  border-radius: 4px;
+  color: #0C0F1F;
+  text-decoration: none;
+  position: relative;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  transition: all 200ms ease-out;
+  -webkit-transition: all 200ms ease-out;
+}
+.wpr-rocketcdn-btn::before {
+  content: "";
+  display: inline-block;
+  line-height: 1;
+  background-image: url("../img/arrow-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-right: 6px;
+  width: 16px;
+  height: 16px;
+}
+.wpr-rocketcdn-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+.wpr-rocketcdn-btn_retry {
+  display: inline-flex;
+}
+.wpr-rocketcdn-btn_retry::before {
+  background-image: url("../img/wpr-purge.svg");
+}
+
 .rocketcdn--upgrade_btn {
   margin-right: 30px;
   color: #464F59;
@@ -4884,6 +4919,7 @@ div.wpr-tutorial-item {
   border-left: 4px solid #E23A3A;
   font-size: 14px;
   margin-bottom: 15px;
+  padding-bottom: 0;
 }
 .wpr-cdn-expired__notice-title {
   font-weight: 600;
