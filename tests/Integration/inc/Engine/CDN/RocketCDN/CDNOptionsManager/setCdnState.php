@@ -18,73 +18,34 @@ use WP_Rocket\Engine\Admin\Settings\Settings;
 class Test_SetCdnState extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/CDNOptionsManager/setCdnState.php';
 
-	/**
-	 * Consumer email used to build a license triplet that satisfies rocket_valid_key(),
-	 * so that Settings::sanitize_callback()'s "Settings saved." notice branch is actually
-	 * reachable. Without the fix's 'ignore' flag, calling set_cdn_state() with this license
-	 * data persisted would queue a spurious "Settings saved." notice.
-	 *
-	 * @var string
-	 */
+	// Valid license triplet so rocket_valid_key() is satisfiable.
 	private const CONSUMER_EMAIL = 'valid@wp-rocket.test';
+	private const CONSUMER_KEY   = '12345678';
 
 	/**
-	 * Consumer key paired with self::CONSUMER_EMAIL - must be exactly 8 characters for
-	 * rocket_valid_key() to consider it valid.
-	 *
-	 * @var string
-	 */
-	private const CONSUMER_KEY = '12345678';
-
-	/**
-	 * The sanitize_option_wp_rocket_settings callback registered in set_up(), kept as a
-	 * property so the test method can temporarily remove/re-add this exact callback.
-	 *
 	 * @var callable
 	 */
 	private $sanitize_callback;
 
-	/**
-	 * Sets up the test environment.
-	 *
-	 * @return void
-	 */
 	public function set_up() {
 		parent::set_up();
 
-		// Settings::sanitize_callback() calls add_settings_error(), which lives in
-		// wp-admin/includes/template.php. That file is only auto-loaded for the AdminOnly
-		// test group; load it here explicitly (guarded, since another AdminOnly test running
-		// in the same process may already have loaded it) rather than pulling this whole test
-		// into the AdminOnly group just for one function.
+		// add_settings_error() lives in wp-admin/includes/template.php, not auto-loaded here.
 		if ( ! function_exists( 'add_settings_error' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/template.php';
 		}
 
-		// Register the same sanitize_option_{$option} filter that Page::configure() attaches
-		// via register_setting() on admin_init, so that update_option( 'wp_rocket_settings', ... )
-		// runs through Settings::sanitize_callback() exactly as it does for the real, admin-page
-		// write this test is guarding against. We add the filter directly (that's all
-		// register_setting() does for this hook) instead of firing the whole admin_init action,
-		// to avoid unrelated admin_init side effects in this lightweight FilesystemTestCase.
+		// Register the sanitize_option filter, as register_setting() does on admin_init.
 		$options_api             = new Options( 'wp_rocket_' );
 		$options                 = new Options_Data( $options_api->get( 'settings', [] ) );
 		$this->sanitize_callback = [ new Settings( $options ), 'sanitize_callback' ];
 
 		add_filter( 'sanitize_option_wp_rocket_settings', $this->sanitize_callback );
 
-		// Start each data set from a clean slate: without this, a "Settings saved." notice
-		// queued by one data set would still be present for the next, and sanitize_callback()'s
-		// own dedup check (skip if a matching notice is already queued) would then mask a
-		// regression in later data sets.
+		// Reset so a notice from a previous data set can't mask this one.
 		$GLOBALS['wp_settings_errors'] = [];
 	}
 
-	/**
-	 * Tears down the test environment.
-	 *
-	 * @return void
-	 */
 	public function tear_down() {
 		remove_filter( 'sanitize_option_wp_rocket_settings', $this->sanitize_callback );
 
@@ -94,9 +55,6 @@ class Test_SetCdnState extends TestCase {
 	}
 
 	/**
-	 * Tests that set_cdn_state() persists cdn_state, strips the internal 'ignore' flag,
-	 * and does not queue a "Settings saved." notice.
-	 *
 	 * @dataProvider configTestData
 	 *
 	 * @param array $config   Test configuration: the CDN state to set.
@@ -106,9 +64,7 @@ class Test_SetCdnState extends TestCase {
 		$options_api = new Options( 'wp_rocket_' );
 		$secret_key  = hash( 'crc32', self::CONSUMER_EMAIL );
 
-		// Seed a valid license with the sanitize_option filter temporarily removed, so this
-		// setup write can never itself queue a "Settings saved." notice - only the
-		// set_cdn_state() write under test, below, is allowed to.
+		// Seed the license without the sanitize filter, so seeding itself can't queue a notice.
 		remove_filter( 'sanitize_option_wp_rocket_settings', $this->sanitize_callback );
 		$options_api->set(
 			'settings',
@@ -123,8 +79,6 @@ class Test_SetCdnState extends TestCase {
 		);
 		add_filter( 'sanitize_option_wp_rocket_settings', $this->sanitize_callback );
 
-		// Snapshot right before running, without reassigning the WP global - only new entries
-		// appended by set_cdn_state() itself are relevant to assertion (c) below.
 		$notices_before = isset( $GLOBALS['wp_settings_errors'] ) ? (array) $GLOBALS['wp_settings_errors'] : [];
 
 		// Run it.
@@ -136,14 +90,10 @@ class Test_SetCdnState extends TestCase {
 		$this->assertArrayHasKey( 'cdn_state', $settings );
 		$this->assertSame( $expected['cdn_state'], $settings['cdn_state'] );
 
-		// (b) the internal 'ignore' flag never reaches the DB - it's stripped by
-		// Settings::sanitize_callback() before the option is persisted.
+		// (b) the internal 'ignore' flag never reaches the DB.
 		$this->assertArrayNotHasKey( 'ignore', $settings );
 
-		// (c) no "Settings saved." notice was queued for this internal write. The sanitize
-		// callback is registered in set_up(), matching what happens on a real admin page
-		// load; without the 'ignore' flag set by set_cdn_state(), this assertion fails
-		// because rocket_valid_key() is satisfied by the license data seeded above.
+		// (c) no "Settings saved." notice was queued for this internal write.
 		$notices_after = isset( $GLOBALS['wp_settings_errors'] ) ? (array) $GLOBALS['wp_settings_errors'] : [];
 		$new_notices   = array_slice( $notices_after, count( $notices_before ) );
 		$saved_notices = array_filter(

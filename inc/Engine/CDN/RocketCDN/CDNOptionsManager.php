@@ -63,8 +63,6 @@ class CDNOptionsManager {
 		$settings             = $this->options_api->get( 'settings', [] );
 		$settings['cdn']      = 1;
 		$settings['cdn_type'] = Context::ROCKETCDN_TYPE;
-		// See set_cdn_state() below for why 'ignore' is required on this internal write.
-		$settings['ignore'] = 1;
 
 		$this->options_api->set( 'settings', $settings );
 
@@ -94,11 +92,8 @@ class CDNOptionsManager {
 	public function set_cdn_state( string $state ) {
 		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn_state'] = $state;
-		// This is an internal (non-form) write, not a submission of the settings page form,
-		// so it must not trigger Settings::sanitize_callback()'s "Settings saved." or Sucuri
-		// invalid-key notices. 'ignore' tells that callback to skip both checks; the callback
-		// strips it from the array before the option is persisted, so it never lands in the DB.
-		// enable() above and disable() below set the same flag for the same reason.
+		// Internal (non-form) write: 'ignore' suppresses Settings::sanitize_callback()'s
+		// notices; the callback strips it before saving.
 		$settings['ignore'] = 1;
 
 		$this->options_api->set( 'settings', $settings );
@@ -130,8 +125,6 @@ class CDNOptionsManager {
 		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn']       = 0;
 		$settings['cdn_state'] = Context::CDN_STATE_NOTHING;
-		// See set_cdn_state() above for why 'ignore' is required on this internal write.
-		$settings['ignore'] = 1;
 
 		$this->options_api->set( 'settings', $settings );
 
