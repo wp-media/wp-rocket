@@ -171,6 +171,7 @@ class Config {
 
 		$host = $this->get_server_input( 'HTTP_HOST', (string) time() );
 		$host = preg_replace( '/:\d+$/', '', $host );
+		$host = str_replace( '/', '.', untrailingslashit( $host ) );
 		$host = trim( strtolower( $host ), '.' );
 
 		return self::memoize( __FUNCTION__, [], rawurlencode( $host ) );
