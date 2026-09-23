@@ -245,7 +245,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	private function remove_query_parameter_and_redirect(): void {
-		$redirect_url = remove_query_arg( 'rocketcdn_checkout' );
+		$redirect_url = remove_query_arg( 'rocketcdn_checkout' ) . '#page_cdn';
 		wp_safe_redirect( $redirect_url );
 		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
