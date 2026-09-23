@@ -3549,8 +3549,7 @@ msgstr "Renouvelez votre abonnement pour continuer à utiliser RocketCDN Free."
 
 #: inc/Engine/CDN/Render/Controller.php:922
 msgid "Contact support to find out how to restore access."
-msgstr ""
-"Contactez le service d'assistance pour savoir comment rétablir votre accès."
+msgstr "Contactez le support pour savoir comment rétablir votre accès."
 
 #: inc/Engine/CDN/Render/Controller.php:926
 msgid "Cancelling your subscription."
@@ -6269,8 +6268,8 @@ msgid ""
 "%1$sYour WP Rocket license has been banned%2$s. Contact support for more "
 "information."
 msgstr ""
-"%1$sVotre licence WP Rocket a été suspendue%2$s. Contactez le service "
-"d'assistance pour plus d'informations."
+"%1$sVotre licence WP Rocket a été suspendue%2$s. Contactez le support pour "
+"plus d'informations."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/partials/cdn/wpr-licence-expired-notice.php:27
