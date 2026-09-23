@@ -3608,8 +3608,8 @@ msgid ""
 "Please wait, RocketCDN will be ready and active shortly. This usually takes "
 "about 90 seconds."
 msgstr ""
-"Veuillez patienter, RocketCDN sera bientôt prêt et opérationnel. Cela prend "
-"généralement environ 90 secondes."
+"Veuillez patienter, RocketCDN sera bientôt prêt et actif. Cela prend environ"
+" 90 secondes."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
 msgid "Plan"
