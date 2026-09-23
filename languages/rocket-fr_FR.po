@@ -3533,7 +3533,7 @@ msgstr ""
 #: inc/Engine/CDN/Render/Controller.php:896
 msgid "This option is managed by your host and can’t be changed here."
 msgstr ""
-"Cette option est gérée par votre hébergeur et ne peut pas être modifiée ici."
+"Cette option est gérée par votre hébergeur et ne peut être modifiée ici."
 
 #: inc/Engine/CDN/Render/Controller.php:914
 msgid ""
