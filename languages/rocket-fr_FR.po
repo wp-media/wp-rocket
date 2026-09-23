@@ -6245,7 +6245,7 @@ msgid ""
 "worries: let's do a manual check."
 msgstr ""
 "%1$sOups, nous n'avons pas pu valider votre abonnement à RocketCDN Pro%2$s. "
-"Pas de souci : procédons à une vérification manuelle."
+"Pas de souci, vérifions ça ensemble."
 
 #: views/settings/partials/cdn/cdn-pro-retry-notice.php:35
 msgid "Retry"
