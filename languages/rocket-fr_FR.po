@@ -3557,7 +3557,7 @@ msgstr "Résilier votre abonnement."
 
 #: inc/Engine/CDN/Render/Controller.php:930
 msgid "Renew to use RocketCDN."
-msgstr "Renouvelez votre abonnement pour continuer à utiliser RocketCDN."
+msgstr "Renouvelez pour utiliser RocketCDN."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: inc/Engine/CDN/Render/Controller.php:1046
