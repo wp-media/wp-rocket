@@ -3810,7 +3810,7 @@ msgstr "Impossible d'enregistrer la page dans la base de données."
 
 #: inc/Engine/CDN/RocketCDN/Rest.php:353 inc/Engine/CDN/RocketCDN/Rest.php:589
 msgid "RocketCDN cannot be activated in its current state."
-msgstr "RocketCDN ne peut pas être activé dans son état actuel."
+msgstr "RocketCDN ne peut pas être activé en l'état."
 
 #: inc/Engine/CDN/RocketCDN/Rest.php:380
 msgid "This page is already registered for RocketCDN delivery."
