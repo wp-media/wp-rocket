@@ -6258,8 +6258,8 @@ msgid ""
 "%1$sRocketCDN Pro subscription is being cancelled.%2$s RocketCDN Pro can’t "
 "be reactivated until the process is complete."
 msgstr ""
-"%1$s L'abonnement à RocketCDN Pro est en cours de résiliation. %2$sRocketCDN"
-" Pro ne pourra pas être réactivé tant que la procédure ne sera pas terminée."
+"%1$sRocketCDN Pro est en cours de résiliation.%2$s RocketCDN Pro ne pourra "
+"pas être réactivé tant ça ne sera pas terminée."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/partials/cdn/wpr-licence-banned-notice.php:22
