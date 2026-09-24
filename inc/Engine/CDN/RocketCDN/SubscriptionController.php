@@ -632,11 +632,6 @@ class SubscriptionController implements LoggerAwareInterface {
 	/**
 	 * Tracks the fresh-install resolution.
 	 *
-	 * Only ever hooked to `wp_rocket_first_install`, which fires exclusively when there's no
-	 * prior stored version at all - never on an upgrade. cdn_state is seeded as
-	 * Context::CDN_STATE_NOTHING by rocket_first_install()'s defaults, and this detection flow
-	 * never writes to it, so it's still that value whenever this fires; no need to read it back.
-	 *
 	 * @return void
 	 */
 	private function track_fresh_install_resolution(): void {

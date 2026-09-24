@@ -22,19 +22,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
 	/**
-	 * Transient name used to guard against tracking the same Pro purchase twice when both
-	 * the checkout-redirect and iframe/AJAX activation flows run for one purchase.
+	 * Transient name used to guard against tracking the same Pro purchase twice.
 	 *
 	 * @var string
 	 */
 	private const PURCHASE_TRACKED_LOCK = 'rocketcdn_purchase_tracked';
-
-	/**
-	 * How long the purchase-tracked lock is held, in seconds.
-	 *
-	 * @var int
-	 */
-	private const PURCHASE_TRACKED_LOCK_TTL = 60;
 
 	/**
 	 * RocketCDN API Client instance.
@@ -301,13 +293,8 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	/**
 	 * Enables RocketCDN Pro and tracks the activation exactly once per purchase.
 	 *
-	 * Both the express-checkout redirect (handle_rocketcdn_checkout_parameter()) and the
-	 * iframe AJAX flow (enable()) can independently run for what is, from the user's
-	 * perspective, a single purchase - e.g. the iframe flow completing and the browser
-	 * then also landing on the checkout redirect URL (window.rocketcdnIframeSource does
-	 * not survive the page reload the iframe close triggers). The short-lived lock below
-	 * makes sure only whichever flow gets here first applies the state change and fires
-	 * the tracking events; a second call within the window is a no-op.
+	 * The checkout-redirect and iframe AJAX flows can both run for one purchase; the
+	 * short-lived lock below ensures only the first to arrive tracks it, the rest are no-ops.
 	 *
 	 * @param string $source Attribution source for the purchase (e.g. 'banner_cta', 'dashboard_upgrade').
 	 *
@@ -317,7 +304,7 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( get_transient( self::PURCHASE_TRACKED_LOCK ) ) {
 			return;
 		}
-		set_transient( self::PURCHASE_TRACKED_LOCK, true, self::PURCHASE_TRACKED_LOCK_TTL );
+		set_transient( self::PURCHASE_TRACKED_LOCK, true, MINUTE_IN_SECONDS );
 
 		$this->cdn_options->enable();
 
