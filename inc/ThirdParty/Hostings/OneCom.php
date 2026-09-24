@@ -118,6 +118,11 @@ class OneCom implements Subscriber_Interface {
 			}
 
 			$sections[ $cdn_section_key ]['is_forced_off'] = true;
+
+			// Hide the "Your CDN is active" status indicator; one.com manages the CDN.
+			if ( isset( $sections[ $cdn_section_key ]['status_indicator'] ) ) {
+				$sections[ $cdn_section_key ]['status_indicator']['is_active'] = false;
+			}
 		}
 
 		return $sections;

@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23.4-alpha3\n"
+"Project-Id-Version: WP Rocket 3.23.4-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-23T08:30:50+00:00\n"
+"POT-Creation-Date: 2026-09-24T08:10:13+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -49,7 +49,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
-#: inc/ThirdParty/Hostings/OneCom.php:150
+#: inc/ThirdParty/Hostings/OneCom.php:155
 #: inc/ThirdParty/Hostings/Pressidium.php:50
 #: inc/ThirdParty/Hostings/ProIsp.php:51
 #: inc/ThirdParty/Hostings/Savvii.php:50
@@ -595,7 +595,7 @@ msgid "Run the test now!"
 msgstr ""
 
 #: inc/admin/ui/notices.php:701
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:655
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:652
 msgid "Add your pages now"
 msgstr ""
 
@@ -1534,7 +1534,7 @@ msgid "%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRoc
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Subscriber.php:466
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:517
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:510
 msgid "Dismiss"
 msgstr ""
 
@@ -2901,35 +2901,35 @@ msgid "Complete activation"
 msgstr ""
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:496
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:489
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:506
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:499
 #, php-format
 msgid "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 #. translators: %1$s = opening strong+paragraph tags, %2$s = closing strong+paragraph tags.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:531
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:622
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:524
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:619
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
 #. translators: %1$s = opening paragraph tag, %2$s = closing paragraph tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:541
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:632
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:534
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:629
 #, php-format
 msgid "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:552
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:653
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:545
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:650
 msgid "Check it later"
 msgstr ""
 
@@ -5072,7 +5072,7 @@ msgstr ""
 #: views/settings/partials/rocket-insights/urls-table.php:19
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/cdn/purge-cdn-cache.php:27
-#: views/settings/sections/cdn/rocketcdn-free.php:59
+#: views/settings/sections/cdn/rocketcdn-free.php:60
 #: views/settings/sections/cdn/rocketcdn-paid.php:50
 #: views/settings/sections/cdn/your-own-cdn.php:49
 #: views/settings/sections/fields-container.php:28
@@ -5114,23 +5114,23 @@ msgstr ""
 msgid "Enable RocketCDN Free"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:54
+#: views/settings/sections/cdn/rocketcdn-free.php:55
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:94
+#: views/settings/sections/cdn/rocketcdn-free.php:95
 msgid "Enter a page URL to add to RocketCDN"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:97
+#: views/settings/sections/cdn/rocketcdn-free.php:98
 msgid "ADD HOMEPAGE"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:103
+#: views/settings/sections/cdn/rocketcdn-free.php:104
 msgid "ADD PAGE"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:107
+#: views/settings/sections/cdn/rocketcdn-free.php:108
 msgid "You have reached the limit of 3 free pages."
 msgstr ""
 
