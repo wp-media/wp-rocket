@@ -456,14 +456,14 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		do_action( 'rocket_before_rollback' );
 
 		$plugin_transient = get_site_transient( 'update_plugins' );
-		$plugin_folder    = plugin_basename( dirname( WP_ROCKET_FILE ) );
-		$plugin           = $plugin_folder . '/' . basename( WP_ROCKET_FILE );
+		$plugin_folder    = plugin_basename( dirname( rocket_get_constant( 'WP_ROCKET_FILE' ) ) );
+		$plugin           = $plugin_folder . '/' . basename( rocket_get_constant( 'WP_ROCKET_FILE' ) );
 
 		$plugin_transient->response[ $plugin ] = (object) [
 			'slug'        => $plugin_folder,
-			'new_version' => WP_ROCKET_LASTVERSION,
+			'new_version' => rocket_get_constant( 'WP_ROCKET_LASTVERSION' ),
 			'url'         => 'https://wp-rocket.me',
-			'package'     => sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), WP_ROCKET_LASTVERSION ),
+			'package'     => sprintf( 'https://api.wp-rocket.me/%s/wp-rocket_%s.zip', get_rocket_option( 'consumer_key' ), rocket_get_constant( 'WP_ROCKET_LASTVERSION' ) ),
 		];
 
 		$this->event_manager->remove_callback( 'pre_set_site_transient_update_plugins', [ $this, 'maybe_add_rocket_update_data' ] );
@@ -476,20 +476,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		}
 
 		// translators: %s is the plugin name.
-		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
+		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ) );
 		$nonce         = 'upgrade-plugin_' . $plugin;
 		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
 		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
 		$upgrader      = $this->get_plugin_upgrader( $upgrader_skin );
 
 		add_filter( 'update_plugin_complete_actions', [ $this, 'rollback_add_return_link' ] );
-		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
+		rocket_put_content( rocket_get_constant( 'WP_CONTENT_DIR' ) . '/advanced-cache.php', '' );
 
 		$upgrader->init();
 		$upgrader->skin->header();
 
 		// Connect to the filesystem first; maintenance_mode() relies on $wp_filesystem (not self-initialized before WP 6.6).
-		if ( $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
+		if ( $upgrader->fs_connect( [ rocket_get_constant( 'WP_CONTENT_DIR' ), rocket_get_constant( 'WP_PLUGIN_DIR' ) ] ) ) {
 			$upgrader->maintenance_mode( true );
 
 			try {
@@ -504,7 +504,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		wp_die(
 			'',
 			// translators: %s is the plugin name.
-			esc_html( sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME ) ),
+			esc_html( sprintf( __( '%s Update Rollback', 'rocket' ), rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ) ) ),
 			[
 				'response' => 200,
 			]

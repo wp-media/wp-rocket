@@ -214,7 +214,7 @@ class WP_Rocket_Requirements_Check {
 		$upgrader->skin->header();
 
 		// Connect to the filesystem first; maintenance_mode() relies on $wp_filesystem (not self-initialized before WP 6.6).
-		if ( $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
+		if ( $upgrader->fs_connect( [ rocket_get_constant( 'WP_CONTENT_DIR' ), rocket_get_constant( 'WP_PLUGIN_DIR' ) ] ) ) {
 			$upgrader->maintenance_mode( true );
 
 			try {
