@@ -162,4 +162,47 @@ class Test_SanitizeCallback extends TestCase {
 
 		$this->assertSame( 1, $output['cdn'] );
 	}
+
+	/**
+	 * @dataProvider settingsSavedNoticeProvider
+	 */
+	public function testShouldAddSettingsSavedNoticeOnlyOnce( $global_errors, $transient_errors, $should_add ) {
+		global $wp_settings_errors;
+
+		$wp_settings_errors = $global_errors;
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		Functions\when( 'get_transient' )->justReturn( $transient_errors );
+		Functions\when( '__' )->returnArg();
+
+		if ( $should_add ) {
+			Functions\expect( 'add_settings_error' )
+				->once()
+				->with( 'general', 'settings_updated', 'Settings saved.', 'updated' );
+		} else {
+			Functions\expect( 'add_settings_error' )->never();
+		}
+
+		$this->settings->sanitize_callback( [ 'secret_key' => 'secret' ] );
+
+		$wp_settings_errors = [];
+	}
+
+	public function settingsSavedNoticeProvider() {
+		$wpr_notice  = [
+			'setting' => 'general',
+			'code'    => 'settings_updated',
+			'message' => 'Settings saved.',
+			'type'    => 'updated',
+		];
+		$core_notice = array_merge( $wpr_notice, [ 'type' => 'success' ] );
+
+		return [
+			'no notice queued yet'                    => [ [], false, true ],
+			'WP Rocket notice queued in this request' => [ [ $wpr_notice ], false, false ],
+			'WP Rocket notice persisted for redirect' => [ [], [ $wpr_notice ], false ],
+			'core notice persisted for redirect'      => [ [], [ $core_notice ], false ],
+			'core notice queued in this request'      => [ [ $core_notice ], false, false ],
+		];
+	}
 }
