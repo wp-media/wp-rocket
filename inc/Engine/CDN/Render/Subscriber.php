@@ -44,8 +44,8 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_purge_cdn_cache_section' ],
 			],
 			'current_screen'                          => [
-				[ 'maybe_sync_forced_off_tracking_state' ],
 				[ 'maybe_disable_rocketcdn_paid_after_cancellation' ],
+				[ 'maybe_sync_forced_off_tracking_state' ],
 			],
 			'rocket_cdn_free_page_list'               => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
