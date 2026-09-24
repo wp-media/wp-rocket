@@ -952,7 +952,9 @@ class Controller extends Abstract_Render {
 		// get_applied_cdn_state() would otherwise classify a frozen, possibly-outdated value.
 		$settings = $this->options_api->get( 'settings', [] );
 
-		if ( Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state( $settings['cdn_state'] ?? null ) ) {
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ||
+			Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state( $settings['cdn_state'] ?? null ) ) {
 			return;
 		}
 

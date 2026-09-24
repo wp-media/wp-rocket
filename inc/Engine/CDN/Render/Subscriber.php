@@ -43,7 +43,10 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'current_screen'                          => [ 'maybe_sync_forced_off_tracking_state' ],
+			'current_screen'                          => [
+				[ 'maybe_sync_forced_off_tracking_state' ],
+				[ 'maybe_disable_rocketcdn_paid_after_cancellation' ],
+			],
 			'rocket_cdn_free_page_list'               => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
@@ -63,7 +66,6 @@ class Subscriber implements Subscriber_Interface {
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
-			'admin_init'                              => 'maybe_disable_rocketcdn_paid_after_cancellation',
 			'admin_enqueue_scripts'                   => [ 'localize_tracking_data', 15 ],
 		];
 	}
