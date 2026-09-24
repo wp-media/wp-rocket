@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Error;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
@@ -573,6 +574,8 @@ class SubscriptionController implements LoggerAwareInterface {
 		$subscription_data = $this->fetch_subscription_data_with_fallback();
 
 		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
+			$this->track_fresh_install_resolution();
+
 			return;
 		}
 
@@ -605,6 +608,8 @@ class SubscriptionController implements LoggerAwareInterface {
 
 		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
 			$this->resolve_conclusive_detection();
+			$this->track_fresh_install_resolution();
+
 			return;
 		}
 
@@ -614,14 +619,35 @@ class SubscriptionController implements LoggerAwareInterface {
 	/**
 	 * Clears the failure transient and cancels any pending retry job.
 	 *
-	 * Called once detection reaches a conclusive answer — whether that's a real API
-	 * response, or the conclusive "no Pro" implied by there being no token at all.
+	 * Called once the scheduled retry job reaches a conclusive answer — whether that's a
+	 * real API response, or the conclusive "no Pro" implied by there being no token at all.
 	 *
 	 * @return void
 	 */
 	private function resolve_conclusive_detection(): void {
 		delete_transient( 'rocket_cdn_pro_detection_failed' );
 		$this->queue->cancel_pro_detection_job();
+	}
+
+	/**
+	 * Tracks the fresh-install resolution.
+	 *
+	 * Only ever hooked to `wp_rocket_first_install`, which fires exclusively when there's no
+	 * prior stored version at all - never on an upgrade. cdn_state is seeded as
+	 * Context::CDN_STATE_NOTHING by rocket_first_install()'s defaults, and this detection flow
+	 * never writes to it, so it's still that value whenever this fires; no need to read it back.
+	 *
+	 * @return void
+	 */
+	private function track_fresh_install_resolution(): void {
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => Context::CDN_STATE_NOTHING,
+				'cdn_status' => 'inactive',
+				'trigger'    => 'fresh_install_resolution',
+			]
+		);
 	}
 
 	/**

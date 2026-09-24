@@ -68,6 +68,7 @@ class WPRocketUninstall {
 		'rocketcdn_status',
 		'rocketcdn_pricing',
 		'rocketcdn_purge_cache_response',
+		'rocketcdn_purchase_tracked',
 		'rocket_cloudflare_ips',
 		'rocket_cloudflare_is_api_keys_valid',
 		'rocket_preload_triggered',
