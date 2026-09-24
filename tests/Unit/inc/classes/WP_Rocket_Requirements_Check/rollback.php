@@ -80,7 +80,7 @@ class Test_Rollback extends TestCase {
 		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( true )->ordered();
 		$this->upgrader->shouldReceive( 'upgrade' )->once()->with( 'wp-rocket/wp-rocket.php' )->andReturn( $upgrade_result )->ordered();
 		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( false )->ordered();
-		$skin->shouldReceive( 'footer' )->never();
+		$skin->shouldReceive( 'footer' )->once()->ordered();
 
 		$this->getSubject()->rollback();
 	}

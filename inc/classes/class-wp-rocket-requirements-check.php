@@ -214,9 +214,7 @@ class WP_Rocket_Requirements_Check {
 		$upgrader->skin->header();
 
 		// Connect to the filesystem first; maintenance_mode() relies on $wp_filesystem (not self-initialized before WP 6.6).
-		if ( ! $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
-			$upgrader->skin->footer();
-		} else {
+		if ( $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
 			$upgrader->maintenance_mode( true );
 
 			try {
@@ -225,6 +223,8 @@ class WP_Rocket_Requirements_Check {
 				$upgrader->maintenance_mode( false );
 			}
 		}
+
+		$upgrader->skin->footer();
 
 		wp_die(
 			'',
