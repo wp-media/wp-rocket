@@ -22,6 +22,13 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
 
 	/**
+	 * Transient name used to guard against tracking the same Pro purchase twice.
+	 *
+	 * @var string
+	 */
+	private const PURCHASE_TRACKED_LOCK = 'rocketcdn_purchase_tracked';
+
+	/**
 	 * RocketCDN API Client instance.
 	 *
 	 * @var APIClient
@@ -207,28 +214,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		// Save token and enable CDN.
 		$this->cdn_options->save_token( $token );
-		$this->cdn_options->enable();
-
-		$this->track_event(
-			'RocketCDN Mode Changed',
-			[
-				'cdn_mode'   => Context::ROCKETCDN_PAID_TYPE,
-				'cdn_status' => 'active',
-				'trigger'    => 'pro_purchase',
-			]
-		);
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading a checkout-flow URL parameter for tracking, not processing form data.
 		$source_raw = isset( $_GET['rocketcdn_source'] ) ? sanitize_key( wp_unslash( $_GET['rocketcdn_source'] ) ) : '';
 		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
 
-		$this->track_event(
-			'RocketCDN Pro Activated',
-			[
-				'source'                     => $source,
-				'preserved_free_pages_count' => $this->query->get_total_count(),
-			]
-		);
+		$this->activate_pro_and_track( $source );
 
 		// Schedule subscription check.
 		$subscription = $this->api_client->get_subscription_data();
@@ -284,12 +275,38 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			wp_send_json_error( $data );
 		}
 
-		$this->cdn_options->enable();
+		$source_raw = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
+		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
+
+		$this->activate_pro_and_track( $source );
 
 		$subscription = $this->api_client->get_subscription_data();
 
 		$this->schedule_subscription_check( $subscription );
 		$this->delete_process();
+
+		$data['message'] = 'rocketcdn_enabled';
+
+		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Enables RocketCDN Pro and tracks the activation exactly once per purchase.
+	 *
+	 * The checkout-redirect and iframe AJAX flows can both run for one purchase; the
+	 * short-lived lock below ensures only the first to arrive tracks it, the rest are no-ops.
+	 *
+	 * @param string $source Attribution source for the purchase (e.g. 'banner_cta', 'dashboard_upgrade').
+	 *
+	 * @return void
+	 */
+	private function activate_pro_and_track( string $source ): void {
+		if ( get_transient( self::PURCHASE_TRACKED_LOCK ) ) {
+			return;
+		}
+		set_transient( self::PURCHASE_TRACKED_LOCK, true, MINUTE_IN_SECONDS );
+
+		$this->cdn_options->enable();
 
 		$this->track_event(
 			'RocketCDN Mode Changed',
@@ -300,9 +317,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			]
 		);
 
-		$source_raw = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
-		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
-
 		$this->track_event(
 			'RocketCDN Pro Activated',
 			[
@@ -310,10 +324,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 				'preserved_free_pages_count' => $this->query->get_total_count(),
 			]
 		);
-
-		$data['message'] = 'rocketcdn_enabled';
-
-		wp_send_json_success( $data );
 	}
 
 	/**

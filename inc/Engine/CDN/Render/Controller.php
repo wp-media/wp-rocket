@@ -631,12 +631,19 @@ class Controller extends Abstract_Render {
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
+		$settings = $this->options_api->get( 'settings', [] );
+
 		// Resume leg: the forced-off condition has just cleared.
 		if ( ! $is_forced ) {
-			$cdn_mode = $this->context->get_cdn_state();
+			$cdn_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
 
-			// A switch-away, not a recovery. subscription was cancelled.
-			if ( Context::CDN_STATE_NOTHING === $cdn_mode || Context::BYOCDN_TYPE === $cdn_mode ) {
+			// Bail out and don't track when BYOCDN is the applied mode.
+			if ( Context::BYOCDN_TYPE === $cdn_mode ) {
+				return;
+			}
+
+			// Bail out and don't track when mode automatcially switches to nothing after cancellation.
+			if ( Context::CDN_STATE_NOTHING === $cdn_mode ) {
 				return;
 			}
 
@@ -656,7 +663,6 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		$settings        = $this->options_api->get( 'settings', [] );
 		$pre_expiry_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
 
 		$this->track_event(
@@ -947,11 +953,9 @@ class Controller extends Abstract_Render {
 		// get_applied_cdn_state() would otherwise classify a frozen, possibly-outdated value.
 		$settings = $this->options_api->get( 'settings', [] );
 
-		// Bail out early on every other admin request: this only matters on the WP Rocket
-		// settings page, while on the RocketCDN driver (and not BYOCDN, which
-		// get_applied_cdn_state() collapses rocketcdn_free/rocketcdn_paid away from).
 		$screen = get_current_screen();
-		if ( ! $screen || 'settings_page_wprocket' !== $screen->id || Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state( $settings['cdn_state'] ?? null ) ) {
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ||
+			Context::ROCKETCDN_TYPE !== $this->context->get_applied_cdn_state( $settings['cdn_state'] ?? null ) ) {
 			return;
 		}
 
@@ -1106,9 +1110,23 @@ class Controller extends Abstract_Render {
 	 * @return void
 	 */
 	public function render_cancelled_banner_notice(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		if ( ! $this->subscription_controller->is_in_grace_period() ) {
 			return;
 		}
+
+		$this->track_event(
+			'RocketCDN Pending Cancellation Banner Viewed',
+			[
+				'stage'          => 'grace_period',
+				// The grace period's actual length/end date isn't currently exposed
+				// by the RocketCDN subscription API so null is used here instead.
+				'days_remaining' => null,
+			]
+		);
 
 		echo $this->generate( 'partials/cdn/wpr-cancelled-notice', [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
