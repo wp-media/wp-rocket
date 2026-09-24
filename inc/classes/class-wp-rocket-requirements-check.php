@@ -198,7 +198,7 @@ class WP_Rocket_Requirements_Check {
 		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
 		set_site_transient( 'update_plugins', $plugin_transient );
 
-		if ( ! class_exists( 'Plugin_Upgrader_Skin' ) ) {
+		if ( ! class_exists( 'Plugin_Upgrader' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		}
 		// translators: %s is the plugin name.
@@ -211,12 +211,19 @@ class WP_Rocket_Requirements_Check {
 		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
 
 		$upgrader->init();
-		$upgrader->maintenance_mode( true );
+		$upgrader->skin->header();
 
-		try {
-			$upgrader->upgrade( $plugin );
-		} finally {
-			$upgrader->maintenance_mode( false );
+		// Connect to the filesystem first; maintenance_mode() relies on $wp_filesystem (not self-initialized before WP 6.6).
+		if ( ! $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
+			$upgrader->skin->footer();
+		} else {
+			$upgrader->maintenance_mode( true );
+
+			try {
+				$upgrader->upgrade( $plugin );
+			} finally {
+				$upgrader->maintenance_mode( false );
+			}
 		}
 
 		wp_die(

@@ -27,6 +27,13 @@ class Test_Rollback extends TestCase {
 	private $upgrader;
 
 	/**
+	 * Mocked Event_Manager instance injected into the subject.
+	 *
+	 * @var Mockery\MockInterface|Event_Manager
+	 */
+	private $event_manager;
+
+	/**
 	 * Defines the plugin constants used by rollback() once for the whole test class.
 	 */
 	public static function setUpBeforeClass(): void {
@@ -47,6 +54,10 @@ class Test_Rollback extends TestCase {
 		if ( ! defined( 'WP_CONTENT_DIR' ) ) {
 			define( 'WP_CONTENT_DIR', '/path/to/wp-content' );
 		}
+
+		if ( ! defined( 'WP_PLUGIN_DIR' ) ) {
+			define( 'WP_PLUGIN_DIR', '/path/to/wp-content/plugins' );
+		}
 	}
 
 	/**
@@ -65,28 +76,79 @@ class Test_Rollback extends TestCase {
 
 		$this->upgrader = Mockery::mock( Plugin_Upgrader::class );
 
-		unset( $_GET['_wpnonce'] );
+		// Reset rather than unset(): some other unit test in the suite may have
+		// `unset( $_GET )` entirely (a superglobal, so that removes it process-wide),
+		// which would make `unset( $_GET['_wpnonce'] )` fatal with "Undefined variable".
+		$_GET = [];
 	}
 
 	/**
 	 * Tears down the test.
 	 */
 	protected function tearDown(): void {
-		unset( $_GET['_wpnonce'] );
+		$_GET = [];
 
 		parent::tearDown();
 	}
 
 	/**
-	 * Asserts that init() -> maintenance_mode(true) -> upgrade() -> maintenance_mode(false)
-	 * always run in that order, and that maintenance mode is always disabled afterward,
-	 * whatever the result of upgrade().
+	 * Asserts that init() -> skin->header() -> fs_connect() -> maintenance_mode(true) ->
+	 * upgrade() -> maintenance_mode(false) always run in that order, and that maintenance
+	 * mode is always disabled afterward, whatever the result of upgrade().
 	 *
 	 * @dataProvider upgradeResultProvider
 	 *
 	 * @param bool|\WP_Error $upgrade_result Value returned by Plugin_Upgrader::upgrade().
 	 */
 	public function testShouldEnableMaintenanceModeAroundUpgradeAndAlwaysDisableItAfter( $upgrade_result ): void {
+		$skin = $this->configureCommonExpectations();
+
+		$this->upgrader->shouldReceive( 'init' )->once()->ordered();
+		$skin->shouldReceive( 'header' )->once()->ordered();
+		$this->upgrader->shouldReceive( 'fs_connect' )->once()->with( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] )->andReturn( true )->ordered();
+		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( true )->ordered();
+		$this->upgrader->shouldReceive( 'upgrade' )->once()->with( 'wp-rocket/wp-rocket.php' )->andReturn( $upgrade_result )->ordered();
+		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( false )->ordered();
+		$skin->shouldReceive( 'footer' )->never();
+
+		$this->getSubject()->rollback();
+	}
+
+	/**
+	 * Asserts that when the filesystem connection fails, maintenance mode is never
+	 * enabled and upgrade() is never called, mirroring core's bulk_upgrade() behaviour.
+	 */
+	public function testShouldNotEnableMaintenanceModeWhenFilesystemConnectionFails(): void {
+		$skin = $this->configureCommonExpectations();
+
+		$this->upgrader->shouldReceive( 'init' )->once()->ordered();
+		$skin->shouldReceive( 'header' )->once()->ordered();
+		$this->upgrader->shouldReceive( 'fs_connect' )->once()->with( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] )->andReturn( false )->ordered();
+		$skin->shouldReceive( 'footer' )->once()->ordered();
+		$this->upgrader->shouldReceive( 'maintenance_mode' )->never();
+		$this->upgrader->shouldReceive( 'upgrade' )->never();
+
+		$this->getSubject()->rollback();
+	}
+
+	/**
+	 * Provides the different values Plugin_Upgrader::upgrade() may return.
+	 */
+	public function upgradeResultProvider(): array {
+		return [
+			'upgrade succeeds'           => [ true ],
+			'upgrade returns false'      => [ false ],
+			'upgrade returns a WP_Error' => [ new \WP_Error( 'error', 'Download failed' ) ],
+		];
+	}
+
+	/**
+	 * Stubs everything rollback() executes before reaching the upgrader sequence,
+	 * and attaches a mocked skin to the upgrader mock.
+	 *
+	 * @return Mockery\MockInterface Mocked Plugin_Upgrader_Skin, accessible via $upgrader->skin.
+	 */
+	private function configureCommonExpectations() {
 		$_GET['_wpnonce'] = 'nonce';
 
 		Functions\when( 'sanitize_key' )->returnArg();
@@ -114,13 +176,23 @@ class Test_Rollback extends TestCase {
 		Functions\when( 'add_filter' )->justReturn( true );
 		Functions\expect( 'rocket_put_content' )->once();
 
-		$this->upgrader->shouldReceive( 'init' )->once()->ordered();
-		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( true )->ordered();
-		$this->upgrader->shouldReceive( 'upgrade' )->once()->with( 'wp-rocket/wp-rocket.php' )->andReturn( $upgrade_result )->ordered();
-		$this->upgrader->shouldReceive( 'maintenance_mode' )->once()->with( false )->ordered();
-
 		Functions\expect( 'wp_die' )->once();
 
+		$skin                 = Mockery::mock( 'Plugin_Upgrader_Skin' );
+		$this->upgrader->skin = $skin;
+
+		$this->event_manager = $event_manager;
+
+		return $skin;
+	}
+
+	/**
+	 * Builds the UpdaterSubscriber partial mock under test, with get_plugin_upgrader()
+	 * overridden to return the mocked Plugin_Upgrader instance.
+	 *
+	 * @return Mockery\MockInterface|UpdaterSubscriber
+	 */
+	private function getSubject() {
 		$renewal_notice = Mockery::mock( RenewalNotice::class );
 		$subject        = Mockery::mock(
 			UpdaterSubscriber::class . '[get_plugin_upgrader]',
@@ -135,19 +207,8 @@ class Test_Rollback extends TestCase {
 		);
 		$subject->shouldAllowMockingProtectedMethods();
 		$subject->shouldReceive( 'get_plugin_upgrader' )->once()->andReturn( $this->upgrader );
-		$subject->set_event_manager( $event_manager );
+		$subject->set_event_manager( $this->event_manager );
 
-		$subject->rollback();
-	}
-
-	/**
-	 * Provides the different values Plugin_Upgrader::upgrade() may return.
-	 */
-	public function upgradeResultProvider(): array {
-		return [
-			'upgrade succeeds'           => [ true ],
-			'upgrade returns false'      => [ false ],
-			'upgrade returns a WP_Error' => [ new \WP_Error( 'error', 'Download failed' ) ],
-		];
+		return $subject;
 	}
 }

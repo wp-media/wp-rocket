@@ -470,7 +470,7 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		set_site_transient( 'update_plugins', $plugin_transient );
 
-		if ( ! class_exists( 'Plugin_Upgrader_Skin' ) ) {
+		if ( ! class_exists( 'Plugin_Upgrader' ) ) {
 			// @phpstan-ignore-next-line
 			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 		}
@@ -485,16 +485,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 		add_filter( 'update_plugin_complete_actions', [ $this, 'rollback_add_return_link' ] );
 		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 
-		// Ensure $upgrader->strings is populated before maintenance_mode() so the skin
-		// feedback resolves the localized "Enabling/Disabling Maintenance mode…" copy
-		// instead of echoing the raw string key (mirrors core's own bulk_upgrade()).
 		$upgrader->init();
-		$upgrader->maintenance_mode( true );
+		$upgrader->skin->header();
 
-		try {
-			$upgrader->upgrade( $plugin );
-		} finally {
-			$upgrader->maintenance_mode( false );
+		// Connect to the filesystem first; maintenance_mode() relies on $wp_filesystem (not self-initialized before WP 6.6).
+		if ( ! $upgrader->fs_connect( [ WP_CONTENT_DIR, WP_PLUGIN_DIR ] ) ) {
+			$upgrader->skin->footer();
+		} else {
+			$upgrader->maintenance_mode( true );
+
+			try {
+				$upgrader->upgrade( $plugin );
+			} finally {
+				$upgrader->maintenance_mode( false );
+			}
 		}
 
 		wp_die(
