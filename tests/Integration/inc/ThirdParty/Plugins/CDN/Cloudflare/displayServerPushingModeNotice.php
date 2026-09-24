@@ -39,6 +39,7 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_server_pushing_mode_notice' );
 	}
 
 	public function tear_down()
@@ -46,12 +47,9 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
         remove_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
 
-		$this->restoreWpHook( 'current_screen' );
-
-		// admin_notices fires every registered subscriber, not just Cloudflare's; ModPagespeed's
-		// detection ping (also mocked below) caches its result for a day, so clear that cache
-		// rather than leak a stale value into whichever test runs it next in this process.
-		delete_transient( 'rocket_mod_pagespeed_enabled' );
+		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
+		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
+		$this->restoreWpHook( 'admin_notices' );
 
 		$this->tear_down_http();
 
@@ -67,25 +65,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 
 		$this->constants['CLOUDFLARE_PLUGIN_DIR'] = true;
         $this->constants['CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE'] = $config['server_push'];
-
-		// admin_notices fires every registered subscriber, not just Cloudflare's; these URLs
-		// belong to RocketCDN's subscription check (a non-404 status avoids its website-search
-		// fallback call) and ModPagespeed's detection ping, both of which run unconditionally on
-		// that hook for an admin on the wprocket settings screen.
-		$this->config['http'] = [
-			'https://rocketcdn.me/api/subscription/example.org/status' => [
-				'headers'  => [],
-				'body'     => wp_json_encode( [ 'success' => false ] ),
-				'response' => [ 'code' => 200 ],
-				'cookies'  => [],
-			],
-			'http://example.org' => [
-				'headers'  => [],
-				'body'     => '',
-				'response' => [ 'code' => 200 ],
-				'cookies'  => [],
-			],
-		];
 
         if ( $config['capability'] ) {
             $user_id = self::$admin_user_id;
