@@ -198,16 +198,27 @@ class WP_Rocket_Requirements_Check {
 		$plugin_transient->response[ $plugin_folder . '/' . $plugin_file ] = $temp_object;
 		set_site_transient( 'update_plugins', $plugin_transient );
 
-		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		if ( ! class_exists( 'Plugin_Upgrader_Skin' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		}
 		// translators: %s is the plugin name.
 		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), $this->plugin_name );
 		$plugin        = 'wp-rocket/wp-rocket.php';
 		$nonce         = 'upgrade-plugin_' . $plugin;
 		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
 		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
-		$upgrader      = new Plugin_Upgrader( $upgrader_skin );
+		$upgrader      = $this->get_plugin_upgrader( $upgrader_skin );
 		remove_filter( 'site_transient_update_plugins', 'rocket_check_update', 1 );
-		$upgrader->upgrade( $plugin );
+
+		$upgrader->init();
+		$upgrader->maintenance_mode( true );
+
+		try {
+			$upgrader->upgrade( $plugin );
+		} finally {
+			$upgrader->maintenance_mode( false );
+		}
+
 		wp_die(
 			'',
 			// translators: %s is the plugin name.
@@ -216,6 +227,20 @@ class WP_Rocket_Requirements_Check {
 				'response' => 200,
 			]
 		);
+	}
+
+	/**
+	 * Gets a Plugin_Upgrader instance.
+	 *
+	 * Extracted to its own method so tests can substitute a test double.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param Plugin_Upgrader_Skin $skin Upgrader skin instance.
+	 * @return Plugin_Upgrader
+	 */
+	protected function get_plugin_upgrader( Plugin_Upgrader_Skin $skin ) {
+		return new Plugin_Upgrader( $skin );
 	}
 
 	/**

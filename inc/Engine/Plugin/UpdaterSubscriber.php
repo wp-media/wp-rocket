@@ -470,20 +470,32 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 
 		set_site_transient( 'update_plugins', $plugin_transient );
 
-		// @phpstan-ignore-next-line
-		require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		if ( ! class_exists( 'Plugin_Upgrader_Skin' ) ) {
+			// @phpstan-ignore-next-line
+			require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
+		}
 
 		// translators: %s is the plugin name.
 		$title         = sprintf( __( '%s Update Rollback', 'rocket' ), WP_ROCKET_PLUGIN_NAME );
 		$nonce         = 'upgrade-plugin_' . $plugin;
 		$url           = 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( $plugin );
 		$upgrader_skin = new Plugin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'plugin' ) );
-		$upgrader      = new Plugin_Upgrader( $upgrader_skin );
+		$upgrader      = $this->get_plugin_upgrader( $upgrader_skin );
 
 		add_filter( 'update_plugin_complete_actions', [ $this, 'rollback_add_return_link' ] );
 		rocket_put_content( WP_CONTENT_DIR . '/advanced-cache.php', '' );
 
-		$upgrader->upgrade( $plugin );
+		// Ensure $upgrader->strings is populated before maintenance_mode() so the skin
+		// feedback resolves the localized "Enabling/Disabling Maintenance mode…" copy
+		// instead of echoing the raw string key (mirrors core's own bulk_upgrade()).
+		$upgrader->init();
+		$upgrader->maintenance_mode( true );
+
+		try {
+			$upgrader->upgrade( $plugin );
+		} finally {
+			$upgrader->maintenance_mode( false );
+		}
 
 		wp_die(
 			'',
@@ -493,6 +505,20 @@ class UpdaterSubscriber implements Event_Manager_Aware_Subscriber_Interface {
 				'response' => 200,
 			]
 		);
+	}
+
+	/**
+	 * Gets a Plugin_Upgrader instance.
+	 *
+	 * Extracted to its own method so tests can substitute a test double.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param Plugin_Upgrader_Skin $skin Upgrader skin instance.
+	 * @return Plugin_Upgrader
+	 */
+	protected function get_plugin_upgrader( Plugin_Upgrader_Skin $skin ) {
+		return new Plugin_Upgrader( $skin );
 	}
 
 	/**
