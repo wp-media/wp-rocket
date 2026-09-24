@@ -69,7 +69,7 @@ return [
 		],
 		'expected' => [
 			'class_contains' => '',
-			'details'        => '<strong>Start with your homepages and add up to 2 more key pages.</strong> Includes unlimited traffic across 10 edge locations.',
+			'details'        => '<strong>Start with your homepage and add up to 2 more key pages.</strong> Includes unlimited traffic across 10 edge locations.',
 		],
 	],
 

@@ -55,6 +55,20 @@ class Test_DisableCdnModeToggle extends TestCase {
 					"is_forced_off for $key should match expected value."
 				);
 			}
+
+			if ( isset( $section_expected['status_indicator'] ) ) {
+				$this->assertArrayHasKey( 'status_indicator', $result[ $key ], "status_indicator for $key should exist in result." );
+
+				if ( isset( $section_expected['status_indicator']['is_active'] ) ) {
+					$this->assertSame(
+						$section_expected['status_indicator']['is_active'],
+						$result[ $key ]['status_indicator']['is_active'] ?? null,
+						"status_indicator.is_active for $key should match expected value."
+					);
+				}
+			} else {
+				$this->assertArrayNotHasKey( 'status_indicator', $result[ $key ], "status_indicator for $key should not be added." );
+			}
 		}
 	}
 

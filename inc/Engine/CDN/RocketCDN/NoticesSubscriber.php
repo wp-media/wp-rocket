@@ -469,14 +469,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_rocketcdn_notice() {
-		/**
-		 * Filters showing rocketcdn admin notices
-		 *
-		 * @since 3.22
-		 *
-		 * @param bool $show_rocketcdn_notices Show rocketcdn notices, by default it's shown.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_hide_rocketcdn_notices', false ) ) {
+		if ( $this->should_hide_notices() ) {
 			return;
 		}
 
@@ -611,6 +604,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_major_release_notice( string $major_version ): void {
+		if ( $this->should_hide_notices() ) {
+			return;
+		}
+
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
 		if ( ! empty( $rocket_cdn_token ) ) {
@@ -668,5 +665,21 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function get_major_release_notice_key( string $major_version ): string {
 		return 'rocket_major_release_notice_' . str_replace( '.', '_', $major_version );
+	}
+
+	/**
+	 * Checks whether RocketCDN admin notices should be hidden.
+	 *
+	 * @return bool
+	 */
+	private function should_hide_notices(): bool {
+		/**
+		 * Filters showing rocketcdn admin notices
+		 *
+		 * @since 3.22
+		 *
+		 * @param bool $show_rocketcdn_notices Show rocketcdn notices, by default it's shown.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_hide_rocketcdn_notices', false );
 	}
 }
