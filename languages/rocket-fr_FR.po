@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23.4-alpha2\n"
+"Project-Id-Version: WP Rocket 3.23.4-alpha3\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-09-23T06:54:07+00:00\n"
+"POT-Creation-Date: 2026-09-23T08:30:50+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -3563,11 +3563,11 @@ msgstr "Renouvelez pour utiliser RocketCDN."
 #: inc/Engine/CDN/Render/Controller.php:1046
 #, php-format
 msgid ""
-"%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes "
+"%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
 "unlimited traffic across 10 edge locations."
 msgstr ""
-"%1$sCommencez par votre page d'accueil et ajoutez jusqu'à 2 pages clés "
-"supplémentaires.%2$s Trafic illimité depuis 10 emplacements edge."
+"%1$sCommencez par votre page d'accueil et ajoutez jusqu'à 2 autres pages "
+"clés.%2$sTrafic illimité depuis 10 emplacements edge."
 
 #: inc/Engine/CDN/Render/Controller.php:1059
 msgid "Renew now to keep using RocketCDN Free."
