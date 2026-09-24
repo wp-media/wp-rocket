@@ -132,10 +132,10 @@ class Test_MaybeSyncForcedOffTrackingState extends TestCase {
 			$this->context->shouldReceive( 'get_forced_off_reason' )->andReturn( $config['reason'] );
 		}
 
-		if ( array_key_exists( 'settings_cdn_state', $config ) ) {
+		if ( $expected['update_option_called'] ) {
 			$this->options_api->shouldReceive( 'get' )
 				->with( 'settings', [] )
-				->andReturn( [ 'cdn_state' => $config['settings_cdn_state'] ] );
+				->andReturn( [ 'cdn_state' => $config['settings_cdn_state'] ?? ( $config['cdn_state'] ?? null ) ] );
 		}
 
 		if ( array_key_exists( 'cdn_state', $config ) ) {
