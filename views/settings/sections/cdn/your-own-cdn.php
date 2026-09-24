@@ -16,15 +16,35 @@
  *     @type string $class       Section classes.
  *     @type string $help        Data to pass to beacon.
  *     @type string $page        Page section identifier.
+ *     @type bool   $is_active   Whether BYOCDN is the currently applied CDN mode.
+ *     @type bool   $is_forced_off Whether the mode toggle must be disabled (e.g. a hosting compatibility layer manages CDN itself).
+ *     @type bool   $show_no_cname_warning Whether to display the missing-CNAME warning (BYOCDN active, no CNAME configured).
+ *     @type string $toggle_tooltip Tooltip shown on the mode toggle when $is_forced_off is true.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
-
+$rocket_byocdn_active = $data['is_active'];
 ?>
 
-<div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?>">
-	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
+<?php // wpr-cdn-active-indicator is kept in sync with JS (cdn-driver.js), which reads it off .wpr-optionHeader to find the previously-active mode on a failed switch — it no longer drives any visible styling on this header itself. ?>
+<div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?><?php echo $rocket_byocdn_active ? ' wpr-cdn-active-indicator' : ''; ?>">
+	<div class="wpr-optionHeader__title-group">
+		<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
+		<?php
+		$this->render_parts_with_data(
+			'cdn/cdn-mode-toggle',
+			[
+				'id'            => 'wpr-byocdn-toggle',
+				'cdn_mode'      => 'byocdn',
+				'checked'       => $rocket_byocdn_active,
+				'is_forced_off' => $data['is_forced_off'],
+				'label'         => __( 'Enable Other CDN', 'rocket' ),
+				'tooltip'       => $data['toggle_tooltip'],
+			]
+		);
+		?>
+	</div>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
 	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
@@ -42,6 +62,15 @@ defined( 'ABSPATH' ) || exit;
 	<?php if ( ! empty( $data['description'] ) ) : ?>
 	<div class="wpr-fieldsContainer-description">
 		<?php echo $data['description']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
+	</div>
+	<?php endif; ?>
+	<?php if ( ! empty( $data['show_no_cname_warning'] ) ) : ?>
+	<div class="wpr-rocketcdn-notice wpr-rocketcdn-notice__warning">
+		<div class="wpr-notice-container">
+			<div class="wpr-notice-70">
+				<p><?php esc_html_e( "Add the CNAME provided by your CDN service to configure your own CDN, then save to apply it. If you don't have a CNAME, you can use RocketCDN Free without any setup.", 'rocket' ); ?></p>
+			</div>
+		</div>
 	</div>
 	<?php endif; ?>
 	<?php $this->render_settings_fields( $data['page'], $data['id'] ); ?>

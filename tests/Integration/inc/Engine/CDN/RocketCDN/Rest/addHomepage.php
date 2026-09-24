@@ -52,6 +52,19 @@ class Test_AddHomepage extends RESTfulTestCase {
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
 		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
+
+		// add_page() calls create_subscription() before inserting the page. Simulate an
+		// already-active subscription so it short-circuits without an external API call
+		// (matches the pattern used in AddPage.php).
+		set_transient(
+			'rocketcdn_status',
+			[
+				'subscription_status' => 'running',
+				'cdn_url'              => 'example1.org',
+			],
+			HOUR_IN_SECONDS
+		);
+
 		self::truncateRocketCDNTable();
 	}
 
@@ -59,6 +72,7 @@ class Test_AddHomepage extends RESTfulTestCase {
 		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
 		wp_set_current_user( 0 );
 		self::truncateRocketCDNTable();
+		delete_transient( 'rocketcdn_status' );
 		parent::tear_down();
 	}
 

@@ -58,12 +58,20 @@ class trackEventTest extends TestCase {
 				return array_merge( (array) $defaults, (array) $args );
 			}
 		);
+		Functions\when( 'esc_url_raw' )->returnArg();
+		Functions\when( 'wp_unslash' )->returnArg();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		if ( isset( $config['request_uri'] ) ) {
+			$_SERVER['REQUEST_URI'] = $config['request_uri'];
+		} else {
+			unset( $_SERVER['REQUEST_URI'] );
+		}
+
 		$this->optin->shouldReceive( 'can_track' )
 			->once()
 			->andReturn( $config['can_track'] );
