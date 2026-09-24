@@ -631,9 +631,11 @@ class Controller extends Abstract_Render {
 		// Clear whole cache.
 		$this->cache->clear_all_cache();
 
+		$settings = $this->options_api->get( 'settings', [] );
+
 		// Resume leg: the forced-off condition has just cleared.
 		if ( ! $is_forced ) {
-			$cdn_mode = $this->context->get_cdn_state();
+			$cdn_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
 
 			// Bail out and don't track when BYOCDN is the applied mode.
 			if ( Context::BYOCDN_TYPE === $cdn_mode ) {
@@ -661,7 +663,6 @@ class Controller extends Abstract_Render {
 			return;
 		}
 
-		$settings        = $this->options_api->get( 'settings', [] );
 		$pre_expiry_mode = $this->context->get_cdn_state( $settings['cdn_state'] );
 
 		$this->track_event(
