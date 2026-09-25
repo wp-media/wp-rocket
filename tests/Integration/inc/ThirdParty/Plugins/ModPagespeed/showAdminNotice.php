@@ -27,9 +27,24 @@ class Test_ShowAdminNotice extends TestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
+		// Isolate from other admin_notices callbacks (e.g. RocketCDN's activation_failed_notice,
+		// which would otherwise make its own real HTTP request through the same pre_http_request
+		// filter this test sets up for ModPagespeed's own request).
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'show_admin_notice', 10 );
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_http_request', [ $this, 'bypass_request'] );
 		delete_transient( 'rocket_mod_pagespeed_enabled' );
+
+		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

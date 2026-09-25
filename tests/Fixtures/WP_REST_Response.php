@@ -1,7 +1,9 @@
 <?php
 
 if ( ! class_exists( 'WP_REST_Response' ) ) {
+
 	class WP_REST_Response {
+
 		private $data;
 		private $status;
 

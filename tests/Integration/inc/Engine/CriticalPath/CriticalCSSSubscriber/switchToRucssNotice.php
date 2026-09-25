@@ -39,6 +39,8 @@ class Test_switchToRucssNotice extends TestCase {
 
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down()
@@ -48,6 +50,7 @@ class Test_switchToRucssNotice extends TestCase {
 		remove_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 		update_user_meta( get_current_user_id(), 'rocket_boxes', [] );
 		set_current_screen( 'front' );
+		$this->restoreWpHook( 'current_screen' );
 		parent::tear_down();
 	}
 
