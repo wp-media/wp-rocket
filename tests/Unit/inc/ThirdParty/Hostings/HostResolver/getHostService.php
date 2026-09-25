@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -23,6 +24,8 @@ class Test_GetHostResolver extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
@@ -48,6 +51,17 @@ class Test_GetHostResolver extends TestCase {
 				break;
 			case 'onecom':
 				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
+				break;
+			case 'presslabs':
+				if ( ! defined( 'PL_INSTANCE_REF' ) ) {
+					define( 'PL_INSTANCE_REF', 'test-instance' );
+				}
+				if ( ! defined( 'WP_CONTENT_DIR' ) ) {
+					define( 'WP_CONTENT_DIR', WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Presslabs' );
+				}
+				if ( ! class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
+					Mockery::mock( 'overload:Presslabs\Cache\CacheHandler' );
+				}
 				break;
 			default:
 				break;
