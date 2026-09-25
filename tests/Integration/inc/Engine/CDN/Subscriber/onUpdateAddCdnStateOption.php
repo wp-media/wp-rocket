@@ -3,7 +3,9 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Integration test covering the full hook chain for the cdn_state migration.
@@ -20,6 +22,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  AdminOnly
  */
 class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
+	use HttpRequestTrait;
 
 	/**
 	 * Settings present before this test, restored in tear_down.
@@ -35,6 +38,8 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		$this->options          = new Options( 'wp_rocket_' );
 		$this->original_settings = $this->options->get( 'settings', [] );
@@ -64,6 +69,8 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		$this->options->set( 'settings', $this->original_settings );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
@@ -72,10 +79,44 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 	}
 
 	/**
+	 * Builds the RocketCDN subscription-status endpoint's mocked HTTP response from the
+	 * fixture's `subscription` shape, matching APIClient::get_remote_subscription_data()'s
+	 * mapping of the raw API body.
+	 *
+	 * @param array $subscription Fixture's `subscription` value.
+	 *
+	 * @return array
+	 */
+	private function subscription_status_response( array $subscription ): array {
+		if ( 'running' !== ( $subscription['subscription_status'] ?? '' ) ) {
+			return [ 'response' => [ 'code' => 404 ], 'body' => '' ];
+		}
+
+		return [
+			'response' => [ 'code' => 200 ],
+			'body'     => wp_json_encode(
+				[
+					'success'   => true,
+					'status'    => 'running',
+					'plan_type' => $subscription['plan_type'] ?? 'free',
+				]
+			),
+		];
+	}
+
+	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldMigrateAsExpected( array $config, array $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'], MINUTE_IN_SECONDS );
+
+		// R4: the CNAME-guard branch of on_update_add_cdn_state_option calls
+		// SubscriptionController::has_active_subscription(), which falls back to this
+		// endpoint when the transient it reads is unset at that point in the flow.
+		$host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
+		$url  = sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, $host );
+
+		$this->config['http'][ $url ] = $this->subscription_status_response( $config['subscription'] );
 
 		// Control Options_Data in-memory reads used by on_update_add_cdn_type_option.
 		if ( ! empty( $config['cdn_enabled'] ) ) {
