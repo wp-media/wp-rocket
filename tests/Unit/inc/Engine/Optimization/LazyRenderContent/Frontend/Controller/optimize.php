@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\LazyRenderContent\Frontend\Controller;
 
 use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Context\Context;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Rows\LazyRenderContent as LRCRow;
@@ -27,6 +28,8 @@ class TestOptimize extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $html, $expected ) {
+		Functions\when( 'rocket_bypass' )->justReturn( false );
+
 		Filters\expectApplied( 'rocket_disable_meta_generator' )
 			->atMost()
 			->once()

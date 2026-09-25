@@ -102,7 +102,7 @@ class Controller implements ControllerInterface {
 	 * @return string
 	 */
 	private function add_css( $html ) {
-		$css = '<style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto;}</style>';
+		$css = '<style id="rocket-lazyrender-inline-css">[data-wpr-lazyrender] {content-visibility: auto; contain-intrinsic-size: 0 0;}@supports (-webkit-touch-callout: none) {[data-wpr-lazyrender]{content-visibility:visible!important;}}</style>';
 
 		$result = preg_replace( '/<\/head>/i', $css . '</head>', $html, 1 );
 
