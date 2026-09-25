@@ -2,7 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
+use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_retry_activation
@@ -11,6 +15,7 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group RocketCDN
  */
 class Test_MaybeRetryActivation extends AdminTestCase {
+	use HttpRequestTrait;
 
 	/**
 	 * Original user ID.
@@ -27,21 +32,16 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 	private $subscriber;
 
 	/**
-	 * Track API call count for mocking.
-	 *
-	 * @var int
-	 */
-	private $subscription_api_call_count = 0;
-
-	/**
-	 * Flag to indicate if activation was called.
+	 * Whether an outbound HTTP request was attempted, set by count_any_request().
 	 *
 	 * @var bool
 	 */
-	private $activation_api_called = false;
+	private $api_request_made = false;
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -53,10 +53,6 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
 		$this->reset_wp_rocket_settings();
-
-		// Reset counters.
-		$this->subscription_api_call_count = 0;
-		$this->activation_api_called       = false;
 
 		// This method only runs on the WP Rocket settings page; scenarios that need a
 		// different screen (e.g. the screen-guard test) override this explicitly.
@@ -72,10 +68,11 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
-		remove_all_filters( 'pre_http_request' );
 		$this->reset_wp_rocket_settings();
 
 		$this->restoreWpHook( 'current_screen' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -110,77 +107,55 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			update_option( 'rocketcdn_user_token', $config['token'] );
 		}
 
-		// Mock API responses.
-		if ( isset( $config['subscription_data'] ) || isset( $config['activation_success'] ) || isset( $config['user_data'] ) ) {
-			$test = $this;
-			add_filter(
-				'pre_http_request',
-				function ( $preempt, $args, $url ) use ( $config, $test ) {
-					// Mock user endpoint (WP Rocket user.php).
-					if ( false !== strpos( $url, 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
-						if ( isset( $config['user_data'] ) ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( $config['user_data'] ),
-							];
-						}
+		// Register the user-data fixture unconditionally: it's the only one every data set
+		// may reach (the fallback lookup when no token is saved locally).
+		$this->config['http'][ UserClient::USER_ENDPOINT ] = isset( $config['user_data'] )
+			? [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['user_data'] ),
+			]
+			: [
+				'response' => [ 'code' => 404 ],
+				'body'     => '',
+			];
 
-						// Return empty response if no user_data is configured.
-						return [
-							'response' => [ 'code' => 404 ],
-							'body'     => '',
-						];
-					}
+		if ( isset( $config['subscription_data'] ) ) {
+			$build_subscription_response = static function ( array $subscription_data ) {
+				if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
+					$subscription_data['subscription_next_date_update'] = gmdate(
+						'Y-m-d H:i:s',
+						strtotime( $subscription_data['subscription_next_date_update'] )
+					);
+				}
 
-					// Mock subscription endpoint (subscription/domain/status/).
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription/example.org/status' ) ) {
-						$test->subscription_api_call_count++;
+				return [
+					'response' => [ 'code' => 200 ],
+					'body'     => wp_json_encode( $subscription_data ),
+				];
+			};
 
-						// After activation was called, return the post-activation data.
-						if (
-							$test->activation_api_called
-							&& isset( $config['subscription_data_after_activation'] )
-						) {
-							$subscription_data = $config['subscription_data_after_activation'];
-						} else {
-							$subscription_data = $config['subscription_data'];
-						}
+			$subscription_url = sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' );
 
-						if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
-							$subscription_data['subscription_next_date_update'] = gmdate(
-								'Y-m-d H:i:s',
-								strtotime( $subscription_data['subscription_next_date_update'] )
-							);
-						}
+			// A successful retry calls get_subscription_data() twice: once before the retry,
+			// once after. The trait's list-response form answers each call in turn.
+			$this->config['http'][ $subscription_url ] = isset( $config['subscription_data_after_activation'] )
+				? [
+					$build_subscription_response( $config['subscription_data'] ),
+					$build_subscription_response( $config['subscription_data_after_activation'] ),
+				]
+				: $build_subscription_response( $config['subscription_data'] );
+		}
 
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $subscription_data ),
-						];
-					}
-
-					// Mock activation endpoint (website/<id>/).
-					if ( preg_match( '/https:\/\/rocketcdn\.me\/api\/website\/\d+\/$/', $url ) ) {
-						$test->activation_api_called = true;
-
-						if ( isset( $config['activation_success'] ) && $config['activation_success'] ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( [ 'success' => true ] ),
-							];
-						}
-
-						return [
-							'response' => [ 'code' => 500 ],
-							'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
-						];
-					}
-
-					return $preempt;
-				},
-				10,
-				3
-			);
+		if ( isset( $config['activation_success'], $config['subscription_data']['website_id'] ) ) {
+			$this->config['http'][ APIClient::ROCKETCDN_API . 'website/' . $config['subscription_data']['website_id'] . '/' ] = $config['activation_success']
+				? [
+					'response' => [ 'code' => 200 ],
+					'body'     => wp_json_encode( [ 'success' => true ] ),
+				]
+				: [
+					'response' => [ 'code' => 500 ],
+					'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
+				];
 		}
 
 		// Execute the method.
@@ -220,25 +195,34 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 
 		set_current_screen( 'edit.php' );
 
-		$api_request_made = false;
-
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $args, $url ) use ( &$api_request_made ) {
-				$api_request_made = true;
-
-				return $preempt;
-			},
-			10,
-			3
-		);
+		// No fixture entry: an empty http config already fails the test on any request.
+		// The inspector also gives an assertion with a specific failure message.
+		add_filter( 'pre_http_request', [ $this, 'count_any_request' ], 9, 3 );
 
 		$this->subscriber->maybe_retry_activation();
 
-		$this->assertFalse( $api_request_made, 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
+		remove_filter( 'pre_http_request', [ $this, 'count_any_request' ], 9 );
+
+		$this->assertFalse( $this->api_request_made, 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
 
 		$settings    = get_option( 'wp_rocket_settings', [] );
 		$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
 		$this->assertFalse( $cdn_enabled, 'CDN should not be enabled when the guard bails on a non-WP Rocket screen' );
+	}
+
+	/**
+	 * Records that an outbound HTTP request was attempted, without altering the response.
+	 * Registered at priority 9, ahead of the trait's own mock at priority 10.
+	 *
+	 * @param false|array|WP_Error $response Preemptive response as received.
+	 * @param array                $args     Unused request arguments.
+	 * @param string               $url      Unused requested URL.
+	 *
+	 * @return false|array|WP_Error
+	 */
+	public function count_any_request( $response, $args, $url ) {
+		$this->api_request_made = true;
+
+		return $response;
 	}
 }

@@ -2,8 +2,12 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
+use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_rocketcdn_checkout_parameter
@@ -13,6 +17,7 @@ use WP_Rocket\Tests\Integration\DBTrait;
  */
 class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	use DBTrait;
+	use HttpRequestTrait;
 
 	/**
 	 * Original $_GET superglobal.
@@ -56,6 +61,8 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Test setup, not processing form data.
 		$this->original_get = $_GET;
 
@@ -85,7 +92,6 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'rocketcdn_purchase_tracked' );
-		remove_all_filters( 'pre_http_request' );
 		self::truncateRocketCDNTable();
 
 		// Reset any cdn_type/cdn a test case may have persisted, so it doesn't bleed
@@ -93,6 +99,8 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
 		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
 		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -132,53 +140,41 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			set_transient( 'wp_rocket_customer_data', (object) $config['user_data'] );
 		}
 
-		// Mock API responses if needed.
+		// Register the user-data fixture for every data set: flush_cache() + get_user_data()
+		// run whenever the checkout parameter is set and the user has the capability,
+		// regardless of whether activation itself is exercised.
+		$this->config['http'][ UserClient::USER_ENDPOINT ] = isset( $config['user_data'] )
+			? [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['user_data'] ),
+			]
+			: new WP_Error( 'http_request_failed', 'Mocked.' );
+
 		if ( isset( $config['api_activation_success'] ) ) {
 			$website_id = $config['user_data']['rocketcdn']['rocketcdn_website_id'];
 
-			add_filter(
-				'pre_http_request',
-				function ( $preempt, $args, $url ) use ( $website_id, $config ) {
-					// Mock user data endpoint (called after flush_cache).
-					if ( false !== strpos( $url, 'api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $config['user_data'] ),
-						];
-					}
+			$this->config['http'][ APIClient::ROCKETCDN_API . 'website/' . $website_id . '/' ] = $config['api_activation_success']
+				? [
+					'response' => [ 'code' => 200 ],
+					'body'     => wp_json_encode( [ 'success' => true ] ),
+				]
+				: [
+					'response' => [ 'code' => 500 ],
+					'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
+				];
+		}
 
-					// Mock activation endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/' . $website_id . '/' ) ) {
-						if ( $config['api_activation_success'] ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( [ 'success' => true ] ),
-							];
-						}
-						return [
-							'response' => [ 'code' => 500 ],
-							'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
-						];
-					}
-
-					// Mock subscription endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription' ) && isset( $config['api_subscription_data'] ) ) {
-						$subscription_data                                  = $config['api_subscription_data'];
-						$subscription_data['subscription_next_date_update'] = gmdate(
-							'Y-m-d H:i:s',
-							strtotime( $subscription_data['subscription_next_date_update'] )
-						);
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $subscription_data ),
-						];
-					}
-
-					return $preempt;
-				},
-				10,
-				3
+		if ( isset( $config['api_subscription_data'] ) ) {
+			$subscription_data                                  = $config['api_subscription_data'];
+			$subscription_data['subscription_next_date_update'] = gmdate(
+				'Y-m-d H:i:s',
+				strtotime( $subscription_data['subscription_next_date_update'] )
 			);
+
+			$this->config['http'][ sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' ) ] = [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $subscription_data ),
+			];
 		}
 
 		// Set an initial cdn_type before checkout, if configured (Task 8.2 regression).

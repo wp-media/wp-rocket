@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\Rest;
 
+use WP_Error;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
@@ -13,7 +15,7 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class Test_AddPage extends RESTfulTestCase {
-	use CapTrait, DBTrait;
+	use CapTrait, DBTrait, HttpRequestTrait;
 
 	private $admin_id;
 	private $post_id;
@@ -30,7 +32,7 @@ class Test_AddPage extends RESTfulTestCase {
 		parent::tear_down_after_class();
 	}
 
-	protected $config;
+	protected $config = [];
 
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
@@ -70,7 +72,7 @@ class Test_AddPage extends RESTfulTestCase {
 		$this->post_id  = $this->factory()->post->create( [ 'post_status' => 'publish', 'post_type' => 'page' ] );
 		$this->post_url = untrailingslashit( get_permalink( $this->post_id ) );
 
-		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
+		$this->setup_http();
 		set_transient(
 			'rocketcdn_status',
 			[
@@ -84,7 +86,7 @@ class Test_AddPage extends RESTfulTestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
+		$this->tear_down_http();
 
 		if ( null !== $this->cdn_state_override ) {
 			remove_filter( 'pre_get_rocket_option_cdn_state', $this->cdn_state_override );
@@ -138,37 +140,35 @@ class Test_AddPage extends RESTfulTestCase {
 		apply_filters( 'rocket_container', null )->get( 'user' )->set_user( $user_data );
 	}
 
-	public function mock_http_response( $pre, $args, $url ) {
-		if ( strpos( $url, 'this-page-does-not-exist' ) !== false ) {
-			return [
-				'response' => [
-					'code'    => 404,
-					'message' => 'Not Found',
-				],
-				'body' => '',
-			];
-		}
-		if (
-			strpos( $url, 'http://example.org' ) === 0 ||
-			strpos( $url, 'https://example.org' ) === 0 ||
-			strpos( $url, home_url() ) === 0
-		) {
-			return [
-				'response' => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'body' => '<html><head><title>Test Page</title></head><body>Test content</body></html>',
-			];
-		}
-
-		return $pre;
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
+		// Resolve the URL under test and register its fixture response up front: the
+		// 'add_first' duplicate-URL setup below issues a real REST request too, before the
+		// switch further down would otherwise compute $url.
+		if ( 'post_url' === $config['url'] ) {
+			$url = $this->post_url;
+		} elseif ( 'homepage' === $config['url'] ) {
+			$url = untrailingslashit( home_url() );
+		} else {
+			$url = $config['url'];
+		}
+
+		if ( false !== strpos( $url, 'this-page-does-not-exist' ) ) {
+			$this->config['http'][ $url ] = [
+				'response' => [ 'code' => 404, 'message' => 'Not Found' ],
+				'body'     => '',
+			];
+		} elseif ( false !== strpos( $url, 'external-site.com' ) ) {
+			$this->config['http'][ $url ] = new WP_Error( 'http_request_failed', 'Mocked.' );
+		} else {
+			$this->config['http'][ $url ] = [
+				'response' => [ 'code' => 200, 'message' => 'OK' ],
+				'body'     => '<html><head><title>Test Page</title></head><body>Test content</body></html>',
+			];
+		}
+
 		// Pre-fill table to limit if configured.
 		if ( ! empty( $config['prefill_count'] ) ) {
 			$query = apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' );
@@ -215,14 +215,6 @@ class Test_AddPage extends RESTfulTestCase {
 		// Per-case licence/reseller override (e.g. a banned reseller licence).
 		if ( ! empty( $config['user'] ) ) {
 			$this->set_user_license( $config['user'] );
-		}
-
-		if ( 'post_url' === $config['url'] ) {
-			$url = $this->post_url;
-		} elseif ( 'homepage' === $config['url'] ) {
-			$url = untrailingslashit( home_url() );
-		} else {
-			$url = $config['url'];
 		}
 
 		$params = [ 'url' => $url ];

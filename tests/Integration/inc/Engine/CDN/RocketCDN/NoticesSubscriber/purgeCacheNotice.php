@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber
 use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
@@ -15,6 +16,15 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
  */
 class Test_PurgeCacheNotice extends TestCase {
 	use IsolateHookTrait;
+	use HttpRequestTrait;
+
+	/**
+	 * HttpRequestTrait fixture config. This class has no fixture file, so it stays an
+	 * empty array unless a test populates $this->config['http'].
+	 *
+	 * @var array
+	 */
+	protected $config = [];
 
 	public static function set_up_before_class() {
 		$role = get_role( 'administrator' );
@@ -24,12 +34,25 @@ class Test_PurgeCacheNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
+
+		// ModPagespeed::has_pagespeed() is unrelated to this notice; priming the transient
+		// stops its admin_notices callback from hitting the network (home_url()).
+		set_transient( 'rocket_mod_pagespeed_enabled', 0 );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'current_screen' );
+
+		// Not explicitly deleted here: testShouldDisplayNoticeWhenTransient mocks
+		// delete_transient() with a strict once()->with('rocketcdn_purge_cache_response')
+		// expectation via Brain\Monkey, active until parent::tear_down() runs. A second,
+		// differently-argued call to the (still mocked) function here would break that
+		// expectation. WP core's per-test DB transaction rollback clears the option instead.
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
