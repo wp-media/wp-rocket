@@ -193,14 +193,19 @@ function rocket_get_ignored_parameters() {
  * @return string A pipe separated list of rejected uri.
  */
 function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	static $uris;
+	static $memo = [];
 	global $wp_rewrite;
 
+	// Kept apart by the flag: the redacted list is what the preload-links script prints into the page,
+	// and an answer built for the other flag would put the entries it hides there.
+	$key = $show_safe_content ? 'all' : 'redacted';
+
 	if ( $force ) {
-		$uris = null;
+		$memo = [];
 	}
-	if ( $uris ) {
-		return $uris;
+
+	if ( ! empty( $memo[ $key ] ) ) {
+		return $memo[ $key ];
 	}
 
 	$uris = (array) get_rocket_option( 'cache_reject_uri', [] );
@@ -270,6 +275,8 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		// Add the home directory back.
 		$uris = $home_root . '(' . $uris . ')';
 	}
+
+	$memo[ $key ] = $uris;
 
 	return $uris;
 }

@@ -352,6 +352,7 @@ class Page extends Abstract_Render {
 		$allowed = [
 			'debug_enabled'               => 1,
 			'varnish_auto_purge'          => 1,
+			'maxcache'                    => 1,
 			'do_cloudflare'               => 1,
 			'cloudflare_protocol_rewrite' => 1,
 			'sucury_waf_cache_sync'       => 1,
@@ -1861,6 +1862,64 @@ class Page extends Abstract_Render {
 				],
 			]
 		);
+
+		/**
+		 * Filters whether the MAx Cache server module is available on this host.
+		 *
+		 * The add-on answers this, and the switch is only offered where the module can actually
+		 * serve. Hosts and integrations can return true to force the switch to be shown.
+		 *
+		 * @since 3.24
+		 *
+		 * @param bool $available True when the module is installed.
+		 */
+		if ( wpm_apply_filters_typed( 'boolean', 'rocket_maxcache_available', false ) ) {
+			$maxcache_description = esc_html__( 'Cache files created by WP Rocket are delivered by the web server itself, without loading PHP.', 'rocket' );
+
+			/**
+			 * Filters the current state of the MAx Cache add-on, as HTML.
+			 *
+			 * The add-on answers this: the switch being on does not mean the module is delivering,
+			 * because a configuration it cannot reproduce exactly is handed back to the plugin.
+			 *
+			 * @since 3.24
+			 *
+			 * @param string $status Empty string when there is nothing to report.
+			 */
+			$maxcache_status = wpm_apply_filters_typed( 'string', 'rocket_maxcache_status', '' );
+
+			if ( '' !== $maxcache_status ) {
+				// Filtered text going into a slot the view echoes as it is (one-click-addon.php):
+				// every other value in that slot is a literal from this file, and this one comes
+				// from whoever hooked the filter. The markup the add-on's own status uses survives.
+				$maxcache_description .= '<br>' . wp_kses_post( $maxcache_status );
+			}
+
+			// The link goes last: every link in this block is given a top margin by the stylesheet,
+			// which reads as a gap in the middle of a sentence anywhere else.
+			$maxcache_description .= '<br><a href="' . esc_url( 'https://cloudlinux.com/max-cache/' ) . '" target="_blank" rel="noopener">'
+				. esc_html__( 'Learn more', 'rocket' ) . '</a>';
+
+			$this->settings->add_settings_fields(
+				[
+					'maxcache' => [
+						'type'              => 'one_click_addon',
+						'sanitize_callback' => 'sanitize_checkbox',
+						'label'             => __( 'MAx Cache', 'rocket' ),
+						'logo'              => [
+							'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-maxcache.svg',
+							'width'  => 152,
+							'height' => 135,
+						],
+						'title'             => __( 'Your server can deliver cached pages before WordPress and PHP are loaded.', 'rocket' ),
+						'description'       => $maxcache_description,
+						'section'           => 'one_click',
+						'page'              => 'addons',
+						'default'           => 0,
+					],
+				]
+			);
+		}
 
 		$default_cf_settings = [
 			'do_cloudflare' => [

@@ -11,6 +11,24 @@ class Tests {
 	use \WP_Rocket\Traits\Memoize;
 
 	/**
+	 * Query-string parameters a page can be cached with whatever the settings say.
+	 *
+	 * Kept here rather than inside the test that reads it, so that a consumer describing this
+	 * layout to something else — the MAx Cache add-on writes it into a server directive — names the
+	 * same parameters rather than a copy of them.
+	 *
+	 * @since 3.24
+	 *
+	 * @var array
+	 */
+	const ALWAYS_ALLOWED_QUERY_PARAMS = [
+		'lang'            => 1,
+		's'               => 1,
+		'permalink_name'  => 1,
+		'lp-variation-id' => 1,
+	];
+
+	/**
 	 * Config instance
 	 *
 	 * @var Config
@@ -530,14 +548,7 @@ class Tests {
 		}
 
 		// The page can be processed if at least one of these parameters is present.
-		$allowed_params = [
-			'lang'            => 1,
-			's'               => 1,
-			'permalink_name'  => 1,
-			'lp-variation-id' => 1,
-		];
-
-		if ( array_intersect_key( $params, $allowed_params ) ) {
+		if ( array_intersect_key( $params, self::ALWAYS_ALLOWED_QUERY_PARAMS ) ) {
 			return self::memoize( __FUNCTION__, [], true );
 		}
 
