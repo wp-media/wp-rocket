@@ -427,6 +427,7 @@ class Plugin {
 			'tracking_subscriber',
 			'logger_subscriber',
 			'optimole_subscriber',
+			'studiopress_accelerator',
 		];
 
 		$host_type = HostResolver::get_host_service();
