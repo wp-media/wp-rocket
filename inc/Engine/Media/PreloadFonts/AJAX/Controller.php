@@ -155,22 +155,24 @@ class Controller implements ControllerInterface {
 	 * @return array Filtered array of fonts, excluding those specified in the exclusion list.
 	 */
 	private function filter_fonts( array $fonts, array $exclusions ): array {
-		if ( empty( $exclusions ) ) {
-			return $fonts;
-		}
-
 		/**
 		 * Create a single regex pattern from all exclusions.
 		 * Use a different delimiter (#) to avoid issues with URLs containing slashes.
 		 */
-		$pattern    = '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
+		$pattern    = empty( $exclusions ) ? '' : '#(' . implode( '|', array_map( 'preg_quote', $exclusions ) ) . ')#i';
 		$extensions = $this->context->get_extensions();
 
 		// Filter out fonts that match the pattern.
 		$filtered_fonts = array_filter(
 			$fonts,
 			function ( $font ) use ( $pattern, $exclusions, $extensions ) {
-				if ( ! in_array( pathinfo( $font, PATHINFO_EXTENSION ), $extensions, true ) ) {
+				$path = wp_parse_url( $font, PHP_URL_PATH ) ?: $font;
+
+				if ( ! in_array( pathinfo( $path, PATHINFO_EXTENSION ), $extensions, true ) ) {
+					return false;
+				}
+
+				if ( $this->is_external_domain_path( $font ) ) {
 					return false;
 				}
 
@@ -180,10 +182,27 @@ class Controller implements ControllerInterface {
 				}
 
 				// Check for substring match using regex.
-				return ! preg_match( $pattern, $font );
+				return empty( $pattern ) || ! preg_match( $pattern, $font );
 			}
 		);
 
 		return array_values( $filtered_fonts );
+	}
+
+	/**
+	 * Checks if a font is a scheme-less external domain path.
+	 *
+	 * @param string $font Font URL or path.
+	 *
+	 * @return bool
+	 */
+	private function is_external_domain_path( string $font ): bool {
+		if ( wp_parse_url( $font, PHP_URL_SCHEME ) ) {
+			return false;
+		}
+
+		$first_path_segment = strtok( ltrim( $font, '/' ), '/' );
+
+		return is_string( $first_path_segment ) && str_contains( $first_path_segment, '.' );
 	}
 }
