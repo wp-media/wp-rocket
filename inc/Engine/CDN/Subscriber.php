@@ -642,11 +642,11 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool True if the URL should be rewritten by the CDN driver, false otherwise.
 	 */
 	private function cdn_driver_should_rewrite_url(): bool {
-		if ( $this->driver && ! $this->driver->should_rewrite_url( $this->get_current_url() ) ) {
+		if ( ! $this->driver ) {
 			return false;
 		}
 
-		return true;
+		return $this->driver->should_rewrite_url( $this->get_current_url() );
 	}
 
 	/**

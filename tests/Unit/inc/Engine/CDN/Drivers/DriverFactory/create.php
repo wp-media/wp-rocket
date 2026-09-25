@@ -43,23 +43,18 @@ class Test_Create extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldCreateCorrectDriver( array $config, ?string $expected ) {
-		$this->context->shouldReceive( 'get_driver' )
+	public function testShouldCreateCorrectDriver( array $config, string $expected ) {
+		$this->context->shouldReceive( 'get_cdn_state' )
 			->once()
-			->andReturn( $config['active_driver'] );
+			->andReturn( $config['effective_cdn_state'] );
 
-		if ( null !== $expected ) {
-			$mock_driver = Mockery::mock( DriverInterface::class );
+		$mock_driver = Mockery::mock( DriverInterface::class );
 
-			$this->container->shouldReceive( 'get' )
-				->once()
-				->with( $expected )
-				->andReturn( $mock_driver );
+		$this->container->shouldReceive( 'get' )
+			->once()
+			->with( $expected )
+			->andReturn( $mock_driver );
 
-			$this->assertSame( $mock_driver, $this->factory->create() );
-		} else {
-			$this->container->shouldNotReceive( 'get' );
-			$this->assertNull( $this->factory->create() );
-		}
+		$this->assertSame( $mock_driver, $this->factory->create() );
 	}
 }

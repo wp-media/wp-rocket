@@ -49,10 +49,20 @@ class Test_MaybeReplaceUrl extends TestCase {
 			];
 		} );
 
+		Functions\when( 'home_url' )->justReturn( 'https://example.org' );
+		Functions\when( 'add_query_arg' )->justReturn( '' );
+
 		$this->cdn        = Mockery::mock( CDN::class );
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->query = $this->createMock( RocketCDN::class );
+
+		// A driver is always present in production (DriverFactory::create() never returns
+		// null). Default it to "always allow" here so these tests, which aren't about driver
+		// gating, keep exercising maybe_replace_url()'s own logic; testShouldReturnOriginalWhenDriverReturnsFalse()
+		// below builds its own subscriber with a driver that blocks the rewrite.
+		$driver = Mockery::mock( DriverInterface::class );
+		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( true );
 
 		$this->subscriber = new Subscriber(
 			$this->options,
@@ -61,7 +71,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 			$this->subscription_controller,
 			Mockery::mock( Cache::class ),
 			$this->query,
-			Mockery::mock( CdnStateBridge::class )
+			Mockery::mock( CdnStateBridge::class ),
+			$driver
 		);
 	}
 

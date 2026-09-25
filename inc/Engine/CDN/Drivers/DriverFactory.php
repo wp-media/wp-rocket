@@ -39,12 +39,15 @@ class DriverFactory {
 	/**
 	 * Create appropriate driver based on current context
 	 *
-	 * @return DriverInterface|null Driver container ID.
+	 * Resolves from cdn_state rather than cdn_type, and never returns null: any
+	 * unrecognized or "nothing" state fails closed to the Disabled driver.
+	 *
+	 * @return DriverInterface Driver instance.
 	 */
-	public function create(): ?DriverInterface {
-		$active_driver = $this->context->get_driver();
+	public function create(): DriverInterface {
+		$cdn_state = $this->context->get_cdn_state();
 
-		switch ( $active_driver ) {
+		switch ( $cdn_state ) {
 			case Context::ROCKETCDN_FREE_TYPE:
 				return $this->container->get( 'cdn_driver_free' );
 
@@ -55,7 +58,7 @@ class DriverFactory {
 				return $this->container->get( 'cdn_driver_byocdn' );
 
 			default:
-				return null;
+				return $this->container->get( 'cdn_driver_disabled' );
 		}
 	}
 }

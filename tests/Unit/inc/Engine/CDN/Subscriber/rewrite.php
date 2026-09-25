@@ -71,4 +71,29 @@ class Test_Rewrite extends TestCase {
 
 		$this->assertSame( $expected['html'], $subscriber->rewrite( $config['html'] ) );
 	}
+
+	public function testShouldReturnOriginalHtmlAndNeverRewriteWhenNoDriver() {
+		$subscription_controller = Mockery::mock( SubscriptionController::class );
+
+		$subscriber = new Subscriber(
+			$this->options,
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$subscription_controller,
+			Mockery::mock( Cache::class ),
+			$this->createMock( RocketCDN::class ),
+			Mockery::mock( CdnStateBridge::class ),
+			null
+		);
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		$this->cdn->shouldNotReceive( 'rewrite' );
+
+		$html = '<img src="https://example.org/wp-content/uploads/image.jpg">';
+
+		$this->assertSame( $html, $subscriber->rewrite( $html ) );
+	}
 }

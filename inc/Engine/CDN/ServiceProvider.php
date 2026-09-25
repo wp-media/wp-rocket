@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\CDN\Drivers\{
 	Custom,
+	Disabled,
 	DriverFactory,
 	RocketCDNFree,
 	RocketCDNPaid
@@ -38,6 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_free',
 		'cdn_driver_paid',
 		'cdn_driver_byocdn',
+		'cdn_driver_disabled',
 		'cdn_driver',
 		'cache_controller',
 		'cdn_state_bridge',
@@ -85,9 +87,14 @@ class ServiceProvider extends AbstractServiceProvider {
 			RocketCDNPaid::class
 		)->addArgument( 'options' );
 
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_byocdn',
 			Custom::class
+		)->addArgument( 'cdn' );
+
+		$this->getContainer()->addShared(
+			'cdn_driver_disabled',
+			Disabled::class
 		);
 
 		// Register Driver Factory.
@@ -99,7 +106,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'cdn_context' );
 
 		// Register current active driver (resolved at runtime).
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver',
 			function () {
 				$factory = $this->getContainer()->get( 'cdn_driver_factory' );

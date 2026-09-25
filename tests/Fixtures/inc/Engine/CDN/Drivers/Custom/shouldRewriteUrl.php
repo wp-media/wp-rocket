@@ -1,22 +1,32 @@
 <?php
 
 return [
-	'testShouldReturnTrueForEmptyUrl'    => [
+	'testShouldReturnTrueForEmptyUrlWithHostname'    => [
 		'config'   => [
-			'url' => '',
+			'url'      => '',
+			'cdn_urls' => [ 'cdn.example.com' ],
 		],
 		'expected' => true,
 	],
-	'testShouldReturnTrueForRelativeUrl' => [
+	'testShouldReturnTrueForRelativeUrlWithHostname' => [
 		'config'   => [
-			'url' => '/some/page/',
+			'url'      => '/some/page/',
+			'cdn_urls' => [ 'cdn.example.com' ],
 		],
 		'expected' => true,
 	],
-	'testShouldReturnTrueForAbsoluteUrl' => [
+	'testShouldReturnTrueForAbsoluteUrlWithHostname' => [
 		'config'   => [
-			'url' => 'https://example.com/some/page/',
+			'url'      => 'https://example.com/some/page/',
+			'cdn_urls' => [ 'cdn.example.com' ],
 		],
 		'expected' => true,
+	],
+	'testShouldReturnFalseWhenNoHostnameConfigured'  => [
+		'config'   => [
+			'url'      => 'https://example.com/some/page/',
+			'cdn_urls' => [],
+		],
+		'expected' => false,
 	],
 ];
