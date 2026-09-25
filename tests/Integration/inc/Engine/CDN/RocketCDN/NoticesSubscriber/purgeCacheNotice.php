@@ -19,8 +19,7 @@ class Test_PurgeCacheNotice extends TestCase {
 	use HttpRequestTrait;
 
 	/**
-	 * HttpRequestTrait fixture config. This class has no fixture file, so it stays an
-	 * empty array unless a test populates $this->config['http'].
+	 * HttpRequestTrait fixture config; no fixture file for this class.
 	 *
 	 * @var array
 	 */
@@ -39,19 +38,15 @@ class Test_PurgeCacheNotice extends TestCase {
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 
-		// ModPagespeed::has_pagespeed() is unrelated to this notice; priming the transient
-		// stops its admin_notices callback from hitting the network (home_url()).
+		// Prevents ModPagespeed::has_pagespeed()'s unrelated admin_notices callback from hitting the network.
 		set_transient( 'rocket_mod_pagespeed_enabled', 0 );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'current_screen' );
 
-		// Not explicitly deleted here: testShouldDisplayNoticeWhenTransient mocks
-		// delete_transient() with a strict once()->with('rocketcdn_purge_cache_response')
-		// expectation via Brain\Monkey, active until parent::tear_down() runs. A second,
-		// differently-argued call to the (still mocked) function here would break that
-		// expectation. WP core's per-test DB transaction rollback clears the option instead.
+		// No explicit delete_transient() here: it would break a strict once() Brain\Monkey
+		// expectation some tests set on it; the DB transaction rollback clears it instead.
 		$this->tear_down_http();
 
 		parent::tear_down();

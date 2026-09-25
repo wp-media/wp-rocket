@@ -144,9 +144,7 @@ class Test_AddPage extends RESTfulTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( array $config, array $expected ) {
-		// Resolve the URL under test and register its fixture response up front: the
-		// 'add_first' duplicate-URL setup below issues a real REST request too, before the
-		// switch further down would otherwise compute $url.
+		// Resolve $url and register its fixture up front: 'add_first' below needs it early.
 		if ( 'post_url' === $config['url'] ) {
 			$url = $this->post_url;
 		} elseif ( 'homepage' === $config['url'] ) {

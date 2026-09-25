@@ -79,9 +79,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 	}
 
 	/**
-	 * Builds the RocketCDN subscription-status endpoint's mocked HTTP response from the
-	 * fixture's `subscription` shape, matching APIClient::get_remote_subscription_data()'s
-	 * mapping of the raw API body.
+	 * Builds the mocked subscription-status response from the fixture's `subscription` shape.
 	 *
 	 * @param array $subscription Fixture's `subscription` value.
 	 *
@@ -111,9 +109,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 	public function testShouldMigrateAsExpected( array $config, array $expected ) {
 		set_transient( 'rocketcdn_status', $config['subscription'], MINUTE_IN_SECONDS );
 
-		// R4: the CNAME-guard branch of on_update_add_cdn_state_option calls
-		// SubscriptionController::has_active_subscription(), which falls back to this
-		// endpoint when the transient it reads is unset at that point in the flow.
+		// The CNAME-guard branch's has_active_subscription() falls back to this endpoint when the transient is unset.
 		$host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
 		$url  = sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, $host );
 

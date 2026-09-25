@@ -140,9 +140,7 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			set_transient( 'wp_rocket_customer_data', (object) $config['user_data'] );
 		}
 
-		// Register the user-data fixture for every data set: flush_cache() + get_user_data()
-		// run whenever the checkout parameter is set and the user has the capability,
-		// regardless of whether activation itself is exercised.
+		// flush_cache() + get_user_data() run for every data set, regardless of activation.
 		$this->config['http'][ UserClient::USER_ENDPOINT ] = isset( $config['user_data'] )
 			? [
 				'response' => [ 'code' => 200 ],

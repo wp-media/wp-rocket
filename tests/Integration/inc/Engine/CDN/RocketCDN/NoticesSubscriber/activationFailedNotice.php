@@ -120,11 +120,8 @@ class Test_ActivationFailedNotice extends TestCase {
 			set_transient( 'wp_rocket_customer_data', $user_data, MINUTE_IN_SECONDS );
 		}
 
-		// Register URL fixtures for the paths the notice's checks may reach. The
-		// `rocketcdn_status` transient short-circuit above already answers most
-		// subscription-status reads, so these rarely fire in practice; they exist so a
-		// regression that removes that short-circuit fails loudly instead of hitting the
-		// network.
+		// Fixtures for the endpoints the notice's checks may still reach past the
+		// `rocketcdn_status` transient short-circuit above.
 		if ( isset( $config['subscription_data'] ) ) {
 			$this->config['http'][ self::SEARCH_ENDPOINT ] = [
 				'response' => [ 'code' => 200 ],

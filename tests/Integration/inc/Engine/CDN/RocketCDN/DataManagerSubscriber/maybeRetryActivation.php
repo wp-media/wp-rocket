@@ -120,30 +120,16 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			];
 
 		if ( isset( $config['subscription_data'] ) ) {
-			$build_subscription_response = static function ( array $subscription_data ) {
-				if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
-					$subscription_data['subscription_next_date_update'] = gmdate(
-						'Y-m-d H:i:s',
-						strtotime( $subscription_data['subscription_next_date_update'] )
-					);
-				}
-
-				return [
-					'response' => [ 'code' => 200 ],
-					'body'     => wp_json_encode( $subscription_data ),
-				];
-			};
-
 			$subscription_url = sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' );
 
 			// A successful retry calls get_subscription_data() twice: once before the retry,
 			// once after. The trait's list-response form answers each call in turn.
 			$this->config['http'][ $subscription_url ] = isset( $config['subscription_data_after_activation'] )
 				? [
-					$build_subscription_response( $config['subscription_data'] ),
-					$build_subscription_response( $config['subscription_data_after_activation'] ),
+					$this->subscription_response( $config['subscription_data'] ),
+					$this->subscription_response( $config['subscription_data_after_activation'] ),
 				]
-				: $build_subscription_response( $config['subscription_data'] );
+				: $this->subscription_response( $config['subscription_data'] );
 		}
 
 		if ( isset( $config['activation_success'], $config['subscription_data']['website_id'] ) ) {
@@ -179,6 +165,27 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			$this->assertNotEmpty( $saved_token, 'Token should be saved after successful activation' );
 			$this->assertSame( $config['user_data']->rocketcdn->cdn_token, $saved_token );
 		}
+	}
+
+	/**
+	 * Builds a mocked subscription-status HTTP response from fixture subscription data.
+	 *
+	 * @param array $subscription_data Fixture's subscription data.
+	 *
+	 * @return array
+	 */
+	private function subscription_response( array $subscription_data ): array {
+		if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
+			$subscription_data['subscription_next_date_update'] = gmdate(
+				'Y-m-d H:i:s',
+				strtotime( $subscription_data['subscription_next_date_update'] )
+			);
+		}
+
+		return [
+			'response' => [ 'code' => 200 ],
+			'body'     => wp_json_encode( $subscription_data ),
+		];
 	}
 
 	/**

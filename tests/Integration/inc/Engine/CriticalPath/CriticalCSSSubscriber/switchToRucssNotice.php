@@ -48,10 +48,7 @@ class Test_switchToRucssNotice extends TestCase {
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 
-		// These admin_notices callbacks are unrelated to this notice: priming them stops
-		// ModPagespeed (home_url() GET) and the RocketCDN activation-failed notice
-		// (user.php POST fallback) from hitting the network. Deliberately not isolated via
-		// IsolateHookTrait, which this class already uses for a single 'current_screen' slot.
+		// Keeps unrelated admin_notices callbacks (ModPagespeed, RocketCDN) off the network.
 		set_transient( 'rocket_mod_pagespeed_enabled', 0 );
 		set_transient( 'wp_rocket_customer_data', (object) [] );
 	}
