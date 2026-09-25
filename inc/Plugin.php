@@ -343,6 +343,7 @@ class Plugin {
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
+			'user_cache_key_subscriber',
 			'beaverbuilder_subscriber',
 			'amp_subscriber',
 			'rest_cpcss_subscriber',

@@ -542,12 +542,18 @@ class Cache extends Abstract_Buffer {
 
 		// Get cache folder of host name.
 		if ( $logged_in_cookie && isset( $cookies[ $logged_in_cookie ] ) && ! $this->tests->has_rejected_cookie( $logged_in_cookie_no_hash ) ) {
+			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
+			$user_key = reset( $user_key );
+
+			if ( ! $this->is_valid_user_cache_cookie( $cookies, $user_key ) ) {
+				// Could not confirm this request was actually authenticated by WordPress: treat as anonymous.
+				return $this->cache_dir_path . $host . rtrim( $request_uri, '/' );
+			}
+
 			if ( $this->config->get_config( 'common_cache_logged_users' ) ) {
 				return $this->cache_dir_path . $host . '-loggedin-' . $this->config->get_config( 'secret_cache_key' ) . rtrim( $request_uri, '/' );
 			}
 
-			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
-			$user_key = reset( $user_key );
 			$user_key = $this->sanitize_user( $user_key ) . '-' . $this->config->get_config( 'secret_cache_key' );
 
 			// Get cache folder of host name.
@@ -555,6 +561,56 @@ class Cache extends Abstract_Buffer {
 		}
 
 		return $this->cache_dir_path . $host . rtrim( $request_uri, '/' );
+	}
+
+	/**
+	 * Checks that the companion cache cookie confirms the username segment of the
+	 * `wordpress_logged_in_*` cookie before it is trusted to pick a cache bucket.
+	 *
+	 * Only trust this cookie's username if the companion validation cookie matches and has
+	 * not expired.
+	 *
+	 * @param array  $cookies  Cookies for the current request.
+	 * @param string $username Username segment read from the logged-in cookie.
+	 * @return bool
+	 */
+	private function is_valid_user_cache_cookie( array $cookies, string $username ): bool {
+		if ( '' === $username ) {
+			return false;
+		}
+
+		$secret = (string) $this->config->get_config( 'secret_cache_key' );
+
+		if ( '' === $secret ) {
+			return false;
+		}
+
+		$cookie_hash = (string) $this->config->get_config( 'cookie_hash' );
+		// The 'wp_rocket_ucc_' prefix must match UserCacheKeySubscriber::COOKIE_PREFIX exactly.
+		$cookie_name = 'wp_rocket_ucc_' . $cookie_hash;
+
+		if ( empty( $cookies[ $cookie_name ] ) ) {
+			return false;
+		}
+
+		// Cookie value shape is "<expiration>|<hmac>" — see UserCacheKeySubscriber::set_user_cache_cookie().
+		$parts = explode( '|', (string) $cookies[ $cookie_name ], 2 );
+
+		if ( 2 !== count( $parts ) ) {
+			return false;
+		}
+
+		list( $expiration, $mac ) = $parts;
+
+		if ( ! ctype_digit( $expiration ) || (int) $expiration <= time() ) {
+			// Expired (or malformed, non-numeric expiration): do not trust it, even if the HMAC below
+			// would otherwise match.
+			return false;
+		}
+
+		$expected = hash_hmac( 'sha256', $username . '|' . $expiration, $secret );
+
+		return hash_equals( $expected, $mac );
 	}
 
 	/**
