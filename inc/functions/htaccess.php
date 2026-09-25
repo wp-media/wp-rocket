@@ -280,10 +280,18 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$site_root = isset( $site_root ) ? trailingslashit( $site_root ) : '';
 
 	// Get cache root.
-	if ( strpos( WP_ROCKET_CACHE_PATH, ABSPATH ) === false && isset( $_SERVER['DOCUMENT_ROOT'] ) ) {
-		$cache_root = '/' . ltrim( str_replace( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '', WP_ROCKET_CACHE_PATH ), '/' );
+	// Normalize separators so the comparison and replacement work on Windows,
+	// where ABSPATH and DOCUMENT_ROOT use backslashes but the cache path uses forward slashes.
+	$document_root = isset( $_SERVER['DOCUMENT_ROOT'] )
+		? wp_normalize_path( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ) )
+		: '';
+	$cache_path    = wp_normalize_path( rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) );
+	$abspath       = wp_normalize_path( rocket_get_constant( 'ABSPATH' ) );
+
+	if ( strpos( $cache_path, $abspath ) === false && '' !== $document_root ) {
+		$cache_root = '/' . ltrim( str_replace( $document_root, '', $cache_path ), '/' );
 	} else {
-		$cache_root = '/' . ltrim( $site_root . str_replace( ABSPATH, '', WP_ROCKET_CACHE_PATH ), '/' );
+		$cache_root = '/' . ltrim( $site_root . str_replace( $abspath, '', $cache_path ), '/' );
 	}
 
 	/**
@@ -302,14 +310,14 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	 *
 	 * @param bool true will force the path to be full.
 	 */
-	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '/kunden/' ) === 0 );
+	$is_1and1_or_force = apply_filters( 'rocket_force_full_path', strpos( $document_root, '/kunden/' ) === 0 );
 
 	$rules      = '';
 	$gzip_rules = '';
 	$enc        = '';
 
 	if ( $is_1and1_or_force ) {
-		$cache_dir_path = str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $http_host . '%{REQUEST_URI}';
+		$cache_dir_path = str_replace( '/kunden/', '/', $cache_path ) . $http_host . '%{REQUEST_URI}';
 	} else {
 		$cache_dir_path = '%{DOCUMENT_ROOT}/' . ltrim( $cache_root, '/' ) . $http_host . '%{REQUEST_URI}';
 	}
