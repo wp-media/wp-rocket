@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Rocket\Buffer\Cache as BufferCache;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use DirectoryIterator;
 use Exception;
@@ -63,7 +64,7 @@ class Purge {
 		$parsed_url = $this->parse_url( $url );
 
 		foreach ( _rocket_get_cache_dirs( $parsed_url['host'] ) as $dir ) {
-			$path = $dir . $parsed_url['path'];
+			$path = $dir . BufferCache::bound_path_components( $parsed_url['path'] );
 
 			if ( ! $this->filesystem->exists( $path ) ) {
 				continue;
