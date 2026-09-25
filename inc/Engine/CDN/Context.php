@@ -102,6 +102,57 @@ class Context {
 	}
 
 	/**
+	 * Gets the CDN state that should actually drive rewrite decisions, overriding the
+	 * persisted `cdn_state` for the "hosted-CDN-no-token" case.
+	 *
+	 * A genuine RocketCDN free-tier subscriber always has a token — `save_token()` is
+	 * called synchronously as soon as `create_subscription()` succeeds, well before the
+	 * subscription is confirmed active. So `cdn_state === rocketcdn_free` with
+	 * `has_token() === false` can only mean the value was inferred by `legacy_to_state()`'s
+	 * "no token → free" fallback (e.g. a hosting integration — Pressable/Presslabs/one.com —
+	 * that force-sets `cdn = 1` on upgrade without ever engaging RocketCDN), never a real
+	 * RocketCDN engagement. In that case, this returns BYOCDN_TYPE instead, which (after the
+	 * driver hostname gate) rewrites unconditionally when a hostname is present — from the
+	 * `rocket_cdn_cnames` filter or a manual CNAME — and does nothing when it isn't.
+	 *
+	 * Mirrors get_driver()'s existing cheap short-circuit shape (`cdn` -> `cdn_type` -> only
+	 * then the live-resolved `cdn_state`) so BYOCDN and CDN-disabled sites never pay the live
+	 * cdn_state resolution cost (which can trigger a live subscription API call via
+	 * CdnStateBridge::resolve_live()) — identical to today's cost profile for those sites.
+	 *
+	 * Note: `CdnStateBridge::resolve_live()` reads the *raw*, unfiltered `cdn_type` from the
+	 * settings array, while `get_cdn_type()` (used here) reads the *filtered* value (e.g.
+	 * one.com's `pre_get_rocket_option_cdn_type` hook always forces `byocdn`). This is a
+	 * pre-existing drift between the two, not introduced by this method: `get_cdn_type()`
+	 * short-circuits before `resolve_live()` is ever reached in that case, so it doesn't
+	 * affect this method's own correctness. Left as-is — changing `CdnStateBridge` is out of
+	 * this ticket's scope.
+	 *
+	 * @return string
+	 */
+	public function get_effective_cdn_state(): string {
+		// Cheap, subscription-free checks first — mirrors get_driver()'s existing shape so
+		// BYOCDN and CDN-disabled sites never pay the live cdn_state resolution cost below.
+		if ( ! $this->options->get( 'cdn', 0 ) ) {
+			return self::CDN_STATE_NOTHING;
+		}
+
+		if ( self::ROCKETCDN_TYPE !== $this->get_cdn_type() ) {
+			return self::BYOCDN_TYPE;
+		}
+
+		// Only genuinely RocketCDN-configured sites reach here — the same category that
+		// already pays this cost today via Context::get_driver() -> rocketcdn_resolver().
+		$cdn_state = $this->get_cdn_state();
+
+		if ( self::ROCKETCDN_FREE_TYPE === $cdn_state && ! $this->subscription_controller->has_token() ) {
+			return self::BYOCDN_TYPE;
+		}
+
+		return $cdn_state;
+	}
+
+	/**
 	 * Get CDN Type.
 	 *
 	 * @return string

@@ -77,15 +77,15 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		// Register individual drivers.
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_free',
 			RocketCDNFree::class
-		)->addArgument( 'rocketcdn_query' );
+		)->addArguments( [ 'cdn', 'rocketcdn_query', 'cdn_context' ] );
 
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_paid',
 			RocketCDNPaid::class
-		)->addArgument( 'options' );
+		)->addArguments( [ 'cdn', 'options', 'cdn_context' ] );
 
 		$this->getContainer()->addShared(
 			'cdn_driver_byocdn',

@@ -44,7 +44,7 @@ class Test_Create extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldCreateCorrectDriver( array $config, string $expected ) {
-		$this->context->shouldReceive( 'get_cdn_state' )
+		$this->context->shouldReceive( 'get_effective_cdn_state' )
 			->once()
 			->andReturn( $config['effective_cdn_state'] );
 
