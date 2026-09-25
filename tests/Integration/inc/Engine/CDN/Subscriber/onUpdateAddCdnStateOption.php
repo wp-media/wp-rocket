@@ -89,7 +89,8 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 	 */
 	private function subscription_status_response( array $subscription ): array {
 		if ( 'running' !== ( $subscription['subscription_status'] ?? '' ) ) {
-			return [ 'response' => [ 'code' => 404 ], 'body' => '' ];
+			// The real API answers 401 (not 404) for an unknown/unactivated token here.
+			return [ 'response' => [ 'code' => 401 ], 'body' => '' ];
 		}
 
 		return [
