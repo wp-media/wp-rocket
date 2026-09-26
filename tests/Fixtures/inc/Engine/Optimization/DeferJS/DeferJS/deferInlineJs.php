@@ -174,4 +174,31 @@ return [
 		'html'     => $html,
 		'expected' => $expected,
 	],
+	'testShouldReturnOriginalWhenInlineExclusionContainsSlash' => [
+		'config' => [
+			'donotrocketoptimize' => false,
+			'post_meta'           => false,
+			'options'             => [
+				'defer_all_js'      => 1,
+				'exclude_defer_js'  => [],
+			],
+			'exclusions_list'     => (object) [
+				'defer_js_inline_exclusions' => [
+					'MyApp/legacyInit',
+				],
+			],
+		],
+		'html'     => <<<HTML
+	<script>
+		MyApp/legacyInit();
+	</script>
+HTML
+		,
+		'expected' => <<<HTML
+	<script>
+		MyApp/legacyInit();
+	</script>
+HTML
+		,
+	],
 ];
