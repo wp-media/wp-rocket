@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\CdnStateBridge;
+use WP_Rocket\Engine\CDN\Drivers\DriverFactory;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -44,6 +45,8 @@ class Test_RewriteSrcset extends TestCase {
 	public function testShouldRewriteSrcsetBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
+		$driver_factory = Mockery::mock( DriverFactory::class );
+		$driver_factory->shouldReceive( 'create' )->andReturn( $driver );
 		$subscription_controller = Mockery::mock( SubscriptionController::class );
 
 		$subscriber = new Subscriber(
@@ -54,7 +57,7 @@ class Test_RewriteSrcset extends TestCase {
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
 			Mockery::mock( CdnStateBridge::class ),
-			$driver
+			$driver_factory
 		);
 
 		$this->options->shouldReceive( 'get' )

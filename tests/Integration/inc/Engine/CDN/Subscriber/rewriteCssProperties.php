@@ -22,10 +22,17 @@ class Test_RewriteCssProperties extends TestCase {
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'setCnames' ] );
 		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
+
+		// Subscriber::rewrite_css_properties() has its own, separate (pre-existing,
+		// out-of-scope for this ticket) has_active_subscription() gate, unrelated to the
+		// CDN driver resolution above — an active RocketCDN subscription state is required
+		// for it to proceed at all, regardless of cdn_type/driver.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ], HOUR_IN_SECONDS );
 	}
 
 	public function tear_down() {
 		remove_filter( 'do_rocket_cdn_css_properties', [ $this, 'return_false' ] );
+		delete_transient( 'rocketcdn_status' );
 
 		parent::tear_down();
 	}

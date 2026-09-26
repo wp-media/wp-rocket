@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\CdnStateBridge;
+use WP_Rocket\Engine\CDN\Drivers\DriverFactory;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -63,6 +64,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 		// below builds its own subscriber with a driver that blocks the rewrite.
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( true );
+		$driver_factory = Mockery::mock( DriverFactory::class );
+		$driver_factory->shouldReceive( 'create' )->andReturn( $driver );
 
 		$this->subscriber = new Subscriber(
 			$this->options,
@@ -72,7 +75,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 			Mockery::mock( Cache::class ),
 			$this->query,
 			Mockery::mock( CdnStateBridge::class ),
-			$driver
+			$driver_factory
 		);
 	}
 
@@ -123,6 +126,8 @@ class Test_MaybeReplaceUrl extends TestCase {
 	public function testShouldReturnOriginalWhenDriverReturnsFalse() {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( false );
+		$driver_factory = Mockery::mock( DriverFactory::class );
+		$driver_factory->shouldReceive( 'create' )->andReturn( $driver );
 		$subscription_controller = Mockery::mock( SubscriptionController::class );
 
 		$this->subscriber = new Subscriber(
@@ -133,7 +138,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 			Mockery::mock( Cache::class ),
 			$this->query,
 			Mockery::mock( CdnStateBridge::class ),
-			$driver
+			$driver_factory
 		);
 
 		$this->options->shouldReceive( 'get' )

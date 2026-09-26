@@ -40,7 +40,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_paid',
 		'cdn_driver_byocdn',
 		'cdn_driver_disabled',
-		'cdn_driver',
 		'cache_controller',
 		'cdn_state_bridge',
 	];
@@ -105,15 +104,6 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( $this->getContainer() )
 			->addArgument( 'cdn_context' );
 
-		// Register current active driver (resolved at runtime).
-		$this->getContainer()->addShared(
-			'cdn_driver',
-			function () {
-				$factory = $this->getContainer()->get( 'cdn_driver_factory' );
-				return $factory->create();
-			}
-		);
-
 		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArguments(
 				[
@@ -124,7 +114,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cache_controller',
 					'rocketcdn_query',
 					'cdn_state_bridge',
-					'cdn_driver',
+					'cdn_driver_factory',
 					'cdn_cname_validator',
 				]
 			);

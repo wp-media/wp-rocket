@@ -3,12 +3,15 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResource;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WP_Rocket\Tests\Integration\ResetsCdnDriverStateTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
+	use ResetsCdnDriverStateTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php';
 	protected $cnames;
 	protected $zones;
@@ -22,11 +25,22 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 
 		$this->isCSSTestData = false;
 		$this->minify_type   = '';
+
+		// DriverFactory resolves the active driver from Context::get_effective_cdn_state(),
+		// which needs cdn_type === 'byocdn' to route to the Custom (CNAME) driver the
+		// CDN-enabled data sets here exercise — the default 'rocketcdn' value would
+		// otherwise route to the Disabled driver and silently stop the CDN rewrite.
+		add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'return_byocdn' ] );
+
+		// Also reset before the test runs, in case an earlier, unrelated test file resolved
+		// these same container singletons under a different cdn_type first.
+		$this->reset_cdn_driver_memo();
 	}
 
 	public function tear_down() {
 		remove_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
 		remove_filter( 'pre_http_request', [ $this, 'pre_request' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'return_byocdn' ] );
 
 		if ( $this->isCSSTestData ) {
 			wp_dequeue_style( $this->src );
@@ -36,7 +50,18 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 
 		$this->unset_settings( $this->options );
 
+		// cdn_driver_byocdn / cdn_subscriber are container singletons — reset their memoized
+		// state so the next data set (which may use different cdn_cnames) isn't affected.
+		$this->reset_cdn_driver_memo();
+
 		parent::tear_down();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function return_byocdn(): string {
+		return 'byocdn';
 	}
 
 	/**

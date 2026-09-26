@@ -7,6 +7,7 @@ use WP_Rocket\Engine\CDN\{
 	CdnStateBridge,
 	CNAMEValidator,
 	Context,
+	Drivers\DriverFactory,
 	Drivers\DriverInterface,
 	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
 	RocketCDN\SubscriptionController
@@ -61,7 +62,15 @@ class Subscriber implements Subscriber_Interface {
 	private $cache;
 
 	/**
-	 * CDN Driver (Strategy)
+	 * CDN Driver Factory, used to resolve the active driver lazily on first use.
+	 *
+	 * @var DriverFactory|null
+	 */
+	private $driver_factory;
+
+	/**
+	 * CDN Driver (Strategy), resolved lazily from $driver_factory and memoized for the
+	 * lifetime of the request — see get_driver().
 	 *
 	 * @var DriverInterface|null
 	 */
@@ -98,7 +107,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Cache                  $cache                   Cache instance.
 	 * @param RocketCDNQuery         $query                   RocketCDN pages query.
 	 * @param CdnStateBridge         $cdn_state_bridge        CDN state bridge instance.
-	 * @param DriverInterface|null   $driver                  CDN Driver instance, optional.
+	 * @param DriverFactory|null     $driver_factory          CDN Driver Factory instance, optional.
 	 * @param CNAMEValidator|null    $cname_validator         CNAME Validator instance, optional.
 	 */
 	public function __construct(
@@ -109,13 +118,13 @@ class Subscriber implements Subscriber_Interface {
 		Cache $cache,
 		RocketCDNQuery $query,
 		CdnStateBridge $cdn_state_bridge,
-		?DriverInterface $driver = null,
+		?DriverFactory $driver_factory = null,
 		?CNAMEValidator $cname_validator = null
 	) {
 		$this->options                 = $options;
 		$this->cdn                     = $cdn;
 		$this->options_api             = $options_api;
-		$this->driver                  = $driver;
+		$this->driver_factory          = $driver_factory;
 		$this->subscription_controller = $subscription_controller;
 		$this->cache                   = $cache;
 		$this->query                   = $query;
@@ -635,6 +644,25 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Resolves the active CDN driver lazily, once per request, from the injected factory.
+	 *
+	 * Resolving at first use — rather than at container-build time — lets any filter that
+	 * affects CDN option resolution (e.g. pre_get_rocket_option_cdn_type, cdn_cnames) that
+	 * gets added after the container is built (as tests, and some third-party integrations,
+	 * do) still be picked up. The resolved driver is memoized on this instance for the
+	 * remainder of the request.
+	 *
+	 * @return DriverInterface|null
+	 */
+	private function get_driver(): ?DriverInterface {
+		if ( null === $this->driver && null !== $this->driver_factory ) {
+			$this->driver = $this->driver_factory->create();
+		}
+
+		return $this->driver;
+	}
+
+	/**
 	 * Determines if the CDN driver should rewrite the current URL.
 	 *
 	 * Checks if a CDN driver is set and whether it allows rewriting of the current URL.
@@ -642,11 +670,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @return bool True if the URL should be rewritten by the CDN driver, false otherwise.
 	 */
 	private function cdn_driver_should_rewrite_url(): bool {
-		if ( ! $this->driver ) {
+		$driver = $this->get_driver();
+
+		if ( ! $driver ) {
 			return false;
 		}
 
-		return $this->driver->should_rewrite_url( $this->get_current_url() );
+		return $driver->should_rewrite_url( $this->get_current_url() );
 	}
 
 	/**
