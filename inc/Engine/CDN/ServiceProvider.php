@@ -8,6 +8,7 @@ use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvi
 use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\CDN\Drivers\{
 	Custom,
+	Disabled,
 	DriverFactory,
 	RocketCDNFree,
 	RocketCDNPaid
@@ -38,7 +39,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_free',
 		'cdn_driver_paid',
 		'cdn_driver_byocdn',
-		'cdn_driver',
+		'cdn_driver_disabled',
 		'cache_controller',
 		'cdn_state_bridge',
 	];
@@ -75,19 +76,24 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		// Register individual drivers.
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_free',
 			RocketCDNFree::class
-		)->addArgument( 'rocketcdn_query' );
+		)->addArguments( [ 'cdn', 'rocketcdn_query', 'cdn_context' ] );
 
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_paid',
 			RocketCDNPaid::class
-		)->addArgument( 'options' );
+		)->addArguments( [ 'cdn', 'options', 'cdn_context' ] );
 
-		$this->getContainer()->add(
+		$this->getContainer()->addShared(
 			'cdn_driver_byocdn',
 			Custom::class
+		)->addArgument( 'cdn' );
+
+		$this->getContainer()->addShared(
+			'cdn_driver_disabled',
+			Disabled::class
 		);
 
 		// Register Driver Factory.
@@ -97,15 +103,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		)
 			->addArgument( $this->getContainer() )
 			->addArgument( 'cdn_context' );
-
-		// Register current active driver (resolved at runtime).
-		$this->getContainer()->add(
-			'cdn_driver',
-			function () {
-				$factory = $this->getContainer()->get( 'cdn_driver_factory' );
-				return $factory->create();
-			}
-		);
 
 		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
 			->addArguments(
@@ -117,7 +114,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cache_controller',
 					'rocketcdn_query',
 					'cdn_state_bridge',
-					'cdn_driver',
+					'cdn_driver_factory',
 					'cdn_cname_validator',
 				]
 			);

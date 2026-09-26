@@ -9,6 +9,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
 use WP_Rocket\Engine\CDN\CdnStateBridge;
+use WP_Rocket\Engine\CDN\Drivers\DriverFactory;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -44,6 +45,8 @@ class Test_RewriteSrcset extends TestCase {
 	public function testShouldRewriteSrcsetBasedOnDriver( array $config, array $expected ) {
 		$driver = Mockery::mock( DriverInterface::class );
 		$driver->shouldReceive( 'should_rewrite_url' )->andReturn( $config['driver_returns'] );
+		$driver_factory = Mockery::mock( DriverFactory::class );
+		$driver_factory->shouldReceive( 'create' )->andReturn( $driver );
 		$subscription_controller = Mockery::mock( SubscriptionController::class );
 
 		$subscriber = new Subscriber(
@@ -54,7 +57,7 @@ class Test_RewriteSrcset extends TestCase {
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
 			Mockery::mock( CdnStateBridge::class ),
-			$driver
+			$driver_factory
 		);
 
 		$this->options->shouldReceive( 'get' )
@@ -70,5 +73,30 @@ class Test_RewriteSrcset extends TestCase {
 		}
 
 		$this->assertSame( $expected['html'], $subscriber->rewrite_srcset( $config['html'] ) );
+	}
+
+	public function testShouldReturnOriginalHtmlAndNeverRewriteWhenNoDriver() {
+		$subscription_controller = Mockery::mock( SubscriptionController::class );
+
+		$subscriber = new Subscriber(
+			$this->options,
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$subscription_controller,
+			Mockery::mock( Cache::class ),
+			$this->createMock( RocketCDN::class ),
+			Mockery::mock( CdnStateBridge::class ),
+			null
+		);
+
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		$this->cdn->shouldNotReceive( 'rewrite_srcset' );
+
+		$html = '<img srcset="https://example.org/wp-content/uploads/image.jpg 1x">';
+
+		$this->assertSame( $html, $subscriber->rewrite_srcset( $html ) );
 	}
 }

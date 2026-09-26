@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Drivers\DriverFactory;
 
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\Drivers\Custom;
+use WP_Rocket\Engine\CDN\Drivers\Disabled;
 use WP_Rocket\Engine\CDN\Drivers\DriverFactory;
 use WP_Rocket\Engine\CDN\Drivers\DriverInterface;
 use WP_Rocket\Engine\CDN\Drivers\RocketCDNFree;
@@ -23,11 +25,30 @@ class Test_Create extends TestCase {
 	private $driver_factory;
 
 	/**
-	 * CDN type value returned by the pre_get_rocket_option_cdn_type filter.
+	 * @var \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager
+	 */
+	private $options_manager;
+
+	/**
+	 * Value returned by the pre_get_rocket_option_cdn filter.
+	 *
+	 * @var int
+	 */
+	private $cdn_enabled = 1;
+
+	/**
+	 * Value returned by the pre_get_rocket_option_cdn_type filter.
 	 *
 	 * @var string
 	 */
-	private $cdn_type_value = 'rocketcdn';
+	private $cdn_type_value = Context::ROCKETCDN_TYPE;
+
+	/**
+	 * Value returned by the pre_get_rocket_option_cdn_state filter.
+	 *
+	 * @var string
+	 */
+	private $cdn_state_value = Context::CDN_STATE_NOTHING;
 
 	/**
 	 * Maps fixture expected strings to concrete driver classes.
@@ -35,106 +56,115 @@ class Test_Create extends TestCase {
 	 * @var array<string, class-string<DriverInterface>>
 	 */
 	private const DRIVER_CLASS_MAP = [
-		'cdn_driver_free'   => RocketCDNFree::class,
-		'cdn_driver_paid'   => RocketCDNPaid::class,
-		'cdn_driver_byocdn' => Custom::class,
+		'cdn_driver_free'     => RocketCDNFree::class,
+		'cdn_driver_paid'     => RocketCDNPaid::class,
+		'cdn_driver_byocdn'   => Custom::class,
+		'cdn_driver_disabled' => Disabled::class,
 	];
 
 	public function set_up() {
 		parent::set_up();
 
-		$container            = apply_filters( 'rocket_container', null );
-		$this->driver_factory = $container->get( 'cdn_driver_factory' );
+		$container             = apply_filters( 'rocket_container', null );
+		$this->driver_factory  = $container->get( 'cdn_driver_factory' );
+		$this->options_manager = $container->get( 'rocketcdn_options_manager' );
 
 		delete_transient( 'rocketcdn_status' );
+		// Clears any existing token via the public API rather than a direct option call.
+		$this->options_manager->save_token( '' );
+
+		// Options_Data snapshots wp_rocket_settings at container-boot time, so a direct
+		// update_option() call mid-test would never be observed — these filters are live
+		// (Options_Data::get() re-applies pre_get_rocket_option_{key} on every call).
+		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'filter_cdn' ] );
+		add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'filter_cdn_type' ] );
+		add_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'filter_cdn_state' ] );
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
-		$this->cdn_type_value = 'rocketcdn';
-
 		delete_transient( 'rocketcdn_status' );
+		$this->options_manager->save_token( '' );
+
+		remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'filter_cdn' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'filter_cdn_type' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'filter_cdn_state' ] );
 
 		parent::tear_down();
 	}
 
-	public function cdn_type_cb(): string {
+	/**
+	 * @return int
+	 */
+	public function filter_cdn(): int {
+		return $this->cdn_enabled;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function filter_cdn_type(): string {
 		return $this->cdn_type_value;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function filter_cdn_state(): string {
+		return $this->cdn_state_value;
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldDoAsExpected( array $config, ?string $expected ): void {
-		$this->setup_driver_state( $config['active_driver'] );
+	public function testShouldDoAsExpected( array $config, string $expected ): void {
+		$this->setup_driver_state( $config['effective_cdn_state'] );
 
 		$driver = $this->driver_factory->create();
-
-		if ( null === $expected ) {
-			$this->assertNull( $driver );
-			return;
-		}
 
 		$this->assertInstanceOf( self::DRIVER_CLASS_MAP[ $expected ], $driver );
 	}
 
 	/**
-	 * Sets up options and transient so that Context::get_driver() returns the desired driver type.
+	 * Configures the live filters so that Context::get_effective_cdn_state() resolves to
+	 * the requested state.
 	 *
-	 * @param string $active_driver One of: rocketcdn_free, rocketcdn_paid, byocdn, unknown_driver.
+	 * @param string $effective_cdn_state One of the CDN_STATE_NOTHING, BYOCDN_TYPE, or
+	 *                                    ROCKETCDN_FREE_TYPE/ROCKETCDN_PAID_TYPE constants,
+	 *                                    or an arbitrary unrecognized value.
 	 * @return void
 	 */
-	private function setup_driver_state( string $active_driver ): void {
-		switch ( $active_driver ) {
-			case 'rocketcdn_free':
-				$this->cdn_type_value = 'rocketcdn';
-				add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
-				set_transient(
-					'rocketcdn_status',
-					[
-						'subscription_status' => 'running',
-						'plan_type'           => 'free',
-						'status_code'         => 200,
-						'cdn_url'             => 'https://test.delivery.rocketcdn.me',
-					],
-					HOUR_IN_SECONDS
-				);
+	private function setup_driver_state( string $effective_cdn_state ): void {
+		switch ( $effective_cdn_state ) {
+			case Context::CDN_STATE_NOTHING:
+				$this->cdn_enabled = 0;
 				break;
 
-			case 'rocketcdn_paid':
-				$this->cdn_type_value = 'rocketcdn';
-				add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
-				set_transient(
-					'rocketcdn_status',
-					[
-						'subscription_status' => 'running',
-						'plan_type'           => 'paid',
-						'status_code'         => 200,
-						'cdn_url'             => 'https://test.delivery.rocketcdn.me',
-					],
-					HOUR_IN_SECONDS
-				);
+			case Context::BYOCDN_TYPE:
+				$this->cdn_enabled    = 1;
+				$this->cdn_type_value = Context::BYOCDN_TYPE;
 				break;
 
-			case 'byocdn':
-				$this->cdn_type_value = 'byocdn';
-				add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
+			case Context::ROCKETCDN_FREE_TYPE:
+				$this->cdn_enabled     = 1;
+				$this->cdn_type_value  = Context::ROCKETCDN_TYPE;
+				$this->cdn_state_value = Context::ROCKETCDN_FREE_TYPE;
+				// A genuine free-tier subscriber always has a token — see Context::get_effective_cdn_state().
+				$this->options_manager->save_token( 'test-token' );
+				break;
+
+			case Context::ROCKETCDN_PAID_TYPE:
+				$this->cdn_enabled     = 1;
+				$this->cdn_type_value  = Context::ROCKETCDN_TYPE;
+				$this->cdn_state_value = Context::ROCKETCDN_PAID_TYPE;
 				break;
 
 			default:
-				// unknown_driver: cancelled subscription → Context returns 'rocketcdn' → factory returns null.
-				$this->cdn_type_value = 'rocketcdn';
-				add_filter( 'pre_get_rocket_option_cdn_type', [ $this, 'cdn_type_cb' ] );
-				set_transient(
-					'rocketcdn_status',
-					[
-						'subscription_status' => 'cancelled',
-						'plan_type'           => 'free',
-						'status_code'         => 200,
-						'cdn_url'             => '',
-					],
-					HOUR_IN_SECONDS
-				);
+				// Unrecognized cdn_state: Context::get_cdn_state() itself sanitizes any value
+				// outside its allow-list back to CDN_STATE_NOTHING, so this exercises the same
+				// Disabled-driver outcome as the explicit "nothing" case above.
+				$this->cdn_enabled     = 1;
+				$this->cdn_type_value  = Context::ROCKETCDN_TYPE;
+				$this->cdn_state_value = $effective_cdn_state;
 				break;
 		}
 	}

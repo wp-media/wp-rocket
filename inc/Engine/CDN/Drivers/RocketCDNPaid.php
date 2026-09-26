@@ -4,10 +4,13 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\CDN\Drivers;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\Optimization\RegexTrait;
 
 class RocketCDNPaid implements DriverInterface {
 	use RegexTrait;
+	use CdnHostnameTrait;
 
 	/**
 	 * Options data for accessing excluded pages
@@ -17,21 +20,36 @@ class RocketCDNPaid implements DriverInterface {
 	private $options;
 
 	/**
+	 * CDN Context, used for the forced-off guard.
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Constructor.
 	 *
+	 * @param CDN          $cdn     CDN instance.
 	 * @param Options_Data $options Options instance.
+	 * @param Context      $context CDN Context instance.
 	 */
-	public function __construct( Options_Data $options ) {
+	public function __construct( CDN $cdn, Options_Data $options, Context $context ) {
+		$this->cdn     = $cdn;
 		$this->options = $options;
+		$this->context = $context;
 	}
 
 	/**
-	 * Should rewrite url or not.
+	 * Should rewrite url or not, once a usable CDN hostname is confirmed.
 	 *
 	 * @param string $url Page Url to check.
 	 * @return bool
 	 */
-	public function should_rewrite_url( string $url ): bool {
+	protected function resolve_should_rewrite_url( string $url ): bool {
+		if ( $this->context->is_forced_off() ) {
+			return false;
+		}
+
 		// Get excluded pages from options.
 		$excluded_pages = $this->get_excluded_pages();
 
