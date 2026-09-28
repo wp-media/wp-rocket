@@ -2,7 +2,7 @@
 /**
  * Trial expired banner.
  *
- * @since 3.24
+ * @since 3.23.4
  */
 
 defined( 'ABSPATH' ) || exit;
