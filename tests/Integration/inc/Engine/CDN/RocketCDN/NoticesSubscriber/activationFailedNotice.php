@@ -31,6 +31,9 @@ class Test_ActivationFailedNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		// Ensure admin notices file is loaded (contains rocket_notice_html function).
 		if ( ! function_exists( 'rocket_notice_html' ) ) {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
@@ -54,6 +57,8 @@ class Test_ActivationFailedNotice extends TestCase {
 		remove_all_filters( 'pre_http_request' );
 		remove_filter( 'pre_transient_rocketcdn_status', [ $this, 'mock_rocketcdn_status_transient' ] );
 
+		$this->restoreWpHook( 'current_screen' );
+		
 		parent::tear_down();
 	}
 

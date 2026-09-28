@@ -2,11 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use Brain\Monkey\Functions;
 use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
@@ -26,6 +26,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class CpcssHeartbeatTest extends AjaxTestCase {
+	use HttpRequestTrait;
 	use IsolateHookTrait;
 	use ProviderTrait;
 	protected static $provider_class = 'Admin';
@@ -48,6 +49,8 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$this->action = 'rocket_cpcss_heartbeat';
 
 		set_transient( 'rocket_critical_css_generation_process_running', [
@@ -68,6 +71,8 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		delete_transient( 'rocket_cpcss_generation_pending' );
 
 		$this->restoreWpHook( 'admin_init' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -111,30 +116,25 @@ class CpcssHeartbeatTest extends AjaxTestCase {
 		if ( ! isset( $config['process_generate'] ) || ! empty ( $expected['bailout_timeout'] ) ) {
 			return;
 		}
-		$params = [
-			'url'        => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
-			'mobile'     => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
-			'nofontface' => false,
-		];
 
 		$job_id = 999;
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_post' )
-				->once()
-				->with( APIClient::API_URL, [ 'body' => $params ] )
-				->andReturn( new WP_Error( 'error', 'error_data' ) );
-		} else {
-			Functions\expect( 'wp_remote_post' )
-				->once()
-				->with( APIClient::API_URL, [ 'body' => $params ] )
-				->andReturn( [ 'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}' ] );
+			$this->config['http'] = [
+				APIClient::API_URL => new WP_Error( 'error', 'error_data' ),
+			];
 
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with( APIClient::API_URL . "{$job_id}/" )
-				->andReturn( [ 'body' => json_encode( $config['process_generate'] ) ] );
+			return;
 		}
+
+		$this->config['http'] = [
+			APIClient::API_URL                => [
+				'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}',
+			],
+			APIClient::API_URL . "{$job_id}/" => [
+				'body' => wp_json_encode( $config['process_generate'] ),
+			],
+		];
 	}
 
 	public function setUserAndCapabilities( $config ) {

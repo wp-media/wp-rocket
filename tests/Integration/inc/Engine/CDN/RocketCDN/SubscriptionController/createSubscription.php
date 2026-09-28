@@ -37,6 +37,14 @@ class Test_CreateSubscription extends AbstractSubscriptionControllerTestCase {
 	public function tear_down() {
 		self::truncateRocketCDNTable();
 
+		// The success path deliberately leaves this transient set (see the assertion
+		// below), so it must be cleared here or it leaks into any other test that runs
+		// afterward in the same process and also has a token set (e.g. it makes
+		// SubscriptionController::get_subscription_data() short-circuit to [] via
+		// is_subscription_creation_loading(), silently breaking is_paid()/is_free()
+		// for unrelated tests such as CdnStateBridge's backfill test).
+		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
+
 		parent::tear_down();
 	}
 

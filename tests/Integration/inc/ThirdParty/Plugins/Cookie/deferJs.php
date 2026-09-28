@@ -18,6 +18,9 @@ class Test_deferJs extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
 	}
 
@@ -29,6 +32,8 @@ class Test_deferJs extends TestCase {
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 		delete_transient( 'wpr_dynamic_lists' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

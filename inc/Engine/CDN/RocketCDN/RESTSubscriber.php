@@ -62,12 +62,13 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'                        => [
+			'rest_api_init'                               => [
 				[ 'register_enable_route' ],
 				[ 'register_disable_route' ],
 				[ 'register_routes' ],
 			],
-			'rocket_cdnfree_website_create_status' => 'check_status',
+			'rocket_cdnfree_website_create_status'        => 'check_status',
+			'rocket_cdnfree_subscription_creation_failed' => 'handle_subscription_creation_failed',
 		];
 	}
 
@@ -222,6 +223,18 @@ class RESTSubscriber implements Subscriber_Interface {
 	 */
 	public function validate_key( $param ) {
 		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
+	}
+
+	/**
+	 * Rolls back a failed CDN provisioning attempt.
+	 *
+	 * Fired by rocket_cdnfree_subscription_creation_failed, which SubscriptionController
+	 * triggers when check_status() receives a non-success response from the CDN API.
+	 *
+	 * @return void
+	 */
+	public function handle_subscription_creation_failed(): void {
+		$this->rest->rollback_failed_subscription();
 	}
 
 	/**

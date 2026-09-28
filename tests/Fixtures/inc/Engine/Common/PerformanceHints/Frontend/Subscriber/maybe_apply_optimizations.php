@@ -24,6 +24,8 @@ $html_output_with_beacon_and_only_lrc_opt = file_get_contents(__DIR__ . '/HTML/o
 $html_input_preload_fonts = file_get_contents(__DIR__ . '/HTML/input_preload_fonts.html');
 $html_input_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_relative_path.html');
 $html_input_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/input_preload_fonts_w_crossorigin.html');
+$html_input_with_percent_encoded_special_chars_img_lcp = file_get_contents(__DIR__ . '/HTML/input_lcp_percent_encoded_special_chars.html');
+$html_output_with_percent_encoded_special_chars_img_lcp = file_get_contents(__DIR__ . '/HTML/output_lcp_percent_encoded_special_chars.html');
 $html_output_preload_fonts = file_get_contents(__DIR__ . '/HTML/output_preload_fonts.html');
 $html_output_preload_fonts_w_crossorigin = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_crossorigin.html');
 $html_output_preload_fonts_w_relative_path = file_get_contents(__DIR__ . '/HTML/output_preload_fonts_w_relative_path.html');
@@ -430,6 +432,26 @@ return [
 				'preload_external_domains' => $preconnect_external_domains,
 			],
 			'expected' => file_get_contents(__DIR__ . '/HTML/output_with_absolute_img_lcp.php'),
+		],
+		'shouldApplyFetchPriorityWhenUrlHasPercentEncodedHash' => [
+			'config' => [
+				'html' => $html_input_with_percent_encoded_special_chars_img_lcp,
+				'atf' => [
+					'row' => [
+						'status' => 'completed',
+						'url' => 'http://example.org',
+						'lcp'      => json_encode( (object) [
+							'type' => 'img',
+							'src'  => 'http://example.com/wp-content/uploads/sample_absolute_image.jpg?v=%2301',
+						] ),
+						'viewport' => json_encode ( [] ),
+					],
+				],
+				'lrc' => $lrc,
+				'preload_fonts' => $preload_fonts_empty,
+				'preload_external_domains' => $preconnect_external_domains,
+			],
+			'expected' => $html_output_with_percent_encoded_special_chars_img_lcp,
 		],
 		'shouldApplyFetchPriorityToImageWithDomain' => [
 			'config' => [

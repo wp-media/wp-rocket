@@ -7,6 +7,7 @@ use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Engine\CDN\CNAMEValidator;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -35,6 +36,7 @@ class Test_MaybeClearCnameCache extends TestCase {
 			Mockery::mock( SubscriptionController::class ),
 			Mockery::mock( Cache::class ),
 			$this->createMock( RocketCDN::class ),
+			Mockery::mock( CdnStateBridge::class ),
 			null,
 			$this->cname_validator
 		);

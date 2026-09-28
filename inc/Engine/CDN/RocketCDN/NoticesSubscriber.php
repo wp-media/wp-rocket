@@ -6,7 +6,6 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
@@ -32,13 +31,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @var Beacon
 	 */
 	private $beacon;
-
-	/**
-	 * UserClient instance
-	 *
-	 * @var UserClient
-	 */
-	private $user_client;
 
 	/**
 	 * Tracking instance
@@ -73,7 +65,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 *
 	 * @param APIClient              $api_client              RocketCDN API Client instance.
 	 * @param Beacon                 $beacon                  Beacon instance.
-	 * @param UserClient             $user_client             UserClient instance.
 	 * @param Tracking               $tracking                Tracking instance.
 	 * @param string                 $template_path           Path to the templates.
 	 * @param Options_Data           $options                 WP Rocket options instance.
@@ -83,7 +74,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	public function __construct(
 		APIClient $api_client,
 		Beacon $beacon,
-		UserClient $user_client,
 		Tracking $tracking,
 		$template_path,
 		Options_Data $options,
@@ -94,7 +84,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 
 		$this->api_client              = $api_client;
 		$this->beacon                  = $beacon;
-		$this->user_client             = $user_client;
 		$this->tracking                = $tracking;
 		$this->options                 = $options;
 		$this->subscription_controller = $subscription_controller;
@@ -181,7 +170,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		];
 
 		// Get button URL for one-click checkout.
-		$button_url = $this->get_express_checkout_url();
+		$button_url = $this->subscription_controller->get_express_checkout_url();
 
 		if ( is_wp_error( $pricing ) ) {
 			$beacon    = $this->beacon->get_suggest( 'rocketcdn_error' );
@@ -419,7 +408,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$express_checkout_url = $this->get_express_checkout_url();
+		$express_checkout_url = $this->subscription_controller->get_express_checkout_url();
 
 		if ( empty( $express_checkout_url ) ) {
 			return;
@@ -471,34 +460,6 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	}
 
 	/**
-	 * Gets the express checkout URL for RocketCDN.
-	 *
-	 * @return string Express checkout URL or empty string if not available.
-	 */
-	private function get_express_checkout_url(): string {
-		$user_data = $this->user_client->get_user_data();
-
-		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
-			return '';
-		}
-
-		return add_query_arg(
-			[
-				'dashboard_url' => rawurlencode(
-					add_query_arg(
-						[
-							'page'               => WP_ROCKET_PLUGIN_SLUG,
-							'rocketcdn_checkout' => 'true',
-						],
-						admin_url( 'options-general.php' )
-					)
-				),
-			],
-			esc_url_raw( $user_data->rocketcdn->button->url )
-		);
-	}
-
-	/**
 	 * Display RocketCDN notice on admin dashboard if flag is set and notice hasn't been dismissed.
 	 * Kept for backward compatibility — no longer hooked via get_subscribed_events().
 	 * Post-activation notice display is now handled by NoticeSubscriber.
@@ -508,14 +469,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_rocketcdn_notice() {
-		/**
-		 * Filters showing rocketcdn admin notices
-		 *
-		 * @since 3.22
-		 *
-		 * @param bool $show_rocketcdn_notices Show rocketcdn notices, by default it's shown.
-		 */
-		if ( wpm_apply_filters_typed( 'boolean', 'rocket_hide_rocketcdn_notices', false ) ) {
+		if ( $this->should_hide_notices() ) {
 			return;
 		}
 
@@ -650,6 +604,10 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function maybe_display_major_release_notice( string $major_version ): void {
+		if ( $this->should_hide_notices() ) {
+			return;
+		}
+
 		$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
 
 		if ( ! empty( $rocket_cdn_token ) ) {
@@ -707,5 +665,21 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 */
 	private function get_major_release_notice_key( string $major_version ): string {
 		return 'rocket_major_release_notice_' . str_replace( '.', '_', $major_version );
+	}
+
+	/**
+	 * Checks whether RocketCDN admin notices should be hidden.
+	 *
+	 * @return bool
+	 */
+	private function should_hide_notices(): bool {
+		/**
+		 * Filters showing rocketcdn admin notices
+		 *
+		 * @since 3.22
+		 *
+		 * @param bool $show_rocketcdn_notices Show rocketcdn notices, by default it's shown.
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_hide_rocketcdn_notices', false );
 	}
 }
