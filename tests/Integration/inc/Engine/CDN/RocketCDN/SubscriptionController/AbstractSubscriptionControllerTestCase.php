@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController;
 
-use ReflectionProperty;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -93,9 +92,8 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	 */
 	protected function reset_frontend_subscriber_memo( $container ): void {
 		$frontend = $container->get( 'rocketcdn_frontend_subscriber' );
-		$prop     = new ReflectionProperty( $frontend, 'rocketcdn_url' );
-		$prop->setAccessible( true );
-		$prop->setValue( $frontend, null );
+
+		$this->set_reflective_property( null, 'rocketcdn_url', $frontend );
 	}
 
 	/**

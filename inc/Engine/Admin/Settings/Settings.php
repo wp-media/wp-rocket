@@ -418,7 +418,8 @@ class Settings {
 		}
 
 		if ( ! empty( $input['secret_key'] ) && empty( $input['ignore'] ) && rocket_valid_key() ) {
-			// Add a "Settings saved." admin notice only if not already added.
+			// Add a "Settings saved." admin notice only if not already added, by WP Rocket ('updated')
+			// or by core's options.php ('success').
 			$notices = array_merge( (array) $wp_settings_errors, (array) get_transient( 'settings_errors' ) );
 			$notices = array_filter(
 				$notices,
@@ -429,7 +430,7 @@ class Settings {
 					if ( ! isset( $error['setting'], $error['code'], $error['type'] ) ) {
 						return false;
 					}
-					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && 'updated' === $error['type'];
+					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && in_array( $error['type'], [ 'updated', 'success' ], true );
 				}
 			);
 

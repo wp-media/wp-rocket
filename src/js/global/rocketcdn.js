@@ -279,6 +279,7 @@
 			return;
 		}
 
+		window.location.hash = '#page_cdn';
 		document.location.reload();
 	}
 

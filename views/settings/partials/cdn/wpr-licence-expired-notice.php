@@ -17,16 +17,22 @@
 
 ?>
 
-<div class="wpr-notice wpr-ri-notice wpr-cdn-expired__notice" id="wpr-cdn-licence-banner">
-	<div class="wpr-notice-container">
-		<div class="wpr-notice-description wpr-notice-70">
-			<h3 class="wpr-cdn-expired__notice-title">
-				<?php esc_html_e( 'Your WP Rocket license has expired', 'rocket' ); ?>
-			</h3>
-			<p><?php esc_html_e( 'Renew now to keep using RocketCDN Free.', 'rocket' ); ?></p>
+<div class="wpr-rocketcdn-notice wpr-cdn-expired__notice wpr-field" id="wpr-cdn-licence-banner">
+	<div class="wpr-notice-container wpr-flex">
+		<div class="wpr-notice-70">
+			<p>
+				<?php
+					printf(
+						// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+						esc_html__( '%1$sYour WP Rocket license has expired%2$s. Renew now to keep using RocketCDN Free.', 'rocket' ),
+						'<strong>',
+						'</strong>'
+					);
+					?>
+			</p>
 		</div>
 		<?php if ( empty( $data['is_reseller'] ) ) : ?>
-			<a target="_blank" rel="noopener noreferrer" class="wpr-notice-close" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
+			<a target="_blank" rel="noopener noreferrer" class="wpr-rocketcdn-btn" href="<?php echo esc_url( $data['renewal_url'] ); ?>">
 				<?php esc_html_e( 'Renew', 'rocket' ); ?>
 			</a>
 		<?php endif; ?>

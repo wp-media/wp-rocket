@@ -64,6 +64,10 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		// The purchase-tracked lock (see DataManagerSubscriber::activate_pro_and_track())
+		// is a real transient - clear it so an activation in one data set doesn't silently
+		// skip enable()/tracking in the next one within this same test run.
+		delete_transient( 'rocketcdn_purchase_tracked' );
 		self::truncateRocketCDNTable();
 
 		// Get the subscriber from container.
@@ -80,6 +84,7 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		$_GET = $this->original_get;
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'wp_rocket_customer_data' );
+		delete_transient( 'rocketcdn_purchase_tracked' );
 		remove_all_filters( 'pre_http_request' );
 		self::truncateRocketCDNTable();
 

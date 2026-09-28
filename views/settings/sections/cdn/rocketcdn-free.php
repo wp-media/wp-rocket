@@ -49,7 +49,8 @@ $rocket_rocketcdn_free_active = $data['is_active'];
 		);
 		?>
 	</div>
-	<?php if ( ! empty( $data['upgrade_url'] ) ) : ?>
+	<?php // Temporarily hidden for the next release; remove the `false &&` guard to restore the Upgrade to PRO button. ?>
+	<?php if ( false && ! empty( $data['upgrade_url'] ) ) : ?>
 		<button type="button" class="rocketcdn--upgrade_btn wpr-rocketcdn-open"<?php echo empty( $data['upgrade_url'] ) ? ' data-micromodal-trigger="wpr-rocketcdn-modal"' : ''; ?>>
 			<?php esc_html_e( 'Upgrade to PRO', 'rocket' ); ?>
 		</button>

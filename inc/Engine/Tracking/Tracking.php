@@ -428,6 +428,7 @@ class Tracking extends Abstract_Render {
 			[
 				'context'             => 'wp_plugin',
 				'interaction_channel' => $this->channel_detector->detect(),
+				'path'                => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 			]
 		);
 

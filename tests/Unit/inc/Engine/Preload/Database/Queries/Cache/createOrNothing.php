@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
 use Mockery;
-use ReflectionClass;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -67,9 +66,6 @@ class Test_CreateOrNothing extends TestCase {
 	 */
 	public function setProtectedProperty($object, $property, $value)
 	{
-		$reflection = new ReflectionClass($object);
-		$reflection_property = $reflection->getProperty($property);
-		$reflection_property->setAccessible(true);
-		$reflection_property->setValue($object, $value);
+		$this->set_reflective_property($value, $property, $object);
 	}
 }

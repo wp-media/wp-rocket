@@ -583,6 +583,15 @@ class Subscriber implements Subscriber_Interface {
 
 		$current_options['cdn_state'] = $new_state;
 		$this->options_api->set( 'settings', $current_options );
+
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => $new_state,
+				'cdn_status' => Context::CDN_STATE_NOTHING === $new_state ? 'inactive' : 'active',
+				'trigger'    => 'migration',
+			]
+		);
 	}
 
 	/**

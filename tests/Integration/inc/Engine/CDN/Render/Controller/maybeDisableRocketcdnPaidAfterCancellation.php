@@ -34,14 +34,14 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 
 		delete_transient( 'rocketcdn_status' );
 
-		// Isolate admin_init to only the Subscriber method under test, so firing the
-		// hook doesn't also run the rest of the admin_init surface (some of which
-		// redirects or wp_die()s). Restored via restoreWpHook() in tear_down().
-		$this->unregisterAllCallbacksExcept( 'admin_init', 'maybe_disable_rocketcdn_paid_after_cancellation' );
+		// Isolate current_screen to only the Subscriber method under test, so firing the
+		// hook doesn't also run the rest of the current_screen surface (e.g.
+		// maybe_sync_forced_off_tracking_state()). Restored via restoreWpHook() in tear_down().
+		$this->unregisterAllCallbacksExcept( 'current_screen', 'maybe_disable_rocketcdn_paid_after_cancellation' );
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'admin_init' );
+		$this->restoreWpHook( 'current_screen' );
 
 		delete_transient( 'rocketcdn_status' );
 		delete_option( 'rocket_rocketcdn_forced_pause_state' );
@@ -76,7 +76,7 @@ class Test_MaybeDisableRocketcdnPaidAfterCancellation extends TestCase {
 		};
 		add_action( 'rocket_mixpanel_track_event', $tracking_listener, 10, 2 );
 
-		do_action( 'admin_init' );
+		do_action( 'current_screen', get_current_screen() );
 
 		remove_action( 'rocket_mixpanel_track_event', $tracking_listener, 10 );
 

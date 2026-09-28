@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.23.4-alpha1\n"
+"Project-Id-Version: WP Rocket 3.23.4-beta2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-21T14:32:18+00:00\n"
+"POT-Creation-Date: 2026-09-24T15:42:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -49,7 +49,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
-#: inc/ThirdParty/Hostings/OneCom.php:150
+#: inc/ThirdParty/Hostings/OneCom.php:155
 #: inc/ThirdParty/Hostings/Pressidium.php:50
 #: inc/ThirdParty/Hostings/ProIsp.php:51
 #: inc/ThirdParty/Hostings/Savvii.php:50
@@ -595,7 +595,7 @@ msgid "Run the test now!"
 msgstr ""
 
 #: inc/admin/ui/notices.php:701
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:700
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:652
 msgid "Add your pages now"
 msgstr ""
 
@@ -992,7 +992,7 @@ msgid "Add URL"
 msgstr ""
 
 #: inc/deprecated/deprecated.php:1245
-#: inc/Engine/Admin/Settings/Settings.php:437
+#: inc/Engine/Admin/Settings/Settings.php:438
 msgid "Settings saved."
 msgstr ""
 
@@ -1534,7 +1534,7 @@ msgid "%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRoc
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Subscriber.php:466
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:562
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:510
 msgid "Dismiss"
 msgstr ""
 
@@ -2539,7 +2539,7 @@ msgstr ""
 msgid "Sucuri Add-on: The API key for the Sucuri firewall must be in format <code>{32 characters}/{32 characters}</code>."
 msgstr ""
 
-#: inc/Engine/Admin/Settings/Settings.php:559
+#: inc/Engine/Admin/Settings/Settings.php:560
 msgid "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site."
 msgstr ""
 
@@ -2737,60 +2737,59 @@ msgstr ""
 msgid "The domain part of the URL will be stripped automatically.<br>Use (.*) wildcards to exclude all files of a given file type located at a specific path."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:896
+#: inc/Engine/CDN/Render/Controller.php:902
 msgid "This option is managed by your host and can’t be changed here."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:914
+#: inc/Engine/CDN/Render/Controller.php:920
 msgid "RocketCDN is currently being activated. Please wait, this should only take a moment."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:918
+#: inc/Engine/CDN/Render/Controller.php:924
 msgid "Renew to use RocketCDN Free."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:922
+#: inc/Engine/CDN/Render/Controller.php:928
 msgid "Contact support to find out how to restore access."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:926
+#: inc/Engine/CDN/Render/Controller.php:932
 msgid "Cancelling your subscription."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:930
+#: inc/Engine/CDN/Render/Controller.php:936
 msgid "Renew to use RocketCDN."
 msgstr ""
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:1046
+#: inc/Engine/CDN/Render/Controller.php:1050
 #, php-format
-msgid "%1$sStart with your homepages and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations."
+msgid "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes unlimited traffic across 10 edge locations."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:1059
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:26
+#: inc/Engine/CDN/Render/Controller.php:1063
 msgid "Renew now to keep using RocketCDN Free."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:1090
-msgid "RocketCDN is serving files from 100+ edge locations"
+#: inc/Engine/CDN/Render/Controller.php:1094
+msgid "RocketCDN delivers every page of your site from 100+ edge locations worldwide."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:1143
+#: inc/Engine/CDN/Render/Controller.php:1191
 msgid "Remove page"
 msgstr ""
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag, %3$s = line breaking <br /> tag.
-#: inc/Engine/CDN/Render/Controller.php:1258
+#: inc/Engine/CDN/Render/Controller.php:1306
 #, php-format
-msgid "%1$sOne more step to a faster website.%2$s%3$sAdd your most important page, and RocketCDN Free will speed it up for your visitors everywhere."
+msgid "%1$sOne more step to a faster website:%2$s add your most important page, and RocketCDN Free will speed it up for your visitors everywhere."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:1293
+#: inc/Engine/CDN/Render/Controller.php:1340
 msgid "Creating your subscription..."
 msgstr ""
 
-#: inc/Engine/CDN/Render/Controller.php:1294
+#: inc/Engine/CDN/Render/Controller.php:1341
 msgid "Please wait, RocketCDN will be ready and active shortly. This usually takes about 90 seconds."
 msgstr ""
 
@@ -2855,94 +2854,82 @@ msgid "RocketCDN cache purge successful."
 msgstr ""
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:180
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:295
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:179
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:294
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:259
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:258
 msgid "Nice work!  You're using RocketCDN on all available pages."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:260
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:259
 msgid "RocketCDN covers up to 3 pages, and you're all set."
 msgstr ""
 
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:364
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:363
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
 msgstr ""
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:366
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:365
 #, php-format
 msgid "The change is already applied to the plugin settings. If you were using the CNAME in your code, make sure to update it to: %1$s."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:375
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 msgid "contact support"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:423
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:422
 msgid "RocketCDN activation incomplete"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:424
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:423
 msgid "RocketCDN isn’t active on this website yet."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:425
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:424
 msgid "Click below to complete the activation. You’ll be redirected to checkout to confirm your subscription."
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:437
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:436
 msgid "Complete activation"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:468
-msgid "Oops, we couldn't confirm your RocketCDN Pro subscription."
-msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:469
-msgid "No worries: let's do a manual check."
-msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:481
-msgid "Retry"
-msgstr ""
-
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:541
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:489
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:499
 #, php-format
 msgid "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
 #. translators: %1$s = opening strong+paragraph tags, %2$s = closing strong+paragraph tags.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:576
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:667
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:524
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:619
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
 #. translators: %1$s = opening paragraph tag, %2$s = closing paragraph tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:586
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:677
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:534
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:629
 #, php-format
 msgid "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:597
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:698
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:545
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:650
 msgid "Check it later"
 msgstr ""
 
@@ -4865,20 +4852,34 @@ msgid "Off"
 msgstr ""
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/cdn-pro-retry-notice.php:26
+#, php-format
+msgid "%1$sOops, we couldn't confirm your RocketCDN Pro subscription%2$s. No worries: let's do a manual check."
+msgstr ""
+
+#: views/settings/partials/cdn/cdn-pro-retry-notice.php:35
+msgid "Retry"
+msgstr ""
+
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/partials/cdn/wpr-cancelled-notice.php:19
 #, php-format
 msgid "%1$sRocketCDN Pro subscription is being cancelled.%2$s RocketCDN Pro can’t be reactivated until the process is complete."
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-banned-notice.php:18
-msgid "Your WP Rocket license has been banned. Contact support for more information."
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:22
+#, php-format
+msgid "%1$sYour WP Rocket license has been banned%2$s. Contact support for more information."
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:24
-msgid "Your WP Rocket license has expired"
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:27
+#, php-format
+msgid "%1$sYour WP Rocket license has expired%2$s. Renew now to keep using RocketCDN Free."
 msgstr ""
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:30
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:36
 msgid "Renew"
 msgstr ""
 
@@ -5071,7 +5072,7 @@ msgstr ""
 #: views/settings/partials/rocket-insights/urls-table.php:19
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/cdn/purge-cdn-cache.php:27
-#: views/settings/sections/cdn/rocketcdn-free.php:59
+#: views/settings/sections/cdn/rocketcdn-free.php:60
 #: views/settings/sections/cdn/rocketcdn-paid.php:50
 #: views/settings/sections/cdn/your-own-cdn.php:49
 #: views/settings/sections/fields-container.php:28
@@ -5113,23 +5114,23 @@ msgstr ""
 msgid "Enable RocketCDN Free"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:54
+#: views/settings/sections/cdn/rocketcdn-free.php:55
 msgid "Upgrade to PRO"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:94
+#: views/settings/sections/cdn/rocketcdn-free.php:95
 msgid "Enter a page URL to add to RocketCDN"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:97
+#: views/settings/sections/cdn/rocketcdn-free.php:98
 msgid "ADD HOMEPAGE"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:103
+#: views/settings/sections/cdn/rocketcdn-free.php:104
 msgid "ADD PAGE"
 msgstr ""
 
-#: views/settings/sections/cdn/rocketcdn-free.php:107
+#: views/settings/sections/cdn/rocketcdn-free.php:108
 msgid "You have reached the limit of 3 free pages."
 msgstr ""
 

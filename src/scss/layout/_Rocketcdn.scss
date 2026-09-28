@@ -20,6 +20,40 @@
 		margin: 0;
 	}
 }
+.wpr-rocketcdn-btn{
+	background-color: #fff;
+	border-radius: 4px;
+	color: #0C0F1F;
+	text-decoration: none;
+	position: relative;
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	padding:10px;
+	transition: all 200ms ease-out;
+    -webkit-transition: all 200ms ease-out;
+	&::before {
+		content: "";
+		display: inline-block;
+		line-height: 1;
+		background-image: url("../img/arrow-icon.svg");
+		background-size: contain;
+		background-repeat: no-repeat;
+		margin-right: 6px;
+		width: 16px;
+		height: 16px;
+	}
+	&:hover{
+		transform: translateY(-2px);
+		box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
+	}
+	&_retry{
+		display: inline-flex;
+		&::before {
+			background-image: url("../img/wpr-purge.svg");
+		}
+	}
+}
 .rocketcdn--upgrade_btn{
 	margin-right:30px;
 	color:#464F59;

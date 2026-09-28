@@ -92,6 +92,9 @@ class CDNOptionsManager {
 	public function set_cdn_state( string $state ) {
 		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn_state'] = $state;
+		// Internal (non-form) write: 'ignore' suppresses Settings::sanitize_callback()'s
+		// notices; the callback strips it before saving.
+		$settings['ignore'] = 1;
 
 		$this->options_api->set( 'settings', $settings );
 	}

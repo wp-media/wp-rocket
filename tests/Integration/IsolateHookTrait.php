@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration;
 
-use ReflectionClass;
 use ReflectionException;
 
 Trait IsolateHookTrait {
@@ -33,9 +32,8 @@ Trait IsolateHookTrait {
 
 		try {
 			$wp_hooks = $wp_filter[ $event_name ];
-			$reflection = new ReflectionClass($wp_hooks);
-			$priorities_property = $reflection->getProperty('priorities');
-			$priorities_property->setAccessible(true);
+			$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
+
 			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
 			$priorities = $priorities_property->getValue($wp_hooks);
 		} catch (ReflectionException $e) {
@@ -84,14 +82,7 @@ Trait IsolateHookTrait {
 		$wp_hooks->callbacks      = [];
 
 		try {
-			$reflection          = new ReflectionClass( $wp_hooks );
-			$priorities_property = $reflection->getProperty( 'priorities' );
-
-			// ✅ PHP 8.1+: setAccessible() is not needed and deprecated
-			// ✅ PHP 7.4: Still works (setAccessible does nothing but no warning)
-			if ( PHP_VERSION_ID < 80100 ) {
-				$priorities_property->setAccessible( true );
-			}
+			$priorities_property = $this->get_reflective_property( 'priorities', $wp_hooks );
 
 			$this->original_wp_priorities = $priorities_property->getValue( $wp_hooks );
 			$priorities_property->setValue( $wp_hooks, [] );
@@ -124,14 +115,7 @@ Trait IsolateHookTrait {
 
 		try {
 			$wp_hooks = $wp_filter[ $event_name ];
-			$reflection = new ReflectionClass($wp_hooks);
-			$priorities_property = $reflection->getProperty('priorities');
-
-			// ✅ PHP 8.1+: setAccessible() is not needed and deprecated
-			// ✅ PHP 7.4: Still works (setAccessible does nothing but no warning)
-			if ( PHP_VERSION_ID < 80100 ) {
-				$priorities_property->setAccessible( true );
-			}
+			$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
 
 			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
 			$priorities = $priorities_property->getValue($wp_hooks);
@@ -166,14 +150,7 @@ Trait IsolateHookTrait {
 			return;
 		}
 		$wp_hooks = $wp_filter[ $event_name ];
-		$reflection = new ReflectionClass($wp_hooks);
-		$priorities_property = $reflection->getProperty('priorities');
-
-		// ✅ PHP 8.1+: setAccessible() is not needed and deprecated
-		// ✅ PHP 7.4: Still works (setAccessible does nothing but no warning)
-		if ( PHP_VERSION_ID < 80100 ) {
-			$priorities_property->setAccessible( true );
-		}
+		$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
 
 		$priorities_property->setValue($wp_hooks, $this->original_wp_priorities);
 	}
