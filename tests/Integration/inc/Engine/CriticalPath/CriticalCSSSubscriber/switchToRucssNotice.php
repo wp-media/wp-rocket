@@ -47,10 +47,7 @@ class Test_switchToRucssNotice extends TestCase {
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
-
-		// Keeps unrelated admin_notices callbacks (ModPagespeed, RocketCDN) off the network.
-		set_transient( 'rocket_mod_pagespeed_enabled', 0 );
-		set_transient( 'wp_rocket_customer_data', (object) [] );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'switch_to_rucss_notice', 9 );
 	}
 
 	public function tear_down()
@@ -60,10 +57,7 @@ class Test_switchToRucssNotice extends TestCase {
 		remove_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 		update_user_meta( get_current_user_id(), 'rocket_boxes', [] );
 		set_current_screen( 'front' );
-		$this->restoreWpHook( 'current_screen' );
-
-		delete_transient( 'rocket_mod_pagespeed_enabled' );
-		delete_transient( 'wp_rocket_customer_data' );
+		$this->restoreWpHook( 'admin_notices' );
 
 		$this->tear_down_http();
 
