@@ -98,6 +98,18 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenTrialCustomer' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'is_trial_customer'  => true,
+			],
+		],
+		'expected' => null,
+	],
 	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
 		'config'   => [
 			'user' => [

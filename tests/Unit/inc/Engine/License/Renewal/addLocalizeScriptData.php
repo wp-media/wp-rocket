@@ -46,6 +46,11 @@ class AddLocalizeScriptData extends TestCase {
 			->once()
 			->andReturn( $config['license_expired'] );
 
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->once()
+			->andReturn( $config['is_trial_customer'] ?? false );
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->twice()

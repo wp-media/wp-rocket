@@ -51,6 +51,7 @@ return [
 			'auto_renew'         => false,
 			'license_expired'    => false,
 			'licence_expiration' => strtotime( 'next week' ),
+			'is_trial_customer'  => false,
 		],
 		'data'    => [
 			'nonce'      => 12345,
@@ -60,6 +61,22 @@ return [
 			'nonce'              => 12345,
 			'origin_url'         => 'https://api.wp-rocket.me',
 			'license_expiration' => strtotime( 'next week' ),
+		],
+	],
+	'testShouldReturnDefaultWhenTrialCustomer' => [
+		'config'   => [
+			'auto_renew'         => false,
+			'license_expired'    => false,
+			'licence_expiration' => strtotime( 'next week' ),
+			'is_trial_customer'  => true,
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 ];

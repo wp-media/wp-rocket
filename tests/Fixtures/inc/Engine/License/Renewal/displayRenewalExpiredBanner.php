@@ -77,6 +77,28 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldRenderTrialEndedBannerWhenTrialCustomerAndLicenseExpired' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => true,
+				'licence_expiration' => strtotime( 'last year' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'auto_renew'         => false,
+				'is_trial_customer'  => true,
+			],
+			'ocd'      => false,
+			'transient' => false,
+			'pricing'  => $pricing,
+			'disabled_date' => '',
+		],
+		'expected' => [
+			'template' => 'trial-ended-banner',
+			'data'     => [
+				'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			],
+		],
+	],
 	'shouldReturnNullWhenBannerDismissed' => [
 		'config'   => [
 			'user' => [

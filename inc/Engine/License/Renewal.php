@@ -67,6 +67,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return;
 		}
@@ -114,6 +118,18 @@ class Renewal extends Abstract_Render {
 		}
 
 		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
+		if ( $this->user->is_trial_customer() && $this->user->is_license_expired() ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $this->generate(
+				'trial-ended-banner',
+				[
+					'renewal_url' => $this->user->get_renewal_url(),
+				]
+			);
+			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 			return;
 		}
 
@@ -250,6 +266,10 @@ class Renewal extends Abstract_Render {
 	 */
 	public function add_localize_script_data( array $data ) {
 		if ( $this->user->is_license_expired() ) {
+			return $data;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
 			return $data;
 		}
 

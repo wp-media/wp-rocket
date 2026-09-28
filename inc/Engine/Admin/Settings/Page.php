@@ -334,6 +334,12 @@ class Page extends Abstract_Render {
 		$data['can_update_plugin']     = $user->can_update_plugin();
 		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
+		if ( $user->is_trial_customer() ) {
+			$data['license_expiration_label'] = __( 'Trial End Date', 'rocket' );
+		} else {
+			$data['license_expiration_label'] = __( 'Expiration Date', 'rocket' );
+		}
+
 		return $data;
 	}
 

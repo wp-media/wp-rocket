@@ -34,6 +34,25 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenTrialCustomer' => [
+		'config'   => [
+			'license_account'    => 1,
+			'licence_expiration' => false,
+			'is_trial_customer'  => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+					'slug' => 'growth',
+					'saving' => "40",
+					'upgrade_url' => "https://growthupgradeurl.com/",
+					'regular_price' => "50",
+					'websites' => "3",
+					'stack' => false,
+				]
+			],
+		],
+		'expected' => null,
+	],
 	'testShouldDisplaySectionWhenLicenseIsNotExpiredAndNotInfinite' => [
 		'config'   => [
 			'license_account'    => 1,

@@ -46,7 +46,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( $config['user']['licence_expired'] );
 
 		$this->user->shouldReceive( 'get_license_expiration' )
@@ -60,6 +60,11 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			->once()
 			->andReturn( $config['user']['is_revoked'] ?? false );
 
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->once()
+			->andReturn( $config['user']['is_trial_customer'] ?? false );
+
 		$this->options->shouldReceive( 'get' )
 			->with( 'optimize_css_delivery', 0 )
 			->andReturn( $config['ocd'] );
@@ -71,53 +76,57 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			->with( 'rocket_renewal_banner_1' )
 			->andReturn( $config['transient'] );
 
-		if ( ! is_null( $expected ) ) {
-			$this->user->shouldReceive( 'get_license_type' )
-				->atMost()
-				->twice()
-				->andReturn( $config['user']['licence_account'] );
+		$is_trial_case = ! empty( $config['user']['is_trial_customer'] );
 
+		if ( ! is_null( $expected ) ) {
 			$this->user->shouldReceive( 'get_renewal_url' )
 				->atMost()
 				->once()
 				->andReturn( $config['user']['renewal_url'] );
 
-			$this->user->shouldReceive( 'get_creation_date' )
-				->andReturn( $config['user']['creation_date'] );
+			if ( ! $is_trial_case ) {
+				$this->user->shouldReceive( 'get_license_type' )
+					->atMost()
+					->twice()
+					->andReturn( $config['user']['licence_account'] );
 
-			Functions\when( 'number_format_i18n' )->returnArg();
+				$this->user->shouldReceive( 'get_creation_date' )
+					->andReturn( $config['user']['creation_date'] );
 
-			$this->pricing->shouldReceive( 'get_renewals_data' )
-				->andReturn( $config['pricing']['renewals'] );
+				Functions\when( 'number_format_i18n' )->returnArg();
 
-			$this->pricing->shouldReceive( 'get_single_websites_count' )
-				->atMost()
-				->twice()
-				->andReturn( $config['pricing']['single']->websites );
+				$this->pricing->shouldReceive( 'get_renewals_data' )
+					->andReturn( $config['pricing']['renewals'] );
 
-			$this->pricing->shouldReceive( 'get_plus_websites_count' )
-				->atMost()
-				->twice()
-				->andReturn( $config['pricing']['plus']->websites );
+				$this->pricing->shouldReceive( 'get_single_websites_count' )
+					->atMost()
+					->twice()
+					->andReturn( $config['pricing']['single']->websites );
 
-			$this->pricing->shouldReceive( 'get_single_pricing' )
-				->atMost()
-				->twice()
-				->andReturn( $config['pricing']['single'] );
+				$this->pricing->shouldReceive( 'get_plus_websites_count' )
+					->atMost()
+					->twice()
+					->andReturn( $config['pricing']['plus']->websites );
 
-			$this->pricing->shouldReceive( 'get_plus_pricing' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['plus'] );
+				$this->pricing->shouldReceive( 'get_single_pricing' )
+					->atMost()
+					->twice()
+					->andReturn( $config['pricing']['single'] );
 
-			$this->pricing->shouldReceive( 'get_infinite_pricing' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite'] );
+				$this->pricing->shouldReceive( 'get_plus_pricing' )
+					->atMost()
+					->once()
+					->andReturn( $config['pricing']['plus'] );
 
-			Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
+				$this->pricing->shouldReceive( 'get_infinite_pricing' )
+					->atMost()
+					->once()
+					->andReturn( $config['pricing']['infinite'] );
 
-			Functions\when( 'get_option' )->justReturn( 'Ymd' );
+				Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
+
+				Functions\when( 'get_option' )->justReturn( 'Ymd' );
+			}
 
 			$this->renewal->shouldReceive( 'generate' )
 				->once()
