@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Cache;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Buffer\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -15,13 +16,11 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 	/**
 	 * Prefix used to build the companion cookie name.
 	 *
-	 * Must be kept in sync with the literal prefix used in
-	 * WP_Rocket\Buffer\Cache::is_valid_user_cache_cookie() — that class runs before WordPress
-	 * (and therefore this class) is loaded, so the two cannot share a constant.
+	 * @see Cache::USER_CACHE_COOKIE_PREFIX
 	 *
 	 * @var string
 	 */
-	const COOKIE_PREFIX = 'wp_rocket_ucc_';
+	const COOKIE_PREFIX = Cache::USER_CACHE_COOKIE_PREFIX;
 
 	/**
 	 * WP Rocket options instance.

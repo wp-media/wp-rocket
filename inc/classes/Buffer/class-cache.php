@@ -9,6 +9,16 @@ namespace WP_Rocket\Buffer;
 class Cache extends Abstract_Buffer {
 
 	/**
+	 * Prefix used to build the companion cookie name that validates the per-user cache username.
+	 *
+	 * Defined here rather than in UserCacheKeySubscriber because this class also runs from
+	 * advanced-cache.php, before WordPress and the Composer autoloader are loaded.
+	 *
+	 * @var string
+	 */
+	const USER_CACHE_COOKIE_PREFIX = 'wp_rocket_ucc_';
+
+	/**
 	 * Process identifier used by the logger.
 	 *
 	 * @var    string
@@ -586,8 +596,7 @@ class Cache extends Abstract_Buffer {
 		}
 
 		$cookie_hash = (string) $this->config->get_config( 'cookie_hash' );
-		// The 'wp_rocket_ucc_' prefix must match UserCacheKeySubscriber::COOKIE_PREFIX exactly.
-		$cookie_name = 'wp_rocket_ucc_' . $cookie_hash;
+		$cookie_name = self::USER_CACHE_COOKIE_PREFIX . $cookie_hash;
 
 		if ( empty( $cookies[ $cookie_name ] ) ) {
 			return false;
