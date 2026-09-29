@@ -22,7 +22,6 @@ use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
-use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
 use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
 use WP_Rocket\ThirdParty\Plugins\Optimole;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
@@ -82,7 +81,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'wp-meteor',
 		'revolution_slider_subscriber',
 		'wordfence_subscriber',
-		'ezoic',
 		'pwa',
 		'convertplug',
 		'unlimited_elements',
@@ -172,7 +170,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'wp-meteor', WPMeteor::class );
 		$this->getContainer()->addShared( 'revolution_slider_subscriber', RevolutionSlider::class );
 		$this->getContainer()->addShared( 'wordfence_subscriber', WordFenceCompatibility::class );
-		$this->getContainer()->addShared( 'ezoic', Ezoic::class );
 		$this->getContainer()->addShared( 'thirstyaffiliates', ThirstyAffiliates::class );
 		$this->getContainer()->addShared( 'pwa', PWA::class );
 		$this->getContainer()->addShared( 'yoast_seo', Yoast::class );
