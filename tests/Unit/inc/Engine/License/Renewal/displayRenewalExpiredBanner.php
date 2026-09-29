@@ -60,11 +60,6 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			->once()
 			->andReturn( $config['user']['is_revoked'] ?? false );
 
-		$this->user->shouldReceive( 'is_trial_customer' )
-			->atMost()
-			->once()
-			->andReturn( $config['user']['is_trial_customer'] ?? false );
-
 		$this->options->shouldReceive( 'get' )
 			->with( 'optimize_css_delivery', 0 )
 			->andReturn( $config['ocd'] );

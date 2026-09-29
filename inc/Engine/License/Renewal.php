@@ -121,18 +121,6 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		if ( $this->user->is_trial_customer() ) {
-			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $this->generate(
-				'trial-ended-banner',
-				[
-					'renewal_url' => $this->user->get_renewal_url(),
-				]
-			);
-
-			return;
-		}
-
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 
