@@ -39,16 +39,17 @@ class Test_MaybeScheduleTrialCustomerDataRefresh extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldScheduleAsExpected( $config ) {
-		$this->user->shouldReceive( 'is_trial_customer' )
+		Functions\expect( 'current_user_can' )
 			->once()
-			->andReturn( $config['is_trial_customer'] );
+			->with( 'rocket_manage_options' )
+			->andReturn( $config['can_manage_options'] );
 
-		if ( $config['checks_expiration'] ) {
-			$this->user->shouldReceive( 'get_license_expiration' )
+		if ( $config['checks_trial'] ) {
+			$this->user->shouldReceive( 'is_trial_customer' )
 				->once()
-				->andReturn( $config['license_expiration'] );
+				->andReturn( $config['is_trial_customer'] );
 		} else {
-			$this->user->shouldNotReceive( 'get_license_expiration' );
+			$this->user->shouldNotReceive( 'is_trial_customer' );
 		}
 
 		if ( $config['checks_schedule'] ) {
@@ -58,6 +59,14 @@ class Test_MaybeScheduleTrialCustomerDataRefresh extends TestCase {
 				->andReturn( $config['next_scheduled'] );
 		} else {
 			Functions\expect( 'wp_next_scheduled' )->never();
+		}
+
+		if ( $config['checks_expiration'] ) {
+			$this->user->shouldReceive( 'get_license_expiration' )
+				->once()
+				->andReturn( $config['license_expiration'] );
+		} else {
+			$this->user->shouldNotReceive( 'get_license_expiration' );
 		}
 
 		if ( $config['should_schedule'] ) {

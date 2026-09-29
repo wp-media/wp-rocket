@@ -385,22 +385,32 @@ class Subscriber implements Subscriber_Interface {
 	 * Ensures a refresh of the customer data transient is scheduled shortly after a trial
 	 * customer's license expiration.
 	 *
+	 * Only schedules while the expiration is still in the future: once it has passed, this
+	 * bails out instead of rescheduling, so an already-serviced (and by-then-cleared) single
+	 * cron event doesn't get recreated with a stale, already-past target time on every
+	 * subsequent page load. A renewal simply produces a new, later licence_expiration, which
+	 * is still in the future and gets scheduled normally.
+	 *
 	 * @since 3.23.5
 	 *
 	 * @return void
 	 */
 	public function maybe_schedule_trial_customer_data_refresh() {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
 		if ( ! $this->user->is_trial_customer() ) {
+			return;
+		}
+
+		if ( wp_next_scheduled( self::CRON_REFRESH_TRIAL_CUSTOMER_DATA ) ) {
 			return;
 		}
 
 		$expiration = $this->user->get_license_expiration();
 
 		if ( 0 === $expiration || $expiration <= time() ) {
-			return;
-		}
-
-		if ( wp_next_scheduled( self::CRON_REFRESH_TRIAL_CUSTOMER_DATA ) ) {
 			return;
 		}
 
