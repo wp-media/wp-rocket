@@ -396,6 +396,19 @@ return [
 			'more_info' => false,
 		],
 	],
+	'testShouldReturnNullWhenUserIsTrialCustomer' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'is_trial_customer'  => true,
+			],
+		],
+		'expected' => null,
+	],
+
 	'testShouldReturnDataWhenLicenseInfiniteAndGrandfatheredWithEuro' => [
 		'config'   => [
 			'user' => [
