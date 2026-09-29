@@ -67,6 +67,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return;
 		}
