@@ -47,34 +47,35 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_license_info'       => 'display_upgrade_section',
-			'rocket_settings_page_footer'         => 'display_upgrade_popin',
-			'rocket_menu_title'                   => [
+			'rocket_dashboard_license_info'         => 'display_upgrade_section',
+			'rocket_settings_page_footer'           => 'display_upgrade_popin',
+			'rocket_menu_title'                     => [
 				[ 'add_notification_bubble', 10, 2 ],
 				[ 'add_notification_bubble_expired' ],
 				[ 'maybe_add_revoked_bubble' ],
 			],
-			'admin_footer-settings_page_wprocket' => [
+			'admin_footer-settings_page_wprocket'   => [
 				[ 'dismiss_notification_bubble' ],
 				[ 'set_dashboard_seen_transient' ],
 			],
-			'rocket_before_dashboard_content'     => [
+			'rocket_before_dashboard_content'       => [
 				[ 'display_promo_banner' ],
 				[ 'display_renewal_soon_banner', 11 ],
 				[ 'display_renewal_expired_banner', 12 ],
 				[ 'maybe_display_revoked_banner', 13 ],
 			],
-			'wp_ajax_rocket_dismiss_promo'        => 'dismiss_promo_banner',
-			'wp_ajax_rocket_dismiss_renewal'      => 'dismiss_renewal_banner',
-			'rocket_localize_admin_script'        => 'add_localize_script_data',
-			'wp_rocket_upgrade'                   => [ 'clean_user_transient', 15, 2 ],
-			'rocket_before_add_field_to_settings' => [
+			'wp_ajax_rocket_dismiss_promo'          => 'dismiss_promo_banner',
+			'wp_ajax_rocket_dismiss_renewal'        => 'dismiss_renewal_banner',
+			'rocket_localize_admin_script'          => 'add_localize_script_data',
+			'wp_rocket_upgrade'                     => [ 'clean_user_transient', 15, 2 ],
+			'rocket_before_add_field_to_settings'   => [
 				[ 'maybe_disable_ocd', 11 ],
 				[ 'add_license_expire_warning' ],
 			],
-			'get_rocket_option_remove_unused_css' => [ 'maybe_disable_option', PHP_INT_MAX ],
-			'get_rocket_option_async_css'         => [ 'maybe_disable_option', PHP_INT_MAX ],
-			'admin_notices'                       => 'maybe_display_revoked_notice',
+			'get_rocket_option_remove_unused_css'   => [ 'maybe_disable_option', PHP_INT_MAX ],
+			'get_rocket_option_async_css'           => [ 'maybe_disable_option', PHP_INT_MAX ],
+			'admin_notices'                         => 'maybe_display_revoked_notice',
+			'set_transient_wp_rocket_customer_data' => 'maybe_rocket_license_expired',
 		];
 	}
 
@@ -294,5 +295,60 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_add_revoked_bubble( $menu_title ) {
 		return $this->revoked->maybe_add_revoked_bubble( $menu_title );
+	}
+
+	/**
+	 * Fires licence status transition actions when the customer data transient is refreshed.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param object $user_data Rocket customer data.
+	 * @return void
+	 */
+	public function maybe_rocket_license_expired( $user_data ) {
+		if ( empty( $user_data->status ) ) {
+			return;
+		}
+
+		$is_revoked = $user_data->licence->is_revoked ?? false;
+
+		if ( 'expired' === $user_data->status || $is_revoked ) {
+			/**
+			 * Fires when the WP Rocket licence transitions to expired or revoked.
+			 *
+			 * Fires before the more specific rocket_license_expired / rocket_license_revoked
+			 * actions, so a callback here runs regardless of which of the two applies.
+			 *
+			 * @since 3.23.4
+			 */
+			do_action( 'rocket_license_expired_or_revoked' );
+
+			if ( 'expired' === $user_data->status ) {
+				/**
+				 * Fires when the WP Rocket licence has expired.
+				 *
+				 * @since 3.23.4
+				 */
+				do_action( 'rocket_license_expired' );
+			}
+
+			if ( $is_revoked ) {
+				/**
+				 * Fires when the WP Rocket licence has been revoked.
+				 *
+				 * @since 3.23.4
+				 */
+				do_action( 'rocket_license_revoked' );
+			}
+		}
+
+		if ( 'active' === $user_data->status ) {
+			/**
+			 * Fires when the WP Rocket licence is active.
+			 *
+			 * @since 3.23.4
+			 */
+			do_action( 'rocket_license_active' );
+		}
 	}
 }

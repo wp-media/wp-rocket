@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber
 
 use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
@@ -13,9 +14,24 @@ use Brain\Monkey\Functions;
  * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
+	use IsolateHookTrait;
+
 	public static function set_up_before_class() {
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_manage_options' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	private function get_notice( $status = 'success', $message = '' ) {

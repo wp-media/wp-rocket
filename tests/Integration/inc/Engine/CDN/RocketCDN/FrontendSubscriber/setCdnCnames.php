@@ -45,8 +45,10 @@ class Test_SetCdnCnames extends TestCase {
 		$this->subscriber  = $container->get( 'rocketcdn_frontend_subscriber' );
 		$this->options_api = $container->get( 'options_api' );
 
-		$this->memoized_url_prop = new ReflectionProperty( FrontendSubscriber::class, 'rocketcdn_url' );
-		$this->memoized_url_prop->setAccessible( true );
+		$this->memoized_url_prop = $this->get_reflective_property( 'rocketcdn_url', FrontendSubscriber::class );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 
 		// Ensure frontend (non-admin) context so set_cdn_cnames takes the frontend path.
 		set_current_screen( 'front' );
@@ -67,6 +69,8 @@ class Test_SetCdnCnames extends TestCase {
 		$this->options_api->set( 'settings', $settings );
 
 		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

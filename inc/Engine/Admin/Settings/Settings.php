@@ -347,8 +347,15 @@ class Settings {
 		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
 		$input['heartbeat_editor_behavior'] = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
 
-		// Option : CDN.
-		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
+		// 'cdn' isn't a field on this settings form - it's managed separately by the CDN
+		// tab's own save flow (CDNOptionsManager, Rest::apply_cdn_mode()). Preserve the
+		// current value when this save doesn't touch it, but respect it when it does:
+		// $this->options is a per-request Options_Data snapshot taken once, early in the
+		// request, so unconditionally overwriting from it would silently revert a 'cdn'
+		// change a caller had just made through a raw update_option() write earlier in
+		// the SAME request (e.g. CDNOptionsManager::disable(), whose write triggers this
+		// very sanitize_option_wp_rocket_settings callback via register_setting()).
+		$input['cdn'] = isset( $input['cdn'] ) ? (int) $input['cdn'] : (int) $this->options->get( 'cdn', 0 );
 
 		// Option : CDN Cnames.
 		if ( isset( $input['cdn_cnames'] ) ) {
@@ -411,7 +418,8 @@ class Settings {
 		}
 
 		if ( ! empty( $input['secret_key'] ) && empty( $input['ignore'] ) && rocket_valid_key() ) {
-			// Add a "Settings saved." admin notice only if not already added.
+			// Add a "Settings saved." admin notice only if not already added, by WP Rocket ('updated')
+			// or by core's options.php ('success').
 			$notices = array_merge( (array) $wp_settings_errors, (array) get_transient( 'settings_errors' ) );
 			$notices = array_filter(
 				$notices,
@@ -422,7 +430,7 @@ class Settings {
 					if ( ! isset( $error['setting'], $error['code'], $error['type'] ) ) {
 						return false;
 					}
-					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && 'updated' === $error['type'];
+					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && in_array( $error['type'], [ 'updated', 'success' ], true );
 				}
 			);
 

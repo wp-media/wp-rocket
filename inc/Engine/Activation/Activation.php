@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
@@ -42,7 +43,7 @@ class Activation {
 	 * @return void
 	 */
 	public static function activate_plugin() {
-		$container     = new Container();
+		$container     = new Container( new IndexedDefinitionAggregate() );
 		$event_manager = new Event_Manager();
 
 		$container->add( 'template_path', new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views' ) );

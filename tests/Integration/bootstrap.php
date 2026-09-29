@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration;
 
 use org\bovigo\vfs\vfsStream;
 use WC_Install;
+use WP_Error;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
@@ -12,6 +13,22 @@ define( 'WP_ROCKET_PLUGIN_ROOT', dirname( dirname( __DIR__ ) ) . DIRECTORY_SEPAR
 define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
+
+/**
+ * Blocks outbound HTTP requests while the WordPress test bootstrap is still running.
+ *
+ * @param mixed  $preempt A preemptive return value, or false to let the request proceed.
+ * @param array  $args    HTTP request arguments.
+ * @param string $url     The request URL.
+ * @return mixed
+ */
+function block_bootstrap_http_request( $preempt, $args, $url ) {
+	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
+		return $preempt;
+	}
+
+	return new WP_Error( 'wp_rocket_tests_bootstrap_http', 'HTTP request blocked during the test bootstrap: ' . $url );
+}
 
 // Manually load the plugin being tested.
 tests_add_filter(
@@ -326,6 +343,19 @@ tests_add_filter(
 			}
 			return $preempt;
 		}, 10, 3 );
+
+		// Nothing may reach the network while WordPress bootstraps: WP Rocket calls its pricing and user APIs
+		// while its container is built, and _delete_all_posts() fires the hosting purges. Tests mock their own
+		// requests, so the guard steps aside once the test case classes are loaded.
+		add_filter( 'pre_http_request', __NAMESPACE__ . '\block_bootstrap_http_request', PHP_INT_MAX, 3 );
+
+		// Serve PricingClient a fixture instead of the live API. The License tests delete it to exercise the fetch.
+		set_transient( 'wp_rocket_pricing', json_decode( file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/License/API/pricing.json' ) ), 12 * HOUR_IN_SECONDS );
+
+		// Core update checks call api.wordpress.org on admin_init. No test needs them.
+		remove_action( 'admin_init', '_maybe_update_core' );
+		remove_action( 'admin_init', '_maybe_update_plugins' );
+		remove_action( 'admin_init', '_maybe_update_themes' );
 
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';

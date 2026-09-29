@@ -126,7 +126,14 @@
 				"league/container",
 				"berlindb/core",
 				"wp-media/plugin-family"
-			]
+			],
+			"override_autoload": {
+				"mobiledetect/mobiledetectlib": {
+					"psr-4": {
+						"Detection\\": "src/"
+					}
+				}
+			}
 		},
 		"plugin_domain": "rocket",
 		"imagify_partner": "wp-rocket"

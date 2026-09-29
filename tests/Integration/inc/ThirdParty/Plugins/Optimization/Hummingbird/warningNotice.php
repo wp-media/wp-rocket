@@ -24,12 +24,17 @@ class Test_WarningNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
 	public function tear_down() {
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 

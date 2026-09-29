@@ -25,6 +25,19 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 		set_current_screen( 'front' );
 	}
 
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
+	}
+
 	/**
      * @dataProvider providerTestData
      */
