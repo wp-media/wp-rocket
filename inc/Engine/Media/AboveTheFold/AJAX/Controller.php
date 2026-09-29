@@ -155,14 +155,30 @@ class Controller implements ControllerInterface {
 		$object       = new \stdClass();
 		$object->type = $image->type ?? 'img';
 
+		// Every branch below stores raw string data supplied via the unauthenticated
+		// `rocket_beacon` AJAX action. It must be sanitized/validated at storage time,
+		// independent of any render-time escaping — a future new `case` must not skip this.
 		switch ( $object->type ) {
 			case 'img-srcset':
 				// If the type is 'img-srcset', add all the required parameters to the object.
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
 					$object->src = $this->sanitize_image_url( $image->src );
 				}
-				$object->srcset = $image->srcset;
-				$object->sizes  = $image->sizes;
+
+				$raw_srcset       = $this->get_string_prop( $image, 'srcset' );
+				$sanitized_srcset = $this->sanitize_srcset( $raw_srcset );
+
+				if ( empty( $sanitized_srcset ) ) {
+					// srcset is required for this type (no <img> fallback like `picture` has);
+					// reject the whole object, mirroring how array_filter() drops invalid
+					// `picture` sources below. Do not fall back to storing an empty string.
+					return null;
+				}
+
+				$object->srcset = $sanitized_srcset;
+
+				$raw_sizes     = $this->get_string_prop( $image, 'sizes' );
+				$object->sizes = ! empty( $raw_sizes ) ? $this->sanitize_sizes( $raw_sizes ) : '';
 				break;
 			case 'picture':
 				if ( isset( $image->src ) && ! empty( $image->src ) && is_string( $image->src ) ) {
@@ -187,10 +203,15 @@ class Controller implements ControllerInterface {
 						if ( is_array( $image->$key ) ) {
 							$sanitized_array = array_map(
 								function ( $item ) {
-									if ( ! empty( $item->src ) ) {
-										$item->src = $this->sanitize_image_url( $item->src );
-									}
-									return $item;
+									// Rebuild each item from a whitelist rather than mutating and
+									// returning the attacker-supplied object as-is, so unrecognized
+									// properties never ride through to the stored JSON.
+									$sanitized_item = new \stdClass();
+
+									$item_src            = is_object( $item ) ? $this->get_string_prop( $item, 'src' ) : '';
+									$sanitized_item->src = '' !== $item_src ? $this->sanitize_image_url( $item_src ) : '';
+
+									return $sanitized_item;
 								},
 								$image->$key
 							);
@@ -219,6 +240,17 @@ class Controller implements ControllerInterface {
 		}
 
 		return $object;
+	}
+
+	/**
+	 * Safely read a string property from an untrusted, attacker-supplied object.
+	 *
+	 * @param object $data The object to read the property from.
+	 * @param string $key  The property name to read.
+	 * @return string The property value if it's set and is a string, empty string otherwise.
+	 */
+	private function get_string_prop( $data, string $key ): string {
+		return isset( $data->$key ) && is_string( $data->$key ) ? $data->$key : '';
 	}
 
 	/**
