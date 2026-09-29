@@ -52,10 +52,9 @@ use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
  * Authoritative id => class registry and constructor argument builder for the
  * resolver-gate-able plugin compatibility subscribers.
  *
- * Single source of truth for the factory-owned plugin ids (Phase 0 scaffolding
- * for issue #6418). `get_registry()` is a pure literal map, safe to enumerate
- * without side effects; `get_arguments()` builds the runtime args for a single
- * id only, at register time.
+ * Single source of truth for the factory-owned plugin ids. `get_registry()` is
+ * a pure literal map, safe to enumerate without side effects; `get_arguments()`
+ * builds the runtime args for a single id only, at register time.
  */
 class SubscriberFactory {
 	/**
@@ -67,8 +66,7 @@ class SubscriberFactory {
 		return [
 			'mobile_subscriber'            => Mobile_Subscriber::class,
 			// syntaxhighlighter_subscriber is ordered before elementor_subscriber: both hook
-			// `rocket_exclude_js` at the default priority (hook-collision scan, issue #6418
-			// Phase 0); this preserves their pre-refactor relative registration order.
+			// `rocket_exclude_js` at the default priority, and this order is relied upon.
 			'syntaxhighlighter_subscriber' => SyntaxHighlighter::class,
 			'elementor_subscriber'         => Elementor::class,
 			'woocommerce_subscriber'       => WooCommerceSubscriber::class,

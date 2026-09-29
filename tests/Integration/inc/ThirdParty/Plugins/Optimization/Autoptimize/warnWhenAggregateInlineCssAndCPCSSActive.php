@@ -26,13 +26,8 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Issue #8789 slice 4 gates Autoptimize behind PluginCompatibilityInterface;
-		// AUTOPTIMIZE_PLUGIN_VERSION is genuinely undefined at real plugin boot in this
-		// test environment, so the live container no longer constructs/hooks Autoptimize
-		// on admin_notices the way unregisterAllCallbacksExcept() previously relied on
-		// (it would silently keep every original callback, including RocketInsights's,
-		// when it can't find a matching one to except). Construct our own instance and
-		// hook it manually instead.
+		// Autoptimize is gated behind PluginCompatibilityInterface and its target
+		// constant is undefined here, so construct and hook it manually instead.
 		$this->unregisterAllCallbacks( 'admin_notices' );
 
 		$container = apply_filters( 'rocket_container', null );
