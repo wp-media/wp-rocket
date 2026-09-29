@@ -385,12 +385,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Ensures a refresh of the customer data transient is scheduled shortly after a trial
 	 * customer's license expiration.
 	 *
-	 * Only schedules while the expiration is still in the future: once it has passed, this
-	 * bails out instead of rescheduling, so an already-serviced (and by-then-cleared) single
-	 * cron event doesn't get recreated with a stale, already-past target time on every
-	 * subsequent page load. A renewal simply produces a new, later licence_expiration, which
-	 * is still in the future and gets scheduled normally.
-	 *
 	 * @since 3.23.5
 	 *
 	 * @return void
