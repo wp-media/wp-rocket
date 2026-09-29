@@ -55,7 +55,17 @@ class Test_ClearUserCacheCookie extends TestCase {
 		$this->subscriber = new ClearCookieRecordingUserCacheKeySubscriber( $this->options );
 	}
 
+	public function testShouldNotClearCookieWhenSecretCacheKeyIsEmpty() {
+		$this->options->shouldReceive( 'get' )->with( 'secret_cache_key' )->andReturn( '' );
+
+		$this->subscriber->clear_user_cache_cookie();
+
+		$this->assertSame( [], $this->subscriber->calls );
+	}
+
 	public function testShouldClearCookieAtBothPathsWithPastExpiry() {
+		$this->options->shouldReceive( 'get' )->with( 'secret_cache_key' )->andReturn( 'supersecretcachekey' );
+
 		$before = time();
 
 		$this->subscriber->clear_user_cache_cookie();
@@ -68,7 +78,7 @@ class Test_ClearUserCacheCookie extends TestCase {
 		$this->assertCount( $expected_calls, $this->subscriber->calls );
 
 		foreach ( $this->subscriber->calls as $call ) {
-			$this->assertSame( 'wp_rocket_ucc_' . COOKIEHASH, $call['name'] );
+			$this->assertSame( 'wp_rocket_ucc_' . COOKIEHASH . '_' . substr( hash_hmac( 'sha256', 'cookie_name', 'supersecretcachekey' ), 0, 12 ), $call['name'] );
 			$this->assertSame( ' ', $call['value'] );
 			$this->assertLessThan( $before, $call['expire'] );
 		}

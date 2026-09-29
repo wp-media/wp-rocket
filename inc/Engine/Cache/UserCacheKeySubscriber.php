@@ -8,19 +8,10 @@ use WP_Rocket\Buffer\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
- * Sets and clears the companion cookie used to confirm the username segment of the
+ * Sets and clears the site-specific companion cookie used to confirm the username segment of the
  * `wordpress_logged_in_*` cookie before it is trusted to pick a per-user cache bucket.
  */
 class UserCacheKeySubscriber implements Subscriber_Interface {
-
-	/**
-	 * Prefix used to build the companion cookie name.
-	 *
-	 * @see Cache::USER_CACHE_COOKIE_PREFIX
-	 *
-	 * @var string
-	 */
-	const COOKIE_PREFIX = Cache::USER_CACHE_COOKIE_PREFIX;
 
 	/**
 	 * WP Rocket options instance.
@@ -45,6 +36,7 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 		return [
 			'set_logged_in_cookie' => [ 'set_user_cache_cookie', 10, 6 ],
 			'clear_auth_cookie'    => 'clear_user_cache_cookie',
+			'init'                 => 'maybe_set_user_cache_cookie',
 		];
 	}
 
@@ -77,23 +69,62 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$mac   = hash_hmac( 'sha256', $username . '|' . $expiration, $secret );
-		$value = $expiration . '|' . $mac;
+		$this->send_user_cache_cookie(
+			Cache::get_user_cache_cookie_value( $username, (int) $expiration, $secret ),
+			(int) $expire,
+			(int) $user_id,
+			$secret
+		);
+	}
 
-		$secure_logged_in_cookie = is_ssl() && 'https' === wp_parse_url( home_url(), PHP_URL_SCHEME );
-
-		/**
-		 * This filter is documented in wp-includes/pluggable.php.
-		 */
-		$secure_logged_in_cookie = wpm_apply_filters_typed( 'boolean', 'secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, is_ssl() );
-
-		$name = self::COOKIE_PREFIX . COOKIEHASH;
-
-		$this->set_cookie( $name, $value, (int) $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
-
-		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			$this->set_cookie( $name, $value, (int) $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+	/**
+	 * Sets the companion cookie for an authenticated user who does not have a valid one yet.
+	 *
+	 * Covers sessions where `set_logged_in_cookie` never fired with User Cache enabled: sessions
+	 * started before User Cache was enabled or before this cookie existed, and multisite sites the
+	 * user did not log in from. Until the cookie is sent back, the page cache is bypassed.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_user_cache_cookie() {
+		if ( ! $this->options->get( 'cache_logged_user' ) || $this->headers_sent() ) {
+			return;
 		}
+
+		$secret = (string) $this->options->get( 'secret_cache_key' );
+
+		if ( '' === $secret ) {
+			return;
+		}
+
+		$auth_cookie = wp_parse_auth_cookie( '', 'logged_in' );
+
+		if ( empty( $auth_cookie['username'] ) || empty( $auth_cookie['expiration'] ) ) {
+			return;
+		}
+
+		$name    = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
+		$current = isset( $_COOKIE[ $name ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ $name ] ) ) : '';
+
+		if ( Cache::is_valid_user_cache_cookie_value( $current, $auth_cookie['username'], $secret ) ) {
+			return;
+		}
+
+		$user_id = get_current_user_id();
+
+		// Only sign a username WordPress itself authenticated from this very logged-in cookie.
+		if ( 0 === $user_id || wp_validate_auth_cookie( '', 'logged_in' ) !== $user_id ) {
+			return;
+		}
+
+		$expiration = (int) $auth_cookie['expiration'];
+
+		$this->send_user_cache_cookie(
+			Cache::get_user_cache_cookie_value( $auth_cookie['username'], $expiration, $secret ),
+			$expiration,
+			$user_id,
+			$secret
+		);
 	}
 
 	/**
@@ -102,13 +133,45 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function clear_user_cache_cookie() {
-		$name   = self::COOKIE_PREFIX . COOKIEHASH;
+		$secret = (string) $this->options->get( 'secret_cache_key' );
+
+		if ( '' === $secret ) {
+			return;
+		}
+
+		$name   = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
 		$expire = time() - YEAR_IN_SECONDS;
 
 		$this->set_cookie( $name, ' ', $expire, COOKIEPATH, COOKIE_DOMAIN, false, true );
 
 		if ( COOKIEPATH !== SITECOOKIEPATH ) {
 			$this->set_cookie( $name, ' ', $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true );
+		}
+	}
+
+	/**
+	 * Sends the companion cookie with the same security flags as the logged-in cookie.
+	 *
+	 * @param string $value   Cookie value.
+	 * @param int    $expire  Cookie expiration as a UNIX timestamp, 0 for a session cookie.
+	 * @param int    $user_id User ID.
+	 * @param string $secret  Secret cache key of the current site.
+	 * @return void
+	 */
+	private function send_user_cache_cookie( string $value, int $expire, int $user_id, string $secret ): void {
+		$secure_logged_in_cookie = is_ssl() && 'https' === wp_parse_url( home_url(), PHP_URL_SCHEME );
+
+		/**
+		 * This filter is documented in wp-includes/pluggable.php.
+		 */
+		$secure_logged_in_cookie = wpm_apply_filters_typed( 'boolean', 'secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, is_ssl() );
+
+		$name = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
+
+		$this->set_cookie( $name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+
+		if ( COOKIEPATH !== SITECOOKIEPATH ) {
+			$this->set_cookie( $name, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
 		}
 	}
 
@@ -129,5 +192,17 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 	 */
 	protected function set_cookie( string $name, string $value, int $expire, string $path, string $domain, bool $secure, bool $httponly ): void {
 		setcookie( $name, $value, $expire, $path, $domain, $secure, $httponly ); // phpcs:ignore WordPress.WP.CookiesInFunctions.CookiesInFunctionsFound
+	}
+
+	/**
+	 * Checks if HTTP headers have already been sent.
+	 *
+	 * Isolated in its own method for the same reason as set_cookie(): `headers_sent()` is always
+	 * true under PHPUnit's CLI SAPI once output started.
+	 *
+	 * @return bool
+	 */
+	protected function headers_sent(): bool {
+		return headers_sent();
 	}
 }

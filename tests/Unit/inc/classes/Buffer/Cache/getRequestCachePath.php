@@ -59,6 +59,7 @@ class Test_GetRequestCachePath extends TestCase {
 	}
 
 	protected function companionCookieValue( string $username, int $expiration, string $secret = self::SECRET ): string {
+		// Built independently from Cache::get_user_cache_cookie_value() so the test pins the format.
 		return $expiration . '|' . hash_hmac( 'sha256', $username . '|' . $expiration, $secret );
 	}
 
@@ -66,8 +67,8 @@ class Test_GetRequestCachePath extends TestCase {
 		return 'wordpress_logged_in_' . self::COOKIE_HASH;
 	}
 
-	protected function companionCookieName(): string {
-		return 'wp_rocket_ucc_' . self::COOKIE_HASH;
+	protected function companionCookieName( string $secret = self::SECRET ): string {
+		return 'wp_rocket_ucc_' . self::COOKIE_HASH . '_' . substr( hash_hmac( 'sha256', 'cookie_name', $secret ), 0, 12 );
 	}
 
 	protected function expectedAnonymousPath(): string {
@@ -95,42 +96,42 @@ class Test_GetRequestCachePath extends TestCase {
 		$this->assertSame( $this->expectedPerUserPath(), $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCompanionCookieIsMissing() {
+	public function testShouldBypassCacheWhenCompanionCookieIsMissing() {
 		$cookies = [
 			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCompanionCookieHasWrongSecret() {
+	public function testShouldBypassCacheWhenCompanionCookieHasWrongSecret() {
 		$cookies = [
 			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
 			$this->companionCookieName() => $this->companionCookieValue( self::USERNAME, time() + 3600, 'wrong-secret' ),
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCompanionCookieHasWrongUsername() {
+	public function testShouldBypassCacheWhenCompanionCookieHasWrongUsername() {
 		$cookies = [
 			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
 			$this->companionCookieName() => $this->companionCookieValue( 'someone-else', time() + 3600 ),
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCompanionCookieIsExpired() {
+	public function testShouldBypassCacheWhenCompanionCookieIsExpired() {
 		$cookies = [
 			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
 			$this->companionCookieName() => $this->companionCookieValue( self::USERNAME, time() - 3600 ),
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCompanionCookieExpirationIsTampered() {
+	public function testShouldBypassCacheWhenCompanionCookieExpirationIsTampered() {
 		$expiration = time() + 3600;
 		$mac        = hash_hmac( 'sha256', self::USERNAME . '|' . $expiration, self::SECRET );
 
@@ -142,17 +143,17 @@ class Test_GetRequestCachePath extends TestCase {
 			$this->companionCookieName() => $tampered_expiration . '|' . $mac,
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
-	public function testShouldReturnAnonymousBucketWhenCommonCacheEnabledButCompanionCookieMissing() {
+	public function testShouldBypassCacheWhenCommonCacheEnabledButCompanionCookieMissing() {
 		$this->config_mock->shouldReceive( 'get_config' )->with( 'common_cache_logged_users' )->andReturn( 1 );
 
 		$cookies = [
 			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
 		];
 
-		$this->assertSame( $this->expectedAnonymousPath(), $this->callGetRequestCachePath( $cookies ) );
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
 	}
 
 	public function testShouldReturnSharedLoggedInBucketWhenCommonCacheEnabledAndCompanionCookieValid() {
@@ -164,6 +165,21 @@ class Test_GetRequestCachePath extends TestCase {
 		];
 
 		$this->assertSame( $this->expectedSharedLoggedInPath(), $this->callGetRequestCachePath( $cookies ) );
+	}
+
+	public function testShouldBypassCacheWhenCompanionCookieBelongsToAnotherSite() {
+		// Multisite: COOKIEHASH is network-wide, each site has its own secret cache key.
+		$cookies = [
+			$this->loggedInCookieName() => self::USERNAME . '|9999999999|token|hmac',
+			$this->companionCookieName( 'main-site-secret' ) => $this->companionCookieValue( self::USERNAME, time() + 3600, 'main-site-secret' ),
+		];
+
+		$this->assertSame( '', $this->callGetRequestCachePath( $cookies ) );
+	}
+
+	public function testShouldUseSiteSpecificCompanionCookieName() {
+		$this->assertNotSame( $this->companionCookieName(), $this->companionCookieName( 'main-site-secret' ) );
+		$this->assertSame( $this->companionCookieName(), Cache::get_user_cache_cookie_name( self::COOKIE_HASH, self::SECRET ) );
 	}
 
 	public function testShouldReturnAnonymousBucketWhenNoLoggedInCookie() {

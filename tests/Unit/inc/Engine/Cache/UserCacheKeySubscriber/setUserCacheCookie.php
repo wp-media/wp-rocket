@@ -105,7 +105,7 @@ class Test_SetUserCacheCookie extends TestCase {
 		$this->assertCount( $expected_calls, $this->subscriber->calls );
 
 		foreach ( $this->subscriber->calls as $call ) {
-			$this->assertSame( 'wp_rocket_ucc_' . COOKIEHASH, $call['name'] );
+			$this->assertSame( 'wp_rocket_ucc_' . COOKIEHASH . '_' . substr( hash_hmac( 'sha256', 'cookie_name', self::SECRET ), 0, 12 ), $call['name'] );
 			$this->assertSame( $expected_value, $call['value'] );
 			$this->assertSame( 0, $call['expire'] );
 		}
