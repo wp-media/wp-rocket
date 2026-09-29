@@ -334,6 +334,9 @@ function get_rocket_cache_mandatory_cookies() { // phpcs:ignore WordPress.Naming
 /**
  * Get list of dynamic cookies.
  *
+ * An entry is either a cookie name, or a cookie name mapped to the parts of that cookie the cache
+ * varies by ( 'parent' => [ 'child' ] ). Both shapes reach the cache file name.
+ *
  * @since 2.7
  *
  * @return array List of dynamic cookies.
@@ -350,7 +353,19 @@ function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingCo
 	 */
 	$cookies = (array) apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
 	$cookies = array_filter( $cookies );
-	$cookies = array_unique( $cookies );
+	$tokens  = [];
+
+	// A name is compared by its value, the parts of a cookie by the key they sit under. Anything else
+	// names no cookie: it is given no token, and the line below drops it.
+	foreach ( $cookies as $key => $cookie ) {
+		if ( is_scalar( $cookie ) ) {
+			$tokens[ $key ] = 'name:' . $cookie;
+		} elseif ( is_array( $cookie ) ) {
+			$tokens[ $key ] = 'key:' . $key;
+		}
+	}
+
+	$cookies = array_intersect_key( $cookies, array_unique( $tokens ) );
 
 	return $cookies;
 }
