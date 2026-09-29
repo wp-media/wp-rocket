@@ -67,6 +67,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return;
 		}
@@ -114,6 +118,18 @@ class Renewal extends Abstract_Render {
 		}
 
 		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo $this->generate(
+				'trial-ended-banner',
+				[
+					'renewal_url' => $this->user->get_renewal_url(),
+				]
+			);
+
 			return;
 		}
 
