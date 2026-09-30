@@ -19,6 +19,7 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		$this->stubRocketGetConstant();
+		$this->stubRocketHasConstant();
 	}
 
 	public function configTestData() {
