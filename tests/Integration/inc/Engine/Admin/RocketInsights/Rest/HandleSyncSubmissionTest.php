@@ -44,7 +44,7 @@ class HandleSyncSubmissionTest extends TestCase {
 
 		// A failing API response makes the sync submission fall back to the async queue.
 		$this->config['http'] = [
-			'http://localhostperformance/' => [
+			'https://saas.wp-rocket.me/performance/' => [
 				'response' => [
 					'code'    => 500,
 					'message' => 'Internal Server Error',

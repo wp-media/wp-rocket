@@ -31,7 +31,7 @@ return [
 			],
 			'max_rows' => 100,
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					'body' => json_encode([
 						'code' => 200,
 						'contents' => [
@@ -103,7 +103,7 @@ return [
 			],
 			'max_rows' => 100,
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					'body' => json_encode([
 						'code' => 200,
 						'contents' => [
@@ -175,7 +175,7 @@ return [
 			],
 			'max_rows' => 2,
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					'body' => json_encode([
 						'code' => 200,
 						'contents' => [
@@ -255,7 +255,7 @@ return [
 			],
 			'max_rows' => 2,
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					'body' => json_encode([
 						'code' => 200,
 						'contents' => [
@@ -335,7 +335,7 @@ return [
 			],
 			'max_rows' => 0,
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					'body' => json_encode([
 						'code' => 200,
 						'contents' => [
@@ -416,7 +416,7 @@ return [
 			'max_rows' => 0,
 			// One job submission per to-submit row, answered in order.
 			'http' => [
-				'http://localhostrucss-job' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
 					[
 						'body'     => json_encode( [
 							'code'     => 401,

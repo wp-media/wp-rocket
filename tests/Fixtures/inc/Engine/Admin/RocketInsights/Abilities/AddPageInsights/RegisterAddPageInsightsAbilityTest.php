@@ -12,7 +12,7 @@ $not_found = [
 	'body'     => '',
 ];
 
-$saas_url = 'http://localhostperformance/';
+$saas_url = 'https://saas.wp-rocket.me/performance/';
 
 return [
 	'testShouldReturnWPErrorWhenNoPermissions' => [

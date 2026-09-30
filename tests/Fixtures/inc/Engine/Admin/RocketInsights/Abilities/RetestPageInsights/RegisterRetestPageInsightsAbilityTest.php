@@ -89,7 +89,7 @@ return [
 				],
 			],
 			'http'           => [
-				'http://localhostperformance/' => $ok,
+				'https://saas.wp-rocket.me/performance/' => $ok,
 			],
 		],
 		'expected' => [
