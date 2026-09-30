@@ -514,7 +514,7 @@ class User {
 	 * @return bool
 	 */
 	public function is_trial_customer(): bool {
-		return (bool) ( $this->user->is_trial_customer ?? false );
+		return ( $this->user->is_trial_cancelled ?? false ) || ( $this->user->is_trial_customer ?? false );
 	}
 
 	/**
