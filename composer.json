@@ -28,6 +28,11 @@
 			"mnsami/composer-custom-directory-installer": true,
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"phpstan/extension-installer": true
+		},
+		"audit": {
+			"ignore": {
+				"GHSA-cxf4-7mrp-vvpr": "league/flysystem 1.x is only a build-time dependency of coenjacobs/mozart (require-dev) and is never shipped in the plugin. No patched 1.x release exists. Remove once mozart is upgraded to a version using flysystem ^3 (#8938)."
+			}
 		}
 	},
 	"support": {
@@ -67,7 +72,6 @@
 		"phpstan/phpstan-phpunit": "^2.0",
 		"phpunit/phpunit": "^7.5 || ^8 || ^9",
 		"psr/container": "1.1.1",
-		"roave/security-advisories": "dev-master",
 		"woocommerce/action-scheduler": "4.1.0",
 		"szepeviktor/phpstan-wordpress": "^2.0",
 		"wp-coding-standards/wpcs": "^3",
