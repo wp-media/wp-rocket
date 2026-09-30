@@ -70,9 +70,12 @@ class Image {
 		// Candidate opening tags for the allowed tag names. The quoted-value
 		// alternatives let a `>` character inside an attribute's value (e.g. raw
 		// markup stored in an attribute) be skipped over instead of
-		// prematurely ending the tag match. Quantifiers are possessive (`*+`) so
-		// a long, quote-free value can't be re-walked by backtracking once matched.
-		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\b(?:[^>"\']++|"[^"]*+"|\'[^\']*+\')*+>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
+		// prematurely ending the tag match. As in browsers, a quote only opens
+		// a value right after `=`: a stray quote anywhere else is a plain
+		// character, so it can't pair with a quote in a later tag and swallow
+		// everything in between. Quantifiers are possessive (`*+`) so a long,
+		// quote-free value can't be re-walked by backtracking once matched.
+		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\b(?:[^>=]++|=\s*+"[^"]*+"|=\s*+\'[^\']*+\'|=)*+>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
