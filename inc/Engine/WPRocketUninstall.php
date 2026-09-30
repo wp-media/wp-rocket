@@ -139,6 +139,7 @@ class WPRocketUninstall {
 		'rocket_preload_revert_old_failed_rows',
 		'rocket_cdn_create_request_timeout',
 		'rocket_cdn_create_request_timeout_active',
+		'rocket_cron_refresh_trial_customer_data',
 	];
 
 	/**
