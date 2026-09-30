@@ -292,12 +292,6 @@ class Assets {
 			. 'var frag=document.createDocumentFragment(),img=lazyLoadImg(id,l);'
 			. 'img.setAttribute("alt",alt);'
 			. 'frag.appendChild(img);'
-			. "if({$lazy_image}&&!{$native}&&!l){"
-			. 'var noscript=document.createElement("noscript"),nimg=lazyLoadImg(id,true);'
-			. 'nimg.setAttribute("alt",alt);'
-			. 'noscript.appendChild(nimg);'
-			. 'frag.appendChild(noscript);'
-			. '}'
 			. 'var btn=document.createElement("button");'
 			. 'btn.setAttribute("class","play");'
 			. "btn.setAttribute(\"aria-label\",\"{$button_aria_label}\");"
