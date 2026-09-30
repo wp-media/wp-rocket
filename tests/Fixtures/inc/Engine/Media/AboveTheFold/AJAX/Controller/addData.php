@@ -1912,6 +1912,393 @@ return [
 	],
 
 	// ========================================================================
+	// XSS VULNERABILITY TEST CASES - img-srcset
+	// ========================================================================
+
+	/**
+	 * Test Case: XSS attempt via img-srcset's srcset with onerror event handler
+	 * Should reject the whole img-srcset object (no partial storage).
+	 */
+	'testXSSInImgSrcsetOnerror' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'img-srcset',
+							'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset' => 'image.jpg" onerror="alert(1)',
+							'sizes'  => '',
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt via img-srcset's srcset with angle brackets/<script>
+	 * Should reject the whole img-srcset object.
+	 */
+	'testXSSInImgSrcsetAngleBrackets' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'img-srcset',
+							'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset' => 'image.jpg<script>alert(1)</script>',
+							'sizes'  => '',
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: XSS attempt via img-srcset's srcset with quote-breakout
+	 * Should reject the whole img-srcset object.
+	 */
+	'testXSSInImgSrcsetSingleQuotes' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'img-srcset',
+							'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset' => "image.jpg' onclick='alert(1)",
+							'sizes'  => '',
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: hostile `sizes` with an otherwise-valid `srcset`
+	 * The object is kept, `srcset` is stored normally, `sizes` falls back to ''.
+	 */
+	'testXSSInImgSizesAttribute' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'img-srcset',
+							'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+							'sizes'  => '100vw" onload="alert(1)',
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'img-srcset',
+						'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+						'sizes'  => '',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'img-srcset',
+						'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+						'sizes'  => '',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: missing/empty `srcset` on an img-srcset object
+	 * Should reject the whole object, same as an explicitly empty string.
+	 */
+	'testImgSrcsetMissingField' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'  => 'img-srcset',
+							'src'   => 'http://example.org/wp-content/uploads/image.jpg',
+							'sizes' => '',
+							'label' => 'lcp',
+						],
+					],
+				]
+			),
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => 'not found',
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: legitimate multi-descriptor srcset + valid sizes
+	 * Proves Acceptance Criterion 1 - no regression for valid img-srcset payloads.
+	 */
+	'testValidImgSrcset' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'img-srcset',
+							'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+							'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+							'sizes'  => '(max-width: 600px) 480px, 800px',
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'img-srcset',
+						'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+						'sizes'  => '(max-width: 600px) 480px, 800px',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'img-srcset',
+						'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+						'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+						'sizes'  => '(max-width: 600px) 480px, 800px',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	/**
+	 * Test Case: bg_set item carries an extra attacker-added property
+	 * Only `src` (sanitized) should survive into the stored object.
+	 */
+	'testBgSetExtraPropertyStripped' => [
+		'config' => [
+			'filter'  => true,
+			'url'     => 'http://example.org/test-page/',
+			'is_mobile' => false,
+			'results' => json_encode(
+				[
+					'lcp' => [
+						[
+							'type'   => 'bg-img',
+							'src'    => '',
+							'bg_set' => [
+								[
+									'src'     => 'http://example.org/anotherlcp.jpg',
+									'onerror' => 'alert(document.domain)',
+								],
+							],
+							'label'  => 'lcp',
+						],
+					],
+				]
+			),
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'status' => 'completed',
+				'error_message' => '',
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'bg-img',
+						'bg_set' => [
+							[
+								'src' => 'http://example.org/anotherlcp.jpg',
+							],
+						],
+						'src'    => '',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url' => 'http://example.org/test-page',
+				'is_mobile' => false,
+				'lcp' => json_encode(
+					(object) [
+						'type'   => 'bg-img',
+						'bg_set' => [
+							[
+								'src' => 'http://example.org/anotherlcp.jpg',
+							],
+						],
+						'src'    => '',
+					]
+				),
+				'viewport' => '[]',
+				'last_accessed' => null,
+				'status' => 'completed',
+				'error_message' => '',
+			],
+		],
+	],
+
+	// ========================================================================
 	// EDGE CASES
 	// ========================================================================
 
