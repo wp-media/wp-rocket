@@ -31,10 +31,7 @@
 		},
 		"audit": {
 			"ignore": {
-				"GHSA-cxf4-7mrp-vvpr": {
-					"apply": "block",
-					"reason": "league/flysystem 1.x is only a build-time dependency of coenjacobs/mozart (require-dev) and is never shipped in the plugin. No patched 1.x release exists. Remove once mozart is upgraded to a version using flysystem ^3."
-				}
+				"GHSA-cxf4-7mrp-vvpr": "league/flysystem 1.x is only a build-time dependency of coenjacobs/mozart (require-dev) and is never shipped in the plugin. No patched 1.x release exists. Remove once mozart is upgraded to a version using flysystem ^3 (#8938)."
 			}
 		}
 	},
