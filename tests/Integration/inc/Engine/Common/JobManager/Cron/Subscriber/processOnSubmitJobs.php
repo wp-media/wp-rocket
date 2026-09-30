@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
-use WP_Rocket\Tests\HTTPCallTrait;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::process_on_submit_jobs
@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_ProcessOnSubmitJobs extends TestCase {
 
-	use HTTPCallTrait;
+	use HttpRequestTrait;
 
 	protected $config;
 
