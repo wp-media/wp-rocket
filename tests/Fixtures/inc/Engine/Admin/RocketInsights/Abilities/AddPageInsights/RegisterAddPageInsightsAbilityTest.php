@@ -1,5 +1,19 @@
 <?php
 
+// Answers every mocked request: a successful SaaS submission, which the page fetch accepts as a 200 page too.
+$ok = [
+	'response' => [ 'code' => 200 ],
+	'body'     => wp_json_encode( [ 'success' => true, 'uuid' => 'test-uuid', 'code' => 200 ] ),
+];
+
+// The URL "does not resolve", so no submission follows.
+$not_found = [
+	'response' => [ 'code' => 404, 'message' => 'Not Found' ],
+	'body'     => '',
+];
+
+$saas_url = 'http://localhostperformance/';
+
 return [
 	'testShouldReturnWPErrorWhenNoPermissions' => [
 		'config'   => [
@@ -8,7 +22,6 @@ return [
 				'url' => 'https://example.com/test-page',
 			],
 			'existing_items' => [],
-			'mock_http'      => false,
 		],
 		'expected' => [
 			'is_error'   => true,
@@ -24,7 +37,10 @@ return [
 				'url' => 'https://example.com/test-page',
 			],
 			'existing_items' => [],
-			'mock_http'      => true,
+			'http'           => [
+				'https://example.com/test-page' => $ok,
+				$saas_url                      => $ok,
+			],
 			'url_limit'      => 10,
 		],
 		'expected' => [
@@ -51,7 +67,9 @@ return [
 					'data'      => '{"status":"complete"}',
 				],
 			],
-			'mock_http'      => true,
+			'http'           => [
+				'https://example.com/existing-page' => $ok,
+			],
 			'url_limit'      => 10,
 		],
 		'expected' => [
@@ -69,7 +87,9 @@ return [
 				'url' => 'https://example.com/non-existent-page',
 			],
 			'existing_items' => [],
-			'mock_http'      => false,
+			'http'           => [
+				'https://example.com/non-existent-page' => $not_found,
+			],
 			'url_limit'      => 10,
 		],
 		'expected' => [
@@ -87,7 +107,10 @@ return [
 				'url' => 'https://example.org/',
 			],
 			'existing_items' => [],
-			'mock_http'      => true,
+			'http'           => [
+				'https://example.org/' => $ok,
+				$saas_url              => $ok,
+			],
 			'url_limit'      => 10,
 		],
 		'expected' => [
@@ -123,7 +146,10 @@ return [
 					'data'      => '{"status":"complete"}',
 				],
 			],
-			'mock_http'      => true,
+			'http'           => [
+				'https://example.com/new-page' => $ok,
+				$saas_url                     => $ok,
+			],
 			'url_limit'      => 10,
 		],
 		'expected' => [
