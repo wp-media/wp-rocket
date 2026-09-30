@@ -164,7 +164,7 @@ class Controller implements ControllerInterface {
 			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
 		}
 
-		$html = preg_replace_callback(
+		$replaced = preg_replace_callback(
 			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
@@ -186,7 +186,11 @@ class Controller implements ControllerInterface {
 			1
 		);
 
-		return $this->restore_html_comments( $html );
+		if ( null === $replaced ) {
+			return $this->restore_html_comments( $html );
+		}
+
+		return $this->restore_html_comments( $replaced );
 	}
 
 	/**
