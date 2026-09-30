@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\PricingClient;
 
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
@@ -11,16 +12,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  License
  */
 class GetPricingData extends TestCase {
+	use HttpRequestTrait;
+
 	protected static $transients = [
 		'wp_rocket_pricing',
 		'wp_rocket_pricing_timeout',
 		'wp_rocket_pricing_timeout_active'
 	];
 
-	private $response;
-
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
@@ -32,7 +35,7 @@ class GetPricingData extends TestCase {
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 
-		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -43,9 +46,9 @@ class GetPricingData extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$client = new PricingClient();
 
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'set_response' ] );
+		$this->config['http'] = false === $config['response']
+			? []
+			: [ PricingClient::PRICING_ENDPOINT => $config['response'] ];
 
 		if ( true === $config['pricing-transient'] ) {
 			set_transient( 'wp_rocket_pricing', $expected['result'] );
@@ -70,9 +73,5 @@ class GetPricingData extends TestCase {
 				get_transient( 'wp_rocket_pricing_timeout' )
 			);
 		}
-	}
-
-	public function set_response() {
-		return $this->response;
 	}
 }

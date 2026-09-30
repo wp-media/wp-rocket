@@ -5,6 +5,8 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\PostListin
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
 use Brain\Monkey\Functions;
+use WP_Rocket\Engine\License\API\RemoteSettingsClient;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -20,14 +22,8 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	 */
 	private $remote_settings_transient = 'wp_rocket_remote_settings';
 
-	/**
-	 * Remote settings response.
-	 *
-	 * @var array
-	 */
-	private $response;
+	use DBTrait, HttpRequestTrait;
 
-	use DBTrait;
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
@@ -44,6 +40,8 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		// Enable Rocket Insights.
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
@@ -55,11 +53,12 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	public function tear_down() {
 		// Remove Rocket Insights filter.
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
-		remove_filter( 'pre_http_request', [ $this, 'mock_remote_settings_response' ] );
 
 		delete_transient( $this->remote_settings_transient );
 		delete_transient( $this->remote_settings_transient . '_timeout' );
 		delete_transient( $this->remote_settings_transient . '_timeout_active' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -74,8 +73,7 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		
 		Functions\when( 'wp_parse_url' )->justReturn( $config['is_live_site'] );
 
-		$this->response = $config['response'];
-		add_filter( 'pre_http_request', [ $this, 'mock_remote_settings_response' ], 10, 3 );
+		$this->config['http'] = [ RemoteSettingsClient::REMOTE_SETTINGS_ENDPOINT => $config['response'] ];
 
 		$remote_settings_data = $container->get( 'remote_settings_client' )->get_remote_settings_data();
 		$remoteSettings = $container->get( 'remote_settings' );
@@ -126,25 +124,5 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		$output = ob_get_clean();
 
 		$this->assertStringContainsString( $expected['html'], $output );
-	}
-
-	/**
-	 * Mocks the HTTP response for remote settings requests to the plugin-settings.php endpoint.
-	 *
-	 * This method is intended to be used as a callback for the 'pre_http_request' filter in tests.
-	 * It returns a mocked response if the request URL contains 'plugin-settings.php'.
-	 *
-	 * @param mixed  $preempt Whether to preempt the default HTTP request. Default false.
-	 * @param array  $args    HTTP request arguments.
-	 * @param string $url     The request URL.
-	 *
-	 * @return mixed Mocked response when URL matches, otherwise null.
-	 */
-	public function mock_remote_settings_response( $preempt, $args, $url ) {
-		if ( false !== strpos( $url, 'plugin-settings.php' ) ) {
-			return $this->response;
-		}
-
-		return $preempt;
 	}
 }

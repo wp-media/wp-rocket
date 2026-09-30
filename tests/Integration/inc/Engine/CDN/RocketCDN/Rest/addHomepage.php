@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\Rest;
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
@@ -13,11 +14,11 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class Test_AddHomepage extends RESTfulTestCase {
-	use CapTrait, DBTrait;
+	use CapTrait, DBTrait, HttpRequestTrait;
 
 	private $admin_id;
 
-	protected $config;
+	protected $config = [];
 
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
@@ -51,7 +52,14 @@ class Test_AddHomepage extends RESTfulTestCase {
 		self::setAdminCap();
 		$this->admin_id = $this->factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->admin_id );
-		add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
+
+		$this->setup_http();
+
+		// add_homepage() always requests untrailingslashit( home_url() ) via get_page_content().
+		$this->config['http'][ untrailingslashit( home_url() ) ] = [
+			'response' => [ 'code' => 200, 'message' => 'OK' ],
+			'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
+		];
 
 		// add_page() calls create_subscription() before inserting the page. Simulate an
 		// already-active subscription so it short-circuits without an external API call
@@ -69,26 +77,12 @@ class Test_AddHomepage extends RESTfulTestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10 );
+		$this->tear_down_http();
+
 		wp_set_current_user( 0 );
 		self::truncateRocketCDNTable();
 		delete_transient( 'rocketcdn_status' );
 		parent::tear_down();
-	}
-
-	public function mock_http_response( $pre, $args, $url ) {
-		// Mock successful response for URLs on the test domain (example.org)
-		if ( strpos( $url, 'http://example.org' ) === 0 || strpos( $url, 'https://example.org' ) === 0 ) {
-			return [
-				'response' => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
-			];
-		}
-
-		return $pre;
 	}
 
 	/**

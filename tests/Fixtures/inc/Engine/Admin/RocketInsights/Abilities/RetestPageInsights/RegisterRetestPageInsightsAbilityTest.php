@@ -1,5 +1,11 @@
 <?php
 
+// Successful SaaS resubmission.
+$ok = [
+	'response' => [ 'code' => 200 ],
+	'body'     => wp_json_encode( [ 'success' => true, 'uuid' => 'test-uuid-retest', 'code' => 200 ] ),
+];
+
 return [
 	'testShouldReturnWPErrorWhenNoPermissions' => [
 		'config'   => [
@@ -8,7 +14,6 @@ return [
 				'url' => 'https://example.com/test-page',
 			],
 			'existing_items' => [],
-			'mock_http'      => false,
 		],
 		'expected' => [
 			'is_error'   => true,
@@ -25,7 +30,6 @@ return [
 				'url' => 'https://example.com/not-tracked',
 			],
 			'existing_items' => [],
-			'mock_http'      => false,
 		],
 		'expected' => [
 			'is_error'   => false,
@@ -55,7 +59,6 @@ return [
 					'data'       => '{"status":"running"}',
 				],
 			],
-			'mock_http'      => false,
 		],
 		'expected' => [
 			'is_error'   => false,
@@ -85,7 +88,9 @@ return [
 					'data'       => '{"status":"complete"}',
 				],
 			],
-			'mock_http'      => true,
+			'http'           => [
+				'https://saas.wp-rocket.me/performance/' => $ok,
+			],
 		],
 		'expected' => [
 			'is_error'           => false,

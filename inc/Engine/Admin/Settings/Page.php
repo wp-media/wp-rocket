@@ -303,11 +303,12 @@ class Page extends Abstract_Render {
 		$user      = new User( $user_data );
 
 		$data = [
-			'license_expiration'    => __( 'Unavailable', 'rocket' ),
-			'license_class'         => 'wpr-isInvalid',
-			'is_from_one_dot_com'   => false,
-			'can_update_plugin'     => false,
-			'update_blocked_reason' => '',
+			'license_expiration'       => __( 'Unavailable', 'rocket' ),
+			'license_class'            => 'wpr-isInvalid',
+			'is_from_one_dot_com'      => false,
+			'can_update_plugin'        => false,
+			'update_blocked_reason'    => '',
+			'license_expiration_label' => __( 'Expiration Date', 'rocket' ),
 		];
 
 		$data['license_type'] = rocket_get_license_type( $user_data );
@@ -333,6 +334,10 @@ class Page extends Abstract_Render {
 		// Get plugin update status.
 		$data['can_update_plugin']     = $user->can_update_plugin();
 		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
+
+		if ( $user->is_trial_customer() ) {
+			$data['license_expiration_label'] = __( 'Trial End Date', 'rocket' );
+		}
 
 		return $data;
 	}

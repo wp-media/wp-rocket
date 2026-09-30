@@ -4,8 +4,10 @@ declare( strict_types=1 );
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIClient;
 
 use ReflectionMethod;
+use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\APIClient::get_subscription_data
@@ -15,6 +17,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group CDN
  */
 class Test_GetSubscriptionData extends TestCase {
+	use HttpRequestTrait;
+
+	const SUBSCRIPTION_ENDPOINT = 'https://rocketcdn.me/api/subscription/example.org/status';
 
 	protected static $use_settings_trait = true;
 
@@ -39,12 +44,15 @@ class Test_GetSubscriptionData extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$container        = apply_filters( 'rocket_container', null );
 		$this->api_client = $container->get( 'rocketcdn_api_client' );
 
 		$this->request_count = 0;
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
+		add_filter( 'pre_http_request', [ $this, 'count_subscription_request' ], 9, 3 );
 
 		delete_transient( 'rocketcdn_status' );
 		delete_option( 'rocketcdn_user_token' );
@@ -52,12 +60,14 @@ class Test_GetSubscriptionData extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_http_request' );
 		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
+		remove_filter( 'pre_http_request', [ $this, 'count_subscription_request' ], 9 );
 
 		delete_transient( 'rocketcdn_status' );
 		delete_option( 'rocketcdn_user_token' );
 		delete_option( APIClient::SUBSCRIPTION_FETCH_LOCK );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -71,31 +81,35 @@ class Test_GetSubscriptionData extends TestCase {
 	}
 
 	/**
-	 * Intercepts calls to the RocketCDN subscription status endpoint and counts
-	 * how many times it's actually hit, so tests can assert on duplicate-request
-	 * behavior. Any other outbound request is left untouched.
+	 * Registers the fixture response for the RocketCDN subscription status endpoint.
 	 *
 	 * @param int        $code HTTP response code to return.
 	 * @param array|null $body Response body to JSON-encode, or null for an empty body.
 	 */
 	private function mock_subscription_endpoint( int $code, $body = [] ): void {
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $_args, $url ) use ( $code, $body ) {
-				if ( false === strpos( $url, 'https://rocketcdn.me/api/subscription/example.org/status' ) ) {
-					return $preempt;
-				}
+		$this->config['http'][ self::SUBSCRIPTION_ENDPOINT ] = [
+			'response' => [ 'code' => $code ],
+			'body'     => null === $body ? '' : wp_json_encode( $body ),
+		];
+	}
 
-				$this->request_count++;
+	/**
+	 * Counts calls to the RocketCDN subscription status endpoint. Registered at priority 9,
+	 * ahead of the trait's own mock at priority 10, so it observes every request without
+	 * altering the response.
+	 *
+	 * @param false|array|WP_Error $response Preemptive response as received.
+	 * @param array                $_args    Unused request arguments.
+	 * @param string               $url      Requested URL.
+	 *
+	 * @return false|array|WP_Error
+	 */
+	public function count_subscription_request( $response, $_args, $url ) {
+		if ( self::SUBSCRIPTION_ENDPOINT === $url ) {
+			$this->request_count++;
+		}
 
-				return [
-					'response' => [ 'code' => $code ],
-					'body'     => null === $body ? '' : wp_json_encode( $body ),
-				];
-			},
-			10,
-			3
-		);
+		return $response;
 	}
 
 	/**
@@ -123,15 +137,15 @@ class Test_GetSubscriptionData extends TestCase {
 		];
 		set_transient( 'rocketcdn_status', $cached, DAY_IN_SECONDS );
 
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test, proving the transient
+		// short-circuits before any HTTP call is attempted.
 		$this->assertSame( $cached, $this->api_client->get_subscription_data() );
 		$this->assertSame( 0, $this->request_count, 'A populated transient must short-circuit the API call entirely.' );
 	}
 
 	public function testShouldReturnDefaultWithoutApiCallWhenTokenMissing() {
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test, proving no call is made
+		// without a saved token.
 		$data = $this->api_client->get_subscription_data();
 
 		$this->assertFalse( $data['success'] );
@@ -174,14 +188,9 @@ class Test_GetSubscriptionData extends TestCase {
 
 	public function testShouldNotFireDuplicateRequestWhenAnotherFetchIsInFlight() {
 		$this->set_token();
-		$this->mock_subscription_endpoint(
-			200,
-			[
-				'success' => true,
-				'status'  => 'running',
-			]
-		);
 
+		// No fixture entry: an unmocked request fails the test, proving a held lock
+		// prevents the duplicate outbound call.
 		// Simulate a concurrent request that is already fetching the same data.
 		// Deliberately a few seconds in the past (not time() exactly): a same-second
 		// value would mask the add_option()-based bug this guards against, since
@@ -207,8 +216,7 @@ class Test_GetSubscriptionData extends TestCase {
 		];
 		set_transient( 'rocketcdn_status', $cached, DAY_IN_SECONDS );
 
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test.
 		// get_subscription_data() short-circuits on the transient before the lock is
 		// even considered, so call the fetch method directly to prove that the
 		// lock-held fallback itself prefers a freshly populated transient over the
