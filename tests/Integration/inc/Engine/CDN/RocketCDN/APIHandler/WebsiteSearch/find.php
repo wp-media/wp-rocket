@@ -3,8 +3,10 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 
+use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch::find
@@ -14,6 +16,9 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group CDN
  */
 class Test_Find extends TestCase {
+	use HttpRequestTrait;
+
+	const SEARCH_ENDPOINT = 'https://rocketcdn.me/api/website/search/?url=http://example.org';
 
 	protected static $use_settings_trait = true;
 
@@ -38,11 +43,15 @@ class Test_Find extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$container            = apply_filters( 'rocket_container', null );
 		$this->website_search = $container->get( 'rocketcdn_website_search_api_client' );
 		$this->website_search->set_site_url( 'http://example.org' );
 
 		$this->request_count = 0;
+
+		add_filter( 'pre_http_request', [ $this, 'count_search_request' ], 9, 3 );
 
 		delete_transient( 'rocket_cdn_website_search' );
 		delete_option( 'rocketcdn_user_token' );
@@ -50,11 +59,13 @@ class Test_Find extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_http_request' );
+		remove_filter( 'pre_http_request', [ $this, 'count_search_request' ], 9 );
 
 		delete_transient( 'rocket_cdn_website_search' );
 		delete_option( 'rocketcdn_user_token' );
 		delete_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -64,31 +75,35 @@ class Test_Find extends TestCase {
 	}
 
 	/**
-	 * Intercepts calls to the RocketCDN website-search endpoint and counts how
-	 * many times it's actually hit, so tests can assert on duplicate-request
-	 * behavior. Any other outbound request is left untouched.
+	 * Registers the fixture response for the RocketCDN website-search endpoint.
 	 *
 	 * @param int        $code HTTP response code to return.
 	 * @param array|null $body Response body to JSON-encode, or null for an empty body.
 	 */
 	private function mock_search_endpoint( int $code, $body = [] ): void {
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $_args, $url ) use ( $code, $body ) {
-				if ( false === strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
-					return $preempt;
-				}
+		$this->config['http'][ self::SEARCH_ENDPOINT ] = [
+			'response' => [ 'code' => $code ],
+			'body'     => null === $body ? '' : wp_json_encode( $body ),
+		];
+	}
 
-				$this->request_count++;
+	/**
+	 * Counts calls to the RocketCDN website-search endpoint. Registered at priority 9,
+	 * ahead of the trait's own mock at priority 10, so it observes every request without
+	 * altering the response.
+	 *
+	 * @param false|array|WP_Error $response Preemptive response as received.
+	 * @param array                $_args    Unused request arguments.
+	 * @param string               $url      Requested URL.
+	 *
+	 * @return false|array|WP_Error
+	 */
+	public function count_search_request( $response, $_args, $url ) {
+		if ( self::SEARCH_ENDPOINT === $url ) {
+			$this->request_count++;
+		}
 
-				return [
-					'response' => [ 'code' => $code ],
-					'body'     => null === $body ? '' : wp_json_encode( $body ),
-				];
-			},
-			10,
-			3
-		);
+		return $response;
 	}
 
 	public function testShouldReturnCachedTransientWithoutHittingApi() {
@@ -100,15 +115,15 @@ class Test_Find extends TestCase {
 		];
 		set_transient( 'rocket_cdn_website_search', $cached, HOUR_IN_SECONDS );
 
-		$this->mock_search_endpoint( 200, [ 'status' => 'active' ] );
-
+		// No fixture entry: an unmocked request fails the test, proving the transient
+		// short-circuits before any HTTP call is attempted.
 		$this->assertSame( $cached, $this->website_search->find() );
 		$this->assertSame( 0, $this->request_count, 'A populated transient must short-circuit the API call entirely.' );
 	}
 
 	public function testShouldReturnFalseWithoutApiCallWhenTokenMissing() {
-		$this->mock_search_endpoint( 200, [ 'status' => 'active' ] );
-
+		// No fixture entry: an unmocked request fails the test, proving no call is made
+		// without a saved token.
 		$this->assertFalse( $this->website_search->find() );
 		$this->assertSame( 0, $this->request_count, 'No API request should be made without a saved token.' );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ), 'No lock should be taken when the request never reaches the API.' );
@@ -156,8 +171,9 @@ class Test_Find extends TestCase {
 
 	public function testShouldNotFireDuplicateRequestWhenAnotherFetchIsInFlight() {
 		$this->set_token();
-		$this->mock_search_endpoint( 200, [ 'status' => 'active' ] );
 
+		// No fixture entry: an unmocked request fails the test, proving a held lock
+		// prevents the duplicate outbound call.
 		// Simulate a concurrent request that is already fetching the same data.
 		// Deliberately a few seconds in the past (not time() exactly): a same-second
 		// value would mask the add_option()-based race this guards against, since

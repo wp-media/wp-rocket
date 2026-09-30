@@ -3,12 +3,15 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::switch_to_rucss_notice
  * @group  AdminOnly
  */
 class Test_switchToRucssNotice extends TestCase {
+	use HttpRequestTrait;
+
 	private static $user;
 
 	private $original_user;
@@ -32,6 +35,9 @@ class Test_switchToRucssNotice extends TestCase {
 	public function set_up()
 	{
 		parent::set_up();
+
+		$this->setup_http();
+
 		add_filter('pre_get_rocket_option_async_css', [$this, 'async_css']);
 		add_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 
@@ -41,6 +47,7 @@ class Test_switchToRucssNotice extends TestCase {
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'switch_to_rucss_notice', 9 );
 	}
 
 	public function tear_down()
@@ -50,7 +57,10 @@ class Test_switchToRucssNotice extends TestCase {
 		remove_filter('rocket_disable_rucss_setting', [$this, 'rucss']);
 		update_user_meta( get_current_user_id(), 'rocket_boxes', [] );
 		set_current_screen( 'front' );
-		$this->restoreWpHook( 'current_screen' );
+		$this->restoreWpHook( 'admin_notices' );
+
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
