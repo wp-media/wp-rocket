@@ -541,8 +541,8 @@ class Controller implements ControllerInterface {
 		}
 
 		// Validate sizes format: media_query width, media_query width, ...
-		// Example: "(max-width: 600px) 480px, 800px".
-		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%]+$/i', $sizes ) ) {
+		// Example: "(max-width: 600px) 480px, 800px" or "calc(100vw / 2), calc(50vw + 10px)".
+		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%\/\+\*]+$/i', $sizes ) ) {
 			return '';
 		}
 

@@ -2318,6 +2318,102 @@ return [
 	],
 
 	/**
+	 * Test Case: calc() sizes with / + * are kept for img-srcset (issue #8950).
+	 */
+	'testImgSrcsetCalcSizesKept' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(max-width: 600px) calc(100vw / 2), calc(50vw + 10px), calc(2 * 100px)',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '(max-width: 600px) calc(100vw / 2), calc(50vw + 10px), calc(2 * 100px)',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: calc() sizes with / + * are kept for picture sources (issue #8950).
+	 */
+	'testPictureSourceCalcSizesKept' => $srcset_descriptor_case(
+		[
+			'type'    => 'picture',
+			'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+			'sources' => [
+				[
+					'srcset' => 'http://example.org/wp-content/uploads/venice-480.webp 480w, http://example.org/wp-content/uploads/venice-800.webp 800w',
+					'media'  => '',
+					'type'   => 'image/webp',
+					'sizes'  => '(max-width: 600px) calc(100vw / 2), calc(50vw + 10px), calc(2 * 100px)',
+				],
+			],
+		],
+		json_encode(
+			(object) [
+				'type'    => 'picture',
+				'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+				'sources' => [
+					[
+						'srcset' => 'http://example.org/wp-content/uploads/venice-480.webp 480w, http://example.org/wp-content/uploads/venice-800.webp 800w',
+						'media'  => '',
+						'type'   => 'image/webp',
+						'sizes'  => '(max-width: 600px) calc(100vw / 2), calc(50vw + 10px), calc(2 * 100px)',
+					],
+				],
+			]
+		),
+		$webp_filetype
+	),
+
+	/**
+	 * Test Case: calc() sizes with an event handler are still rejected.
+	 */
+	'testImgSrcsetCalcSizesWithEventHandlerRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => 'calc(100vw / 2) onerror=alert(1)',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: calc() sizes with angle brackets are still rejected.
+	 */
+	'testImgSrcsetCalcSizesWithAngleBracketsRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => 'calc(100vw / 2)<script>',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
 	 * Test Case: bg_set item carries an extra attacker-added property
 	 * Only `src` (sanitized) should survive into the stored object.
 	 */
