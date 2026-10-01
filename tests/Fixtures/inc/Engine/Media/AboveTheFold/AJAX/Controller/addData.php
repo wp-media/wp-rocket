@@ -2006,7 +2006,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with onerror event handler
-	 * Should reject the whole img-srcset object (no partial storage).
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetOnerror' => [
 		'config' => [
@@ -2057,7 +2057,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with angle brackets/<script>
-	 * Should reject the whole img-srcset object.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetAngleBrackets' => [
 		'config' => [
@@ -2108,7 +2108,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with quote-breakout
-	 * Should reject the whole img-srcset object.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetSingleQuotes' => [
 		'config' => [
@@ -2224,7 +2224,7 @@ return [
 
 	/**
 	 * Test Case: missing/empty `srcset` on an img-srcset object
-	 * Should reject the whole object, same as an explicitly empty string.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img, same as an explicitly empty string.
 	 */
 	'testImgSrcsetMissingField' => [
 		'config' => [
