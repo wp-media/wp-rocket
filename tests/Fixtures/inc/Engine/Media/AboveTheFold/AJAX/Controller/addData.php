@@ -104,7 +104,7 @@ $decimal_srcset = 'http://example.org/wp-content/uploads/venice-1x.webp 1x, http
  * Builds an img-srcset LCP payload and its expected stored JSON.
  *
  * @param string      $srcset          The srcset sent by the beacon.
- * @param string|null $expected_srcset The srcset expected in DB, null when the object must be rejected.
+ * @param string|null $expected_srcset The srcset expected in DB, null when no candidate survives (src-only img fallback).
  *
  * @return array
  */
@@ -117,7 +117,7 @@ $img_srcset_case = function ( string $srcset, $expected_srcset ) use ( $srcset_d
 			'sizes'  => '',
 		],
 		null === $expected_srcset
-			? 'not found'
+			? '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}'
 			: json_encode(
 				(object) [
 					'type'   => 'img-srcset',
@@ -2006,7 +2006,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with onerror event handler
-	 * Should reject the whole img-srcset object (no partial storage).
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetOnerror' => [
 		'config' => [
@@ -2026,6 +2026,11 @@ return [
 					],
 				]
 			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'result'  => true,
@@ -2034,14 +2039,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -2052,7 +2057,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with angle brackets/<script>
-	 * Should reject the whole img-srcset object.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetAngleBrackets' => [
 		'config' => [
@@ -2072,6 +2077,11 @@ return [
 					],
 				]
 			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'result'  => true,
@@ -2080,14 +2090,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -2098,7 +2108,7 @@ return [
 
 	/**
 	 * Test Case: XSS attempt via img-srcset's srcset with quote-breakout
-	 * Should reject the whole img-srcset object.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img.
 	 */
 	'testXSSInImgSrcsetSingleQuotes' => [
 		'config' => [
@@ -2118,6 +2128,11 @@ return [
 					],
 				]
 			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'result'  => true,
@@ -2126,14 +2141,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -2209,7 +2224,7 @@ return [
 
 	/**
 	 * Test Case: missing/empty `srcset` on an img-srcset object
-	 * Should reject the whole object, same as an explicitly empty string.
+	 * The srcset is rejected, nothing from it is stored, and the LCP falls back to a src-only img, same as an explicitly empty string.
 	 */
 	'testImgSrcsetMissingField' => [
 		'config' => [
@@ -2228,6 +2243,11 @@ return [
 					],
 				]
 			),
+			'allowed_mime_types' => $mime_types,
+			'filetype' => [
+				'ext'  => 'jpg',
+				'type' => 'image/jpeg',
+			],
 		],
 		'expected' => [
 			'result'  => true,
@@ -2236,14 +2256,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => 'not found',
+				'lcp' => '{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -2722,7 +2742,7 @@ return [
 			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480.5w',
 			'sizes'  => '',
 		],
-		'not found',
+		'{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 		$jpg_filetype
 	),
 
@@ -2736,7 +2756,7 @@ return [
 			'srcset' => 'http://example.org/wp-content/uploads/image.jpg -1x',
 			'sizes'  => '',
 		],
-		'not found',
+		'{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 		$jpg_filetype
 	),
 
@@ -2750,7 +2770,7 @@ return [
 			'srcset' => 'http://example.org/wp-content/uploads/image-a.jpg 1.x, http://example.org/wp-content/uploads/image-b.jpg 1.5.2x',
 			'sizes'  => '',
 		],
-		'not found',
+		'{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 		$jpg_filetype
 	),
 
@@ -2764,7 +2784,7 @@ return [
 			'srcset' => 'http://example.org/wp-content/uploads/image.jpg 1.5x" onerror="alert(1)',
 			'sizes'  => '',
 		],
-		'not found',
+		'{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
 		$jpg_filetype
 	),
 
@@ -2858,5 +2878,75 @@ return [
 	'testImgSrcsetDataSchemeRejected' => $img_srcset_case(
 		'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4= 1x',
 		null
+	),
+	/**
+	 * Test Case: a data: placeholder candidate is skipped, the real candidates are kept (issue #8949).
+	 */
+	'testImgSrcsetDataPlaceholderCandidateSkipped' => $img_srcset_case(
+		'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1w, http://example.org/wp-content/uploads/image-1200.jpg 1200w, http://example.org/wp-content/uploads/image-768.jpg 768w',
+		'http://example.org/wp-content/uploads/image-1200.jpg 1200w, http://example.org/wp-content/uploads/image-768.jpg 768w'
+	),
+
+	/**
+	 * Test Case: a candidate URL with an apostrophe is skipped, the other candidates are kept (issue #8949).
+	 */
+	'testImgSrcsetApostropheCandidateSkipped' => $img_srcset_case(
+		"http://example.org/wp-content/uploads/image-1200.jpg 1200w, http://example.org/wp-content/uploads/o'neil-768.jpg 768w",
+		'http://example.org/wp-content/uploads/image-1200.jpg 1200w'
+	),
+
+	/**
+	 * Test Case: a hostile candidate is skipped without storing any of it, the valid candidate is kept.
+	 */
+	'testImgSrcsetHostileCandidateSkipped' => $img_srcset_case(
+		'http://example.org/wp-content/uploads/image.jpg" onerror="alert(1) 1x, http://example.org/wp-content/uploads/image-2x.jpg 2x, javascript:alert(1) 3x, onload=alert(1) 4x',
+		'http://example.org/wp-content/uploads/image-2x.jpg 2x'
+	),
+
+	/**
+	 * Test Case: when no srcset candidate survives, the LCP falls back to a src-only img (issue #8949).
+	 */
+	'testImgSrcsetFallsBackToSrcWhenNoCandidateSurvives' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1w, http://example.org/wp-content/uploads/image.jpg 480.5w',
+			'sizes'  => '(max-width: 600px) 480px, 800px',
+		],
+		'{"type":"img","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg"}',
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a picture source keeps its valid candidates when one is a data: placeholder (issue #8949).
+	 */
+	'testPictureSourceDataPlaceholderCandidateSkipped' => $srcset_descriptor_case(
+		[
+			'type'    => 'picture',
+			'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+			'sources' => [
+				[
+					'srcset' => 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7 1x, http://example.org/wp-content/uploads/venice-1x.webp 1x, http://example.org/wp-content/uploads/venice-2x.webp 2x',
+					'media'  => '',
+					'type'   => 'image/webp',
+					'sizes'  => '',
+				],
+			],
+		],
+		json_encode(
+			(object) [
+				'type'    => 'picture',
+				'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+				'sources' => [
+					[
+						'srcset' => 'http://example.org/wp-content/uploads/venice-1x.webp 1x, http://example.org/wp-content/uploads/venice-2x.webp 2x',
+						'media'  => '',
+						'type'   => 'image/webp',
+						'sizes'  => '',
+					],
+				],
+			]
+		),
+		$webp_filetype
 	),
 ];
