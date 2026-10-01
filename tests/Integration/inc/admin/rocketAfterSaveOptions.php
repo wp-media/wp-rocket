@@ -50,8 +50,16 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$this->setup_http();
 
-		// A RocketCDN token left by an earlier test makes the settings save check the subscription over HTTP.
-		add_filter( 'pre_option_rocketcdn_user_token', '__return_false' );
+		// RocketCDN state left by earlier tests makes the settings save check the subscription; answer it like the
+		// wp_remote_get() stub this test used to have, so the check is a no-op.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => '', 'message' => '' ],
+				'cookies'  => [],
+			],
+		];
 
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
@@ -76,7 +84,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_option_rocketcdn_user_token', '__return_false' );
 		$this->tear_down_http();
 
 		parent::tear_down();
