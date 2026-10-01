@@ -72,7 +72,17 @@ class Controller implements ControllerInterface {
 		}
 
 		foreach ( (array) $hashes as $hash ) {
-			$below_the_fold[] = sanitize_text_field( wp_unslash( $hash ) );
+			if ( ! is_string( $hash ) ) {
+				continue;
+			}
+
+			$hash = sanitize_text_field( wp_unslash( $hash ) );
+
+			if ( ! preg_match( '/^[a-f0-9]{32}$/', $hash ) ) {
+				continue;
+			}
+
+			$below_the_fold[] = $hash;
 			--$max_lrc_hashes_number;
 		}
 

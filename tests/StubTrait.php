@@ -20,7 +20,6 @@ trait StubTrait {
 	protected $white_label = false;
 	protected $white_label_footprint = null;
 	protected $plugin_name = 'WP Rocket';
-	protected $rucss_api = 'http://localhost';
 	protected $constants = [];
 	protected $dontasynccss = false;
 	protected $rest_request = false;
@@ -171,9 +170,6 @@ trait StubTrait {
 
 			case 'WP_ROCKET_PLUGIN_NAME':
 				return $this->plugin_name;
-
-			case 'WP_ROCKET_SAAS_API_URL':
-				return $this->rucss_api;
 
 			default:
 				if ( isset( $this->constants[ $constant_name ] ) ) {

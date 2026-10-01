@@ -476,4 +476,73 @@ return [
 				],
 			],
 		],
+		'testShouldReturnTrialBannerWhenTrialCustomerAndLicenseExpired' => [
+			'config'   => [
+				'user'      => [
+					'licence_account'     => 1,
+					'licence_expired'     => true,
+					'licence_expiration'  => strtotime( 'now - 10 days' ),
+					'renewal_url'         => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'creation_date'       => strtotime( '2021-01-01' ),
+					'auto_renew'          => false,
+					'is_trial_customer'   => true,
+				],
+				'ocd' => false,
+				'transient' => false,
+				'pricing' => $pricing,
+				'disabled_date' => '',
+			],
+			'expected' => [
+				'template' => 'trial-expired-banner',
+				'data' => [
+					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				],
+			],
+		],
+		'testShouldReturnTrialBannerWhenTrialCustomerAndOcdEnabled' => [
+			'config'   => [
+				'user'      => [
+					'licence_account'     => 1,
+					'licence_expired'     => true,
+					'licence_expiration'  => strtotime( 'now - 100 days' ),
+					'renewal_url'         => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'creation_date'       => strtotime( '2021-01-01' ),
+					'auto_renew'          => false,
+					'is_trial_customer'   => true,
+				],
+				'ocd' => true,
+				'transient' => false,
+				'pricing' => $pricing,
+				'disabled_date' => '',
+			],
+			'expected' => [
+				'template' => 'trial-expired-banner',
+				'data' => [
+					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				],
+			],
+		],
+		'testShouldReturnTrialBannerWhenTrialCustomerWithAutoRenewExpiredSinceLessThan4Days' => [
+			'config'   => [
+				'user'      => [
+					'licence_account'     => 1,
+					'licence_expired'     => true,
+					'licence_expiration'  => strtotime( 'now - 1 day' ),
+					'renewal_url'         => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'creation_date'       => strtotime( '2021-01-01' ),
+					'auto_renew'          => true,
+					'is_trial_customer'   => true,
+				],
+				'ocd' => false,
+				'transient' => false,
+				'pricing' => $pricing,
+				'disabled_date' => '',
+			],
+			'expected' => [
+				'template' => 'trial-expired-banner',
+				'data' => [
+					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				],
+			],
+		],
 ];

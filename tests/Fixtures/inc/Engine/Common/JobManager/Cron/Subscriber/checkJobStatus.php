@@ -118,7 +118,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -155,7 +155,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -166,7 +166,7 @@ return [
 					]
 				],
 				'create' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'POST',
 					'response' => [
 						'response' => [
@@ -204,7 +204,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -215,7 +215,7 @@ return [
 					]
 				],
 				'create' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'POST',
 					'response' => [
 						'response' => [
@@ -253,7 +253,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -264,7 +264,7 @@ return [
 					]
 				],
 				'create' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'POST',
 					'response' => [
 						'response' => [
@@ -301,7 +301,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -312,7 +312,7 @@ return [
 					]
 				],
 				'create' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'POST',
 					'response' => [
 						'response' => [
@@ -349,7 +349,7 @@ return [
 					'is_mobile' => false,
 				],
 				'request' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'GET',
 					'response' => [
 						'response' => [
@@ -360,7 +360,7 @@ return [
 					]
 				],
 				'create' => [
-					'url' => 'http://localhostrucss-job',
+					'url' => 'https://saas.wp-rocket.me/rucss-job',
 					'method' => 'POST',
 					'response' => [
 						'response' => [
