@@ -30,7 +30,7 @@ class ReadTest extends TestCase {
 		$data = $this->read();
 
 		$this->assertSame(
-			[ 'site', 'settings', 'schema', 'unset', 'writable' ],
+			[ 'site', 'settings', 'schema', 'unset', 'writable', 'plugin_version' ],
 			array_keys( $data )
 		);
 	}
@@ -53,6 +53,18 @@ class ReadTest extends TestCase {
 		);
 		$this->assertSame( [ 'minify_css' ], $data['unset'] );
 		$this->assertSame( [ 'cache_mobile', 'minify_css' ], $data['writable'] );
+	}
+
+	/**
+	 * Test the running plugin version is reported, so Fleet can match
+	 * recommendations to what is installed.
+	 *
+	 * @return void
+	 */
+	public function testShouldReportThePluginVersion(): void {
+		$this->rocket_version = '3.23.5';
+
+		$this->assertSame( '3.23.5', $this->read()['plugin_version'] );
 	}
 
 	/**

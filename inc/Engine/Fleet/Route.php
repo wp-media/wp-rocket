@@ -212,20 +212,23 @@ class Route {
 
 		return new WP_REST_Response(
 			[
-				'site'     => (string) wp_parse_url( home_url(), PHP_URL_HOST ),
+				'site'           => (string) wp_parse_url( home_url(), PHP_URL_HOST ),
 				// Cast, so the shape does not change with the contents: an
 				// empty PHP array would encode as `[]` and a populated one as
 				// an object.
-				'settings' => (object) $settings,
+				'settings'       => (object) $settings,
 				// The type of each one, so a caller can render a checkbox for
 				// a toggle rather than a text box for everything.
-				'schema'   => (object) $schema,
+				'schema'         => (object) $schema,
 				// Which of those have never been written on this site: "off"
 				// and "never configured" behave alike but are not the same fact.
-				'unset'    => $unset,
+				'unset'          => $unset,
 				// What Fleet is allowed to write, so it can render a form
 				// without hardcoding a copy of our allowlist.
-				'writable' => $allowed,
+				'writable'       => $allowed,
+				// The version running here, so Fleet can ask for
+				// recommendations this install actually supports.
+				'plugin_version' => (string) rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
 			],
 			200
 		);
