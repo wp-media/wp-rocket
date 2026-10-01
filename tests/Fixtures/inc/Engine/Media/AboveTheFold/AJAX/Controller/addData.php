@@ -100,6 +100,36 @@ $webp_filetype = [
 ];
 $decimal_srcset = 'http://example.org/wp-content/uploads/venice-1x.webp 1x, http://example.org/wp-content/uploads/venice-1_5x.webp 1.5x, http://example.org/wp-content/uploads/venice-2x.webp 2x';
 
+/**
+ * Builds an img-srcset LCP payload and its expected stored JSON.
+ *
+ * @param string      $srcset          The srcset sent by the beacon.
+ * @param string|null $expected_srcset The srcset expected in DB, null when the object must be rejected.
+ *
+ * @return array
+ */
+$img_srcset_case = function ( string $srcset, $expected_srcset ) use ( $srcset_descriptor_case, $jpg_filetype ) {
+	return $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => $srcset,
+			'sizes'  => '',
+		],
+		null === $expected_srcset
+			? 'not found'
+			: json_encode(
+				(object) [
+					'type'   => 'img-srcset',
+					'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+					'srcset' => $expected_srcset,
+					'sizes'  => '',
+				]
+			),
+		$jpg_filetype
+	);
+};
+
 return [
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
@@ -1536,14 +1566,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -1594,14 +1624,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -1836,14 +1866,14 @@ return [
 				'is_mobile' => false,
 				'status' => 'completed',
 				'error_message' => '',
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 			],
 			'item'    => [
 				'url' => 'http://example.org/test-page',
 				'is_mobile' => false,
-				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[]}',
+				'lcp' => '{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/image.jpg","sources":[{"srcset":"image.avif","media":"","type":"image\/avif","sizes":""}]}',
 				'viewport' => '[]',
 				'last_accessed' => null,
 				'status' => 'completed',
@@ -2660,5 +2690,77 @@ return [
 		],
 		'{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/venice.jpg","sources":[]}',
 		$webp_filetype
+	),
+	/**
+	 * Test Case: commas inside the URL path (Cloudinary-style transformations).
+	 * Candidates are split per the HTML srcset parsing rules, not on every comma.
+	 */
+	'testImgSrcsetCommaInUrlPath' => $img_srcset_case(
+		'https://res.cloudinary.com/demo/image/upload/w_400,c_fill/image.jpg 400w, https://res.cloudinary.com/demo/image/upload/w_800,c_fill/image.jpg 800w',
+		'https://res.cloudinary.com/demo/image/upload/w_400,c_fill/image.jpg 400w, https://res.cloudinary.com/demo/image/upload/w_800,c_fill/image.jpg 800w'
+	),
+
+	/**
+	 * Test Case: commas inside the query string (imgix-style parameters).
+	 */
+	'testImgSrcsetCommaInQueryString' => $img_srcset_case(
+		'https://demo.imgix.net/image.jpg?w=400&fit=crop,faces 400w, https://demo.imgix.net/image.jpg?w=800&fit=crop,faces 800w',
+		'https://demo.imgix.net/image.jpg?w=400&fit=crop,faces 400w, https://demo.imgix.net/image.jpg?w=800&fit=crop,faces 800w'
+	),
+
+	/**
+	 * Test Case: candidates separated by a comma without whitespace are still split.
+	 */
+	'testImgSrcsetCommaWithoutWhitespace' => $img_srcset_case(
+		'http://example.org/wp-content/uploads/image-1x.jpg 1x,http://example.org/wp-content/uploads/image-2x.jpg 2x',
+		'http://example.org/wp-content/uploads/image-1x.jpg 1x, http://example.org/wp-content/uploads/image-2x.jpg 2x'
+	),
+
+	/**
+	 * Test Case: relative URLs without a leading slash are valid srcset candidates.
+	 */
+	'testImgSrcsetRelativeUrlWithoutLeadingSlash' => $img_srcset_case(
+		'wp-content/uploads/image-1x.jpg 1x, ./image-2x.jpg 2x, ../uploads/image-3x.jpg 3x',
+		'wp-content/uploads/image-1x.jpg 1x, ./image-2x.jpg 2x, ../uploads/image-3x.jpg 3x'
+	),
+
+	/**
+	 * Test Case: query parameters containing "on" followed by "=" (e.g. options=crop) are not event handlers.
+	 */
+	'testImgSrcsetQueryParamLookingLikeEventHandler' => $img_srcset_case(
+		'http://example.org/wp-content/uploads/image.jpg?options=crop 1x, http://example.org/wp-content/uploads/image-2x.jpg?version=2 2x',
+		'http://example.org/wp-content/uploads/image.jpg?options=crop 1x, http://example.org/wp-content/uploads/image-2x.jpg?version=2 2x'
+	),
+
+	/**
+	 * Test Case: a whitespace-separated event handler must still be rejected.
+	 */
+	'testImgSrcsetUnquotedEventHandlerRejected' => $img_srcset_case(
+		'http://example.org/wp-content/uploads/image.jpg onerror=alert(1)',
+		null
+	),
+
+	/**
+	 * Test Case: a leading event handler must still be rejected.
+	 */
+	'testImgSrcsetLeadingEventHandlerRejected' => $img_srcset_case(
+		'onerror=alert(1)',
+		null
+	),
+
+	/**
+	 * Test Case: non-http schemes must still be rejected, even though relative URLs are now allowed.
+	 */
+	'testImgSrcsetJavascriptSchemeRejected' => $img_srcset_case(
+		'javascript:alert(1) 1x',
+		null
+	),
+
+	/**
+	 * Test Case: data URIs must still be rejected.
+	 */
+	'testImgSrcsetDataSchemeRejected' => $img_srcset_case(
+		'data:image/svg+xml;base64,PHN2Zz48L3N2Zz4= 1x',
+		null
 	),
 ];
