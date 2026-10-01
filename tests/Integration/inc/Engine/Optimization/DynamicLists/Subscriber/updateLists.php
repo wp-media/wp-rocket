@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
 
+use WP_Rocket\Engine\Optimization\DynamicLists\AbstractAPIClient;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::update_lists
@@ -10,7 +12,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  DynamicLists
  */
 class Test_UpdateLists extends FilesystemTestCase {
-	private $api_response;
+	use HttpRequestTrait;
+
 	private $original_user;
 	private static $user;
 	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php';
@@ -26,14 +29,17 @@ class Test_UpdateLists extends FilesystemTestCase {
 		delete_transient( 'wpr_dynamic_lists' );
 		parent::set_up();
 
+		$this->setup_http();
+
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
 	public function tear_down() {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
-		remove_filter( 'pre_http_request', [ $this, 'api_response' ] );
 		delete_transient( 'wpr_dynamic_lists' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -42,11 +48,14 @@ class Test_UpdateLists extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected( $user, $api_response, $expected ) {
-		$this->api_response = $api_response;
-
 		$this->set_reflective_property( $user, 'user', self::$user );
 
-		add_filter( 'pre_http_request', [ $this, 'api_response' ] );
+		// Each list provider requests its own endpoint; they all get the same response.
+		$this->config['http'] = [
+			AbstractAPIClient::API_URL . 'exclusions/list'           => $api_response,
+			AbstractAPIClient::API_URL . 'delay-js-exclusions/list'  => $api_response,
+			AbstractAPIClient::API_URL . 'incompatible-plugins/list' => $api_response,
+		];
 
 		do_action( 'rocket_update_dynamic_lists' );
 
@@ -58,9 +67,5 @@ class Test_UpdateLists extends FilesystemTestCase {
 			$expected['transient'],
 			get_transient( 'wpr_dynamic_lists' )
 		);
-	}
-
-	public function api_response() {
-		return $this->api_response;
 	}
 }
