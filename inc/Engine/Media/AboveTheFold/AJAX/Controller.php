@@ -169,10 +169,11 @@ class Controller implements ControllerInterface {
 				$sanitized_srcset = $this->sanitize_srcset( $raw_srcset );
 
 				if ( empty( $sanitized_srcset ) ) {
-					// srcset is required for this type (no <img> fallback like `picture` has);
-					// reject the whole object, mirroring how array_filter() drops invalid
-					// `picture` sources below. Do not fall back to storing an empty string.
-					return null;
+					// No srcset candidate survived: fall back to a src-only `img` object rather
+					// than losing the LCP. Never store an empty srcset. The src is still checked
+					// by validate_image(), and an object without a src is rejected below.
+					$object->type = 'img';
+					break;
 				}
 
 				$object->srcset = $sanitized_srcset;
@@ -411,44 +412,49 @@ class Controller implements ControllerInterface {
 	 * @return string Sanitized srcset or empty string if invalid.
 	 */
 	private function sanitize_srcset( $srcset ) {
-		// Check for event handlers or malicious content.
-		if ( $this->hasOnAttribute( $srcset ) ) {
-			return '';
-		}
-
-		// Check for quotes, angle brackets, or other HTML-like content.
-		if ( $this->hasQuotes( $srcset ) ) {
-			return '';
-		}
-
 		// Validate srcset format: url [descriptor], url [descriptor], ...
+		// An invalid candidate is skipped (never stored) without rejecting the valid ones.
 		$candidates    = $this->parse_srcset_candidates( $srcset );
 		$clean_sources = [];
 
 		foreach ( $candidates as $candidate ) {
 			list( $url, $descriptor ) = $candidate;
 
-			// Width descriptors are integers, density descriptors may be decimals.
-			// Example: "1x", "1.5x", ".5x" or "480w".
-			if ( '' !== $descriptor && ! preg_match( '/^(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x)$/i', $descriptor ) ) {
-				return '';
+			if ( $this->is_valid_srcset_candidate( $url, $descriptor ) ) {
+				$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
 			}
-
-			// Validate URL format: absolute http(s), protocol-relative or relative, but no other scheme.
-			if (
-				! preg_match( '/^[^\s<>"\']+$/', $url )
-				|| (
-					! preg_match( '/^https?:\/\//i', $url )
-					&& preg_match( '/^[a-z][a-z0-9+.\-]*:/i', $url )
-				)
-			) {
-				return '';
-			}
-
-			$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
 		}
 
 		return implode( ', ', $clean_sources );
+	}
+
+	/**
+	 * Checks a single srcset candidate.
+	 *
+	 * @param string $url        Candidate URL.
+	 * @param string $descriptor Candidate descriptor, empty when none.
+	 * @return bool
+	 */
+	private function is_valid_srcset_candidate( string $url, string $descriptor ): bool {
+		// Check for quotes, angle brackets, whitespace or event handlers in the URL.
+		if (
+			! preg_match( '/^[^\s<>"\']+$/', $url )
+			|| $this->hasOnAttribute( $url )
+		) {
+			return false;
+		}
+
+		// Absolute http(s), protocol-relative or relative URL, but no other scheme (e.g. data:, javascript:).
+		if (
+			! preg_match( '/^https?:\/\//i', $url )
+			&& preg_match( '/^[a-z][a-z0-9+.\-]*:/i', $url )
+		) {
+			return false;
+		}
+
+		// Width descriptors are integers, density descriptors may be decimals.
+		// Example: "1x", "1.5x", ".5x" or "480w".
+		return '' === $descriptor || (bool) preg_match( '/^(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x)$/i', $descriptor );
 	}
 
 	/**
