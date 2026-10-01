@@ -41,6 +41,65 @@ $mime_types = [
 	'asf|asx'      => 'video/x-ms-asf',
 ];
 
+/**
+ * Builds a srcset-descriptor test case for a single LCP image.
+ *
+ * @param array  $lcp          The LCP image payload sent by the beacon.
+ * @param string $expected_lcp The JSON stored for the LCP, or 'not found' when rejected.
+ * @param array  $filetype     The wp_check_filetype() return value.
+ *
+ * @return array
+ */
+$srcset_descriptor_case = function ( array $lcp, string $expected_lcp, array $filetype ) use ( $mime_types ) {
+	return [
+		'config'   => [
+			'filter'             => true,
+			'url'                => 'http://example.org/test-page/',
+			'is_mobile'          => false,
+			'results'            => json_encode(
+				[
+					'lcp' => [
+						array_merge( $lcp, [ 'label' => 'lcp' ] ),
+					],
+				]
+			),
+			'allowed_mime_types' => $mime_types,
+			'filetype'           => $filetype,
+		],
+		'expected' => [
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org/test-page',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'error_message' => '',
+				'lcp'           => $expected_lcp,
+				'viewport'      => '[]',
+				'last_accessed' => null,
+			],
+			'item'    => [
+				'url'           => 'http://example.org/test-page',
+				'is_mobile'     => false,
+				'lcp'           => $expected_lcp,
+				'viewport'      => '[]',
+				'last_accessed' => null,
+				'status'        => 'completed',
+				'error_message' => '',
+			],
+		],
+	];
+};
+
+$jpg_filetype  = [
+	'ext'  => 'jpg',
+	'type' => 'image/jpeg',
+];
+$webp_filetype = [
+	'ext'  => 'webp',
+	'type' => 'image/webp',
+];
+$decimal_srcset = 'http://example.org/wp-content/uploads/venice-1x.webp 1x, http://example.org/wp-content/uploads/venice-1_5x.webp 1.5x, http://example.org/wp-content/uploads/venice-2x.webp 2x';
+
 return [
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
@@ -2471,4 +2530,135 @@ return [
 			],
 		],
 	],
+	/**
+	 * Test Case: img-srcset with decimal density descriptors (issue #8931)
+	 * Decimal `x` densities are valid HTML; the object must be stored unchanged.
+	 */
+	'testImgSrcsetDecimalDensity' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/venice.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/venice-1x.jpg 1x, http://example.org/wp-content/uploads/venice-1_5x.jpg 1.5x, http://example.org/wp-content/uploads/venice-2_25x.jpg 2.25x, http://example.org/wp-content/uploads/venice-half.jpg .5x',
+			'sizes'  => '',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/venice.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/venice-1x.jpg 1x, http://example.org/wp-content/uploads/venice-1_5x.jpg 1.5x, http://example.org/wp-content/uploads/venice-2_25x.jpg 2.25x, http://example.org/wp-content/uploads/venice-half.jpg .5x',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: picture source with decimal density descriptors (issue #8931)
+	 * The source must be kept with every candidate and descriptor unchanged.
+	 */
+	'testPictureSourceDecimalDensity' => $srcset_descriptor_case(
+		[
+			'type'    => 'picture',
+			'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+			'sources' => [
+				[
+					'srcset' => $decimal_srcset,
+					'media'  => '',
+					'type'   => 'image/webp',
+					'sizes'  => '',
+				],
+			],
+		],
+		json_encode(
+			(object) [
+				'type'    => 'picture',
+				'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+				'sources' => [
+					[
+						'srcset' => $decimal_srcset,
+						'media'  => '',
+						'type'   => 'image/webp',
+						'sizes'  => '',
+					],
+				],
+			]
+		),
+		$webp_filetype
+	),
+
+	/**
+	 * Test Case: decimal width descriptor is invalid HTML and must still be rejected.
+	 */
+	'testImgSrcsetDecimalWidthRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480.5w',
+			'sizes'  => '',
+		],
+		'not found',
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: negative density descriptor must still be rejected.
+	 */
+	'testImgSrcsetNegativeDensityRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image.jpg -1x',
+			'sizes'  => '',
+		],
+		'not found',
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: malformed decimal density (trailing dot, multiple dots) must be rejected.
+	 */
+	'testImgSrcsetMalformedDecimalDensityRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-a.jpg 1.x, http://example.org/wp-content/uploads/image-b.jpg 1.5.2x',
+			'sizes'  => '',
+		],
+		'not found',
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: decimal density combined with an injection attempt must be rejected.
+	 */
+	'testImgSrcsetDecimalDensityWithInjectionRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image.jpg 1.5x" onerror="alert(1)',
+			'sizes'  => '',
+		],
+		'not found',
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: picture source with a decimal width descriptor is dropped, the <img> fallback is kept.
+	 */
+	'testPictureSourceDecimalWidthRejected' => $srcset_descriptor_case(
+		[
+			'type'    => 'picture',
+			'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+			'sources' => [
+				[
+					'srcset' => 'http://example.org/wp-content/uploads/venice-480.webp 480.5w',
+					'media'  => '',
+					'type'   => 'image/webp',
+					'sizes'  => '',
+				],
+			],
+		],
+		'{"type":"picture","src":"http:\/\/example.org\/wp-content\/uploads\/venice.jpg","sources":[]}',
+		$webp_filetype
+	),
 ];

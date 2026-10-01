@@ -426,9 +426,10 @@ class Controller implements ControllerInterface {
 		$clean_sources = [];
 
 		foreach ( $sources as $source ) {
-			// Each source should be: url [width_descriptor].
-			// Example: "image.jpg 1x" or "image.jpg 480w".
-			if ( ! preg_match( '/^([^\s]+)(\s+\d+[wx])?$/i', $source, $matches ) ) {
+			// Each source should be: url [descriptor].
+			// Width descriptors are integers, density descriptors may be decimals.
+			// Example: "image.jpg 1x", "image.jpg 1.5x", "image.jpg .5x" or "image.jpg 480w".
+			if ( ! preg_match( '/^([^\s]+)(\s+(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x))?$/i', $source, $matches ) ) {
 				return '';
 			}
 
