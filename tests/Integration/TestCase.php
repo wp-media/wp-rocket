@@ -6,8 +6,10 @@ use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class TestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
@@ -60,6 +62,9 @@ abstract class TestCase extends BaseTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
@@ -83,6 +88,9 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function configTestData() {
