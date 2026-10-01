@@ -361,6 +361,9 @@ tests_add_filter(
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
 
+		// Action Scheduler's async runner posts a loopback to admin-ajax.php at shutdown. No test needs it.
+		add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
