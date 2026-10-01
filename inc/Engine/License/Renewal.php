@@ -121,6 +121,12 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		// Trial customers see the trial-ended banner right away: the auto-renew grace period below does not apply to them.
+		if ( $this->user->is_trial_customer() ) {
+			echo $this->generate( 'trial-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 
@@ -133,12 +139,6 @@ class Renewal extends Abstract_Render {
 		}
 
 		$renewal_url = $this->user->get_renewal_url();
-
-		if ( $this->user->is_trial_customer() ) {
-			echo $this->generate( 'trial-expired-banner', [ 'renewal_url' => $renewal_url ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			return;
-		}
-
 		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 
 		$message = null;

@@ -662,7 +662,9 @@ class Cache extends Abstract_Buffer {
 
 		list( $expiration, $mac ) = $parts;
 
-		if ( ! ctype_digit( $expiration ) || (int) $expiration <= time() ) {
+		// Not ctype_digit(): this runs from advanced-cache.php and ctype is an optional PHP extension.
+		// `\z` (not `$`) so a trailing newline is rejected too.
+		if ( ! preg_match( '/^\d+\z/', $expiration ) || (int) $expiration <= time() ) {
 			// Expired (or malformed, non-numeric expiration): do not trust it, even if the HMAC below
 			// would otherwise match.
 			return false;

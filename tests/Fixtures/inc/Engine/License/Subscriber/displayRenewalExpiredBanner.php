@@ -148,6 +148,37 @@ return [
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text">Dismiss this notice</span></button>
 	</section>',
 	],
+	'testShouldDisplayTrialBannerWhenTrialCustomerWithAutoRenewExpiredSinceLessThan4Days' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'licence_expiration' => strtotime( 'now - 1 day' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( '2022-01-05' ),
+				'is_auto_renew' => true,
+				'is_trial_customer' => true,
+			] ) ),
+			'pricing' => $pricing,
+			'transient' => false,
+		],
+		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
+		<div class="banner-copy">
+		<h3 class="rocket-expired-title">Your WP Rocket trial has ended</h3>
+		<div class="rocket-renewal-expired-banner-container">
+			<div class="rocket-expired-message">
+				<p>
+				Your site is no longer optimized, and key features have stopped working. You&#039;ve also lost plugin updates and support. Buy WP Rocket now to get it all back.
+				</p>
+			</div>
+		</div>
+		</div>
+		<div class="rocket-expired-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Get WP Rocket back</a>
+		</div>
+
+		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-renewal"><span class="screen-reader-text">Dismiss this notice</span></button>
+	</section>',
+	],
 	'testShouldReturnNullWhenTrialCustomerAndWhiteLabel' => [
 		'config'   => [
 			'user' => json_decode( json_encode( [
