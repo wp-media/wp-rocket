@@ -542,6 +542,9 @@ class Controller implements ControllerInterface {
 
 		// Validate sizes format: media_query width, media_query width, ...
 		// Example: "(max-width: 600px) 480px, 800px" or "calc(100vw / 2), calc(50vw + 10px)".
+		// The allow-list is deliberately permissive enough for media queries and calc()
+		// (including / + *); it relies on hasOnAttribute()/hasQuotes() above having already
+		// run, and on the returned value being passed through esc_attr() on output.
 		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%\/\+\*]+$/i', $sizes ) ) {
 			return '';
 		}
