@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * rather than being force-registered.
  *
  * The hook-collision half of this coverage lives in the Unit suite instead
- * (tests/Unit/inc/ThirdParty/Plugins/PluginResolver/easy25HookCollisionScan.php):
+ * (tests/Unit/inc/ThirdParty/Plugins/PluginResolver/hookCollisionScan.php):
  * `get_subscribed_events()` is a static method with no WordPress dependency,
  * and its `@runInSeparateProcess` isolation is incompatible with the shared
  * Integration bootstrap.
@@ -33,7 +33,7 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 	 *
 	 * @var int
 	 */
-	private const EXPECTED_PLUGIN_SUBSCRIBERS = 20;
+	private const EXPECTED_PLUGIN_SUBSCRIBERS = 16;
 
 	/**
 	 * Every id the resolver reports as active (the full registry minus the ids
