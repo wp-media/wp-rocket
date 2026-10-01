@@ -422,21 +422,26 @@ class Controller implements ControllerInterface {
 		}
 
 		// Validate srcset format: url [descriptor], url [descriptor], ...
-		$sources       = array_map( 'trim', explode( ',', $srcset ) );
+		$candidates    = $this->parse_srcset_candidates( $srcset );
 		$clean_sources = [];
 
-		foreach ( $sources as $source ) {
-			// Each source should be: url [width_descriptor].
-			// Example: "image.jpg 1x" or "image.jpg 480w".
-			if ( ! preg_match( '/^([^\s]+)(\s+\d+[wx])?$/i', $source, $matches ) ) {
+		foreach ( $candidates as $candidate ) {
+			list( $url, $descriptor ) = $candidate;
+
+			// Width descriptors are integers, density descriptors may be decimals.
+			// Example: "1x", "1.5x", ".5x" or "480w".
+			if ( '' !== $descriptor && ! preg_match( '/^(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x)$/i', $descriptor ) ) {
 				return '';
 			}
 
-			$url        = $matches[1];
-			$descriptor = isset( $matches[2] ) ? trim( $matches[2] ) : '';
-
-			// Validate URL format (relative or absolute).
-			if ( ! preg_match( '/^(https?:\/\/|\/)[^\s<>"\']+$/i', $url ) ) {
+			// Validate URL format: absolute http(s), protocol-relative or relative, but no other scheme.
+			if (
+				! preg_match( '/^[^\s<>"\']+$/', $url )
+				|| (
+					! preg_match( '/^https?:\/\//i', $url )
+					&& preg_match( '/^[a-z][a-z0-9+.\-]*:/i', $url )
+				)
+			) {
 				return '';
 			}
 
@@ -444,6 +449,52 @@ class Controller implements ControllerInterface {
 		}
 
 		return implode( ', ', $clean_sources );
+	}
+
+	/**
+	 * Split a srcset into its candidates following the HTML srcset parsing rules.
+	 *
+	 * A candidate URL is a run of non-whitespace characters, so it may contain commas
+	 * (e.g. "w_400,c_fill" or "fit=crop,faces"). Candidates are separated by the comma
+	 * following the descriptor, or by trailing commas of the URL when it has no descriptor.
+	 *
+	 * @see https://html.spec.whatwg.org/multipage/images.html#parse-a-srcset-attribute
+	 *
+	 * @param string $srcset Raw srcset value.
+	 * @return array<int, array{0: string, 1: string}> List of [ url, descriptor ] pairs.
+	 */
+	private function parse_srcset_candidates( string $srcset ): array {
+		$whitespace = " \t\n\r\f";
+		$length     = strlen( $srcset );
+		$position   = 0;
+		$candidates = [];
+
+		while ( $position < $length ) {
+			// Skip whitespace and commas between candidates.
+			$position += strspn( $srcset, $whitespace . ',', $position );
+
+			if ( $position >= $length ) {
+				break;
+			}
+
+			$url_length = strcspn( $srcset, $whitespace, $position );
+			$url        = substr( $srcset, $position, $url_length );
+			$position  += $url_length;
+			$descriptor = '';
+
+			if ( ',' === substr( $url, -1 ) ) {
+				// Trailing commas end the candidate: it has no descriptor.
+				$url = rtrim( $url, ',' );
+			} else {
+				$descriptor_length = strcspn( $srcset, ',', $position );
+				$descriptor        = trim( substr( $srcset, $position, $descriptor_length ), $whitespace );
+				$position         += $descriptor_length;
+			}
+
+			$candidates[] = [ $url, $descriptor ];
+		}
+
+		return $candidates;
 	}
 
 	/**
@@ -548,7 +599,8 @@ class Controller implements ControllerInterface {
 	 * @return false|int
 	 */
 	private function hasOnAttribute( $item ) {
-		return preg_match( '/\s*on\w+\s*=/i', $item );
+		// "on" must start a token so values like "options=crop" are not flagged.
+		return preg_match( '/(?:^|[\s"\'])on\w+\s*=/i', $item );
 	}
 
 	/**
