@@ -541,8 +541,22 @@ class Controller implements ControllerInterface {
 			return '';
 		}
 
+		// Set aside media range conditions, e.g. "(width >= 1000px)" or "(400px <= width <= 700px)":
+		// they are the only place where `<`, `>` and `=` are accepted. The rest of the value goes
+		// through the checks below unchanged.
+		$ranges = [];
+		$check  = preg_replace_callback(
+			$this->get_media_range_pattern(),
+			function ( $matches ) use ( &$ranges ) {
+				$ranges[] = preg_replace( '/\s+/', ' ', $matches[0] );
+
+				return '(rocket-range-' . ( count( $ranges ) - 1 ) . ')';
+			},
+			$sizes
+		);
+
 		// Check for quotes or angle brackets.
-		if ( $this->hasQuotes( $sizes ) ) {
+		if ( ! is_string( $check ) || $this->hasQuotes( $check ) ) {
 			return '';
 		}
 
@@ -551,11 +565,41 @@ class Controller implements ControllerInterface {
 		// The allow-list is deliberately permissive enough for media queries and calc()
 		// (including / + *); it relies on hasOnAttribute()/hasQuotes() above having already
 		// run, and on the returned value being passed through esc_attr() on output.
-		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%\/\+\*]+$/i', $sizes ) ) {
+		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%\/\+\*]+$/i', $check ) ) {
 			return '';
 		}
 
-		return sanitize_text_field( $sizes );
+		// The range conditions are already strictly validated: put them back after
+		// sanitize_text_field(), which would otherwise encode their `<` as `&lt;`.
+		return (string) preg_replace_callback(
+			'/\(rocket-range-(\d+)\)/',
+			function ( $matches ) use ( $ranges ) {
+				return $ranges[ (int) $matches[1] ] ?? $matches[0];
+			},
+			sanitize_text_field( $check )
+		);
+	}
+
+	/**
+	 * Gets the pattern matching a media range condition.
+	 *
+	 * Matches one parenthesized condition comparing a range media feature to a value, e.g.
+	 * "(width >= 1000px)", "(1000px < width)", "(aspect-ratio > 16/9)" or a two-sided
+	 * "(400px <= width <= 700px)" where both operators point the same way.
+	 *
+	 * @return string
+	 */
+	private function get_media_range_pattern(): string {
+		$feature = '(?:device-width|device-height|aspect-ratio|resolution|width|height)';
+		$value   = '(?:\d*\.?\d+(?:[a-z]{1,4}|%)?(?:\s*\/\s*\d*\.?\d+)?)';
+		$compare = '(?:[<>]=?|=)';
+
+		return '/\(\s*(?:'
+			. $feature . '\s*' . $compare . '\s*' . $value
+			. '|' . $value . '\s*<=?\s*' . $feature . '\s*<=?\s*' . $value
+			. '|' . $value . '\s*>=?\s*' . $feature . '\s*>=?\s*' . $value
+			. '|' . $value . '\s*' . $compare . '\s*' . $feature
+			. ')\s*\)/i';
 	}
 
 	/**

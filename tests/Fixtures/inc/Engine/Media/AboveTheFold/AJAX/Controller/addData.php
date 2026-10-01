@@ -2434,6 +2434,207 @@ return [
 	),
 
 	/**
+	 * Test Case: CSS range syntax in sizes is kept for img-srcset (R2).
+	 */
+	'testImgSrcsetRangeSizesKept' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(width >= 1000px) 50vw, 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '(width >= 1000px) 50vw, 100vw',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a two-sided range condition is kept.
+	 */
+	'testImgSrcsetTwoSidedRangeSizesKept' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(400px <= width <= 700px) 50vw, 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '(400px <= width <= 700px) 50vw, 100vw',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: range conditions without spaces, combined with and, and a ratio value are kept.
+	 */
+	'testImgSrcsetRangeSizesWithoutSpacesKept' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(width>=600px) and (width<1000px) 50vw, (aspect-ratio > 16/9) 30vw, 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '(width>=600px) and (width<1000px) 50vw, (aspect-ratio > 16/9) 30vw, 100vw',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a comparison operator outside a parenthesized condition is still rejected.
+	 */
+	'testImgSrcsetComparisonOutsideConditionRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(width >= 1000px) 50vw, 100vw > 10px',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a range-shaped condition on an unknown feature name is still rejected.
+	 */
+	'testImgSrcsetUnknownRangeFeatureRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(onerror=alert) 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a malformed range operator is still rejected.
+	 */
+	'testImgSrcsetMalformedRangeOperatorRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(width => 1000px) 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: a two-sided range with mixed directions is still rejected.
+	 */
+	'testImgSrcsetMixedRangeDirectionRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(400px < width > 700px) 100vw',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: an angle bracket outside a range condition is still rejected.
+	 */
+	'testImgSrcsetRangeSizesWithAngleBracketRejected' => $srcset_descriptor_case(
+		[
+			'type'   => 'img-srcset',
+			'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+			'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+			'sizes'  => '(width >= 1000px) 50vw, <script>',
+		],
+		json_encode(
+			(object) [
+				'type'   => 'img-srcset',
+				'src'    => 'http://example.org/wp-content/uploads/image.jpg',
+				'srcset' => 'http://example.org/wp-content/uploads/image-480.jpg 480w, http://example.org/wp-content/uploads/image-800.jpg 800w',
+				'sizes'  => '',
+			]
+		),
+		$jpg_filetype
+	),
+
+	/**
+	 * Test Case: range syntax in a picture source's sizes is kept.
+	 */
+	'testPictureSourceRangeSizesKept' => $srcset_descriptor_case(
+		[
+			'type'    => 'picture',
+			'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+			'sources' => [
+				[
+					'srcset' => 'http://example.org/wp-content/uploads/venice-480.webp 480w, http://example.org/wp-content/uploads/venice-800.webp 800w',
+					'media'  => '',
+					'type'   => 'image/webp',
+					'sizes'  => '(min-width: 300px) and (width <= 900px) 50vw, 100vw',
+				],
+			],
+		],
+		json_encode(
+			(object) [
+				'type'    => 'picture',
+				'src'     => 'http://example.org/wp-content/uploads/venice.jpg',
+				'sources' => [
+					[
+						'srcset' => 'http://example.org/wp-content/uploads/venice-480.webp 480w, http://example.org/wp-content/uploads/venice-800.webp 800w',
+						'media'  => '',
+						'type'   => 'image/webp',
+						'sizes'  => '(min-width: 300px) and (width <= 900px) 50vw, 100vw',
+					],
+				],
+			]
+		),
+		$webp_filetype
+	),
+
+	/**
 	 * Test Case: bg_set item carries an extra attacker-added property
 	 * Only `src` (sanitized) should survive into the stored object.
 	 */
