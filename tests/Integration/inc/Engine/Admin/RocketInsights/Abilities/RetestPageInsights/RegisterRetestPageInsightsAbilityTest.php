@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Abilities\
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering wp-rocket/retest-page-insights ability registration and execution.
@@ -14,7 +15,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class RegisterRetestPageInsightsAbilityTest extends TestCase {
-	use DBTrait;
+	use DBTrait, HttpRequestTrait;
 
 	private $hook_fired    = false;
 	private $hook_fired_id = null;
@@ -40,6 +41,8 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 			$this->markTestSkipped( 'WordPress 6.9+ required for Abilities API' );
 		}
 
+		$this->setup_http();
+
 		// Clean up data before each test.
 		self::truncatePerformanceMonitoringTable();
 
@@ -60,6 +63,8 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 		// Remove filters.
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 		remove_action( 'rocket_rocket_insights_job_retest', [ $this, 'capture_hook_fired' ] );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -89,10 +94,7 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 			}
 		}
 
-		// Mock HTTP response if needed.
-		if ( $config['mock_http'] ?? false ) {
-			add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
-		}
+		$this->config['http'] = $config['http'] ?? [];
 
 		// Get the ability.
 		$ability = wp_get_ability( 'wp-rocket/retest-page-insights' );
@@ -101,11 +103,6 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 
 		// Execute the ability with input.
 		$result = $ability->execute( $config['input'] ?? null );
-
-		// Remove HTTP mock.
-		if ( $config['mock_http'] ?? false ) {
-			remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ] );
-		}
 
 		if ( $expected['is_error'] ) {
 			$this->assertInstanceOf( 'WP_Error', $result, 'Should return WP_Error when user lacks permission.' );
@@ -156,30 +153,6 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 				$this->assertSame( 0, (int) $row->is_blurred, 'is_blurred should be cleared after retest trigger' );
 			}
 		}
-	}
-
-	/**
-	 * Mock HTTP response for testing.
-	 *
-	 * @param mixed  $preempt Whether to preempt the request.
-	 * @param array  $args    Request arguments.
-	 * @param string $url     Request URL.
-	 *
-	 * @return array Mock response.
-	 */
-	public function mock_http_response( $preempt, $args, $url ) {
-		return [
-			'response' => [
-				'code' => 200,
-			],
-			'body'     => json_encode(
-				[
-					'success' => true,
-					'uuid'    => 'test-uuid-retest',
-					'code'    => 200,
-				]
-			),
-		];
 	}
 
 	/**

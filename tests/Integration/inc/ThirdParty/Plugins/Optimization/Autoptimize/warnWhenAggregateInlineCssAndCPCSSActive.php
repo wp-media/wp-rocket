@@ -3,6 +3,7 @@
 declare( strict_types=1 );
 
 use Brain\Monkey\Functions;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -25,10 +26,12 @@ class Test_WarnWhenAggregateInlineCssAndCPCSSActive extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept(
-			'admin_notices',
-			'warn_when_aggregate_inline_css_and_cpcss_active'
-		);
+		// Autoptimize is gated behind PluginCompatibilityInterface and its target
+		// constant is undefined here, so construct and hook it manually instead.
+		$this->unregisterAllCallbacks( 'admin_notices' );
+
+		$container = apply_filters( 'rocket_container', null );
+		add_action( 'admin_notices', [ new Autoptimize( $container->get( 'options' ) ), 'warn_when_aggregate_inline_css_and_cpcss_active' ] );
 
 		Functions\expect( 'wp_create_nonce' )
 			->with( 'warn_when_aggregate_inline_css_and_cpcss_active' )

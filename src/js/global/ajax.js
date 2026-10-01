@@ -30,6 +30,9 @@ $(document).ready(function(){
                     if ( true === response.success ) {
                         account.html(response.data.license_type);
                         expire.addClass(response.data.license_class).html(response.data.license_expiration);
+						if ( response.data.license_expiration_label ) {
+                            document.getElementById('wpr-expiration-label').textContent = response.data.license_expiration_label;
+                        }
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
