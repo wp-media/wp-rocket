@@ -49,6 +49,9 @@ class Test_GetActivePlugins extends TestCase {
 		// is_plugin_active() directly; stub it absent by default to match every other
 		// gated id's "target plugin not installed" assumption in this test environment.
 		Functions\when( 'is_plugin_active' )->justReturn( false );
+
+		// Hummingbird::is_activated() is admin-gated; stub is_admin() for the same reason.
+		Functions\when( 'is_admin' )->justReturn( false );
 	}
 
 	/**
