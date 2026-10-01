@@ -7,7 +7,29 @@ $jquery_path = $scripts->registered['jquery-core']->src;
 $timenow = time();
 
 $js_response = [
-	'body'     => 'var bootstrap=1;',
+	'body'     => <<<'JS'
+/*!
+ * Bootstrap v4.5.1 (https://getbootstrap.com/)
+ */
+(function (global, factory) {
+	// Module wrapper.
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) : (global = global || self, factory(global.bootstrap = {}));
+}(this, function (exports) {
+	'use strict';
+	var VERSION = "4.5.1";
+	var TRANSITION_END = /transitionend/i;
+	function toType(obj) {
+		if (obj === null || typeof obj === 'undefined') {
+			return "" + obj;
+		}
+		return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
+	}
+	exports.VERSION = VERSION;
+	exports.toType = toType;
+	exports.isTransitionEnd = function (name) { return TRANSITION_END.test(name); };
+}));
+JS
+,
 	'response' => [ 'code' => 200, 'message' => 'OK' ],
 ];
 

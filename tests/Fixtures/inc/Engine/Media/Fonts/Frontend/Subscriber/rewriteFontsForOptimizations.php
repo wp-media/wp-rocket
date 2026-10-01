@@ -122,8 +122,17 @@ return [
 				'locally_inline_css' => false,
 				'http' => [
 					'https://fonts.googleapis.com/css2?family=Goldman:wght@700&family=Roboto:ital,wght@0,100;0,400;0,500;1,500;1,900&family=MontSerra:ital,wght@0,100;0,400;0,500;1,500;1,900&family=Comfortaa&display=optional' => [
-						'body' => '.goldman { font-family: "Goldman"; } .roboto { font-family: "Roboto"; }',
+						'body' => "@font-face { font-family: 'Goldman'; src: url(https://fonts.gstatic.com/s/goldman/v21/goldman.woff2) format('woff2'); }\n@font-face { font-family: 'Roboto'; src: url(https://fonts.gstatic.com/s/roboto/v51/roboto.woff2) format('woff2'); }",
 						'response' => ['code' => 200 ]
+					],
+					// Font files referenced by the CSS: one downloads, one fails.
+					'https://fonts.gstatic.com/s/goldman/v21/goldman.woff2' => [
+						'body' => 'wOF2',
+						'response' => ['code' => 200 ]
+					],
+					'https://fonts.gstatic.com/s/roboto/v51/roboto.woff2' => [
+						'body' => '',
+						'response' => ['code' => 404 ]
 					],
 				],
 				'exclude_locally_host_fonts' => [

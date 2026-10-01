@@ -1,6 +1,31 @@
 <?php
 $css_response = [
-	'body'     => '.fa{display:inline-block}',
+	'body'     => <<<'CSS'
+/*!
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ */
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');
+	src: url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+.fa {
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	color: #ffffff;
+	margin: 0px 0px 0px 0px;
+	-webkit-font-smoothing: antialiased;
+}
+.fa-lg { font-size: 1.33333333em; line-height: 0.75em; vertical-align: -15%; }
+.fa-glass:before { content: "\f000"; }
+@media screen and (max-width: 768px) {
+	.fa-2x { font-size: 2em !important; }
+}
+CSS
+,
 	'response' => [ 'code' => 200, 'message' => 'OK' ],
 ];
 
