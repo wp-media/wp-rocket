@@ -142,10 +142,10 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 		$name   = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
 		$expire = time() - YEAR_IN_SECONDS;
 
-		$this->set_cookie( $name, ' ', $expire, COOKIEPATH, COOKIE_DOMAIN, false, true );
+		$this->set_cookie( $name, ' ', $expire, COOKIEPATH, (string) COOKIE_DOMAIN, false, true );
 
 		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			$this->set_cookie( $name, ' ', $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true );
+			$this->set_cookie( $name, ' ', $expire, SITECOOKIEPATH, (string) COOKIE_DOMAIN, false, true );
 		}
 	}
 
@@ -168,10 +168,10 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 
 		$name = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
 
-		$this->set_cookie( $name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+		$this->set_cookie( $name, $value, $expire, COOKIEPATH, (string) COOKIE_DOMAIN, $secure_logged_in_cookie, true );
 
 		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			$this->set_cookie( $name, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+			$this->set_cookie( $name, $value, $expire, SITECOOKIEPATH, (string) COOKIE_DOMAIN, $secure_logged_in_cookie, true );
 		}
 	}
 
