@@ -25,9 +25,6 @@ class CookieDomainFalseRecordingUserCacheKeySubscriber extends UserCacheKeySubsc
  * and ::clear_user_cache_cookie when COOKIE_DOMAIN is false (WordPress < 6.6 default, or
  * `define( 'COOKIE_DOMAIN', false )` in wp-config.php).
  *
- * COOKIE_DOMAIN is a process-wide constant that other test files define as '', so each test
- * runs in a separate process and defines the constants itself.
- *
  * @group Cache
  */
 class Test_CookieDomainFalse extends TestCase {
@@ -40,22 +37,24 @@ class Test_CookieDomainFalse extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		define( 'COOKIEHASH', 'testcookiehash' );
-		define( 'COOKIEPATH', '/' );
-		define( 'SITECOOKIEPATH', '/' );
-		define( 'COOKIE_DOMAIN', false );
-		if ( ! defined( 'YEAR_IN_SECONDS' ) ) {
-			define( 'YEAR_IN_SECONDS', 365 * 24 * 60 * 60 );
-		}
+		$constants = [
+			'COOKIEHASH'      => 'testcookiehash',
+			'COOKIEPATH'      => '/',
+			'SITECOOKIEPATH'  => '/blog',
+			'COOKIE_DOMAIN'   => false,
+			'YEAR_IN_SECONDS' => 365 * 24 * 60 * 60,
+		];
+
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $name, $default = null ) use ( $constants ) {
+				return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
+			}
+		);
 
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscriber = new CookieDomainFalseRecordingUserCacheKeySubscriber( $this->options );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function testShouldSetCookieWithEmptyDomainOnLogin() {
 		Functions\when( 'is_ssl' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
@@ -66,20 +65,16 @@ class Test_CookieDomainFalse extends TestCase {
 
 		$this->subscriber->set_user_cache_cookie( 'john|1234|token|hmac', 0, time() + 3600, 1, 'logged_in', 'token' );
 
-		$this->assertCount( 1, $this->subscriber->calls );
-		$this->assertSame( '', $this->subscriber->calls[0]['domain'] );
+		$this->assertSame( [ '/', '/blog' ], array_column( $this->subscriber->calls, 'path' ) );
+		$this->assertSame( [ '', '' ], array_column( $this->subscriber->calls, 'domain' ) );
 	}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
 	public function testShouldClearCookieWithEmptyDomainOnLogout() {
 		$this->options->shouldReceive( 'get' )->with( 'secret_cache_key' )->andReturn( self::SECRET );
 
 		$this->subscriber->clear_user_cache_cookie();
 
-		$this->assertCount( 1, $this->subscriber->calls );
-		$this->assertSame( '', $this->subscriber->calls[0]['domain'] );
+		$this->assertSame( [ '/', '/blog' ], array_column( $this->subscriber->calls, 'path' ) );
+		$this->assertSame( [ '', '' ], array_column( $this->subscriber->calls, 'domain' ) );
 	}
 }
