@@ -26,5 +26,10 @@ return [
 			'host'     => 'savvii',
 			'expected' => 'WP_Rocket\ThirdParty\Hostings\Savvii',
 		],
+
+		'testShouldReturnPagely' => [
+			'host'     => 'pagely',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\Pagely',
+		],
 	],
 ];
