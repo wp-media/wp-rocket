@@ -37,19 +37,13 @@ class Test_CookieDomainFalse extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$constants = [
+		$this->constants = [
 			'COOKIEHASH'      => 'testcookiehash',
 			'COOKIEPATH'      => '/',
 			'SITECOOKIEPATH'  => '/blog',
 			'COOKIE_DOMAIN'   => false,
 			'YEAR_IN_SECONDS' => 365 * 24 * 60 * 60,
 		];
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $name, $default = null ) use ( $constants ) {
-				return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
-			}
-		);
 
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscriber = new CookieDomainFalseRecordingUserCacheKeySubscriber( $this->options );
