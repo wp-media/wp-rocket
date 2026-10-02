@@ -37,13 +37,11 @@ class Test_CookieDomainFalse extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->constants = [
-			'COOKIEHASH'      => 'testcookiehash',
-			'COOKIEPATH'      => '/',
-			'SITECOOKIEPATH'  => '/blog',
-			'COOKIE_DOMAIN'   => false,
-			'YEAR_IN_SECONDS' => 365 * 24 * 60 * 60,
-		];
+		$this->constants['COOKIEHASH']      = 'testcookiehash';
+		$this->constants['COOKIEPATH']      = '/';
+		$this->constants['SITECOOKIEPATH']  = '/blog';
+		$this->constants['COOKIE_DOMAIN']   = false;
+		$this->constants['YEAR_IN_SECONDS'] = 365 * 24 * 60 * 60;
 
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->subscriber = new CookieDomainFalseRecordingUserCacheKeySubscriber( $this->options );
