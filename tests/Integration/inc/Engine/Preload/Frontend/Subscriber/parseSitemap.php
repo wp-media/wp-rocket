@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 use WP_Error;
 use WP_Rocket\Tests\Integration\ASTrait;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
@@ -12,12 +13,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Preload
  */
 class Test_ParseSitemap extends TestCase {
-	use ASTrait;
+	use ASTrait, HttpRequestTrait;
 
 	protected $config;
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		// Install the preload cache table.
 		self::installPreloadCacheTable();
@@ -27,6 +30,8 @@ class Test_ParseSitemap extends TestCase {
 		// Uninstall the preload cache table.
 		self::uninstallPreloadCacheTable();
 
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
@@ -35,9 +40,8 @@ class Test_ParseSitemap extends TestCase {
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
 
-		$this->config = $config;
-
-		add_filter( 'pre_http_request', [ $this, 'requestResult' ] );
+		$this->config         = $config;
+		$this->config['http'] = [ $config['sitemap_url'] => $this->sitemap_response() ];
 
 		do_action( 'rocket_preload_job_parse_sitemap', $config['sitemap_url'] );
 
@@ -57,7 +61,12 @@ class Test_ParseSitemap extends TestCase {
 		}
 	}
 
-	public function requestResult() {
+	/**
+	 * Builds the sitemap response from the data set.
+	 *
+	 * @return array|WP_Error
+	 */
+	private function sitemap_response() {
 		if ( ! empty( $this->config['process_generate']['is_wp_error'] ) ) {
 			return new WP_Error( 'error', 'error_data' );
 		} else {
