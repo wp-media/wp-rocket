@@ -131,6 +131,12 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		$db_host = rocket_get_constant( 'DB_HOST', '' );
+		if ( ! empty( $db_host ) && strpos( $db_host, '.wpserveur.net' ) !== false ) {
+			self::$hostname = 'wpserveur';
+			return 'wpserveur';
+		}
+
 		return '';
 	}
 
