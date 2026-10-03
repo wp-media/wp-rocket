@@ -195,6 +195,63 @@ class Controller {
 	}
 
 	/**
+	 * Truncate performance hints optimization tables when the active theme or its parent is updated
+	 *
+	 * Uses the same conditions as rocket_clean_cache_theme_update() in inc/common/purge.php, so the
+	 * hints data is invalidated together with the page cache when the active theme is updated.
+	 *
+	 * @param array $hook_extra Array of bulk item update data.
+	 *
+	 * @return void
+	 */
+	public function truncate_on_theme_update( $hook_extra ) {
+		if ( ! $this->is_active_theme_update( $hook_extra ) ) {
+			return;
+		}
+
+		if ( ! $this->is_allowed() ) {
+			return;
+		}
+
+		$this->truncate_tables();
+	}
+
+	/**
+	 * Checks whether the current upgrader process is an update of the active theme or its parent
+	 *
+	 * Mirrors the conditions of rocket_clean_cache_theme_update() in inc/common/purge.php.
+	 *
+	 * @param array $hook_extra Array of bulk item update data.
+	 *
+	 * @return bool True when the active theme or its parent is being updated.
+	 */
+	private function is_active_theme_update( $hook_extra ) {
+		if ( rocket_is_importing() ) {
+			return false;
+		}
+
+		if ( ! isset( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
+			return false;
+		}
+
+		if ( ! isset( $hook_extra['type'] ) || 'theme' !== $hook_extra['type'] ) {
+			return false;
+		}
+
+		if ( ! isset( $hook_extra['themes'] ) || ! is_array( $hook_extra['themes'] ) ) {
+			return false;
+		}
+
+		$current_theme = wp_get_theme();
+		$themes        = [
+			$current_theme->get_template(), // Parent theme.
+			$current_theme->get_stylesheet(), // Child theme.
+		];
+
+		return ! empty( array_intersect( $hook_extra['themes'], $themes ) );
+	}
+
+	/**
 	 * Deletes row by url from table.
 	 *
 	 * @param string $url Url to delete.
