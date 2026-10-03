@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Common\PerformanceHints\Admin;
 
 use WP_Admin_Bar;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Upgrader;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -58,6 +59,7 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'switch_theme'                              => 'truncate_tables',
+			'upgrader_process_complete'                 => [ 'truncate_on_theme_update', 10, 2 ],
 			'permalink_structure_changed'               => 'truncate_tables',
 			'rocket_domain_options_changed'             => 'truncate_tables',
 			'wp_trash_post'                             => 'delete_post',
@@ -91,6 +93,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function truncate_tables(): void {
 		$this->controller->truncate_tables();
+	}
+
+	/**
+	 * Callback for truncating performance hints tables when the active theme is updated
+	 *
+	 * @param WP_Upgrader $upgrader WP_Upgrader instance.
+	 * @param array       $hook_extra Array of bulk item update data.
+	 *
+	 * @return void
+	 */
+	public function truncate_on_theme_update( $upgrader, $hook_extra ): void {
+		$this->controller->truncate_on_theme_update( $upgrader, $hook_extra );
 	}
 
 	/**

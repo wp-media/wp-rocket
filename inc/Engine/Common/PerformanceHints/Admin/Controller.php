@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Common\PerformanceHints\Admin;
 
+use WP_Upgrader;
+
 class Controller {
 
 	/**
@@ -184,6 +186,52 @@ class Controller {
 	 */
 	public function truncate_on_update( $new_version, $old_version ) {
 		if ( version_compare( $old_version, '3.16.1', '>=' ) ) {
+			return;
+		}
+
+		if ( ! $this->is_allowed() ) {
+			return;
+		}
+
+		$this->truncate_tables();
+	}
+
+	/**
+	 * Truncate performance hints optimization tables when the active theme or its parent is updated
+	 *
+	 * Uses the same conditions as rocket_clean_cache_theme_update() in inc/common/purge.php, so the
+	 * hints data is invalidated together with the page cache when the active theme is updated.
+	 *
+	 * @param WP_Upgrader $upgrader WP_Upgrader instance.
+	 * @param array       $hook_extra Array of bulk item update data.
+	 *
+	 * @return void
+	 */
+	public function truncate_on_theme_update( $upgrader, $hook_extra ) {
+		if ( rocket_is_importing() ) {
+			return;
+		}
+
+		if ( ! isset( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
+			return;
+		}
+
+		if ( ! isset( $hook_extra['type'] ) || 'theme' !== $hook_extra['type'] ) {
+			return;
+		}
+
+		if ( ! isset( $hook_extra['themes'] ) || ! is_array( $hook_extra['themes'] ) ) {
+			return;
+		}
+
+		$current_theme = wp_get_theme();
+		$themes        = [
+			$current_theme->get_template(), // Parent theme.
+			$current_theme->get_stylesheet(), // Child theme.
+		];
+
+		// Bail out if the current theme or its parent is not updating.
+		if ( empty( array_intersect( $hook_extra['themes'], $themes ) ) ) {
 			return;
 		}
 
