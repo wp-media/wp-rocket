@@ -98,13 +98,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback for truncating performance hints tables when the active theme is updated
 	 *
-	 * @param WP_Upgrader $upgrader WP_Upgrader instance.
+	 * @param WP_Upgrader $upgrader   WP_Upgrader instance, not used but part of the hook signature.
 	 * @param array       $hook_extra Array of bulk item update data.
 	 *
 	 * @return void
 	 */
 	public function truncate_on_theme_update( $upgrader, $hook_extra ): void {
-		$this->controller->truncate_on_theme_update( $upgrader, $hook_extra );
+		unset( $upgrader );
+
+		$this->controller->truncate_on_theme_update( $hook_extra );
 	}
 
 	/**
