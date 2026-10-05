@@ -1,5 +1,6 @@
 <?php
 
+use WP_Rocket\Buffer\Cache;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Engine\Cache\AdvancedCache;
 
@@ -617,7 +618,23 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
 
-				$entry = $dir . $parsed_url['path'];
+				/*
+				 * A segment carrying "*" is a purge pattern (see cache_purge_pages), not a name: it
+				 * must reach preg_match as written, because bounding would hash it and a cut inside
+				 * a group or a character class would make it invalid. Every other segment is a real
+				 * directory the writer bounded, so it has to be bounded here too.
+				 */
+				$entry = $dir . implode(
+					'/',
+					array_map(
+						function ( $segment ) {
+							return str_contains( $segment, '*' )
+								? $segment
+								: Cache::bound_path_component( $segment );
+						},
+						explode( '/', $parsed_url['path'] )
+					)
+				);
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
@@ -889,7 +906,7 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 		do_action( 'before_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 		foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
-			$entry = $dir . $parsed_url['path'];
+			$entry = $dir . Cache::bound_path_components( $parsed_url['path'] );
 			// Skip if the dir/file does not exist.
 			if ( ! $filesystem->exists( $entry ) ) {
 				continue;
@@ -1031,8 +1048,8 @@ function rocket_clean_user( $user_id, $lang = '' ) {
 			$parse_url['host'] = str_replace( '.', '_', $parse_url['host'] );
 		}
 
-		$cache_dir = $parse_url['host'] . '-' . strtolower( $user_key );
-		$cache_dir = $cache_dir . $parse_url['path'];
+		$cache_dir = Cache::bound_path_component( $parse_url['host'] . '-' . strtolower( $user_key ) );
+		$cache_dir = $cache_dir . Cache::bound_path_components( $parse_url['path'] );
 		$root      = rocket_get_constant( 'WP_ROCKET_CACHE_PATH' ) . $cache_dir;
 
 		/**
