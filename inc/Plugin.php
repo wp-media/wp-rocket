@@ -431,6 +431,7 @@ class Plugin {
 			'cache_abilities_subscriber',
 			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
+			'abilities_admin_subscriber',
 		];
 
 		return $subscribers;
