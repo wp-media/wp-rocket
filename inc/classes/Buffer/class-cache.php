@@ -830,15 +830,10 @@ class Cache extends Abstract_Buffer {
 
 		foreach ( $cache_dynamic_cookies as $key => $cookie_name ) {
 			if ( is_array( $cookie_name ) ) {
-				// The cookies this call was given, as everywhere else in this method: the name is built
-				// from one source, not from this branch reading the request somewhere else.
 				if ( isset( $cookies[ $key ] ) ) {
-					// A cookie declared by its parts can arrive as a plain value instead. Read as no
-					// parts at all, since reading a part of one ends the request on PHP 8.
 					$sent = is_array( $cookies[ $key ] ) ? $cookies[ $key ] : [];
 
 					foreach ( $cookie_name as $cookie_key ) {
-						// A part that did not arrive holds its place in the name, as it always has.
 						if ( ! isset( $sent[ $cookie_key ] ) ) {
 							$filename .= '-';
 

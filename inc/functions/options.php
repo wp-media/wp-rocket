@@ -355,8 +355,6 @@ function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingCo
 	$cookies = array_filter( $cookies );
 	$tokens  = [];
 
-	// A name is compared by its value, the parts of a cookie by the key they sit under. Anything else
-	// names no cookie: it is given no token, and the line below drops it.
 	foreach ( $cookies as $key => $cookie ) {
 		if ( is_scalar( $cookie ) ) {
 			$tokens[ $key ] = 'name:' . $cookie;

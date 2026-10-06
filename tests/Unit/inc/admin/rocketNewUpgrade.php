@@ -24,9 +24,9 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\expect( 'rocket_clean_cache_busting' )
 			->once();
 		Functions\expect( 'rocket_clean_domain' )
-			->twice();
+			->once();
 		Functions\expect( 'rocket_generate_config_file' )
-			->twice();
+			->once();
 		Functions\expect( 'rocket_clean_minify' )
 			->with( 'css' )
 			->once();
@@ -88,7 +88,6 @@ class Test_RocketNewUpgrade extends TestCase {
 	}
 
 	public function testShouldRewriteTheConfigFileAndCleanTheDomainWhenUpdatingFromBeforeThisRelease() {
-		// Every gate below this release is passed over, and this is the only call outside them.
 		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
 
 		Functions\expect( 'rocket_generate_config_file' )

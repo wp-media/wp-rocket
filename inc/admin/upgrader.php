@@ -222,7 +222,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
-		rocket_generate_config_file();
 
 		// Create a .htaccess file in the log folder.
 		$handler = Logger::get_stream_handler();
@@ -272,7 +271,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
-		rocket_clean_domain();
 	}
 
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
@@ -308,10 +306,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
-		rocket_generate_config_file();
-	}
-
 	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
 		delete_transient( 'wp_rocket_pricing' );
 	}
@@ -320,8 +314,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		flush_rewrite_rules();
 	}
 
-	// The front end reads the list of dynamic cookies from a generated file, and that list used to
-	// come back short. Pages cached from the short one carry names this release gives other requests.
 	if ( version_compare( $actual_version, '3.24', '<' ) ) {
 		rocket_generate_config_file();
 		rocket_clean_domain();
