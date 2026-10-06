@@ -6,8 +6,10 @@ use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\RESTVfsTestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class RESTVfsTestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
@@ -61,6 +63,9 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		$this->initDefaultStructure();
 		$this->init();
 
@@ -82,6 +87,9 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 		unset( $GLOBALS['debug_fs'] );
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function dataProvider() {

@@ -37,6 +37,9 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		// Install the preload cache table to prevent DB error caused by permalink changed.
 		self::installPreloadCacheTable();
 		self::installAtfTable();
@@ -63,6 +66,8 @@ class TestRocketCleanPostCacheOnSlugChange extends TestCase {
 		self::uninstallLrcTable();
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

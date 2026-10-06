@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cache_abilities_clear_url_cache',
 		'cache_abilities_clear_website_cache',
 		'cache_abilities_subscriber',
+		'user_cache_key_subscriber',
 	];
 
 	/**
@@ -87,6 +88,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'purge',
 				]
 			);
+		$this->getContainer()->addShared( 'user_cache_key_subscriber', UserCacheKeySubscriber::class )
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'admin_cache_subscriber', AdminSubscriber::class )
 			->addArguments(
 				[

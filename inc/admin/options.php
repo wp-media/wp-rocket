@@ -216,7 +216,12 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	if ( $keys ) {
 		delete_transient( WP_ROCKET_SLUG );
-		$newvalue = array_merge( $newvalue, $keys );
+
+		// Only carry forward the license fields this transient exists for (see rocket_check_key()) -
+		// merging the whole payload let any other, unrelated key it happened to still be holding
+		// (e.g. a stale 'cdn' snapshot from whenever it was set) silently overwrite the value this
+		// save is actively trying to persist.
+		$newvalue = array_merge( $newvalue, array_intersect_key( $keys, array_flip( [ 'consumer_key', 'consumer_email', 'secret_key', 'license' ] ) ) );
 	}
 
 	// Added this as an additional check to ensure there's none regression for the update in inc/main.php.

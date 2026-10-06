@@ -3,14 +3,18 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController;
 
-use ReflectionProperty;
+use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Shared scaffolding for the RocketCDN SubscriptionController integration tests.
  *
  */
 abstract class AbstractSubscriptionControllerTestCase extends TestCase {
+	use HttpRequestTrait;
 
 	protected static $use_settings_trait = true;
 
@@ -28,6 +32,8 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$container = $this->getRocketContainer();
 
 		$this->subscription_controller = $container->get( 'rocketcdn_subscription_controller' );
@@ -38,18 +44,24 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 
 		$this->reset_frontend_subscriber_memo( $container );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_http_request' );
 		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
 		$this->clear_rocketcdn_transients();
 		$this->clear_rocketcdn_options();
 
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -67,7 +79,10 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
 		delete_transient( 'wp_rocket_customer_data' );
 
-		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request' ] as $transient_key ) {
+		// 'wpr_user_information' is UserClient's own transient key (get_user_data()'s cache); it
+		// must be cleared too, otherwise a timeout lockout tripped by an unrelated/earlier test
+		// silently short-circuits every get_user_data() call here before it reaches mock_api().
+		foreach ( [ 'rocket_cdn_website_search', 'rocket_cdn_create_request', 'rocket_cdn_check_status_request', 'wpr_user_information' ] as $transient_key ) {
 			delete_transient( $transient_key );
 			delete_transient( $transient_key . '_timeout' );
 			delete_transient( $transient_key . '_timeout_active' );
@@ -85,9 +100,8 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	 */
 	protected function reset_frontend_subscriber_memo( $container ): void {
 		$frontend = $container->get( 'rocketcdn_frontend_subscriber' );
-		$prop     = new ReflectionProperty( $frontend, 'rocketcdn_url' );
-		$prop->setAccessible( true );
-		$prop->setValue( $frontend, null );
+
+		$this->set_reflective_property( null, 'rocketcdn_url', $frontend );
 	}
 
 	/**
@@ -134,7 +148,13 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	}
 
 	/**
-	 * Intercepts HTTP requests via `pre_http_request` based on a fixture config.
+	 * Registers the RocketCDN API fixture responses a SubscriptionController call may reach.
+	 *
+	 * Every URL below is always registered, on the base's 404/empty-body default, so any of
+	 * them answers a fixture instead of the network; a genuinely unexpected URL still fails
+	 * the test via the trait. A child that expects zero requests (e.g.
+	 * isSubscriptionCreationLoading) simply never calls this method, leaving `$config['http']`
+	 * empty.
 	 *
 	 * Recognised config keys:
 	 *   subscription_status_code (int, default 404)
@@ -146,54 +166,39 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 	 *   create_free_error        (string) — returns WP_Error instead of an HTTP response
 	 *   task_code                (int, default 404)
 	 *   task_body                (array, used when code is 200)
+	 *   user_data_code           (int, default 404)
+	 *   user_data_body           (array, used when code is 200)
 	 */
 	protected function mock_api( array $config ): void {
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $_args, $url ) use ( $config ) {
-				if ( preg_match( '#https://rocketcdn\.me/api/subscription/[^/]+/status#', $url ) ) {
-					if ( 200 === ( $config['subscription_status_code'] ?? 404 ) ) {
-						return [
-							'response' => [ 'code' => 200, 'message' => 'OK' ],
-							'body'     => json_encode( $config['subscription_status_body'] ?? [] ),
-						];
-					}
-					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
-				}
-				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
-					if ( 200 === ( $config['website_search_code'] ?? 404 ) ) {
-						return [
-							'response' => [ 'code' => 200, 'message' => 'OK' ],
-							'body'     => json_encode( $config['website_search_body'] ?? [] ),
-						];
-					}
-					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
-				}
-				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/create-free/' ) ) {
-					if ( isset( $config['create_free_error'] ) ) {
-						return new \WP_Error( 'http_request_failed', $config['create_free_error'] );
-					}
-					if ( 200 === ( $config['create_free_code'] ?? 404 ) ) {
-						return [
-							'response' => [ 'code' => 200, 'message' => 'OK' ],
-							'body'     => json_encode( $config['create_free_body'] ?? [] ),
-						];
-					}
-					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
-				}
-				if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/task/' ) ) {
-					if ( 200 === ( $config['task_code'] ?? 404 ) ) {
-						return [
-							'response' => [ 'code' => 200, 'message' => 'OK' ],
-							'body'     => json_encode( $config['task_body'] ?? [] ),
-						];
-					}
-					return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
-				}
-				return $preempt;
-			},
-			10,
-			3
-		);
+		$this->config['http'] = [
+			UserClient::USER_ENDPOINT => $this->fixture_response( $config, 'user_data' ),
+
+			sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' ) => $this->fixture_response( $config, 'subscription_status' ),
+
+			add_query_arg( 'url', 'http://example.org', APIClient::ROCKETCDN_API . 'website/search/' ) => $this->fixture_response( $config, 'website_search' ),
+
+			APIClient::ROCKETCDN_API . 'website/create-free/' => isset( $config['create_free_error'] )
+				? new WP_Error( 'http_request_failed', $config['create_free_error'] )
+				: $this->fixture_response( $config, 'create_free' ),
+
+			sprintf( '%1$swebsite/task/%2$s/', APIClient::ROCKETCDN_API, 'task_abc_123' ) => $this->fixture_response( $config, 'task' ),
+		];
+	}
+
+	/**
+	 * Builds a mocked HTTP response array from a fixture's `{prefix}_code` / `{prefix}_body`
+	 * keys, preserving the base's original 200-or-404 semantics.
+	 *
+	 * @return array
+	 */
+	private function fixture_response( array $config, string $prefix ): array {
+		if ( 200 === ( $config[ $prefix . '_code' ] ?? 404 ) ) {
+			return [
+				'response' => [ 'code' => 200, 'message' => 'OK' ],
+				'body'     => json_encode( $config[ $prefix . '_body' ] ?? [] ),
+			];
+		}
+
+		return [ 'response' => [ 'code' => 404, 'message' => 'Not Found' ], 'body' => '' ];
 	}
 }

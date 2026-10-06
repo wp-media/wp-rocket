@@ -3,7 +3,9 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\UserClient;
 
 use WPMedia\PHPUnit\Integration\ApiTrait;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\API\UserClient::get_user_data
@@ -13,10 +15,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_GetUserData extends TestCase {
 	use ApiTrait;
+	use HttpRequestTrait;
 
 	protected static $api_credentials_config_file = 'license.php';
 	private static $client;
-	private $response;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -30,6 +32,9 @@ class Test_GetUserData extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
+
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
@@ -43,7 +48,8 @@ class Test_GetUserData extends TestCase {
 		delete_transient( 'wpr_user_information_timeout' );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
-		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -56,9 +62,7 @@ class Test_GetUserData extends TestCase {
 			set_transient( 'wp_rocket_customer_data', $expected );
 		}
 
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'set_response' ] );
+		$this->config['http'] = [ UserClient::USER_ENDPOINT => $config['response'] ];
 
 		$this->assertEquals(
 			$expected,
@@ -72,9 +76,5 @@ class Test_GetUserData extends TestCase {
 
 	public function set_consumer_key() {
 		return self::getApiCredential( 'ROCKET_KEY' );
-	}
-
-	public function set_response() {
-		return $this->response;
 	}
 }
