@@ -36,6 +36,8 @@ class Test_MaybeDeactivateRocketLazyload extends SmushSubscriberTestCase {
 	}
 
 	public function tear_down() {
+		global $wp_filter;
+
 		parent::tear_down();
 
 		foreach ( $this->filters as $tag => $list ) {
