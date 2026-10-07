@@ -54,9 +54,7 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_data(): array {
-		$payload = [
-			'lcp' => '',
-		];
+		$payload = [];
 
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 

@@ -154,7 +154,6 @@ If tracking_enabled is false, tell the user Preload tracking is disabled rather 
 			'mobile_cache_active'         => $mobile_active,
 			'estimated_seconds_remaining' => null,
 			'estimated_completion_human'  => null,
-			'method'                      => '',
 		];
 
 		if ( ! $tracking_enabled ) {

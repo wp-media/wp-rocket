@@ -358,7 +358,6 @@ class SiteList {
 		}
 
 		$full_list['wordpress']['has_subcats'] = $has_subcats;
-		$has_subcats                           = false;
 
 		return $full_list;
 	}
