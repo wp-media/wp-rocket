@@ -38,7 +38,6 @@ add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), 'rocket_
  */
 function rocket_plugin_row_meta( $plugin_meta, $plugin_file ) {
 	if ( 'wp-rocket/wp-rocket.php' === $plugin_file ) {
-
 		$update_plugins = get_site_transient( 'update_plugins' );
 
 		if ( false !== $update_plugins && isset( $update_plugins->response[ $plugin_file ] ) && empty( $update_plugins->response[ $plugin_file ]->package ) ) {
@@ -47,6 +46,8 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file ) {
 
 			$plugin_meta = array_merge( (array) $link, $plugin_meta );
 		}
+
+		$plugin_meta[] = '<a href="https://wp-rocket.me/changelog/" target="_blank">Changelog</a>';
 	}
 
 	return $plugin_meta;
