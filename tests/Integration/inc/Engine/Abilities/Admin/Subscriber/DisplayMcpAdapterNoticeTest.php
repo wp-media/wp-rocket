@@ -12,6 +12,13 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  */
 class DisplayMcpAdapterNoticeTest extends AdminTestCase {
 	/**
+	 * Capabilities this test added to the administrator role.
+	 *
+	 * @var string[]
+	 */
+	private $added_caps = [];
+
+	/**
 	 * Loads the notice helpers.
 	 */
 	public static function set_up_before_class() {
@@ -37,6 +44,12 @@ class DisplayMcpAdapterNoticeTest extends AdminTestCase {
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
 
+		foreach ( $this->added_caps as $cap ) {
+			$this->removeRoleCap( 'administrator', $cap );
+		}
+
+		$this->added_caps = [];
+
 		parent::tear_down();
 	}
 
@@ -50,15 +63,23 @@ class DisplayMcpAdapterNoticeTest extends AdminTestCase {
 	 * @param bool   $expected  Whether the notice is expected.
 	 */
 	public function testShouldDisplayExpected( string $role, array $user_meta, bool $expected ): void {
-		$this->setRoleCap( 'administrator', 'install_plugins' );
-		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
+		if ( class_exists( 'WP\MCP\Core\McpAdapter' ) ) {
+			$this->markTestSkipped( 'An MCP Adapter is loaded in the test environment.' );
+		}
+
+		foreach ( [ 'install_plugins', 'rocket_manage_options' ] as $cap ) {
+			if ( ! get_role( 'administrator' )->has_cap( $cap ) ) {
+				$this->setRoleCap( 'administrator', $cap );
+				$this->added_caps[] = $cap;
+			}
+		}
+
 		$this->setCurrentUser( $role );
 
 		foreach ( $user_meta as $key => $value ) {
 			update_user_meta( $this->user_id, $key, $value );
 		}
 
-		$this->assertFalse( class_exists( 'WP\MCP\Core\McpAdapter' ) );
 		$this->assertNotFalse( has_action( 'admin_notices', [ apply_filters( 'rocket_container', null )->get( 'abilities_admin_subscriber' ), 'display_mcp_adapter_notice' ] ) );
 
 		ob_start();
