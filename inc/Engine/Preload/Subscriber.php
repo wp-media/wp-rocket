@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Preload\Controller\LoadInitialSitemap;
 use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 use WP_Rocket\Engine\Common\Utils;
@@ -60,7 +60,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Mobile detector instance.
 	 *
-	 * @var WP_Rocket_Mobile_Detect
+	 * @var MobileDetect
 	 */
 	protected $mobile_detect;
 
@@ -74,15 +74,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Creates an instance of the class.
 	 *
-	 * @param Options_Data            $options Options instance.
-	 * @param LoadInitialSitemap      $controller controller creating the initial task.
-	 * @param Cache                   $query Cache query instance.
-	 * @param Activation              $activation Activation manager.
-	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile detector instance.
-	 * @param ClearCache              $clear_cache Clear cache controller.
-	 * @param Queue                   $queue Preload queue.
+	 * @param Options_Data       $options Options instance.
+	 * @param LoadInitialSitemap $controller controller creating the initial task.
+	 * @param Cache              $query Cache query instance.
+	 * @param Activation         $activation Activation manager.
+	 * @param MobileDetect       $mobile_detect Mobile detector instance.
+	 * @param ClearCache         $clear_cache Clear cache controller.
+	 * @param Queue              $queue Preload queue.
 	 */
-	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, WP_Rocket_Mobile_Detect $mobile_detect, ClearCache $clear_cache, Queue $queue ) {
+	public function __construct( Options_Data $options, LoadInitialSitemap $controller, $query, Activation $activation, MobileDetect $mobile_detect, ClearCache $clear_cache, Queue $queue ) {
 		$this->options       = $options;
 		$this->controller    = $controller;
 		$this->query         = $query;

@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Recommendations\D
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient;
@@ -35,12 +36,13 @@ class Test_GetStatus extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$api_client   = Mockery::mock( APIClient::class );
-		$options      = Mockery::mock( Options_Data::class );
-		$global_score = Mockery::mock( GlobalScore::class );
+		$api_client       = Mockery::mock( APIClient::class );
+		$options          = Mockery::mock( Options_Data::class );
+		$global_score     = Mockery::mock( GlobalScore::class );
 		$metric_formatter = Mockery::mock( MetricFormatter::class );
+		$ri_query         = $this->createMock( RocketInsightsQuery::class );
 
-		$this->data_manager = new DataManager( $api_client, $options, $global_score, $metric_formatter );
+		$this->data_manager = new DataManager( $api_client, $options, $global_score, $metric_formatter, $ri_query );
 		$this->set_logger( $this->data_manager );
 	}
 

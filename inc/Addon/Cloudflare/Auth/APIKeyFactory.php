@@ -1,9 +1,7 @@
 <?php
 
-namespace WPMedia\Cloudflare\Auth;
+namespace WP_Rocket\Addon\Cloudflare\Auth;
 
-use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
-use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
 use WP_Rocket\Admin\Options_Data;
 
 class APIKeyFactory implements AuthFactoryInterface {

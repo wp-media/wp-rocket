@@ -13,9 +13,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @uses \WP_Rocket\Logger\Logger::info
  * @uses \WP_Rocket\Logger\Logger::debug
- * @uses \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::parse
- * @uses \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::get_combined_url
- * @uses \WP_Rocket\Engine\Optimization\GoogleFonts\Combine::get_optimized_markup
+ * @uses \WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2::parse
+ * @uses \WP_Rocket\Engine\Optimization\GoogleFonts\CombineV2::get_combined_url
  *
  * @group  Optimize
  * @group  GoogleFonts

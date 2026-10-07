@@ -12,6 +12,28 @@ return [
 		],
 	],
 
+	'testShouldReturnSameArgsWhenURLEmpty' => [
+		'config'   => [
+			'url' => '',
+		],
+		'expected' => [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		],
+	],
+
+	'testShouldReturnSameArgsWhenURLNull' => [
+		'config'   => [
+			'url' => null,
+		],
+		'expected' => [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		],
+	],
+
 	'testShouldReturnSameArgsWhenAuthorizationHeadersEmptyAndEndpointIsPricing' => [
 		'config'   => [
 			'url' => 'https://rocketcdn.me/api/pricing',

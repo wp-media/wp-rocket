@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 
 /**
  * Rocket Insights Jobs Manager
@@ -47,20 +48,30 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $plan;
 
 	/**
+	 * ChannelDetector instance.
+	 *
+	 * @var ChannelDetector
+	 */
+	private ChannelDetector $channel_detector;
+
+	/**
 	 * Instantiate the class.
 	 *
-	 * @param RocketInsightsQuery $query Rocket Insights Query instance.
-	 * @param ContextInterface    $context Rocket Insights Context.
-	 * @param Plan                $plan Plan instance.
+	 * @param RocketInsightsQuery $query            Rocket Insights Query instance.
+	 * @param ContextInterface    $context          Rocket Insights Context.
+	 * @param Plan                $plan             Plan instance.
+	 * @param ChannelDetector     $channel_detector Channel Detector instance.
 	 */
 	public function __construct(
 		RocketInsightsQuery $query,
 		ContextInterface $context,
-		Plan $plan
+		Plan $plan,
+		ChannelDetector $channel_detector
 	) {
-		$this->query   = $query;
-		$this->context = $context;
-		$this->plan    = $plan;
+		$this->query            = $query;
+		$this->context          = $context;
+		$this->plan             = $plan;
+		$this->channel_detector = $channel_detector;
 	}
 
 	/**
@@ -92,11 +103,12 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		$additional_details['data'] = wp_parse_args(
 			$additional_details['data'] ?? [],
 			[
-				'start_time' => time(),
-				'is_retest'  => false,
-				'source'     => 'performance monitoring',
+				'start_time'          => time(),
+				'is_retest'           => false,
+				'source'              => 'performance monitoring',
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
-			);
+		);
 		$additional_details['data'] = wp_json_encode( $additional_details['data'] );
 		return $this->add_url_to_the_queue( $url, $is_mobile, $additional_details );
 	}

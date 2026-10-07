@@ -62,7 +62,7 @@ class Test_RenderRecommendationsWidget extends TestCase {
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
 		// Clean up Performance Monitoring table.
-		$this->truncatePerformanceMonitoringTable();
+		$this->uninstallPerformanceMonitoringTable();
 
         $this->restoreWpHook( 'rocket_sidebar' );
 

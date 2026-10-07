@@ -15,6 +15,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @var array
 	 */
 	protected $provides = [
+		'channel_detector',
 		'mixpanel_tracking',
 		'tracking',
 		'tracking_subscriber',
@@ -37,6 +38,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
+		$this->getContainer()->addShared( 'channel_detector', ChannelDetector::class );
 		$this->getContainer()->add( 'mixpanel_optin', Optin::class )
 			->addArguments(
 				[
@@ -60,6 +62,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'mixpanel_optin',
 					'mixpanel_tracking',
 					'user',
+					'channel_detector',
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/sections/' ),
 				]
 			);

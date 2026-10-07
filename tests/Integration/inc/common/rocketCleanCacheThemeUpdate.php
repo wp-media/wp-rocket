@@ -14,22 +14,28 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Purge
  * @group vfs
  */
-class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
+class RocketCleanCacheThemeUpdateTest extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
 
 	public function set_up() {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'upgrader_process_complete', 'rocket_clean_cache_theme_update' );
-		switch_theme( 'default/style.css' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'stylesheet', [ $this, 'set_current_theme_stylesheet' ] );
+		remove_filter( 'template', [ $this, 'set_current_theme_stylesheet' ] );
+
 		$this->restoreWpHook( 'upgrader_process_complete' );
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'], $GLOBALS['debug_fs'] );
 
 		parent::tear_down();
+	}
+
+	public function set_current_theme_stylesheet() {
+		return 'default';
 	}
 
 	/**
@@ -38,6 +44,12 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	public function testShouldCleanExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
+		}
+
+		// Point the current theme at the updated one via filters (no DB writes, unlike switch_theme()).
+		if ( ! empty( $expected['wp_get_theme'] ) ) {
+			add_filter( 'stylesheet', [ $this, 'set_current_theme_stylesheet' ] );
+			add_filter( 'template', [ $this, 'set_current_theme_stylesheet' ] );
 		}
 
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {

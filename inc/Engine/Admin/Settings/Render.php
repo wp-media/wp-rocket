@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 3.5.5 Moves into the new architecture.
  * @since 3.0
  */
-class Render extends Abstract_render {
+class Render extends Abstract_Render {
 	/**
 	 * Settings array.
 	 *
@@ -209,10 +209,12 @@ class Render extends Abstract_render {
 	/**
 	 * Render the tools page section.
 	 *
+	 * @param array $data Data to pass to the template.
+	 *
 	 * @since 3.0
 	 */
-	public function render_tools_section() {
-		echo $this->generate( 'page-sections/tools' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	public function render_tools_section( $data = [] ) {
+		echo $this->generate( 'page-sections/tools', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

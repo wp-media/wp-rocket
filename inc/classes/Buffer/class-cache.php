@@ -9,6 +9,16 @@ namespace WP_Rocket\Buffer;
 class Cache extends Abstract_Buffer {
 
 	/**
+	 * Prefix used to build the companion cookie name that validates the per-user cache username.
+	 *
+	 * Defined here rather than in UserCacheKeySubscriber because this class also runs from
+	 * advanced-cache.php, before WordPress and the Composer autoloader are loaded.
+	 *
+	 * @var string
+	 */
+	const USER_CACHE_COOKIE_PREFIX = 'wp_rocket_ucc_';
+
+	/**
 	 * Process identifier used by the logger.
 	 *
 	 * @var    string
@@ -91,6 +101,12 @@ class Cache extends Abstract_Buffer {
 		 * Serve the cache file if it exists.
 		 */
 		$cache_filepath = $this->get_cache_path();
+
+		if ( '' === $cache_filepath ) {
+			// Logged-in request that could not be verified: neither serve nor generate a cache file.
+			$this->log( 'Logged-in request could not be verified: cache bypassed.' );
+			return;
+		}
 
 		$this->log(
 			'Looking for cache file.',
@@ -278,6 +294,12 @@ class Cache extends Abstract_Buffer {
 		$webp_enabled   = preg_match( '@<!-- Rocket (has|no) webp -->@', $buffer, $webp_tag );
 		$has_webp       = ! empty( $webp_tag ) ? 'has' === $webp_tag[1] : false;
 		$cache_filepath = $this->get_cache_path( [ 'webp' => $has_webp ] );
+
+		if ( '' === $cache_filepath ) {
+			// Logged-in request that could not be verified: never write it to any cache folder.
+			return $buffer . ( $is_html ? $this->get_rocket_footprint() : '' );
+		}
+
 		$cache_dir_path = dirname( $cache_filepath );
 
 		// Create cache folders.
@@ -373,7 +395,7 @@ class Cache extends Abstract_Buffer {
 	 *
 	 *     @type bool $webp Set to false to prevent adding the part related to webp.
 	 * }
-	 * @return string
+	 * @return string Empty string when the request must not be served from or written to the cache.
 	 */
 	public function get_cache_path( $args = [] ) {
 		$args             = array_merge(
@@ -384,7 +406,12 @@ class Cache extends Abstract_Buffer {
 		);
 		$cookies          = $this->tests->get_cookies();
 		$request_uri_path = $this->get_request_cache_path( $cookies );
-		$filename         = 'index';
+
+		if ( '' === $request_uri_path ) {
+			return '';
+		}
+
+		$filename = 'index';
 
 		$filename = $this->maybe_mobile_filename( $filename );
 
@@ -526,7 +553,7 @@ class Cache extends Abstract_Buffer {
 	 * @since 3.3
 	 *
 	 * @param array $cookies Cookies for the current request.
-	 * @return string
+	 * @return string Empty string when the request carries a logged-in cookie that could not be verified.
 	 */
 	private function get_request_cache_path( $cookies ) {
 		$host = $this->config->get_host();
@@ -542,12 +569,19 @@ class Cache extends Abstract_Buffer {
 
 		// Get cache folder of host name.
 		if ( $logged_in_cookie && isset( $cookies[ $logged_in_cookie ] ) && ! $this->tests->has_rejected_cookie( $logged_in_cookie_no_hash ) ) {
+			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
+			$user_key = reset( $user_key );
+
+			if ( ! $this->is_valid_user_cache_cookie( $cookies, $user_key ) ) {
+				// Could not confirm who this user is. WordPress may still render the page as logged in,
+				// so it must not land in the public folder nor in any per-user folder: bypass the cache.
+				return '';
+			}
+
 			if ( $this->config->get_config( 'common_cache_logged_users' ) ) {
 				return $this->cache_dir_path . $host . '-loggedin-' . $this->config->get_config( 'secret_cache_key' ) . rtrim( $request_uri, '/' );
 			}
 
-			$user_key = explode( '|', $cookies[ $logged_in_cookie ] );
-			$user_key = reset( $user_key );
 			$user_key = $this->sanitize_user( $user_key ) . '-' . $this->config->get_config( 'secret_cache_key' );
 
 			// Get cache folder of host name.
@@ -555,6 +589,88 @@ class Cache extends Abstract_Buffer {
 		}
 
 		return $this->cache_dir_path . $host . rtrim( $request_uri, '/' );
+	}
+
+	/**
+	 * Checks that the companion cache cookie confirms the username segment of the
+	 * `wordpress_logged_in_*` cookie before it is trusted to pick a cache bucket.
+	 *
+	 * Only trust this cookie's username if the companion validation cookie matches and has
+	 * not expired.
+	 *
+	 * @param array  $cookies  Cookies for the current request.
+	 * @param string $username Username segment read from the logged-in cookie.
+	 * @return bool
+	 */
+	private function is_valid_user_cache_cookie( array $cookies, string $username ): bool {
+		$secret      = (string) $this->config->get_config( 'secret_cache_key' );
+		$cookie_name = self::get_user_cache_cookie_name( (string) $this->config->get_config( 'cookie_hash' ), $secret );
+
+		if ( empty( $cookies[ $cookie_name ] ) ) {
+			return false;
+		}
+
+		return self::is_valid_user_cache_cookie_value( (string) $cookies[ $cookie_name ], $username, $secret );
+	}
+
+	/**
+	 * Gets the name of the companion cookie validating the per-user cache username.
+	 *
+	 * The name is site-specific: on multisite `COOKIEHASH` is shared network-wide while each site
+	 * signs the cookie with its own secret cache key, so a shared name would make sites overwrite
+	 * each other's cookie.
+	 *
+	 * @param string $cookie_hash Cookie hash (`COOKIEHASH`).
+	 * @param string $secret      Secret cache key of the current site.
+	 * @return string
+	 */
+	public static function get_user_cache_cookie_name( string $cookie_hash, string $secret ): string {
+		return self::USER_CACHE_COOKIE_PREFIX . $cookie_hash . '_' . substr( hash_hmac( 'sha256', 'cookie_name', $secret ), 0, 12 );
+	}
+
+	/**
+	 * Gets the value of the companion cookie for a username and expiration.
+	 *
+	 * @param string $username   Username segment of the logged-in cookie.
+	 * @param int    $expiration The time the logged-in cookie expires as a UNIX timestamp.
+	 * @param string $secret     Secret cache key of the current site.
+	 * @return string
+	 */
+	public static function get_user_cache_cookie_value( string $username, int $expiration, string $secret ): string {
+		return $expiration . '|' . hash_hmac( 'sha256', $username . '|' . $expiration, $secret );
+	}
+
+	/**
+	 * Checks a companion cookie value against a username.
+	 *
+	 * @param string $value    Companion cookie value.
+	 * @param string $username Username segment of the logged-in cookie.
+	 * @param string $secret   Secret cache key of the current site.
+	 * @return bool
+	 */
+	public static function is_valid_user_cache_cookie_value( string $value, string $username, string $secret ): bool {
+		if ( '' === $username || '' === $secret ) {
+			return false;
+		}
+
+		// Cookie value shape is "<expiration>|<hmac>", see get_user_cache_cookie_value().
+		$parts = explode( '|', $value, 2 );
+
+		if ( 2 !== count( $parts ) ) {
+			return false;
+		}
+
+		list( $expiration, $mac ) = $parts;
+
+		// Not ctype_digit(): this runs from advanced-cache.php and ctype is an optional PHP extension.
+		// `\z` (not `$`) so a trailing newline is rejected too.
+		if ( ! preg_match( '/^\d+\z/', $expiration ) || (int) $expiration <= time() ) {
+			// Expired (or malformed, non-numeric expiration): do not trust it, even if the HMAC below
+			// would otherwise match.
+			return false;
+		}
+
+		return hash_equals( self::get_user_cache_cookie_value( $username, (int) $expiration, $secret ), $value );
 	}
 
 	/**
@@ -576,11 +692,11 @@ class Cache extends Abstract_Buffer {
 			return $filename;
 		}
 
-		if ( ! class_exists( 'WP_Rocket_Mobile_Detect' ) ) {
+		if ( ! class_exists( 'WP_Rocket\Dependencies\Detection\MobileDetect' ) ) {
 			return $filename;
 		}
 
-		$detect = new \WP_Rocket_Mobile_Detect();
+		$detect = new \WP_Rocket\Dependencies\Detection\MobileDetect();
 
 		if (
 			( $detect->isMobile() && ! $detect->isTablet() && 'desktop' === $cache_mobile_files_tablet )

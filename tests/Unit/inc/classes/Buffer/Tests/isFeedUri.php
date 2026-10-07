@@ -14,13 +14,13 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_IsFeedURI extends TestCase {
 	protected $tests;
-	protected $config;
+	protected $config_mock;
 
 	public function setUp(): void
 	{
 		parent::setUp();
-		$this->config = \Mockery::mock(Config::class);
-		$this->tests = \Mockery::mock(Tests::class.'[get_clean_request_uri]', [$this->config]);
+		$this->config_mock = \Mockery::mock(Config::class);
+		$this->tests = \Mockery::mock(Tests::class.'[get_clean_request_uri]', [$this->config_mock]);
 	}
 
 

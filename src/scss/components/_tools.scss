@@ -51,6 +51,7 @@
 
     &-col{
         flex: 1 1 auto;
+        align-self: center;
 
         &:first-child{
             padding-left: $space*9;
@@ -74,7 +75,7 @@
     }
 
     .wpr-button{
-        margin-top: $space*3;
+        margin-top: 0;
         white-space: normal;
     }
 

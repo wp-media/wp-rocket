@@ -23,6 +23,13 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	private static $runner = null;
 
 	/**
+	 * Whether the cleaner instance is a non-default one.
+	 *
+	 * @var bool
+	 */
+	private $is_custom_cleaner;
+
+	/**
 	 * Number of processed actions.
 	 *
 	 * @var int
@@ -59,7 +66,8 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$async_request = new ActionScheduler_AsyncRequest_QueueRunner( $this->store );
 		}
 
-		$this->async_request = $async_request;
+		$this->async_request     = $async_request;
+		$this->is_custom_cleaner = get_class( $this->cleaner ) !== ActionScheduler_QueueCleaner::class;
 	}
 
 	/**
@@ -86,6 +94,13 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
 		add_action( self::WP_CRON_HOOK, array( self::instance(), 'run' ) );
 		$this->hook_dispatch_async_request();
+
+		// Backward compatibility: If the action cleaner is standard, cleaning will be performed as an action to improve throughput
+		// and enable daily runs. If not, cleaning will occur explicitly before processing actions to ensure backward compatibility.
+		// The cleaner was initially designed as a QueueRunner dependency, which is why the hooks are registered here.
+		if ( ! $this->is_custom_cleaner ) {
+			$this->cleaner->register_cleaner_hooks();
+		}
 	}
 
 	/**
@@ -148,13 +163,27 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	public function run( $context = 'WP Cron' ) {
 		ActionScheduler_Compatibility::raise_memory_limit();
 		ActionScheduler_Compatibility::raise_time_limit( $this->get_time_limit() );
+
 		do_action( 'action_scheduler_before_process_queue' );
-		$this->run_cleanup();
+
+		$cleanup_time_limit = 10 * $this->get_time_limit();
+		// Backward compatibility: If the action cleaner is standard, cleaning will be performed as an action to improve throughput
+		// and enable daily runs. If not, cleaning will occur explicitly before processing actions to ensure backward compatibility.
+		if ( $this->is_custom_cleaner ) {
+			// Execute complete cleanup cycle, as in this logical branch deletion IS NOT executed via a separate action.
+			$this->cleaner->clean( $cleanup_time_limit );
+		} else {
+			// Execute partial cleanup cycle, as in this logical branch deletion IS executed via a separate action.
+			$this->cleaner->reset_timeouts( $cleanup_time_limit );
+			$this->cleaner->mark_failures( $cleanup_time_limit );
+		}
 
 		$this->processed_actions_count = 0;
 		if ( false === $this->has_maximum_concurrent_batches() ) {
+			$batch_size = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
+			// Note: gc_collect_cycles() was considered here and in do_batch/clear_caches, but rejected:
+			// upside is speculative, GC sweep cost scales with object count and can cause pauses.
 			do {
-				$batch_size                     = apply_filters( 'action_scheduler_queue_runner_batch_size', 25 );
 				$processed_actions_in_batch     = $this->do_batch( $batch_size, $context );
 				$this->processed_actions_count += $processed_actions_in_batch;
 			} while ( $processed_actions_in_batch > 0 && ! $this->batch_limits_exceeded( $this->processed_actions_count ) ); // keep going until we run out of actions, time, or memory.
@@ -180,11 +209,13 @@ class ActionScheduler_QueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		$this->monitor->attach( $claim );
 		$processed_actions = 0;
 
+		$claim_id = $claim->get_id();
 		foreach ( $claim->get_actions() as $action_id ) {
-			// bail if we lost the claim.
-			if ( ! in_array( $action_id, $this->store->find_actions_by_claim_id( $claim->get_id() ), true ) ) {
+			// Bail if we lost the claim.
+			if ( $claim_id !== $this->store->get_claim_id( $action_id ) ) {
 				break;
 			}
+
 			$this->process_action( $action_id, $context );
 			$processed_actions++;
 

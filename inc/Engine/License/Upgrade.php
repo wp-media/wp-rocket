@@ -46,6 +46,10 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
@@ -64,6 +68,10 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
 			return;
 		}
 
@@ -282,6 +290,10 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function can_use_promo() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return false;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
 			return false;
 		}
 

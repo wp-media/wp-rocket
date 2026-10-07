@@ -3,11 +3,17 @@
  * Import page section template.
  *
  * @since 3.0
+ *
+ * @param array $data {
+ *    @type array $mcp_server_beacon MCP server beacon data.
+ * }
  */
 
 use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || exit;
+
+$rocket_mcp_server_beacon = ! empty( $data['mcp_server_beacon'] ) ? $data['mcp_server_beacon'] : [];
 
 // Debug mode.
 $rocket_log_description = '';
@@ -32,6 +38,31 @@ if ( rocket_direct_filesystem()->exists( Logger::get_log_file_path() ) ) {
 	<div class="wpr-sectionHeader">
 		<h2 class="wpr-title1 wpr-icon-tools"><?php esc_html_e( 'Tools', 'rocket' ); ?></h2>
 	</div>
+	<div class="wpr-tools">
+		<div class="wpr-tools-col">
+			<div class="wpr-title3 wpr-tools-label wpr-icon-mcp"><?php esc_html_e( 'MCP Server', 'rocket' ); ?></div>
+			<div class="wpr-field-description"><?php esc_html_e( 'Connect your AI tool to WP Rocket', 'rocket' ); ?></div>
+		</div>
+		<div class="wpr-tools-col">
+			<?php
+			$this->render_action_button(
+				'link',
+				'mcp_server',
+				[
+					'label'      => __( 'How to set up MCP', 'rocket' ),
+					'url'        => ! empty( $rocket_mcp_server_beacon['url'] ) ? $rocket_mcp_server_beacon['url'] : '',
+					'attributes' => [
+						'target'              => '_blank',
+						'rel'                 => 'noopener noreferrer',
+						'data-beacon-article' => ! empty( $rocket_mcp_server_beacon['id'] ) ? $rocket_mcp_server_beacon['id'] : '',
+						'class'               => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-chevron-down',
+					],
+				]
+			);
+			?>
+		</div>
+	</div>
+
 	<div class="wpr-tools">
 		<div class="wpr-tools-col">
 			<div class="wpr-title3 wpr-tools-label wpr-icon-export"><?php esc_html_e( 'Export settings', 'rocket' ); ?></div>

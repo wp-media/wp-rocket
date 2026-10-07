@@ -2,10 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use Brain\Monkey\Functions;
 use WP_Error;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_heartbeat
@@ -24,11 +25,12 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  CriticalPath
  * @group  CriticalPathAdminSubscriber
  */
-class Test_CpcssHeartbeat extends AjaxTestCase {
+class CpcssHeartbeatTest extends AjaxTestCase {
+	use HttpRequestTrait;
+	use IsolateHookTrait;
 	use ProviderTrait;
 	protected static $provider_class = 'Admin';
 
-	private static   $admin_user_id      = 0;
 	protected static $use_settings_trait = true;
 	protected static $transients         = [
 		'rocket_critical_css_generation_process_running' => null,
@@ -42,13 +44,12 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		parent::set_up_before_class();
 
 		self::setAdminCap();
-
-		//create an editor user that has the capability
-		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		$this->action = 'rocket_cpcss_heartbeat';
 
@@ -58,16 +59,22 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			'items'     => [],
 		] );
 		delete_transient( 'rocket_cpcss_generation_pending' );
+
+		$this->unregisterAllCallbacks( 'admin_init' );
 	}
 
 	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
-		parent::tear_down();
-
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_cpcss_generation_pending' );
+
+		$this->restoreWpHook( 'admin_init' );
+
+		$this->tear_down_http();
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -109,30 +116,25 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 		if ( ! isset( $config['process_generate'] ) || ! empty ( $expected['bailout_timeout'] ) ) {
 			return;
 		}
-		$params = [
-			'url'        => $config['rocket_cpcss_generation_pending']['front_page.css']['url'],
-			'mobile'     => $config['rocket_cpcss_generation_pending']['front_page.css']['mobile'],
-			'nofontface' => false,
-		];
 
 		$job_id = 999;
 
 		if ( ! empty( $config['process_generate']['is_wp_error'] ) ) {
-			Functions\expect( 'wp_remote_post' )
-				->once()
-				->with( APIClient::API_URL, [ 'body' => $params ] )
-				->andReturn( new WP_Error( 'error', 'error_data' ) );
-		} else {
-			Functions\expect( 'wp_remote_post' )
-				->once()
-				->with( APIClient::API_URL, [ 'body' => $params ] )
-				->andReturn( [ 'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}' ] );
+			$this->config['http'] = [
+				APIClient::API_URL => new WP_Error( 'error', 'error_data' ),
+			];
 
-			Functions\expect( 'wp_remote_get' )
-				->once()
-				->with( APIClient::API_URL . "{$job_id}/" )
-				->andReturn( [ 'body' => json_encode( $config['process_generate'] ) ] );
+			return;
 		}
+
+		$this->config['http'] = [
+			APIClient::API_URL                => [
+				'body' => '{"status":200,"success":true,"data":{"state":"generating","id":"' . $job_id . '"}}',
+			],
+			APIClient::API_URL . "{$job_id}/" => [
+				'body' => wp_json_encode( $config['process_generate'] ),
+			],
+		];
 	}
 
 	public function setUserAndCapabilities( $config ) {
@@ -144,7 +146,7 @@ class Test_CpcssHeartbeat extends AjaxTestCase {
 			$this->setRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 		}
 
-		wp_set_current_user( self::$admin_user_id );
+		$this->_setRole( 'administrator' );
 	}
 
 	public function async_css() {

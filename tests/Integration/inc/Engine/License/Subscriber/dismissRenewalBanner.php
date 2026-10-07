@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\Subscriber::dismiss_renewal_banner
@@ -11,6 +12,8 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  License
  */
 class Test_DismissRenewalBanner extends AjaxTestCase {
+	use IsolateHookTrait;
+
 	/**
 	 * User's ID.
 	 * @var int
@@ -32,12 +35,15 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 
 		wp_set_current_user( self::$user_id );
 		$this->action = 'rocket_dismiss_renewal';
+
+		$this->unregisterAllCallbacks( 'admin_init' );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		delete_transient( 'rocket_renewal_banner_' . self::$user_id );
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {

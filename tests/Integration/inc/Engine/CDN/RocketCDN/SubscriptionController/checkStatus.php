@@ -25,6 +25,12 @@ class Test_CheckStatus extends AbstractSubscriptionControllerTestCase {
 
 		self::truncateRocketCDNTable();
 
+		// Enabling the CDN updates the settings, firing every `update_option_wp_rocket_settings`
+		// subscriber. Some of them query tables that check_status() never touches (e.g. the
+		// Preconnect External Domains subscriber truncates its table). Isolate the whole hook so
+		// no current or future incidental subscriber leaks a side effect into this test.
+		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
+
 		$this->update_rocketcdn_settings(
 			[
 				'cdn'      => 0,
@@ -35,6 +41,8 @@ class Test_CheckStatus extends AbstractSubscriptionControllerTestCase {
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
+
 		self::truncateRocketCDNTable();
 
 		parent::tear_down();

@@ -67,6 +67,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_get_refreshed_fragments_cache'            => null,
 		'wpr_user_information_timeout_active'             => null,
 		'wpr_user_information_timeout'                    => null,
+		'rocket_mixpanel_reseller_synced'                 => null,
 	];
 
 	private $events = [
@@ -75,6 +76,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
+		'rocket_cron_refresh_trial_customer_data',
 	];
 
 	public static function set_up_before_class() {

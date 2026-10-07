@@ -49,6 +49,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/admin/options.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
+		- %currentWorkingDirectory%/vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
 		- %currentWorkingDirectory%/wp-rocket.php
 	excludePaths:
 		 - %currentWorkingDirectory%/inc/vendors/

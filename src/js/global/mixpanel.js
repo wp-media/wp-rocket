@@ -136,7 +136,8 @@ class RocketMixpanel {
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
 			application: rocket_mixpanel_data.app,
-			context: rocket_mixpanel_data.context
+			context: rocket_mixpanel_data.context,
+			interaction_channel: 'UI'
 		});
 	}
 

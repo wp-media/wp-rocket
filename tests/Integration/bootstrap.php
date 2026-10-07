@@ -2,7 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use org\bovigo\vfs\vfsStream;
 use WC_Install;
+use WP_Error;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
@@ -12,10 +14,42 @@ define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 
+/**
+ * Blocks outbound HTTP requests while the WordPress test bootstrap is still running.
+ *
+ * @param mixed  $preempt A preemptive return value, or false to let the request proceed.
+ * @param array  $args    HTTP request arguments.
+ * @param string $url     The request URL.
+ * @return mixed
+ */
+function block_bootstrap_http_request( $preempt, $args, $url ) {
+	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
+		return $preempt;
+	}
+
+	return new WP_Error( 'wp_rocket_tests_bootstrap_http', 'HTTP request blocked during the test bootstrap: ' . $url );
+}
+
 // Manually load the plugin being tested.
 tests_add_filter(
 	'muplugins_loaded',
 	function () {
+		// Under the PHPUnit CLI there is no HTTP request, so $_SERVER['REQUEST_URI'] is unset. Since
+		// WordPress 6.9 core's _wp_cron() (wp-includes/cron.php) runs on the shutdown hook and reads
+		// $_SERVER['REQUEST_URI'] without a guard when spawning due cron events, emitting an
+		// "Undefined array key REQUEST_URI" warning. Seeding it earlier does not survive the WP test
+		// suite's own $_SERVER setup, so ensure the key exists on shutdown just before _wp_cron
+		// (default priority 10) reads it.
+		add_action(
+			'shutdown',
+			function () {
+				if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+					$_SERVER['REQUEST_URI'] = '/';
+				}
+			},
+			0
+		);
+
 		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		add_filter( 'rocket_lrc_optimization', '__return_false' );
@@ -66,6 +100,16 @@ tests_add_filter(
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 
+		// The cache path constants above (and everything wp-rocket.php derives from them) live under the
+		// vfs:// scheme, so register its stream wrapper for the whole suite. Without it, tests that run
+		// without a FilesystemTestCase having registered it first (e.g. the standalone AdminOnly run) let
+		// cache writes — advanced-cache/cache-dir generation on admin_init, notices, etc. — collapse
+		// "vfs://" to "vfs:/" and create a real "vfs:" directory on disk. FilesystemTestCase/RESTVfsTestCase
+		// call vfsStream::setup() again with their own structure, replacing this empty root.
+		if ( ! in_array( 'vfs', stream_get_wrappers(), true ) ) {
+			vfsStream::setup( 'public' );
+		}
+
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
@@ -94,6 +138,10 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'ConvertPlug' ) ) {
 			define( 'CP_VERSION', '1.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Termly' ) ) {
+			define( 'TERMLY_VERSION', '1.0' );
 		}
 
 		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
@@ -299,6 +347,22 @@ tests_add_filter(
 			}
 			return $preempt;
 		}, 10, 3 );
+
+		// Nothing may reach the network while WordPress bootstraps: WP Rocket calls its pricing and user APIs
+		// while its container is built, and _delete_all_posts() fires the hosting purges. Tests mock their own
+		// requests, so the guard steps aside once the test case classes are loaded.
+		add_filter( 'pre_http_request', __NAMESPACE__ . '\block_bootstrap_http_request', PHP_INT_MAX, 3 );
+
+		// Serve PricingClient a fixture instead of the live API. The License tests delete it to exercise the fetch.
+		set_transient( 'wp_rocket_pricing', json_decode( file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/License/API/pricing.json' ) ), 12 * HOUR_IN_SECONDS );
+
+		// Core update checks call api.wordpress.org on admin_init. No test needs them.
+		remove_action( 'admin_init', '_maybe_update_core' );
+		remove_action( 'admin_init', '_maybe_update_plugins' );
+		remove_action( 'admin_init', '_maybe_update_themes' );
+
+		// Action Scheduler's async runner posts a loopback to admin-ajax.php at shutdown. No test needs it.
+		add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );
 
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';

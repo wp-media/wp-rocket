@@ -2,7 +2,12 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
+use WP_Error;
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_rocketcdn_checkout_parameter
@@ -11,6 +16,8 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group RocketCDN
  */
 class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
+	use DBTrait;
+	use HttpRequestTrait;
 
 	/**
 	 * Original $_GET superglobal.
@@ -27,12 +34,34 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	private $subscriber;
 
 	/**
+	 * Installs the RocketCDN page-list table once for the class.
+	 *
+	 * @return void
+	 */
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+		self::installRocketCDNTable();
+	}
+
+	/**
+	 * Uninstalls the RocketCDN page-list table after the class.
+	 *
+	 * @return void
+	 */
+	public static function tear_down_after_class() {
+		self::uninstallRocketCDNTable();
+		parent::tear_down_after_class();
+	}
+
+	/**
 	 * Set up test fixtures.
 	 *
 	 * @return void
 	 */
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Test setup, not processing form data.
 		$this->original_get = $_GET;
@@ -42,6 +71,11 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		// The purchase-tracked lock (see DataManagerSubscriber::activate_pro_and_track())
+		// is a real transient - clear it so an activation in one data set doesn't silently
+		// skip enable()/tracking in the next one within this same test run.
+		delete_transient( 'rocketcdn_purchase_tracked' );
+		self::truncateRocketCDNTable();
 
 		// Get the subscriber from container.
 		$container        = apply_filters( 'rocket_container', null );
@@ -57,7 +91,16 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		$_GET = $this->original_get;
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'wp_rocket_customer_data' );
-		remove_all_filters( 'pre_http_request' );
+		delete_transient( 'rocketcdn_purchase_tracked' );
+		self::truncateRocketCDNTable();
+
+		// Reset any cdn_type/cdn a test case may have persisted, so it doesn't bleed
+		// into other tests.
+		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
+		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
+		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -97,62 +140,86 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			set_transient( 'wp_rocket_customer_data', (object) $config['user_data'] );
 		}
 
-		// Mock API responses if needed.
+		// flush_cache() + get_user_data() run for every data set, regardless of activation.
+		$this->config['http'][ UserClient::USER_ENDPOINT ] = isset( $config['user_data'] )
+			? [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['user_data'] ),
+			]
+			: new WP_Error( 'http_request_failed', 'Mocked.' );
+
 		if ( isset( $config['api_activation_success'] ) ) {
 			$website_id = $config['user_data']['rocketcdn']['rocketcdn_website_id'];
 
-			add_filter(
-				'pre_http_request',
-				function ( $preempt, $args, $url ) use ( $website_id, $config ) {
-					// Mock user data endpoint (called after flush_cache).
-					if ( false !== strpos( $url, 'api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $config['user_data'] ),
-						];
-					}
+			$this->config['http'][ APIClient::ROCKETCDN_API . 'website/' . $website_id . '/' ] = $config['api_activation_success']
+				? [
+					'response' => [ 'code' => 200 ],
+					'body'     => wp_json_encode( [ 'success' => true ] ),
+				]
+				: [
+					'response' => [ 'code' => 500 ],
+					'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
+				];
+		}
 
-					// Mock activation endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/' . $website_id . '/' ) ) {
-						if ( $config['api_activation_success'] ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( [ 'success' => true ] ),
-							];
-						}
-						return [
-							'response' => [ 'code' => 500 ],
-							'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
-						];
-					}
-
-					// Mock subscription endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/subscription' ) && isset( $config['api_subscription_data'] ) ) {
-						$subscription_data = $config['api_subscription_data'];
-						$subscription_data['subscription_next_date_update'] = gmdate(
-							'Y-m-d H:i:s',
-							strtotime( $subscription_data['subscription_next_date_update'] )
-						);
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $subscription_data ),
-						];
-					}
-
-					return $preempt;
-				},
-				10,
-				3
+		if ( isset( $config['api_subscription_data'] ) ) {
+			$subscription_data                                  = $config['api_subscription_data'];
+			$subscription_data['subscription_next_date_update'] = gmdate(
+				'Y-m-d H:i:s',
+				strtotime( $subscription_data['subscription_next_date_update'] )
 			);
+
+			$this->config['http'][ sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' ) ] = [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $subscription_data ),
+			];
 		}
 
-		// Expect WPDieException for cases that trigger redirects.
+		// Set an initial cdn_type before checkout, if configured (Task 8.2 regression).
+		// Write straight through options_api (live get_option()/update_option()), not
+		// a request-scoped Options_Data snapshot, so it's reliably visible to the
+		// subscriber under test regardless of when its own instance was built.
+		if ( isset( $config['initial_cdn_type'] ) ) {
+			$options_api          = apply_filters( 'rocket_container', null )->get( 'options_api' );
+			$settings             = $options_api->get( 'settings', [] );
+			$settings['cdn_type'] = $config['initial_cdn_type'];
+			$options_api->set( 'settings', $settings );
+		}
+
+		// Prefill the page-list table, if configured (page-list preservation regression).
+		if ( ! empty( $config['prefill_pages'] ) ) {
+			$query = apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' );
+
+			for ( $i = 1; $i <= $config['prefill_pages']; $i++ ) {
+				$query->add_item(
+					[
+						'url'           => "http://example.org/page-{$i}",
+						'title'         => "Page {$i}",
+						'modified'      => current_time( 'mysql' ),
+						'last_accessed' => current_time( 'mysql' ),
+					]
+				);
+			}
+		}
+
+		$page_count_before = ! empty( $config['prefill_pages'] )
+			? apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' )->get_total_count( false )
+			: null;
+
+		// The method always ends in a redirect (wp_die() in test env), so catch it locally
+		// instead of using expectException(): that would unwind the stack past every
+		// assertion below before it runs, silently making them all dead code.
+		$redirected = false;
+
+		try {
+			$this->subscriber->handle_rocketcdn_checkout_parameter();
+		} catch ( \WPDieException $e ) {
+			$redirected = true;
+		}
+
 		if ( isset( $expected['expects_redirect'] ) && $expected['expects_redirect'] ) {
-			$this->expectException( \WPDieException::class );
+			$this->assertTrue( $redirected, 'Expected handle_rocketcdn_checkout_parameter() to redirect.' );
 		}
-
-		// Execute the method.
-		$this->subscriber->handle_rocketcdn_checkout_parameter();
 
 		// Assert results based on expected outcome.
 		if ( isset( $expected['token_stored'] ) && false === $expected['token_stored'] ) {
@@ -163,12 +230,28 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 			$this->assertSame( $expected['token_value'], get_option( 'rocketcdn_user_token' ) );
 		}
 
-		if ( isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
+		if ( isset( $expected['cdn_enabled'] ) ) {
 			$settings = get_option( 'wp_rocket_settings' );
-			$this->assertArrayHasKey( 'cdn', $settings );
-			$this->assertEquals( 1, $settings['cdn'] );
-			$this->assertArrayHasKey( 'cdn_cnames', $settings );
-			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
+
+			if ( $expected['cdn_enabled'] ) {
+				$this->assertArrayHasKey( 'cdn', $settings );
+				$this->assertEquals( 1, $settings['cdn'] );
+			} else {
+				// enable() is only called from the activation-success branch, so its absence
+				// here proves is_wp_error( $activation_result ) correctly short-circuited.
+				$this->assertArrayNotHasKey( 'cdn', (array) $settings );
+			}
+		}
+
+		if ( isset( $expected['cdn_type'] ) ) {
+			$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
+			$this->assertArrayHasKey( 'cdn_type', $settings );
+			$this->assertSame( $expected['cdn_type'], $settings['cdn_type'] );
+		}
+
+		if ( isset( $expected['page_count_unchanged'] ) && $expected['page_count_unchanged'] ) {
+			$page_count_after = apply_filters( 'rocket_container', null )->get( 'rocketcdn_query' )->get_total_count( false );
+			$this->assertSame( $page_count_before, $page_count_after );
 		}
 	}
 }

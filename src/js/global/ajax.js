@@ -30,6 +30,9 @@ $(document).ready(function(){
                     if ( true === response.success ) {
                         account.html(response.data.license_type);
                         expire.addClass(response.data.license_class).html(response.data.license_expiration);
+						if ( response.data.license_expiration_label ) {
+                            document.getElementById('wpr-expiration-label').textContent = response.data.license_expiration_label;
+                        }
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
@@ -67,7 +70,14 @@ $(document).ready(function(){
         var name  = $(this).attr('id');
         var value = $(this).prop('checked') ? 1 : 0;
 
-		var excluded = [ 'cloudflare_auto_settings', 'cloudflare_devmode', 'analytics_enabled' ];
+		var excluded = [
+			'cloudflare_auto_settings',
+			'cloudflare_devmode',
+			'analytics_enabled',
+			'wpr-rocketcdn-free-toggle',
+			'wpr-byocdn-toggle',
+			'wpr-rocketcdn-paid-toggle'
+		];
 		if ( excluded.indexOf( name ) >= 0 ) {
 			return;
 		}

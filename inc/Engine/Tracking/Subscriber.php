@@ -42,7 +42,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
 			'rocket_rocketcdn_add_homepage'        => [ 'track_add_rocket_cdn_homepage', 10, 1 ],
-			'rocket_rocketcdn_cdn_state_changed'   => [ 'track_rocket_cdn_pause_status', 10, 2 ],
 			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
 			'rocket_notice_displayed'              => [ 'track_rocketcdn_notice_viewed', 10, 1 ],
 		];
@@ -167,18 +166,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_add_rocket_cdn_homepage( string $source ): void {
 		$this->tracking->track_add_rocket_cdn_homepage( $source );
-	}
-
-	/**
-	 * Track RocketCDN CDN pause/resume state change.
-	 *
-	 * @param string $status  Either 'paused' or 'active'.
-	 * @param string $trigger The trigger source (e.g. 'button').
-	 *
-	 * @return void
-	 */
-	public function track_rocket_cdn_pause_status( string $status, string $trigger ): void {
-		$this->tracking->track_rocket_cdn_pause_status( $status, $trigger );
 	}
 
 	/**

@@ -315,7 +315,8 @@ $(document).ready(function(){
 					'brand': rocket_mixpanel_data.brand,
 					'application': rocket_mixpanel_data.app,
 					'context': rocket_mixpanel_data.context,
-					'path': rocket_mixpanel_data.path
+					'path': rocket_mixpanel_data.path,
+					'interaction_channel': 'UI'
 				});
 			}
 		}
@@ -346,7 +347,8 @@ $(document).ready(function(){
 			'brand': rocket_mixpanel_data.brand,
 			'application': rocket_mixpanel_data.app,
 			'context': rocket_mixpanel_data.context,
-			'path': rocket_mixpanel_data.path
+			'path': rocket_mixpanel_data.path,
+			'interaction_channel': 'UI'
 		});
 	});
 });
