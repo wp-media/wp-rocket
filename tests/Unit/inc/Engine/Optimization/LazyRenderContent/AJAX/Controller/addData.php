@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\tests\Fixtures\inc\Engine\AJAX\Controller;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
@@ -81,6 +82,12 @@ class Test_AddData extends TestCase {
 				return is_string( $value ) ? stripslashes( $value ) : $value;
 			}
 		);
+
+		if ( isset( $config['max_number'] ) ) {
+			Filters\expectApplied( 'rocket_lrc_hashes_number' )
+				->once()
+				->andReturn( $config['max_number'] );
+		}
 
 		$this->stubWpParseUrl();
 
