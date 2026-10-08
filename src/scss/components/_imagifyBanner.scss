@@ -15,7 +15,7 @@
     background: $cGreyLight3;
     border: 1px solid $cGreyLighter1;
     border-radius: 4px;
-    color: #0C0F1F;
+    color: $cTextPrimary;
     @include font-size(14,21);
 
     p {

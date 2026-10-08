@@ -1936,7 +1936,7 @@ div.wpr-upgrade-websites.notstacked {
 \*-----------------------------------------------*/
 .wpr-sectionHeader {
   position: relative;
-  border-bottom: 1px solid #E0E4E9;
+  border-bottom: 1px solid #E2E5E9;
   padding-bottom: 24px;
 }
 .wpr-sectionHeader:before {
@@ -1951,18 +1951,26 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-sectionHeader .wpr-title1 {
   line-height: 48px;
+  color: #0C0F1F;
 }
 .wpr-sectionHeader .wpr-title1:before {
   display: inline-block;
   width: 48px;
   height: 48px;
   margin-right: 24px;
-  background-color: #FDE0D9;
+  background-color: #FFF1ED;
   background-size: 65%;
   color: #F56640;
   text-align: center;
-  border-radius: 3px;
+  border-radius: 4px;
   vertical-align: middle;
+}
+.wpr-sectionHeader .wpr-title1.wpr-icon-zap:before {
+  content: "";
+  background-image: url("../img/wpr-zap.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
 }
 .wpr-sectionHeader-title {
   margin-top: 8px;
