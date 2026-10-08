@@ -144,7 +144,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Gets the Imagify plugin data from the WordPress.org API, cached in a transient.
 	 *
-	 * @since 3.23
+	 * @since 3.2
 	 *
 	 * @return stdClass|array Plugin data, or an empty array if it could not be retrieved.
 	 */
@@ -205,7 +205,7 @@ class Render extends Abstract_Render {
 	 * Renders the enabled banner while the Imagify plugin is active, the promo banner otherwise.
 	 * Renders nothing for white label accounts.
 	 *
-	 * @since 3.23
+	 * @since 3.26
 	 *
 	 * @param array $args Array of arguments to populate the template.
 	 *

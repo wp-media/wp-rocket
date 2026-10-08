@@ -4,7 +4,7 @@
  *
  * Static placeholder content from the design.
  *
- * @since 3.23
+ * @since 3.26
  */
 
 defined( 'ABSPATH' ) || exit;
