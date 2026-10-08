@@ -44,9 +44,11 @@ class SiteGround implements Subscriber_Interface {
 
 		if ( version_compare( $instance->get_sg_optimizer_version(), '5.0' ) < 0 ) {
 			$events['wp_ajax_sg-cachepress-purge'] = [ 'sg_clear_cache', 0 ];
-		} else {
-			$events['wp_ajax_admin_bar_purge_cache'] = [ 'sg_clear_cache', 0 ];
+
+			return $events;
 		}
+
+		$events['wp_ajax_admin_bar_purge_cache'] = [ 'sg_clear_cache', 0 ];
 
 		return $events;
 	}
