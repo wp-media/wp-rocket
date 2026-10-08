@@ -282,6 +282,19 @@ $(document).ready(function(){
 		$(this).addClass('is-expanded');
 	});
 
+	// Handle expand/collapse of the dashboard recommendations list.
+	$(document).on('click', '.wpr-dash-recs__more', function() {
+		const $button = $(this);
+		const isExpanded = $button.hasClass('is-expanded');
+
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('rocket insights recommendations load more', 'load_more');
+		}
+
+		$button.toggleClass('is-expanded', !isExpanded).attr('aria-expanded', String(!isExpanded));
+		$button.siblings('.wpr-dash-recs__list').toggleClass('is-expanded', !isExpanded);
+	});
+
 	// Track Rocket Insights Recommendation Activate button clicks
 	$(document).on('click', '.wpr-recommendation-item__activate', function() {
 		var recommendation = $(this).data('recommendation') || 'unknown';

@@ -6,6 +6,9 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Controller;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Render as RecommendationsRender;
+use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights;
 use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Manager;
 use WP_Rocket\Engine\Admin\RocketInsights\Credit\Manager as CreditManager;
@@ -42,7 +45,7 @@ class GetItemsTest extends TestCase {
 		$options = $this->createMock(Options_Data::class);
 		$tracking = $this->createMock(Tracking::class);
 
-		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_plan, $global_score, $user, $options, $tracking);
+		$controller = new Controller($mock_query, $mock_manager, $mock_context, $mock_plan, $global_score, $user, $options, $tracking, $this->createMock(Render::class), $this->createMock(RecommendationsRender::class), $this->createMock(DataManager::class));
 		$result = $controller->get_items();
 
 		$this->assertEquals(['foo'], $result);

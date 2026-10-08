@@ -7,7 +7,9 @@ use WP_Rocket\Engine\Admin\RocketInsights\{GlobalScore,
 	Jobs\Manager,
 	Context\Context,
 	Database\Queries\RocketInsights as Query,
-	Managers\Plan
+	Managers\Plan,
+	Recommendations\DataManager,
+	Recommendations\Render as RecommendationsRender
 };
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
@@ -71,16 +73,40 @@ class Controller {
 	private $tracking;
 
 	/**
+	 * Render instance.
+	 *
+	 * @var Render
+	 */
+	private $render;
+
+	/**
+	 * Recommendations Render instance.
+	 *
+	 * @var RecommendationsRender
+	 */
+	private $recommendations_render;
+
+	/**
+	 * Recommendations DataManager instance.
+	 *
+	 * @var DataManager
+	 */
+	private $recommendations_data_manager;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Query        $query Query instance.
-	 * @param Manager      $manager Manager instance.
-	 * @param Context      $context Context instance.
-	 * @param Plan         $plan Plan instance.
-	 * @param GlobalScore  $global_score GlobalScore instance.
-	 * @param User         $user User client API instance.
-	 * @param Options_Data $options Plugin options instance.
-	 * @param Tracking     $tracking The tracking service.
+	 * @param Query                 $query Query instance.
+	 * @param Manager               $manager Manager instance.
+	 * @param Context               $context Context instance.
+	 * @param Plan                  $plan Plan instance.
+	 * @param GlobalScore           $global_score GlobalScore instance.
+	 * @param User                  $user User client API instance.
+	 * @param Options_Data          $options Plugin options instance.
+	 * @param Tracking              $tracking The tracking service.
+	 * @param Render                $render Render instance.
+	 * @param RecommendationsRender $recommendations_render Recommendations Render instance.
+	 * @param DataManager           $recommendations_data_manager Recommendations DataManager instance.
 	 */
 	public function __construct(
 		Query $query,
@@ -90,7 +116,10 @@ class Controller {
 		GlobalScore $global_score,
 		User $user,
 		Options_Data $options,
-		Tracking $tracking
+		Tracking $tracking,
+		Render $render,
+		RecommendationsRender $recommendations_render,
+		DataManager $recommendations_data_manager
 	) {
 		$this->query        = $query;
 		$this->manager      = $manager;
@@ -100,6 +129,10 @@ class Controller {
 		$this->user         = $user;
 		$this->options      = $options;
 		$this->tracking     = $tracking;
+
+		$this->render                       = $render;
+		$this->recommendations_render       = $recommendations_render;
+		$this->recommendations_data_manager = $recommendations_data_manager;
 	}
 
 	/**
@@ -232,6 +265,42 @@ class Controller {
 	 */
 	public function get_global_score() {
 		return $this->global_score->get_global_score_data();
+	}
+
+	/**
+	 * Render the redesigned global score component on the dashboard.
+	 *
+	 * @return void
+	 */
+	public function render_dashboard_global_score(): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$data                   = $this->get_global_score();
+		$data['remaining_urls'] = $this->get_remaining_url_count();
+		$data['context']        = 'dashboard';
+
+		$this->render->render_dashboard_global_score( $data );
+	}
+
+	/**
+	 * Render the redesigned recommendations component on the dashboard.
+	 *
+	 * @return void
+	 */
+	public function render_dashboard_recommendations(): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		if ( false === $this->recommendations_data_manager->get_recommendations() ) {
+			$this->recommendations_data_manager->maybe_fetch_recommendations();
+		}
+
+		$this->recommendations_render->render_dashboard_recommendations(
+			$this->recommendations_data_manager->get_recommendations()
+		);
 	}
 
 	/**

@@ -162,6 +162,29 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Render the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return void
+	 */
+	public function render_dashboard_global_score( array $data ): void {
+		echo $this->get_dashboard_global_score( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return string
+	 */
+	public function get_dashboard_global_score( array $data ): string {
+		return $this->generate(
+			'partials/rocket-insights/dashboard-global-score',
+			$this->prepare_global_score_widget_data( $data )
+		);
+	}
+
+	/**
 	 * Generate the global score widget HTML.
 	 *
 	 * @param array $data Data for the global score widget.
@@ -204,6 +227,7 @@ class Render extends Abstract_Render {
 				'can_add_url'   => $is_adding_page_allowed,
 				'reach_max_url' => ! $is_adding_page_allowed,
 				'status_text'   => $this->get_monitoring_status_text(),
+				'help'          => $this->beacon->get_suggest( 'rocket_insights' ),
 			]
 		);
 	}

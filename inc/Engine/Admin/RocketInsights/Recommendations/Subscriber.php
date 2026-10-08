@@ -95,7 +95,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function output_recommendations_rest_response( array $response_data ): array {
 		$recommendations                  = $this->data_manager->get_recommendations();
 		$response_data['recommendations'] = [
-			'html' => $this->render->render_recommendations_widget( $recommendations, false ),
+			'html'           => $this->render->render_recommendations_widget( $recommendations, false ),
+			'dashboard_html' => $this->render->get_dashboard_recommendations( $recommendations ),
 		];
 
 		return $response_data;

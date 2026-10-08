@@ -810,9 +810,10 @@ class Rest extends WP_REST_Controller {
 		$payload['remaining_urls'] = $this->get_remaining_url_count();
 
 		return [
-			'data'     => $payload,
-			'html'     => $this->render->get_global_score_widget_content( $payload ),
-			'row_html' => $this->render->get_global_score_row( $payload ),
+			'data'           => $payload,
+			'html'           => $this->render->get_global_score_widget_content( $payload ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $payload ),
+			'row_html'       => $this->render->get_global_score_row( $payload ),
 		];
 	}
 

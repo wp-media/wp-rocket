@@ -166,6 +166,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
 			'rocket_before_sidebar_content'               => 'render_global_score_widget_sidebar',
 			'rocket_dashboard_sidebar'                    => 'render_global_score_widget_dashboard',
+			'rocket_dashboard_content'                    => [
+				[ 'render_dashboard_global_score', 10 ],
+				[ 'render_dashboard_recommendations', 20 ],
+			],
 			'rocket_insights_tab_content'                 => [
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'render_performance_urls_table', 20 ],
@@ -231,9 +235,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
 
 		$data['global_score_data'] = [
-			'data'     => $global_score_data,
-			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
-			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+			'data'           => $global_score_data,
+			'html'           => $this->render->get_global_score_widget_content( $global_score_data ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $global_score_data ),
+			'row_html'       => $this->render->get_global_score_row( $global_score_data ),
 		];
 
 		$data['assets_img_url'] = WP_ROCKET_ASSETS_IMG_URL;
@@ -409,6 +414,24 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$data['context']        = 'dashboard';
 		$this->render->render_global_score_widget( $data );
+	}
+
+	/**
+	 * Render the redesigned global score component in the dashboard content.
+	 *
+	 * @return void
+	 */
+	public function render_dashboard_global_score(): void {
+		$this->controller->render_dashboard_global_score();
+	}
+
+	/**
+	 * Render the redesigned recommendations component in the dashboard content.
+	 *
+	 * @return void
+	 */
+	public function render_dashboard_recommendations(): void {
+		$this->controller->render_dashboard_recommendations();
 	}
 
 	/**

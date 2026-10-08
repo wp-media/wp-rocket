@@ -185,6 +185,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user',
 					'options',
 					'tracking',
+					'ri_render',
+					'ri_recommendations_render',
+					'ri_recommendations_data_manager',
 				]
 			);
 
@@ -292,6 +295,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'ri_recommendations_data_manager',
+					'beacon',
 				]
 			);
 

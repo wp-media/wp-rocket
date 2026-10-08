@@ -1,0 +1,402 @@
+// main: ../main.scss
+
+/**
+ * Dashboard Rocket Insights components
+ *
+ * Global score card and recommendations list displayed in the dashboard main column.
+ */
+
+.wpr-dash-section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $space;
+	min-height: 32px;
+	margin-bottom: $space;
+
+	&__title {
+		margin: 0;
+		@include font-size(16, 24);
+		font-weight: 700;
+		color: $cOrange;
+	}
+
+	&__heading {
+		display: flex;
+		align-items: center;
+		gap: $space;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: $space;
+	}
+}
+
+.wpr-dash-help {
+	position: relative;
+	display: inline-flex;
+	flex: 0 0 16px;
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+
+	&__icon {
+		width: 16px;
+		height: 16px;
+		background: url("../img/wpr-question-filled.svg") no-repeat center / contain;
+	}
+}
+
+.wpr-dash-score,
+.wpr-dash-recs {
+	margin-bottom: $space * 4;
+}
+
+.wpr-dash-score {
+	// 24px between the page header separator and the first section (Figma "Main Column Wrapper").
+	margin-top: $space * 3;
+
+	&__add {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 32px;
+		padding: 6px 12px;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cWhite;
+		color: $cInk;
+		@include font-size(12, 16);
+		font-weight: 700;
+		text-transform: none;
+		text-decoration: none;
+
+		&::before {
+			font-size: 12.8px;
+		}
+
+		&:hover,
+		&:focus {
+			color: $cInk;
+			background: $cGreyLight3;
+		}
+
+		&.disabled {
+			opacity: 0.5;
+			pointer-events: none;
+		}
+	}
+
+	&__card {
+		display: flex;
+		align-items: center;
+		gap: $space * 4;
+		min-height: 92px;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		@include respond-to('xs') {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: $space * 2;
+		}
+	}
+
+	&__summary {
+		display: flex;
+		flex: 1 1 auto;
+		align-items: center;
+		gap: $space * 2;
+		min-width: 0;
+		align-self: stretch;
+		padding-inline-end: $space * 2;
+		border-inline-end: 1px solid $cGreyLighter1;
+
+		@include respond-to('xs') {
+			align-self: auto;
+			padding-inline-end: 0;
+			border-inline-end: 0;
+		}
+	}
+
+	&__gauge {
+		flex: 0 0 60px;
+		width: 60px;
+		height: 60px;
+
+		.wpr-percentage-indicator {
+			width: 60px;
+			height: 60px;
+		}
+
+		.wpr-percentage-indicator .wpr-percentage-circle {
+			box-sizing: border-box;
+			width: 60px;
+			height: 60px;
+			border-width: 3px;
+			background-color: $cWhite;
+			font-size: 28px;
+			font-weight: 600;
+		}
+
+		.wpr-score-no-urls {
+			width: 60px;
+			height: 60px;
+			margin: 0;
+		}
+	}
+
+	&__details {
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		min-width: 0;
+	}
+
+	&__heading {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	&__title {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cInk;
+	}
+
+	&__pages {
+		@include font-size(11, 16);
+		color: $cGreyLighter3;
+	}
+
+	&__legend {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		white-space: nowrap;
+		@include font-size(11, 16);
+		color: $cSlate;
+	}
+
+	&__legend-item {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		padding-inline: $space;
+
+		&:first-child {
+			padding-inline-start: 0;
+		}
+
+		&:last-child {
+			padding-inline-end: 0;
+		}
+
+		& + & {
+			border-inline-start: 1px solid $cGreyLighter1;
+		}
+
+		&::before {
+			content: "";
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: currentColor;
+		}
+
+		&--good::before {
+			color: $cFgSuccess;
+		}
+
+		&--average::before {
+			color: $cFgWarning;
+		}
+
+		&--poor::before {
+			color: $cFgError;
+		}
+	}
+
+	&__metrics {
+		display: flex;
+		flex: 0 0 auto;
+		gap: $space * 3;
+		padding-inline-end: $space * 2;
+
+		@include respond-to('xs') {
+			flex-wrap: wrap;
+			padding-inline-end: 0;
+		}
+	}
+
+	&__metric {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	&__metric-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		@include font-size(13, 20);
+		font-weight: 600;
+		color: $cInk;
+	}
+
+	&__metric-value {
+		@include font-size(13, 20);
+		font-weight: 600;
+
+		&--success {
+			color: $cFgSuccess;
+		}
+
+		&--warning {
+			color: $cFgWarning;
+		}
+
+		&--error {
+			color: $cFgError;
+		}
+
+		&--na {
+			color: $cGreyLighter3;
+		}
+	}
+}
+
+.wpr-dash-recs {
+	// Table list (generic component) restyled as one bordered panel, rows separated by a line.
+	&__list {
+		gap: $space * 2;
+		margin-bottom: $space * 2;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLight1;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		.wpr-table-list__row {
+			align-items: flex-start;
+			padding: 0 0 $space * 2;
+			border: 0;
+			border-bottom: 1px solid $cGreyLighter1;
+			border-radius: 0;
+			background: none;
+		}
+
+		.wpr-table-list__cell a {
+			text-decoration: none;
+		}
+
+		// Show only the first 3 rows until expanded; the last visible row has no separator.
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(n + 4) {
+			display: none;
+		}
+
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(3),
+		.wpr-table-list__row:last-child {
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+	}
+
+	&__heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $space;
+		margin-bottom: 4px;
+	}
+
+	&__title {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cInk;
+	}
+
+	&__impact {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding-inline-start: $space;
+		border-inline-start: 1px solid $cGreyLighter1;
+		@include font-size(11, 16);
+		color: $cGreyLighter3;
+	}
+
+	&__tag {
+		padding: 4px $space;
+		border-radius: 2px;
+		background: $cGreyDark5;
+		font-weight: 600;
+		text-transform: uppercase;
+
+		& + & {
+			margin-inline-start: 2px;
+		}
+	}
+
+	&__activate {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cOrange;
+		text-transform: none;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: $cOrangeDark1;
+		}
+	}
+
+	&__description {
+		margin: 0;
+		@include font-size(14, 21);
+		color: $cInk;
+	}
+
+	&__more {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 40px;
+		padding: 6px 12px;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cWhite;
+		color: $cInk;
+		@include font-size(14, 18);
+		font-weight: 600;
+		text-transform: uppercase;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			background: $cGreyLight3;
+		}
+
+		.wpr-dash-recs__more-text:last-child,
+		&.is-expanded .wpr-dash-recs__more-text:first-child {
+			display: none;
+		}
+
+		&.is-expanded .wpr-dash-recs__more-text:last-child {
+			display: inline;
+		}
+	}
+}

@@ -8,6 +8,9 @@ use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Render as RecommendationsRender;
+use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\Jobs\Manager;
@@ -43,7 +46,10 @@ class Test_TrackHomeAfterAnalyticsOptin extends TestCase {
 			Mockery::mock( GlobalScore::class ),
 			Mockery::mock( User::class ),
 			Mockery::mock( Options_Data::class ),
-			$this->tracking
+			$this->tracking,
+			Mockery::mock( Render::class ),
+			Mockery::mock( RecommendationsRender::class ),
+			Mockery::mock( DataManager::class )
 		);
 	}
 

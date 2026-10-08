@@ -4,8 +4,8 @@ $(document).ready(function(){
         /**
          * Show beacons on button "help" click
          */
-        var $help = $('.wpr-infoAction--help');
-        $help.on('click', function(e){
+        // Delegated so help links re-rendered by live updates (e.g. dashboard components) keep working.
+        $(document).on('click', '.wpr-infoAction--help, .wpr-dash-help', function(e){
             var ids = $(this).attr('data-beacon-id');
             var button = $(this).data('wpr_track_button') || 'Beacon Help';
             var context = $(this).data('wpr_track_context') || 'Settings';
