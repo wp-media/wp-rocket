@@ -895,7 +895,7 @@ class Page extends Abstract_Render {
 			'media',
 			[
 				'title'            => __( 'Image & Media', 'rocket' ),
-				'menu_description' => __( 'Imagify, LazyLoad, image dimensions, font optimization', 'rocket' ),
+				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
 			]
 		);
 
