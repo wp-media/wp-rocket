@@ -205,7 +205,7 @@ class Render extends Abstract_Render {
 	 * Renders the enabled banner while the Imagify plugin is active, the promo banner otherwise.
 	 * Renders nothing for white label accounts.
 	 *
-	 * @since 3.26
+	 * @since 3.23.6
 	 *
 	 * @param array $args Array of arguments to populate the template.
 	 *

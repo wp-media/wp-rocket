@@ -4,7 +4,7 @@
  *
  * The content is static placeholder content from the design.
  *
- * @since 3.26
+ * @since 3.23.6
  *
  * @param array $data {
  *     Banner data.
