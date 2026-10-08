@@ -16,8 +16,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_installed    = \Imagify_Partner::is_imagify_installed();
-$rocket_plugin       = plugin_basename( \Imagify_Partner::get_imagify_path() );
+$rocket_installed = \Imagify_Partner::is_imagify_installed();
+$rocket_plugin    = plugin_basename( \Imagify_Partner::get_imagify_path() );
 // Installed but inactive: use the standard WordPress activation link, the partner install flow is not available once an API key is saved.
 $rocket_activate_url = current_user_can( 'activate_plugins' )
 	? wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $rocket_plugin ) ), 'activate-plugin_' . $rocket_plugin )
