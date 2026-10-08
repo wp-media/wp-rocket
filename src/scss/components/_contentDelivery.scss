@@ -48,18 +48,10 @@
 	&--new {
 		background: #0d5ec3;
 		color: $cWhite;
-		padding: 4px 2px;
-		border-radius: 4px;
+		padding: 2px 4px;
+		border-radius: 2px;
 		@include font-size(9, 12);
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.02em;
-		writing-mode: vertical-rl;
-		transform: rotate(180deg);
-		left: -11px;
-		position: absolute;
-		top: 50%;
-		translate: 0 -50%;
+		font-weight: 590;
 	}
 }
 
