@@ -1,7 +1,6 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use Imagify_Partner;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
 
@@ -54,7 +53,6 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
 			'rocket_settings_menu_navigation'      => [
 				[ 'add_menu_tools_page' ],
-				[ 'add_imagify_page', 9 ],
 				[ 'add_tutorials_page', 11 ],
 				[ 'add_plugins_page', 12 ],
 			],
@@ -202,32 +200,6 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'title'            => __( 'Tools', 'rocket' ),
 			'menu_description' => __( 'Export, import, rollback, and set up MCP', 'rocket' ),
 			'badge'            => __( 'NEW', 'rocket' ),
-		];
-
-		return $navigation;
-	}
-
-	/**
-	 * Add Imagify section to navigation.
-	 *
-	 * @since 3.2
-	 *
-	 * @param array $navigation Array of menu items.
-	 * @return array
-	 */
-	public function add_imagify_page( $navigation ) {
-		if (
-			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
-			||
-			Imagify_Partner::has_imagify_api_key()
-		) {
-			return $navigation;
-		}
-
-		$navigation['imagify'] = [
-			'id'               => 'imagify',
-			'title'            => __( 'Image Optimization', 'rocket' ),
-			'menu_description' => __( 'Compress your images', 'rocket' ),
 		];
 
 		return $navigation;

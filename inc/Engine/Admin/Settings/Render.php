@@ -142,18 +142,20 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Render the Imagify page section.
+	 * Gets the Imagify plugin data from the WordPress.org API, cached in a transient.
 	 *
-	 * @since 3.2
+	 * @since 3.23
+	 *
+	 * @return stdClass|array Plugin data, or an empty array if it could not be retrieved.
 	 */
-	public function render_imagify_section() {
-
-		// @phpstan-ignore-next-line
-		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-
+	public function get_imagify_plugin_data() {
 		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
 
 		if ( ! $plugin_data ) {
+			if ( ! function_exists( 'plugins_api' ) ) {
+				// @phpstan-ignore-next-line
+				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
+			}
 
 			$query_args = [
 				'slug'   => 'imagify',
@@ -194,7 +196,35 @@ class Render extends Abstract_Render {
 			set_transient( 'rocket_imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
 		}
 
-		echo $this->generate( 'page-sections/imagify', $plugin_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		return $plugin_data;
+	}
+
+	/**
+	 * Renders the Imagify banner at the top of the Image & Media page.
+	 *
+	 * Renders the enabled banner while the Imagify plugin is active, the promo banner otherwise.
+	 * Renders nothing for white label accounts.
+	 *
+	 * @since 3.23
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 *
+	 * @return void
+	 */
+	public function render_imagify_banner( $args ) {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
+		if ( \Imagify_Partner::is_imagify_activated() ) {
+			echo $this->generate( 'partials/imagify-banner-enabled', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+
+			return;
+		}
+
+		$args['plugin_data'] = $this->get_imagify_plugin_data();
+
+		echo $this->generate( 'partials/imagify-banner', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

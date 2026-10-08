@@ -161,14 +161,12 @@ PageManager.prototype.change = function() {
         'database',
         'tools',
         'addons',
-        'imagify',
         'tutorials',
         'plugins',
     ];
 
     const pagesWithoutSidebarToggle = [
         'dashboard',
-        'imagify',
         'page_cdn',
     ];
 
@@ -176,10 +174,6 @@ PageManager.prototype.change = function() {
     if(this.pageId == "dashboard"){
         this.$sidebar.style.display = 'none';
         this.$content.classList.remove('isNotFull');
-    }
-
-    if (this.pageId == "imagify") {
-        this.$sidebar.style.display = 'none';
     }
 
     if (pagesWithoutSidebarToggle.includes(this.pageId)) {
