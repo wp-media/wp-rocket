@@ -22,6 +22,11 @@
     .wpr-infoAction{
         margin-right: $space;
     }
+
+    // Help icon sits right after the title.
+    .wpr-title2 + .wpr-infoAction--help{
+        margin: 0 auto 0 $space;
+    }
 }
 
 .wpr-optionHeader.wpr-isHidden{

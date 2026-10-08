@@ -119,7 +119,11 @@ Method : SUITCSS (modified)
 .wpr-optionHeader{
     .wpr-title2 {
         padding-right: 0;
-        padding-left: 40px;
+        padding-left: 0;
+    }
+
+    .wpr-title2 + .wpr-infoAction--help{
+        margin: 0 $space 0 auto;
     }
 }
 
@@ -215,10 +219,30 @@ Method : SUITCSS (modified)
     }
 }
 
+// components/addon - user cache card
+.add-on-container--user-cache{
+    .wpr-addon-text{
+        margin-left: inherit;
+        margin-right: $space*6;
+
+        @include respond-to('md') {
+            margin-right: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-right: $space*6;
+        }
+
+        @include respond-to('xs') {
+            margin-right: 0;
+        }
+    }
+}
+
 // components/fields/radio
 .wpr-radio{
     padding-left: 0;
-    padding-right: $space*11;
+    padding-right: $wpr-radio-track-width + $wpr-radio-gap;
 
     [type="checkbox"]:not(:checked),
     [type="checkbox"]:checked {
@@ -227,67 +251,43 @@ Method : SUITCSS (modified)
 
     [type="checkbox"]:not(:checked) + label:before,
     [type="checkbox"]:checked + label:before {
-        left:inherit;
+        left: auto;
         right: 0;
     }
 
     [type="checkbox"]:not(:checked) + label:after,
     [type="checkbox"]:checked + label:after {
-        left: inherit;
-        right: 3px;
+        left: auto;
+        right: $wpr-radio-knob-inset;
     }
 
     [type="checkbox"]:checked + label:after {
-        right: 33px;
-    }
-
-    [type="checkbox"]:checked + label .wpr-radio-ui,
-    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
-    [type="checkbox"]:checked + label .wpr-radio-ui:after {
-        right: 4px;
-    }
-
-    // OFF text
-    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
-        right: 27px;
+        right: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
     }
 
     // Reverse label/checkbox
     &--reverse{
         padding-left: 0;
-        padding-right: $space*9;;
+        padding-right: $wpr-radio-track-width + $wpr-radio-gap;
 
-        // The box
+        // The track
         [type="checkbox"]:not(:checked) + label:before,
         [type="checkbox"]:checked + label:before {
-            right:0;
-            left: inherit;
+            right: 0;
+            left: auto;
         }
 
-        // The ball
+        // The knob
         [type="checkbox"]:not(:checked) + label:after,
         [type="checkbox"]:checked + label:after {
-            right: 33px;
-            left: inherit;
+            right: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
+            left: auto;
         }
 
-        // Checked ball
+        // Checked knob
         [type="checkbox"]:checked + label:after {
-            right: 3px;
-            left: inherit;
-        }
-
-        [type="checkbox"]:checked + label .wpr-radio-ui,
-        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
-        [type="checkbox"]:checked + label .wpr-radio-ui:after {
-            right: 15px;
-            left: inherit;
-        }
-
-        // OFF text
-        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
-            right: 6px;
-            left: inherit;
+            right: $wpr-radio-knob-inset;
+            left: auto;
         }
     }
 }

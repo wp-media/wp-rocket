@@ -1,7 +1,11 @@
 // main: ../main.scss
 
 $space: 8px;
-$wpr-radio-track-height: 22px;
+$wpr-radio-track-width: 28px;
+$wpr-radio-track-height: 16px;
+$wpr-radio-knob-size: 12px;
+$wpr-radio-knob-inset: 2px;
+$wpr-radio-gap: $space*2;
 
 //* -- Breakpoints -- */
 
@@ -16,6 +20,9 @@ $breakpoints: (
 
 // Main colors
 $cBlack: #121116;
+$cTextPrimary: #0C0F1F;
+$cSurfacePrimary: #182352;
+$cTextSecondary: #464F59;
 $cWhite: #fff;
 $cBlue: #1EADBF;
 $cGreen: #3ECE9D;
@@ -66,6 +73,7 @@ $cOrangeLight1: #FC8665;
 $cOrangeLight2: #FFA58B;
 $cOrangeLight3: #FFC3B1;
 $cOrangeLight4: #FDE0D9;
+$cOrangeLight5: #FFF1ED;
 $cOrangeDark1: #AC2B15;
 
 
