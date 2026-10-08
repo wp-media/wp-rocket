@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering ::rocket_activate_polylang and ::rocket_deactivate_polylang
+ * Test class covering ::rocket_activate_polylang
  * @group ThirdParty
  * @group Polylang
  */
@@ -21,106 +21,42 @@ class Test_activatePolylang extends TestCase {
 	}
 
 	/**
-	 * Settings are read from the database here, and the language is not in the address, so the
-	 * cookie enters the file name and what is cached under the old names goes.
+	 * @dataProvider providerTestData
+	 *
+	 * @param array $settings What Polylang stored.
+	 * @param array $expected What activation has to register and purge.
 	 *
 	 * @return void
 	 */
-	public function testShouldVaryByTheLanguageWhenItIsSetFromContent() {
-		Functions\when( 'get_option' )->justReturn(
-			[
-				'browser'    => 1,
-				'force_lang' => 0,
-			]
-		);
+	public function testShouldFollowTheStoredSettings( $settings, $expected ) {
+		Functions\when( 'get_option' )->justReturn( $settings );
 
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->once();
+		$this->expectFilter( 'rocket_cache_mandatory_cookies', $expected['mandatory_cookie'], 'rocket_add_polylang_mandatory_cookie' );
+		$this->expectFilter( 'rocket_cache_dynamic_cookies', $expected['dynamic_cookie'], 'rocket_add_polylang_dynamic_cookie' );
+		$this->expectCall( 'rocket_clean_home', $expected['clean_home'] );
+		$this->expectCall( 'rocket_clean_domain', $expected['clean_domain'] );
 
 		rocket_activate_polylang();
 	}
 
-	/**
-	 * The address carries the language, so the file name is left alone and so is the cache.
-	 *
-	 * @return void
-	 */
-	public function testShouldNotVaryByTheLanguageWhenTheAddressCarriesIt() {
-		Functions\when( 'get_option' )->justReturn(
-			[
-				'browser'    => 1,
-				'force_lang' => 1,
-			]
-		);
 
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->never();
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		rocket_activate_polylang();
+	private function expectFilter( $filter, $added, $callback ) {
+		if ( $added ) {
+			Filters\expectAdded( $filter )->with( $callback );
+		} else {
+			Filters\expectAdded( $filter )->never();
+		}
 	}
 
-	/**
-	 * Browser language detection is off, so the integration leaves the site alone: nothing is
-	 * registered, nothing is regenerated and nothing is purged.
-	 *
-	 * @return void
-	 */
-	public function testShouldDoNothingWhenDetectionIsOff() {
-		Functions\when( 'get_option' )->justReturn(
-			[
-				'browser'    => 0,
-				'force_lang' => 0,
-			]
-		);
-
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->never();
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->never();
-		Filters\expectAdded( 'rocket_htaccess_mod_rewrite' )->never();
-		Functions\expect( 'rocket_clean_home' )->never();
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		rocket_activate_polylang();
+	private function expectCall( $function, $called ) {
+		if ( $called ) {
+			Functions\expect( $function )->once();
+		} else {
+			Functions\expect( $function )->never();
+		}
 	}
 
-	/**
-	 * Polylang is gone, so neither list names its cookie and the files it named go.
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheCookieNowhereOnDeactivation() {
-		Functions\when( 'get_option' )->justReturn(
-			[
-				'browser'    => 1,
-				'force_lang' => 0,
-			]
-		);
-
-		Filters\expectRemoved( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		rocket_deactivate_polylang();
-	}
-
-	/**
-	 * Polylang is gone, and the language was never in the file name, so nothing cached moves.
-	 *
-	 * @return void
-	 */
-	public function testShouldKeepTheCacheOnDeactivationWhenTheAddressCarriedTheLanguage() {
-		Functions\when( 'get_option' )->justReturn(
-			[
-				'browser'    => 1,
-				'force_lang' => 1,
-			]
-		);
-
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		rocket_deactivate_polylang();
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'activatePolylang' );
 	}
 }

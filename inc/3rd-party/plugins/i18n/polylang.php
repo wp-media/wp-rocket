@@ -60,10 +60,12 @@ function rocket_add_polylang_mandatory_cookie( $cookies ) {
  * @return bool
  */
 function rocket_polylang_varies_by_cookie( $settings ) {
-	// An option holding a plain object is a fatal when read by key, not a false.
-	if ( ! is_array( $settings ) && ! $settings instanceof ArrayAccess ) {
+	// With PLL_COOKIE off no cookie is written, so no file name can vary by it.
+	if ( ! rocket_get_polylang_cookie_name() ) {
 		return false;
 	}
+
+	$settings = rocket_polylang_readable_settings( $settings );
 
 	return isset( $settings['browser'], $settings['force_lang'] )
 		&& 1 === (int) $settings['browser']
@@ -71,8 +73,19 @@ function rocket_polylang_varies_by_cookie( $settings ) {
 }
 
 /**
- * Gets the name Polylang keeps the visitor's language under, or false with PLL_COOKIE off, which
- * the lists drop as empty.
+ * Polylang settings that can be read by key, or an empty array when they cannot.
+ *
+ * @since 3.24
+ *
+ * @param mixed $settings Polylang settings.
+ * @return array|ArrayAccess
+ */
+function rocket_polylang_readable_settings( $settings ) {
+	return ( is_array( $settings ) || $settings instanceof ArrayAccess ) ? $settings : [];
+}
+
+/**
+ * Gets the name Polylang keeps the visitor's language under, or false with PLL_COOKIE off.
  *
  * @since 3.24
  *
@@ -107,7 +120,7 @@ function rocket_add_polylang_dynamic_cookie( $cookies ) {
  */
 function rocket_activate_polylang() {
 	// Read Polylang settings from db.
-	$polylang_settings = get_option( 'polylang' );
+	$polylang_settings = rocket_polylang_readable_settings( get_option( 'polylang' ) );
 
 	$varies_by_cookie = rocket_polylang_varies_by_cookie( $polylang_settings );
 
@@ -172,22 +185,22 @@ add_action( 'deactivate_polylang/polylang.php', 'rocket_deactivate_polylang', 11
  * Update mandatory cookie in WP Rocket config file and remove rewrite rules from .htaccess
  * when Detect browser language module is enabled / disabled.
  *
- * @param array $value Array containing Polylang settings before its written to db.
+ * @param array $value     Array containing Polylang settings before its written to db.
+ * @param array $old_value Array containing the Polylang settings being replaced.
  * @return array
  *
  * @author Arun Basil Lal
  * @since 3.0.5
  */
 function rocket_detect_browser_language_status_change( $value, $old_value = [] ) {
-	// The settings being saved are $value, read by key only: from Polylang 3.7 they can be an object
-	// that answers like an array. With Polylang inactive nothing sets the cookie.
-	$readable          = is_array( $value ) || $value instanceof ArrayAccess;
-	$polylang_settings = ( function_exists( 'PLL' ) && $readable ) ? $value : [];
+	// With Polylang inactive nothing sets the cookie.
+	$polylang_settings = function_exists( 'PLL' ) ? rocket_polylang_readable_settings( $value ) : [];
 
 	$varies_by_cookie = rocket_polylang_varies_by_cookie( $polylang_settings );
 
 	// Only the settings being replaced say where the file names moved from.
-	$renames_cache_files = rocket_polylang_varies_by_cookie( $old_value ) !== $varies_by_cookie;
+	$varied_before       = function_exists( 'PLL' ) && rocket_polylang_varies_by_cookie( $old_value );
+	$renames_cache_files = $varied_before !== $varies_by_cookie;
 
 	if ( isset( $polylang_settings['browser'] ) && $polylang_settings['browser'] ) {
 

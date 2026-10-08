@@ -1,10 +1,9 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\plugins\i18n\Polylang;
+
+namespace WP_Rocket\Tests\Fixtures\Polylang;
 
 /**
- * Stands in for the settings Polylang holds, which from 3.7 are an object that answers like an
- * array rather than an array. Casting one gives its private properties, so the code under test has
- * to read it by key.
+ * Stands in for the settings object Polylang holds from 3.7, which reads like an array.
  */
 class Polylang_Options_Stub implements \ArrayAccess {
 	/**

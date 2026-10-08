@@ -9,21 +9,30 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Polylang
  */
 class Test_addPolylangMandatoryCookie extends TestCase {
-	protected function setUp(): void {
-		parent::setUp();
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
-	}
-
 	/**
-	 * The name Polylang uses by default, added after whatever the site already requires.
+	 * Each case defines PLL_COOKIE, so each one needs a process of its own.
+	 *
+	 * @dataProvider providerTestData
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 *
+	 * @param string|bool|null $cookie_constant What the site set PLL_COOKIE to, null if it did not.
+	 * @param array            $cookies         What the site already varies by.
+	 * @param array            $expected        The list the filter returns.
 	 *
 	 * @return void
 	 */
-	public function testShouldAppendTheLanguageCookie() {
-		$this->assertSame(
-			[ 'my_cookie', 'pll_language' ],
-			rocket_add_polylang_mandatory_cookie( [ 'my_cookie' ] )
-		);
+	public function testShouldNameTheCookiePolylangWrites( $cookie_constant, $cookies, $expected ) {
+		if ( null !== $cookie_constant ) {
+			define( 'PLL_COOKIE', $cookie_constant );
+		}
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
+
+		$this->assertSame( $expected, array_filter( rocket_add_polylang_mandatory_cookie( $cookies ) ) );
+	}
+
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'addPolylangMandatoryCookie' );
 	}
 }

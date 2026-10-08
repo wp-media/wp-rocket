@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\plugins\i18n\Polylang;
 
+use WP_Rocket\Tests\Fixtures\Polylang\Polylang_Options_Stub;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -9,70 +10,40 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Polylang
  */
 class Test_polylangVariesByCookie extends TestCase {
-	protected function setUp(): void {
-		parent::setUp();
-
-		require_once __DIR__ . '/PolylangOptionsStub.php';
-
-		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
-	}
-
 	/**
-	 * Settings and the answer the cache file name depends on.
+	 * A case may define PLL_COOKIE, so each one needs a process of its own.
 	 *
-	 * @return array
-	 */
-	public function settingsProvider() {
-		return [
-			'detection on and the language set from content' => [ [ 'browser' => 1, 'force_lang' => 0 ], true ],
-			'the address carries the language'               => [ [ 'browser' => 1, 'force_lang' => 1 ], false ],
-			'detection off'                                  => [ [ 'browser' => 0, 'force_lang' => 0 ], false ],
-			'the settings do not say how the language is carried' => [ [ 'browser' => 1 ], false ],
-			'the settings say nothing'                       => [ [], false ],
-			'values arrive as the strings a stored option can hold' => [ [ 'browser' => '1', 'force_lang' => '0' ], true ],
-		];
-	}
-
-	/**
-	 * @dataProvider settingsProvider
+	 * @dataProvider providerTestData
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 *
-	 * @param array $settings Polylang settings.
-	 * @param bool  $expected Whether the cache has to vary by the language cookie.
+	 * @param array            $settings        Polylang settings.
+	 * @param bool             $expected        Whether the cache has to vary by the language cookie.
+	 * @param string           $held_as         How the settings are held: an array unless the case says otherwise.
+	 * @param string|bool|null $cookie_constant What the site set PLL_COOKIE to, null if it did not.
 	 *
 	 * @return void
 	 */
-	public function testShouldAnswerFromTheSettings( $settings, $expected ) {
+	public function testShouldAnswerFromTheSettings( $settings, $expected, $held_as = 'array', $cookie_constant = null ) {
+		if ( null !== $cookie_constant ) {
+			define( 'PLL_COOKIE', $cookie_constant );
+		}
+
+		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
+
+		switch ( $held_as ) {
+			case 'object':
+				$settings = new Polylang_Options_Stub( $settings );
+				break;
+			case 'plain_object':
+				$settings = new \stdClass();
+				break;
+		}
+
 		$this->assertSame( $expected, rocket_polylang_varies_by_cookie( $settings ) );
 	}
 
-	/**
-	 * A stored option can hold a plain object, which cannot be read by key at all.
-	 *
-	 * @return void
-	 */
-	public function testShouldAnswerNoForSettingsThatCannotBeReadByKey() {
-		$this->assertFalse(
-			rocket_polylang_varies_by_cookie( new \stdClass() ),
-			'A stored option holding a plain object is read by key elsewhere, which is a fatal, so it answers no here instead.'
-		);
-	}
-
-	/**
-	 * From Polylang 3.7 the settings are an object that answers like an array, and it has to be
-	 * read the same way.
-	 *
-	 * @return void
-	 */
-	public function testShouldAnswerFromSettingsPolylangHoldsAsAnObject() {
-		$this->assertTrue(
-			rocket_polylang_varies_by_cookie(
-				new Polylang_Options_Stub(
-					[
-						'browser'    => 1,
-						'force_lang' => 0,
-					]
-				)
-			)
-		);
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'polylangVariesByCookie' );
 	}
 }

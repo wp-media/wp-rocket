@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\plugins\i18n\Polylang;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Fixtures\Polylang\Polylang_Options_Stub;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -11,88 +12,45 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Polylang
  */
 class Test_loadPolylang extends TestCase {
-	protected function setUp(): void {
-		parent::setUp();
-
-		require_once __DIR__ . '/PolylangOptionsStub.php';
-	}
-
 	/**
-	 * Loads the integration as WordPress does, with Polylang holding these settings. Each case runs
-	 * in its own process: the file registers filters once and defines the functions the rest of the
-	 * suite asks for.
+	 * Loading registers filters once, so each case needs a process of its own.
 	 *
-	 * @param array $options What Polylang is holding.
+	 * @dataProvider providerTestData
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 *
+	 * @param array $settings What Polylang is holding.
+	 * @param array $expected Which filters the load has to register.
 	 *
 	 * @return void
 	 */
-	private function load_with( array $options ) {
+	public function testShouldRegisterWhatTheSettingsAskFor( $settings, $expected ) {
+		$this->expectFilter( 'rocket_cache_mandatory_cookies', $expected['mandatory_cookie'], 'rocket_add_polylang_mandatory_cookie' );
+		$this->expectFilter( 'rocket_cache_dynamic_cookies', $expected['dynamic_cookie'], 'rocket_add_polylang_dynamic_cookie' );
+
+		if ( $expected['mod_rewrite_off'] ) {
+			Filters\expectAdded( 'rocket_htaccess_mod_rewrite' )->with( '__return_false', 74 );
+		} else {
+			Filters\expectAdded( 'rocket_htaccess_mod_rewrite' )->never();
+		}
+
 		define( 'POLYLANG_VERSION', '3.7' );
 
-		Functions\when( 'PLL' )->justReturn( (object) [ 'options' => new Polylang_Options_Stub( $options ) ] );
+		Functions\when( 'PLL' )->justReturn( (object) [ 'options' => new Polylang_Options_Stub( $settings ) ] );
 
 		require WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
 	}
 
-	/**
-	 * The language is not in the address, so the cookie has to name it in the file.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldVaryByTheLanguageWhenItIsSetFromContent() {
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Filters\expectAdded( 'rocket_htaccess_mod_rewrite' )->with( '__return_false', 74 );
 
-		$this->load_with(
-			[
-				'browser'    => 1,
-				'force_lang' => 0,
-			]
-		);
+	private function expectFilter( $filter, $added, $callback ) {
+		if ( $added ) {
+			Filters\expectAdded( $filter )->with( $callback );
+		} else {
+			Filters\expectAdded( $filter )->never();
+		}
 	}
 
-	/**
-	 * The address carries the language, so the file name does not have to.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNotVaryByTheLanguageWhenTheAddressCarriesIt() {
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->never();
-
-		$this->load_with(
-			[
-				'browser'    => 1,
-				'force_lang' => 1,
-			]
-		);
-	}
-
-	/**
-	 * Detection is off, so neither list names the cookie and the rewrite rules stay.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheCookieNowhereWhenDetectionIsOff() {
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->never();
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->never();
-		Filters\expectAdded( 'rocket_htaccess_mod_rewrite' )->never();
-
-		$this->load_with(
-			[
-				'browser'    => 0,
-				'force_lang' => 0,
-			]
-		);
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'loadPolylang' );
 	}
 }

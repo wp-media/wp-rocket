@@ -3,6 +3,7 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\plugins\i18n\Polylang;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Fixtures\Polylang\Polylang_Options_Stub;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -14,8 +15,6 @@ class Test_detectBrowserLanguageStatusChange extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		require_once __DIR__ . '/PolylangOptionsStub.php';
-
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/3rd-party/plugins/i18n/polylang.php';
 
 		Functions\when( 'rocket_generate_config_file' )->justReturn();
@@ -23,307 +22,67 @@ class Test_detectBrowserLanguageStatusChange extends TestCase {
 	}
 
 	/**
-	 * Answers as Polylang does while it saves: its own copy is still the settings being replaced,
-	 * measured on 3.8.9, where it is an object that reads like an array. Where those differ from
-	 * the ones being saved, reading it instead of $value turns the case red.
+	 * The filter registers and removes filters, so each case needs a process of its own.
 	 *
-	 * @param array $options The settings Polylang still holds, i.e. the previous ones.
-	 *
-	 * @return void
-	 */
-	private function polylang_holds( array $options ) {
-		Functions\when( 'PLL' )->justReturn( (object) [ 'options' => new Polylang_Options_Stub( $options ) ] );
-	}
-
-	/**
-	 * The language is not in the address, so the cookie has to name it in the file. The settings
-	 * being replaced say the opposite, so every cached file is about to move.
-	 *
+	 * @dataProvider providerTestData
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 *
+	 * @param array|null $polylang_holds The settings Polylang still answers with, null when it is gone.
+	 * @param array      $value          The settings being saved.
+	 * @param array|null $old_value      The settings being replaced, null when the filter is called without them.
+	 * @param array      $expected       What the save has to register, remove and purge.
+	 *
 	 * @return void
 	 */
-	public function testShouldVaryByTheLanguageWhenItIsSetFromContent() {
-		$this->polylang_holds(
-			[
-				'browser'    => 0,
-				'force_lang' => 1,
-			]
-		);
+	public function testShouldFollowTheSettingsBeingSaved( $polylang_holds, $value, $old_value, $expected ) {
+		if ( null !== $polylang_holds ) {
+			// Polylang's own copy still answers with the settings being replaced.
+			Functions\when( 'PLL' )->justReturn( (object) [ 'options' => new Polylang_Options_Stub( $polylang_holds ) ] );
+		}
 
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->once();
+		$this->expectFilter( 'rocket_cache_mandatory_cookies', $expected, 'mandatory_cookie', 'rocket_add_polylang_mandatory_cookie' );
+		$this->expectFilter( 'rocket_cache_dynamic_cookies', $expected, 'dynamic_cookie', 'rocket_add_polylang_dynamic_cookie' );
 
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
+		if ( ! empty( $expected['mandatory_never_added'] ) ) {
+			Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->never();
+		}
 
-		$old_value = [
-			'browser'    => 0,
-			'force_lang' => 1,
-		];
+		$this->expectCall( 'rocket_clean_home', $expected );
+		$this->expectCall( 'rocket_clean_domain', $expected );
 
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $old_value ) );
+		$returned = null === $old_value
+			? rocket_detect_browser_language_status_change( $value )
+			: rocket_detect_browser_language_status_change( $value, $old_value );
+
+		$this->assertSame( $value, $returned );
 	}
 
-	/**
-	 * The address carries the language, so the file name does not have to, and the files named
-	 * with the cookie until now go.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNotVaryByTheLanguageWhenTheAddressCarriesIt() {
-		$this->polylang_holds(
-			[
-				'browser'    => 1,
-				'force_lang' => 0,
-			]
-		);
 
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 1,
-		];
-
-		$old_value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $old_value ) );
+	private function expectFilter( $filter, array $expected, $key, $callback ) {
+		switch ( $expected[ $key ] ?? null ) {
+			case 'added':
+				Filters\expectAdded( $filter )->with( $callback );
+				break;
+			case 'removed':
+				Filters\expectRemoved( $filter )->with( $callback );
+				break;
+		}
 	}
 
-	/**
-	 * Detection is turned on while the address still carries the language: the cookie never enters
-	 * the file name, so nothing cached moves.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldKeepTheCacheWhenTheFileNamesDoNotMove() {
-		$this->polylang_holds(
-			[
-				'browser'    => 0,
-				'force_lang' => 1,
-			]
-		);
+	private function expectCall( $function, array $expected ) {
+		$key = str_replace( 'rocket_', '', $function );
 
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->never();
+		if ( ! array_key_exists( $key, $expected ) ) {
+			return;
+		}
 
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 1,
-		];
-
-		$old_value = [
-			'browser'    => 0,
-			'force_lang' => 1,
-		];
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $old_value ) );
+		$expected[ $key ]
+			? Functions\expect( $function )->once()
+			: Functions\expect( $function )->never();
 	}
 
-	/**
-	 * A save that changes nothing. This hook fires on every save of the option, and the whole
-	 * domain is not emptied for one that leaves every file where it is.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldKeepTheCacheWhenNothingChanges() {
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->polylang_holds( $value );
-
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $value ) );
-	}
-
-	/**
-	 * Detection goes off, so the cookie names nothing any more and the files it named go.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheCookieNowhereWhenDetectionIsOff() {
-		$this->polylang_holds(
-			[
-				'browser'    => 1,
-				'force_lang' => 0,
-			]
-		);
-
-		Filters\expectRemoved( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		$value = [
-			'browser'    => 0,
-			'force_lang' => 0,
-		];
-
-		$old_value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $old_value ) );
-	}
-
-	/**
-	 * Called with the settings alone, as a filter may be: nothing says what the names were, so the
-	 * files that may be under the old ones go.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldPurgeWhenThePreviousSettingsAreNotGiven() {
-		$this->polylang_holds( [] );
-
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value ) );
-	}
-
-	/**
-	 * The option can be written with Polylang inactive: nothing sets the cookie then, so the lists
-	 * stop naming it whatever the settings ask for.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheCookieNowhereWithoutPolylang() {
-		Filters\expectRemoved( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Filters\expectAdded( 'rocket_cache_mandatory_cookies' )->never();
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 1,
-		];
-
-		$this->assertSame(
-			$value,
-			rocket_detect_browser_language_status_change( $value, [ 'browser' => 1, 'force_lang' => 1 ] )
-		);
-	}
-
-	/**
-	 * Polylang gone with the language still in the file names: the names go back, so the files
-	 * written under them go too.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldPurgeWithoutPolylangWhenTheLanguageWasInTheFileName() {
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->assertSame(
-			$value,
-			rocket_detect_browser_language_status_change( $value, [ 'browser' => 1, 'force_lang' => 0 ] )
-		);
-	}
-
-	/**
-	 * A save that omits detection is read as off, so neither list names the cookie and the files
-	 * stay where the previous settings put them.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheCookieNowhereWhenTheSaveOmitsDetection() {
-		$this->polylang_holds(
-			[
-				'browser'    => 1,
-				'force_lang' => 1,
-			]
-		);
-
-		Filters\expectRemoved( 'rocket_cache_mandatory_cookies' )->with( 'rocket_add_polylang_mandatory_cookie' );
-		Filters\expectRemoved( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_domain' )->never();
-
-		$value = [ 'force_lang' => 1 ];
-
-		$this->assertSame(
-			$value,
-			rocket_detect_browser_language_status_change( $value, [ 'browser' => 1, 'force_lang' => 1 ] )
-		);
-	}
-
-	/**
-	 * The decision follows the settings being saved, not Polylang's own copy: while this hook runs,
-	 * that copy still answers with the settings being replaced.
-	 *
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 *
-	 * @return void
-	 */
-	public function testShouldFollowTheSettingsBeingSaved() {
-		$old_value = [
-			'browser'    => 1,
-			'force_lang' => 1,
-		];
-
-		$this->polylang_holds( $old_value );
-
-		Filters\expectAdded( 'rocket_cache_dynamic_cookies' )->with( 'rocket_add_polylang_dynamic_cookie' );
-		Functions\expect( 'rocket_clean_home' )->once();
-		Functions\expect( 'rocket_clean_domain' )->once();
-
-		$value = [
-			'browser'    => 1,
-			'force_lang' => 0,
-		];
-
-		$this->assertSame( $value, rocket_detect_browser_language_status_change( $value, $old_value ) );
+	public function providerTestData() {
+		return $this->getTestData( __DIR__, 'detectBrowserLanguageStatusChange' );
 	}
 }
