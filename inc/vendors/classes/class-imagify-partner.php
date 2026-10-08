@@ -107,8 +107,7 @@ if ( ! class_exists( 'Imagify_Partner' ) ) :
 				return;
 			}
 
-			// The API key survives deactivation, so also allow (re)activating Imagify when it is installed but inactive.
-			if ( ! self::has_imagify_api_key() || ! self::is_imagify_activated() ) {
+			if ( ! self::has_imagify_api_key() ) {
 				add_action( 'wp_ajax_' . $this->get_post_action(),    array( $this, 'post_callback' ) );
 				add_action( 'admin_post_' . $this->get_post_action(), array( $this, 'post_callback' ) );
 			}

@@ -196,7 +196,7 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function init_admin_subscribers() {
-		if ( ! Imagify_Partner::has_imagify_api_key() || ! Imagify_Partner::is_imagify_activated() ) {
+		if ( ! Imagify_Partner::has_imagify_api_key() ) {
 			$imagify = new Imagify_Partner( 'wp-rocket' );
 			$imagify->init();
 			remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
