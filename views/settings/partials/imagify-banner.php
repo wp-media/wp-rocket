@@ -16,9 +16,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_imagify     = new \Imagify_Partner( 'wp-rocket' );
-$rocket_button_text = \Imagify_Partner::is_imagify_installed() ? __( 'Activate', 'rocket' ) : __( 'Install', 'rocket' );
-$rocket_button_url  = $rocket_imagify->get_post_install_url();
+if ( \Imagify_Partner::is_imagify_installed() ) {
+	// Installed but inactive: use the standard WordPress activation link, the partner install flow is not available once an API key is saved.
+	$rocket_plugin      = plugin_basename( \Imagify_Partner::get_imagify_path() );
+	$rocket_button_text = __( 'Activate', 'rocket' );
+	$rocket_button_url  = current_user_can( 'activate_plugins' )
+		? wp_nonce_url( self_admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $rocket_plugin ) ), 'activate-plugin_' . $rocket_plugin )
+		: '';
+} else {
+	$rocket_imagify     = new \Imagify_Partner( 'wp-rocket' );
+	$rocket_button_text = __( 'Install', 'rocket' );
+	$rocket_button_url  = $rocket_imagify->get_post_install_url();
+}
 ?>
 
 <div class="wpr-optionHeader">
