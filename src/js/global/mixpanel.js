@@ -17,6 +17,10 @@ class RocketMixpanel {
 		'tools'
 	];
 
+	pageNames = {
+		file_optimization: 'javascript & css'
+	};
+
 	constructor( config ) {
 		this.config = config;
 	}
@@ -131,7 +135,7 @@ class RocketMixpanel {
 	_sendPageViewedEvent(source, newHash) {
 		mixpanel.track('Page Viewed', {
 			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
-			page_name: newHash.replace('_', ' '),
+			page_name: this.pageNames[newHash] || newHash.replace('_', ' '),
 			source: source,
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,
