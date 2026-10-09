@@ -12,6 +12,7 @@ package-lock.json
 /.e2e-temp
 .pipeline-logs/
 .playwright-mcp/
+.playwright-cli/
 
 # Claude Code user-local settings
 .claude/settings.local.json
