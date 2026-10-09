@@ -22,7 +22,7 @@ define( 'WP_ROCKET_IS_TESTING', true );
  * @param string $url     The request URL.
  * @return mixed
  */
-function block_bootstrap_http_request( $preempt, $args, $url ) {
+function block_bootstrap_http_request( $preempt, $args, $url ) { // @phpstan-ignore function.unusedParameter ($args precedes $url in the pre_http_request signature.)
 	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
 		return $preempt;
 	}
