@@ -45,9 +45,9 @@ class Test_GetActivePlugins extends TestCase {
 
 		$this->reset_memoization();
 
-		// ThirstyAffiliates::is_activated() calls is_plugin_active() directly; stub it
-		// absent by default to match every other gated id's "target plugin not
-		// installed" assumption in this test environment.
+		// ThirstyAffiliates::is_activated() and Cloudflare::is_activated() call
+		// is_plugin_active() directly; stub it absent by default to match every other
+		// gated id's "target plugin not installed" assumption in this test environment.
 		Functions\when( 'is_plugin_active' )->justReturn( false );
 	}
 

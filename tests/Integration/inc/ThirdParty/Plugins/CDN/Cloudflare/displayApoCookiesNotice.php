@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
 use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
@@ -17,6 +18,16 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
+
+	/**
+	 * @var \WP_Rocket\Event_Management\Event_Manager
+	 */
+	private $event_manager;
+
+	/**
+	 * @var Cloudflare
+	 */
+	private $cloudflare;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -42,6 +53,18 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		add_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		add_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 
+		// The gated Cloudflare subscriber isn't registered in the test container, so
+		// build it directly and wire it to the event manager for the notice to fire.
+		$container            = apply_filters( 'rocket_container', null );
+		$this->cloudflare     = new Cloudflare(
+			$container->get( 'options' ),
+			$container->get( 'options_api' ),
+			$container->get( 'beacon' ),
+			$container->get( 'cloudflare_plugin_facade' )
+		);
+		$this->event_manager = $container->get( 'event_manager' );
+		$this->event_manager->add_subscriber( $this->cloudflare );
+
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_apo_cookies_notice' );
@@ -60,6 +83,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
 		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
 		$this->restoreWpHook( 'admin_notices' );
+		$this->event_manager->remove_subscriber( $this->cloudflare );
 
 		$this->tear_down_http();
 
