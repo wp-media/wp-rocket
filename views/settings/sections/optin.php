@@ -10,8 +10,13 @@
 defined( 'ABSPATH' ) || exit;
 ?>
 
-<div class="wpr-fieldsContainer">
-	<fieldset class="wpr-fieldsContainer-fieldset">
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			<?php esc_html_e( 'Rocket Analytics', 'rocket' ); ?>
+		</h3>
+	</div>
+	<div class="wpr-account-card">
 		<div class="wpr-field wpr-field--radio">
 			<div class="wpr-radio">
 				<input type="checkbox" id="analytics_enabled" class="" name="rocket_mixpanel_optin" value="1" <?php checked( $data['current_value'], 1 ); ?>>
@@ -28,5 +33,5 @@ defined( 'ABSPATH' ) || exit;
 				?>
 			</div>
 		</div>
-	</fieldset>
+	</div>
 </div>

@@ -229,6 +229,7 @@ class Page extends Abstract_Render {
 			$this->advanced_cache_section();
 			$this->database_section();
 			$this->heartbeat_section();
+			$this->account_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
@@ -291,7 +292,7 @@ class Page extends Abstract_Render {
 	}
 
 	/**
-	 * Returns the customer data to display on the dashboard
+	 * Returns the customer data to display on the account page
 	 *
 	 * @since 3.7.3 Update to use the user client class to get the data
 	 * @since 3.0
@@ -308,7 +309,7 @@ class Page extends Abstract_Render {
 			'is_from_one_dot_com'      => false,
 			'can_update_plugin'        => false,
 			'update_blocked_reason'    => '',
-			'license_expiration_label' => __( 'Expiration Date', 'rocket' ),
+			'license_expiration_label' => __( 'Expiration date', 'rocket' ),
 		];
 
 		$data['license_type'] = rocket_get_license_type( $user_data );
@@ -336,7 +337,7 @@ class Page extends Abstract_Render {
 		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
 		if ( $user->is_trial_customer() ) {
-			$data['license_expiration_label'] = __( 'Trial End Date', 'rocket' );
+			$data['license_expiration_label'] = __( 'Trial end date', 'rocket' );
 		}
 
 		return $data;
@@ -455,6 +456,22 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Registers Account section.
+	 *
+	 * @since 3.23.6
+	 */
+	private function account_section() {
+		$this->settings->add_page_section(
+			'account',
+			[
+				'title'            => __( 'Account', 'rocket' ),
+				'menu_description' => __( 'License & billing', 'rocket' ),
+				'customer_data'    => $this->customer_data(),
+			]
+		);
+	}
+
+	/**
 	 * Registers Dashboard section.
 	 *
 	 * @since 3.0
@@ -466,7 +483,6 @@ class Page extends Abstract_Render {
 				'title'                   => __( 'Dashboard', 'rocket' ),
 				'menu_description'        => __( 'Get help, account info', 'rocket' ),
 				'faq'                     => $this->beacon->get_suggest( 'faq' ),
-				'customer_data'           => $this->customer_data(),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
 				'is_rocketcdn_paid_user'  => $this->subscription_controller->is_paid(),
 			]

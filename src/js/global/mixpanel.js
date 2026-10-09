@@ -2,6 +2,7 @@ class RocketMixpanel {
 
 	trackedTabs = [
 		'dashboard',
+		'account',
 		'rocket_insights',
 		'page_cdn',
 		'file_optimization',

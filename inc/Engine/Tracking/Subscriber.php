@@ -32,7 +32,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings'     => [ 'track_option_change', 10, 2 ],
 			'wp_rocket_upgrade'                    => [ 'migrate_optin', 10, 2 ],
-			'rocket_dashboard_after_account_data'  => [ 'render_optin', 8 ],
+			'rocket_account_after_license_info'    => [ 'render_optin', 20 ],
 			'wp_ajax_rocket_toggle_optin'          => [ 'ajax_toggle_optin' ],
 			'admin_enqueue_scripts'                => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],

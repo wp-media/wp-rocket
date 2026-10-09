@@ -37,24 +37,6 @@
 
     &#dashboard{ // Exception for dashboard
 
-        #wpr-action-refresh_account{
-            &:before{
-                transition: all 200ms ease-out;
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            &.wpr-isLoading:before{
-                animation: loading 1.2s infinite;
-            }
-            &.wpr-isHidden:before{
-                opacity: 0;
-            }
-            &.wpr-isShown:before{
-                opacity: 1;
-            }
-        }
-
         @keyframes loading {
             from{transform: rotate(0);}
             to{transform: rotate(360deg);}

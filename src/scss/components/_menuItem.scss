@@ -124,6 +124,7 @@
     &-advanced_cache{ @extend .wpr-icon-rules; }
     &-database{ @extend .wpr-icon-database; }
     &-page_cdn{ @extend .wpr-icon-cdn; }
+    &-account{ @extend .wpr-icon-user; }
     &-addons{ @extend .wpr-icon-addons; }
     &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
     &-heartbeat { @extend .wpr-icon-heartbeat; }

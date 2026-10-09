@@ -157,6 +157,7 @@ PageManager.prototype.change = function() {
 
     const pagesWithoutSubmit = [
         'dashboard',
+        'account',
         'addons',
         'database',
         'tools',
@@ -168,12 +169,13 @@ PageManager.prototype.change = function() {
 
     const pagesWithoutSidebarToggle = [
         'dashboard',
+        'account',
         'imagify',
         'page_cdn',
     ];
 
     // Exception for dashboard
-    if(this.pageId == "dashboard"){
+    if(this.pageId == "dashboard" || this.pageId == "account"){
         this.$sidebar.style.display = 'none';
         this.$content.classList.remove('isNotFull');
     }
