@@ -198,7 +198,18 @@ class Render extends Abstract_Render {
 			$items[ $item['id'] ] = $item;
 		}
 
-		$order   = [ 'dashboard', 'rocket_insights', 'page_cdn', 'cache', 'page_optimization', 'backend', 'settings', 'help', 'account' ];
+		$order = [
+			'dashboard',
+			'rocket_insights',
+			'page_cdn',
+			'cache',
+			'page_optimization',
+			'backend',
+			'settings',
+			'help',
+			'account',
+		];
+
 		$entries = [];
 
 		foreach ( $order as $id ) {
