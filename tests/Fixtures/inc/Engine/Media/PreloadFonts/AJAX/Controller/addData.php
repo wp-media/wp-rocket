@@ -10,6 +10,8 @@ return [
 				'preload_fonts' => [
 					'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
 					'https://fonts.googleapis.com/css?family=Roboto',
+					'fonts.gstatic.com/s/poppins/v13/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2',
+					'/fonts.gstatic.com/s/poppins/v13/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2',
 				]
 			]),
 		],
@@ -21,7 +23,6 @@ return [
 				'fonts' => json_encode(
 					[
 						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -37,7 +38,6 @@ return [
 				'fonts' => json_encode(
 					[
 						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'created_at'     => '2025-02-02 00:00:00',
@@ -138,7 +138,6 @@ return [
 				'fonts' => json_encode(
 					[
 						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -169,7 +168,6 @@ return [
 				'fonts' => json_encode(
 					[
 						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'last_accessed'  => '2025-02-02 00:00:00',
@@ -185,7 +183,6 @@ return [
 				'fonts' => json_encode(
 					[
 						'https://fonts.gstatic.com/s/raleway/v34/1Ptug8zYS_SKggPNyC0IT4ttDfA.woff2',
-						'https://fonts.googleapis.com/css?family=Roboto',
 					],
 				),
 				'created_at'     => '2025-02-02 00:00:00',
