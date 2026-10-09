@@ -4688,20 +4688,6 @@ div.wpr-tutorial-item {
   gap: 8px;
 }
 
-.wpr-dash-help {
-  position: relative;
-  display: inline-flex;
-  flex: 0 0 16px;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-}
-.wpr-dash-help__icon {
-  width: 16px;
-  height: 16px;
-  background: url("../img/wpr-question-filled.svg") no-repeat center/contain;
-}
-
 .wpr-dash-score,
 .wpr-dash-recs {
   margin-bottom: 32px;

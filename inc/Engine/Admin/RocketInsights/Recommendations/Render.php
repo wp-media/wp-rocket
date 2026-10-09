@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
 /**
  * Recommendations Render class.
@@ -23,23 +22,14 @@ class Render extends Abstract_Render {
 	private $data_manager;
 
 	/**
-	 * Beacon instance.
-	 *
-	 * @var Beacon
-	 */
-	private $beacon;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param string      $template_path Path to the template file.
 	 * @param DataManager $data_manager Recommendations data manager instance.
-	 * @param Beacon      $beacon Beacon instance.
 	 */
-	public function __construct( string $template_path, DataManager $data_manager, Beacon $beacon ) { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+	public function __construct( string $template_path, DataManager $data_manager ) { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
 		parent::__construct( $template_path );
 		$this->data_manager = $data_manager;
-		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -109,7 +99,6 @@ class Render extends Abstract_Render {
 			'state'           => 'loading',
 			'recommendations' => [],
 			'show_load_more'  => false,
-			'help'            => $this->beacon->get_suggest( 'rocket_insights' ),
 		];
 
 		if ( false !== $cached_data ) {

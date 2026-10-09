@@ -18,12 +18,6 @@ defined( 'ABSPATH' ) || exit;
 	<div class="wpr-dash-section-header">
 		<div class="wpr-dash-section-header__heading">
 			<h3 class="wpr-dash-section-header__title"><?php esc_html_e( 'Recommendations', 'rocket' ); ?></h3>
-			<?php if ( ! empty( $data['help'] ) ) : ?>
-				<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Dashboard" class="wpr-dash-help" target="_blank" rel="noopener noreferrer">
-					<span class="wpr-dash-help__icon" aria-hidden="true"></span>
-					<span class="screen-reader-text"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></span>
-				</a>
-			<?php endif; ?>
 		</div>
 	</div>
 

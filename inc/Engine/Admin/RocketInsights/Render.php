@@ -227,7 +227,6 @@ class Render extends Abstract_Render {
 				'can_add_url'   => $is_adding_page_allowed,
 				'reach_max_url' => ! $is_adding_page_allowed,
 				'status_text'   => $this->get_monitoring_status_text(),
-				'help'          => $this->beacon->get_suggest( 'rocket_insights' ),
 			]
 		);
 	}
