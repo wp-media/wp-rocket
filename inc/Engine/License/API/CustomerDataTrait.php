@@ -29,8 +29,8 @@ trait CustomerDataTrait {
 	 */
 	protected function get_customer_key(): string {
 		return ! empty( $this->options->get( 'consumer_key', '' ) )
-			? $this->options->get( 'consumer_key', '' )
-			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
+			? (string) $this->options->get( 'consumer_key', '' )
+			: (string) rocket_get_constant( 'WP_ROCKET_KEY', '' );
 	}
 
 	/**
@@ -44,7 +44,7 @@ trait CustomerDataTrait {
 	 */
 	protected function get_customer_email(): string {
 		return ! empty( $this->options->get( 'consumer_email', '' ) )
-			? $this->options->get( 'consumer_email', '' )
-			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
+			? (string) $this->options->get( 'consumer_email', '' )
+			: (string) rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
 	}
 }
