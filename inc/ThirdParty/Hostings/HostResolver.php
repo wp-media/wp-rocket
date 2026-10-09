@@ -131,6 +131,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
+			self::$hostname = 'siteground';
+			return 'siteground';
+		}
+
 		return '';
 	}
 
