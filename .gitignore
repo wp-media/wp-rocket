@@ -13,6 +13,7 @@ package-lock.json
 .pipeline-logs/
 .playwright-mcp/
 .playwright-cli/
+.claude/graph/
 
 # Claude Code user-local settings
 .claude/settings.local.json

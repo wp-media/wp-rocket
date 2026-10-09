@@ -1,1 +1,0 @@
-../skills/wordpress-compliance/SKILL.md
