@@ -185,6 +185,9 @@ class ServiceProvider extends AbstractServiceProvider {
 					'user',
 					'options',
 					'tracking',
+					'ri_render',
+					'ri_recommendations_render',
+					'ri_recommendations_data_manager',
 				]
 			);
 

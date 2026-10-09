@@ -52,14 +52,7 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 }
 ?>
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
-	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
-	</div>
-
 	<?php
-	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
-
 	if ( ! $rocket_box_is_dismissed ) :
 		?>
 	<div class="wpr-notice">
@@ -86,7 +79,15 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
-	<?php endif; ?>
+		<?php
+		// Mark the banner as seen on first render so it never shows again, even if it wasn't dismissed.
+		rocket_dismiss_box( 'rocket_activation_notice' );
+	endif;
+	?>
+	<div class="wpr-sectionHeader">
+		<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
+	</div>
+
 	<?php
 		/**
 		 * Fires before displaying the dashboard tab content
@@ -97,6 +98,14 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
+			<?php
+			/**
+			 * Fires in the main column of the dashboard tab content.
+			 *
+			 * @since 3.23.6
+			 */
+			do_action( 'rocket_dashboard_content' );
+			?>
 			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'My Account', 'rocket' ); ?></h3>

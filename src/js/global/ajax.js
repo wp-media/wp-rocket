@@ -428,11 +428,27 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	/**
+	 * Replaces the redesigned dashboard global score component with its freshly rendered HTML.
+	 *
+	 * @param {Object} scoreData Global score payload.
+	 * @param {string} scoreData.dashboard_html Rendered HTML of the dashboard global score component.
+	 */
+	function updateDashboardGlobalScore(scoreData) {
+		if (!scoreData?.dashboard_html) {
+			return;
+		}
+
+		$('.wpr-dash-score').replaceWith(scoreData.dashboard_html);
+	}
+
+	/**
 	 * Updates the global score UI widget or table row based on the selected menu.
 	 * When the dashboard or rocket insights menu is clicked, this function updates
 	 * the corresponding global score display after a short delay.
 	 */
 	function decideGlobalScoreToUpdate() {
+		updateDashboardGlobalScore(globalScoreData);
+
 		if ('' === globalScoreData.html) {
 			return;
 		}
@@ -479,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 					// Update all global score widget instances.
 					$('.wpr-global-score-widget').html(response.global_score_data.html);
+					updateDashboardGlobalScore(response.global_score_data);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
 

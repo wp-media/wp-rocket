@@ -62,6 +62,39 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
 	public function get_recommendations_widget( $cached_data ): string {
+		return $this->generate( 'partials/rocket-insights/recommendations/widget', $this->get_widget_data( $cached_data ) );
+	}
+
+	/**
+	 * Render the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return void
+	 */
+	public function render_dashboard_recommendations( $recommendations ): void {
+		echo $this->get_dashboard_recommendations( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return string
+	 */
+	public function get_dashboard_recommendations( $recommendations ): string {
+		return $this->generate(
+			'partials/rocket-insights/dashboard-recommendations',
+			$this->get_widget_data( $recommendations )
+		);
+	}
+
+	/**
+	 * Build the data passed to the recommendations templates.
+	 *
+	 * @param array|false $cached_data Recommendations data or false if not cached.
+	 * @return array
+	 */
+	private function get_widget_data( $cached_data ): array {
 		$widget_data = [
 			'state'           => 'loading',
 			'recommendations' => [],
@@ -71,10 +104,55 @@ class Render extends Abstract_Render {
 		if ( false !== $cached_data ) {
 			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
 			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
+			$widget_data['rows']            = array_map( [ $this, 'build_dashboard_row' ], $widget_data['recommendations'] );
 			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
 		}
 
-		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
+		return $widget_data;
+	}
+
+	/**
+	 * Build the table-list-row data of a recommendation, used by the dashboard component.
+	 *
+	 * @param array $recommendation Formatted recommendation.
+	 * @return array Row data for the table-list-row partial.
+	 */
+	private function build_dashboard_row( array $recommendation ): array {
+		$impact = '';
+
+		if ( ! empty( $recommendation['impact_tags'] ) ) {
+			$tags = '';
+
+			foreach ( $recommendation['impact_tags'] as $metric => $value ) {
+				$tags .= '<span class="wpr-dash-recs__tag" data-impact-value="' . esc_attr( (string) $value ) . '">' . esc_html( $metric ) . '</span>';
+			}
+
+			$impact = '<span class="wpr-dash-recs__impact"><span class="wpr-dash-recs__impact-label">' . esc_html__( 'Impact on', 'rocket' ) . '</span>' . $tags . '</span>';
+		}
+
+		$more_info = '';
+
+		if ( ! empty( $recommendation['learn_more_url'] ) ) {
+			$more_info = ' <a href="' . esc_url( $recommendation['learn_more_url'] ) . '" target="_blank" rel="noopener noreferrer">' . esc_html__( 'More info', 'rocket' ) . '</a>';
+		}
+
+		$content = '<div class="wpr-dash-recs__heading"><span class="wpr-dash-recs__title">' . esc_html( $recommendation['title'] ) . '</span>' . $impact . '</div>'
+			. '<p class="wpr-dash-recs__description">' . esc_html( $recommendation['description'] ) . $more_info . '</p>';
+
+		$activate = '<a class="wpr-dash-recs__activate wpr-recommendation-item__activate" href="' . esc_url( $recommendation['section'] ) . '" data-recommendation="' . esc_attr( $recommendation['option_slug'] ) . '">' . esc_html__( 'Activate', 'rocket' ) . '</a>';
+
+		return [
+			'class'   => 'wpr-dash-recs__item',
+			'columns' => [
+				[
+					'content' => $content,
+				],
+				[
+					'content' => $activate,
+					'type'    => 'actions',
+				],
+			],
+		];
 	}
 
 	/**

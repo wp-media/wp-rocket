@@ -15,12 +15,15 @@ $(document).ready(function(){
 	function updateRecommendationsWidget(data) {
 		const widget = $('.wpr-recommendations');
 
-		if (!widget || !data?.recommendations?.html) {
-			return;
+		if (widget.length && data?.recommendations?.html) {
+			// Update the widget content with the new recommendations HTML
+			widget.replaceWith(data.recommendations.html);
 		}
 
-		// Update the widget content with the new recommendations HTML
-		widget.replaceWith(data?.recommendations?.html);
+		// Update the redesigned dashboard recommendations component.
+		if (data?.recommendations?.dashboard_html) {
+			$('.wpr-dash-recs').replaceWith(data.recommendations.dashboard_html);
+		}
 	}
 
 
