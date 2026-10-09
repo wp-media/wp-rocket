@@ -80,7 +80,7 @@ Method : SUITCSS (modified)
 
 .wpr-optionHeader .wpr-title2 {
   padding-right: 0;
-  padding-left: 40px;
+  padding-left: 0;
 }
 
 .wpr-infoAction:before {
@@ -155,6 +155,26 @@ Method : SUITCSS (modified)
 .wpr-checkbox [type=checkbox]:checked + label:after {
   left: inherit;
   right: 2px;
+}
+
+.add-on-container--user-cache .wpr-addon-text {
+  margin-left: inherit;
+  margin-right: 48px;
+}
+@media (max-width: 1239px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 16px;
+  }
+}
+@media (max-width: 1083px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 48px;
+  }
+}
+@media (max-width: 783px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 0;
+  }
 }
 
 .wpr-radio {

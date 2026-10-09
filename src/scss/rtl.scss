@@ -119,7 +119,7 @@ Method : SUITCSS (modified)
 .wpr-optionHeader{
     .wpr-title2 {
         padding-right: 0;
-        padding-left: 40px;
+        padding-left: 0;
     }
 }
 
@@ -212,6 +212,26 @@ Method : SUITCSS (modified)
     [type="checkbox"]:checked + label:after {
         left: inherit;
         right: 2px;
+    }
+}
+
+// components/addon - user cache card
+.add-on-container--user-cache{
+    .wpr-addon-text{
+        margin-left: inherit;
+        margin-right: $space*6;
+
+        @include respond-to('md') {
+            margin-right: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-right: $space*6;
+        }
+
+        @include respond-to('xs') {
+            margin-right: 0;
+        }
     }
 }
 

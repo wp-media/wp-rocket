@@ -1952,7 +1952,7 @@ div.wpr-upgrade-websites.notstacked {
 \*-----------------------------------------------*/
 .wpr-sectionHeader {
   position: relative;
-  border-bottom: 1px solid #E0E4E9;
+  border-bottom: 1px solid #E2E5E9;
   padding-bottom: 24px;
 }
 .wpr-sectionHeader:before {
@@ -1966,19 +1966,24 @@ div.wpr-upgrade-websites.notstacked {
   background-color: #F56640;
 }
 .wpr-sectionHeader .wpr-title1 {
-  line-height: 48px;
+  display: flex;
+  align-items: center;
+  line-height: 32px;
+  letter-spacing: 0;
+  color: #0C0F1F;
 }
 .wpr-sectionHeader .wpr-title1:before {
-  display: inline-block;
+  flex: 0 0 48px;
   width: 48px;
   height: 48px;
   margin-right: 24px;
   background-color: #FDE0D9;
   background-size: 65%;
   color: #F56640;
+  font-size: 23px;
+  line-height: 48px;
   text-align: center;
-  border-radius: 3px;
-  vertical-align: middle;
+  border-radius: 4px;
 }
 .wpr-sectionHeader-title {
   margin-top: 8px;
@@ -2651,8 +2656,19 @@ div.wpr-upgrade-websites.notstacked {
     Addon style
 
 \*-----------------------------------------------*/
+.add-on-container .wpr-field + .wpr-field {
+  border-top-color: #E2E5E9;
+}
+.add-on-container .wpr-title3, .add-on-container .wpr-select label, .wpr-select .add-on-container label, .add-on-container .wpr-select select, .wpr-select .add-on-container select, .add-on-container .wpr-field--radio label, .wpr-field--radio .add-on-container label {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #0C0F1F;
+}
+
 .wpr-addon {
-  padding: 24px 0;
+  padding: 16px 0;
 }
 .wpr-addon .wpr-flex {
   align-items: flex-start;
@@ -2666,10 +2682,17 @@ div.wpr-upgrade-websites.notstacked {
   text-align: left;
 }
 .wpr-addon .wpr-addon-title {
-  margin-bottom: 16px;
-  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #0C0F1F;
 }
 .wpr-addon .wpr-field-description {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0;
+  color: #464F59;
   font-style: normal;
 }
 .wpr-addon .wpr-field-helper {
@@ -2732,7 +2755,28 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-addon .wpr-addon-text a {
   display: inline-block;
-  margin-top: 24px;
+  margin-top: 16px;
+}
+.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #0C0F1F;
+  text-decoration: none;
+}
+.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:before {
+  content: "";
+  width: 17px;
+  height: 17px;
+  background: url("../img/wpr-info-circle-filled.svg") no-repeat center/contain;
+}
+.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:hover, .wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:focus {
+  color: #0C0F1F;
+  text-decoration: underline;
 }
 .wpr-addon .wpr-addon-text .button {
   margin-top: 24px;
@@ -2743,6 +2787,34 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-addon .wpr-addon-text .wpr-add-on-helper a {
   margin-top: 0;
+}
+
+.add-on-container--user-cache .wpr-addon-logo {
+  flex: 0 0 96px;
+}
+.add-on-container--user-cache .wpr-addon-logo img {
+  display: block;
+  width: 96px;
+  height: 87px;
+  object-fit: cover;
+}
+.add-on-container--user-cache .wpr-addon-text {
+  margin-left: 48px;
+}
+@media (max-width: 1239px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-left: 16px;
+  }
+}
+@media (max-width: 1083px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-left: 48px;
+  }
+}
+@media (max-width: 783px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-left: 0;
+  }
 }
 
 .wpr-webp-addon .wpr-addon .wpr-addon-text a {

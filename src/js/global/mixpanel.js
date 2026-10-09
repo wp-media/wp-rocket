@@ -1,3 +1,8 @@
+// Page names reported to Mixpanel when they differ from the hash with underscores replaced by spaces.
+const PAGE_NAMES = {
+	advanced_cache: 'cache rules'
+};
+
 class RocketMixpanel {
 
 	trackedTabs = [
@@ -131,7 +136,7 @@ class RocketMixpanel {
 	_sendPageViewedEvent(source, newHash) {
 		mixpanel.track('Page Viewed', {
 			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
-			page_name: newHash.replace('_', ' '),
+			page_name: PAGE_NAMES[newHash] || newHash.replace('_', ' '),
 			source: source,
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,

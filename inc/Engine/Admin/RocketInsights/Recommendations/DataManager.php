@@ -70,7 +70,7 @@ class DataManager implements LoggerAwareInterface {
 		'schedule_automatic_cleanup'   => 'database',
 		'cdn'                          => 'page_cdn',
 		'control_heartbeat'            => 'heartbeat',
-		'cache_logged_user'            => 'addons',
+		'cache_logged_user'            => 'advanced_cache',
 		'minify_concatenate_js'        => 'file_optimization',
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
