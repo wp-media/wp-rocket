@@ -33,8 +33,8 @@ Locally, run every PHP command inside the wp-env tests container, never with a l
 
 | Setting | Value | Used by |
 |---|---|---|
-| Test command | `composer test-unit`, then `composer test-integration`. The full matrix (`composer run-tests`, 46 phpunit runs) is left to CI | dod |
-| Test — targeted subset | `composer test-unit -- --filter <Name>` and `vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <Group>` | implementer |
+| Test command | `composer test-unit`, then `composer test-integration`. The full matrix (`composer run-tests`, 46 phpunit runs) is left to CI | implementer, dod |
+| Test — targeted subset | `composer test-unit -- --filter <Name>` and `vendor/bin/phpunit --configuration tests/Integration/phpunit.xml.dist --group <Group>` | implementer, dod |
 | Lint command | `composer phpcs-changed`, then `composer phpcs` | implementer, dod |
 | Lint — auto-fix | `composer phpcs:fix` | implementer, dod |
 | Static analysis | `composer run-stan` | dod |
@@ -460,7 +460,7 @@ Agents MUST activate the relevant skill depending on the task:
 A dependency graph is generated at `.claude/graph/dependency-graph.json` (not tracked in git).
 
 Before exploring the codebase structure (finding a class, tracing dependencies, checking
-namespace boundaries), **read this file first**; if it is missing, generate it first. It contains:
+namespace boundaries), **read this file first**; if it is missing, generate it first. The graph contains:
 - `nodes`: per-file namespace, declared symbols, and imports.
 - `symbol_index`: maps every fully-qualified PHP class/interface/trait/enum to its file.
 
@@ -603,8 +603,7 @@ Single implementer for PHP and JS/CSS. Commit format and permissions: §5.1.
 - ❌ Running PHP tests or lint with a local PHP binary → ✅ run them in the wp-env container (see
   Project Configuration).
 - ❌ Running the full test matrix when the spec doesn't name tests → ✅ run the targeted unit and
-  integration tests for the changed code during your own iterations; the DoD check runs the full
-  `Test command`, and CI runs the full matrix.
+  integration tests for the changed code during your own iterations; CI runs the full matrix.
 - ❌ jQuery, inline event handlers or `innerHTML` in admin JS → ✅ vanilla DOM APIs, event delegation,
   data passed with `wp_localize_script()`.
 - ❌ `apply_filters()`, `get_option( 'wp_rocket_settings' )`, raw constants → ✅
@@ -633,7 +632,7 @@ services, BerlinDB tables, and plugin metadata.
 - `composer phpcs-changed` passes.
 - The DoD check runs the `Test command` (full unit, then integration suites). The targeted subset is
   for the implementer's iterations; CI runs the matrix.
-- Jest is not set up: the automated-tests check is N/A for JS-only changes.
+- Jest is not set up: no JS unit tests are expected, so a missing JS test is not a WARN.
 - The PR body follows `.claude/skills/orchestrator/refs/pr-template.md` with headings copied
   exactly. The `PR Template Checker` CI (`wp-media/pr-checklist-action`) fails otherwise. Ticking
   the Chore or Release type skips most of its checks, and filling "Unticked items justification"
