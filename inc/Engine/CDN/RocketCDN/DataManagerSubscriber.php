@@ -195,7 +195,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		// Sanitize and store values to avoid multiple sanitization.
 		$token      = sanitize_key( $user_data->rocketcdn->cdn_token );
-		$cdn_url    = esc_url_raw( $user_data->rocketcdn->cdn_url );
 		$website_id = (int) $user_data->rocketcdn->rocketcdn_website_id;
 
 		// Validate token length (must be 40 characters).
@@ -550,7 +549,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		}
 
 		$current_token = get_option( 'rocketcdn_user_token' );
-		$current_cname = $this->cdn_options->get_cdn_cnames();
 
 		if ( ! empty( $current_token ) ) {
 			$data['message'] = 'token_already_set';

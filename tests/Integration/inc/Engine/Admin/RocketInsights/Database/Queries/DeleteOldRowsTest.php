@@ -43,11 +43,9 @@ class DeleteOldRowsTest extends TestCase {
 		$ri_query = $container->get( 'ri_query' );
 
 		// Add test data.
-		$item_ids = [];
 		foreach ( $config['items'] as $item ) {
 			$item_id = $ri_query->add_item( $item );
 			$this->assertNotFalse( $item_id );
-			$item_ids[] = $item_id;
 		}
 
 		// Handle timestamp updates for deleteOldAccessedRows test.

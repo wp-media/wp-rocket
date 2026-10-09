@@ -16,8 +16,7 @@ class RuleFormatter {
 			return $css;
 		}
 
-		$block          = '';
-		$replaced_block = null;
+		$block = '';
 
 		$blocks = [];
 
