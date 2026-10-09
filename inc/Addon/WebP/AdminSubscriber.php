@@ -161,7 +161,12 @@ class AdminSubscriber extends AbstractWebp implements Subscriber_Interface {
 
 		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			// 1.
-			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
+			if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
+				$imagify_link = '<a href="#media">';
+			} else {
+				// The Imagify page is not displayed.
+				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
+			}
 
 			$cache_webp_field['description'] = sprintf(
 			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
