@@ -319,7 +319,7 @@ a:focus, button:focus {
   content: "\e918";
 }
 
-.wpr-icon-user:before {
+.wpr-icon-user:before, #wpr-nav-account:before {
   content: "\e919";
 }
 
@@ -657,20 +657,6 @@ a:focus, button:focus {
   .wpr-Page-col--fixed {
     margin-left: 0;
   }
-}
-.wpr-Page#dashboard #wpr-action-refresh_account:before {
-  transition: all 200ms ease-out;
-  opacity: 1;
-  transform: translateY(0);
-}
-.wpr-Page#dashboard #wpr-action-refresh_account.wpr-isLoading:before {
-  animation: loading 1.2s infinite;
-}
-.wpr-Page#dashboard #wpr-action-refresh_account.wpr-isHidden:before {
-  opacity: 0;
-}
-.wpr-Page#dashboard #wpr-action-refresh_account.wpr-isShown:before {
-  opacity: 1;
 }
 @keyframes loading {
   from {
@@ -5474,6 +5460,242 @@ div.wpr-tutorial-item {
   width: 14px;
   height: 14px;
   font-size: 14px;
+}
+
+/*-----------------------------------------------*\
+
+    Account page
+
+\*-----------------------------------------------*/
+.wpr-account .wpr-sectionHeader .wpr-title1:before {
+  content: "";
+  background-image: url("../img/wpr-user.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
+}
+.wpr-account-section {
+  margin-top: 32px;
+}
+.wpr-account-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.wpr-account-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #F56640;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.wpr-account .wpr-infoAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0;
+  font-weight: 700;
+  color: #464F59;
+  font-size: 0.75rem;
+  line-height: 1.3333333333;
+}
+.wpr-account .wpr-infoAction:before {
+  position: static;
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+.wpr-account .wpr-infoAction:hover, .wpr-account .wpr-infoAction:focus {
+  color: #F56640;
+}
+.wpr-account #wpr-action-refresh_account:before {
+  transition: all 200ms ease-out;
+  opacity: 1;
+  transform: translateY(0);
+}
+.wpr-account #wpr-action-refresh_account.wpr-isLoading:before {
+  animation: loading 1.2s infinite;
+}
+.wpr-account #wpr-action-refresh_account.wpr-isHidden:before {
+  opacity: 0;
+}
+.wpr-account #wpr-action-refresh_account.wpr-isShown:before {
+  opacity: 1;
+}
+.wpr-account-card {
+  padding: 15px;
+  background: #F9FAFB;
+  border: 1px solid #E2E5E9;
+  border-radius: 4px;
+  color: #464F59;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+}
+.wpr-account-card--license {
+  padding-bottom: 0;
+}
+.wpr-account-card--license .wpr-account-row:last-child {
+  padding-bottom: 11px;
+}
+.wpr-account-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wpr-account-row + .wpr-account-row {
+  padding: 12px 0;
+  border-top: 1px solid #E2E5E9;
+}
+.wpr-account-row--license {
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.wpr-account-row--split {
+  gap: 16px;
+  justify-content: space-between;
+}
+@media (max-width: 783px) {
+  .wpr-account-row--license, .wpr-account-row--split {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+.wpr-account-license {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.wpr-account-license p {
+  margin: 4px 0 -4px;
+  color: #464F59;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+}
+.wpr-account-license .wpr-license-upgrade-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+}
+.wpr-account-line {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.wpr-account-label {
+  color: #0C0F1F;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+}
+.wpr-account-partner img {
+  vertical-align: middle;
+}
+.wpr-account-value {
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.3333333333;
+}
+.wpr-account-value.wpr-isValid {
+  color: #31A670;
+}
+.wpr-account-value.wpr-isInvalid {
+  color: #D33F49;
+}
+.wpr-account-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  background: #EBFBF5;
+  border-radius: 2px;
+  color: #31A670;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 1.4545454545;
+}
+.wpr-account-plan {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.wpr-account-planItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.wpr-account-planLabel {
+  color: #0C0F1F;
+  font-weight: 600;
+}
+.wpr-account-planValue {
+  color: #464F59;
+}
+.wpr-account-planValue.wpr-isValid {
+  color: #31A670;
+}
+.wpr-account-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 40px;
+  padding: 6px 12px;
+  background: #F56640;
+  border: 0;
+  border-radius: 4px;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  transition: filter 200ms ease-out;
+  -webkit-transition: filter 200ms ease-out;
+}
+.wpr-account-button:hover, .wpr-account-button:focus {
+  color: #fff;
+  filter: brightness(0.95);
+}
+.wpr-account-button--neutral {
+  background: #fff;
+  color: #0C0F1F;
+}
+.wpr-account-button--neutral:hover, .wpr-account-button--neutral:focus {
+  color: #0C0F1F;
+}
+.wpr-account .wpr-field {
+  padding: 0;
+}
+.wpr-account .wpr-field-description {
+  margin: 8px 0 -4px;
+  color: #464F59;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+}
+.wpr-account .wpr-field-description .wpr-js-popin {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
 }
 
 /*-----------------------------------------------*\

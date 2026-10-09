@@ -74,7 +74,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_license_info'         => 'display_upgrade_section',
+			'rocket_account_license_info'           => 'display_upgrade_section',
 			'rocket_settings_page_footer'           => 'display_upgrade_popin',
 			'rocket_menu_title'                     => [
 				[ 'add_notification_bubble', 10, 2 ],
