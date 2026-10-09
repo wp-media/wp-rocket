@@ -34,6 +34,8 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_nopriv_rocket_beacon'       => 'add_data',
 			'wp_ajax_rocket_check_beacon'        => 'check_data',
 			'wp_ajax_nopriv_rocket_check_beacon' => 'check_data',
+			'wp_ajax_rocket_beacon_nonce'        => 'add_nonce',
+			'wp_ajax_nopriv_rocket_beacon_nonce' => 'add_nonce',
 		];
 	}
 
@@ -53,5 +55,23 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function check_data() {
 		$this->processor->check_data();
+	}
+
+	/**
+	 * Callback for returning a fresh nonce to the beacon script.
+	 *
+	 * The nonce embedded in the cached page HTML is generated at page render time and
+	 * expires after 12-24 hours, while the page cache can live much longer. This lets
+	 * the beacon recover from a 403 on the check/save endpoints by fetching a fresh
+	 * nonce instead of failing for the whole lifetime of the cache file.
+	 *
+	 * @return void
+	 */
+	public function add_nonce() {
+		wp_send_json_success(
+			[
+				'nonce' => wp_create_nonce( 'rocket_beacon' ),
+			]
+		);
 	}
 }
