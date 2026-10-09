@@ -82,9 +82,6 @@ Method : SUITCSS (modified)
   padding-right: 0;
   padding-left: 0;
 }
-.wpr-optionHeader .wpr-title2 + .wpr-infoAction--help {
-  margin: 0 8px 0 auto;
-}
 
 .wpr-infoAction:before {
   right: -26px;
@@ -182,7 +179,7 @@ Method : SUITCSS (modified)
 
 .wpr-radio {
   padding-left: 0;
-  padding-right: 44px;
+  padding-right: 88px;
 }
 .wpr-radio [type=checkbox]:not(:checked),
 .wpr-radio [type=checkbox]:checked {
@@ -190,34 +187,52 @@ Method : SUITCSS (modified)
 }
 .wpr-radio [type=checkbox]:not(:checked) + label:before,
 .wpr-radio [type=checkbox]:checked + label:before {
-  left: auto;
+  left: inherit;
   right: 0;
 }
 .wpr-radio [type=checkbox]:not(:checked) + label:after,
 .wpr-radio [type=checkbox]:checked + label:after {
-  left: auto;
-  right: 2px;
+  left: inherit;
+  right: 3px;
 }
 .wpr-radio [type=checkbox]:checked + label:after {
-  right: 14px;
+  right: 33px;
+}
+.wpr-radio [type=checkbox]:checked + label .wpr-radio-ui,
+.wpr-radio [type=checkbox]:not(:checked) + label .wpr-radio-ui:before,
+.wpr-radio [type=checkbox]:checked + label .wpr-radio-ui:after {
+  right: 4px;
+}
+.wpr-radio [type=checkbox]:not(:checked) + label .wpr-radio-ui:before {
+  right: 27px;
 }
 .wpr-radio--reverse {
   padding-left: 0;
-  padding-right: 44px;
+  padding-right: 72px;
 }
 .wpr-radio--reverse [type=checkbox]:not(:checked) + label:before,
 .wpr-radio--reverse [type=checkbox]:checked + label:before {
   right: 0;
-  left: auto;
+  left: inherit;
 }
 .wpr-radio--reverse [type=checkbox]:not(:checked) + label:after,
 .wpr-radio--reverse [type=checkbox]:checked + label:after {
-  right: 14px;
-  left: auto;
+  right: 33px;
+  left: inherit;
 }
 .wpr-radio--reverse [type=checkbox]:checked + label:after {
-  right: 2px;
-  left: auto;
+  right: 3px;
+  left: inherit;
+}
+.wpr-radio--reverse [type=checkbox]:checked + label .wpr-radio-ui,
+.wpr-radio--reverse [type=checkbox]:not(:checked) + label .wpr-radio-ui:before,
+.wpr-radio--reverse [type=checkbox]:checked + label .wpr-radio-ui:after {
+  right: 15px;
+  left: inherit;
+}
+.wpr-radio--reverse [type=checkbox]:not(:checked) + label .wpr-radio-ui:before {
+  right: 6px;
+  left: inherit;
 }
 
 .wpr-multiple .wpr-button {

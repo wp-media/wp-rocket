@@ -1977,7 +1977,7 @@ div.wpr-upgrade-websites.notstacked {
   width: 48px;
   height: 48px;
   margin-right: 24px;
-  background-color: #FFF1ED;
+  background-color: #FDE0D9;
   background-size: 65%;
   color: #F56640;
   font-size: 23px;
@@ -2022,9 +2022,6 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-optionHeader .wpr-infoAction {
   margin-right: 8px;
-}
-.wpr-optionHeader .wpr-title2 + .wpr-infoAction--help {
-  margin: 0 auto 0 8px;
 }
 
 .wpr-optionHeader.wpr-isHidden {
@@ -2136,17 +2133,12 @@ div.wpr-upgrade-websites.notstacked {
   -webkit-transition: color 200ms ease-out;
 }
 .wpr-infoAction--help {
-  display: block;
-  flex: 0 0 auto;
-  align-self: center;
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  text-indent: 100%;
-  white-space: nowrap;
-  background: url("../img/wpr-question-filled.svg") no-repeat center/contain;
+  text-transform: uppercase;
+  color: #02707F;
+  font-weight: bold;
+  font-size: 0.75rem;
+  line-height: 2;
+  letter-spacing: 0;
 }
 @media (max-width: 783px) {
   .wpr-infoAction--help {
@@ -2154,7 +2146,7 @@ div.wpr-upgrade-websites.notstacked {
   }
 }
 .wpr-infoAction--help:before {
-  display: none;
+  color: #1EADBF;
 }
 .wpr-infoAction:hover, .wpr-infoAction:focus {
   color: #F56640;
@@ -2162,15 +2154,6 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-infoAction:hover:before, .wpr-infoAction:focus:before {
   color: #FFA58B;
-}
-
-.wpr-infoAction--help:hover, .wpr-infoAction--help:focus {
-  opacity: 0.7;
-}
-.wpr-infoAction--help:focus-visible {
-  outline: 2px solid #182352;
-  outline-offset: 2px;
-  border-radius: 50%;
 }
 
 /*-----------------------------------------------*\
@@ -5441,7 +5424,7 @@ div.wpr-tutorial-item {
 
 .wpr-cdn-mode-toggle {
   flex-shrink: 0;
-  height: 16px;
+  height: 22px;
 }
 .wpr-cdn-mode-toggle label {
   display: block;
@@ -5652,13 +5635,12 @@ div.wpr-tutorial-item {
 
 /*-----------------------------------------------*\
 
-    Custom radio (switch on/off)
+    Custom radio (radio on/off)
 
 \*-----------------------------------------------*/
 .wpr-radio {
   position: relative;
-  min-height: 16px;
-  padding-left: 44px;
+  padding-left: 88px;
 }
 .wpr-radio label {
   user-select: none;
@@ -5675,61 +5657,112 @@ div.wpr-tutorial-item {
 .wpr-radio [type=checkbox]:checked + label:after {
   content: "";
   position: absolute;
-  top: 50%;
 }
 .wpr-radio [type=checkbox]:not(:checked) + label:before,
 .wpr-radio [type=checkbox]:checked + label:before {
   left: 0;
-  width: 28px;
-  height: 16px;
-  margin-top: -8px;
-  background: #D4D9DD;
-  border-radius: 9999px;
+  width: 52px;
+  height: 22px;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #444444;
   transition: all 150ms ease-out;
   -webkit-transition: all 150ms ease-out;
 }
 .wpr-radio [type=checkbox]:not(:checked) + label:after,
 .wpr-radio [type=checkbox]:checked + label:after {
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  margin-top: -6px;
+  width: 18px;
+  height: 18px;
   border-radius: 100%;
-  background: #F9FAFB;
+  background: #444444;
+  top: 3px;
+  left: 3px;
   transition: all 150ms ease-out;
   -webkit-transition: all 150ms ease-out;
 }
-.wpr-radio [type=checkbox]:checked + label:before {
-  background: #182352;
-}
-.wpr-radio [type=checkbox]:checked + label:after {
-  left: 14px;
+.wpr-radio [type=checkbox]:disabled + label:after,
+.wpr-radio [type=checkbox]:disabled + label:after {
+  background: #E0E4E9;
 }
 .wpr-radio [type=checkbox]:disabled + label:before,
-.wpr-radio [type=checkbox]:disabled + label:after {
-  opacity: 0.5;
+.wpr-radio [type=checkbox]:disabled + label:before {
+  border: 1px solid #E0E4E9;
 }
-.wpr-radio [type=checkbox]:focus-visible + label:before {
-  outline: 2px solid #182352;
-  outline-offset: 2px;
+.wpr-radio [type=checkbox]:checked + label:before {
+  border-color: #1EADBF;
+}
+.wpr-radio [type=checkbox]:checked + label:after {
+  background: #1EADBF;
+  left: 33px;
+}
+.wpr-radio [type=checkbox]:checked + label .wpr-radio-ui,
+.wpr-radio [type=checkbox]:not(:checked) + label .wpr-radio-ui:before,
+.wpr-radio [type=checkbox]:checked + label .wpr-radio-ui:after {
+  position: absolute;
+  left: 4px;
+  width: 52px;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-weight: bold;
+  font-size: 0.6875rem;
+  line-height: 2.1818181818;
+  transition: all 150ms ease-out;
+  -webkit-transition: all 150ms ease-out;
+}
+.wpr-radio [type=checkbox]:not(:checked) + label .wpr-radio-ui:before {
+  content: attr(data-l10n-inactive);
+  left: 27px;
+  color: #666666;
+}
+.wpr-radio [type=checkbox]:checked + label .wpr-radio-ui:after {
+  content: attr(data-l10n-active);
+  color: #02707F;
 }
 .wpr-radio--reverse {
-  padding-right: 44px;
+  padding-right: 72px;
   padding-left: 0;
 }
 .wpr-radio--reverse [type=checkbox]:not(:checked) + label:before,
 .wpr-radio--reverse [type=checkbox]:checked + label:before {
   right: 0;
-  left: auto;
+  left: inherit;
 }
 .wpr-radio--reverse [type=checkbox]:not(:checked) + label:after,
 .wpr-radio--reverse [type=checkbox]:checked + label:after {
-  right: 14px;
-  left: auto;
+  right: 33px;
+  left: inherit;
 }
 .wpr-radio--reverse [type=checkbox]:checked + label:after {
-  right: 2px;
-  left: auto;
+  right: 3px;
+  left: inherit;
+}
+.wpr-radio--reverse [type=checkbox]:checked + label .wpr-radio-ui,
+.wpr-radio--reverse [type=checkbox]:not(:checked) + label .wpr-radio-ui:before,
+.wpr-radio--reverse [type=checkbox]:checked + label .wpr-radio-ui:after {
+  right: -2px;
+  left: inherit;
+}
+.wpr-radio--reverse [type=checkbox]:not(:checked) + label .wpr-radio-ui:before {
+  right: -25px;
+  left: inherit;
+}
+.wpr-radio [type=checkbox]:not(:checked):focus + label:before {
+  border: 1px dashed #444444;
+}
+.wpr-radio [type=checkbox]:checked:focus + label:before {
+  border: 1px dashed #1EADBF;
+}
+.wpr-radio--tips [type=checkbox]:checked + label:before {
+  border-color: #3ECE9D;
+}
+.wpr-radio--tips [type=checkbox]:checked + label:after {
+  background: #3ECE9D;
+}
+.wpr-radio--tips [type=checkbox]:checked + label .wpr-radio-ui:after {
+  color: #00A66B;
+}
+.wpr-radio--tips [type=checkbox]:checked:focus + label:before {
+  border: 1px dashed #3ECE9D;
 }
 
 /*-----------------------------------------------*\

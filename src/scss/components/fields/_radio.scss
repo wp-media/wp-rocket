@@ -2,15 +2,14 @@
 
 /*-----------------------------------------------*\
 
-    Custom radio (switch on/off)
+    Custom radio (radio on/off)
 
 \*-----------------------------------------------*/
 
 
 .wpr-radio{
     position: relative;
-    min-height: $wpr-radio-track-height;
-    padding-left: $wpr-radio-track-width + $wpr-radio-gap;
+    padding-left: $space*11;
 
     label{
         user-select: none;
@@ -30,78 +29,152 @@
     [type="checkbox"]:checked + label:after {
         content: '';
         position: absolute;
-        top: 50%;
     }
 
-    // The track
+    // The box
     [type="checkbox"]:not(:checked) + label:before,
     [type="checkbox"]:checked + label:before {
-        left: 0;
-        width: $wpr-radio-track-width;
+        left:0;
+        width: 52px;
         height: $wpr-radio-track-height;
-        margin-top: -($wpr-radio-track-height / 2);
-        background: $cGreyLighter2;
-        border-radius: 9999px;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid $cGreyDark1;
         @include transition(all, 150ms);
     }
 
-    // The knob
+    // The ball
     [type="checkbox"]:not(:checked) + label:after,
     [type="checkbox"]:checked + label:after {
-        left: $wpr-radio-knob-inset;
-        width: $wpr-radio-knob-size;
-        height: $wpr-radio-knob-size;
-        margin-top: -($wpr-radio-knob-size / 2);
+        width: 18px;
+        height: 18px;
         border-radius: 100%;
-        background: $cGreyLight3;
+        background: $cGreyDark1;
+        top: 3px;
+        left: 3px;
         @include transition(all, 150ms);
     }
 
-    // Checked track
+  	// disabled radio
+	[type="checkbox"]:disabled + label:after,
+	[type="checkbox"]:disabled + label:after {
+		background: $cGrey;
+  	}
+
+	[type="checkbox"]:disabled + label:before,
+	[type="checkbox"]:disabled + label:before {
+	  border: 1px solid $cGrey;
+	}
+
+    // Checked box
     [type="checkbox"]:checked + label:before {
-        background: $cSurfacePrimary;
+        border-color: $cBlue;
     }
 
-    // Checked knob
+    // Checked ball
     [type="checkbox"]:checked + label:after {
-        left: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
+        background: $cBlue;
+        left: 33px;
     }
 
-    // Disabled
-    [type="checkbox"]:disabled + label:before,
-    [type="checkbox"]:disabled + label:after {
-        opacity: .5;
+    [type="checkbox"]:checked + label .wpr-radio-ui,
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        position: absolute;
+        left: 4px;
+        width: 52px;
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+        font-weight: bold;
+        @include font-size(11,24);
+        @include transition(all, 150ms);
     }
 
-    // Focus
-    [type="checkbox"]:focus-visible + label:before {
-        outline: 2px solid $cSurfacePrimary;
-        outline-offset: 2px;
+    // OFF text
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+        content: attr(data-l10n-inactive);
+        left: 27px;
+        color: $cGreyDark2;
     }
+
+    // ON text
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        content: attr(data-l10n-active);
+        color: $cBlueDark1;
+    }
+
 
     // Reverse label/checkbox
     &--reverse{
-        padding-right: $wpr-radio-track-width + $wpr-radio-gap;
+        padding-right: $space*9;
         padding-left: 0;
 
-        // The track
+        // The box
         [type="checkbox"]:not(:checked) + label:before,
         [type="checkbox"]:checked + label:before {
-            right: 0;
-            left: auto;
+            right:0;
+            left: inherit;
         }
 
-        // The knob
+        // The ball
         [type="checkbox"]:not(:checked) + label:after,
         [type="checkbox"]:checked + label:after {
-            right: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
-            left: auto;
+            right: 33px;
+            left: inherit;
         }
 
-        // Checked knob
+        // Checked ball
         [type="checkbox"]:checked + label:after {
-            right: $wpr-radio-knob-inset;
-            left: auto;
+            right: 3px;
+            left: inherit;
+        }
+
+        [type="checkbox"]:checked + label .wpr-radio-ui,
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            right: -2px;
+            left: inherit;
+        }
+
+        // OFF text
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+            right: -25px;
+            left: inherit;
+        }
+    }
+
+
+    // Focus
+    [type="checkbox"]:not(:checked):focus + label:before{
+        border: 1px dashed $cGreyDark1;
+    }
+
+    [type="checkbox"]:checked:focus + label:before {
+        border: 1px dashed $cBlue;
+    }
+
+
+
+
+    // Change color for tips
+    &--tips{
+        // Checked box
+        [type="checkbox"]:checked + label:before {
+            border-color: $cGreen;
+        }
+
+        // Checked ball
+        [type="checkbox"]:checked + label:after {
+            background: $cGreen;
+        }
+
+        // ON text
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            color: $cGreenDark1;
+        }
+
+        [type="checkbox"]:checked:focus + label:before {
+            border: 1px dashed $cGreen;
         }
     }
 }

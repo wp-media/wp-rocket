@@ -121,10 +121,6 @@ Method : SUITCSS (modified)
         padding-right: 0;
         padding-left: 0;
     }
-
-    .wpr-title2 + .wpr-infoAction--help{
-        margin: 0 $space 0 auto;
-    }
 }
 
 
@@ -242,7 +238,7 @@ Method : SUITCSS (modified)
 // components/fields/radio
 .wpr-radio{
     padding-left: 0;
-    padding-right: $wpr-radio-track-width + $wpr-radio-gap;
+    padding-right: $space*11;
 
     [type="checkbox"]:not(:checked),
     [type="checkbox"]:checked {
@@ -251,43 +247,67 @@ Method : SUITCSS (modified)
 
     [type="checkbox"]:not(:checked) + label:before,
     [type="checkbox"]:checked + label:before {
-        left: auto;
+        left:inherit;
         right: 0;
     }
 
     [type="checkbox"]:not(:checked) + label:after,
     [type="checkbox"]:checked + label:after {
-        left: auto;
-        right: $wpr-radio-knob-inset;
+        left: inherit;
+        right: 3px;
     }
 
     [type="checkbox"]:checked + label:after {
-        right: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
+        right: 33px;
+    }
+
+    [type="checkbox"]:checked + label .wpr-radio-ui,
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+    [type="checkbox"]:checked + label .wpr-radio-ui:after {
+        right: 4px;
+    }
+
+    // OFF text
+    [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+        right: 27px;
     }
 
     // Reverse label/checkbox
     &--reverse{
         padding-left: 0;
-        padding-right: $wpr-radio-track-width + $wpr-radio-gap;
+        padding-right: $space*9;;
 
-        // The track
+        // The box
         [type="checkbox"]:not(:checked) + label:before,
         [type="checkbox"]:checked + label:before {
-            right: 0;
-            left: auto;
+            right:0;
+            left: inherit;
         }
 
-        // The knob
+        // The ball
         [type="checkbox"]:not(:checked) + label:after,
         [type="checkbox"]:checked + label:after {
-            right: $wpr-radio-track-width - $wpr-radio-knob-size - $wpr-radio-knob-inset;
-            left: auto;
+            right: 33px;
+            left: inherit;
         }
 
-        // Checked knob
+        // Checked ball
         [type="checkbox"]:checked + label:after {
-            right: $wpr-radio-knob-inset;
-            left: auto;
+            right: 3px;
+            left: inherit;
+        }
+
+        [type="checkbox"]:checked + label .wpr-radio-ui,
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before,
+        [type="checkbox"]:checked + label .wpr-radio-ui:after {
+            right: 15px;
+            left: inherit;
+        }
+
+        // OFF text
+        [type="checkbox"]:not(:checked) + label .wpr-radio-ui:before {
+            right: 6px;
+            left: inherit;
         }
     }
 }

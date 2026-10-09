@@ -25,26 +25,19 @@
         @include transition(color,200ms);
     }
 
-    // Icon only. The "Need Help?" text stays in the markup as the accessible name.
     &--help{
-        display: block;
-        flex: 0 0 auto;
-        align-self: center;
-        width: 16px;
-        height: 16px;
-        padding: 0;
-        border: 0;
-        overflow: hidden;
-        text-indent: 100%;
-        white-space: nowrap;
-        background: url('../img/wpr-question-filled.svg') no-repeat center / contain;
+        text-transform: uppercase;
+        color: $cBlueDark1;
+        font-weight: bold;
+        @include font-size(12,24);
+        letter-spacing: 0;
 
         @include respond-to('xs') {
             display: none;
         }
 
         &:before{
-            display: none;
+            color: $cBlue;
         }
     }
 
@@ -56,18 +49,5 @@
         &:before{
             color: $cOrangeLight2;
         }
-    }
-}
-
-.wpr-infoAction--help{
-    &:hover,
-    &:focus{
-        opacity: .7;
-    }
-
-    &:focus-visible{
-        outline: 2px solid $cSurfacePrimary;
-        outline-offset: 2px;
-        border-radius: 50%;
     }
 }

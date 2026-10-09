@@ -1295,7 +1295,6 @@ class Page extends Abstract_Render {
 					'title'       => __( 'User Cache', 'rocket' ),
 					'description' => '',
 					'type'        => 'addons_container',
-					'help'        => $user_cache_beacon,
 					'page'        => 'advanced_cache',
 				],
 			]
