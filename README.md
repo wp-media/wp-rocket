@@ -25,6 +25,12 @@ You can use composer to install the plugin as a dependency:
 composer require wp-media/wp-rocket
 ```
 
+Then, in the plugin's folder, install the dependencies:
+```
+cd wp-content/plugins/wp-rocket/
+composer install --no-dev --no-scripts
+```
+
 To be able to validate your license and use the plugin, you will also have to manually define 2 constants in your wp-config.php file:
 
 - `WP_ROCKET_EMAIL` which is the email for your WP Rocket account
