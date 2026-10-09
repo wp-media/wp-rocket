@@ -2,147 +2,297 @@
 
 /*-----------------------------------------------*\
 
-    Navigation menu item
+    Navigation menu: standalone items, collapsible groups and their sub-items
 
 \*-----------------------------------------------*/
 
-.wpr-menuItem{
+// Shared by standalone items and group triggers.
+.wpr-menuItem:not(.wpr-menuItem--sub),
+.wpr-menuGroup-trigger {
     position: relative;
     display: flex;
-    flex-direction: column;
-    padding: $space*2 44px 18px 20px;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+    margin: 0;
+    // The design's 1px top border is inside the 16px padding.
+    padding: calc($space * 2 - 1px) $space*2 $space*2;
+    border: 0;
+    border-top: 1px solid $cGreyLighter1;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    text-align: start;
     text-decoration: none;
-    color: $cBlack;
-    border-top: 1px solid $cGrey;
-    border-left: 2px solid transparent;
-    position: relative;
+    color: $cTextPrimary;
+    cursor: pointer;
     @include transition(all, 100ms);
 
     @include respond-to('xs') {
-        width: 57px;
+        align-items: center;
+        justify-content: center;
         height: 50px;
         padding: 0;
     }
 
-    &:before{
-        position: absolute;
-        top: calc(50% - 12px);
-        right: 18px;
-        text-align: center;
-        @include font-size(23,23);
-        color: $cBlack;
-        opacity: 0.4;
-        @include transition(all, 150ms);
-    }
-
     &:hover,
-    &.isActive{
-        color: $cBlack;
+    &:focus-visible {
+        color: $cTextPrimary;
+        box-shadow: none;
+
+        .wpr-menuItem-title,
+        .wpr-menuItem-icon {
+            color: $cOrange;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid $cOrange;
+        outline-offset: -2px;
+    }
+
+    // Standalone item of the page being displayed.
+    &.isActive {
         background: $cWhite;
-        border-left: 2px solid $cOrange;
+        box-shadow: inset 2px 0 0 $cOrange;
 
-        .wpr-menuItem-title{
+        .wpr-menuItem-title,
+        .wpr-menuItem-icon {
             color: $cOrange;
         }
+    }
+}
 
-        &:before{
-            color: $cOrange;
-            opacity: 1;
-        }
+// Group trigger: the group is expanded, or holds the page being displayed.
+.wpr-menuGroup-trigger {
+    padding-bottom: $space;
+
+    // Guide line under the icon, shown while the group is open.
+    &:after {
+        content: '';
+        position: absolute;
+        top: 39px;
+        bottom: 0;
+        inset-inline-start: 21.5px;
+        width: 1px;
+        background: $cGreyLighter1;
+        opacity: 0;
+        @include transition(opacity, 250ms);
     }
 
-    &:focus{
-        color: $cBlack;
-
-        &:before{
-            color: $cBlack;
-        }
+    @include respond-to('xs') {
+        padding-bottom: 0;
     }
+}
 
-    &-title{
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        @include font-size(13,19);
-        font-weight: bold;
-        letter-spacing: -0.08px;
-        text-transform: uppercase;
-        color: $cBlack;
+.wpr-menuItem-icon {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    height: 24px;
+    color: $cGreyLighter3;
 
-        @include respond-to('xs') {
-            display: none !important;
-        }
+    &:before {
+        content: '';
+        display: block;
+        width: 14px;
+        height: 14px;
+        background-color: currentColor;
+        -webkit-mask-image: var(--wpr-nav-icon);
+        mask-image: var(--wpr-nav-icon);
+        -webkit-mask-size: contain;
+        mask-size: contain;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
     }
+}
 
-    &-description{
-        margin-top: 2px;
-        color: $cGreyDark3;
-        @include font-size(13,16);
-        @include transition(all, 150ms);
+.wpr-menuItem-text {
+    display: flex;
+    flex: 1 0 0;
+    flex-direction: column;
+    min-width: 1px;
+    overflow: hidden;
+
+    @include respond-to('xs') {
+        display: none;
+    }
+}
+
+.wpr-menuItem-title {
+    display: flex;
+    align-items: center;
+    gap: $space;
+    @include font-size(16,24);
+    font-weight: 600;
+    color: $cTextPrimary;
+    white-space: nowrap;
+}
+
+.wpr-menuItem-description {
+    @include font-size(13,20);
+    color: $cGreyLighter3;
+}
+
+.wpr-menuGroup {
+    &-chevron {
+        flex: 0 0 auto;
+        width: 16px;
+        height: 16px;
+        background-color: $cGreyLighter3;
+        -webkit-mask-image: url("../img/wpr-nav-chevron-down.svg");
+        mask-image: url("../img/wpr-nav-chevron-down.svg");
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+        -webkit-mask-position: center;
+        mask-position: center;
+        @include transition(transform, 150ms);
 
         @include respond-to('xs') {
             display: none;
         }
     }
 
-    // Special for Addons
-    &.wpr-subMenuItem{
-        display: none;
-        padding: 10px 20px $space 25px;
+    // Slides open and closed: the row grows from 0fr to 1fr.
+    &-items {
+        display: grid;
+        grid-template-rows: 0fr;
+        visibility: hidden;
+        transition: grid-template-rows 250ms ease-out, visibility 0s linear 250ms;
 
         @include respond-to('xs') {
-            padding: $space 20px $space 23px;
-            height: 35px;
+            display: none;
+        }
+    }
+
+    &-list {
+        min-height: 0;
+        overflow: hidden;
+
+        // Bottom spacing of an open group, inside the sliding area so it animates with it.
+        &:after {
+            content: '';
+            display: block;
+            height: $space*1.5;
+        }
+    }
+
+    // Open groups are highlighted. Only one is open at a time.
+    &.is-open {
+        background: $cWhite;
+        box-shadow: inset 1px 0 0 $cGreyLighter1;
+
+        .wpr-menuGroup-chevron {
+            transform: rotate(180deg);
         }
 
-        .wpr-menuItem-title{
-            display: inline-block;
-            @include font-size(13,24);
-            text-transform: inherit;
-            font-weight: 600;
+        .wpr-menuGroup-trigger:after {
+            opacity: 1;
         }
 
-        &:before{
-            position: relative;
-            display: inline-block;
-            top: 2px;
-            right: 2px;
-            margin-right: 8px;
-            @include font-size(16,16);
+        .wpr-menuGroup-items {
+            grid-template-rows: 1fr;
+            visibility: visible;
+            transition-delay: 0s;
+        }
+
+        .wpr-menuItem-title,
+        .wpr-menuItem-icon {
+            color: $cOrange;
+        }
+    }
+
+    // Icon-only menu: groups cannot expand, so the group holding the current page is highlighted instead.
+    &.has-active {
+        @include respond-to('xs') {
+            background: $cWhite;
+            box-shadow: inset 2px 0 0 $cOrange;
+
+            .wpr-menuItem-title,
+            .wpr-menuItem-icon {
+                color: $cOrange;
+            }
+        }
+    }
+
+    @include transition(all, 250ms);
+
+    @media (prefers-reduced-motion: reduce) {
+        &-items,
+        &-chevron {
+            transition: none;
         }
     }
 }
 
+// Sub-items of a group.
+.wpr-menuItem--sub {
+    position: relative;
+    display: block;
+    height: 32px;
+    padding: 0 $space*2.5 0 $space*5;
+    @include font-size(14,32);
+    font-weight: 400;
+    text-decoration: none;
+    color: $cNavTextSecondary;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-// For each .itemMenu, ID will detect which icon will be used
-#wpr-nav{
-    &-dashboard{ @extend .wpr-icon-home; }
-    &-cache{ @extend .wpr-icon-files; &:before{right: 20px}}
-    &-file_optimization{ @extend .wpr-icon-stack; }
-    &-media{ @extend .wpr-icon-media; }
-    &-preload{ @extend .wpr-icon-refresh; }
-    &-advanced_cache{ @extend .wpr-icon-rules; }
-    &-database{ @extend .wpr-icon-database; }
-    &-page_cdn{ @extend .wpr-icon-cdn; }
-    &-addons{ @extend .wpr-icon-addons; }
-    &-tools{ @extend .wpr-icon-tools; &:before{right: 20px}}
-    &-heartbeat { @extend .wpr-icon-heartbeat; }
-    &-heartbeat:hover { @extend .wpr-icon-heartbeat-hover; }
-    &-heartbeat.isActive { @extend .wpr-icon-heartbeat-hover; }
-    &-rocket_insights { @extend .wpr-icon-rocket-insights; }
-    &-rocket_insights:hover { @extend .wpr-icon-rocket-insights-hover; }
-    &-rocket_insights.isActive { @extend .wpr-icon-rocket-insights-hover; }
-    &-imagify{ @extend .wpr-icon-imagify; }
-    &-imagify:hover{ @extend .wpr-icon-imagify-hover; }
-    &-imagify.isActive{ @extend .wpr-icon-imagify-hover; }
-    &-tutorials{ @extend .wpr-icon-tutorial; }
-    &-tutorials:hover{ @extend .wpr-icon-tutorial-hover; }
-    &-tutorials.isActive{ @extend .wpr-icon-tutorial-hover; }
-    &-plugins{ @extend .wpr-icons-plugins; }
-    &-plugins:hover{ @extend .wpr-icons-plugins-hover; }
-    &-plugins.isActive{ @extend .wpr-icons-plugins-hover; }
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        inset-inline-start: 22.5px;
+        width: 1px;
+        background: $cGreyLighter1;
+    }
+
+    &:hover,
+    &:focus-visible {
+        color: $cOrange;
+        box-shadow: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $cOrange;
+        outline-offset: -2px;
+    }
+
+    &.isActive {
+        font-weight: 500;
+        color: $cOrange;
+
+        &:before {
+            width: 2px;
+            background: $cOrange;
+        }
+    }
+
+    // Shown by JS when the matching add-on is enabled.
+    &.wpr-subMenuItem {
+        display: none;
+    }
 }
 
-.wpr-addonSubMenuItem {
-    @extend .wpr-icon-addon;
+// For each menu entry, its ID tells which icon is used.
+@mixin wpr-nav-icon($file) {
+    .wpr-menuItem-icon {
+        --wpr-nav-icon: url("../img/#{$file}.svg");
+    }
+}
+
+#wpr-nav{
+    &-dashboard{ @include wpr-nav-icon(wpr-nav-home); }
+    &-rocket_insights{ @include wpr-nav-icon(wpr-nav-lightbulb); }
+    &-page_cdn{ @include wpr-nav-icon(wpr-nav-globe); }
+    &-group-cache{ @include wpr-nav-icon(wpr-nav-refresh); }
+    &-group-page_optimization{ @include wpr-nav-icon(wpr-nav-zap); }
+    &-group-backend{ @include wpr-nav-icon(wpr-nav-database); }
+    &-group-settings{ @include wpr-nav-icon(wpr-nav-settings); }
+    &-group-help{ @include wpr-nav-icon(wpr-nav-book-open); }
+    &-account{ @include wpr-nav-icon(wpr-nav-user); }
 }

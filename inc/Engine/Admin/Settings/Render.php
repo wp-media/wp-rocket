@@ -93,6 +93,9 @@ class Render extends Abstract_Render {
 		 *     @type string $title            Menu item title.
 		 *     @type string $menu_description Menu item description.
 		 *     @type string $class            Menu item classes
+		 *     @type string $group            Identifier of the navigation group the item belongs to. Optional.
+		 *     @type string $url              External URL. When set, the item is a link instead of a page. Optional.
+		 *     @type string $target           Link target, used with `url`. Optional.
 		 * }
 		 */
 		$navigation = (array) apply_filters( 'rocket_settings_menu_navigation', $this->settings );
@@ -102,6 +105,9 @@ class Render extends Abstract_Render {
 			'title'            => '',
 			'menu_description' => '',
 			'class'            => '',
+			'group'            => '',
+			'url'              => '',
+			'target'           => '',
 		];
 
 		$navigation = array_map(
@@ -118,7 +124,130 @@ class Render extends Abstract_Render {
 			$navigation
 		);
 
-		echo $this->generate( 'navigation', $navigation ); // phpcs:ignore WordPress.Security.EscapeOutput -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'navigation', $this->group_navigation( $navigation ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Gets the collapsible navigation groups, in display order.
+	 *
+	 * Groups only hold other items, they have no page content of their own.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return array[] {
+	 *     Groups keyed by identifier.
+	 *
+	 *     @type string   $title            Group title.
+	 *     @type string   $menu_description Group summary.
+	 *     @type string[] $items            Identifiers of the items of the group, in display order.
+	 * }
+	 */
+	private function get_navigation_groups(): array {
+		return [
+			'cache'             => [
+				'title'            => __( 'Cache', 'rocket' ),
+				'menu_description' => __( 'Content caching', 'rocket' ),
+				'items'            => [ 'preload', 'advanced_cache' ],
+			],
+			'page_optimization' => [
+				'title'            => __( 'Page Optimization', 'rocket' ),
+				'menu_description' => __( 'Image, JavaScript & CSS', 'rocket' ),
+				'items'            => [ 'media', 'file_optimization' ],
+			],
+			'backend'           => [
+				'title'            => __( 'Backend', 'rocket' ),
+				'menu_description' => __( 'Database & Heartbeat', 'rocket' ),
+				'items'            => [ 'database', 'heartbeat' ],
+			],
+			'settings'          => [
+				'title'            => __( 'Settings', 'rocket' ),
+				'menu_description' => __( 'Add-ons & Tools', 'rocket' ),
+				'items'            => [ 'tools', 'addons' ],
+			],
+			'help'              => [
+				'title'            => __( 'Help', 'rocket' ),
+				'menu_description' => __( 'Support & resources', 'rocket' ),
+				'items'            => [ 'support', 'tutorials', 'documentation', 'plugins' ],
+			],
+		];
+	}
+
+	/**
+	 * Arranges the navigation items into the top-level entries of the menu.
+	 *
+	 * Items belonging to a known group are nested under it. Items without a group, or with an unknown one,
+	 * stay standalone, which keeps items added by third parties through `rocket_settings_menu_navigation` working.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array[] $navigation Normalized navigation items.
+	 *
+	 * @return array[] List of entries, each with a `type` of `item` or `group`.
+	 */
+	private function group_navigation( array $navigation ): array {
+		$groups   = $this->get_navigation_groups();
+		$children = [];
+		$items    = [];
+
+		foreach ( $navigation as $item ) {
+			if ( ! empty( $item['group'] ) && isset( $groups[ $item['group'] ] ) ) {
+				$children[ $item['group'] ][ $item['id'] ] = $item;
+				continue;
+			}
+
+			$items[ $item['id'] ] = $item;
+		}
+
+		$order = [
+			'dashboard',
+			'rocket_insights',
+			'page_cdn',
+			'cache',
+			'page_optimization',
+			'backend',
+			'settings',
+			'help',
+			'account',
+		];
+
+		$entries = [];
+
+		foreach ( $order as $id ) {
+			if ( isset( $groups[ $id ], $children[ $id ] ) ) {
+				$group  = $groups[ $id ];
+				$sorted = [];
+
+				foreach ( $group['items'] as $child_id ) {
+					if ( isset( $children[ $id ][ $child_id ] ) ) {
+						$sorted[] = $children[ $id ][ $child_id ];
+						unset( $children[ $id ][ $child_id ] );
+					}
+				}
+
+				// Items added to the group by third parties go after the known ones.
+				$sorted = array_merge( $sorted, array_values( $children[ $id ] ) );
+
+				$entries[] = [
+					'type'             => 'group',
+					'id'               => $id,
+					'title'            => $group['title'],
+					'menu_description' => $group['menu_description'],
+					'children'         => $sorted,
+				];
+				continue;
+			}
+
+			if ( isset( $items[ $id ] ) ) {
+				$entries[] = [ 'type' => 'item' ] + $items[ $id ];
+				unset( $items[ $id ] );
+			}
+		}
+
+		foreach ( $items as $item ) {
+			$entries[] = [ 'type' => 'item' ] + $item;
+		}
+
+		return $entries;
 	}
 
 	/**

@@ -14,7 +14,8 @@ class RocketMixpanel {
 		'imagify',
 		'tutorials',
 		'plugins',
-		'tools'
+		'tools',
+		'account'
 	];
 
 	constructor( config ) {

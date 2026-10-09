@@ -71,30 +71,30 @@ Method : SUITCSS (modified)
 
 
 
+// layout/Header
+.wpr-Header{
+    padding-left: 0;
+    padding-right: $space*2;
+    border-radius: 0 4px 4px 0;
+
+    @include respond-to('xs') {
+        padding-right: 0;
+    }
+
+    &-logo{
+        padding-right: 0;
+        padding-left: $space*2;
+    }
+}
+
 // components/menuItem
-.wpr-menuItem{
-    padding: $space*2 20px 18px 44px;
+.wpr-menuItem:not(.wpr-menuItem--sub).isActive,
+.wpr-menuGroup.has-active{
+    box-shadow: inset -2px 0 0 $cOrange;
+}
 
-    &:before{
-        right: inherit !important;
-        left: 18px !important;
-    }
-
-    &:after{
-        border-width: 12px 0 12px 10px;
-        border-color: transparent transparent transparent #fff;
-        left: 0;
-        right: inherit;
-        transform: translateX(-12px);
-    }
-
-    &:hover{
-        transform: translateX(0);
-    }
-
-    &.wpr-subMenuItem{
-        padding: 10px 25px $space 20px;
-    }
+.wpr-menuGroup.is-open{
+    box-shadow: inset -1px 0 0 $cGreyLighter1;
 }
 
 

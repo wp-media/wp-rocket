@@ -9,21 +9,32 @@
 .wpr-Header{
     display: flex;
     flex-direction: column;
-    flex: 0 0 225px;
+    flex: 0 0 274px;
+    padding-left: $space*2;
+    border-radius: 4px 0 0 4px;
+    background: $cGreyLight3;
 
     @include respond-to('xs') {
         flex: 0 0 50px;
+        padding-left: 0;
     }
 
     &-logo{
-        padding: $space*4 0 $space*3;
-        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 98px;
+        padding-right: $space*2;
 
         @include respond-to('xs') {
+            height: auto;
             padding: $space*2 0 $space;
         }
 
         &-desktop{
+            width: 148.15px;
+            height: 40px;
+
             @include respond-to('xs') {
                 display: none;
             }
@@ -41,11 +52,12 @@
 
     &-footer{
         margin-top: auto;
-        padding: $space*6 20px 0;
-        @include font-size(11,48);
+        padding: $space*5 $space*2 $space*2;
+        @include font-size(11,16);
         color: $cGreyDark2;
         opacity: 0.6;
         font-weight: bold;
+        text-transform: uppercase;
 
         @include respond-to('xs') {
             display: none;
