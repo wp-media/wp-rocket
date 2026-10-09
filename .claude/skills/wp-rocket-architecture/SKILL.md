@@ -174,8 +174,8 @@ Avoid:
 
 ## Git Operations
 
-Follow the policy defined in AGENTS.md §5.1. Outside the issue workflow, do not run `git commit` or `git push`.
+Follow the policy defined in AGENTS.md §5.1. Outside the delivery pipeline, do not run `git commit` or `git push`.
 
 ## Pull request descriptions
 
-Every PR body must follow `.claude/skills/issue-workflow/refs/pr-template.md` with its section headings copied exactly, including "What was tested" and "Mandatory Checklist". This applies outside the issue workflow too. The `PR Template Checker` CI (`wp-media/pr-checklist-action`) fails otherwise. Full rules are in `.github/instructions/pull-request.instructions.md`.
+Every PR body must follow `.claude/skills/orchestrator/refs/pr-template.md` with its section headings copied exactly, including "What was tested" and "Mandatory Checklist". This applies outside the delivery pipeline too. The `PR Template Checker` CI (`wp-media/pr-checklist-action`) fails otherwise. Full rules are in `.github/instructions/pull-request.instructions.md`.
