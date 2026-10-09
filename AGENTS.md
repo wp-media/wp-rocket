@@ -464,8 +464,10 @@ namespace boundaries), **read this file first**. It contains:
 - `nodes`: per-file namespace, declared symbols, and imports.
 - `symbol_index`: maps every fully-qualified PHP class/interface/trait/enum to its file.
 
-Build or refresh it from the repo root with the builder bundled in the
-`gas-delivery-pipeline-templates:knowledge-graph` skill (`--full` to force a rebuild).
+Build or refresh it from the repo root with `node "<knowledge-graph skill base directory>/scripts/build-graph.js"`
+(`--full` to force a rebuild). The builder is bundled in the
+`gas-delivery-pipeline-templates:knowledge-graph` skill; this repo does not contain
+`.claude/skills/knowledge-graph/`. If the builder can't run, fall back to grep/glob.
 
 ---
 
@@ -606,6 +608,8 @@ Single implementer for PHP and JS/CSS. Commit format and permissions: §5.1.
   data passed with `wp_localize_script()`.
 - ❌ `apply_filters()`, `get_option( 'wp_rocket_settings' )`, raw constants → ✅
   `wpm_apply_filters_typed()`, injected `Options_Data`, `rocket_get_constant()`.
+- ❌ Invoking the bare `docs` or `dod` skill (`anthropic-skills:docs` also exists) → ✅ use the fully
+  qualified `gas-delivery-pipeline-templates:docs` and `gas-delivery-pipeline-templates:dod`.
 
 ## Documentation conventions
 
