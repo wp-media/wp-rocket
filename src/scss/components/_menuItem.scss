@@ -126,7 +126,7 @@
     align-items: center;
     gap: $space;
     @include font-size(16,24);
-    font-weight: 590;
+    font-weight: 600;
     color: $cTextPrimary;
     white-space: nowrap;
 }
@@ -263,7 +263,7 @@
     }
 
     &.isActive {
-        font-weight: 510;
+        font-weight: 500;
         color: $cOrange;
 
         &:before {

@@ -1971,7 +1971,7 @@ div.wpr-upgrade-websites.notstacked {
   gap: 8px;
   font-size: 1rem;
   line-height: 1.5;
-  font-weight: 590;
+  font-weight: 600;
   color: #0C0F1F;
   white-space: nowrap;
 }
@@ -2092,7 +2092,7 @@ div.wpr-upgrade-websites.notstacked {
   outline-offset: -2px;
 }
 .wpr-menuItem--sub.isActive {
-  font-weight: 510;
+  font-weight: 500;
   color: #F56640;
 }
 .wpr-menuItem--sub.isActive:before {
@@ -4893,7 +4893,7 @@ div.wpr-tutorial-item {
   border-radius: 2px;
   font-size: 0.5625rem;
   line-height: 1.3333333333;
-  font-weight: 590;
+  font-weight: 600;
 }
 
 .wpr-cdn-tabs {
