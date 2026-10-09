@@ -352,7 +352,6 @@ class Plugin {
 			'mod_pagespeed',
 			'webp_subscriber',
 			'webp_admin_subscriber',
-			'ezoic',
 			'dynamic_lists_subscriber',
 			'cache_config',
 			'admin_api_subscriber',
