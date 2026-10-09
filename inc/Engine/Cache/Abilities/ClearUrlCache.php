@@ -138,7 +138,6 @@ class ClearUrlCache implements AbilitiesInterface {
 			if ( trailingslashit( $url ) === trailingslashit( home_url() ) ) {
 				rocket_clean_home();
 
-				$cleaned_urls[ $url ] = true;
 				continue;
 			}
 

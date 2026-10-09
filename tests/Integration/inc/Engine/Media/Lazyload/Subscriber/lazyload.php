@@ -22,9 +22,13 @@ class Test_Lazyload extends TestCase {
 		$this->iframes  = null;
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lazyload', 18 );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );

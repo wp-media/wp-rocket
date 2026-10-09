@@ -51,6 +51,10 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
 
 		self::installPreloadCacheTable();
@@ -71,6 +75,8 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

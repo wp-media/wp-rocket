@@ -67,6 +67,10 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->is_expired_soon() ) {
 			return;
 		}
@@ -117,6 +121,12 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
+		// Trial customers see the trial-ended banner right away: the auto-renew grace period below does not apply to them.
+		if ( $this->user->is_trial_customer() ) {
+			echo $this->generate( 'trial-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			return;
+		}
+
 		$expiration    = $this->user->get_license_expiration();
 		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
 
@@ -128,8 +138,8 @@ class Renewal extends Abstract_Render {
 			return;
 		}
 
-		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 		$renewal_url = $this->user->get_renewal_url();
+		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 
 		$message = null;
 
@@ -317,8 +327,6 @@ class Renewal extends Abstract_Render {
 		if ( ! isset( $prices->prices, $prices->prices->renewal ) ) {
 			return 0;
 		}
-
-		$prices = $prices->prices;
 
 		if ( $renewals['is_grandfather'] ) {
 			return $renewals['discount_percent']->is_grandfather;

@@ -10,7 +10,6 @@ use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -41,7 +40,6 @@ class Test_DisplayResellerLimitBanner extends TestCase {
 
 		$api_client              = Mockery::mock( APIClient::class );
 		$beacon                  = Mockery::mock( Beacon::class );
-		$user_client             = Mockery::mock( UserClient::class );
 		$tracking                = Mockery::mock( Tracking::class );
 		$options                 = Mockery::mock( Options_Data::class );
 		$subscription_controller = Mockery::mock( SubscriptionController::class );
@@ -52,7 +50,6 @@ class Test_DisplayResellerLimitBanner extends TestCase {
 			[
 				$api_client,
 				$beacon,
-				$user_client,
 				$tracking,
 				'',
 				$options,

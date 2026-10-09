@@ -76,6 +76,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
+		'rocket_cron_refresh_trial_customer_data',
 	];
 
 	public static function set_up_before_class() {

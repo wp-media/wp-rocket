@@ -135,7 +135,7 @@ class Subscriber implements Subscriber_Interface {
 		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php';
 
 		$config = [
-			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
+			'excludeUris'       => $this->get_uris_to_exclude(),
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
 			'fileExt'           => $images_ext . '|html|htm',
@@ -164,14 +164,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
-	 * @param bool $use_trailing_slash When true, uses trailing slash.
-	 *
 	 * @return string
 	 */
-	private function get_uris_to_exclude( $use_trailing_slash ) {
-		$site_url = site_url();
-		$uris     = get_rocket_cache_reject_uri( false, false );
-		$uris     = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
+	private function get_uris_to_exclude() {
+		$uris = get_rocket_cache_reject_uri( false, false );
+		$uris = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
 
 		$default = [
 			'/refer/',

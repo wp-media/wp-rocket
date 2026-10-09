@@ -72,7 +72,7 @@ abstract class AdminTestCase extends BaseTestCase {
 		$this->assertArrayHasKey( $priority, $wp_filter[ $event ]->callbacks );
 
 		$object = null;
-		foreach ( $wp_filter['post_tag_row_actions']->callbacks[ $priority ] as $key => $callback ) {
+		foreach ( $wp_filter['post_tag_row_actions']->callbacks[ $priority ] as $callback ) {
 			if ( isset( $callback['function'][1] ) && $method === $callback['function'][1] ) {
 				$object = $callback['function'][0];
 				break;

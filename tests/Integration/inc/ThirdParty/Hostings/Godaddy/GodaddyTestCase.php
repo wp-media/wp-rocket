@@ -2,20 +2,18 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class GodaddyTestCase extends TestCase {
+	use HttpRequestTrait;
 
 	public function set_up() {
 		parent::set_up();
-		add_filter( 'pre_http_request', [ $this, 'mock_response' ] );
+		$this->setup_http();
 	}
 
 	public function tear_down() {
+		$this->tear_down_http();
 		parent::tear_down();
-		remove_filter( 'pre_http_request', [ $this, 'mock_response' ]);
-	}
-
-	public function mock_response() {
-		return 'response';
 	}
 }
