@@ -117,6 +117,18 @@ class WPRocketUninstall {
 	];
 
 	/**
+	 * Prefixes of WP Rocket options with dynamic suffixes.
+	 *
+	 * @var array
+	 */
+	private $option_prefixes = [
+		// Two rows per honoured Fleet request, each recorded under a hash of a
+		// one-time identifier. {@see \WP_Rocket\Engine\Fleet\Subscriber} prunes
+		// these while installed; uninstalling takes the rest.
+		'fleet_bridge_jti_',
+	];
+
+	/**
 	 * WP Rocket scheduled events.
 	 *
 	 * @var array
@@ -140,6 +152,7 @@ class WPRocketUninstall {
 		'rocket_cdn_create_request_timeout',
 		'rocket_cdn_create_request_timeout_active',
 		'rocket_cron_refresh_trial_customer_data',
+		'rocket_fleet_purge_nonces',
 	];
 
 	/**
@@ -265,6 +278,12 @@ class WPRocketUninstall {
 		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
 
+		// A loop rather than array_walk: a method passed as a callable reads as
+		// an unused private method to static analysis.
+		foreach ( $this->option_prefixes as $option_prefix ) {
+			$this->delete_options_by_prefix( $option_prefix );
+		}
+
 		foreach ( $this->events as $event ) {
 			if ( ! wp_next_scheduled( $event ) ) {
 				continue;
@@ -290,6 +309,26 @@ class WPRocketUninstall {
 				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
 				$wpdb->esc_like( '_transient_' . $prefix ) . '%',
 				$wpdb->esc_like( '_transient_timeout_' . $prefix ) . '%'
+			)
+		);
+	}
+
+	/**
+	 * Deletes all options whose names start with the given prefix.
+	 *
+	 * Used for options with a dynamic suffix (e.g. fleet_bridge_jti_<hash>).
+	 *
+	 * @param string $prefix Option name prefix.
+	 * @return void
+	 */
+	private function delete_options_by_prefix( string $prefix ): void {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s",
+				$wpdb->esc_like( $prefix ) . '%'
 			)
 		);
 	}
