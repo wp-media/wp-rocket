@@ -333,9 +333,6 @@ class Controller extends Abstract_Render {
 	public function add_purge_cdn_cache_section( array $sections ): array {
 		$cdn_beacon = $this->beacon->get_suggest( 'purge_cdn' );
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-		}
 		$classes = [ 'rocketcdn', 'rocketcdn-shared-section' ];
 
 		$sections['purge_cdn_cache_section'] = [

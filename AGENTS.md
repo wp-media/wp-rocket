@@ -222,7 +222,7 @@ Test files **mirror** the source structure: `inc/Engine/Foo/Bar.php` → `tests/
 ## 4.2 Which test type to write
 
 - **Unit** — business logic in isolation; mock all dependencies with Brain\Monkey / Mockery; no WordPress context needed.
-- **Integration** — WordPress hooks, database operations, or hook interactions; extend the appropriate base class (`TestCase`, `AdminTestCase`, `AjaxTestCase`).
+- **Integration** — WordPress hooks, database operations, or hook interactions; extend the appropriate base class (`TestCase`, `AdminTestCase`, `AjaxTestCase`). These bases fail a test on any HTTP request it doesn't mock: key the responses by exact URL in `$this->config['http']` (vendor `HttpRequestTrait`), never with a bespoke `pre_http_request` filter or a Brain\Monkey `wp_remote_*` mock.
 
 ## 4.3 Key patterns
 

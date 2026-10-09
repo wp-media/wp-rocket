@@ -71,7 +71,7 @@ class Test_ParseSitemap extends TestCase {
 			->once()
 			->andReturn( $config['children'] );
 
-		foreach ( $config['links'] as $index => $link ) {
+		foreach ( $config['links'] as $link ) {
 			$this->controller->expects()->is_excluded_by_filter( $link )
 					->once()
 					->andReturn( $config['is_excluded'] );

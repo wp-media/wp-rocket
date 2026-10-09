@@ -72,6 +72,10 @@ class Controller implements ControllerInterface {
 		}
 
 		foreach ( (array) $hashes as $hash ) {
+			if ( 0 >= $max_lrc_hashes_number ) {
+				break;
+			}
+
 			if ( ! is_string( $hash ) ) {
 				continue;
 			}
