@@ -1124,7 +1124,6 @@ class Page extends Abstract_Render {
 		);
 
 		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
-		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 		$preload_links = $this->beacon->get_suggest( 'preload_links' );
 		$exclusions    = $this->beacon->get_suggest( 'preload_exclusions' );
 
@@ -1947,8 +1946,6 @@ class Page extends Abstract_Render {
 				)
 			);
 		}
-
-		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';

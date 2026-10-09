@@ -56,8 +56,6 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 		Filters\expectApplied( 'rocket_exclude_post_taxonomy' )
 			->once();
 
-		$urls  = [];
-		$index = 0;
 		foreach ( $taxonomies as $type => $taxonomy ) {
 			if ( ! $taxonomy->public ) {
 				continue;
@@ -83,8 +81,6 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 					->once()
 					->with( $term->slug, $taxonomy->name )
 					->andReturn( 'https://example.org/' . $term->slug );
-				$index++;
-				$urls[] = 'https://example.org/' . $term->slug;
 				Functions\expect( 'is_wp_error' )
 					->once()
 					->with( 'https://example.org/' . $term->slug )
@@ -110,8 +106,6 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 						->once()
 						->with( $term->parent , property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( 'https://example.org/' . $term->parent );
-					$index++;
-					$urls[] = 'https://example.org/' . $term->parent ;
 				} else {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()
