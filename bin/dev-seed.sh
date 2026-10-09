@@ -9,6 +9,16 @@ WP="npx @wordpress/env run cli wp"
 
 echo "Seeding test data..."
 
+# Fall back to the local PHPUnit credentials file if no env vars were passed in.
+LICENSE_FILE="tests/env/local/license.php"
+if [[ -z "${WP_ROCKET_TESTS_LICENSE_KEY:-}" && -f "$LICENSE_FILE" ]]; then
+  WP_ROCKET_TESTS_LICENSE_KEY="$(php -r "require '$LICENSE_FILE'; echo defined('ROCKET_KEY') ? ROCKET_KEY : '';")"
+  WP_ROCKET_EMAIL="${WP_ROCKET_EMAIL:-$(php -r "require '$LICENSE_FILE'; echo defined('ROCKET_EMAIL') ? ROCKET_EMAIL : '';")}"
+  if [[ -n "$WP_ROCKET_TESTS_LICENSE_KEY" ]]; then
+    echo "  Using credentials from $LICENSE_FILE."
+  fi
+fi
+
 # Set a dummy license key if provided via env var (enables PRO features).
 if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
   $WP eval "
@@ -20,11 +30,11 @@ if [[ -n "${WP_ROCKET_TESTS_LICENSE_KEY:-}" ]]; then
 
   # Set WP_ROCKET_EMAIL and WP_ROCKET_KEY as wp-config constants for dual validation.
   # Always set the key constant if we have a license key
-  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}" --raw
+  $WP config set WP_ROCKET_KEY "${WP_ROCKET_TESTS_LICENSE_KEY}"
 
   # Only set the email constant if explicitly provided
   if [[ -n "${WP_ROCKET_EMAIL:-}" ]]; then
-    $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL" --raw
+    $WP config set WP_ROCKET_EMAIL "$WP_ROCKET_EMAIL"
   fi
   echo "  wp-config constants set."
 fi

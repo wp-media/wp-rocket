@@ -207,6 +207,7 @@ After validating the acceptance criteria, do a brief smoke test of the main happ
 - **Settings page** — navigate to `/wp-admin/options-general.php?page=wprocket` and confirm it loads without errors.
 - **Dashboard** — navigate to `/wp-admin/` and confirm the admin bar and WP Rocket toolbar item render.
 - **Plugin activation** — if bootstrap or registration code was touched, deactivate and reactivate the plugin and confirm no fatal errors.
+- **Web-accessible file writes** — if the PR writes any file (backup, export, log, generated config) to a path under `wp-content/`, `curl -s -o /dev/null -w "%{http_code}" <the actual resulting URL>` for the file it just created (trigger the write first if needed) and confirm the response is 403/404, never 200 with the file content. Do this regardless of what access-control mechanism the PR added — an `.htaccess` doesn't protect Nginx, and an `index.php` stub in the directory does nothing for a direct request to the file itself (both web servers serve it straight from disk), so a live HTTP check against the real generated filename is the only real evidence.
 
 Skip any smoke test that is unrelated to the changed files.
 

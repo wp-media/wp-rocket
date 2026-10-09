@@ -6,7 +6,7 @@ namespace WP_Rocket\Addon\Cloudflare;
 use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\{Options, Options_Data};
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 class Subscriber implements Subscriber_Interface {
 	/**

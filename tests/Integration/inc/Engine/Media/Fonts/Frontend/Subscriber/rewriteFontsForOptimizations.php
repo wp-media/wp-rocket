@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Fonts\Frontend\Subscriber;
 
-use WP_Rocket\Tests\HTTPCallTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber::rewrite_fonts
  * @group HostFontsLocally
  */
 class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
-	use HttpCallTrait;
+	use HttpRequestTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFontsForOptimizations.php';
 

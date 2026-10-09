@@ -251,15 +251,6 @@
   aspect-ratio: 20/21;
 }
 
-.wpr-icon-mcp:before {
-  display: block;
-  content: "";
-  background: url("../img/mcp.svg") no-repeat center center;
-  background-size: contain;
-  width: 45px;
-  height: 45px;
-}
-
 .wp-list-table th.column-rocket_insights,
 .wp-list-table td.column-rocket_insights {
   width: 150px;
@@ -587,7 +578,7 @@
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled,
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions a.wpr-ri-action--disabled {
-  color: rgb(52.7487976323%, 58.84572697%, 66.4668886422%) !important;
+  color: #8796a9 !important;
   cursor: not-allowed;
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled:focus,

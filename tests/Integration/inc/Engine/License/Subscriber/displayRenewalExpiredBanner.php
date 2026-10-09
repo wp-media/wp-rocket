@@ -62,6 +62,8 @@ class DisplayRenewalExpiredBanner extends TestCase {
 			set_transient( 'rocket_renewal_banner_' . self::$user_id, 1, MINUTE_IN_SECONDS );
 		}
 
+		$this->white_label = $config['white_label'] ?? false;
+
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->getActualHtml()

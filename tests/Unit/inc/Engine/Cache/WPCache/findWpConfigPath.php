@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 
 use Brain\Monkey\Filters;
-use ReflectionMethod;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
@@ -12,7 +11,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
  *
  * @group  WPCache
  */
-class Test_FindWpConfigPath extends FileSystemTestCase {
+class Test_FindWpConfigPath extends FilesystemTestCase {
     protected $path_to_test_data = '/inc/Engine/Cache/WPCache/findWpconfigPath.php';
 
 	/**
@@ -38,8 +37,7 @@ class Test_FindWpConfigPath extends FileSystemTestCase {
 			$filter->andReturn( $this->config_file_name );
         }
 
-		$find_wpconfig_path = new ReflectionMethod( 'WP_Rocket\Engine\Cache\WPCache', 'find_wpconfig_path' );
-		$find_wpconfig_path->setAccessible( true );
+		$find_wpconfig_path = $this->get_reflective_method( 'find_wpconfig_path', WPCache::class );
 
         $actual = $find_wpconfig_path->invoke( new WPCache( $this->filesystem ) );
 

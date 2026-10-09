@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::cron_remove_failed_jobs
@@ -11,7 +12,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group  JobManager
  */
 class Test_CronRemoveFailedJobs extends TestCase {
-	private $add_to_queue_response;
+	use HttpRequestTrait;
 
 	public function set_up() {
 		parent::set_up();
@@ -19,15 +20,17 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		self::installUsedCssTable();
 		self::installPreloadCacheTable();
 
-		add_filter( 'pre_http_request', [ $this, 'edit_http_request' ], 10, 3 );
+		$this->setup_http();
 	}
 	public function tear_down() {
 		self::uninstallUsedCssTable();
 		self::uninstallPreloadCacheTable();
 
-		remove_filter( 'pre_http_request',  [$this, 'edit_http_request' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
@@ -38,7 +41,6 @@ class Test_CronRemoveFailedJobs extends TestCase {
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
-		$this->add_to_queue_response = $input['add_job_to_queue_response'];
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
@@ -56,10 +58,6 @@ class Test_CronRemoveFailedJobs extends TestCase {
 
 		$this->assertCount( count( $expected ), $resultUsedCssAfterClean );
 	}
-	public function edit_http_request($response, $args, $url) {
-		return $this->add_to_queue_response;
-	}
-
 	public function set_rucss_option() {
 		return 1;
 	}

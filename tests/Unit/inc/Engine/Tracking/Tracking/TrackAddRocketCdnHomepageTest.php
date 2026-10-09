@@ -62,12 +62,16 @@ class TrackAddRocketCdnHomepageTest extends TestCase {
 				return array_merge( (array) $defaults, (array) $args );
 			}
 		);
+		Functions\when( 'esc_url_raw' )->returnArg();
+		Functions\when( 'wp_unslash' )->returnArg();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		unset( $_SERVER['REQUEST_URI'] );
+
 		$this->optin->shouldReceive( 'can_track' )
 			->times( $expected['can_track_count'] )
 			->andReturn( $config['can_track'] );
@@ -82,6 +86,7 @@ class TrackAddRocketCdnHomepageTest extends TestCase {
 					[
 						'context'             => 'wp_plugin',
 						'interaction_channel' => ChannelDetector::CHANNEL_UI,
+						'path'                => '',
 						'button'              => 'rocket cdn add homepage',
 						'source'              => $config['source'],
 					]
