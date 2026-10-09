@@ -99,6 +99,14 @@ function PageManager(aElem) {
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
     this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
+
+    // Pages that were merged into another one keep working from old links and saved hashes.
+    var movedPages = { imagify: 'media' };
+    if (movedPages.hasOwnProperty(this.pageId)) {
+        this.pageId = movedPages[this.pageId];
+        history.replaceState(null, '', '#' + this.pageId);
+    }
+
     localStorage.setItem('wpr-hash', this.pageId);
 
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
