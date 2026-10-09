@@ -1,0 +1,204 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Imagify banner (Image & Media page)
+
+\*-----------------------------------------------*/
+
+.wpr-imagifyBanner {
+    display: flex;
+    flex-direction: column;
+    gap: $space*2;
+    margin-top: $space;
+    padding: $space*2 - 1px; // Figma draws the 1px border inside the 16px padding.
+    background: $cGreyLight3;
+    border: 1px solid $cGreyLighter1;
+    border-radius: 4px;
+    color: $cTextPrimary;
+    @include font-size(14,21);
+
+    p {
+        margin: 0;
+        @include font-size(14,21);
+    }
+
+    strong {
+        font-weight: 600;
+    }
+
+    &-header {
+        display: flex;
+        align-items: center;
+        gap: $space*3;
+        padding-bottom: $space*2;
+        border-bottom: 1px solid $cGreyLighter1;
+
+        @include respond-to('xs') {
+            flex-direction: column-reverse;
+            align-items: flex-start;
+        }
+    }
+
+    &-headerText {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    &-title {
+        font-weight: 600;
+
+        &--valid {
+            display: flex;
+            align-items: center;
+            gap: $space;
+
+            &::before {
+                content: "";
+                flex-shrink: 0;
+                width: 16px;
+                height: 16px;
+                background: url("../img/wpr-valid.svg") no-repeat center / contain;
+            }
+        }
+    }
+
+    &-description {
+        color: #464F59;
+    }
+
+    &-logo {
+        flex-shrink: 0;
+        width: 108.667px;
+        height: auto;
+    }
+
+    &-content {
+        display: flex;
+        align-items: center;
+        gap: $space*6;
+
+        @include respond-to('xs') {
+            flex-direction: column;
+            align-items: stretch;
+            gap: $space*3;
+        }
+    }
+
+    &-list {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: $space*4;
+        min-width: 0;
+    }
+
+    &-benefits {
+        display: flex;
+        flex-direction: column;
+        gap: $space;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    &-benefit {
+        display: flex;
+        align-items: center;
+        gap: $space*2;
+        min-height: 40px;
+        margin: 0;
+
+        img {
+            flex-shrink: 0;
+            width: 42px;
+            height: 32px;
+        }
+    }
+
+    &-learnMore {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: #464F59;
+        font-weight: 700;
+        text-decoration: none;
+        @include font-size(12,16);
+
+        &:hover,
+        &:focus {
+            color: #464F59;
+            text-decoration: underline;
+        }
+
+        img {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    &-cta {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $space*3;
+        flex-shrink: 0;
+        box-sizing: border-box;
+        width: 310px;
+        padding: $space*3;
+        background: $cWhite;
+        border-radius: 4px;
+
+        @include respond-to('xs') {
+            width: auto;
+        }
+    }
+
+    &-ctaText {
+        display: flex;
+        flex-direction: column;
+        gap: $space;
+        width: 100%;
+    }
+
+    &-image {
+        display: block;
+        width: 100%;
+        height: 137px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    // Overrides the generic .wpr-button look to match the banner design.
+    &-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 40px;
+        padding: 6px 12px;
+        letter-spacing: 0;
+        text-transform: none;
+        box-shadow: none;
+        @include font-size(12,16);
+
+        &:hover,
+        &:focus {
+            box-shadow: none;
+        }
+
+        &--arrow::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            background: url("../img/wpr-arrow-right.svg") no-repeat center / contain;
+        }
+    }
+}

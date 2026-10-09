@@ -24,6 +24,7 @@
 
     .wpr-title1{
         line-height: $space*6;
+        color: $cTextPrimary;
 
         &:before{
             display: inline-block;
@@ -34,8 +35,17 @@
 			background-size: 65%;
             color: $cOrange;
             text-align: center;
-            border-radius: 3px;
+            border-radius: 4px;
 			vertical-align: middle;
+        }
+
+        // Page header icon drawn from an SVG (Image & Media).
+        &.wpr-icon-zap:before{
+            content: '';
+            background-image: url('../img/wpr-zap.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 23px;
         }
     }
 

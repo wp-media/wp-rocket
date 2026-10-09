@@ -11,7 +11,6 @@ class RocketMixpanel {
 		'database',
 		'heartbeat',
 		'addons',
-		'imagify',
 		'tutorials',
 		'plugins',
 		'tools'
