@@ -71,8 +71,8 @@ Read by the `gas-wordpress-engineering` skills.
 | Text domain | `rocket` |
 | Custom capability map | `rocket_manage_options` (general plugin management, default), `rocket_purge_cache`, `rocket_preload_cache`, `rocket_remove_unused_css`, `rocket_regenerate_critical_css`, `rocket_purge_cloudflare_cache`, `rocket_purge_sucuri_cache`, `rocket_purge_posts`, `rocket_purge_terms`, `rocket_purge_users`. Never use `manage_options` for WP Rocket actions. New capabilities must be added here and to `phpcs.xml` |
 | REST namespace | `wp-rocket/v1` |
-| Hook-registration style | Subscriber + ServiceProvider (see §3). Never call `add_action` / `add_filter` directly |
-| Feature/module entry points | `inc/Engine/<Feature>/ServiceProvider.php` (see §3 module layout) |
+| Hook-registration style | Subscriber + ServiceProvider (see `wp-rocket-architecture`). Never call `add_action` / `add_filter` directly |
+| Feature/module entry points | `inc/Engine/<Feature>/ServiceProvider.php` (module layout in `wp-rocket-architecture`) |
 | Admin JS / data layer | Vanilla JS in `src/js` (built to `assets/js`), no jQuery. Views in `views/` |
 | PHPCS ruleset | `phpcs.xml` |
 | Unit test base class | `WP_Rocket\Tests\Unit\TestCase` (stubs `rocket_get_constant()` from `$this->constants`) |
@@ -168,47 +168,9 @@ If no PHPCS configuration exists, stop and ask.
 
 ## 2.2 PHPStan Custom Rules (MANDATORY)
 
-WP Rocket ships four custom PHPStan rules. Every change must satisfy them:
-
-| Rule | What it enforces |
-|---|---|
-| `DiscourageApplyFilters` | Use `wpm_apply_filters_typed()` instead of `apply_filters()` |
-| `DiscourageWPOptionUsage` | Use injected Option objects instead of `get_option()` directly |
-| `EnsureCallbackMethodsExistsInSubscribedEvents` | Every method name declared in `get_subscribed_events()` must exist in the class |
-| `NoHooksInORM` | No WordPress hooks (`add_action`, `add_filter`, `apply_filters`) inside database Query/Table classes |
-
-**`wpm_apply_filters_typed()` is mandatory for all new filters:**
-```php
-// ❌ Never — flagged by DiscourageApplyFilters
-$value = apply_filters( 'rocket_my_filter', $default );
-
-// ✅ Always — type-safe, with required docblock
-/**
- * Filters the custom value.
- *
- * @param string $value The custom value.
- * @return string
- */
-$value = wpm_apply_filters_typed( 'string', 'rocket_my_filter', $default );
-```
-
-Available types: `'string'`, `'integer'`, `'boolean'`, `'array'`, `'string[]'`.
-
-**Option objects are mandatory for reading plugin settings:**
-```php
-// ❌ Never
-$value = get_option( 'wp_rocket_settings' );
-
-// ✅ Always — inject Options_Data via constructor
-/** @var Options_Data */
-private $options;
-
-public function __construct( Options_Data $options ) {
-    $this->options = $options;
-}
-
-$value = $this->options->get( 'option_key', $default );
-```
+WP Rocket ships four custom PHPStan rules, and every change must satisfy them:
+`DiscourageApplyFilters`, `DiscourageWPOptionUsage`, `EnsureCallbackMethodsExistsInSubscribedEvents`
+and `NoHooksInORM`. What each enforces, with examples, is in the `wp-rocket-architecture` skill.
 
 ---
 
@@ -227,45 +189,10 @@ AI must NOT:
 
 Follow existing patterns:
 
-* **Subscriber** → implements `Subscriber_Interface`, declares `get_subscribed_events()`
-* **ServiceProvider** → extends `AbstractServiceProvider`, binds services in `register()`
-* **Context classes** → `inc/Engine/Feature/Context/Context.php` encapsulates "should this feature run?" logic; inject into Subscribers, never inline those checks
-* **Container wiring** → via ServiceProvider only, never manual `new ClassName()`
+* Subscriber, ServiceProvider, Context classes and Container wiring, the standard module
+  directory structure and BerlinDB table versioning: see the `wp-rocket-architecture` skill.
 * Strict types where already used
 * Namespacing: `WP_Rocket\Engine\*` for engine features, `WP_Rocket\Admin\*` for admin
-
-### Standard module directory structure
-
-When adding a new feature module, follow this layout:
-
-```
-inc/Engine/MyFeature/
-├── ServiceProvider.php       # binds all services and declares $provides
-├── Context/
-│   └── Context.php          # is this feature active? (injected into Subscriber)
-├── Admin/
-│   └── Subscriber.php       # admin-only hooks
-├── Frontend/
-│   ├── Controller.php       # business logic
-│   └── Subscriber.php       # frontend hooks
-└── Database/                # only when custom tables are needed
-    ├── Tables/MyFeature.php
-    ├── Queries/MyFeature.php
-    ├── Rows/MyFeature.php
-    └── Schemas/MyFeature.php
-```
-
-### BerlinDB table versioning
-
-Table version format is `YYYYMMDD`. Migrations are declared in `$upgrades`:
-
-```php
-protected $version = 20251006;
-protected $upgrades = [
-    20251006 => 'add_new_column',
-];
-protected function add_new_column(): void { /* ALTER TABLE … */ }
-```
 
 ---
 
@@ -544,7 +471,7 @@ Effort is sized by the grooming and challenger agents; this repo does not define
 - Multisite behavior
 - The cache serving or purge path
 - Writes to `.htaccess`, `wp-config.php`, `advanced-cache.php` or other server/WordPress config files
-- BerlinDB schema changes (`$version` / `$upgrades`, see §3)
+- BerlinDB schema changes (`$version` / `$upgrades`, see `wp-rocket-architecture`)
 - Settings (`wp_rocket_settings`) structure or migrations
 - Activation, deactivation, uninstall or upgrade routines
 - Licence, updater or remote API calls
