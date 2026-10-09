@@ -1936,7 +1936,7 @@ div.wpr-upgrade-websites.notstacked {
 \*-----------------------------------------------*/
 .wpr-sectionHeader {
   position: relative;
-  border-bottom: 1px solid #E2E5E9;
+  border-bottom: 1px solid #E0E4E9;
   padding-bottom: 24px;
 }
 .wpr-sectionHeader:before {
@@ -1958,7 +1958,7 @@ div.wpr-upgrade-websites.notstacked {
   width: 48px;
   height: 48px;
   margin-right: 24px;
-  background-color: #FFF1ED;
+  background-color: #FDE0D9;
   background-size: 65%;
   color: #F56640;
   text-align: center;
