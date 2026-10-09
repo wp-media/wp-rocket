@@ -146,7 +146,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
-		$subscription_data = $this->api_client->get_subscription_data();
+		$this->api_client->get_subscription_data();
 
 		if ( $this->subscription_controller->has_active_subscription() && $this->subscription_controller->is_paid() ) {
 			return;
@@ -157,17 +157,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 		$regular_price_monthly = '';
 		$regular_price_annual  = '';
 		$nopromo_variant       = '--no-promo';
-		$cta_small_class       = 'wpr-isHidden';
 		$cta_big_class         = '';
 
 		if ( get_user_meta( get_current_user_id(), 'rocket_rocketcdn_cta_hidden', true ) ) {
-			$cta_small_class = '';
-			$cta_big_class   = 'wpr-isHidden';
+			$cta_big_class = 'wpr-isHidden';
 		}
-
-		$small_cta_data = [
-			'container_class' => $cta_small_class,
-		];
 
 		// Get button URL for one-click checkout.
 		$button_url = $this->subscription_controller->get_express_checkout_url();
