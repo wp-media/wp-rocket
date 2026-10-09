@@ -1,6 +1,5 @@
 <?php
 
-use WP\MCP\Core\McpAdapter;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Container;
@@ -11,22 +10,6 @@ defined( 'ABSPATH' ) || exit;
 // Composer autoload.
 if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 	require WP_ROCKET_PATH . 'vendor/autoload.php';
-}
-
-$rocket_can_boot_mcp_adapter =
-	class_exists( McpAdapter::class )
-	&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
-	&& function_exists( 'wp_register_ability' )
-	&& function_exists( 'wp_get_ability' )
-	&& function_exists( 'wp_get_abilities' )
-	&& function_exists( 'wp_register_ability_category' );
-
-if ( $rocket_can_boot_mcp_adapter ) {
-	McpAdapter::instance();
-
-	if ( class_exists( \WPMedia\MCP\OAuth\Bootstrap::class ) ) {
-		\WPMedia\MCP\OAuth\Bootstrap::instance();
-	}
 }
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
@@ -41,6 +24,19 @@ require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'Action
  * @since 1.0
  */
 function rocket_init() {
+	// Boot MCP OAuth once all plugins are loaded, so the standalone MCP Adapter plugin is detected whatever the load order.
+	if (
+		class_exists( 'WP\MCP\Core\McpAdapter' )
+		&& class_exists( \WPMedia\MCP\OAuth\Bootstrap::class )
+		&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+		&& function_exists( 'wp_register_ability' )
+		&& function_exists( 'wp_get_ability' )
+		&& function_exists( 'wp_get_abilities' )
+		&& function_exists( 'wp_register_ability_category' )
+	) {
+		\WPMedia\MCP\OAuth\Bootstrap::instance();
+	}
+
 	// Nothing to do if autosave.
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
