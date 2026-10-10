@@ -185,18 +185,25 @@ return [
 			'exclusions_list'     => (object) [
 				'defer_js_inline_exclusions' => [
 					'MyApp/legacyInit',
+					'otherLegacyInit',
 				],
 			],
 		],
 		'html'     => <<<HTML
 	<script>
-		MyApp/legacyInit();
+		jQuery(function(){ MyApp/legacyInit(); });
+	</script>
+	<script>
+		jQuery(function(){ otherLegacyInit(); });
 	</script>
 HTML
 		,
 		'expected' => <<<HTML
 	<script>
-		MyApp/legacyInit();
+		jQuery(function(){ MyApp/legacyInit(); });
+	</script>
+	<script>
+		jQuery(function(){ otherLegacyInit(); });
 	</script>
 HTML
 		,
