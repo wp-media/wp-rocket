@@ -289,7 +289,8 @@ class DeferJS {
 		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list );
 
 		foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
-			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
+			// Escape for '/', the delimiter the pattern below is actually matched with.
+			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '/' ) . '|';
 		}
 
 		return rtrim( $inline_exclusions, '|' );
