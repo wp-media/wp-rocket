@@ -24,7 +24,6 @@
 
     .wpr-title1{
         line-height: $space*6;
-        color: $cTextPrimary;
 
         &:before{
             display: inline-block;
@@ -35,7 +34,7 @@
 			background-size: 65%;
             color: $cOrange;
             text-align: center;
-            border-radius: 4px;
+            border-radius: 3px;
 			vertical-align: middle;
         }
 

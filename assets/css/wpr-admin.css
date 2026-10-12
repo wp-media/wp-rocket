@@ -1951,7 +1951,6 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-sectionHeader .wpr-title1 {
   line-height: 48px;
-  color: #0C0F1F;
 }
 .wpr-sectionHeader .wpr-title1:before {
   display: inline-block;
@@ -1962,7 +1961,7 @@ div.wpr-upgrade-websites.notstacked {
   background-size: 65%;
   color: #F56640;
   text-align: center;
-  border-radius: 4px;
+  border-radius: 3px;
   vertical-align: middle;
 }
 .wpr-sectionHeader .wpr-title1.wpr-icon-zap:before {

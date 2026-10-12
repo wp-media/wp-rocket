@@ -67,7 +67,7 @@
     }
 
     &-description {
-        color: #464F59;
+        color: $cTextSecondary;
     }
 
     &-logo {
@@ -125,14 +125,14 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        color: #464F59;
+        color: $cTextSecondary;
         font-weight: 700;
         text-decoration: none;
         @include font-size(12,16);
 
         &:hover,
         &:focus {
-            color: #464F59;
+            color: $cTextSecondary;
             text-decoration: underline;
         }
 
