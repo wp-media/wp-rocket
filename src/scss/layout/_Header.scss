@@ -17,6 +17,9 @@
     @include respond-to('xs') {
         flex: 0 0 50px;
         padding-left: 0;
+        // Above the page content (z-index 1000), so the sub-menu panels are not covered by it.
+        position: relative;
+        z-index: 1001;
     }
 
     &-logo{
