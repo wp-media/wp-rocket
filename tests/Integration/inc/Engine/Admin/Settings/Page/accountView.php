@@ -16,9 +16,30 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group SettingsPage
  */
 class Test_AccountView extends TestCase {
+	private $original_hooks = [];
+
+	public function set_up() {
+		parent::set_up();
+
+		// Isolate the view from real subscribers (RocketCDN, Analytics, ...) hooked on the account hooks.
+		global $wp_filter;
+
+		foreach ( [ 'rocket_account_license_info', 'rocket_account_after_license_info' ] as $hook ) {
+			$this->original_hooks[ $hook ] = isset( $wp_filter[ $hook ] ) ? clone $wp_filter[ $hook ] : null;
+			remove_all_actions( $hook );
+		}
+	}
+
 	public function tear_down() {
-		remove_all_actions( 'rocket_account_license_info' );
-		remove_all_actions( 'rocket_account_after_license_info' );
+		global $wp_filter;
+
+		foreach ( $this->original_hooks as $hook => $original ) {
+			if ( null === $original ) {
+				unset( $wp_filter[ $hook ] );
+			} else {
+				$wp_filter[ $hook ] = $original;
+			}
+		}
 
 		parent::tear_down();
 	}
