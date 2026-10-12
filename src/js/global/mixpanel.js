@@ -21,6 +21,10 @@ class RocketMixpanel {
 		file_optimization: 'javascript & css'
 	};
 
+	sourceNames = {
+		file_optimization: 'javascript_css'
+	};
+
 	constructor( config ) {
 		this.config = config;
 	}
@@ -87,7 +91,7 @@ class RocketMixpanel {
 
 	_getSource( oldHash = '' ) {
 		if ( oldHash ) {
-			return `settings_${oldHash}`;
+			return `settings_${this.sourceNames[oldHash] || oldHash}`;
 		}
 
 		let source = this._getSourceFromQueryStringAndRemoveIt();
