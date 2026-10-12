@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
 /**
@@ -85,6 +86,12 @@ class Test_AddData extends TestCase {
 				return is_string( $value ) ? stripslashes( $value ) : $value;
 			}
 		);
+
+		if ( isset( $config['max_number'] ) ) {
+			Filters\expectApplied( 'rocket_preconnect_external_domains_number' )
+				->once()
+				->andReturn( $config['max_number'] );
+		}
 
 		$this->stubWpParseUrl();
 
