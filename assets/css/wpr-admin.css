@@ -1940,12 +1940,13 @@ div.wpr-upgrade-websites.notstacked {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
+  width: 14px;
   height: 24px;
   color: #738191;
 }
 .wpr-menuItem-icon:before {
   content: "";
-  display: block;
+  display: none;
   width: 14px;
   height: 14px;
   background-color: currentColor;
@@ -2166,29 +2167,56 @@ div.wpr-upgrade-websites.notstacked {
 #wpr-nav-dashboard .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-home.svg");
 }
+#wpr-nav-dashboard .wpr-menuItem-icon:before {
+  display: block;
+}
 #wpr-nav-rocket_insights .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-lightbulb.svg");
+}
+#wpr-nav-rocket_insights .wpr-menuItem-icon:before {
+  display: block;
 }
 #wpr-nav-page_cdn .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-globe.svg");
 }
+#wpr-nav-page_cdn .wpr-menuItem-icon:before {
+  display: block;
+}
 #wpr-nav-group-cache .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-refresh.svg");
+}
+#wpr-nav-group-cache .wpr-menuItem-icon:before {
+  display: block;
 }
 #wpr-nav-group-page_optimization .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-zap.svg");
 }
+#wpr-nav-group-page_optimization .wpr-menuItem-icon:before {
+  display: block;
+}
 #wpr-nav-group-backend .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-database.svg");
+}
+#wpr-nav-group-backend .wpr-menuItem-icon:before {
+  display: block;
 }
 #wpr-nav-group-settings .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-settings.svg");
 }
+#wpr-nav-group-settings .wpr-menuItem-icon:before {
+  display: block;
+}
 #wpr-nav-group-help .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-book-open.svg");
 }
+#wpr-nav-group-help .wpr-menuItem-icon:before {
+  display: block;
+}
 #wpr-nav-account .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-user.svg");
+}
+#wpr-nav-account .wpr-menuItem-icon:before {
+  display: block;
 }
 
 /*-----------------------------------------------*\

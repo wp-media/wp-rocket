@@ -95,12 +95,15 @@
     display: flex;
     flex: 0 0 auto;
     align-items: center;
+    width: 14px;
     height: 24px;
     color: $cGreyLighter3;
 
+    // Only shown for entries that have an icon (see wpr-nav-icon below), so items added through
+    // `rocket_settings_menu_navigation` get an empty, aligned slot instead of a filled square.
     &:before {
         content: '';
-        display: block;
+        display: none;
         width: 14px;
         height: 14px;
         background-color: currentColor;
@@ -352,6 +355,10 @@
 @mixin wpr-nav-icon($file) {
     .wpr-menuItem-icon {
         --wpr-nav-icon: url("../img/#{$file}.svg");
+
+        &:before {
+            display: block;
+        }
     }
 }
 
