@@ -501,6 +501,16 @@ function rocket_can_display_options() {
 /**
  * Create a hash from wp rocket options.
  *
+ * Cdn_state, cdn, and cdn_type are excluded: Subscriber::maybe_clear_cache() already
+ * reacts to every relevant change on this same update_option_wp_rocket_settings hook and
+ * decides the correct clearing scope (full or free-pages-only) for each transition -
+ * including any of these here would make rocket_after_save_options() redundantly force a
+ * full clear on top of whatever maybe_clear_cache() already decided, defeating the
+ * scoped-clear optimization for the nothing<->rocketcdn_free transition. cdn_state alone
+ * is not enough to exclude: it's a derived field computed from cdn/cdn_type (see
+ * CdnStateBridge::reconcile()), so a Free-toggle flip still changes cdn itself and would
+ * otherwise still change this hash even with cdn_state excluded.
+ *
  * @param array $value options.
  *
  * @return string
@@ -536,6 +546,9 @@ function rocket_create_options_hash( $value ) {
 		'preload_excluded_uri'        => true,
 		'cache_reject_uri'            => true,
 		'version'                     => true,
+		'cdn_state'                   => true,
+		'cdn'                         => true,
+		'cdn_type'                    => true,
 	];
 
 	// Create 2 arrays to compare.

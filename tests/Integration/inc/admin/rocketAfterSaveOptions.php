@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\admin;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering ::rocket_after_save_options
@@ -23,6 +24,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group SaveOptions
  */
 class Test_RocketAfterSaveOptions extends FilesystemTestCase {
+	use HttpRequestTrait;
+
 	protected $path_to_test_data = '/inc/admin/rocketAfterSaveOptions.php';
 
 	protected static $use_settings_trait = true;
@@ -45,6 +48,19 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		parent::set_up();
 
+		$this->setup_http();
+
+		// RocketCDN state left by earlier tests makes the settings save check the subscription; answer it like the
+		// wp_remote_get() stub this test used to have, so the check is a no-op.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => '', 'message' => '' ],
+				'cookies'  => [],
+			],
+		];
+
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
 
@@ -63,13 +79,13 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->dicontainer = new DIContainer();
 		$this->dicontainer->setUp();
 
-		Functions\when( 'wp_remote_get' )->justReturn();
-
 		// Hook it back up as we're ready to test.
 		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
 	}
 
 	public function tear_down() {
+		$this->tear_down_http();
+
 		parent::tear_down();
 		if ( $this->shouldForceCdnOption ) {
 			remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );

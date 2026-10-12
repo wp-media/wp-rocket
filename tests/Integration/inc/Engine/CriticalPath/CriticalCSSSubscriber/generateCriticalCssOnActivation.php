@@ -2,7 +2,9 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
+use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
@@ -17,6 +19,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
+	use CriticalCssLoopbackTrait, HttpRequestTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	protected static $transients = [
 		'rocket_critical_css_generation_process_running' => null,
@@ -40,6 +44,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$this->switchedBlog = false;
 		$this->did_filter   = [
 			'do_rocket_critical_css_generation' => 0,
@@ -48,6 +54,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
+		$this->tear_down_http();
+
 		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'return_true' ] );
@@ -73,6 +81,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		if ( $expected ) {
 			$this->filesystem->delete( 'wp-content/cache/critical-css/1/critical.css' );
 		}
+
+		$this->config['http'] = $this->critical_css_loopback_fixture();
 
 		// Run it.
 		do_action( 'update_option_wp_rocket_settings', $values['old'], $values['new'] );
@@ -105,6 +115,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		}
 
 		$this->assertFalse( get_transient( 'rocket_critical_css_generation_process_running' ) );
+
+		$this->config['http'] = $this->critical_css_loopback_fixture();
 
 		// Run it.
 		$this->subscriber->generate_critical_css_on_activation( $values['old'], $values['new'] );

@@ -35,6 +35,9 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_post_activation_notice', 10 );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		// rocketcdn_notices_subscriber is only initialized in admin context; register its callback manually.
 		add_action(
 			'rocket_display_major_release_notice',
@@ -52,6 +55,7 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 		delete_user_meta( self::$editor_user_id, 'rocket_boxes' );
 		set_current_screen( 'front' );
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		remove_action(
 			'rocket_display_major_release_notice',

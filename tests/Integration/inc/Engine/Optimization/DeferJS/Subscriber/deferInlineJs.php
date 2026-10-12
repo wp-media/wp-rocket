@@ -26,6 +26,9 @@ class Test_DeferInlineJs extends TestCase {
 		// Prevent remote HTTP calls from the RocketCDN subscription check.
 		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled', 'cdn_url' => '' ], MINUTE_IN_SECONDS );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
 
 		self::installPreloadCacheTable();
@@ -51,6 +54,8 @@ class Test_DeferInlineJs extends TestCase {
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 		delete_transient( 'wpr_dynamic_lists' );
 		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

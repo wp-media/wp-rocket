@@ -509,6 +509,15 @@ class User {
 	}
 
 	/**
+	 * Checks if the customer is on a trial license (active, cancelled or expired, until converted to paid).
+	 *
+	 * @return bool
+	 */
+	public function is_trial_customer(): bool {
+		return ( $this->user->is_trial_cancelled ?? false ) || ( $this->user->is_trial_customer ?? false );
+	}
+
+	/**
 	 * Retrieves the Rocket Insights plan data associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to find the corresponding Rocket Insights plan.

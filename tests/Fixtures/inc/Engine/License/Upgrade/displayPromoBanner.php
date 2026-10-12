@@ -87,6 +87,19 @@ return [
 		],
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenUserIsTrialCustomer' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
+			'transient'          => false,
+			'date_created'       => strtotime( 'last year' ),
+			'is_trial_customer'  => true,
+		],
+		'expected' => null,
+	],
 	'testShouldReturnDataWhenPromoNotSeenAndLicenseSingle' => [
 		'config'   => [
 			'licence_account'    => 1,

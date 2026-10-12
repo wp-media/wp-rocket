@@ -1,6 +1,45 @@
 <?php
+$css_response = [
+	'body'     => <<<'CSS'
+/*!
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ */
+@font-face {
+	font-family: 'FontAwesome';
+	src: url('../fonts/fontawesome-webfont.eot?v=4.7.0');
+	src: url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'), url("../fonts/fontawesome-webfont.woff?v=4.7.0") format('woff');
+	font-weight: normal;
+	font-style: normal;
+}
+.fa {
+	display: inline-block;
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+	color: #ffffff;
+	margin: 0px 0px 0px 0px;
+	-webkit-font-smoothing: antialiased;
+}
+.fa-lg { font-size: 1.33333333em; line-height: 0.75em; vertical-align: -15%; }
+.fa-glass:before { content: "\f000"; }
+@media screen and (max-width: 768px) {
+	.fa-2x { font-size: 2em !important; }
+}
+CSS
+,
+	'response' => [ 'code' => 200, 'message' => 'OK' ],
+];
+
+// The valid integrity hash is computed from the mocked body, so the remote file is never downloaded.
+$fontawesome_integrity = 'sha384-' . base64_encode( hash( 'sha384', $css_response['body'], true ) );
+
 return [
 	'vfs_dir' => 'wp-content/',
+
+	'http' => [
+		'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css' => $css_response,
+		'https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css'     => $css_response,
+		'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.css' => $css_response,
+	],
 
 	'settings' => [
 		'minify_css'             => 1,
@@ -66,7 +105,7 @@ return [
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalid" type="text/css" media="all">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="notvalidalgorithm-hashed">
 					<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.css" integrity="sha384-notvalidhash">
-					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.css" integrity="sha384-kru28UjhynaepLMcLGIBjkuOAHbhva6Xuk0nZStgRk733F+oTf2JKejiH/TslLhR">
+					<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/fontawesome.css" integrity="' . $fontawesome_integrity . '">
 		</head>
 				<body>
 				</body>

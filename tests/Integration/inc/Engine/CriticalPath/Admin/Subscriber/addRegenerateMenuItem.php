@@ -32,6 +32,9 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		add_filter( 'show_admin_bar', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
@@ -42,6 +45,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		remove_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
 
 		unset( $_SERVER['REQUEST_URI'] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

@@ -6,8 +6,43 @@ wp_default_scripts( $scripts );
 $jquery_path = $scripts->registered['jquery-core']->src;
 $timenow = time();
 
+$js_response = [
+	'body'     => <<<'JS'
+/*!
+ * Bootstrap v4.5.1 (https://getbootstrap.com/)
+ */
+(function (global, factory) {
+	// Module wrapper.
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) : (global = global || self, factory(global.bootstrap = {}));
+}(this, function (exports) {
+	'use strict';
+	var VERSION = "4.5.1";
+	var TRANSITION_END = /transitionend/i;
+	function toType(obj) {
+		if (obj === null || typeof obj === 'undefined') {
+			return "" + obj;
+		}
+		return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
+	}
+	exports.VERSION = VERSION;
+	exports.toType = toType;
+	exports.isTransitionEnd = function (name) { return TRANSITION_END.test(name); };
+}));
+JS
+,
+	'response' => [ 'code' => 200, 'message' => 'OK' ],
+];
+
+// The valid integrity hash is computed from the mocked body, so the remote file is never downloaded.
+$bootstrap_integrity = 'sha384-' . base64_encode( hash( 'sha384', $js_response['body'], true ) );
+
 return [
 	'vfs_dir' => 'wp-content/',
+
+	'http' => [
+		'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js' => $js_response,
+		'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js' => $js_response,
+	],
 
 	'settings' => [
 		'minify_concatenate_js' => 0,
@@ -71,7 +106,7 @@ return [
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalid"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
-					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js" integrity="sha384-DCTGxr1MNV4fD9E8fGEPvxOCqu7hIyBSUrSwiSFtEloMCudWDuD8X75eb1x9b8eJ"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js" integrity="' . $bootstrap_integrity . '"></script>
 				</head>
 				<body>
 				</body>

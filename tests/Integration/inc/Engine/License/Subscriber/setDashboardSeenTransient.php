@@ -31,6 +31,10 @@ class Test_SetDashboardSeenTransient extends TestCase {
 		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 
 		$this->unregisterAllCallbacksExcept( 'admin_footer-settings_page_wprocket', 'set_dashboard_seen_transient' );
@@ -42,6 +46,7 @@ class Test_SetDashboardSeenTransient extends TestCase {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
 		$this->restoreWpHook( 'admin_footer-settings_page_wprocket' );
+		$this->restoreWpHook( 'current_screen' );
 
 		remove_filter( 'pre_get_rocket_option_optimize_css_delivery', [ $this, 'set_ocd'] );
 		delete_transient( 'wpr_dashboard_seen_' . self::$user_id );

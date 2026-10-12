@@ -137,7 +137,9 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 						do_action( 'rocket_dashboard_license_info' );
 						?>
 						<p>
-							<span class="wpr-title3"><?php esc_html_e( 'Expiration Date', 'rocket' ); ?></span>
+							<span id="wpr-expiration-label" class="wpr-title3">
+								<?php echo esc_html( $data['customer_data']['license_expiration_label'] ); ?>
+							</span>
 							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
 						</p>
 						<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>

@@ -1,59 +1,70 @@
 <?php
+
+/**
+ * Fixtures for CDN\Admin\Subscriber::sanitize_cdn_type_option().
+ *
+ * The method validates and sanitizes the submitted cdn_type and cdn_state values:
+ *   - cdn_type: must be 'rocketcdn' or 'byocdn'; empty or invalid values fall back to 'rocketcdn'.
+ *   - cdn_state: when present, must be one of the four known states; invalid values fall back to 'nothing'.
+ */
 return [
-	'testShouldReturnDefaultWhenCdnTypeIsEmpty' => [
-		'config' => [
-			'input' => [
-				'cdn_type' => '',
-			]
+	'testShouldDefaultCdnTypeToRocketcdnWhenEmpty'       => [
+		'input'    => [
+			'cdn_type' => '',
 		],
 		'expected' => [
-			'input' => [
-				'cdn_type' => 'rocketcdn',
-			]
+			'cdn_type' => 'rocketcdn',
 		],
 	],
-	'testShouldReturnRocketCdnWhenCdnTypeIsRocketCdn' => [
-		'config' => [
-			'input' => [
-				'cdn_type' => 'rocketcdn',
-			]
+
+	'testShouldPreserveValidByocdnTypeAndState'          => [
+		'input'    => [
+			'cdn_type'  => 'byocdn',
+			'cdn_state' => 'byocdn',
 		],
 		'expected' => [
-			'input' => [
-				'cdn_type' => 'rocketcdn',
-			]
+			'cdn_type'  => 'byocdn',
+			'cdn_state' => 'byocdn',
 		],
 	],
-	'testShouldReturnByoCdnWhenCdnTypeIsByoCdn' => [
-		'config' => [
-			'input' => [
-				'cdn_type' => 'byocdn',
-			]
+
+	'testShouldPreserveValidRocketcdnFreeState'          => [
+		'input'    => [
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_free',
 		],
 		'expected' => [
-			'input' => [
-				'cdn_type' => 'byocdn',
-			]
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'rocketcdn_free',
 		],
 	],
-	'testShouldReturnDefaultWhenCdnTypeIsInvalid' => [
-		'config' => [
-			'input' => [
-				'cdn_type' => 'invalid',
-			]
+
+	'testShouldDefaultInvalidCdnTypeToRocketcdn'         => [
+		'input'    => [
+			'cdn_type' => 'unknown_driver',
 		],
 		'expected' => [
-			'input' => [
-				'cdn_type' => 'rocketcdn',
-			]
+			'cdn_type' => 'rocketcdn',
 		],
 	],
-	'testShouldSanitizeCdnType' => [
-		'config' => [
-			'input' => ['cdn_type' => '<b>byocdn</b>'],
+
+	'testShouldDefaultInvalidCdnStateToNothing'          => [
+		'input'    => [
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'invalid_state',
 		],
 		'expected' => [
-			'input' => ['cdn_type' => 'rocketcdn'],
+			'cdn_type'  => 'rocketcdn',
+			'cdn_state' => 'nothing',
+		],
+	],
+
+	'testShouldLeaveCdnStateAbsentWhenNotInInput'        => [
+		'input'    => [
+			'cdn_type' => 'rocketcdn',
+		],
+		'expected' => [
+			'cdn_type' => 'rocketcdn',
 		],
 	],
 ];

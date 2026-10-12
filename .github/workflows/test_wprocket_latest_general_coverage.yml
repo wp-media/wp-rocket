@@ -60,7 +60,8 @@ jobs:
       uses: wp-media/workflows/.github/actions/setup-php-composer@main
       with:
         php-version: ${{ matrix.php-versions }}
-        coverage: xdebug
+        coverage: pcov
+        ini-values: pcov.directory=inc
         extra-require: phpunit/phpcov
 
     - name: Setup WordPress test suite

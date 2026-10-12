@@ -4,16 +4,23 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\APIClient;
 use WP_Rocket\Engine\CriticalPath\APIClient;
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Error;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\APIClient::send_generation_request
  * @group CriticalPath
  */
 class Test_SendGenerationRequest extends TestCase {
-	private $response;
+	use HttpRequestTrait;
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->setup_http();
+	}
 
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'bypass_request'] );
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -24,9 +31,7 @@ class Test_SendGenerationRequest extends TestCase {
 		$item_url  = isset( $config['item_url'] ) ? $config['item_url'] : '';
 		$is_mobile = isset( $config['is_mobile'] ) ? $config['is_mobile'] : false;
 
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'bypass_request'] );
+		$this->config['http'] = [ APIClient::API_URL => $config['response'] ];
 
 		$api_client = new APIClient();
 
@@ -43,9 +48,5 @@ class Test_SendGenerationRequest extends TestCase {
 			$this->assertSame( $expected['message'], $actual->get_error_message() );
 			$this->assertSame( $expected['data'], $actual->get_error_data() );
 		}
-	}
-
-	public function bypass_request() {
-		return $this->response;
 	}
 }

@@ -79,6 +79,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options_api',
 					'user_client',
 					'rocketcdn_subscription_controller',
+					'rocketcdn_query',
 				]
 			);
 		// RocketCDN Frontend subscriber.
@@ -117,7 +118,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'rocketcdn_api_client',
 					'beacon',
-					'user_client',
 					'tracking',
 					new StringArgument( __DIR__ . '/views' ),
 					'options',
@@ -140,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_check_status_api_client',
 					'user',
 					'rocketcdn_website_search_api_client',
+					'user_client',
 				]
 				);
 

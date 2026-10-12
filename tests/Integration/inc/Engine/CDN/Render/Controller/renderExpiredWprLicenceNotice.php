@@ -85,9 +85,9 @@ class Test_RenderExpiredWprLicenceNotice extends TestCase {
 		}
 
 		if ( $expected && ! empty( $config['is_reseller'] ) ) {
-			$this->assertStringNotContainsString( 'wpr-notice-close', $output );
+			$this->assertStringNotContainsString( 'wpr-rocketcdn-btn', $output );
 		} elseif ( $expected ) {
-			$this->assertStringContainsString( 'wpr-notice-close', $output );
+			$this->assertStringContainsString( 'wpr-rocketcdn-btn', $output );
 		}
 	}
 

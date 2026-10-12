@@ -4,6 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
@@ -14,6 +15,7 @@ use WP_Rocket\Tests\Integration\IsolateHookTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
+	use HttpRequestTrait;
 	use IsolateHookTrait;
 	use ProviderTrait;
 
@@ -38,12 +40,20 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$this->action = 'rocket_enable_mobile_cpcss';
 		$this->unregisterAllCallbacks( 'admin_init' );
+
+		// The generation's loopback request is unrelated to the AJAX response under test.
+		add_filter( 'do_rocket_critical_css_generation', '__return_false' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'do_rocket_critical_css_generation', '__return_false' );
 		$this->restoreWpHook( 'admin_init' );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}

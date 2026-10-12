@@ -3,12 +3,15 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResource;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
+	use HttpRequestTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php';
 	protected $cnames;
 	protected $zones;
@@ -20,13 +23,14 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		$this->isCSSTestData = false;
 		$this->minify_type   = '';
 	}
 
 	public function tear_down() {
 		remove_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
-		remove_filter( 'pre_http_request', [ $this, 'pre_request' ] );
 
 		if ( $this->isCSSTestData ) {
 			wp_dequeue_style( $this->src );
@@ -35,6 +39,8 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		}
 
 		$this->unset_settings( $this->options );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -59,7 +65,15 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			wp_enqueue_script( $src, $src );
 		}
 
-		add_filter( 'pre_http_request', [ $this, 'pre_request' ] );
+		$this->config['http'] = [
+			$src => [
+				'headers'  => [],
+				'body'     => 'test',
+				'response' => [],
+				'cookies'  => [],
+				'filename' => '',
+			],
+		];
 
 		// Apply the filter event. Check the result.
 		$this->assertSame( $expected, apply_filters( $event, $src, '' ) );
@@ -119,13 +133,4 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
         return $this->zones;
     }
 
-	public function pre_request() {
-		return [
-			'headers' => [],
-			'body' => 'test',
-			'response' => [],
-			'cookies' => [],
-			'filename' => ''
-		];
-	}
 }

@@ -40,6 +40,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cdn_driver_byocdn',
 		'cdn_driver',
 		'cache_controller',
+		'cdn_state_bridge',
 	];
 
 	/**
@@ -63,18 +64,13 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'rocketcdn_query' );
 		$this->getContainer()->addShared( 'cdn_cname_validator', CNAMEValidator::class );
 		$this->getContainer()->addShared( 'cdn', CDN::class )
-			->addArguments(
-				[
-					'options',
-					'cdn_cname_validator',
-					'cdn_context',
-				]
-				);
+			->addArgument( 'options' );
 		$this->getContainer()->addShared( 'cdn_context', Context::class )
 			->addArguments(
 				[
 					'options',
 					'rocketcdn_subscription_controller',
+					'user',
 				]
 			);
 
@@ -120,11 +116,21 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_subscription_controller',
 					'cache_controller',
 					'rocketcdn_query',
+					'cdn_state_bridge',
 					'cdn_driver',
 					'cdn_cname_validator',
 				]
 			);
 		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
+
+		// CDN state compatibility bridge (RocketCDN refactor epic #8693 - temporary, removed in Story 10).
+		$this->getContainer()->addShared( 'cdn_state_bridge', CdnStateBridge::class )
+			->addArguments(
+				[
+					'rocketcdn_subscription_controller',
+					'options_api',
+				]
+			);
 
 		// CDN Render controller.
 		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
@@ -134,6 +140,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
 					'cdn_context',
 					'options',
+					'options_api',
 					'rocketcdn_query',
 					'rocketcdn_subscription_controller',
 					'user',

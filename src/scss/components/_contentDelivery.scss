@@ -36,8 +36,8 @@
 	white-space: nowrap;
 
 	&--grey {
-		background: #f6f7f8;
-		color: #738191;
+		background: $cBlueLight5;
+		color: $cBlueDark2;
 	}
 
 	&--blue {
@@ -66,14 +66,13 @@
 // CDN driver tabs
 .wpr-cdn-tabs {
 	display: flex;
-	gap: $space;
 	align-items: center;
-	padding: $space;
 	border: 1px solid $cGreyLighter1;
 	border-radius: 4px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 
 	&__tab {
+		margin: 0.5 * $space;
 		display: flex;
 		align-items: center;
 		padding: 6px $space;
@@ -86,7 +85,7 @@
 		color: $cGreyLighter3;
 
 		&--active {
-			background: $cGreyLight3;
+			background: $cGreyDark5;
 			color: $cBlack;
 			font-weight: 600;
 		}
@@ -234,6 +233,24 @@
 	}
 }
 
+.wpr-cdn-active-label {
+	display: none;
+}
+.wpr-cdn-active-indicator {
+	.wpr-cdn-active-label {
+		display: inline;
+	}
+}
+
+.wpr-cdn-tabs__tab .wpr-cdn-active-label {
+	margin-left: 6px;
+	@include font-size(12, 16);
+	color: $cWhite;
+	font-weight: 600;
+	background-color: $cGreenDark2;
+	padding: 5px 10px;
+}
+
 .wpr-cdn-status--paused {
 	.wpr-cdn-indicator__dot {
 		background: #e5a800;
@@ -272,10 +289,11 @@
 .wpr-cdn-expired{
 	&__notice{
 		color: #0C0F1F;
-		background: #FFF7E1;
-		border-left: 4px solid #FED055;
+		background: #FDE9E9;
+		border-left: 4px solid #E23A3A;
 		font-size: 14px;;
 		margin-bottom: 15px;
+		padding-bottom: 0;
 		&-title{
 			font-weight: 600;
 			font-size: 14px;
@@ -366,7 +384,9 @@
 		background: $cGreyLighter1;
 	}
 
-	&--paused, &--disabled {
+	// Only --disabled blocks the add-page controls - being merely paused (CDN toggled
+	// off) must not, since add_page() supports adding pages while paused.
+	&--disabled {
 		.wpr-cdn-add-page {
 			pointer-events: none;
 
@@ -759,4 +779,54 @@
 .wpr-cdn-disabled a {
 	opacity: 0.5;
 	pointer-events: none;
+}
+
+// CDN mode toggle (reuses the Addons/Analytics .wpr-radio component).
+.wpr-cdn-title-divider{
+	border-left: 1px solid $cGreyLighter1;
+	height: $space * 2;
+	margin: 0 $space;
+}
+.wpr-cdn-mode-toggle {
+	flex-shrink: 0;
+	// No visible label text here, so give the wrapper an explicit height or it collapses to 0 and misaligns in the flex row.
+	height: $wpr-radio-track-height;
+
+	label {
+		display: block;
+		cursor: pointer;
+	}
+
+	[type="checkbox"]:disabled + label {
+		cursor: not-allowed;
+	}
+
+	.wpr-tooltip {
+		left: 50%;
+		top: calc(100% + #{$space});
+		transform: translateX(-50%);
+		white-space: nowrap;
+
+		&:before {
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+
+	&:hover .wpr-tooltip {
+		visibility: visible;
+		opacity: 1;
+	}
+
+	// Loading state while a mode-toggle request is in flight (added/removed in cdn-driver.js).
+	// Only targets :disabled so a permanently forced-off toggle (is_forced_off, no loading
+	// class) is left with its plain disabled look instead.
+	&--loading [type="checkbox"]:disabled + label {
+		cursor: wait;
+
+		&:before,
+		&:after {
+			opacity: 0.5;
+		}
+	}
 }

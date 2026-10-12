@@ -38,6 +38,10 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'edit.php' );
 	}
 
@@ -50,6 +54,8 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 		self::uninstallPreconnectDomainsTable();
 
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

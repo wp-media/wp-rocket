@@ -6,6 +6,7 @@ use WP_Error;
 use WP_Rocket\Addon\Cloudflare\API\Client;
 use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Addon\Cloudflare\API\Client::post
@@ -13,11 +14,22 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestPost extends TestCase {
-	protected $response;
+	use HttpRequestTrait;
+
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
 	protected $rocket_version = '3.13';
 
+	public function set_up() {
+		parent::set_up();
+
+		$this->setup_http();
+	}
+
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -26,11 +38,9 @@ class TestPost extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->response = $config['response'];
-		$email = 'roger@wp-rocket.me';
-		$api_key = '12345';
-
-		add_filter( 'pre_http_request', [ $this, 'http_request'] );
+		$this->config['http'] = [
+			Client::CLOUDFLARE_API . $config['path'] => $config['response'],
+		];
 
 		$auth = new APIKey( $config['email'], $config['api_key'] );
 		$client = new Client( $auth );
@@ -49,9 +59,5 @@ class TestPost extends TestCase {
 				$result
 			);
 		}
-	}
-
-	public function http_request() {
-		return $this->response;
 	}
 }

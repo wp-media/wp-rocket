@@ -66,10 +66,7 @@ class RocketInsightsSectionTest extends TestCase {
 
 		// Clear existing sections
 		$settings = $container->get( 'settings' );
-		$reflection = new \ReflectionClass( $settings );
-		$property = $reflection->getProperty( 'settings' );
-		$property->setAccessible( true );
-		$property->setValue( $settings, [] );
+		$this->set_reflective_property( [], 'settings', $settings );
 
 		// Call the method
 		$page->rocket_insights_section();

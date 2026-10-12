@@ -31,11 +31,16 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	public function set_up() {
 		parent::set_up();
 		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

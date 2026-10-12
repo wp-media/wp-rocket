@@ -37,29 +37,50 @@ class Subscriber implements Subscriber_Interface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_cdn_driver_sections'              => [
+				[ 'add_applied_cdn_state_to_cdn_section' ],
 				[ 'add_rocketcdn_paid_section' ],
 				[ 'add_rocketcdn_free_section' ],
 				[ 'add_exclude_cdn_section' ],
 				[ 'add_purge_cdn_cache_section' ],
 			],
-			'current_screen'                          => [ 'maybe_sync_forced_pause_tracking_state' ],
+			'current_screen'                          => [
+				[ 'maybe_disable_rocketcdn_paid_after_cancellation' ],
+				[ 'maybe_sync_forced_off_tracking_state' ],
+			],
 			'rocket_cdn_free_page_list'               => 'render_built_in_page_list',
 			'rocket_cdn_free_page_rows'               => 'render_built_in_page_rows',
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta'            => 'maybe_display_rocketcdn_cta',
 			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
-			'pre_get_rocket_option_cdn'               => 'maybe_pause_cdn_for_inactive_subscription',
+			'pre_get_rocket_option_cdn'               => 'maybe_turn_off_rocketcdn_for_inactive_subscription',
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'render_expired_wpr_licence_notice', 9 ],
 				[ 'render_reseller_banned_notice', 9 ],
+			],
+			'rocket_cdn_paid_before_status_indicator' => [
+				[ 'render_cancelled_banner_notice', 9 ],
+				[ 'render_pro_detection_failure_notice', 9 ],
 			],
 			'rocket_rocketcdn_status_indicator_texts' => [
 				[ 'get_free_status_indicator_texts', 10, 4 ],
 				[ 'get_paid_status_indicator_texts', 10, 4 ],
 			],
-			'admin_init'                              => 'maybe_auto_create_rocketcdn_free_subscription',
+			'admin_enqueue_scripts'                   => [ 'localize_tracking_data', 15 ],
 		];
+	}
+
+	/**
+	 * Adds the applied CDN state to the "Your CDN" (BYOCDN) section, when present.
+	 *
+	 * @since 3.23.3
+	 *
+	 * @param array $sections CDN driver sections.
+	 *
+	 * @return array
+	 */
+	public function add_applied_cdn_state_to_cdn_section( array $sections ): array {
+		return $this->controller->add_applied_cdn_state_to_cdn_section( $sections );
 	}
 
 	/**
@@ -193,8 +214,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return void
 	 */
-	public function maybe_sync_forced_pause_tracking_state( \WP_Screen $screen ): void {
-		$this->controller->maybe_sync_forced_pause_tracking_state( $screen );
+	public function maybe_sync_forced_off_tracking_state( \WP_Screen $screen ): void {
+		$this->controller->maybe_sync_forced_off_tracking_state( $screen );
 	}
 
 	/**
@@ -206,8 +227,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return mixed
 	 */
-	public function maybe_pause_cdn_for_inactive_subscription( $cdn ) {
-		return $this->controller->maybe_pause_cdn_for_inactive_subscription( $cdn );
+	public function maybe_turn_off_rocketcdn_for_inactive_subscription( $cdn ) {
+		return $this->controller->maybe_turn_off_rocketcdn_for_inactive_subscription( $cdn );
 	}
 
 	/**
@@ -261,13 +282,41 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Auto-creates a RocketCDN Free subscription when a previously forced-paused state is resolved.
+	 * Disables RocketCDN for paid subscriptions after cancellation.
 	 *
-	 * @since 3.22.0.2
+	 * @since 3.23.4
 	 *
 	 * @return void
 	 */
-	public function maybe_auto_create_rocketcdn_free_subscription(): void {
-		$this->controller->maybe_auto_create_rocketcdn_free_subscription();
+	public function maybe_disable_rocketcdn_paid_after_cancellation(): void {
+		$this->controller->maybe_disable_rocketcdn_paid_after_cancellation();
+	}
+
+	/**
+	 * Display notice when cancelled or in grace period.
+	 *
+	 * @return void
+	 */
+	public function render_cancelled_banner_notice() {
+		$this->controller->render_cancelled_banner_notice();
+	}
+
+	/**
+	 * Displays an admin notice when fresh-install Pro subscription detection failed after all retries.
+	 *
+	 * @return void
+	 */
+	public function render_pro_detection_failure_notice() {
+		$this->controller->render_pro_detection_failure_notice();
+	}
+
+	/**
+	 * Localizes the `cdn_mode`/`cdn_status` tracking axis properties for JS-side
+	 * Mixpanel tracking.
+	 *
+	 * @return void
+	 */
+	public function localize_tracking_data(): void {
+		$this->controller->localize_tracking_data();
 	}
 }

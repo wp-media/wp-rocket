@@ -65,6 +65,11 @@ class AddLocalizeScriptData extends TestCase {
 			->once()
 			->andReturn( $config['is_revoked'] ?? false );
 
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->once()
+			->andReturn( $config['is_trial_customer'] ?? false );
+
 		$this->pricing->shouldReceive( 'is_promo_active' )
 			->atMost()
 			->once()

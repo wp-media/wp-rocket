@@ -40,6 +40,9 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_apo_cache_notice' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down()
@@ -53,6 +56,7 @@ class Test_displayApoCacheNotice extends AdminTestCase {
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'do_caching_mobile_files']);
 
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

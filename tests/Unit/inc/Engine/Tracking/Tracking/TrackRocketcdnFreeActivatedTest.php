@@ -62,12 +62,16 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 				return array_merge( (array) $defaults, (array) $args );
 			}
 		);
+		Functions\when( 'esc_url_raw' )->returnArg();
+		Functions\when( 'wp_unslash' )->returnArg();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		unset( $_SERVER['REQUEST_URI'] );
+
 		$this->optin->shouldReceive( 'can_track' )
 			->times( $expected['can_track_count'] )
 			->andReturn( $config['can_track'] );
@@ -77,7 +81,7 @@ class TrackRocketcdnFreeActivatedTest extends TestCase {
 		} else {
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
-				->with( 'RocketCDN Activated', [ 'context' => 'wp_plugin', 'interaction_channel' => ChannelDetector::CHANNEL_UI ] );
+				->with( 'RocketCDN Activated', [ 'context' => 'wp_plugin', 'interaction_channel' => ChannelDetector::CHANNEL_UI, 'path' => '' ] );
 		}
 
 		$this->tracking->track_rocketcdn_free_activated();

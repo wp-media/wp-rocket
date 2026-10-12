@@ -1,6 +1,6 @@
 ---
 name: wp-rocket-architecture
-description: Use this skill when changing service structure, Subscribers, ServiceProviders, Container wiring, bootstrapping, Context classes, or any code that may affect the core caching engine in WP Rocket.
+description: Use this skill when changing service structure, Subscribers, ServiceProviders, Container wiring, bootstrapping, Context classes, or any code that may affect the core caching engine in WP Rocket. Also use it when reading constants, writing unit tests that depend on constants, or opening a pull request.
 ---
 
 # WP Rocket Architecture Integrity
@@ -101,6 +101,29 @@ public function __construct( Options_Data $options ) {
 $setting = $this->options->get( 'option_key', $default );
 ```
 
+## Constants — read through `rocket_get_constant()`
+
+Read WordPress and WP Rocket constants with `rocket_get_constant()`, cast to the type the code expects, with a default that matches WordPress core. Raw constants can't be changed per test, and their value types vary by WordPress version and wp-config (for example, `COOKIE_DOMAIN` is `false` before WP 6.6 or when defined as `false`).
+
+```php
+// ❌ Not mockable, and a TypeError when the constant isn't a string
+$this->set_cookie( $name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure, true );
+
+// ✅ Required
+$cookie_path   = (string) rocket_get_constant( 'COOKIEPATH', '/' );
+$cookie_domain = (string) rocket_get_constant( 'COOKIE_DOMAIN', '' );
+```
+
+In unit tests, don't `define()` constants, use `@runInSeparateProcess`, or stub `rocket_get_constant` yourself. The base `TestCase::setUp()` already stubs it (`tests/StubTrait.php`), and it returns values from `$this->constants`. Set only the keys the test needs, and never replace the whole array:
+
+```php
+// ❌ Wipes out keys set by the base test setup
+$this->constants = [ 'COOKIE_DOMAIN' => false ];
+
+// ✅ Required
+$this->constants['COOKIE_DOMAIN'] = false;
+```
+
 ## PHPStan custom rules — all must pass
 
 | Rule | Implication |
@@ -152,3 +175,7 @@ Avoid:
 ## Git Operations
 
 Follow the policy defined in AGENTS.md §5.1. Outside the issue workflow, do not run `git commit` or `git push`.
+
+## Pull request descriptions
+
+Every PR body must follow `.claude/skills/issue-workflow/refs/pr-template.md` with its section headings copied exactly, including "What was tested" and "Mandatory Checklist". This applies outside the issue workflow too. The `PR Template Checker` CI (`wp-media/pr-checklist-action`) fails otherwise. Full rules are in `.github/instructions/pull-request.instructions.md`.

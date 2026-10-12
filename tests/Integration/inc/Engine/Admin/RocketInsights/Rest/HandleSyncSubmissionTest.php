@@ -3,10 +3,10 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
-use ReflectionMethod;
 use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::handle_sync_submission
@@ -15,7 +15,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group AdminOnly
  */
 class HandleSyncSubmissionTest extends TestCase {
-	use DBTrait;
+	use DBTrait, HttpRequestTrait;
 
 	private $controller;
 	private $container;
@@ -42,16 +42,25 @@ class HandleSyncSubmissionTest extends TestCase {
 		$this->container  = apply_filters( 'rocket_container', null );
 		$this->controller = $this->container->get( 'ri_rest' );
 
-		// Mock HTTP requests for API calls
-		add_filter( 'pre_http_request', [ $this, 'mock_http_request' ], 10, 3 );
+		// A failing API response makes the sync submission fall back to the async queue.
+		$this->config['http'] = [
+			'https://saas.wp-rocket.me/performance/' => [
+				'response' => [
+					'code'    => 500,
+					'message' => 'Internal Server Error',
+				],
+				'body'     => wp_json_encode( [ 'error' => 'API error' ] ),
+			],
+		];
+
+		$this->setup_http();
 	}
 
 	public function tear_down() {
 		// Clean up data after each test
 		self::truncatePerformanceMonitoringTable();
 
-		// Remove HTTP mock
-		remove_filter( 'pre_http_request', [ $this, 'mock_http_request' ] );
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -61,8 +70,7 @@ class HandleSyncSubmissionTest extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		// Use reflection to access the private method
-		$method = new ReflectionMethod( Rest::class, 'handle_sync_submission' );
-		$method->setAccessible( true );
+		$method = $this->get_reflective_method( 'handle_sync_submission', Rest::class );
 
 		// Call the method
 		$result = $method->invoke(
@@ -96,29 +104,5 @@ class HandleSyncSubmissionTest extends TestCase {
 				$this->assertEmpty( $items );
 			}
 		}
-	}
-
-	/**
-	 * Mock HTTP requests for API calls.
-	 *
-	 * @param false|array|\WP_Error $preempt A preemptive return value of an HTTP request.
-	 * @param array                $args HTTP request arguments.
-	 * @param string               $url The request URL.
-	 * @return array|false
-	 */
-	public function mock_http_request( $preempt, $args, $url ) {
-		// Mock failed API response for sync submission tests
-		// This ensures we test the fallback to async queue behavior
-		if ( strpos( $url, 'performance/' ) !== false ) {
-			return [
-				'response' => [
-					'code'    => 500,
-					'message' => 'Internal Server Error',
-				],
-				'body' => wp_json_encode( [ 'error' => 'API error' ] ),
-			];
-		}
-
-		return $preempt;
 	}
 }
