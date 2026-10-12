@@ -96,23 +96,6 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
-			<?php
-			/**
-			 * Fires when displaying the license information.
-			 *
-			 * @since 3.7.3
-			 * @deprecated 3.23.6 Use `rocket_account_license_info` instead. The license information now lives on the Account page.
-			 */
-			do_action( 'rocket_dashboard_license_info' );
-
-			/**
-			 * Fires after the account data section on the WP Rocket settings dashboard.
-			 *
-			 * @since 3.5
-			 * @deprecated 3.23.6 Use `rocket_account_after_license_info` instead. The account data now lives on the Account page.
-			 */
-			do_action( 'rocket_dashboard_after_account_data' );
-			?>
 			<?php $this->render_part( 'getting-started' ); ?>
 			<div class="wpr-optionHeader">
 				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>

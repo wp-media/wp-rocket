@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 		<h2 class="wpr-title1"><?php echo esc_html( $data['title'] ); ?></h2>
 	</div>
 
-	<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
+	<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) : ?>
 	<div class="wpr-account-section">
 		<div class="wpr-account-header">
 			<h3 class="wpr-account-title">
@@ -60,7 +60,7 @@ defined( 'ABSPATH' ) || exit;
 					 *
 					 * @since 3.23.6
 					 */
-					do_action( 'rocket_account_license_info' );
+					rocket_do_action_and_deprecated( 'rocket_account_license_info', [], '3.23.6', 'rocket_dashboard_license_info' );
 					?>
 				</div>
 				<div class="wpr-account-actions">
@@ -103,6 +103,6 @@ defined( 'ABSPATH' ) || exit;
 	 *
 	 * @since 3.23.6
 	 */
-	do_action( 'rocket_account_after_license_info' );
+	rocket_do_action_and_deprecated( 'rocket_account_after_license_info', [], '3.23.6', 'rocket_dashboard_after_account_data' );
 	?>
 </div>
