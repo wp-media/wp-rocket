@@ -2656,19 +2656,8 @@ div.wpr-upgrade-websites.notstacked {
     Addon style
 
 \*-----------------------------------------------*/
-.add-on-container .wpr-field + .wpr-field {
-  border-top-color: #E2E5E9;
-}
-.add-on-container .wpr-title3, .add-on-container .wpr-select label, .wpr-select .add-on-container label, .add-on-container .wpr-select select, .wpr-select .add-on-container select, .add-on-container .wpr-field--radio label, .wpr-field--radio .add-on-container label {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  font-weight: 600;
-  letter-spacing: 0;
-  color: #0C0F1F;
-}
-
 .wpr-addon {
-  padding: 16px 0;
+  padding: 24px 0;
 }
 .wpr-addon .wpr-flex {
   align-items: flex-start;
@@ -2682,17 +2671,10 @@ div.wpr-upgrade-websites.notstacked {
   text-align: left;
 }
 .wpr-addon .wpr-addon-title {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: #0C0F1F;
+  margin-bottom: 16px;
+  font-weight: 500;
 }
 .wpr-addon .wpr-field-description {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  margin-top: 0;
-  color: #464F59;
   font-style: normal;
 }
 .wpr-addon .wpr-field-helper {
@@ -2755,28 +2737,7 @@ div.wpr-upgrade-websites.notstacked {
 }
 .wpr-addon .wpr-addon-text a {
   display: inline-block;
-  margin-top: 16px;
-}
-.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child {
-  display: flex;
-  width: fit-content;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  line-height: 1.5;
-  font-weight: 600;
-  color: #0C0F1F;
-  text-decoration: none;
-}
-.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:before {
-  content: "";
-  width: 17px;
-  height: 17px;
-  background: url("../img/wpr-info-circle-filled.svg") no-repeat center/contain;
-}
-.wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:hover, .wpr-addon .wpr-addon-text .wpr-field-description > br + a:last-child:focus {
-  color: #0C0F1F;
-  text-decoration: underline;
+  margin-top: 24px;
 }
 .wpr-addon .wpr-addon-text .button {
   margin-top: 24px;
@@ -2789,6 +2750,32 @@ div.wpr-upgrade-websites.notstacked {
   margin-top: 0;
 }
 
+.add-on-container--user-cache .wpr-field + .wpr-field {
+  border-top-color: #E2E5E9;
+}
+.add-on-container--user-cache h4.wpr-title3 {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #0C0F1F;
+}
+.add-on-container--user-cache .wpr-addon {
+  padding: 16px 0;
+}
+.add-on-container--user-cache .wpr-addon-title {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #0C0F1F;
+}
+.add-on-container--user-cache .wpr-field-description {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-top: 0;
+  color: #464F59;
+}
 .add-on-container--user-cache .wpr-addon-logo {
   flex: 0 0 96px;
 }
@@ -2815,6 +2802,30 @@ div.wpr-upgrade-websites.notstacked {
   .add-on-container--user-cache .wpr-addon-text {
     margin-left: 0;
   }
+}
+.add-on-container--user-cache .wpr-addon-text a {
+  margin-top: 16px;
+}
+.add-on-container--user-cache .wpr-addon-text .wpr-field-description > br + a:last-child {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: #0C0F1F;
+  text-decoration: none;
+}
+.add-on-container--user-cache .wpr-addon-text .wpr-field-description > br + a:last-child:before {
+  content: "";
+  width: 17px;
+  height: 17px;
+  background: url("../img/wpr-info-circle-filled.svg") no-repeat center/contain;
+}
+.add-on-container--user-cache .wpr-addon-text .wpr-field-description > br + a:last-child:hover, .add-on-container--user-cache .wpr-addon-text .wpr-field-description > br + a:last-child:focus {
+  color: #0C0F1F;
+  text-decoration: underline;
 }
 
 .wpr-webp-addon .wpr-addon .wpr-addon-text a {

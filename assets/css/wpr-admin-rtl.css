@@ -80,7 +80,7 @@ Method : SUITCSS (modified)
 
 .wpr-optionHeader .wpr-title2 {
   padding-right: 0;
-  padding-left: 0;
+  padding-left: 40px;
 }
 
 .wpr-infoAction:before {

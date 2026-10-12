@@ -6,21 +6,8 @@
 
 \*-----------------------------------------------*/
 
-.add-on-container{
-    .wpr-field + .wpr-field{
-        border-top-color: $cGreyLighter1;
-    }
-
-    .wpr-title3{
-        @include font-size(14,21);
-        font-weight: 600;
-        letter-spacing: 0;
-        color: $cTextPrimary;
-    }
-}
-
 .wpr-addon{
-    padding: $space*2 0;
+    padding: $space*3 0;
 
     .wpr-flex{
         align-items: flex-start;
@@ -35,16 +22,11 @@
     }
 
     .wpr-addon-title{
-        @include font-size(14,21);
-        margin-bottom: $space;
-        font-weight: 600;
-        color: $cTextPrimary;
+        margin-bottom: $space*2;
+        font-weight: 500;
     }
 
     .wpr-field-description{
-        @include font-size(14,21);
-        margin-top: 0;
-        color: $cTextSecondary;
         font-style: normal;
     }
 
@@ -105,6 +87,78 @@
 
         a{
             display: inline-block;
+            margin-top: $space*3;
+        }
+
+        .button{
+            margin-top: $space*3;
+        }
+		.wpr-add-on-helper{
+		  font-weight:normal;
+		  color:#1eadbf;
+		  a{
+			margin-top:0
+		  }
+		}
+    }
+}
+// User Cache card (Cache Rules page): redesigned card, scoped so other add-ons keep their style.
+.add-on-container--user-cache{
+    .wpr-field + .wpr-field{
+        border-top-color: $cGreyLighter1;
+    }
+
+    h4.wpr-title3{
+        @include font-size(14,21);
+        font-weight: 600;
+        letter-spacing: 0;
+        color: $cTextPrimary;
+    }
+
+    .wpr-addon{
+        padding: $space*2 0;
+    }
+
+    .wpr-addon-title{
+        @include font-size(14,21);
+        margin-bottom: $space;
+        font-weight: 600;
+        color: $cTextPrimary;
+    }
+
+    .wpr-field-description{
+        @include font-size(14,21);
+        margin-top: 0;
+        color: $cTextSecondary;
+    }
+
+    .wpr-addon-logo{
+        flex: 0 0 96px;
+
+        img{
+            display: block;
+            width: 96px;
+            height: 87px;
+            object-fit: cover;
+        }
+    }
+
+    .wpr-addon-text{
+        margin-left: $space*6;
+
+        @include respond-to('md') {
+            margin-left: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-left: $space*6;
+        }
+
+        @include respond-to('xs') {
+            margin-left: 0;
+        }
+
+        a{
             margin-top: $space*2;
         }
 
@@ -131,46 +185,6 @@
                 color: $cTextPrimary;
                 text-decoration: underline;
             }
-        }
-
-        .button{
-            margin-top: $space*3;
-        }
-		.wpr-add-on-helper{
-		  font-weight:normal;
-		  color:#1eadbf;
-		  a{
-			margin-top:0
-		  }
-		}
-    }
-}
-// User Cache card: smaller logo (96x87), cropped to fit like the design.
-.add-on-container--user-cache{
-    .wpr-addon-logo{
-        flex: 0 0 96px;
-
-        img{
-            display: block;
-            width: 96px;
-            height: 87px;
-            object-fit: cover;
-        }
-    }
-
-    .wpr-addon-text{
-        margin-left: $space*6;
-
-        @include respond-to('md') {
-            margin-left: $space*2;
-        }
-
-        @include respond-to('sm') {
-            margin-left: $space*6;
-        }
-
-        @include respond-to('xs') {
-            margin-left: 0;
         }
     }
 }
