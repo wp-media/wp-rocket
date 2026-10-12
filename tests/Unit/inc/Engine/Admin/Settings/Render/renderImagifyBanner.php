@@ -25,6 +25,7 @@ class Test_RenderImagifyBanner extends TestCase {
 		$args    = [ 'title' => 'Imagify' ];
 		$partner = Mockery::mock( 'alias:Imagify_Partner' );
 		$partner->shouldReceive( 'is_imagify_activated' )->andReturn( $config['activated'] );
+		$partner->shouldReceive( 'has_imagify_api_key' )->andReturn( $config['api_key'] );
 
 		Functions\when( 'rocket_get_constant' )->justReturn( $config['white_label'] );
 
@@ -33,16 +34,9 @@ class Test_RenderImagifyBanner extends TestCase {
 		if ( null === $expected['template'] ) {
 			$render->shouldReceive( 'generate' )->never();
 		} else {
-			$expected_args = $args;
-
-			if ( ! $config['activated'] ) {
-				$render->shouldReceive( 'get_imagify_plugin_data' )->once()->andReturn( [] );
-				$expected_args['plugin_data'] = [];
-			}
-
 			$render->shouldReceive( 'generate' )
 				->once()
-				->with( $expected['template'], $expected_args )
+				->with( $expected['template'], $args )
 				->andReturn( 'banner' );
 		}
 

@@ -142,70 +142,12 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Gets the Imagify plugin data from the WordPress.org API, cached in a transient.
-	 *
-	 * @since 3.2
-	 *
-	 * @return stdClass|array Plugin data, or an empty array if it could not be retrieved.
-	 */
-	public function get_imagify_plugin_data() {
-		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
-
-		if ( ! $plugin_data ) {
-			if ( ! function_exists( 'plugins_api' ) ) {
-				// @phpstan-ignore-next-line
-				require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-			}
-
-			$query_args = [
-				'slug'   => 'imagify',
-				'fields' => [
-					'icons'                  => true,
-					'active_installs'        => true,
-					'rating'                 => true,
-					'ratings'                => true,
-					'short_description'      => false,
-					'sections'               => false,
-					'last_updated'           => false,
-					'added'                  => false,
-					'tags'                   => false,
-					'homepage'               => false,
-					'donate_link'            => false,
-					'screenshots'            => false,
-					'versions'               => false,
-					'banners'                => false,
-					'contributors'           => false,
-					'requires'               => false,
-					'tested'                 => false,
-					'requires_php'           => false,
-					'support_url'            => false,
-					'upgrade_notice'         => false,
-					'business_model'         => false,
-					'repository_url'         => false,
-					'commercial_support_url' => false,
-					'preview_link'           => false,
-				],
-			];
-
-			$plugin_data = plugins_api( 'plugin_information', $query_args );
-
-			if ( is_wp_error( $plugin_data ) ) {
-				$plugin_data = [];
-			}
-
-			set_transient( 'rocket_imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
-		}
-
-		return $plugin_data;
-	}
-
-	/**
 	 * Renders the Imagify banner at the top of the Image & Media page.
 	 *
 	 * Renders the enabled banner while the Imagify plugin is active, the promo banner otherwise.
-	 * Renders nothing for white label accounts.
+	 * Renders nothing for white label accounts, or when an API key is saved and Imagify is inactive.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array $args Array of arguments to populate the template.
 	 *
@@ -222,7 +164,10 @@ class Render extends Abstract_Render {
 			return;
 		}
 
-		$args['plugin_data'] = $this->get_imagify_plugin_data();
+		// The partner install/activate flow is not available once an API key is saved, same as the former Imagify page.
+		if ( \Imagify_Partner::has_imagify_api_key() ) {
+			return;
+		}
 
 		echo $this->generate( 'partials/imagify-banner', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
