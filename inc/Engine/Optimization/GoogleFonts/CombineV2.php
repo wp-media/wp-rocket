@@ -56,8 +56,6 @@ class CombineV2 extends AbstractGFOptimization {
 			}
 			);
 
-		$num_tags = count( $filtered_tags );
-
 		$families = [];
 		foreach ( $filtered_tags as $tag ) {
 			$parsed_families = $this->parse( $tag );
