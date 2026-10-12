@@ -62,7 +62,6 @@ $rocket_has_metrics = ! empty( $data['average_metrics'] ) && isset( $data['avera
 					<span class="wpr-dash-score__title"><?php esc_html_e( 'Rocket Insights Score', 'rocket' ); ?></span>
 					<span class="wpr-dash-score__pages">
 						<?php
-						// translators: %1$s is the status text, %2$s is the number of pages tracked/monitored.
 						printf( '%1$s: <span>%2$s</span>', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
 						?>
 					</span>
