@@ -346,12 +346,14 @@ $(document).ready(function(){
 	});
 
 	// Track Rocket Insights Recommendation Activate button clicks
-	$(document).on('click', '.wpr-recommendation-item__activate', function() {
+	$(document).on('click', '.wpr-recommendation-item__activate', function(e) {
 		var recommendation = $(this).data('recommendation') || 'unknown';
 		var pageId = (this.hash || '').slice(1);
 
 		if (pageId && pageId === window.location.hash.slice(1)) {
 			// Already on the target page: no navigation will happen, scroll right away.
+			// Prevent the native jump to the current hash, it would cancel the smooth scroll.
+			e.preventDefault();
 			pendingRecommendation = null;
 			scrollAndHighlight(recommendation);
 		} else if (pageId) {
