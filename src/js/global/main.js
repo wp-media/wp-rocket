@@ -282,22 +282,82 @@ $(document).ready(function(){
 		$(this).addClass('is-expanded');
 	});
 
-	// Track Rocket Insights Recommendation Activate button clicks
-	$(document).on('click', '.wpr-recommendation-item__activate', function() {
-		var recommendation = $(this).data('recommendation') || 'unknown';
+	// Setting targeted by a recommendation Activate link, waiting for its page to be displayed.
+	var pendingRecommendation = null;
+	var highlightTimer = null;
 
-		// If the element is visible, scroll to the element with id matching the recommendation value.
-		// Delay scroll by 100ms to allow navigation to the section to complete and ensure the target element is in view.
-		setTimeout(function() {
-			var $target = $(`#${recommendation}`);
-			
-			if (!$target.length && !$target.is(':visible')) {
+	/**
+	 * Scrolls to the setting of a recommendation and highlights it.
+	 * Falls back to the closest visible parent field when the setting is hidden, does nothing when it is not found.
+	 *
+	 * @param {string} slug Option slug of the recommendation.
+	 */
+	function scrollAndHighlight(slug) {
+		var escaped = CSS.escape(slug);
+		var target = document.querySelector('[name="wp_rocket_settings[' + escaped + ']"]') || document.getElementById(slug);
+
+		if (!target) {
+			return;
+		}
+
+		var field = target.closest('.wpr-field') || target;
+
+		// Walk up through the parent fields until a visible one is found.
+		while (field && field.offsetParent === null) {
+			var parentId = field.dataset.parent;
+
+			if (!parentId) {
 				return;
 			}
 
-			$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-		}, 100);
-		
+			var parent = document.getElementById(parentId);
+			field = parent ? (parent.closest('.wpr-field') || parent) : null;
+		}
+
+		if (!field) {
+			return;
+		}
+
+		var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+
+		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted');
+		clearTimeout(highlightTimer);
+
+		field.classList.add('wpr-field--highlighted');
+		highlightTimer = setTimeout(function() {
+			field.classList.remove('wpr-field--highlighted');
+		}, 2000);
+	}
+
+	// Once the target page of a recommendation is displayed, scroll to its setting.
+	document.addEventListener('rocketJsAfterPageNavigation', function(e) {
+		if (!pendingRecommendation) {
+			return;
+		}
+
+		var pending = pendingRecommendation;
+		pendingRecommendation = null;
+
+		if (e.detail && e.detail.pageId === pending.pageId) {
+			scrollAndHighlight(pending.slug);
+		}
+	});
+
+	// Track Rocket Insights Recommendation Activate button clicks
+	$(document).on('click', '.wpr-recommendation-item__activate', function() {
+		var recommendation = $(this).data('recommendation') || 'unknown';
+		var pageId = (this.hash || '').slice(1);
+
+		if (pageId && pageId === window.location.hash.slice(1)) {
+			// Already on the target page: no navigation will happen, scroll right away.
+			pendingRecommendation = null;
+			scrollAndHighlight(recommendation);
+		} else if (pageId) {
+			pendingRecommendation = { slug: recommendation, pageId: pageId };
+		}
+
 		// Track directly with Mixpanel
 		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
 			// Check if user has opted in
