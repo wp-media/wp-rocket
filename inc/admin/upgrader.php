@@ -319,5 +319,9 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.23', '<' ) ) {
 		flush_rewrite_rules();
 	}
+
+	if ( version_compare( $actual_version, '3.24', '<' ) ) {
+		rocket_clean_domain();
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );
