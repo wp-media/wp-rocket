@@ -6,6 +6,28 @@
 var $ = jQuery;
 $(document).ready(function(){
 	/**
+	 * Replaces the dashboard recommendations component, keeping its expanded state.
+	 *
+	 * @param {string} html Rendered HTML of the dashboard recommendations component.
+	 */
+	function replaceDashboardRecommendations(html) {
+		const $current = $('.wpr-dash-recs');
+
+		if (!$current.length) {
+			return;
+		}
+
+		const $new = $(html);
+
+		if ($current.find('.wpr-dash-recs__more').hasClass('is-expanded')) {
+			$new.find('.wpr-dash-recs__more').addClass('is-expanded').attr('aria-expanded', 'true');
+			$new.find('.wpr-dash-recs__list').addClass('is-expanded');
+		}
+
+		$current.replaceWith($new);
+	}
+
+	/**
 	 * Updates the recommendations widget UI based on the fetched data.
 	 *
 	 * @param {Object} data - The recommendations data from the API.
@@ -22,7 +44,7 @@ $(document).ready(function(){
 
 		// Update the redesigned dashboard recommendations component.
 		if (data?.recommendations?.dashboard_html) {
-			$('.wpr-dash-recs').replaceWith(data.recommendations.dashboard_html);
+			replaceDashboardRecommendations(data.recommendations.dashboard_html);
 		}
 	}
 

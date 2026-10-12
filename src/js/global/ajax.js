@@ -433,11 +433,14 @@ document.addEventListener('DOMContentLoaded', function() {
 	 * @param {Object} scoreData Global score payload.
 	 * @param {string} scoreData.dashboard_html Rendered HTML of the dashboard global score component.
 	 */
+	let lastDashboardGlobalScoreHtml = '';
+
 	function updateDashboardGlobalScore(scoreData) {
-		if (!scoreData?.dashboard_html) {
+		if (!scoreData?.dashboard_html || scoreData.dashboard_html === lastDashboardGlobalScoreHtml) {
 			return;
 		}
 
+		lastDashboardGlobalScoreHtml = scoreData.dashboard_html;
 		$('.wpr-dash-score').replaceWith(scoreData.dashboard_html);
 	}
 
