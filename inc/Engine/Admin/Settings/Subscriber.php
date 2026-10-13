@@ -53,6 +53,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
 			'rocket_settings_menu_navigation'      => [
 				[ 'add_menu_tools_page' ],
+				[ 'add_help_links' ],
 				[ 'add_tutorials_page', 11 ],
 				[ 'add_plugins_page', 12 ],
 			],
@@ -199,7 +200,45 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'id'               => 'tools',
 			'title'            => __( 'Tools', 'rocket' ),
 			'menu_description' => __( 'Export, import, rollback, and set up MCP', 'rocket' ),
-			'badge'            => __( 'NEW', 'rocket' ),
+			'group'            => 'settings',
+		];
+
+		return $navigation;
+	}
+
+	/**
+	 * Add the Support and Documentation links to navigation.
+	 *
+	 * They have no page of their own: they open the external resource in a new tab.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array $navigation Array of menu items.
+	 * @return array
+	 */
+	public function add_help_links( $navigation ) {
+		$navigation['support'] = [
+			'id'               => 'support',
+			'title'            => __( 'Support', 'rocket' ),
+			'menu_description' => __( 'Get help from our team', 'rocket' ),
+			'group'            => 'help',
+			'url'              => rocket_get_external_url(
+				'support',
+				[
+					'utm_source' => 'wp_plugin',
+					'utm_medium' => 'wp_rocket',
+				]
+			),
+			'target'           => '_blank',
+		];
+
+		$navigation['documentation'] = [
+			'id'               => 'documentation',
+			'title'            => __( 'Documentation', 'rocket' ),
+			'menu_description' => __( 'Read the documentation', 'rocket' ),
+			'group'            => 'help',
+			'url'              => get_rocket_documentation_url(),
+			'target'           => '_blank',
 		];
 
 		return $navigation;
@@ -218,6 +257,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'id'               => 'tutorials',
 			'title'            => __( 'Tutorials', 'rocket' ),
 			'menu_description' => __( 'Getting started and how to videos', 'rocket' ),
+			'group'            => 'help',
 		];
 
 		return $navigation;
@@ -283,8 +323,9 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	public function add_plugins_page( $navigation ) {
 		$navigation['plugins'] = [
 			'id'               => 'plugins',
-			'title'            => __( 'Our Plugins', 'rocket' ),
+			'title'            => __( 'Our plugins', 'rocket' ),
 			'menu_description' => __( 'Build Better, Faster, Safer', 'rocket' ),
+			'group'            => 'help',
 		];
 
 		return $navigation;

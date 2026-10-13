@@ -2,6 +2,7 @@ class RocketMixpanel {
 
 	trackedTabs = [
 		'dashboard',
+		'account',
 		'rocket_insights',
 		'page_cdn',
 		'file_optimization',
@@ -13,10 +14,12 @@ class RocketMixpanel {
 		'addons',
 		'tutorials',
 		'plugins',
-		'tools'
+		'tools',
+		'account'
 	];
 
 	pageNames = {
+		advanced_cache: 'cache rules',
 		file_optimization: 'javascript & css'
 	};
 
