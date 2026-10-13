@@ -1,6 +1,6 @@
 <?php
 
-$cpcss_content = <<<HTML
+$cpcss_content = <<<'HTML'
 <p class="cpcss_generate ">
 	Generate specific Critical Path CSS for this post.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">
 	More info</a>
@@ -23,10 +23,9 @@ $cpcss_content = <<<HTML
 		Revert back to the default CPCSS</span>
 	</button>
 </div>
-HTML
-;
+HTML;
 
-$cpcss_content_not_disabled = <<<HTML
+$cpcss_content_not_disabled = <<<'HTML'
 <p class="cpcss_generate ">
 	Generate specific Critical Path CSS for this post.<a href="https://docs.wp-rocket.me/article/1266-optimize-css-delivery/?utm_source=wp_plugin&#038;utm_medium=wp_rocket" data-beacon-article="5d52144c0428631e94f94ae2" target="_blank" rel="noopener noreferrer">
 	More info</a>
@@ -49,16 +48,16 @@ $cpcss_content_not_disabled = <<<HTML
 		Revert back to the default CPCSS</span>
 	</button>
 </div>
-HTML
-;
+HTML;
 
 return [
 
-	'testShouldDisplayAllWarnings' => [
-		'config' => [
+	'testShouldDisplayAllWarnings'                   => [
+		'config'   => [
 			'options'            => [
-				'async_css' => 0,
-				'async_css_mobile' => 0,
+				'async_css'         => 1,
+				'async_css_mobile'  => 0,
+				'remove_unused_css' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -70,8 +69,8 @@ return [
 
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
-			'data'               => [
-				'disabled_description' => 'Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.',
+			'data' => [
+				'disabled_description' => 'Publish the post and Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
 			// For the integration test.
@@ -84,7 +83,7 @@ return [
 </div>
 <div id="cpcss_response_notice" class="components-notice is-notice is-warning">
 	<div class="components-notice__content">
-		<p>Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.</p>
+		<p>Publish the post and Enable Load CSS asynchronously in the options above to use this feature.</p>
 	</div>
 </div>
 HTML
@@ -95,8 +94,9 @@ HTML
 	'testShouldDisplayPostNotPublishedAndOptionExcludedWarning' => [
 		'config'   => [
 			'options'            => [
-				'async_css' => 1,
-				'async_css_mobile' => 1,
+				'async_css'         => 1,
+				'async_css_mobile'  => 1,
+				'remove_unused_css' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -107,7 +107,7 @@ HTML
 		],
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
-			'data'               => [
+			'data' => [
 				'disabled_description' => 'Publish the post and Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
@@ -129,11 +129,12 @@ HTML
 		],
 	],
 
-	'testShouldDisplayPostNotPublishedWarning' => [
+	'testShouldDisplayPostNotPublishedWarning'       => [
 		'config'   => [
 			'options'            => [
-				'async_css' => 1,
-				'async_css_mobile' => 1,
+				'async_css'         => 1,
+				'async_css_mobile'  => 1,
+				'remove_unused_css' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -144,7 +145,7 @@ HTML
 		],
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
-			'data'               => [
+			'data' => [
 				'disabled_description' => 'Publish the post to use this feature.',
 			],
 
@@ -169,8 +170,9 @@ HTML
 	'testShouldDisplayOptionExcludedFromPostWarning' => [
 		'config'   => [
 			'options'            => [
-				'async_css' => 1,
-				'async_css_mobile' => 1,
+				'async_css'         => 1,
+				'async_css_mobile'  => 1,
+				'remove_unused_css' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -181,7 +183,7 @@ HTML
 		],
 		'expected' => [
 			// For Unit Test: the data the "generate" method should receive.
-			'data'               => [
+			'data' => [
 				'disabled_description' => 'Enable Load CSS asynchronously in the options above to use this feature.',
 			],
 
@@ -203,11 +205,12 @@ HTML
 		],
 	],
 
-	'testShouldNoWarning' => [
-		'config' => [
+	'testShouldNoWarning'                            => [
+		'config'   => [
 			'options'            => [
-				'async_css' => 1,
-				'async_css_mobile' => 1,
+				'async_css'         => 1,
+				'async_css_mobile'  => 1,
+				'remove_unused_css' => 0,
 			],
 			'post'               => (object) [
 				'ID'          => 1,
@@ -237,6 +240,37 @@ HTML
 HTML
 			,
 		],
+	],
+
+	'testShouldNotDisplaySectionWhenLCADisabled'     => [
+		'config'   => [
+			'options'            => [
+				'async_css' => 0,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => null,
+	],
+
+	'testShouldNotDisplaySectionWhenRUCSSEnabled'    => [
+		'config'   => [
+			'options'            => [
+				'async_css'         => 1,
+				'remove_unused_css' => 1,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => null,
 	],
 
 ];

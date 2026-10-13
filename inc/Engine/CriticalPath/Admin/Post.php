@@ -63,6 +63,16 @@ class Post extends Abstract_Render {
 			return;
 		}
 
+		// Hide CPCSS section when LCA is not enabled globally.
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
+		// Hide CPCSS section when RUCSS is active (supersedes CPCSS).
+		if ( $this->options->get( 'remove_unused_css', 0 ) ) {
+			return;
+		}
+
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
 		];
@@ -170,10 +180,6 @@ class Post extends Abstract_Render {
 			$this->disabled_data['not_published'] = 1;
 		}
 
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			$this->disabled_data['option_disabled'] = 1;
-		}
-
 		if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
 			$this->disabled_data['option_excluded'] = 1;
 		}
@@ -220,7 +226,6 @@ class Post extends Abstract_Render {
 		$list   = [
 			// translators: %s = post type.
 			'not_published'   => sprintf( __( 'Publish the %s', 'rocket' ), $post->post_type ),
-			'option_disabled' => __( 'Enable Load CSS asynchronously in WP Rocket settings', 'rocket' ),
 			'option_excluded' => __( 'Enable Load CSS asynchronously in the options above', 'rocket' ),
 		];
 
