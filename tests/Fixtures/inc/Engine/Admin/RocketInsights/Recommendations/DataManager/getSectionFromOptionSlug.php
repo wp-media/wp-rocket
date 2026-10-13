@@ -15,6 +15,13 @@ return [
 			'expected' => 'addons',
 		],
 
+		'shouldReturnMediaForImagify'           => [
+			'config'   => [
+				'option_slug' => 'plugin_imagify',
+			],
+			'expected' => 'media',
+		],
+
 		'shouldReturnDashboardForUnknownSlug'   => [
 			'config'   => [
 				'option_slug' => 'unknown_option',

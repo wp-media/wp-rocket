@@ -308,4 +308,27 @@
 		}
 	  }
 	}
+
+    // Highlight applied after a recommendation scrolls the field into view
+    &--highlighted{
+        animation: wpr-field-highlight 2s ease-out;
+
+        @media (prefers-reduced-motion: reduce){
+            animation: none;
+            outline: 2px solid $cBlue;
+            outline-offset: 2px;
+        }
+    }
+}
+
+@keyframes wpr-field-highlight{
+    0%{
+        background-color: $cBlueLight4;
+        box-shadow: 0 0 0 $space $cBlueLight4;
+    }
+
+    100%{
+        background-color: transparent;
+        box-shadow: 0 0 0 $space transparent;
+    }
 }

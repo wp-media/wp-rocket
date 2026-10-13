@@ -2775,7 +2775,27 @@ div.wpr-upgrade-websites.notstacked {
   user-select: all;
   color: #121116;
 }
+.wpr-field--highlighted {
+  animation: wpr-field-highlight 2s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wpr-field--highlighted {
+    animation: none;
+    outline: 2px solid #1EADBF;
+    outline-offset: 2px;
+  }
+}
 
+@keyframes wpr-field-highlight {
+  0% {
+    background-color: #CFF5FA;
+    box-shadow: 0 0 0 8px #CFF5FA;
+  }
+  100% {
+    background-color: transparent;
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
 /*-----------------------------------------------*\
 
     Field warning
