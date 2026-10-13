@@ -403,7 +403,7 @@ return [
 				'data-recommendation="cdn"',
 				'href="#heartbeat"',
 				'data-recommendation="control_heartbeat"',
-				'href="#addons"',
+				'href="#advanced_cache"',
 				'data-recommendation="cache_logged_user"',
 				'href="#imagify"',
 				'data-recommendation="plugin_imagify"',
