@@ -1224,12 +1224,8 @@ class Page extends Abstract_Render {
 			'advanced_cache',
 			[
 				'title'            => __( 'Cache Rules', 'rocket' ),
-<<<<<<< HEAD
-				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
-=======
 				'menu_description' => __( 'Cache Rules', 'rocket' ),
 				'group'            => 'cache',
->>>>>>> feature/8710-dashboard-redesign
 			]
 		);
 		$ecommerce_beacon           = $this->beacon->get_suggest( 'ecommerce' );
