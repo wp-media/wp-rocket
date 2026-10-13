@@ -55,7 +55,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
-			$this->doCleanFilesTest( $urls, $config, $expected );
+			$this->doCleanFilesTest( $urls, $expected );
 		}
 
 		// Run it.
@@ -71,7 +71,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		Functions\expect( 'rocket_rrmdir' )->never();
 	}
 
-	private function doCleanFilesTest( $urls, $config, $expected ) {
+	private function doCleanFilesTest( $urls, $expected ) {
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )
