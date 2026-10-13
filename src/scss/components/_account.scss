@@ -1,0 +1,282 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Account page
+
+\*-----------------------------------------------*/
+
+.wpr-account{
+
+    // Page header icon (outline user glyph)
+    .wpr-sectionHeader .wpr-title1:before{
+        content: '';
+        background-image: url("../img/wpr-user.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 23px;
+    }
+
+    // Section: header + card
+    &-section{
+        margin-top: $space*4;
+    }
+
+    &-header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $space;
+    }
+
+    &-title{
+        display: flex;
+        align-items: center;
+        gap: $space;
+        margin: 0;
+        color: $cOrange;
+        font-weight: 700;
+        @include font-size(16,24);
+    }
+
+    // "Refresh info" action
+    .wpr-infoAction{
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        height: auto;
+        margin: 0;
+        padding: 0;
+        letter-spacing: 0;
+        font-weight: 700;
+        color: $cTextSecondary;
+        @include font-size(12,16);
+
+        &:before{
+            position: static;
+            margin: 0;
+            @include font-size(20,20);
+        }
+
+        &:hover,
+        &:focus{
+            color: $cOrange;
+        }
+    }
+
+    #wpr-action-refresh_account{
+        &:before{
+            transition: all 200ms ease-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        &.wpr-isLoading:before{
+            animation: loading 1.2s infinite;
+        }
+        &.wpr-isHidden:before{
+            opacity: 0;
+        }
+        &.wpr-isShown:before{
+            opacity: 1;
+        }
+    }
+
+    // Card
+    &-card{
+        // 15px + 1px border, as the design measures padding from the outer edge.
+        padding: $space*2 - 1px;
+        background: $cGreyLight3;
+        border: 1px solid $cGreyLighter1;
+        border-radius: 4px;
+        color: $cTextSecondary;
+        @include font-size(14,18);
+
+        // The rows carry their own vertical spacing.
+        &--license{
+            padding-bottom: 0;
+
+            .wpr-account-row:last-child{
+                padding-bottom: 11px;
+            }
+        }
+    }
+
+    // Row separated from the previous one by a line
+    &-row{
+        display: flex;
+        align-items: center;
+        gap: $space;
+
+        & + &{
+            padding: 12px 0;
+            border-top: 1px solid $cGreyLighter1;
+        }
+
+        &--license{
+            gap: $space*2;
+            margin-bottom: $space*2;
+        }
+
+        &--split{
+            gap: $space*2;
+            justify-content: space-between;
+        }
+
+        @include respond-to('xs') {
+            &--license,
+            &--split{
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    }
+
+    &-license{
+        flex: 1 1 auto;
+        min-width: 0;
+
+        p{
+            margin: 4px 0 -4px;
+            color: $cTextSecondary;
+            @include font-size(14,18);
+        }
+
+        .wpr-license-upgrade-button{
+            padding: 0;
+            border: 0;
+            background: none;
+            color: inherit;
+            font-weight: 600;
+            cursor: pointer;
+            @include font-size(14,18);
+        }
+    }
+
+    &-line{
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: $space;
+    }
+
+    &-label{
+        color: $cTextPrimary;
+        font-weight: 500;
+        @include font-size(14,18);
+    }
+
+    &-partner img{
+        vertical-align: middle;
+    }
+
+    // Value shown next to a label
+    &-value{
+        font-weight: 600;
+        @include font-size(12,16);
+
+        &.wpr-isValid{
+            color: $cGreenDark2;
+        }
+
+        &.wpr-isInvalid{
+            color: $cRed;
+        }
+    }
+
+    &-badge{
+        display: inline-flex;
+        align-items: center;
+        padding: calc($space / 2) $space;
+        background: $cSuccessSubtle;
+        border-radius: 2px;
+        color: $cGreenDark2;
+        font-weight: 600;
+        @include font-size(11,16);
+    }
+
+    // RocketCDN plan items
+    &-plan{
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+    }
+
+    &-planItem{
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        @include font-size(14,21);
+    }
+
+    &-planLabel{
+        color: $cTextPrimary;
+        font-weight: 600;
+    }
+
+    &-planValue{
+        color: $cTextSecondary;
+
+        &.wpr-isValid{
+            color: $cGreenDark2;
+        }
+    }
+
+    // Buttons
+    &-button{
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        height: 40px;
+        padding: 6px 12px;
+        background: $cOrange;
+        border: 0;
+        border-radius: 4px;
+        color: $cWhite;
+        font-weight: 600;
+        text-decoration: none;
+        white-space: nowrap;
+        @include font-size(14,21);
+        @include transition(filter,200ms);
+
+        &:hover,
+        &:focus{
+            color: $cWhite;
+            filter: brightness(0.95);
+        }
+
+        &--neutral{
+            background: $cWhite;
+            color: $cTextPrimary;
+
+            &:hover,
+            &:focus{
+                color: $cTextPrimary;
+            }
+        }
+    }
+
+    // Rocket Analytics opt-in
+    .wpr-field{
+        padding: 0;
+
+        &-description{
+            margin: $space 0 -4px;
+            color: $cTextSecondary;
+            @include font-size(14,18);
+
+            .wpr-js-popin{
+                padding: 0;
+                border: 0;
+                background: none;
+                color: inherit;
+                font-weight: 600;
+                text-decoration: underline;
+                cursor: pointer;
+                @include font-size(14,18);
+            }
+        }
+    }
+}
