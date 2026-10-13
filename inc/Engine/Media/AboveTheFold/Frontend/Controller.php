@@ -317,11 +317,6 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	private function generate_lcp_link_tag_with_sources( object $lcp ): array {
-		$pairs = [
-			'tags'    => '',
-			'sources' => [],
-		];
-
 		$tag       = '';
 		$start_tag = '<link rel="preload" data-rocket-preload as="image" ';
 		$end_tag   = ' fetchpriority="high">';
@@ -358,10 +353,10 @@ class Controller implements ControllerInterface {
 				break;
 		}
 
-		$pairs['tags']    = $tag;
-		$pairs['sources'] = $sources;
-
-		return $pairs;
+		return [
+			'tags'    => $tag,
+			'sources' => $sources,
+		];
 	}
 
 	/**
@@ -431,7 +426,7 @@ class Controller implements ControllerInterface {
 		$prev_type      = null;
 
 		// Iterate over the sources in the LCP object.
-		foreach ( $lcp->sources as $i => $source ) {
+		foreach ( $lcp->sources as $source ) {
 			// If the type of the previous source is not equal to the type of the current source, break the loop.
 			if ( ! empty( $source->type ) && $prev_type !== $source->type && null !== $prev_type ) {
 				break;

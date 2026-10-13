@@ -530,7 +530,7 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'file_optimization',
 			[
-				'title'            => __( 'File Optimization', 'rocket' ),
+				'title'            => __( 'JavaScript & CSS', 'rocket' ),
 				'menu_description' => __( 'Optimize CSS & JS', 'rocket' ),
 			]
 		);
@@ -548,15 +548,6 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
-				'css' => [
-					'title'  => __( 'CSS Files', 'rocket' ),
-					'help'   => [
-						'id'  => $this->beacon->get_suggest( 'css_section' ),
-						'url' => $files_beacon['url'],
-					],
-					'page'   => 'file_optimization',
-					'helper' => $css_section_helper,
-				],
 				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
@@ -566,6 +557,15 @@ class Page extends Abstract_Render {
 					'page'   => 'file_optimization',
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_js() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'JS', WP_ROCKET_PLUGIN_NAME ) : '',
+				],
+				'css' => [
+					'title'  => __( 'CSS Files', 'rocket' ),
+					'help'   => [
+						'id'  => $this->beacon->get_suggest( 'css_section' ),
+						'url' => $files_beacon['url'],
+					],
+					'page'   => 'file_optimization',
+					'helper' => $css_section_helper,
 				],
 			]
 		);
@@ -1140,7 +1140,6 @@ class Page extends Abstract_Render {
 		);
 
 		$bot_beacon    = $this->beacon->get_suggest( 'bot' );
-		$fonts_preload = $this->beacon->get_suggest( 'fonts_preload' );
 		$preload_links = $this->beacon->get_suggest( 'preload_links' );
 		$exclusions    = $this->beacon->get_suggest( 'preload_exclusions' );
 
@@ -1963,8 +1962,6 @@ class Page extends Abstract_Render {
 				)
 			);
 		}
-
-		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
 			$imagify_link = '<a href="#imagify">';

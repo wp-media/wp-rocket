@@ -45,6 +45,41 @@ return [
 			],
 		],
 	],
+	'testShouldOnlyAddMaxNumberOfDomains' => [
+		'config'   => [
+			'filter'     => true,
+			'url'        => 'http://example.org',
+			'is_mobile'  => false,
+			'max_number' => 1,
+			'results'    => json_encode( [
+				'preconnect_external_domain' => [
+					'https://example-domain-1.com/',
+					'https://example-domain-2.com/',
+				],
+			] ),
+		],
+		'expected' => [
+			'item'    => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'domains'       => json_encode( [ 'https://example-domain-1.com/' ] ),
+				'created_at'    => '2025-02-18 00:00:00',
+				'last_accessed' => '2025-02-18 00:00:00',
+				'error_message' => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'           => 'http://example.org',
+				'is_mobile'     => false,
+				'status'        => 'completed',
+				'error_message' => '',
+				'domains'       => json_encode( [ 'https://example-domain-1.com/' ] ),
+				'created_at'    => '2025-02-18 00:00:00',
+				'last_accessed' => '2025-02-18 00:00:00',
+			],
+		],
+	],
 	'testShouldBailWhenNotAllowed' => [
 		'config'   => [
 			'filter'    => false,
