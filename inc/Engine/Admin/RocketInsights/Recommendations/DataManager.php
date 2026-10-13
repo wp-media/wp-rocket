@@ -551,7 +551,7 @@ class DataManager implements LoggerAwareInterface {
 			$value = $this->get_option_value( $option_key, $options );
 
 			// Check if option is enabled.
-			if ( $this->is_option_enabled( $option_key, $value ) ) {
+			if ( $this->is_option_enabled( $value ) ) {
 				$enabled[] = $option_key;
 			}
 		}
@@ -567,11 +567,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Check if a specific option is enabled.
 	 *
-	 * @param string $option_key Option key.
-	 * @param mixed  $value      Option value.
+	 * @param mixed $value Option value.
 	 * @return bool True if enabled, false otherwise.
 	 */
-	private function is_option_enabled( string $option_key, $value ): bool {
+	private function is_option_enabled( $value ): bool {
 		// Boolean options.
 		return ! empty( $value ) && 1 === (int) $value;
 	}

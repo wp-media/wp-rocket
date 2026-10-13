@@ -7,6 +7,7 @@ use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller;
 use WP_Rocket\Engine\Media\PreloadFonts\Context\Context;
 use WP_Rocket\Engine\Media\PreloadFonts\Database\Queries\PreloadFonts;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 
 /**
@@ -73,8 +74,6 @@ class Test_AddData extends TestCase {
 			->once()
 			->andReturn( $config['exclusions'] ?? [] );
 
-		$valid_source = $expected['valid_source'] ?? [];
-
 		Functions\when( 'sanitize_text_field' )->alias(
 			function ( $value ) {
 				return is_string( $value ) ? strip_tags( $value ) : $value;
@@ -98,6 +97,12 @@ class Test_AddData extends TestCase {
 				return is_string( $value ) ? stripslashes( $value ) : $value;
 			}
 		);
+
+		if ( isset( $config['max_number'] ) ) {
+			Filters\expectApplied( 'rocket_preload_fonts_number' )
+				->once()
+				->andReturn( $config['max_number'] );
+		}
 
 		$this->stubWpParseUrl();
 
