@@ -207,7 +207,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Inserts the Youtube thumbnail script in the footer
+	 * Inserts the YouTube thumbnail script in the footer
 	 *
 	 * @since 3.3
 	 *
@@ -242,9 +242,9 @@ class Subscriber implements Subscriber_Interface {
 		$thumbnail_resolution = apply_filters( 'rocket_lazyload_youtube_thumbnail_resolution', $thumbnail_resolution );
 
 		/**
-		 * Extension from the thumbnail from Youtube video.
+		 * Extension from the thumbnail from YouTube video.
 		 *
-		 * @param string $extension extension from the thumbnail from Youtube video.
+		 * @param string $extension extension from the thumbnail from YouTube video.
 		 * @returns string
 		 */
 		$extension = wpm_apply_filters_typed( 'string', 'rocket_lazyload_youtube_thumbnail_extension', 'jpg' );
@@ -259,7 +259,7 @@ class Subscriber implements Subscriber_Interface {
 				'lazy_image'        => (bool) $this->options->get( 'lazyload' ),
 				'native'            => $this->is_native_images(),
 				'extension'         => $extension,
-				'button_aria_label' => esc_html__( 'Play Youtube video', 'rocket' ),
+				'button_aria_label' => esc_html__( 'Play YouTube video', 'rocket' ),
 			]
 		);
 	}
@@ -288,7 +288,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Inserts the Youtube thumbnail CSS in the header
+	 * Inserts the YouTube thumbnail CSS in the header
 	 *
 	 * @since 3.3
 	 *
