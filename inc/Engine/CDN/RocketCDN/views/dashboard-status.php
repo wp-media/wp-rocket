@@ -1,6 +1,6 @@
 <?php
 /**
- * RocketCDN status on dashboard tab template.
+ * RocketCDN status on account tab template.
  *
  * @since 3.5
  *
@@ -14,27 +14,31 @@
 
 $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound
 ?>
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">RocketCDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<?php if ( ! $data['is_live_site'] ) : ?>
-	<span class="wpr-infoAccount wpr-isInvalid"><?php esc_html_e( 'RocketCDN is unavailable on local domains and staging sites.', 'rocket' ); ?></span>
-	<?php else : ?>
-	<div class="wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
-		<div class="wpr-dashboard-plans">
-		<?php foreach ( $data['items'] ?? [] as $rocket_plan_item ) : ?>
-		<div>
-			<span class="wpr-title3"><?php echo esc_html( $rocket_plan_item['label'] ); ?></span>
-			<span class="wpr-infoAccount<?php echo esc_attr( $rocket_plan_item['class'] ); ?>"><?php echo esc_html( $rocket_plan_item['value'] ); ?></span>
-		</div>
-		<?php endforeach; ?>
-		</div>
-		<?php if ( ! $data['is_active'] ) : ?>
-		<div>
-			<a href="#page_cdn" class="wpr-button"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
-		</div>
-		<?php endif; ?>
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			<?php esc_html_e( 'RocketCDN Account', 'rocket' ); ?>
+		</h3>
 	</div>
+	<div class="wpr-account-card">
+	<?php if ( ! $data['is_live_site'] ) : ?>
+		<span class="wpr-account-value wpr-isInvalid"><?php esc_html_e( 'RocketCDN is unavailable on local domains and staging sites.', 'rocket' ); ?></span>
+	<?php else : ?>
+		<div class="wpr-account-row wpr-account-row--split wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
+			<div class="wpr-account-plan wpr-dashboard-plans">
+			<?php foreach ( $data['items'] ?? [] as $rocket_plan_item ) : ?>
+				<div class="wpr-account-planItem">
+					<span class="wpr-account-planLabel"><?php echo esc_html( '' !== $rocket_plan_item['label'] ? $rocket_plan_item['label'] : __( 'License', 'rocket' ) ); ?></span>
+					<span class="wpr-account-planValue<?php echo esc_attr( $rocket_plan_item['class'] ); ?>"><?php echo esc_html( $rocket_plan_item['value'] ); ?></span>
+				</div>
+			<?php endforeach; ?>
+			</div>
+			<?php if ( ! $data['is_active'] ) : ?>
+			<div class="wpr-account-actions">
+				<a href="#page_cdn" class="wpr-account-button"><?php esc_html_e( 'Get RocketCDN Pro', 'rocket' ); ?></a>
+			</div>
+			<?php endif; ?>
+		</div>
 	<?php endif; ?>
+	</div>
 </div>
