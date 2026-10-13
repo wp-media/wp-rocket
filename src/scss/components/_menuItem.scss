@@ -369,7 +369,7 @@
     &-group-cache{ @include wpr-nav-icon(wpr-nav-refresh); }
     &-group-page_optimization{ @include wpr-nav-icon(wpr-nav-zap); }
     &-group-backend{ @include wpr-nav-icon(wpr-nav-database); }
-    &-group-settings{ @include wpr-nav-icon(wpr-nav-settings); }
+    &-group-tools{ @include wpr-nav-icon(wpr-nav-settings); }
     &-group-help{ @include wpr-nav-icon(wpr-nav-book-open); }
     &-account{ @include wpr-nav-icon(wpr-nav-user); }
 }

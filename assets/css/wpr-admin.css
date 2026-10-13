@@ -2170,10 +2170,10 @@ div.wpr-upgrade-websites.notstacked {
 #wpr-nav-group-backend .wpr-menuItem-icon:before {
   display: block;
 }
-#wpr-nav-group-settings .wpr-menuItem-icon {
+#wpr-nav-group-tools .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-settings.svg");
 }
-#wpr-nav-group-settings .wpr-menuItem-icon:before {
+#wpr-nav-group-tools .wpr-menuItem-icon:before {
   display: block;
 }
 #wpr-nav-group-help .wpr-menuItem-icon {
