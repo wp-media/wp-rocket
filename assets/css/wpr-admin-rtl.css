@@ -48,25 +48,28 @@ Method : SUITCSS (modified)
   padding-right: 56px;
 }
 
-.wpr-menuItem {
-  padding: 16px 20px 18px 44px;
+.wpr-Header {
+  padding-left: 0;
+  padding-right: 16px;
+  border-radius: 0 4px 4px 0;
 }
-.wpr-menuItem:before {
-  right: inherit !important;
-  left: 18px !important;
+@media (max-width: 783px) {
+  .wpr-Header {
+    padding-right: 0;
+  }
 }
-.wpr-menuItem:after {
-  border-width: 12px 0 12px 10px;
-  border-color: transparent transparent transparent #fff;
-  left: 0;
-  right: inherit;
-  transform: translateX(-12px);
+.wpr-Header-logo {
+  padding-right: 0;
+  padding-left: 16px;
 }
-.wpr-menuItem:hover {
-  transform: translateX(0);
+
+.wpr-menuItem:not(.wpr-menuItem--sub).isActive,
+.wpr-menuGroup.has-active {
+  box-shadow: inset -2px 0 0 #F56640;
 }
-.wpr-menuItem.wpr-subMenuItem {
-  padding: 10px 25px 8px 20px;
+
+.wpr-menuGroup.is-open {
+  box-shadow: inset -1px 0 0 #E2E5E9;
 }
 
 .wpr-sectionHeader:before {

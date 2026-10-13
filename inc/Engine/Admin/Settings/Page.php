@@ -229,6 +229,7 @@ class Page extends Abstract_Render {
 			$this->advanced_cache_section();
 			$this->database_section();
 			$this->heartbeat_section();
+			$this->account_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
@@ -455,6 +456,21 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Registers Account section.
+	 *
+	 * @since 3.23.6
+	 */
+	private function account_section() {
+		$this->settings->add_page_section(
+			'account',
+			[
+				'title'            => __( 'Account', 'rocket' ),
+				'menu_description' => __( 'License & billing', 'rocket' ),
+			]
+		);
+	}
+
+	/**
 	 * Registers Dashboard section.
 	 *
 	 * @since 3.0
@@ -464,7 +480,7 @@ class Page extends Abstract_Render {
 			'dashboard',
 			[
 				'title'                   => __( 'Dashboard', 'rocket' ),
-				'menu_description'        => __( 'Get help, account info', 'rocket' ),
+				'menu_description'        => __( 'Performance overview', 'rocket' ),
 				'faq'                     => $this->beacon->get_suggest( 'faq' ),
 				'customer_data'           => $this->customer_data(),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
@@ -516,6 +532,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'JavaScript & CSS', 'rocket' ),
 				'menu_description' => __( 'Optimize CSS & JS', 'rocket' ),
+				'group'            => 'page_optimization',
 			]
 		);
 
@@ -896,6 +913,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Media', 'rocket' ),
 				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
+				'group'            => 'page_optimization',
 			]
 		);
 
@@ -1120,6 +1138,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Preload', 'rocket' ),
 				'menu_description' => __( 'Generate cache files', 'rocket' ),
+				'group'            => 'cache',
 			]
 		);
 
@@ -1204,8 +1223,9 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'advanced_cache',
 			[
-				'title'            => __( 'Advanced Rules', 'rocket' ),
-				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
+				'title'            => __( 'Cache Rules', 'rocket' ),
+				'menu_description' => __( 'Cache Rules', 'rocket' ),
+				'group'            => 'cache',
 			]
 		);
 		$ecommerce_beacon           = $this->beacon->get_suggest( 'ecommerce' );
@@ -1374,6 +1394,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Database', 'rocket' ),
 				'menu_description' => __( 'Optimize, reduce bloat', 'rocket' ),
+				'group'            => 'backend',
 			]
 		);
 
@@ -1534,10 +1555,10 @@ class Page extends Abstract_Render {
 				 *
 				 * Return an empty string to suppress the badge (e.g. for existing paid subscribers).
 				 *
-				 * @param string $badge Badge label. Default 'NEW'.
+				 * @param string $badge Badge label. Default 'New'.
 				 * @return string
 				 */
-				'badge'            => wpm_apply_filters_typed( 'string', 'rocket_cdn_tab_badge', __( 'NEW', 'rocket' ) ),
+				'badge'            => wpm_apply_filters_typed( 'string', 'rocket_cdn_tab_badge', __( 'New', 'rocket' ) ),
 			]
 		);
 
@@ -1651,6 +1672,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Heartbeat', 'rocket' ),
 				'menu_description' => __( 'Control WordPress Heartbeat API', 'rocket' ),
+				'group'            => 'backend',
 			]
 		);
 
@@ -1735,7 +1757,7 @@ class Page extends Abstract_Render {
 			'rocket_insights',
 			[
 				'title'            => __( 'Rocket Insights', 'rocket' ),
-				'menu_description' => __( 'Get performance insights', 'rocket' ),
+				'menu_description' => __( 'Page insights & recommendations', 'rocket' ),
 			]
 		);
 
@@ -1819,6 +1841,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Add-ons', 'rocket' ),
 				'menu_description' => __( 'Add more features', 'rocket' ),
+				'group'            => 'settings',
 			]
 		);
 
@@ -2038,9 +2061,9 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
+				'group'            => 'settings',
 				'class'            => [
 					'wpr-subMenuItem',
-					'wpr-addonSubMenuItem',
 				],
 			]
 		);
@@ -2155,9 +2178,9 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Sucuri', 'rocket' ),
 				'menu_description' => '',
+				'group'            => 'settings',
 				'class'            => [
 					'wpr-subMenuItem',
-					'wpr-addonSubMenuItem',
 				],
 			]
 		);
