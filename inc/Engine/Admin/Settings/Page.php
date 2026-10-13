@@ -911,7 +911,7 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'media',
 			[
-				'title'            => __( 'Media', 'rocket' ),
+				'title'            => __( 'Image & Media', 'rocket' ),
 				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
 				'group'            => 'page_optimization',
 			]
@@ -975,6 +975,11 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
+				'imagify_banner_section'    => [
+					'title' => __( 'Imagify', 'rocket' ),
+					'type'  => 'render_imagify_banner',
+					'page'  => 'media',
+				],
 				'lazyload_section'          => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
@@ -1973,7 +1978,7 @@ class Page extends Abstract_Render {
 		}
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
-			$imagify_link = '<a href="#imagify">';
+			$imagify_link = '<a href="#media">';
 		} else {
 			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 		}

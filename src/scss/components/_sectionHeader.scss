@@ -42,6 +42,15 @@
             text-align: center;
             border-radius: 4px;
         }
+
+        // Page header icon drawn from an SVG (Image & Media).
+        &.wpr-icon-zap:before{
+            content: '';
+            background-image: url('../img/wpr-zap.svg');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 23px;
+        }
     }
 
     &-title{
