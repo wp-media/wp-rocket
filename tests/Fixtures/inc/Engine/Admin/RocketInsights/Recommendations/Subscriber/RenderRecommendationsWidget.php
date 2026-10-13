@@ -405,7 +405,7 @@ return [
 				'data-recommendation="control_heartbeat"',
 				'href="#advanced_cache"',
 				'data-recommendation="cache_logged_user"',
-				'href="#imagify"',
+				'href="#media"',
 				'data-recommendation="plugin_imagify"',
 				'href="#dashboard"',
 				'data-recommendation="not_a_known_option"',
