@@ -1236,6 +1236,7 @@ class Page extends Abstract_Render {
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 		$cache_life_beacon          = $this->beacon->get_suggest( 'cache_lifespan' );
 		$nonce_beacon               = $this->beacon->get_suggest( 'nonce' );
+		$user_cache_beacon          = $this->beacon->get_suggest( 'user_cache' );
 
 		$ecommerce_plugin = '';
 		$reject_uri_desc  = __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.', 'rocket' );
@@ -1309,6 +1310,12 @@ class Page extends Abstract_Render {
 					'help'        => $cache_query_strings_beacon,
 					'page'        => 'advanced_cache',
 				],
+				'user_cache_section'           => [
+					'title'       => __( 'User Cache', 'rocket' ),
+					'description' => '',
+					'type'        => 'addons_container',
+					'page'        => 'advanced_cache',
+				],
 			]
 		);
 
@@ -1372,6 +1379,24 @@ class Page extends Abstract_Render {
 					'page'              => 'advanced_cache',
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
+				],
+				'cache_logged_user'    => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'User Cache', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
+						'width'  => 96,
+						'height' => 87,
+					],
+					'container_class'   => [ 'add-on-container--user-cache' ],
+					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'user_cache_section',
+					'page'              => 'advanced_cache',
+					'settings_page'     => 'user_cache',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -1833,8 +1858,7 @@ class Page extends Abstract_Render {
 	 * @since 3.0
 	 */
 	private function addons_section() {
-		$webp_beacon       = $this->beacon->get_suggest( 'webp' );
-		$user_cache_beacon = $this->beacon->get_suggest( 'user_cache' );
+		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 
 		$this->settings->add_page_section(
 			'addons',
@@ -1863,28 +1887,6 @@ class Page extends Abstract_Render {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'cache_logged_user' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'User Cache', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
-						'width'  => 152,
-						'height' => 135,
-					],
-					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'settings_page'     => 'user_cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);

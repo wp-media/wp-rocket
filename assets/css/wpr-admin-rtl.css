@@ -160,6 +160,26 @@ Method : SUITCSS (modified)
   right: 2px;
 }
 
+.add-on-container--user-cache .wpr-addon-text {
+  margin-left: inherit;
+  margin-right: 48px;
+}
+@media (max-width: 1239px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 16px;
+  }
+}
+@media (max-width: 1083px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 48px;
+  }
+}
+@media (max-width: 783px) {
+  .add-on-container--user-cache .wpr-addon-text {
+    margin-right: 0;
+  }
+}
+
 .wpr-radio {
   padding-left: 0;
   padding-right: 88px;

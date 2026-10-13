@@ -215,6 +215,26 @@ Method : SUITCSS (modified)
     }
 }
 
+// components/addon - user cache card
+.add-on-container--user-cache{
+    .wpr-addon-text{
+        margin-left: inherit;
+        margin-right: $space*6;
+
+        @include respond-to('md') {
+            margin-right: $space*2;
+        }
+
+        @include respond-to('sm') {
+            margin-right: $space*6;
+        }
+
+        @include respond-to('xs') {
+            margin-right: 0;
+        }
+    }
+}
+
 // components/fields/radio
 .wpr-radio{
     padding-left: 0;

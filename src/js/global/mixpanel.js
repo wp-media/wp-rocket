@@ -19,6 +19,7 @@ class RocketMixpanel {
 	];
 
 	pageNames = {
+		advanced_cache: 'cache rules',
 		file_optimization: 'javascript & css'
 	};
 
