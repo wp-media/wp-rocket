@@ -93,6 +93,9 @@ class Render extends Abstract_Render {
 		 *     @type string $title            Menu item title.
 		 *     @type string $menu_description Menu item description.
 		 *     @type string $class            Menu item classes
+		 *     @type string $group            Identifier of the navigation group the item belongs to. Optional.
+		 *     @type string $url              External URL. When set, the item is a link instead of a page. Optional.
+		 *     @type string $target           Link target, used with `url`. Optional.
 		 * }
 		 */
 		$navigation = (array) apply_filters( 'rocket_settings_menu_navigation', $this->settings );
@@ -102,6 +105,9 @@ class Render extends Abstract_Render {
 			'title'            => '',
 			'menu_description' => '',
 			'class'            => '',
+			'group'            => '',
+			'url'              => '',
+			'target'           => '',
 		];
 
 		$navigation = array_map(
@@ -118,7 +124,130 @@ class Render extends Abstract_Render {
 			$navigation
 		);
 
-		echo $this->generate( 'navigation', $navigation ); // phpcs:ignore WordPress.Security.EscapeOutput -- Dynamic content is properly escaped in the view.
+		echo $this->generate( 'navigation', $this->group_navigation( $navigation ) ); // phpcs:ignore WordPress.Security.EscapeOutput -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Gets the collapsible navigation groups, in display order.
+	 *
+	 * Groups only hold other items, they have no page content of their own.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return array[] {
+	 *     Groups keyed by identifier.
+	 *
+	 *     @type string   $title            Group title.
+	 *     @type string   $menu_description Group summary.
+	 *     @type string[] $items            Identifiers of the items of the group, in display order.
+	 * }
+	 */
+	private function get_navigation_groups(): array {
+		return [
+			'cache'             => [
+				'title'            => __( 'Cache', 'rocket' ),
+				'menu_description' => __( 'Content caching', 'rocket' ),
+				'items'            => [ 'preload', 'advanced_cache' ],
+			],
+			'page_optimization' => [
+				'title'            => __( 'Page Optimization', 'rocket' ),
+				'menu_description' => __( 'Image, JavaScript & CSS', 'rocket' ),
+				'items'            => [ 'media', 'file_optimization' ],
+			],
+			'backend'           => [
+				'title'            => __( 'Backend', 'rocket' ),
+				'menu_description' => __( 'Database & Heartbeat', 'rocket' ),
+				'items'            => [ 'database', 'heartbeat' ],
+			],
+			'settings'          => [
+				'title'            => __( 'Settings', 'rocket' ),
+				'menu_description' => __( 'Add-ons & Tools', 'rocket' ),
+				'items'            => [ 'tools', 'addons' ],
+			],
+			'help'              => [
+				'title'            => __( 'Help', 'rocket' ),
+				'menu_description' => __( 'Support & resources', 'rocket' ),
+				'items'            => [ 'support', 'tutorials', 'documentation', 'plugins' ],
+			],
+		];
+	}
+
+	/**
+	 * Arranges the navigation items into the top-level entries of the menu.
+	 *
+	 * Items belonging to a known group are nested under it. Items without a group, or with an unknown one,
+	 * stay standalone, which keeps items added by third parties through `rocket_settings_menu_navigation` working.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array[] $navigation Normalized navigation items.
+	 *
+	 * @return array[] List of entries, each with a `type` of `item` or `group`.
+	 */
+	private function group_navigation( array $navigation ): array {
+		$groups   = $this->get_navigation_groups();
+		$children = [];
+		$items    = [];
+
+		foreach ( $navigation as $item ) {
+			if ( ! empty( $item['group'] ) && isset( $groups[ $item['group'] ] ) ) {
+				$children[ $item['group'] ][ $item['id'] ] = $item;
+				continue;
+			}
+
+			$items[ $item['id'] ] = $item;
+		}
+
+		$order = [
+			'dashboard',
+			'rocket_insights',
+			'page_cdn',
+			'cache',
+			'page_optimization',
+			'backend',
+			'settings',
+			'help',
+			'account',
+		];
+
+		$entries = [];
+
+		foreach ( $order as $id ) {
+			if ( isset( $groups[ $id ], $children[ $id ] ) ) {
+				$group  = $groups[ $id ];
+				$sorted = [];
+
+				foreach ( $group['items'] as $child_id ) {
+					if ( isset( $children[ $id ][ $child_id ] ) ) {
+						$sorted[] = $children[ $id ][ $child_id ];
+						unset( $children[ $id ][ $child_id ] );
+					}
+				}
+
+				// Items added to the group by third parties go after the known ones.
+				$sorted = array_merge( $sorted, array_values( $children[ $id ] ) );
+
+				$entries[] = [
+					'type'             => 'group',
+					'id'               => $id,
+					'title'            => $group['title'],
+					'menu_description' => $group['menu_description'],
+					'children'         => $sorted,
+				];
+				continue;
+			}
+
+			if ( isset( $items[ $id ] ) ) {
+				$entries[] = [ 'type' => 'item' ] + $items[ $id ];
+				unset( $items[ $id ] );
+			}
+		}
+
+		foreach ( $items as $item ) {
+			$entries[] = [ 'type' => 'item' ] + $item;
+		}
+
+		return $entries;
 	}
 
 	/**
@@ -142,59 +271,34 @@ class Render extends Abstract_Render {
 	}
 
 	/**
-	 * Render the Imagify page section.
+	 * Renders the Imagify banner at the top of the Image & Media page.
 	 *
-	 * @since 3.2
+	 * Renders the enabled banner while the Imagify plugin is active, the promo banner otherwise.
+	 * Renders nothing for white label accounts, or when an API key is saved and Imagify is inactive.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $args Array of arguments to populate the template.
+	 *
+	 * @return void
 	 */
-	public function render_imagify_section() {
-
-		// @phpstan-ignore-next-line
-		require_once ABSPATH . 'wp-admin/includes/plugin-install.php';
-
-		$plugin_data = get_transient( 'rocket_imagify_plugin_data' );
-
-		if ( ! $plugin_data ) {
-
-			$query_args = [
-				'slug'   => 'imagify',
-				'fields' => [
-					'icons'                  => true,
-					'active_installs'        => true,
-					'rating'                 => true,
-					'ratings'                => true,
-					'short_description'      => false,
-					'sections'               => false,
-					'last_updated'           => false,
-					'added'                  => false,
-					'tags'                   => false,
-					'homepage'               => false,
-					'donate_link'            => false,
-					'screenshots'            => false,
-					'versions'               => false,
-					'banners'                => false,
-					'contributors'           => false,
-					'requires'               => false,
-					'tested'                 => false,
-					'requires_php'           => false,
-					'support_url'            => false,
-					'upgrade_notice'         => false,
-					'business_model'         => false,
-					'repository_url'         => false,
-					'commercial_support_url' => false,
-					'preview_link'           => false,
-				],
-			];
-
-			$plugin_data = plugins_api( 'plugin_information', $query_args );
-
-			if ( is_wp_error( $plugin_data ) ) {
-				$plugin_data = [];
-			}
-
-			set_transient( 'rocket_imagify_plugin_data', $plugin_data, WEEK_IN_SECONDS );
+	public function render_imagify_banner( $args ) {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
 		}
 
-		echo $this->generate( 'page-sections/imagify', $plugin_data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+		if ( \Imagify_Partner::is_imagify_activated() ) {
+			echo $this->generate( 'partials/imagify-banner-enabled', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+
+			return;
+		}
+
+		// The partner install/activate flow is not available once an API key is saved, same as the former Imagify page.
+		if ( \Imagify_Partner::has_imagify_api_key() ) {
+			return;
+		}
+
+		echo $this->generate( 'partials/imagify-banner', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

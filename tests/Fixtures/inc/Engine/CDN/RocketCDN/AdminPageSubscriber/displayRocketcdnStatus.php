@@ -64,12 +64,19 @@ return [
 					],
 				],
 			],
-			'integration' => '<div class="wpr-optionHeader">
-					<h3 class="wpr-title2">RocketCDN</h3>
-				</div>
-				<div class="wpr-field wpr-field-account">
-					<span class="wpr-infoAccount wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
-				</div>',
+			'integration' => <<<HTML
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			RocketCDN Account
+		</h3>
+	</div>
+	<div class="wpr-account-card">
+		<span class="wpr-account-value wpr-isInvalid">RocketCDN is unavailable on local domains and staging sites.</span>
+	</div>
+</div>
+HTML
+			,
 		],
 
 		'config' => [
@@ -101,22 +108,29 @@ return [
 					],
 				],
 			],
-			'integration' => '<div class="wpr-optionHeader">
-					<h3 class="wpr-title2">RocketCDN</h3>
+			'integration' => <<<HTML
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			RocketCDN Account
+		</h3>
+	</div>
+	<div class="wpr-account-card">
+		<div class="wpr-account-row wpr-account-row--split wpr-flex wpr-flex--egal">
+			<div class="wpr-account-plan wpr-dashboard-plans">
+				<div class="wpr-account-planItem">
+					<span class="wpr-account-planLabel">License</span>
+					<span class="wpr-account-planValue wpr-isInvalid">No RocketCDN Pro Subscription</span>
 				</div>
-				<div class="wpr-field wpr-field-account">
-					<div class="wpr-flex wpr-flex--egal">
-						<div class="wpr-dashboard-plans">
-							<div>
-								<span class="wpr-title3"></span>
-								<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
-							</div>
-						</div>
-						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
-						</div>
-					</div>
-				</div>',
+			</div>
+			<div class="wpr-account-actions">
+				<a href="#page_cdn" class="wpr-account-button">Get RocketCDN Pro</a>
+			</div>
+		</div>
+	</div>
+</div>
+HTML
+			,
 		],
 
 		'config' => [
@@ -148,22 +162,29 @@ return [
 					],
 				],
 			],
-			'integration' => '<div class="wpr-optionHeader">
-					<h3 class="wpr-title2">RocketCDN</h3>
+			'integration' => <<<HTML
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			RocketCDN Account
+		</h3>
+	</div>
+	<div class="wpr-account-card">
+		<div class="wpr-account-row wpr-account-row--split wpr-flex wpr-flex--egal">
+			<div class="wpr-account-plan wpr-dashboard-plans">
+				<div class="wpr-account-planItem">
+					<span class="wpr-account-planLabel">License</span>
+					<span class="wpr-account-planValue wpr-isInvalid">No RocketCDN Pro Subscription</span>
 				</div>
-				<div class="wpr-field wpr-field-account">
-					<div class="wpr-flex wpr-flex--egal">
-						<div class="wpr-dashboard-plans">
-							<div>
-								<span class="wpr-title3"></span>
-								<span class="wpr-infoAccount wpr-isInvalid">No RocketCDN Pro Subscription</span>
-							</div>
-						</div>
-						<div>
-							<a href="#page_cdn" class="wpr-button">Get RocketCDN Pro</a>
-						</div>
-					</div>
-				</div>',
+			</div>
+			<div class="wpr-account-actions">
+				<a href="#page_cdn" class="wpr-account-button">Get RocketCDN Pro</a>
+			</div>
+		</div>
+	</div>
+</div>
+HTML
+			,
 		],
 
 		'config' => [
@@ -201,19 +222,23 @@ return [
 				],
 			],
 			'integration' => <<<HTML
-<div class="wpr-optionHeader">
-	<h3 class="wpr-title2">RocketCDN</h3>
-</div>
-<div class="wpr-field wpr-field-account">
-	<div class="wpr-flex">
-		<div class="wpr-dashboard-plans">
-			<div>
-				<span class="wpr-title3">Plan</span>
-				<span class="wpr-infoAccount wpr-isValid wpr-no-icon">RocketCDN Pro</span>
-			</div>
-			<div>
-				<span class="wpr-title3">Next Billing Date</span>
-				<span class="wpr-infoAccount wpr-isValid">2020-01-01</span>
+<div class="wpr-account-section">
+	<div class="wpr-account-header">
+		<h3 class="wpr-account-title">
+			RocketCDN Account
+		</h3>
+	</div>
+	<div class="wpr-account-card">
+		<div class="wpr-account-row wpr-account-row--split wpr-flex">
+			<div class="wpr-account-plan wpr-dashboard-plans">
+				<div class="wpr-account-planItem">
+					<span class="wpr-account-planLabel">Plan</span>
+					<span class="wpr-account-planValue wpr-isValid wpr-no-icon">RocketCDN Pro</span>
+				</div>
+				<div class="wpr-account-planItem">
+					<span class="wpr-account-planLabel">Next Billing Date</span>
+					<span class="wpr-account-planValue wpr-isValid">2020-01-01</span>
+				</div>
 			</div>
 		</div>
 	</div>

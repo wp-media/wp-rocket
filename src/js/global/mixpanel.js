@@ -2,6 +2,7 @@ class RocketMixpanel {
 
 	trackedTabs = [
 		'dashboard',
+		'account',
 		'rocket_insights',
 		'page_cdn',
 		'file_optimization',
@@ -11,11 +12,20 @@ class RocketMixpanel {
 		'database',
 		'heartbeat',
 		'addons',
-		'imagify',
 		'tutorials',
 		'plugins',
-		'tools'
+		'tools',
+		'account'
 	];
+
+	pageNames = {
+		advanced_cache: 'cache rules',
+		file_optimization: 'javascript & css'
+	};
+
+	sourceNames = {
+		file_optimization: 'javascript_css'
+	};
 
 	constructor( config ) {
 		this.config = config;
@@ -83,7 +93,7 @@ class RocketMixpanel {
 
 	_getSource( oldHash = '' ) {
 		if ( oldHash ) {
-			return `settings_${oldHash}`;
+			return `settings_${this.sourceNames[oldHash] || oldHash}`;
 		}
 
 		let source = this._getSourceFromQueryStringAndRemoveIt();
@@ -131,7 +141,7 @@ class RocketMixpanel {
 	_sendPageViewedEvent(source, newHash) {
 		mixpanel.track('Page Viewed', {
 			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
-			page_name: newHash.replace('_', ' '),
+			page_name: this.pageNames[newHash] || newHash.replace('_', ' '),
 			source: source,
 			plugin: rocket_mixpanel_data.plugin,
 			brand: rocket_mixpanel_data.brand,

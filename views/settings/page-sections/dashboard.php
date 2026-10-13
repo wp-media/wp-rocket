@@ -16,7 +16,6 @@
  *         @type string $url   Documentation item URL.
  *         @type string $title Documentation item title.
  *     }
- *     @type object $customer_data WP Rocket customer data.
  * }
  */
 
@@ -52,14 +51,7 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 }
 ?>
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
-	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
-	</div>
-
 	<?php
-	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
-
 	if ( ! $rocket_box_is_dismissed ) :
 		?>
 	<div class="wpr-notice">
@@ -86,7 +78,15 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
 		</div>
 	</div>
-	<?php endif; ?>
+		<?php
+		// Mark the banner as seen on first render so it never shows again, even if it wasn't dismissed.
+		rocket_dismiss_box( 'rocket_activation_notice' );
+	endif;
+	?>
+	<div class="wpr-sectionHeader">
+		<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
+	</div>
+
 	<?php
 		/**
 		 * Fires before displaying the dashboard tab content
@@ -97,87 +97,13 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 	?>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">
-			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
-			<div class="wpr-optionHeader">
-				<h3 class="wpr-title2"><?php esc_html_e( 'My Account', 'rocket' ); ?></h3>
-				<?php
-				$this->render_action_button(
-					'button',
-					'refresh_account',
-					[
-						'label'      => __( 'Refresh info', 'rocket' ),
-						'attributes' => [
-							'class' => 'wpr-infoAction wpr-icon-refresh',
-						],
-					]
-				);
-				?>
-			</div>
-
-			<div class="wpr-field wpr-field-account">
-				<div class="wpr-flex">
-					<div class="wpr-infoAccount-License">
-						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
-							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span>
-						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
-							<span>
-								<?php esc_html_e( 'with', 'rocket' ); ?>
-								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
-							</span>
-						<?php endif; ?>
-						<br>
-						<?php
-						/**
-						 * Fires when displaying the license information
-						 *
-						 * @since 3.7.3
-						 */
-						do_action( 'rocket_dashboard_license_info' );
-						?>
-						<p>
-							<span id="wpr-expiration-label" class="wpr-title3">
-								<?php echo esc_html( $data['customer_data']['license_expiration_label'] ); ?>
-							</span>
-							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
-						</p>
-						<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
-						<p>
-							<span class="wpr-title3"><?php esc_html_e( 'Plugin Updates', 'rocket' ); ?></span>
-							<?php if ( ! empty( $data['customer_data']['can_update_plugin'] ) ) : ?>
-								<span class="wpr-infoAccount wpr-isValid wpr-icon-check" id="wpr-plugin-updates-data"></span>
-							<?php else : ?>
-								<span class="wpr-infoAccount wpr-isInvalid" id="wpr-plugin-updates-data"><?php echo esc_html( $data['customer_data']['update_blocked_reason'] ); ?></span>
-							<?php endif; ?>
-						</p>
-						<?php endif; ?>
-					</div>
-					<div>
-						<?php
-						$this->render_action_button(
-							'link',
-							'view_account',
-							[
-								'label'      => __( 'View my account', 'rocket' ),
-								'attributes' => [
-									'target' => '_blank',
-									'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
-								],
-							]
-						);
-						?>
-					</div>
-				</div>
-			</div>
-				<?php
-			endif;
+			<?php
 			/**
-			 * Fires after the account data section on the WP Rocket settings dashboard
+			 * Fires in the main column of the dashboard tab content.
 			 *
-			 * @since 3.5
+			 * @since 3.23.6
 			 */
-			do_action( 'rocket_dashboard_after_account_data' );
+			do_action( 'rocket_dashboard_content' );
 			?>
 			<?php $this->render_part( 'getting-started' ); ?>
 			<div class="wpr-optionHeader">
