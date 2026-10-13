@@ -96,7 +96,7 @@ class Cloudflare {
 
 		$parsed_url = wp_parse_url( $site_url );
 
-		if ( property_exists( $result, 'name' ) && false !== strpos( strtolower( $parsed_url['host'] ), $result->name ) ) {
+		if ( property_exists( $result, 'name' ) && false !== strpos( strtolower( idn_to_utf8( $parsed_url['host'] ) ), $result->name ) ) {
 			$zone_found = true;
 		}
 
