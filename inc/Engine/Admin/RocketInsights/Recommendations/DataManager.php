@@ -77,7 +77,7 @@ class DataManager implements LoggerAwareInterface {
 		'varnish_auto_purge'           => 'addons',
 
 		'plugin_rocketcdn'             => 'page_cdn',
-		'plugin_imagify'               => 'imagify',
+		'plugin_imagify'               => 'media',
 	];
 
 	/**
