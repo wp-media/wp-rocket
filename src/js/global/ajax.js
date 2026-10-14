@@ -318,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
         html: '',
         row_html: '',
 		disabled_btn_html: {
-			global_score_widget: '',
 			rocket_insights: ''
 		}
     };
@@ -491,13 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Update all global score widget instances.
 		globalScoreWidgets.html(globalScoreData.html);
-
-		// Disable "Add Pages" button on global score widget.
-		if (!('disabled_btn_html' in globalScoreData)) {
-			return;
-		}
-
-		$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 	}
 
 	// ==== AJAX Handlers ====
