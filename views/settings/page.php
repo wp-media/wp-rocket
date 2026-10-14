@@ -50,12 +50,28 @@ settings_errors( $data['slug'] ); ?>
 				$this->render_plugin_section();
 			}
 			?>
-			<?php // Same page lookup as pageManager.js, run before the first paint so the CSS can hide the sidebar on Dashboard and Account without a flash. ?>
+			<?php // Same page lookup as pageManager.js, run before the first paint so the CSS can hide the sidebar on Dashboard and Account, and the other sections, without a flash (pageManager.js removes the style). ?>
 			<script>
 				( function () {
 					try {
 						var page = window.location.hash.slice( 1 ).split( '=' )[0] || window.localStorage.getItem( 'wpr-hash' ) || 'dashboard';
+
+						// Pages merged into another one, as in pageManager.js.
+						if ( 'imagify' === page ) {
+							page = 'media';
+						}
+
 						document.querySelector( '.wpr-Content' ).dataset.page = page;
+
+						// Only hide the other sections when the page exists, so an unknown hash cannot blank the screen.
+						var section = /^[\w-]+$/.test( page ) ? document.getElementById( page ) : null;
+
+						if ( section && section.classList.contains( 'wpr-Page' ) ) {
+							var style = document.createElement( 'style' );
+							style.id = 'wpr-first-paint';
+							style.textContent = '.wpr-Content .wpr-Page:not(#' + page + '){display:none}';
+							document.head.appendChild( style );
+						}
 					} catch ( e ) {}
 				}() );
 			</script>

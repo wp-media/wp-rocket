@@ -157,6 +157,13 @@ PageManager.prototype.change = function() {
     var refThis = this;
     document.documentElement.scrollTop = refThis.bodyTop;
 
+    // The inline style of the page template only covers the first paint. The inline display styles set
+    // below take over in the same task, so nothing is painted in between, even if this method throws.
+    var firstPaint = document.getElementById('wpr-first-paint');
+    if (firstPaint) {
+        firstPaint.remove();
+    }
+
     // Hide other pages
     for (var i = 0; i < this.$pages.length; i++) {
         this.$pages[i].style.display = 'none';
