@@ -13,10 +13,10 @@ use WP_Rocket\Tests\Unit\TestCase;
 /**
  * Renders the real addon-card.php and category.php templates through Render::get_dashboard_sidebar().
  *
- * @covers \WP_Rocket\Engine\Admin\Settings\Render::get_dashboard_sidebar
- *
  * Runs in a separate process: the real templates call WordPress functions when included, and PHPUnit
  * replays the included files of this process into the separate-process tests that run later.
+ *
+ * @covers \WP_Rocket\Engine\Admin\Settings\Render::get_dashboard_sidebar
  *
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
