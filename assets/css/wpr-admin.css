@@ -542,9 +542,10 @@ a:focus, button:focus {
   flex-direction: column;
   gap: 16px;
 }
-@media (min-width: 1480px) {
+@media (min-width: 1500px) {
   .wpr-Sidebar {
-    flex-basis: 354px;
+    flex-basis: 362px;
+    padding: 0 20px;
   }
 }
 @media (max-width: 1239px) {
@@ -648,6 +649,11 @@ a:focus, button:focus {
 .wpr-Content.isNotFull {
   max-width: 960px;
   z-index: 1000;
+}
+@media (min-width: 1500px) {
+  .wpr-Content.isNotFull {
+    max-width: 868px;
+  }
 }
 .wpr-Content.isNotFull[data-page=dashboard], .wpr-Content.isNotFull[data-page=account] {
   max-width: 1230px;
