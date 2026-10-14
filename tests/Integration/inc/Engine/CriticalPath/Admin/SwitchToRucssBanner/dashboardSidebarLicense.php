@@ -45,8 +45,10 @@ class Test_DashboardSidebarLicense extends TestCase {
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
 
-		// Promos are out of the picture: only the License category is checked.
+		// Promos and add-ons (the Imagify card is hooked by a plain admin subscriber) are out of the picture:
+		// only the License category is checked.
 		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_promos' );
+		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_addons' );
 	}
 
 	public function tear_down() {
@@ -56,6 +58,7 @@ class Test_DashboardSidebarLicense extends TestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		update_user_meta( self::$user_id, 'rocket_boxes', [] );
 		$this->restoreWpHook( 'rocket_dashboard_sidebar_promos' );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_addons' );
 		$this->white_label = false;
 
 		parent::tear_down();
