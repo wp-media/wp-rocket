@@ -11,7 +11,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group SettingsPage
  */
 class Test_GetDashboardSidebarAddons extends TestCase {
+	private const HOOKS = [
+		'rocket_dashboard_sidebar_license',
+		'rocket_dashboard_sidebar_promos',
+		'rocket_dashboard_sidebar_addons',
+	];
+
 	private static $render;
+	private $original_hooks = [];
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -24,15 +31,27 @@ class Test_GetDashboardSidebarAddons extends TestCase {
 		parent::set_up();
 
 		// Only the cards added by this test: no License, Promos nor real add-on card.
-		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_license' );
-		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_promos' );
-		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_addons' );
+		// IsolateHookTrait keeps one single original hook, so each hook is swapped for an empty one here.
+		global $wp_filter;
+
+		foreach ( self::HOOKS as $hook ) {
+			$this->original_hooks[ $hook ] = $wp_filter[ $hook ] ?? null;
+			$wp_filter[ $hook ]            = new \WP_Hook();
+		}
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_promos' );
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_addons' );
+		global $wp_filter;
+
+		foreach ( $this->original_hooks as $hook => $original ) {
+			if ( null === $original ) {
+				unset( $wp_filter[ $hook ] );
+			} else {
+				$wp_filter[ $hook ] = $original;
+			}
+		}
+
+		$this->original_hooks = [];
 
 		parent::tear_down();
 	}

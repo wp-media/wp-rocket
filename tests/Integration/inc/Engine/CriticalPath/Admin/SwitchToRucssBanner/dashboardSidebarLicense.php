@@ -20,6 +20,7 @@ class Test_DashboardSidebarLicense extends TestCase {
 	private $original_user;
 	private $original_pricing;
 	private $async_css = true;
+	private $original_hooks = [];
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
@@ -47,8 +48,8 @@ class Test_DashboardSidebarLicense extends TestCase {
 
 		// Promos and add-ons (the Imagify card is hooked by a plain admin subscriber) are out of the picture:
 		// only the License category is checked.
-		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_promos' );
-		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_addons' );
+		$this->isolateHook( 'rocket_dashboard_sidebar_promos' );
+		$this->isolateHook( 'rocket_dashboard_sidebar_addons' );
 	}
 
 	public function tear_down() {
@@ -57,11 +58,58 @@ class Test_DashboardSidebarLicense extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		update_user_meta( self::$user_id, 'rocket_boxes', [] );
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_promos' );
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_addons' );
+		$this->restoreHooks();
 		$this->white_label = false;
 
 		parent::tear_down();
+	}
+
+	/**
+	 * Replaces a hook by an empty one, or by one keeping only the callbacks accepted by $keep.
+	 *
+	 * IsolateHookTrait stores one single original hook, so it cannot isolate several hooks in one test.
+	 *
+	 * @param string        $name Hook name.
+	 * @param callable|null $keep Receives a callback and returns whether to keep it.
+	 *
+	 * @return void
+	 */
+	private function isolateHook( string $name, $keep = null ) {
+		global $wp_filter;
+
+		$original = $wp_filter[ $name ] ?? null;
+
+		if ( ! array_key_exists( $name, $this->original_hooks ) ) {
+			$this->original_hooks[ $name ] = $original;
+		}
+
+		$isolated = new \WP_Hook();
+
+		if ( $keep && $original ) {
+			foreach ( $original->callbacks as $priority => $callbacks ) {
+				foreach ( $callbacks as $callback ) {
+					if ( $keep( $callback['function'] ) ) {
+						$isolated->add_filter( $name, $callback['function'], $priority, $callback['accepted_args'] );
+					}
+				}
+			}
+		}
+
+		$wp_filter[ $name ] = $isolated;
+	}
+
+	private function restoreHooks() {
+		global $wp_filter;
+
+		foreach ( $this->original_hooks as $name => $original ) {
+			if ( null === $original ) {
+				unset( $wp_filter[ $name ] );
+			} else {
+				$wp_filter[ $name ] = $original;
+			}
+		}
+
+		$this->original_hooks = [];
 	}
 
 	public function async_css() {
@@ -165,6 +213,14 @@ class Test_DashboardSidebarLicense extends TestCase {
 		$this->setUserData( [ 'licence_expiration' => strtotime( 'next year' ) ] );
 		set_current_screen( 'settings_page_wprocket' );
 
+		// Only the Critical Path notices (the former home of the RUCSS notice) are left on admin_notices.
+		$this->isolateHook(
+			'admin_notices',
+			function ( $callback ) {
+				return is_array( $callback ) && $callback[0] instanceof \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
+			}
+		);
+
 		ob_start();
 		do_action( 'admin_notices' );
 		$notices = ob_get_clean();
@@ -172,6 +228,6 @@ class Test_DashboardSidebarLicense extends TestCase {
 		set_current_screen( 'front' );
 
 		$this->assertStringNotContainsString( 'switch_to_rucss', $notices );
-		$this->assertFalse( method_exists( \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::class, 'switch_to_rucss_notice' ) );
+		$this->assertStringNotContainsString( 'Remove Unused CSS', $notices );
 	}
 }
