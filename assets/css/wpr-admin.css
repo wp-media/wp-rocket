@@ -621,10 +621,6 @@ a:focus, button:focus {
   display: none;
 }
 
-.wpr-Content[data-page=account] + .wpr-Sidebar {
-  display: none;
-}
-
 /*-----------------------------------------------*\
 
     Main content of the page
@@ -654,9 +650,6 @@ a:focus, button:focus {
   .wpr-Content.isNotFull {
     max-width: 868px;
   }
-}
-.wpr-Content.isNotFull[data-page=dashboard], .wpr-Content.isNotFull[data-page=account] {
-  max-width: 1230px;
 }
 .wpr-Content.isNotFull[data-page=dashboard] {
   max-width: 1230px;
