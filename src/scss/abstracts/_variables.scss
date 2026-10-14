@@ -2,6 +2,9 @@
 
 $space: 8px;
 $sidebarWidth: 290px;
+// Inner pages sidebar on wide screens: two cards of 322px (design) between 16px paddings.
+$sidebarWideWidth: 322px + $space*4;
+$sidebarWideBreakpoint: 1480px;
 $wpr-radio-track-height: 22px;
 
 //* -- Breakpoints -- */
