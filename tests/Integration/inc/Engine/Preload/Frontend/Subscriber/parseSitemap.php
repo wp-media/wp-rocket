@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 use ReflectionProperty;
 use WP_Error;
 use WP_Rocket\Dependencies\Monolog\Handler\AbstractProcessingHandler;
+use WP_Rocket\Dependencies\Monolog\Logger as Monolog;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Integration\ASTrait;
 use WP_Rocket\Tests\Integration\TestCase;
@@ -23,7 +24,7 @@ class Test_ParseSitemap extends TestCase {
 	/**
 	 * Handler collecting the records written by the real logger.
 	 *
-	 * @var AbstractProcessingHandler
+	 * @var AbstractProcessingHandler&object{records: array}
 	 */
 	private $log_handler;
 
@@ -146,6 +147,7 @@ class Test_ParseSitemap extends TestCase {
 		$this->original_debug_cache = $cache->getValue();
 		$cache->setValue( null, true );
 
+		/** @var Monolog $logger */
 		$logger                  = Logger::get_logger();
 		$this->original_handlers = $logger->getHandlers();
 		$logger->setHandlers( [ $this->log_handler ] );
@@ -157,7 +159,9 @@ class Test_ParseSitemap extends TestCase {
 	 * @return void
 	 */
 	private function release_logs() {
-		Logger::get_logger()->setHandlers( $this->original_handlers );
+		/** @var Monolog $logger */
+		$logger = Logger::get_logger();
+		$logger->setHandlers( $this->original_handlers );
 
 		$this->debug_cache_property()->setValue( null, $this->original_debug_cache );
 	}
