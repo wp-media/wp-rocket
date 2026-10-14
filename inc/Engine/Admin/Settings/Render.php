@@ -159,9 +159,9 @@ class Render extends Abstract_Render {
 				'menu_description' => __( 'Database & Heartbeat', 'rocket' ),
 				'items'            => [ 'database', 'heartbeat' ],
 			],
-			'settings'          => [
-				'title'            => __( 'Settings', 'rocket' ),
-				'menu_description' => __( 'Add-ons & Tools', 'rocket' ),
+			'tools'             => [
+				'title'            => __( 'Tools', 'rocket' ),
+				'menu_description' => __( 'Tools & Add-ons', 'rocket' ),
 				'items'            => [ 'tools', 'addons' ],
 			],
 			'help'              => [
@@ -205,7 +205,7 @@ class Render extends Abstract_Render {
 			'cache',
 			'page_optimization',
 			'backend',
-			'settings',
+			'tools',
 			'help',
 			'account',
 		];
