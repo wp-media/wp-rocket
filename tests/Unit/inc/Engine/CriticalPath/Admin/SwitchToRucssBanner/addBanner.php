@@ -42,6 +42,24 @@ class Test_AddBanner extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $name, $default = null ) use ( $config ) {
+				return 'WP_ROCKET_WHITE_LABEL_ACCOUNT' === $name ? $config['white_label'] : $default;
+			}
+		);
+
+		// White label is checked first: nothing else is read.
+		if ( $config['white_label'] ) {
+			Functions\expect( 'get_user_meta' )->never();
+			$this->options->shouldReceive( 'get' )->never();
+			$this->user->shouldReceive( 'is_license_expired' )->never();
+			$this->banner->shouldReceive( 'generate' )->never();
+
+			$this->assertSame( '', $this->banner->add_banner( '' ) );
+
+			return;
+		}
+
 		Functions\when( 'get_current_user_id' )->justReturn( $config['user_id'] );
 		Functions\expect( 'get_user_meta' )
 			->once()

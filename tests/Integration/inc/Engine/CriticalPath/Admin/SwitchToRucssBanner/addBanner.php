@@ -47,6 +47,7 @@ class Test_AddBanner extends TestCase {
 		remove_filter( 'rocket_disable_rucss_setting', [ $this, 'rucss' ] );
 		update_user_meta( self::$user_id, 'rocket_boxes', [] );
 		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
+		$this->white_label = false;
 
 		parent::tear_down();
 	}
@@ -61,6 +62,8 @@ class Test_AddBanner extends TestCase {
 		if ( $config['in_boxes'] ) {
 			rocket_dismiss_box( 'switch_to_rucss_notice' );
 		}
+
+		$this->white_label = $config['white_label'] ?? false;
 
 		$html = apply_filters( 'rocket_dashboard_sidebar_license', '' );
 

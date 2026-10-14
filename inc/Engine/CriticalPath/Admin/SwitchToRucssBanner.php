@@ -80,11 +80,17 @@ class SwitchToRucssBanner extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Returns the banner HTML, or an empty string when it must not be displayed.
+	 * Returns the banner HTML, or an empty string when it must not be displayed: white label accounts,
+	 * dismissed by the user, Load CSS asynchronously off, expired license, or Remove Unused CSS disabled.
 	 *
 	 * @return string
 	 */
 	private function get_banner(): string {
+		// Like the other License banners: white label hides it.
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return '';
+		}
+
 		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 
 		if ( in_array( self::DISMISS_KEY, (array) $boxes, true ) ) {

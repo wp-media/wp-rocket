@@ -183,16 +183,12 @@ class Test_DashboardSidebarLicense extends TestCase {
 		$this->assertStringNotContainsString( 'wpr-rucss-switch', $html );
 	}
 
-	public function testWhiteLabelWithAsyncCssShouldRenderLicenseCategoryWithOnlyRucss() {
+	public function testWhiteLabelWithAsyncCssShouldRenderNothing() {
 		$this->white_label = true;
 		$this->setUserData( [ 'licence_expiration' => strtotime( '+10 days' ) ] );
 
-		$html = self::$render->get_dashboard_sidebar();
-
-		$this->assertSame( 1, substr_count( $html, 'wpr-Dashboard-sidebar-category' ) );
-		$this->assertStringContainsString( 'wpr-rucss-switch', $html );
-		$this->assertStringNotContainsString( 'rocket-renewal-banner', $html );
-		$this->assertStringNotContainsString( 'revoked-website-banner', $html );
+		// Like every License banner, the RUCSS one is hidden for white label: no category, no aside content.
+		$this->assertSame( '', self::$render->get_dashboard_sidebar() );
 	}
 
 	public function testShouldRenderNothingWhenRucssIsDismissed() {

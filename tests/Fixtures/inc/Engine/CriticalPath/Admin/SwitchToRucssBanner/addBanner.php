@@ -21,6 +21,7 @@ $base = [
 	'async_css'       => true,
 	'expired_license' => false,
 	'rucss_status'    => [ 'disable' => false, 'text' => '' ],
+	'white_label'     => false,
 ];
 
 return [
@@ -31,6 +32,10 @@ return [
 	'shouldDisplayBannerWhenOtherBoxesAreDismissed' => [
 		'config'   => array_merge( $base, [ 'boxes' => [ 'rocket_activation_notice' ] ] ),
 		'expected' => true,
+	],
+	'whiteLabelShouldNotDisplayBanner' => [
+		'config'   => array_merge( $base, [ 'white_label' => true ] ),
+		'expected' => false,
 	],
 	'dismissedShouldNotDisplayBanner' => [
 		'config'   => array_merge( $base, [ 'boxes' => [ 'switch_to_rucss_notice' ], 'in_boxes' => true ] ),
