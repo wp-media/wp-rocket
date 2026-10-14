@@ -50,6 +50,15 @@ settings_errors( $data['slug'] ); ?>
 				$this->render_plugin_section();
 			}
 			?>
+			<?php // Same page lookup as pageManager.js, run before the first paint so the CSS can hide the sidebar on Dashboard and Account without a flash. ?>
+			<script>
+				( function () {
+					try {
+						var page = window.location.hash.slice( 1 ).split( '=' )[0] || window.localStorage.getItem( 'wpr-hash' ) || 'dashboard';
+						document.querySelector( '.wpr-Content' ).dataset.page = page;
+					} catch ( e ) {}
+				}() );
+			</script>
 		</section>
 
 		<?php
