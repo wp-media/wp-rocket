@@ -96,12 +96,7 @@
     }
 }
 
-// No sidebar on the Dashboard (it has its own column) and on Account.
+// No sidebar on the Dashboard: it has its own column.
 .wpr-Content[data-page="dashboard"] + .wpr-Sidebar{
-    display: none;
-}
-
-// Account: remove this block to show the sidebar on the Account page.
-.wpr-Content[data-page="account"] + .wpr-Sidebar{
     display: none;
 }

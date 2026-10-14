@@ -32,13 +32,8 @@
         }
     }
 
-    // Higher specificity than .isNotFull, which is on every page.
-    &.isNotFull[data-page="dashboard"],
-    &.isNotFull[data-page="account"]{
-        max-width: calc(960px + 270px);
-    }
-
     // Dashboard: the container is transparent, the main column and the sidebar get their own card.
+    // Higher specificity than .isNotFull, which is on every page.
     &.isNotFull[data-page="dashboard"]{
         max-width: 1230px;
         padding: 0;
