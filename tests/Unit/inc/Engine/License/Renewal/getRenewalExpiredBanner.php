@@ -10,11 +10,11 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Renewal::display_renewal_expired_banner
+ * Test class covering \WP_Rocket\Engine\License\Renewal::get_renewal_expired_banner
  *
  * @group License
  */
-class DisplayRenewalExpiredBanner extends TestCase {
+class GetRenewalExpiredBanner extends TestCase {
 	private $pricing;
 	private $user;
 	private $renewal;
@@ -44,6 +44,57 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->assertSame(
+			is_null( $expected ) ? '' : 'banner html',
+			$this->getBanner( $config, $expected, 'banner html' )
+		);
+	}
+
+	/**
+	 * The gap between the 15-90 days and the more than 90 days banners: nothing is displayed.
+	 */
+	public function testShouldReturnEmptyStringWhenOCDEnabledAndExpiredSinceExactly90Days() {
+		$now = time();
+
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_transient' )->justReturn( false );
+
+		$this->user->shouldReceive( 'get_license_expiration' )->andReturn( $now - 90 * DAY_IN_SECONDS );
+		$this->user->shouldReceive( 'is_license_expired' )->andReturn( true );
+		$this->user->shouldReceive( 'is_revoked' )->andReturn( false );
+		$this->user->shouldReceive( 'is_trial_customer' )->andReturn( false );
+		$this->user->shouldReceive( 'is_auto_renew' )->andReturn( false );
+		$this->user->shouldReceive( 'get_renewal_url' )->andReturn( 'https://example.org/renew' );
+		$this->options->shouldReceive( 'get' )->with( 'optimize_css_delivery', 0 )->andReturn( true );
+
+		$this->renewal->shouldReceive( 'generate' )->never();
+
+		$html = $this->renewal->get_renewal_expired_banner();
+
+		if ( time() !== $now ) {
+			$this->markTestSkipped( 'The clock ticked during the test, the 90 days boundary was missed.' );
+		}
+
+		$this->assertSame( '', $html );
+	}
+
+	/**
+	 * @dataProvider configNonEmptyData
+	 */
+	public function testShouldReturnEmptyStringWhenGenerateReturnsNull( $config, $expected ) {
+		$this->assertSame( '', $this->getBanner( $config, $expected, null ) );
+	}
+
+	public function configNonEmptyData() {
+		return array_filter(
+			$this->configTestData(),
+			function ( $case ) {
+				return ! is_null( $case['expected'] );
+			}
+		);
+	}
+
+	private function getBanner( $config, $expected, $generated ) {
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->once()
@@ -130,14 +181,13 @@ class DisplayRenewalExpiredBanner extends TestCase {
 					$expected['template'],
 					$expected['data']
 				)
-				->andReturn( '' );
+				->andReturn( $generated );
 
-			$this->expectOutputString( '' );
 		} else {
 			$this->renewal->shouldReceive( 'generate' )
 				->never();
 		}
 
-		$this->renewal->display_renewal_expired_banner();
+		return $this->renewal->get_renewal_expired_banner();
 	}
 }

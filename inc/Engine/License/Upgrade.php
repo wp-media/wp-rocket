@@ -130,17 +130,19 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the promotion banner
+	 * Returns the promotion banner HTML
 	 *
-	 * @return void
+	 * @since 3.23.6 Returns the HTML instead of echoing it.
+	 *
+	 * @return string
 	 */
-	public function display_promo_banner() {
+	public function get_promo_banner(): string {
 		if ( ! $this->can_use_promo() ) {
-			return;
+			return '';
 		}
 
 		if ( false !== get_transient( 'rocket_promo_banner_' . get_current_user_id() ) ) {
-			return;
+			return '';
 		}
 
 		$promo          = $this->pricing->get_promo_data();
@@ -154,7 +156,7 @@ class Upgrade extends Abstract_Render {
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
-		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return (string) $this->generate( 'promo-banner', $data );
 	}
 
 	/**

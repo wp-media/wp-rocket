@@ -149,6 +149,28 @@ $(document).ready(function(){
         );
     });
 
+    /**
+     * Hides the Dashboard sidebar category holding a dismissed banner once it has no visible content left,
+     * then the whole sidebar (card and ribbon) once no category is left.
+     *
+     * @param {jQuery} $banner Dismissed banner.
+     */
+    function wprHideEmptiedSidebarCategory( $banner ) {
+        var $category = $banner.closest( '.wpr-Dashboard-sidebar-category' );
+        var $sidebar = $banner.closest( 'aside.wpr-Dashboard-sidebar' );
+
+        // The banner is hidden with an animation: wait for it to end before counting what is visible.
+        $banner.promise().done( function() {
+            if ( $category.length && ! $category.find( ':visible' ).not( '.wpr-Dashboard-sidebar-title' ).length ) {
+                $category.hide();
+            }
+
+            if ( $sidebar.length && ! $sidebar.find( '.wpr-Dashboard-sidebar-category:visible' ).length ) {
+                $sidebar.hide();
+            }
+        } );
+    }
+
     $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
         e.preventDefault();
 
@@ -160,7 +182,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-promo-banner').hide( 'slow' );
+					var $banner = $('#rocket-promo-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );
@@ -177,7 +202,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-renewal-banner').hide( 'slow' );
+					var $banner = $('#rocket-renewal-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );

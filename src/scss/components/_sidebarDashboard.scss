@@ -1,0 +1,147 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Dashboard sidebar: license and promo banners
+
+    The banner templates keep their horizontal markup and layout (_Renewals.scss, _Promotion.scss).
+    Everything here is scoped under .wpr-Dashboard-sidebar and turns them into a column card.
+
+\*-----------------------------------------------*/
+
+.wpr-Dashboard-sidebar{
+
+    // Expiring soon: text, then the countdown, then the button.
+    .rocket-renewal-banner{
+        display: flex;
+        flex-flow: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: $space*2;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        .rocket-renew-message{
+            order: 1;
+            width: 100%;
+            margin: 0;
+
+            & > p{
+                margin: 0 0 $space;
+                @include font-size(14,21);
+            }
+        }
+
+        .rocket-promo-countdown{
+            order: 2;
+        }
+
+        .rocket-renew-cta-container{
+            order: 3;
+            width: 100%;
+        }
+    }
+
+    // Expired, trial ended and revoked.
+    .rocket-renewal-expired-banner{
+        display: flex;
+        flex-flow: column;
+        gap: $space*2;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        .banner-copy,
+        &.revoked-website-banner .banner-copy{
+            width: 100%;
+        }
+
+        .rocket-renewal-expired-banner-container{
+            flex-flow: column;
+
+            & > div{
+                width: 100%;
+            }
+        }
+
+        .rocket-expired-title{
+            margin: 0 0 $space;
+            @include font-size(16,24);
+
+            // Warning icon, in front of the title.
+            &::before{
+                width: 24px;
+                height: 24px;
+                margin-right: $space;
+                background: url(../img/warning.svg) center / contain no-repeat;
+                content: "";
+            }
+        }
+
+        .rocket-expired-message > p{
+            margin: 0 0 $space;
+            padding-left: 0;
+            @include font-size(14,21);
+        }
+
+        .rocket-expired-cta-container{
+            align-self: stretch;
+        }
+    }
+
+    // Promo.
+    .rocket-promo-banner{
+        flex-flow: column;
+        justify-content: flex-start;
+        gap: $space*2;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        & > div{
+            width: 100%;
+        }
+
+        .rocket-promo-title{
+            margin-bottom: $space;
+        }
+
+        .rocket-promo-cta-block{
+            align-items: stretch;
+            margin-right: 0;
+        }
+    }
+
+    // Shared: countdown and buttons fill the card.
+    .rocket-promo-countdown{
+        width: 100%;
+        margin: 0 0 $space*2;
+        padding: 0;
+        gap: $space;
+
+        & > .rocket-countdown-item{
+            margin-right: 0;
+            @include font-size(11,16);
+        }
+    }
+
+    .rocket-renew-cta,
+    .rocket-promo-cta{
+        display: block;
+        width: 100%;
+        padding: $space*1.5 $space*2;
+        border-radius: 4px;
+        text-align: center;
+        @include font-size(14,20);
+    }
+
+    .rocket-promo-cta{
+        border: 0;
+    }
+
+    .wpr-notice-close{
+        top: $space;
+        right: $space;
+    }
+}
