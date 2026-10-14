@@ -45,7 +45,7 @@ class Test_RenderAddonCard extends TestCase {
 				[
 					'id'           => 'imagify',
 					'title'        => 'Reduce image size by 20%',
-					'image'        => [ 'src' => 'https://example.org/img.png', 'alt' => 'alt' ],
+					'image'        => [ 'src' => 'https://example.org/img.png', 'alt' => 'alt', 'width' => 266, 'height' => 137 ],
 					'lead'         => 'Lead',
 					'text'         => 'Text',
 					'list'         => [ '<strong>One</strong> thing', 'Two' ],
@@ -97,5 +97,6 @@ class Test_RenderAddonCard extends TestCase {
 
 	public function testShouldOnlyRenderTheImageWhenThereIsOne() {
 		$this->assertSame( 1, substr_count( $this->html, '<img class="wpr-addonCard-image"' ) );
+		$this->assertStringContainsString( 'alt="alt" width="266" height="137">', $this->html );
 	}
 }

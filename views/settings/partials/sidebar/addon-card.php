@@ -12,8 +12,10 @@
  *     @type string   $id           Unique card identifier.
  *     @type string   $title        Card title.
  *     @type array    $image        {
- *         @type string $src Image URL, empty for no image.
- *         @type string $alt Image alternative text.
+ *         @type string $src    Image URL, empty for no image.
+ *         @type string $alt    Image alternative text, empty when decorative.
+ *         @type int    $width  Optional image width.
+ *         @type int    $height Optional image height.
  *     }
  *     @type string   $lead         Bold sentence under the image.
  *     @type string   $text         Text following the lead.
@@ -46,15 +48,17 @@ $rocket_card_list  = 'wpr-addonCard-list-' . $rocket_card_id;
 $rocket_card_image = wp_parse_args(
 	(array) $rocket_card['image'],
 	[
-		'src' => '',
-		'alt' => '',
+		'src'    => '',
+		'alt'    => '',
+		'width'  => 0,
+		'height' => 0,
 	]
 );
 ?>
 <div class="wpr-addonCard wpr-addonCard--<?php echo esc_attr( $rocket_card_id ); ?>" id="wpr-addonCard-<?php echo esc_attr( $rocket_card_id ); ?>">
 	<h4 class="wpr-addonCard-title"><?php echo esc_html( $rocket_card['title'] ); ?></h4>
 	<?php if ( ! empty( $rocket_card_image['src'] ) ) : ?>
-		<img class="wpr-addonCard-image" src="<?php echo esc_url( $rocket_card_image['src'] ); ?>" alt="<?php echo esc_attr( $rocket_card_image['alt'] ); ?>">
+		<img class="wpr-addonCard-image" src="<?php echo esc_url( $rocket_card_image['src'] ); ?>" alt="<?php echo esc_attr( $rocket_card_image['alt'] ); ?>"<?php echo $rocket_card_image['width'] && $rocket_card_image['height'] ? ' width="' . esc_attr( (string) $rocket_card_image['width'] ) . '" height="' . esc_attr( (string) $rocket_card_image['height'] ) . '"' : ''; ?>>
 	<?php endif; ?>
 	<p class="wpr-addonCard-lead"><?php echo esc_html( $rocket_card['lead'] ); ?></p>
 	<p class="wpr-addonCard-text">

@@ -63,6 +63,10 @@ class Test_RocketcdnUpsell extends TestCase {
 		Filters\expectApplied( 'rocket_display_rocketcdn_cta' )->with( true )->andReturn( $config['filter'] );
 		Functions\when( 'rocket_get_constant' )->alias(
 			function ( $name, $default = null ) use ( $config ) {
+				if ( 'WP_ROCKET_ASSETS_IMG_URL' === $name ) {
+					return 'https://example.org/assets/img/';
+				}
+
 				return 'WP_ROCKET_WHITE_LABEL_ACCOUNT' === $name ? $config['white_label'] : $default;
 			}
 		);
@@ -140,6 +144,10 @@ class Test_RocketcdnUpsell extends TestCase {
 
 		$this->assertSame( 'rocketcdn', $card['id'] );
 		$this->assertSame( 'Deliver your content faster', $card['title'] );
+		$this->assertSame( 'https://example.org/assets/img/wpr-rocketcdn-illustration.png', $card['image']['src'] );
+		$this->assertSame( '', $card['image']['alt'] );
+		$this->assertSame( 266, $card['image']['width'] );
+		$this->assertSame( 137, $card['image']['height'] );
 		$this->assertSame( 'Propel Your Content at the Speed of Light', $card['lead'] );
 		$this->assertSame( 'from 100+ edge locations with unlimited bandwidth.', $card['text'] );
 		$this->assertSame(

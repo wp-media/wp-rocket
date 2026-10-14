@@ -176,8 +176,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'id'           => 'rocketcdn',
 			'title'        => __( 'Deliver your content faster', 'rocket' ),
 			'image'        => [
-				'src' => '',
-				'alt' => '',
+				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-rocketcdn-illustration.png',
+				// Decorative: the title is right next to it.
+				'alt'    => '',
+				'width'  => 266,
+				'height' => 137,
 			],
 			'lead'         => __( 'Propel Your Content at the Speed of Light', 'rocket' ),
 			'text'         => __( 'from 100+ edge locations with unlimited bandwidth.', 'rocket' ),

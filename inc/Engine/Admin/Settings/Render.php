@@ -343,8 +343,10 @@ class Render extends Abstract_Render {
 		 *         @type string   $id           Unique card identifier.
 		 *         @type string   $title        Card title.
 		 *         @type array    $image        {
-		 *             @type string $src Image URL, empty for no image.
-		 *             @type string $alt Image alternative text.
+		 *             @type string $src    Image URL, empty for no image.
+		 *             @type string $alt    Image alternative text, empty when decorative.
+		 *             @type int    $width  Optional image width, avoids a layout shift.
+		 *             @type int    $height Optional image height.
 		 *         }
 		 *         @type string   $lead         Bold sentence under the image.
 		 *         @type string   $text         Text following the lead, next to the "Learn more" toggle.
@@ -417,8 +419,10 @@ class Render extends Abstract_Render {
 			'id'           => 'imagify',
 			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
 			'image'        => [
-				'src' => WP_ROCKET_ASSETS_IMG_URL . 'wpr-imagify-before-after.png',
-				'alt' => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
+				'src'    => WP_ROCKET_ASSETS_IMG_URL . 'wpr-imagify-before-after.png',
+				'alt'    => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
+				'width'  => 262,
+				'height' => 137,
 			],
 			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
 			'text'         => __( 'Images can account for 50% of your loading time.', 'rocket' ),
