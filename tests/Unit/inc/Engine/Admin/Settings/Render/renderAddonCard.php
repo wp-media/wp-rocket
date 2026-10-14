@@ -15,6 +15,12 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @covers \WP_Rocket\Engine\Admin\Settings\Render::get_dashboard_sidebar
  *
+ * Runs in a separate process: the real templates call WordPress functions when included, and PHPUnit
+ * replays the included files of this process into the separate-process tests that run later.
+ *
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ *
  * @group SettingsPage
  */
 class Test_RenderAddonCard extends TestCase {
