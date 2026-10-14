@@ -375,3 +375,29 @@ Method : SUITCSS (modified)
   right: inherit;
   left: 24px;
 }
+
+.wpr-ri-score-widget__metric-column:not(:first-child) .wpr-ri-score-widget__metric-info .wpr-tooltip,
+.wpr-dash-score__metric:nth-last-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+  left: 18px;
+  right: auto;
+}
+.wpr-ri-score-widget__metric-column:not(:first-child) .wpr-ri-score-widget__metric-info .wpr-tooltip:before,
+.wpr-dash-score__metric:nth-last-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip:before {
+  left: -14px;
+  right: auto;
+  border-left: none;
+  border-right: 8px solid #0e1428;
+}
+
+.wpr-ri-score-widget__metric-column:first-child .wpr-ri-score-widget__metric-info .wpr-tooltip,
+.wpr-dash-score__metric:nth-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+  left: auto;
+  right: 16px;
+}
+.wpr-ri-score-widget__metric-column:first-child .wpr-ri-score-widget__metric-info .wpr-tooltip:before,
+.wpr-dash-score__metric:nth-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip:before {
+  left: auto;
+  right: -8px;
+  border-right: none;
+  border-left: 8px solid #0e1428;
+}

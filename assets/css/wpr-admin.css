@@ -3709,11 +3709,11 @@ div.wpr-tutorial-item {
   justify-content: center;
   gap: 4px;
 }
-.wpr-ri-score-widget__metric-column:last-child .wpr-ri-score-widget__metric-info .wpr-tooltip, .wpr-ri-score-widget__metric-column:nth-child(3) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+.wpr-ri-score-widget__metric-column:not(:first-child) .wpr-ri-score-widget__metric-info .wpr-tooltip {
   left: auto;
   right: 16px;
 }
-.wpr-ri-score-widget__metric-column:last-child .wpr-ri-score-widget__metric-info .wpr-tooltip:before, .wpr-ri-score-widget__metric-column:nth-child(3) .wpr-ri-score-widget__metric-info .wpr-tooltip:before {
+.wpr-ri-score-widget__metric-column:not(:first-child) .wpr-ri-score-widget__metric-info .wpr-tooltip:before {
   left: auto;
   right: -8px;
   border-right: none;
@@ -3750,6 +3750,7 @@ div.wpr-tutorial-item {
   background-position: center;
 }
 .wpr-ri-score-widget__metric-info .wpr-tooltip {
+  display: none;
   top: -16px;
   left: 18px;
   min-width: 180px;
@@ -3764,6 +3765,7 @@ div.wpr-tutorial-item {
   border-right: 8px solid #0e1428;
 }
 .wpr-ri-score-widget__metric-info:hover .wpr-tooltip {
+  display: block;
   visibility: visible;
   opacity: 1;
 }
@@ -5281,6 +5283,16 @@ div.wpr-tutorial-item {
   display: flex;
   flex-direction: column;
   gap: 4px;
+}
+.wpr-dash-score__metric:nth-last-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+  left: auto;
+  right: 16px;
+}
+.wpr-dash-score__metric:nth-last-child(-n+2) .wpr-ri-score-widget__metric-info .wpr-tooltip:before {
+  left: auto;
+  right: -8px;
+  border-right: none;
+  border-left: 8px solid #0e1428;
 }
 .wpr-dash-score__metric-label {
   display: inline-flex;
