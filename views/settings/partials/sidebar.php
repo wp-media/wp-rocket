@@ -1,6 +1,9 @@
 <?php
 /**
- * Sidebar template.
+ * Sidebar template of the inner pages.
+ *
+ * It only fires the sidebar hooks: the Rocket Insights score and Recommendations cards hook onto them.
+ * The page prints the sidebar aside only when nothing is output here.
  *
  * @since 3.0
  */
@@ -18,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 do_action( 'rocket_before_sidebar_content' );
 
 /**
- * Fires after sidebar content before quick actions (deprecated).
+ * Fires after the sidebar content (deprecated).
  *
  * @deprecated 3.17 Use 'rocket_before_sidebar_content' instead.
  */

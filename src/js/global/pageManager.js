@@ -38,6 +38,9 @@ function PageManager(aElem) {
     this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
 
+    // Clean the preference stored by the former sidebar toggle, once.
+    localStorage.removeItem( 'wpr-show-sidebar' );
+
     refThis.getBodyTop();
 
     // If url page change
@@ -166,9 +169,6 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
-    // The sidebar toggle was removed: clean the stored preference.
-    localStorage.removeItem( 'wpr-show-sidebar' );
-
     this.$menuItem.classList.add('isActive');
     this.updateGroups();
     this.$submitButton.value = this.buttonText;
@@ -186,7 +186,7 @@ PageManager.prototype.change = function() {
         'account',
     ];
 
-    // The CSS shows or hides the sidebar from this attribute.
+    // The CSS shows or hides the sidebar (and styles the Dashboard container) from this attribute.
     this.$content.dataset.page = this.pageId;
 
     if (pagesWithoutSubmit.includes(this.pageId)) {

@@ -50,7 +50,7 @@ class Renewal extends Abstract_Render {
 	/**
 	 * Returns the renewal banner HTML for users expiring in less than 30 days
 	 *
-	 * @since 3.23.6 Returns the HTML instead of echoing it.
+	 * @since 3.23.6
 	 * @since 3.7.5
 	 *
 	 * @return string
@@ -97,7 +97,7 @@ class Renewal extends Abstract_Render {
 	/**
 	 * Returns the renewal banner HTML for expired users
 	 *
-	 * @since 3.23.6 Returns the HTML instead of echoing it.
+	 * @since 3.23.6
 	 * @since 3.7.5
 	 *
 	 * @return string

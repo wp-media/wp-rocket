@@ -132,7 +132,7 @@ class Upgrade extends Abstract_Render {
 	/**
 	 * Returns the promotion banner HTML
 	 *
-	 * @since 3.23.6 Returns the HTML instead of echoing it.
+	 * @since 3.23.6
 	 *
 	 * @return string
 	 */

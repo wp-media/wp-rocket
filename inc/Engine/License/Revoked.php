@@ -38,7 +38,7 @@ class Revoked extends Abstract_Render {
 	 * This method checks whether the revoked banner should be shown, constructs a message identifying
 	 * loss of access to features, and returns the rendered banner template.
 	 *
-	 * @since 3.23.6 Returns the HTML instead of echoing it.
+	 * @since 3.23.6
 	 *
 	 * @return string
 	 */
