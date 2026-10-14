@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
 
@@ -11,6 +12,8 @@ use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, Plugi
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
+	use TrackingTrait;
+
 	/**
 	 * Page instance
 	 *
@@ -66,6 +69,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
+			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -83,6 +87,33 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Tracks a click on the Imagify banner install/activate CTA.
+	 *
+	 * Runs before Imagify_Partner::post_callback(), which redirects and exits.
+	 *
+	 * @return void
+	 */
+	public function track_imagify_banner_install(): void {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, \Imagify_Partner::NONCE_NAME ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button' => 'imagify banner install',
+				'source' => 'image & media',
+			]
+		);
 	}
 
 	/**
