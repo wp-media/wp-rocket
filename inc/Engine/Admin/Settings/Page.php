@@ -501,7 +501,6 @@ class Page extends Abstract_Render {
 			[
 				'title'                   => __( 'Dashboard', 'rocket' ),
 				'menu_description'        => __( 'Performance overview', 'rocket' ),
-				'faq'                     => $this->beacon->get_suggest( 'faq' ),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
 				'is_rocketcdn_paid_user'  => $this->subscription_controller->is_paid(),
 			]
@@ -1889,7 +1888,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Add-ons', 'rocket' ),
 				'menu_description' => __( 'Add more features', 'rocket' ),
-				'group'            => 'settings',
+				'group'            => 'tools',
 			]
 		);
 
@@ -2087,7 +2086,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
-				'group'            => 'settings',
+				'group'            => 'tools',
 				'class'            => [
 					'wpr-subMenuItem',
 				],
@@ -2204,7 +2203,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Sucuri', 'rocket' ),
 				'menu_description' => '',
-				'group'            => 'settings',
+				'group'            => 'tools',
 				'class'            => [
 					'wpr-subMenuItem',
 				],
