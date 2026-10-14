@@ -25,6 +25,11 @@
     &.isNotFull{
         max-width: 960px;
         z-index: 1000;
+
+        // Wide screens: same width as the Dashboard main card (1230px container - sidebar footprint).
+        @media (min-width: $sidebarWideBreakpoint) {
+            max-width: 1230px - $sidebarWideWidth;
+        }
     }
 
     // Higher specificity than .isNotFull, which is on every page.

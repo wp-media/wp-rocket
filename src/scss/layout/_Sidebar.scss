@@ -15,9 +15,11 @@
 	gap: $space*2;
 
     // Wide screens only: the content column needs about 660px, so the wider sidebar
-    // (card 322px as in the design) fits from 1480px of viewport (WP menu 160 + page 32 + nav 274).
+    // (cards 322px as in the design) fits from 1500px of viewport (WP menu 160 + page 32 + nav 274).
+    // Symmetric padding: nothing to mirror for RTL.
     @media (min-width: $sidebarWideBreakpoint) {
         flex-basis: $sidebarWideWidth;
+        padding: 0 $space*2.5;
     }
 
     @include respond-to('md') {

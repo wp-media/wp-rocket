@@ -2,9 +2,11 @@
 
 $space: 8px;
 $sidebarWidth: 290px;
-// Inner pages sidebar on wide screens: two cards of 322px (design) between 16px paddings.
-$sidebarWideWidth: 322px + $space*4;
-$sidebarWideBreakpoint: 1480px;
+// Inner pages sidebar on wide screens: two cards of 322px between 20px paddings. Its 362px footprint is the
+// one of the Dashboard sidebar (346px) plus the 16px gap, so both main cards get the same width.
+$sidebarWideWidth: 322px + $space*5;
+// The content column keeps at least about 660px: viewport - 192 (WP menu and page) - 274 (nav) - 362 >= 660.
+$sidebarWideBreakpoint: 1500px;
 $wpr-radio-track-height: 22px;
 
 //* -- Breakpoints -- */
