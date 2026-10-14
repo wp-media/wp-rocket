@@ -1,0 +1,174 @@
+<?php
+
+namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\SwitchToRucssBanner;
+
+use WP_Rocket\Tests\Integration\TestCase;
+
+/**
+ * Test class covering the License category of the Dashboard sidebar with the Switch to RUCSS banner.
+ *
+ * Uses Render::get_dashboard_sidebar() and every License callback, as on the Dashboard.
+ *
+ * @group AdminOnly
+ * @group CriticalPath
+ */
+class Test_DashboardSidebarLicense extends TestCase {
+	private static $user;
+	private static $pricing;
+	private static $render;
+	private static $user_id = 0;
+	private $original_user;
+	private $original_pricing;
+	private $async_css = true;
+
+	public static function wpSetUpBeforeClass( $factory ) {
+		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
+	}
+
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		$container     = apply_filters( 'rocket_container', null );
+		self::$user    = $container->get( 'user' );
+		self::$pricing = $container->get( 'pricing' );
+		self::$render  = $container->get( 'settings_render' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
+
+		wp_set_current_user( self::$user_id );
+		get_role( 'administrator' )->add_cap( 'rocket_manage_options' );
+
+		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
+		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
+
+		// Promos are out of the picture: only the License category is checked.
+		$this->unregisterAllCallbacks( 'rocket_dashboard_sidebar_promos' );
+	}
+
+	public function tear_down() {
+		$this->set_reflective_property( $this->original_user, 'user', self::$user );
+		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
+
+		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
+		update_user_meta( self::$user_id, 'rocket_boxes', [] );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_promos' );
+		$this->white_label = false;
+
+		parent::tear_down();
+	}
+
+	public function async_css() {
+		return $this->async_css;
+	}
+
+	private function setUserData( array $data ) {
+		$this->set_reflective_property(
+			json_decode( json_encode( array_merge( [ 'licence_account' => 1, 'has_auto_renew' => false ], $data ) ) ),
+			'user',
+			self::$user
+		);
+	}
+
+	private function setPricing() {
+		$this->set_reflective_property(
+			json_decode(
+				json_encode(
+					[
+						'licenses' => [
+							'single'   => [ 'prices' => [ 'renewal' => [ 'is_grandfather' => 24.5, 'is_grandmother' => 24.5, 'not_grandfather' => 34.3, 'is_expired' => 39.2 ] ], 'websites' => 1 ],
+							'plus'     => [ 'prices' => [ 'renewal' => [ 'is_grandfather' => 49.5, 'is_grandmother' => 49.5, 'not_grandfather' => 69.3, 'is_expired' => 79.2 ] ], 'websites' => 3 ],
+							'infinite' => [ 'prices' => [ 'renewal' => [ 'is_grandfather' => 124.5, 'is_grandmother' => 124.5, 'not_grandfather' => 174.3, 'is_expired' => 199.2 ] ] ],
+						],
+						'renewals' => [
+							'extra_days'       => 90,
+							'grandfather_date' => 1567296000,
+							'grandmother_date' => 315532800,
+							'discount_percent' => [ 'is_grandfather' => 20, 'not_grandfather' => 0, 'is_expired' => 0 ],
+						],
+					]
+				)
+			),
+			'pricing',
+			self::$pricing
+		);
+	}
+
+	public function testRucssAloneShouldBeShownInTheLicenseCategory() {
+		$this->setUserData( [ 'licence_expiration' => strtotime( 'next year' ) ] );
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertSame( 1, substr_count( $html, 'wpr-Dashboard-sidebar-category' ) );
+		$this->assertStringContainsString( 'wpr-rucss-switch', $html );
+		$this->assertStringContainsString( 'License', $html );
+	}
+
+	public function testRucssAndExpiringSoonShouldOnlyShowExpiringSoon() {
+		$this->setPricing();
+		$this->setUserData( [ 'licence_expiration' => strtotime( '+10 days' ) ] );
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertStringContainsString( 'rocket-renewal-banner', $html );
+		$this->assertStringNotContainsString( 'wpr-rucss-switch', $html );
+		$this->assertSame( 1, substr_count( $html, 'wpr-Dashboard-sidebar-category' ) );
+	}
+
+	public function testRucssAndRevokedShouldOnlyShowRevoked() {
+		$this->setUserData(
+			[
+				'licence_expiration' => strtotime( 'next year' ),
+				'licence'            => [ 'is_revoked' => true ],
+			]
+		);
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertStringContainsString( 'revoked-website-banner', $html );
+		$this->assertStringNotContainsString( 'wpr-rucss-switch', $html );
+	}
+
+	public function testWhiteLabelWithAsyncCssShouldRenderLicenseCategoryWithOnlyRucss() {
+		$this->white_label = true;
+		$this->setUserData( [ 'licence_expiration' => strtotime( '+10 days' ) ] );
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertSame( 1, substr_count( $html, 'wpr-Dashboard-sidebar-category' ) );
+		$this->assertStringContainsString( 'wpr-rucss-switch', $html );
+		$this->assertStringNotContainsString( 'rocket-renewal-banner', $html );
+		$this->assertStringNotContainsString( 'revoked-website-banner', $html );
+	}
+
+	public function testShouldRenderNothingWhenRucssIsDismissed() {
+		$this->setUserData( [ 'licence_expiration' => strtotime( 'next year' ) ] );
+		update_user_meta( self::$user_id, 'rocket_boxes', [ 'switch_to_rucss_notice' ] );
+
+		$this->assertSame( '', self::$render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldRenderNothingWhenAsyncCssIsOff() {
+		$this->async_css = false;
+		$this->setUserData( [ 'licence_expiration' => strtotime( 'next year' ) ] );
+
+		$this->assertSame( '', self::$render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldNotLeaveAnythingOnAdminNoticesForRucss() {
+		$this->setUserData( [ 'licence_expiration' => strtotime( 'next year' ) ] );
+		set_current_screen( 'settings_page_wprocket' );
+
+		ob_start();
+		do_action( 'admin_notices' );
+		$notices = ob_get_clean();
+
+		set_current_screen( 'front' );
+
+		$this->assertStringNotContainsString( 'switch_to_rucss', $notices );
+		$this->assertFalse( method_exists( \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::class, 'switch_to_rucss_notice' ) );
+	}
+}
