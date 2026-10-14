@@ -161,7 +161,7 @@ class Render extends Abstract_Render {
 			],
 			'tools'             => [
 				'title'            => __( 'Tools', 'rocket' ),
-				'menu_description' => __( 'Add-ons & Tools', 'rocket' ),
+				'menu_description' => __( 'Tools & Add-ons', 'rocket' ),
 				'items'            => [ 'tools', 'addons' ],
 			],
 			'help'              => [

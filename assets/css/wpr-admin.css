@@ -2084,7 +2084,8 @@ div.wpr-upgrade-websites.notstacked {
   position: relative;
   display: block;
   height: 32px;
-  padding: 0 20px 0 40px;
+  padding-block: 0;
+  padding-inline: 40px 20px;
   font-size: 0.875rem;
   line-height: 2.2857142857;
   font-weight: 400;
@@ -2171,7 +2172,7 @@ div.wpr-upgrade-websites.notstacked {
   display: block;
 }
 #wpr-nav-group-tools .wpr-menuItem-icon {
-  --wpr-nav-icon: url("../img/wpr-nav-settings.svg");
+  --wpr-nav-icon: url("../img/wpr-nav-wrench.svg");
 }
 #wpr-nav-group-tools .wpr-menuItem-icon:before {
   display: block;

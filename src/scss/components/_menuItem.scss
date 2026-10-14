@@ -290,7 +290,8 @@
     position: relative;
     display: block;
     height: 32px;
-    padding: 0 $space*2.5 0 $space*5;
+    padding-block: 0;
+    padding-inline: $space*5 $space*2.5;
     @include font-size(14,32);
     font-weight: 400;
     text-decoration: none;
@@ -369,7 +370,7 @@
     &-group-cache{ @include wpr-nav-icon(wpr-nav-refresh); }
     &-group-page_optimization{ @include wpr-nav-icon(wpr-nav-zap); }
     &-group-backend{ @include wpr-nav-icon(wpr-nav-database); }
-    &-group-tools{ @include wpr-nav-icon(wpr-nav-settings); }
+    &-group-tools{ @include wpr-nav-icon(wpr-nav-wrench); }
     &-group-help{ @include wpr-nav-icon(wpr-nav-book-open); }
     &-account{ @include wpr-nav-icon(wpr-nav-user); }
 }
