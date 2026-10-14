@@ -419,7 +419,7 @@ class Render extends Abstract_Render {
 			'id'           => 'imagify',
 			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
 			'image'        => [
-				'src'    => WP_ROCKET_ASSETS_IMG_URL . 'wpr-imagify-before-after.png',
+				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-imagify-before-after.png',
 				'alt'    => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
 				'width'  => 262,
 				'height' => 137,
@@ -427,7 +427,7 @@ class Render extends Abstract_Render {
 			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
 			'text'         => __( 'Images can account for 50% of your loading time.', 'rocket' ),
 			'list'         => array_column( $this->get_imagify_benefits(), 'text' ),
-			'button_label' => $imagify['installed'] ? __( 'Activate', 'rocket' ) : __( 'Install Imagify', 'rocket' ),
+			'button_label' => __( 'Install Imagify', 'rocket' ),
 			'button_url'   => $imagify['url'],
 			'is_external'  => false,
 		];
@@ -472,15 +472,13 @@ class Render extends Abstract_Render {
 	 *
 	 * @return array {
 	 *     @type bool   $activated   Whether Imagify is active.
-	 *     @type bool   $installed   Whether Imagify is installed.
 	 *     @type bool   $has_api_key Whether an Imagify API key is saved.
-	 *     @type string $url         Post install URL of the Imagify partner flow.
+	 *     @type string $url         Post install URL of the Imagify partner flow (installs when needed, then activates).
 	 * }
 	 */
 	protected function get_imagify_partner_data(): array {
 		return [
 			'activated'   => (bool) \Imagify_Partner::is_imagify_activated(),
-			'installed'   => (bool) \Imagify_Partner::is_imagify_installed(),
 			'has_api_key' => (bool) \Imagify_Partner::has_imagify_api_key(),
 			'url'         => (string) ( new \Imagify_Partner( 'wp-rocket' ) )->get_post_install_url(),
 		];

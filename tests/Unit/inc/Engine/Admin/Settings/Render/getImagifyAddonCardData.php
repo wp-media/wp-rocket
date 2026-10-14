@@ -21,6 +21,10 @@ class Test_GetImagifyAddonCardData extends TestCase {
 		Functions\stubEscapeFunctions();
 		Functions\when( 'rocket_get_constant' )->alias(
 			function ( $name, $default = null ) use ( $white_label ) {
+				if ( 'WP_ROCKET_ASSETS_IMG_URL' === $name ) {
+					return 'https://example.org/assets/img/';
+				}
+
 				return 'WP_ROCKET_WHITE_LABEL_ACCOUNT' === $name ? $white_label : $default;
 			}
 		);
@@ -33,7 +37,6 @@ class Test_GetImagifyAddonCardData extends TestCase {
 			array_merge(
 				[
 					'activated'   => false,
-					'installed'   => false,
 					'has_api_key' => false,
 					'url'         => 'https://example.org/install',
 				],
@@ -54,7 +57,7 @@ class Test_GetImagifyAddonCardData extends TestCase {
 		$this->assertSame( 'Install Imagify', $card['button_label'] );
 		$this->assertSame( 'https://example.org/install', $card['button_url'] );
 		$this->assertFalse( $card['is_external'] );
-		$this->assertStringEndsWith( 'wpr-imagify-before-after.png', $card['image']['src'] );
+		$this->assertSame( 'https://example.org/assets/img/wpr-imagify-before-after.png', $card['image']['src'] );
 		$this->assertCount( 4, $card['list'] );
 	}
 
@@ -65,12 +68,6 @@ class Test_GetImagifyAddonCardData extends TestCase {
 			array_column( $render->get_imagify_benefits(), 'text' ),
 			$render->get_imagify_addon_card_data()['list']
 		);
-	}
-
-	public function testShouldReturnTheActivateCardWhenInstalledButInactive() {
-		$card = $this->getRender( [ 'installed' => true ] )->get_imagify_addon_card_data();
-
-		$this->assertSame( 'Activate', $card['button_label'] );
 	}
 
 	public function hiddenCases() {
