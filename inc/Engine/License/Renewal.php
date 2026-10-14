@@ -129,7 +129,7 @@ class Renewal extends Abstract_Render {
 		}
 
 		$expiration    = $this->user->get_license_expiration();
-		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
+		$expired_since = ( $this->get_current_time() - $expiration ) / DAY_IN_SECONDS;
 
 		if (
 			$this->user->is_auto_renew()
@@ -162,6 +162,17 @@ class Renewal extends Abstract_Render {
 		}
 
 		return (string) $this->generate( $template, $args );
+	}
+
+	/**
+	 * Returns the current timestamp. A seam so the day-based branches can be tested at an exact time.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return int
+	 */
+	protected function get_current_time(): int {
+		return time();
 	}
 
 	/**

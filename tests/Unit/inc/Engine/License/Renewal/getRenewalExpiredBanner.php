@@ -19,6 +19,7 @@ class GetRenewalExpiredBanner extends TestCase {
 	private $user;
 	private $renewal;
 	private $options;
+	private $now;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -27,13 +28,20 @@ class GetRenewalExpiredBanner extends TestCase {
 		$this->user    = Mockery::mock( User::class );
 		$this->options =Mockery::mock( Options_Data::class );
 		$this->renewal = Mockery::mock(
-			Renewal::class . '[generate]',
+			Renewal::class . '[generate,get_current_time]',
 			[
 				$this->pricing,
 				$this->user,
 				$this->options,
 				'views',
 			]
+		)->shouldAllowMockingProtectedMethods();
+
+		// The real clock, unless a test freezes it.
+		$this->renewal->shouldReceive( 'get_current_time' )->andReturnUsing(
+			function () {
+				return $this->now ?? time();
+			}
 		);
 
 		$this->stubEscapeFunctions();
@@ -54,7 +62,8 @@ class GetRenewalExpiredBanner extends TestCase {
 	 * The gap between the 15-90 days and the more than 90 days banners: nothing is displayed.
 	 */
 	public function testShouldReturnEmptyStringWhenOCDEnabledAndExpiredSinceExactly90Days() {
-		$now = time();
+		$this->now = 1700000000;
+		$now       = $this->now;
 
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_transient' )->justReturn( false );
@@ -69,13 +78,7 @@ class GetRenewalExpiredBanner extends TestCase {
 
 		$this->renewal->shouldReceive( 'generate' )->never();
 
-		$html = $this->renewal->get_renewal_expired_banner();
-
-		if ( time() !== $now ) {
-			$this->markTestSkipped( 'The clock ticked during the test, the 90 days boundary was missed.' );
-		}
-
-		$this->assertSame( '', $html );
+		$this->assertSame( '', $this->renewal->get_renewal_expired_banner() );
 	}
 
 	/**
