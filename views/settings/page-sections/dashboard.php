@@ -56,28 +56,30 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 		<?php
 		if ( ! $rocket_box_is_dismissed ) :
 			?>
-		<div class="wpr-notice">
-			<div class="wpr-notice-container">
-				<div class="wpr-notice-supTitle"><?php echo esc_html( $rocket_hero_title ); ?></div>
-				<h2 class="wpr-notice-title">
-					<?php echo wp_kses( $rocket_title, [ 'br' => [] ] ); ?>
-				</h2>
-				<div class="wpr-notice-description">
-					<?php echo wp_kses( $rocket_hero_description, [ 'br' => [] ] ); ?>
-				</div>
-				<?php if ( ! empty( $rocket_cdn_token ) && ! empty( $data['rocket_insights_enabled'] ) ) : ?>
-					<div class="wpr-notice-continue">
-						<?php
-						printf(
-							// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-							esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
-							'<strong>',
-							'</strong>'
-						);
-						?>
+		<div class="wpr-Dashboard-main-notice">
+			<div class="wpr-notice">
+				<div class="wpr-notice-container">
+					<div class="wpr-notice-supTitle"><?php echo esc_html( $rocket_hero_title ); ?></div>
+					<h2 class="wpr-notice-title">
+						<?php echo wp_kses( $rocket_title, [ 'br' => [] ] ); ?>
+					</h2>
+					<div class="wpr-notice-description">
+						<?php echo wp_kses( $rocket_hero_description, [ 'br' => [] ] ); ?>
 					</div>
-				<?php endif; ?>
-				<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+					<?php if ( ! empty( $rocket_cdn_token ) && ! empty( $data['rocket_insights_enabled'] ) ) : ?>
+						<div class="wpr-notice-continue">
+							<?php
+							printf(
+								// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+								esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
+								'<strong>',
+								'</strong>'
+							);
+							?>
+						</div>
+					<?php endif; ?>
+					<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+				</div>
 			</div>
 		</div>
 			<?php

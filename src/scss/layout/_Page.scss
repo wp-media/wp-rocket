@@ -157,6 +157,22 @@
         background: #fff;
         border-radius: 0 4px 4px 0;
 
+        // The hero notice dismiss slide (main.js, 40px) must not overshoot the card edge.
+        // Only the notice wrapper clips: tooltips of the score component must stay visible.
+        &-notice{
+            overflow: hidden;
+
+            // The card padding is enough: no extra top margin.
+            .wpr-notice{
+                margin-top: 0;
+            }
+        }
+
+        // Columns stacked: the card is no longer attached to the navigation.
+        @include respond-to('md') {
+            border-radius: 4px;
+        }
+
         @include respond-to('xs') {
             padding: $space*3 $space*2;
         }

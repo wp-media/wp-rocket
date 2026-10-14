@@ -46,11 +46,49 @@ Method : SUITCSS (modified)
 .wpr-Dashboard{
     &-main{
         border-radius: 4px 0 0 4px;
+
+        @include respond-to('md') {
+            border-radius: 4px;
+        }
     }
 
     &-sidebar:before{
         right: auto;
         left: $space*2;
+    }
+
+    // Dashboard sidebar content, mirrored.
+    &-sidebar{
+        // Add-on cards: check list bullets on the right.
+        .wpr-addonCard-list li{
+            padding-left: 0;
+            padding-right: $space*3;
+
+            &:before,
+            &:after{
+                left: auto;
+            }
+
+            &:before{
+                right: 0;
+            }
+
+            &:after{
+                right: 4px;
+                transform: rotate(45deg);
+            }
+        }
+
+        // License banners: warning icon before the title, close button on the left.
+        .rocket-renewal-expired-banner .rocket-expired-title::before{
+            margin-right: 0;
+            margin-left: $space;
+        }
+
+        .wpr-notice-close{
+            right: auto;
+            left: $space;
+        }
     }
 }
 
