@@ -6407,6 +6407,28 @@ div.wpr-tutorial-item {
 .wpr-account-planValue.wpr-isValid {
   color: #31A670;
 }
+.wpr-account-plan--active {
+  flex: 1 1 auto;
+  gap: 0;
+}
+.wpr-account-plan--active .wpr-account-planItem {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+.wpr-account-plan--active .wpr-account-planItem:not(:last-child) {
+  padding-bottom: 12px;
+}
+.wpr-account-plan--active .wpr-account-planItem + .wpr-account-planItem {
+  padding-top: 12px;
+  border-top: 1px solid #E2E5E9;
+}
+.wpr-account-plan--active .wpr-account-planValue {
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.3333333333;
+}
 .wpr-account-button {
   display: inline-flex;
   align-items: center;

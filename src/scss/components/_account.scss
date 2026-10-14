@@ -223,6 +223,35 @@
         }
     }
 
+    // Paid subscription: label and value on one line, rows separated by a line.
+    &-plan--active{
+        flex: 1 1 auto;
+        gap: 0;
+
+        .wpr-account-planItem{
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: $space;
+
+            // Same line between rows as the WP Rocket card.
+            &:not(:last-child){
+                padding-bottom: 12px;
+            }
+
+            & + .wpr-account-planItem{
+                padding-top: 12px;
+                border-top: 1px solid $cGreyLighter1;
+            }
+        }
+
+        // Same typography as .wpr-account-value (e.g. the license expiration date).
+        .wpr-account-planValue{
+            font-weight: 600;
+            @include font-size(12,16);
+        }
+    }
+
     // Buttons
     &-button{
         display: inline-flex;
