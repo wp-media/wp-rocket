@@ -32,5 +32,3 @@ do_action( 'rocket_after_sidebar_content' );
  * @since 3.21
  */
 do_action( 'rocket_sidebar' );
-
-$this->render_part( 'documentation' );

@@ -84,8 +84,6 @@ $(document).ready(function(){
 			// Check if it's in FAQ section or sidebar documentation
 			if ($(this).closest('.wpr-fieldsContainer-fieldset').prev('.wpr-optionHeader').find('.wpr-title2').text().includes('Frequently Asked Questions')) {
 				window.wprTrackHelpButton('FAQ - ' + text, 'Dashboard');
-			} else if ($(this).closest('.wpr-documentation').length > 0) {
-				window.wprTrackHelpButton('Documentation', 'Sidebar');
 			} else {
 				window.wprTrackHelpButton('Documentation Link', 'General');
 			}
@@ -209,29 +207,6 @@ $(document).ready(function(){
 			.set($wprPopinOverlay, {'display':'none'})
 		;
 	}
-
-	/***
-	* Sidebar on/off
-	***/
-	var $wprSidebar    = $( '.wpr-Sidebar' );
-	var $wprButtonTips = $('.wpr-js-tips');
-
-	$wprButtonTips.on('change', function() {
-		wprDetectTips($(this));
-	});
-
-	function wprDetectTips(aElem){
-		if(aElem.is(':checked')){
-			$wprSidebar.css('display','block');
-			localStorage.setItem( 'wpr-show-sidebar', 'on' );
-		}
-		else{
-			$wprSidebar.css('display','none');
-			localStorage.setItem( 'wpr-show-sidebar', 'off' );
-		}
-	}
-
-
 
 	/***
 	* Detect Adblock

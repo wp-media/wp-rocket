@@ -95,8 +95,9 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 		 */
 		do_action( 'rocket_before_dashboard_content' );
 	?>
-	<div class="wpr-Page-row">
-		<div class="wpr-Page-col">
+	<?php $rocket_dashboard_sidebar = $this->get_dashboard_sidebar(); ?>
+	<div class="wpr-Page-row wpr-Dashboard">
+		<div class="wpr-Page-col wpr-Dashboard-main">
 			<?php
 			/**
 			 * Fires in the main column of the dashboard tab content.
@@ -145,17 +146,10 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 			</div>
 		</div>
 
-		<div class="wpr-Page-col wpr-Page-col--fixed">
-			<?php
-			/**
-			 * Fires in the dashboard sidebar
-			 */
-			do_action( 'rocket_dashboard_sidebar' );
-
-			$this->render_part( 'quick-actions' );
-
-			$this->render_part( 'documentation' );
-			?>
-		</div>
+		<?php if ( '' !== $rocket_dashboard_sidebar ) : ?>
+		<aside class="wpr-Dashboard-sidebar">
+			<?php echo $rocket_dashboard_sidebar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in its own view. ?>
+		</aside>
+		<?php endif; ?>
 	</div>
 </div>

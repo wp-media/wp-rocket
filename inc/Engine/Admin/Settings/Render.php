@@ -302,6 +302,58 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Returns the HTML of the Dashboard sidebar, one block per category.
+	 *
+	 * A category without content is not rendered, title included.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return string
+	 */
+	public function get_dashboard_sidebar(): string {
+		/**
+		 * Filters the License banner of the dashboard sidebar. The first non-empty value wins, so only one banner is displayed.
+		 *
+		 * @since 3.23.6
+		 *
+		 * @param string $html HTML of the License banner.
+		 */
+		$license = wpm_apply_filters_typed( 'string', 'rocket_dashboard_sidebar_license', '' );
+
+		/**
+		 * Filters the Promos banners of the dashboard sidebar.
+		 *
+		 * @since 3.23.6
+		 *
+		 * @param string $html HTML of the Promos banners.
+		 */
+		$promos = wpm_apply_filters_typed( 'string', 'rocket_dashboard_sidebar_promos', '' );
+
+		$categories = [
+			__( 'License', 'rocket' ) => $license,
+			__( 'Promos', 'rocket' )  => $promos,
+		];
+
+		$html = '';
+
+		foreach ( $categories as $title => $content ) {
+			if ( '' === trim( $content ) ) {
+				continue;
+			}
+
+			$html .= (string) $this->generate(
+				'partials/sidebar/category',
+				[
+					'title'   => $title,
+					'content' => $content,
+				]
+			);
+		}
+
+		return $html;
+	}
+
+	/**
 	 * Render the Tutorials page section.
 	 *
 	 * @since 3.4

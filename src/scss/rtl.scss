@@ -31,29 +31,27 @@ Method : SUITCSS (modified)
 }
 
 
-// layout/Page
-.wpr-Page{
-    &-col--fixed{
-        margin-left: 0;
-        margin-right: $space*3;
-
-        @include respond-to('md') {
-            margin-right: 0;
-        }
-    }
-}
-
-
 // layout/Content
 .wpr-Content{
     border: 1px solid $cGrey;
     border-right: none;
+
+    // Dashboard: transparent container, no border.
+    &.isNotFull[data-page="dashboard"]{
+        border: none;
+    }
 }
 
-// Show sidebar
-.wpr-Content-tips {
-    right: unset;
-    left: 24px;
+// layout/Page (Dashboard columns)
+.wpr-Dashboard{
+    &-main{
+        border-radius: 4px 0 0 4px;
+    }
+
+    &-sidebar:before{
+        right: auto;
+        left: $space*2;
+    }
 }
 
 // layout/Sidebar

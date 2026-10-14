@@ -48,24 +48,19 @@ settings_errors( $data['slug'] ); ?>
 				$this->render_tools_section( $data['tools_page'] );
 				$this->render_tutorials_section();
 				$this->render_plugin_section();
-				?>
-			<div class="wpr-Content-tips">
-				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
-					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
-					<label for="wpr-js-tips">
-						<span data-l10n-active="On"
-							data-l10n-inactive="Off" class="wpr-radio-ui"></span>
-						<?php esc_html_e( 'Show Sidebar', 'rocket' ); ?></label>
-				</div>
-			</div>
-				<?php
 			}
 			?>
 		</section>
 
+		<?php
+		$rocket_sidebar = trim( (string) $this->generate( 'partials/sidebar' ) );
+
+		if ( '' !== $rocket_sidebar ) :
+			?>
 		<aside class="wpr-Sidebar">
-			<?php $this->render_part( 'sidebar' ); ?>
+			<?php echo $rocket_sidebar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</aside>
+		<?php endif; ?>
 	</div>
 
 	<div class="wpr-Popin wpr-Popin-Analytics">
