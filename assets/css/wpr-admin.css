@@ -542,6 +542,11 @@ a:focus, button:focus {
   flex-direction: column;
   gap: 16px;
 }
+@media (min-width: 1480px) {
+  .wpr-Sidebar {
+    flex-basis: 354px;
+  }
+}
 @media (max-width: 1239px) {
   .wpr-Sidebar {
     flex: 0 0 260px;
@@ -788,6 +793,7 @@ a:focus, button:focus {
 }
 .wpr-Dashboard-main-notice .wpr-notice {
   margin-top: 0;
+  margin-bottom: 24px;
 }
 @media (max-width: 1239px) {
   .wpr-Dashboard-main {
