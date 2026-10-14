@@ -85,4 +85,33 @@ class Test_GetDashboardSidebar extends TestCase {
 
 		$this->assertSame( '', $this->render->get_dashboard_sidebar() );
 	}
+
+	public function testShouldRenderEveryAddonCardFromDataUnderTheAddonsCategory() {
+		$imagify = [ 'id' => 'imagify', 'title' => 'Imagify' ];
+		$cdn     = [ 'id' => 'rocketcdn', 'title' => 'CDN' ];
+
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->with( [] )->andReturn( [ $imagify, $cdn ] );
+
+		$this->render->shouldReceive( 'generate' )->once()->ordered()->with( 'partials/sidebar/addon-card', $imagify )->andReturn( '<i>1</i>' );
+		$this->render->shouldReceive( 'generate' )->once()->ordered()->with( 'partials/sidebar/addon-card', $cdn )->andReturn( '<i>2</i>' );
+		$this->render->shouldReceive( 'generate' )
+			->once()
+			->ordered()
+			->with( 'partials/sidebar/category', [ 'title' => 'Add-ons', 'content' => '<i>1</i><i>2</i>' ] )
+			->andReturn( '<div>Add-ons</div>' );
+
+		$this->assertSame( '<div>Add-ons</div>', $this->render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldNotRenderTheAddonsCategoryWhenThereIsNoCard() {
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->andReturn( [] );
+
+		$this->render->shouldReceive( 'generate' )->never();
+
+		$this->assertSame( '', $this->render->get_dashboard_sidebar() );
+	}
 }

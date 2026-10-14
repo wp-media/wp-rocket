@@ -205,4 +205,117 @@
             }
         }
     }
+
+    // Add-on cards (Imagify, RocketCDN): collapsed by default, the benefits list shows when expanded.
+    .wpr-addonCard{
+        padding: $space*2;
+        border-radius: 4px;
+        background: $cOrangeLight4;
+        color: $cBlack;
+
+        & + .wpr-addonCard{
+            margin-top: $space*2;
+        }
+
+        &-title{
+            margin: 0 0 $space;
+            color: $cOrange;
+            @include font-size(16,24);
+            font-weight: 500;
+        }
+
+        &-image{
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 0 $space;
+            border-radius: 4px;
+        }
+
+        &-lead{
+            margin: 0;
+            @include font-size(13,20);
+            font-weight: bold;
+        }
+
+        &-text{
+            margin: 0 0 $space*2;
+            @include font-size(13,20);
+        }
+
+        &-toggle{
+            display: inline;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: inherit;
+            font: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+
+            &:focus-visible{
+                outline: 2px solid $cOrange;
+                outline-offset: 2px;
+            }
+        }
+
+        &-list{
+            margin: 0 0 $space*2;
+            padding: 0;
+            list-style: none;
+            @include font-size(13,20);
+
+            &[hidden]{
+                display: none;
+            }
+
+            li{
+                position: relative;
+                margin: 0 0 $space;
+                padding-left: $space*3;
+
+                &:before{
+                    content: "";
+                    position: absolute;
+                    top: 4px;
+                    left: 0;
+                    width: 14px;
+                    height: 14px;
+                    background: $cGreen;
+                    border-radius: 50%;
+                }
+
+                &:after{
+                    content: "";
+                    position: absolute;
+                    top: 7px;
+                    left: 4px;
+                    width: 6px;
+                    height: 3px;
+                    border-left: 2px solid #fff;
+                    border-bottom: 2px solid #fff;
+                    transform: rotate(-45deg);
+                }
+            }
+        }
+
+        &-button{
+            display: block;
+            width: 100%;
+            padding: $space*1.5 $space*2;
+            border-radius: 4px;
+            background: $cOrange;
+            color: #fff;
+            text-align: center;
+            text-decoration: none;
+            @include font-size(14,20);
+            font-weight: bold;
+
+            &:hover,
+            &:focus{
+                background: $cOrangeLight1;
+                color: #fff;
+            }
+        }
+    }
 }

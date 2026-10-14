@@ -2,35 +2,15 @@
 /**
  * Imagify banner benefits list.
  *
- * Static placeholder content from the design.
+ * Static placeholder content from the design, shared with the Imagify card of the Dashboard sidebar through
+ * Render::get_imagify_benefits().
  *
  * @since 3.24
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_benefits = [
-	[
-		'image' => 'wpr-imagify-benefit-1.png',
-		// Translators: %1$s = <strong>, %2$s = </strong>.
-		'text'  => sprintf( esc_html__( '%1$sCompress all your images%2$s in one click', 'rocket' ), '<strong>', '</strong>' ),
-	],
-	[
-		'image' => 'wpr-imagify-benefit-2.png',
-		// Translators: %1$s = <strong>, %2$s = </strong>.
-		'text'  => sprintf( esc_html__( '%1$sConvert images%2$s to WebP and Avif', 'rocket' ), '<strong>', '</strong>' ),
-	],
-	[
-		'image' => 'wpr-imagify-benefit-3.png',
-		// Translators: %1$s = <strong>, %2$s = </strong>.
-		'text'  => sprintf( esc_html__( '%1$sResize your image%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
-	],
-	[
-		'image' => 'wpr-imagify-benefit-4.png',
-		// Translators: %1$s = <strong>, %2$s = </strong>.
-		'text'  => sprintf( esc_html__( '%1$sFree plan includes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
-	],
-];
+$rocket_benefits = $this->get_imagify_benefits();
 ?>
 <ul class="wpr-imagifyBanner-benefits">
 	<?php foreach ( $rocket_benefits as $rocket_benefit ) : ?>

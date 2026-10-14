@@ -329,9 +329,48 @@ class Render extends Abstract_Render {
 		 */
 		$promos = wpm_apply_filters_typed( 'string', 'rocket_dashboard_sidebar_promos', '' );
 
+		/**
+		 * Filters the add-on cards of the dashboard sidebar.
+		 *
+		 * Each callback appends the data of its card, without any HTML: the card is rendered by WP Rocket.
+		 *
+		 * @since 3.23.6
+		 *
+		 * @param array $cards {
+		 *     Card data, one array per card.
+		 *
+		 *     @type array $card {
+		 *         @type string   $id           Unique card identifier.
+		 *         @type string   $title        Card title.
+		 *         @type array    $image        {
+		 *             @type string $src Image URL, empty for no image.
+		 *             @type string $alt Image alternative text.
+		 *         }
+		 *         @type string   $lead         Bold sentence under the image.
+		 *         @type string   $text         Text following the lead, next to the "Learn more" toggle.
+		 *         @type string[] $list         Benefits shown when the card is expanded. Only <strong> is allowed.
+		 *         @type string   $button_label Button label.
+		 *         @type string   $button_url   Button URL.
+		 *         @type bool     $is_external  Whether the button opens an external site in a new tab.
+		 *     }
+		 * }
+		 */
+		$cards = wpm_apply_filters_typed( 'array', 'rocket_dashboard_sidebar_addons', [] );
+
+		$addons = '';
+
+		foreach ( $cards as $card ) {
+			if ( ! is_array( $card ) ) {
+				continue;
+			}
+
+			$addons .= (string) $this->generate( 'partials/sidebar/addon-card', $card );
+		}
+
 		$categories = [
 			__( 'License', 'rocket' ) => $license,
 			__( 'Promos', 'rocket' )  => $promos,
+			__( 'Add-ons', 'rocket' ) => $addons,
 		];
 
 		$html = '';
@@ -351,6 +390,96 @@ class Render extends Abstract_Render {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Returns the data of the Imagify card of the Dashboard sidebar.
+	 *
+	 * Same rules as render_imagify_banner(): nothing for white label accounts, while Imagify is active,
+	 * or when an API key is saved.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return array Card data, empty when the card must not be displayed.
+	 */
+	public function get_imagify_addon_card_data(): array {
+		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return [];
+		}
+
+		$imagify = $this->get_imagify_partner_data();
+
+		if ( $imagify['activated'] || $imagify['has_api_key'] ) {
+			return [];
+		}
+
+		return [
+			'id'           => 'imagify',
+			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
+			'image'        => [
+				'src' => WP_ROCKET_ASSETS_IMG_URL . 'wpr-imagify-before-after.png',
+				'alt' => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
+			],
+			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
+			'text'         => __( 'Images can account for 50% of your loading time.', 'rocket' ),
+			'list'         => array_column( $this->get_imagify_benefits(), 'text' ),
+			'button_label' => $imagify['installed'] ? __( 'Activate', 'rocket' ) : __( 'Install Imagify', 'rocket' ),
+			'button_url'   => $imagify['url'],
+			'is_external'  => false,
+		];
+	}
+
+	/**
+	 * Returns the Imagify benefits, shared by the Imagify banner and the Imagify card.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return array[] Benefits, with the image file name and the text (only <strong> tags).
+	 */
+	public function get_imagify_benefits(): array {
+		return [
+			[
+				'image' => 'wpr-imagify-benefit-1.png',
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				'text'  => sprintf( esc_html__( '%1$sCompress all your images%2$s in one click', 'rocket' ), '<strong>', '</strong>' ),
+			],
+			[
+				'image' => 'wpr-imagify-benefit-2.png',
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				'text'  => sprintf( esc_html__( '%1$sConvert images%2$s to WebP and Avif', 'rocket' ), '<strong>', '</strong>' ),
+			],
+			[
+				'image' => 'wpr-imagify-benefit-3.png',
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				'text'  => sprintf( esc_html__( '%1$sResize your image%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
+			],
+			[
+				'image' => 'wpr-imagify-benefit-4.png',
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				'text'  => sprintf( esc_html__( '%1$sFree plan includes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
+			],
+		];
+	}
+
+	/**
+	 * Returns the Imagify partner state used by the Imagify card.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return array {
+	 *     @type bool   $activated   Whether Imagify is active.
+	 *     @type bool   $installed   Whether Imagify is installed.
+	 *     @type bool   $has_api_key Whether an Imagify API key is saved.
+	 *     @type string $url         Post install URL of the Imagify partner flow.
+	 * }
+	 */
+	protected function get_imagify_partner_data(): array {
+		return [
+			'activated'   => (bool) \Imagify_Partner::is_imagify_activated(),
+			'installed'   => (bool) \Imagify_Partner::is_imagify_installed(),
+			'has_api_key' => (bool) \Imagify_Partner::has_imagify_api_key(),
+			'url'         => (string) ( new \Imagify_Partner( 'wp-rocket' ) )->get_post_install_url(),
+		];
 	}
 
 	/**
