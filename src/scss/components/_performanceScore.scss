@@ -94,7 +94,8 @@
 		justify-content: center;
 		gap: 4px;
 
-		&:last-child, &:nth-child(3) {
+		// Every column but the first one opens its tooltip to the left: the card is narrow and sits at the page edge.
+		&:not(:first-child) {
 			.wpr-ri-score-widget__metric-info {
 				.wpr-tooltip {
 					left: auto;
@@ -145,6 +146,8 @@
 		}
 
 		.wpr-tooltip {
+			// Not rendered until hovered: a hidden box (visibility only) still extends the scrollable area of the page.
+			display: none;
 			top: -16px;
 			left: 18px;
 			min-width: 180px;
@@ -162,6 +165,7 @@
 
 		&:hover {
 			.wpr-tooltip {
+				display: block;
 				visibility: visible;
 				opacity: 1;
 			}
