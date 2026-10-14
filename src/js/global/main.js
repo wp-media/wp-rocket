@@ -17,7 +17,7 @@ $(document).ready(function(){
 	function wprCloseDashboardNotice(){
 		var vTL = new TimelineLite()
 		  .to($notice, 1, {autoAlpha:0, x:40, ease:Power4.easeOut})
-		  .to($notice, 0.6, {height: 0, marginTop:0, ease:Power4.easeOut}, '=-.4')
+		  .to($notice, 0.6, {height: 0, marginTop:0, marginBottom:0, ease:Power4.easeOut}, '=-.4')
 		  .set($notice, {'display':'none'})
 		;
 	}

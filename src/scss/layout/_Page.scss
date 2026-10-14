@@ -163,8 +163,11 @@
             overflow: hidden;
 
             // The card padding is enough: no extra top margin.
+            // Space before the section title. main.js tweens marginTop and marginBottom to 0 on dismiss,
+            // so the gap collapses with the notice.
             .wpr-notice{
                 margin-top: 0;
+                margin-bottom: $space*3;
             }
         }
 
