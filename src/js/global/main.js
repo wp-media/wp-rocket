@@ -81,10 +81,8 @@ $(document).ready(function(){
 			var href = $(this).attr('href');
 			var text = $(this).text();
 
-			// Check if it's in FAQ section or sidebar documentation
-			if ($(this).closest('.wpr-fieldsContainer-fieldset').prev('.wpr-optionHeader').find('.wpr-title2').text().includes('Frequently Asked Questions')) {
-				window.wprTrackHelpButton('FAQ - ' + text, 'Dashboard');
-			} else if ($(this).closest('.wpr-documentation').length > 0) {
+			// Check if it's in sidebar documentation
+			if ($(this).closest('.wpr-documentation').length > 0) {
 				window.wprTrackHelpButton('Documentation', 'Sidebar');
 			} else {
 				window.wprTrackHelpButton('Documentation Link', 'General');

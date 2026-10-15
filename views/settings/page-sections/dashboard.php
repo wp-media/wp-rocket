@@ -9,13 +9,6 @@
  *
  *     @type string $id    Page section identifier.
  *     @type string $title Page section title.
- *     @type array  $faq   {
- *         Items to populate the FAQ section.
- *
- *         @type string $id    Documentation item ID.
- *         @type string $url   Documentation item URL.
- *         @type string $title Documentation item title.
- *     }
  * }
  */
 
@@ -105,44 +98,6 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 			 */
 			do_action( 'rocket_dashboard_content' );
 			?>
-			<?php $this->render_part( 'getting-started' ); ?>
-			<div class="wpr-optionHeader">
-				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
-			</div>
-			<div class="wpr-fieldsContainer-fieldset">
-				<div class="wpr-field">
-					<ul class="wpr-field-list">
-					<?php foreach ( $data['faq'] as $rocket_faq_item ) : ?>
-						<li class="wpr-icon-information"><a href="<?php echo esc_url( $rocket_faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $rocket_faq_item['id'] ); ?>" target="_blank"><?php echo esc_html( $rocket_faq_item['title'] ); ?></a></li>
-					<?php endforeach; ?>
-					</ul>
-				</div>
-				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
-					<div class="wpr-field">
-						<div class="wpr-flex wpr-flex--egal">
-							<div>
-								<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
-								<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-							</div>
-							<div>
-								<?php
-								$this->render_action_button(
-									'link',
-									'ask_support',
-									[
-										'label'      => __( 'Ask support', 'rocket' ),
-										'attributes' => [
-											'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
-											'target' => '_blank',
-										],
-									]
-								);
-								?>
-							</div>
-						</div>
-					</div>
-				<?php } ?>
-			</div>
 		</div>
 
 		<div class="wpr-Page-col wpr-Page-col--fixed">
