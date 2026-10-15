@@ -2,21 +2,17 @@
 /**
  * Dashboard Global Score component.
  *
- * @param array $data Global score data (same data as the global score widget).
+ * @param array $data {
+ *     Global score data (same data as the global score widget).
+ *
+ *     @type array $metric_definitions Label and tooltip of each metric, used for the loading state.
+ * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $rocket_has_metrics = ! empty( $data['average_metrics'] ) && isset( $data['average_metrics']['largest_contentful_paint'] ) && is_array( $data['average_metrics']['largest_contentful_paint'] );
 $rocket_is_loading  = ( isset( $data['status'] ) && 'in-progress' === $data['status'] ) || ! empty( $data['is_running'] );
-
-// Same metrics as the Calculator, shown with skeleton values while the tests run.
-$rocket_loading_metrics = [
-	'LCP'  => __( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ),
-	'TBT'  => __( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ),
-	'CLS'  => __( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ),
-	'TTFB' => __( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ),
-];
 ?>
 <section class="wpr-dash-score<?php echo $rocket_is_loading ? ' wpr-dash-score--loading' : ''; ?>" data-context="<?php echo esc_attr( $data['context'] ?? 'dashboard' ); ?>"<?php echo $rocket_is_loading ? ' aria-busy="true"' : ''; ?>>
 	<div class="wpr-dash-section-header">
@@ -89,14 +85,14 @@ $rocket_loading_metrics = [
 
 		<?php if ( $rocket_is_loading ) : ?>
 			<div class="wpr-dash-score__metrics">
-				<?php foreach ( $rocket_loading_metrics as $rocket_metric_label => $rocket_metric_tooltip ) : ?>
+				<?php foreach ( $data['metric_definitions'] as $rocket_metric ) : ?>
 					<div class="wpr-dash-score__metric">
 						<span class="wpr-dash-score__metric-label">
-							<?php echo esc_html( $rocket_metric_label ); ?>
+							<?php echo esc_html( $rocket_metric['label'] ); ?>
 							<span class="wpr-ri-score-widget__metric-info">
 								<span class="wpr-ri-score-widget__metric-info-icon"></span>
 								<span class="wpr-tooltip">
-									<span class="wpr-tooltip-content"><?php echo esc_html( $rocket_metric_tooltip ); ?></span>
+									<span class="wpr-tooltip-content"><?php echo esc_html( $rocket_metric['tooltip'] ); ?></span>
 								</span>
 							</span>
 						</span>
