@@ -84,22 +84,17 @@
 		background: $cWhite;
 		border-radius: 2px;
 		text-align: center;
-
-        &:before {
-          display: block;
-          content: "";
-          background: url("../img/orange-loading.svg") no-repeat center center;
-          background-size: contain;
-          width: 22.857px;
-          height: 24px;
-          aspect-ratio: 20/21;
-        }
 	}
 
 	&__loading-spinner {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+
+		.wpr-loading-dots {
+			width: 24px;
+			height: 24px;
+		}
 	}
 
 	&__loading-text {

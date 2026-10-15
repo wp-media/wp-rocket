@@ -366,7 +366,8 @@
 		a {
 			text-decoration: none;
 		}
-		.wpr-loading-img{
+		.wpr-loading-img,
+		.wpr-loading-dots {
 			width: 78px;
 			height: 82px;
 			&-sm{
@@ -390,3 +391,28 @@
 			}
 		}
 	}
+
+// Same loader as orange-loading.svg, animated with CSS (browsers stop SMIL animations inside an <img> after a few seconds).
+// 12 dots pulsing in size and colour over 2s, offset by 1/6s each.
+.wpr-loading-dots circle {
+	fill: rgba(243, 112, 77, 0.5);
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: wpr-loading-dot 2s linear infinite;
+	animation-delay: calc((var(--wpr-dot) - 11) / 6 * 1s);
+}
+
+@keyframes wpr-loading-dot {
+	0%,
+	25%,
+	75%,
+	100% {
+		fill: rgba(243, 112, 77, 0.5);
+		transform: scale(1);
+	}
+
+	50% {
+		fill: #F3704D;
+		transform: scale(1.6667);
+	}
+}

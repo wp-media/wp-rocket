@@ -69,9 +69,31 @@
 			background: $cGreyLight3;
 		}
 
+		// Page limit reached: keep pointer events so the tooltip shows on hover (the click is blocked by the disabled attribute).
+		.wpr-tooltip {
+			left: auto;
+			right: 0;
+			bottom: auto;
+			top: 100%;
+			transform: none;
+			white-space: nowrap;
+
+			&::before {
+				left: auto;
+				right: $space * 2;
+				transform: none;
+			}
+		}
+
 		&.disabled {
-			opacity: 0.5;
-			pointer-events: none;
+			border-color: transparent;
+			color: $cWhite;
+
+			&:hover,
+			&:focus {
+				color: $cWhite;
+				background: #a199b1; // Same as the shared disabled add-page button.
+			}
 		}
 	}
 
@@ -125,7 +147,6 @@
 			width: 60px;
 			height: 60px;
 			border-width: 3px;
-			background-color: $cWhite;
 			font-size: 28px;
 			font-weight: 600;
 		}
@@ -134,6 +155,13 @@
 			width: 60px;
 			height: 60px;
 			margin: 0;
+		}
+
+		.wpr-loading-container,
+		.wpr-loading-dots {
+			display: block;
+			width: 60px;
+			height: 60px;
 		}
 	}
 
@@ -238,6 +266,12 @@
 		@include font-size(13, 20);
 		font-weight: 600;
 		color: $cInk;
+
+		// Centre the info icon on the label (the shared widget offsets it by -2px).
+		.wpr-ri-score-widget__metric-info {
+			height: 10px;
+			margin-top: 0;
+		}
 	}
 
 	&__metric-value {
@@ -286,12 +320,12 @@
 			text-decoration: none;
 		}
 
-		// Show only the first 3 rows until expanded; the last visible row has no separator.
-		&:not(.is-expanded) .wpr-table-list__row:nth-child(n + 4) {
+		// Show only the first 5 rows until expanded; the last visible row has no separator.
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(n + 6) {
 			display: none;
 		}
 
-		&:not(.is-expanded) .wpr-table-list__row:nth-child(3),
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(5),
 		.wpr-table-list__row:last-child {
 			padding-bottom: 0;
 			border-bottom: 0;
