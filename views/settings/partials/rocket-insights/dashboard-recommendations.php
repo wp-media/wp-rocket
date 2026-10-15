@@ -22,7 +22,10 @@ defined( 'ABSPATH' ) || exit;
 	</div>
 
 	<?php if ( 'loading' === $data['state'] ) : ?>
-		<?php $this->render_part( 'rocket-insights/recommendations/states/loading' ); ?>
+		<div class="wpr-dash-recs__loading" role="status">
+			<?php $this->render_part( 'rocket-insights/loading-dots' ); ?>
+			<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Recommendations loading...', 'rocket' ); ?></p>
+		</div>
 	<?php elseif ( 'failed' === $data['state'] ) : ?>
 		<?php $this->render_part( 'rocket-insights/recommendations/states/failed' ); ?>
 	<?php elseif ( empty( $data['recommendations'] ) ) : ?>

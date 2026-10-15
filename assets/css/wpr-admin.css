@@ -5228,11 +5228,64 @@ div.wpr-tutorial-item {
   height: 60px;
   margin: 0;
 }
-.wpr-dash-score__gauge .wpr-loading-container,
-.wpr-dash-score__gauge .wpr-loading-dots {
-  display: block;
+.wpr-dash-score__gauge .wpr-loading-container {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
   width: 60px;
   height: 60px;
+}
+.wpr-dash-score__gauge .wpr-loading-dots {
+  width: 39px;
+  height: 39px;
+}
+.wpr-dash-score__skeleton {
+  display: block;
+  border-radius: 4px;
+  background: linear-gradient(110deg, #E2E5E9 35%, #D4D9DD 50%, #E2E5E9 65%) #E2E5E9;
+  background-size: 200% 100%;
+  animation: wpr-dash-skeleton-shimmer 1.5s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wpr-dash-score__skeleton {
+    animation: none;
+  }
+}
+.wpr-dash-score__skeleton--pages {
+  width: 80px;
+  height: 10px;
+}
+.wpr-dash-score__skeleton--metric {
+  width: 40px;
+  height: 14px;
+}
+.wpr-dash-score--loading .wpr-dash-score__add {
+  opacity: 0.5;
+}
+.wpr-dash-score--loading .wpr-dash-score__summary {
+  align-items: flex-start;
+}
+.wpr-dash-score--loading .wpr-dash-score__pages {
+  display: flex;
+  align-items: center;
+  height: 16px;
+}
+.wpr-dash-score--loading .wpr-dash-score__metric {
+  gap: 2px;
+}
+.wpr-dash-score--loading .wpr-dash-score__metric-label {
+  gap: 4px;
+}
+.wpr-dash-score--loading .wpr-dash-score__metric-label .wpr-ri-score-widget__metric-info,
+.wpr-dash-score--loading .wpr-dash-score__metric-label .wpr-ri-score-widget__metric-info-icon {
+  width: 12px;
+  height: 12px;
+  background-size: 12px 12px;
+}
+.wpr-dash-score--loading .wpr-dash-score__metric-value {
+  display: flex;
+  align-items: center;
+  height: 20px;
 }
 .wpr-dash-score__details {
   display: flex;
@@ -5426,6 +5479,27 @@ div.wpr-tutorial-item {
   line-height: 1.5;
   color: #0C0F1F;
 }
+.wpr-dash-recs__loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px solid #E8EBEE;
+  border-radius: 4px;
+  background: #F9FAFB;
+}
+.wpr-dash-recs__loading .wpr-loading-dots {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+}
+.wpr-dash-recs__loading-text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #738191;
+}
 .wpr-dash-recs__more {
   display: flex;
   align-items: center;
@@ -5454,6 +5528,14 @@ div.wpr-tutorial-item {
   display: inline;
 }
 
+@keyframes wpr-dash-skeleton-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
 .wpr-optionHeader--cdn-driver {
   display: flex;
   align-items: center;

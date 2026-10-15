@@ -157,11 +157,79 @@
 			margin: 0;
 		}
 
-		.wpr-loading-container,
-		.wpr-loading-dots {
-			display: block;
+		// Loading state: the spinner sits at the top of the 60px score area (Figma "Score" loading).
+		.wpr-loading-container {
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
 			width: 60px;
 			height: 60px;
+		}
+
+		.wpr-loading-dots {
+			width: 39px;
+			height: 39px;
+		}
+	}
+
+	// Placeholder bar shown instead of the values still being computed.
+	&__skeleton {
+		display: block;
+		border-radius: 4px;
+		// A darker band sweeps diagonally from left to right over the base colour.
+		background: linear-gradient(110deg, $cGreyLighter1 35%, $cGreyLighter2 50%, $cGreyLighter1 65%) $cGreyLighter1;
+		background-size: 200% 100%;
+		animation: wpr-dash-skeleton-shimmer 1.5s linear infinite;
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+
+		&--pages {
+			width: 80px;
+			height: 10px;
+		}
+
+		&--metric {
+			width: 40px;
+			height: 14px;
+		}
+	}
+
+	&--loading {
+		.wpr-dash-score__add {
+			opacity: 0.5;
+		}
+
+		.wpr-dash-score__summary {
+			align-items: flex-start;
+		}
+
+		.wpr-dash-score__pages {
+			display: flex;
+			align-items: center;
+			height: 16px;
+		}
+
+		.wpr-dash-score__metric {
+			gap: 2px;
+		}
+
+		.wpr-dash-score__metric-label {
+			gap: 4px;
+
+			.wpr-ri-score-widget__metric-info,
+			.wpr-ri-score-widget__metric-info-icon {
+				width: 12px;
+				height: 12px;
+				background-size: 12px 12px;
+			}
+		}
+
+		.wpr-dash-score__metric-value {
+			display: flex;
+			align-items: center;
+			height: 20px;
 		}
 	}
 
@@ -387,6 +455,30 @@
 		color: $cInk;
 	}
 
+	// Loading state (Figma "Recommendations" loading).
+	&__loading {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLight1;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		.wpr-loading-dots {
+			flex: 0 0 32px;
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	&__loading-text {
+		margin: 0;
+		@include font-size(14, 21);
+		color: $cGreyLighter3;
+	}
+
 	&__more {
 		display: flex;
 		align-items: center;
@@ -417,5 +509,15 @@
 		&.is-expanded .wpr-dash-recs__more-text:last-child {
 			display: inline;
 		}
+	}
+}
+
+@keyframes wpr-dash-skeleton-shimmer {
+	from {
+		background-position: 100% 0;
+	}
+
+	to {
+		background-position: 0 0;
 	}
 }
