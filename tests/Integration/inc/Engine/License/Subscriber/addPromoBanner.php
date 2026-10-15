@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::display_renewal_soon_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_promo_banner
  *
  * @group License
  * @group AdminOnly
  */
-class DisplayRenewalSoonBanner extends TestCase {
+class AddPromoBanner extends TestCase {
 	private static $user;
 	private static $pricing;
 	private $original_user;
@@ -32,7 +32,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_renewal_soon_banner', 11 );
+		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_sidebar_promos', 'add_promo_banner', 10 );
 
 		wp_set_current_user( self::$user_id );
 
@@ -41,10 +41,12 @@ class DisplayRenewalSoonBanner extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_promos' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
+
+		delete_transient( 'rocket_promo_banner_' . self::$user_id );
 
 		parent::tear_down();
 	}
@@ -56,6 +58,10 @@ class DisplayRenewalSoonBanner extends TestCase {
 		$this->set_reflective_property( $config['user'], 'user', self::$user );
 		$this->set_reflective_property( $config['pricing'], 'pricing', self::$pricing );
 
+		if ( false !== $config['transient'] ) {
+			set_transient( 'rocket_promo_banner_' . self::$user_id, 1, MINUTE_IN_SECONDS );
+		}
+
 		$this->assertSame(
 			$this->format_the_html($expected ),
 			$this->getActualHtml()
@@ -63,9 +69,7 @@ class DisplayRenewalSoonBanner extends TestCase {
 	}
 
 	private function getActualHtml() {
-		ob_start();
-		do_action( 'rocket_before_dashboard_content' );
-		$actual = ob_get_clean();
+		$actual = apply_filters( 'rocket_dashboard_sidebar_promos', '' );
 
 		return empty( $actual )
 			? $actual

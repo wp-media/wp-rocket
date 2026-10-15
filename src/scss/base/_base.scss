@@ -63,6 +63,38 @@ a, button{
     @include font-size(14,21);
 }
 
+// At the "sm" breakpoint and below, the sidebar stacks under the content, not under the nav.
+@include respond-to('sm') {
+    .wpr-body{
+        display: grid;
+        grid-template-columns: 274px minmax(0, 1fr);
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "nav content"
+            "nav sidebar";
+
+        .wpr-Header{
+            grid-area: nav;
+        }
+
+        .wpr-Content{
+            grid-area: content;
+            min-width: 0;
+        }
+
+        .wpr-Sidebar{
+            grid-area: sidebar;
+            align-self: start;
+        }
+    }
+}
+
+@include respond-to('xs') {
+    .wpr-body{
+        grid-template-columns: 50px minmax(0, 1fr);
+    }
+}
+
 .wpr-body * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
