@@ -308,6 +308,11 @@ $(document).ready(function(){
 		var escaped = CSS.escape(slug);
 		var target = document.querySelector('[name="wp_rocket_settings[' + escaped + ']"]') || document.getElementById(slug);
 
+		// A hidden input only stores the value (e.g. Remove Unused CSS), the option is displayed by a radio button.
+		if (!target || target.type === 'hidden') {
+			target = document.getElementById('wpr-radio-' + slug) || target;
+		}
+
 		if (!target) {
 			return;
 		}
@@ -334,12 +339,25 @@ $(document).ready(function(){
 
 		field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
 
-		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted');
+		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted').css('--wpr-highlight-end', '');
 		clearTimeout(highlightTimer);
 
+		// Extend the highlight down to the next visible element, or to the bottom of the container, covering the spacing left by hidden child fields.
+		var next = field.nextElementSibling;
+
+		while (next && next.offsetParent === null) {
+			next = next.nextElementSibling;
+		}
+
+		var fieldBottom = field.getBoundingClientRect().bottom;
+		var containerBottom = field.parentElement.getBoundingClientRect().bottom - parseFloat(getComputedStyle(field.parentElement).borderBottomWidth);
+		var end = next ? next.getBoundingClientRect().top : containerBottom;
+
+		field.style.setProperty('--wpr-highlight-end', Math.max(0, end - fieldBottom) + 'px');
 		field.classList.add('wpr-field--highlighted');
 		highlightTimer = setTimeout(function() {
 			field.classList.remove('wpr-field--highlighted');
+			field.style.removeProperty('--wpr-highlight-end');
 		}, 2000);
 	}
 
