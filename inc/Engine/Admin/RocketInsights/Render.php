@@ -392,17 +392,13 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return string The generated HTML for the "Add Page" button.
 	 */
 	public function get_add_page_btn( string $type, array $data ) {
 		switch ( $type ) {
-			case 'global-score-widget':
-				$button = $this->generate( 'partials/rocket-insights/buttons/global-score-widget', $data );
-				break;
-
 			case 'rocket-insights':
 			default:
 				$button = $this->generate( 'partials/rocket-insights/buttons/rocket-insights-panel', $data );
@@ -417,7 +413,7 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return void

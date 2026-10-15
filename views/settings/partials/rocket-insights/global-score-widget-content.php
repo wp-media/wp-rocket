@@ -45,10 +45,4 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 	<?php endif; ?>
-
-	<div class="wpr-global-score-widget-btn-wrapper">
-		<?php
-		$this->render_add_page_btn( 'global-score-widget', $data );
-		?>
-	</div>
 </div>

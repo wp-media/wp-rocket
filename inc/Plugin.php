@@ -218,6 +218,7 @@ class Plugin {
 			'rocketcdn_notices_subscriber',
 			'rocketcdn_data_manager_subscriber',
 			'critical_css_admin_subscriber',
+			'switch_to_rucss_banner',
 			'health_check',
 			'minify_css_admin_subscriber',
 			'admin_cache_subscriber',

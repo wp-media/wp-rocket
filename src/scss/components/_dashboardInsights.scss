@@ -325,6 +325,19 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+
+		// The two right-most metrics open their tooltip to the left, so it stays inside the card and the page.
+		&:nth-last-child(-n + 2) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+			left: auto;
+			right: 16px;
+
+			&:before {
+				left: auto;
+				right: -8px;
+				border-right: none;
+				border-left: 8px solid #0e1428;
+			}
+		}
 	}
 
 	&__metric-label {

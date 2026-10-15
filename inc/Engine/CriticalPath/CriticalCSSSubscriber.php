@@ -119,7 +119,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'critical_css_generation_running_notice' ],
 				[ 'critical_css_generation_complete_notice' ],
 				[ 'warning_critical_css_dir_permissions' ],
-				[ 'switch_to_rucss_notice', 9 ],
 			],
 
 			'wp_head' => [ 'insert_load_css', PHP_INT_MAX ],
@@ -830,67 +829,6 @@ JS;
 		$this->critical_css->stop_generation();
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
-	}
-
-	/**
-	 * Display a notice to pass from CPCSS to RUCSS.
-	 *
-	 * @return void
-	 */
-	public function switch_to_rucss_notice() {
-		$boxes = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-
-		if ( in_array( __FUNCTION__, (array) $boxes, true ) ) {
-			return;
-		}
-
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return;
-		}
-
-		if ( $this->user->is_license_expired() ) {
-			return;
-		}
-
-		$screen = get_current_screen();
-
-		if ( isset( $screen->id ) && 'settings_page_wprocket' !== $screen->id ) {
-			return;
-		}
-
-		/**
-		 * Filters the status of the RUCSS option.
-		 *
-		 * @param array $should_disable will return array with disable status and text.
-		 */
-		$rucss_status = wpm_apply_filters_typed(
-			'array',
-			'rocket_disable_rucss_setting',
-			[
-				'disable' => false,
-				'text'    => '',
-			]
-		);
-
-		if ( key_exists( 'disable', $rucss_status ) && $rucss_status['disable'] ) {
-			return;
-		}
-
-		rocket_notice_html(
-			[
-				'status'                 => 'wpr-warning',
-				'dismissible'            => '',
-				'dismiss_button'         => __FUNCTION__,
-				'message'                => sprintf(
-					// translators: %1$ = opening bold tag, %2$ = closing bold tag.
-					__( 'We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS optimization. Load CSS Asynchronously is always available as a back-up.', 'rocket' ),
-					'<b>',
-							'</b>'
-				),
-				'action'                 => 'switch_to_rucss',
-				'dismiss_button_message' => __( 'Stay with the old option', 'rocket' ),
-			]
-		);
 	}
 
 	/**

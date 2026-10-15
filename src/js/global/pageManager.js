@@ -30,15 +30,16 @@ function PageManager(aElem) {
     this.$menuGroups = document.querySelectorAll('.wpr-menuGroup');
     this.$submitButton = document.querySelector('.wpr-Content > form > #wpr-options-submit');
     this.$pages = document.querySelectorAll('.wpr-Page');
-    this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$content = document.querySelector('.wpr-Content');
-    this.$tips = document.querySelector('.wpr-Content-tips');
     this.$links = document.querySelectorAll('.wpr-body a');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
     this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
+
+    // Clean the preference stored by the former sidebar toggle, once.
+    localStorage.removeItem( 'wpr-show-sidebar' );
 
     refThis.getBodyTop();
 
@@ -156,6 +157,13 @@ PageManager.prototype.change = function() {
     var refThis = this;
     document.documentElement.scrollTop = refThis.bodyTop;
 
+    // The inline style of the page template only covers the first paint. The inline display styles set
+    // below take over in the same task, so nothing is painted in between, even if this method throws.
+    var firstPaint = document.getElementById('wpr-first-paint');
+    if (firstPaint) {
+        firstPaint.remove();
+    }
+
     // Hide other pages
     for (var i = 0; i < this.$pages.length; i++) {
         this.$pages[i].style.display = 'none';
@@ -168,18 +176,6 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
-    if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
-        localStorage.setItem( 'wpr-show-sidebar', 'on' );
-    }
-
-    if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'flex';
-    } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'none';
-        document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );
-    }
-
-    this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
     this.updateGroups();
     this.$submitButton.value = this.buttonText;
@@ -197,21 +193,8 @@ PageManager.prototype.change = function() {
         'account',
     ];
 
-    const pagesWithoutSidebarToggle = [
-        'dashboard',
-        'account',
-        'page_cdn',
-    ];
-
-    // Exception for dashboard
-    if(this.pageId == "dashboard" || this.pageId == "account"){
-        this.$sidebar.style.display = 'none';
-        this.$content.classList.remove('isNotFull');
-    }
-
-    if (pagesWithoutSidebarToggle.includes(this.pageId)) {
-        this.$tips.style.display = 'none';
-    }
+    // The CSS shows or hides the sidebar (and styles the Dashboard container) from this attribute.
+    this.$content.dataset.page = this.pageId;
 
     if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';

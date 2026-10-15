@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::display_renewal_expired_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_renewal_expired_banner
  *
  * @group License
  * @group AdminOnly
  */
-class DisplayRenewalExpiredBanner extends TestCase {
+class AddRenewalExpiredBanner extends TestCase {
 	private static $user;
 	private static $pricing;
 	private $original_user;
@@ -32,7 +32,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_renewal_expired_banner', 12 );
+		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_sidebar_license', 'add_renewal_expired_banner', 12 );
 
 		wp_set_current_user( self::$user_id );
 
@@ -41,7 +41,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
@@ -71,9 +71,7 @@ class DisplayRenewalExpiredBanner extends TestCase {
 	}
 
 	private function getActualHtml() {
-		ob_start();
-		do_action( 'rocket_before_dashboard_content' );
-		$actual = ob_get_clean();
+		$actual = apply_filters( 'rocket_dashboard_sidebar_license', '' );
 
 		return empty( $actual )
 			? $actual
