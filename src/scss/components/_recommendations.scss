@@ -104,30 +104,77 @@
 		margin: 0;
 	}
 
-	// Success state (all recommendations applied) - green left border box
+	// Success state (all recommendations applied) - shared by the dashboard and the sidebar.
+	// The block is a size container: links sit inline when there is room, stacked otherwise.
 	&__success {
+		container-type: inline-size;
 		display: flex;
 		flex-direction: column;
-		align-items: flex-start;
-		justify-content: center;
-		padding: $space $space * 2; // 8px 16px
-		background: $cGreenLight4;
-		border-left: 4px solid $successDark;
-		border-radius: 0;
+		gap: $space;
+		padding: 12px $space * 2;
+		background: $cSuccessSubtle;
+		border-inline-start: 3px solid $cGreenDark2;
+		border-radius: 4px;
+		box-shadow: 0 1px 1px 0 rgba(20, 20, 20, 0.05);
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	&__success-content {
+		display: flex;
+		flex-direction: column;
 	}
 
 	&__success-title {
-		@include font-size(14, 18);
-		font-weight: 600;
-		color: $cBlack;
+		@include font-size(14, 21);
+		font-weight: 700;
+		color: $cInk;
 		margin: 0;
 	}
 
 	&__success-message {
-		@include font-size(14, 18);
+		@include font-size(14, 21);
 		font-weight: 400;
-		color: $cBlack;
+		color: $cSlate;
 		margin: 0;
+	}
+
+	&__success-links {
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+
+		li {
+			margin: 0;
+		}
+
+		@container (min-width: 400px) {
+			flex-direction: row;
+			align-items: center;
+			gap: 0;
+
+			li + li {
+				margin-inline-start: 12px;
+				padding-inline-start: 12px;
+				border-inline-start: 1px solid $cGreyLighter1;
+			}
+		}
+	}
+
+	&__success-link {
+		@include font-size(14, 21);
+		font-weight: 500; // Figma's SF Pro Semibold (590) renders heavier in the browser's system font.
+		color: $cSlate;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: $cInk;
+			text-decoration: underline;
+		}
 	}
 
 	// Failed state - red left border box
