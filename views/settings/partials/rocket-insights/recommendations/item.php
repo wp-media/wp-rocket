@@ -25,6 +25,11 @@ $rocket_description    = $data['description'];
 $rocket_learn_more_url = $data['learn_more_url'];
 $rocket_icon_slug      = $data['icon_slug'];
 $rocket_impact_tags    = $data['impact_tags'];
+$rocket_link_title     = __( 'Activate', 'rocket' );
+
+if ( 'plugin_rocketcdn' === $rocket_option_slug ) {
+	$rocket_link_title = __( 'Upgrade', 'rocket' );
+}
 ?>
 <div class="wpr-recommendation-item">
 	<div class="wpr-recommendation-item__inner">
@@ -39,7 +44,7 @@ $rocket_impact_tags    = $data['impact_tags'];
 						'link',
 						'',
 						[
-							'label'      => __( 'Activate', 'rocket' ),
+							'label'      => $rocket_link_title,
 							'url'        => esc_url( $data['section'] ),
 							'attributes' => [
 								'class'               => 'wpr-recommendation-item__activate',
