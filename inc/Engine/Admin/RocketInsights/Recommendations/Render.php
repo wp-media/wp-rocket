@@ -84,6 +84,9 @@ class Render extends Abstract_Render {
 	public function get_dashboard_recommendations( $recommendations ): string {
 		$data = $this->get_widget_data( $recommendations );
 
+		// The dashboard shows the first 5 recommendations; the legacy widget shows 3.
+		$data['show_load_more'] = count( $data['recommendations'] ) > 5;
+
 		$data['rows'] = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
 
 		return $this->generate( 'partials/rocket-insights/dashboard-recommendations', $data );
@@ -105,7 +108,7 @@ class Render extends Abstract_Render {
 		if ( false !== $cached_data ) {
 			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
 			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
-			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 5;
+			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
 		}
 
 		return $widget_data;
