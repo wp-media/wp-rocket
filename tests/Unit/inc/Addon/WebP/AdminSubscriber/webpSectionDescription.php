@@ -35,6 +35,12 @@ class Test_WebpSectionDescription extends TestCase {
 		);
 	}
 
+	public function tearDown(): void {
+		$this->white_label = false;
+
+		parent::tearDown();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
@@ -50,7 +56,20 @@ class Test_WebpSectionDescription extends TestCase {
 				]
 			);
 
-		Functions\when( 'rocket_valid_key' )->justReturn( false );
+		$this->white_label = ! empty( $config['white_label'] );
+
+		if ( $this->white_label ) {
+			// The Imagify link is skipped entirely, so neither lookup should be reached.
+			Functions\expect( 'rocket_valid_key' )->never();
+		} else {
+			Functions\when( 'rocket_valid_key' )->justReturn( ! empty( $config['valid_key'] ) );
+		}
+
+		// Imagify is not installed here, so the API key lookup resolves to "no key".
+		// When a key is present the description falls back to the same wordpress.org link,
+		// so that state is not covered separately: the markup is identical to the case below.
+		Functions\when( 'is_multisite' )->justReturn( false );
+		Functions\when( 'get_option' )->justReturn( [] );
 
 		Functions\expect( 'rocket_is_plugin_active' )
 			->andReturn( true );
@@ -100,5 +119,11 @@ class Test_WebpSectionDescription extends TestCase {
 
 		$this->assertArrayHasKey( 'description', $field );
 		$this->assertStringStartsWith( $expected, $field['description'] );
+
+		// Every opening anchor tag must be closed by exactly one closing tag.
+		$this->assertSame(
+			substr_count( $field['description'], '<a ' ),
+			substr_count( $field['description'], '</a>' )
+		);
 	}
 }
