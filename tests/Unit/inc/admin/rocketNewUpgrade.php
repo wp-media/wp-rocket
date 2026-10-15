@@ -86,4 +86,26 @@ class Test_RocketNewUpgrade extends TestCase {
 
 		rocket_new_upgrade( '3.24', '3.23' );
 	}
+
+	public function testShouldRewriteTheConfigFileAndCleanTheDomainWhenUpdatingFromBeforeThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->once();
+		Functions\expect( 'rocket_clean_domain' )
+			->once();
+
+		rocket_new_upgrade( '3.24', '3.23.3.3' );
+	}
+
+	public function testShouldNotTouchAnythingWhenAlreadyUpdatedPastThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->never();
+		Functions\expect( 'rocket_clean_domain' )
+			->never();
+
+		rocket_new_upgrade( '3.24.1', '3.24' );
+	}
 }

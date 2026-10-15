@@ -32,7 +32,6 @@ class Test_DeleteOldUsedCss extends TestCase {
 
 	public function testShouldTruncateTableWhenOptionIsEnabled() {
 		$container           = apply_filters( 'rocket_container', null );
-		$rucss_usedcss_table = $container->get( 'rucss_usedcss_table' );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
