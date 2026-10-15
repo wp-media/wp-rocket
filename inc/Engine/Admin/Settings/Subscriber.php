@@ -92,6 +92,8 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Tracks a click on the Imagify banner install/activate CTA.
 	 *
+	 * The CTA is shared: the button is 'activate' when Imagify is already installed, 'install' otherwise.
+	 *
 	 * Runs before Imagify_Partner::post_callback(), which redirects and exits.
 	 *
 	 * @return void
@@ -110,7 +112,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		$this->track_event(
 			'Button Clicked',
 			[
-				'button' => 'imagify banner install',
+				'button' => \Imagify_Partner::is_imagify_installed() ? 'imagify banner activate' : 'imagify banner install',
 				'source' => 'image & media',
 			]
 		);

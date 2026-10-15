@@ -18,7 +18,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_TrackImagifyBannerInstall extends TestCase {
 	/**
-	 * Tests that the click is tracked only with a valid nonce and capability.
+	 * Tests that the click is tracked only with a valid nonce and capability, with the install or activate button.
 	 *
 	 * @param array $config   Test configuration.
 	 * @param array $expected Expected result.
@@ -30,6 +30,8 @@ class Test_TrackImagifyBannerInstall extends TestCase {
 	 */
 	public function testShouldTrackOnlyWhenAuthorized( $config, $expected ) {
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/vendors/classes/class-imagify-partner.php';
+
+		define( 'IMAGIFY_FILE', $config['imagify_installed'] ? __FILE__ : '/nonexistent/imagify.php' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound -- Third-party constant.
 
 		$_REQUEST['_wpnonce'] = 'nonce';
 
@@ -44,7 +46,7 @@ class Test_TrackImagifyBannerInstall extends TestCase {
 				->with(
 					'Button Clicked',
 					[
-						'button' => 'imagify banner install',
+						'button' => $expected['button'],
 						'source' => 'image & media',
 					]
 				);
