@@ -346,6 +346,8 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
 
+	// The whole list, logged-in cookie included: mod_rewrite serves one file per address, and a
+	// logged-in visitor's page is cached under a per-user path these rules cannot build.
 	$cookies = get_rocket_cache_reject_cookies();
 	if ( $cookies ) {
 		$rules .= 'RewriteCond %{HTTP:Cookie} !(' . $cookies . ') [NC]' . PHP_EOL;
