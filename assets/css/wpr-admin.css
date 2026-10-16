@@ -6565,16 +6565,42 @@ div.wpr-tutorial-item {
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 700;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-discount {
   margin: 0;
-  padding: 4px 10px;
+  padding: 4px 8px;
   border-radius: 2px;
-  background: #172153;
+  background: #182352;
   color: #fff;
-  font-size: 0.75rem;
-  line-height: 1.3333333333;
-  font-weight: 600;
+  font-size: 0.6875rem;
+  line-height: 1.4545454545;
+  font-weight: 590;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message,
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-deal {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message b,
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message strong {
+  font-weight: 590;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-deal {
+  margin-top: 0;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta {
+  height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #182352;
+  border-radius: 4px;
+  background: #182352;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 590;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta-block {
   align-items: stretch;
@@ -6582,7 +6608,7 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .rocket-promo-countdown {
   width: 100%;
-  margin: 0 0 16px;
+  margin: 12px 0 16px;
   padding: 0;
   gap: 8px;
 }
