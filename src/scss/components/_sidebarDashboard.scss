@@ -68,12 +68,13 @@
         .rocket-expired-title{
             margin: 0;
 
-            // Warning icon, in front of the title.
+            // Warning icon, on its own line above the title.
             &::before{
-                width: 24px;
-                height: 24px;
-                margin-right: $space;
-                background: url(../img/warning.svg) center / contain no-repeat;
+                display: block;
+                width: 42px;
+                height: 32px;
+                margin: 0 0 $space*1.5;
+                background: url(../img/wpr-warning-picto.svg) center / contain no-repeat;
                 content: "";
             }
         }
@@ -204,6 +205,21 @@
         text-decoration: none;
         @include font-size(14,21);
         font-weight: 590;
+
+        // Arrow icon after the label (not on the expired trial banner, as in the design).
+        &::after{
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            margin-left: $space;
+            background: url(../img/wpr-arrow-right-banner.svg) center / contain no-repeat;
+            font-size: 0;
+            content: "";
+        }
+    }
+
+    .rocket-trial-expired-banner .rocket-renew-cta::after{
+        content: none;
     }
 
     // Thin, light close icon, same on every banner.
