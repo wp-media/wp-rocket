@@ -32,6 +32,11 @@
         }
     }
 
+    // No sidebar (license validation screen): the content takes the whole width.
+    &.isNotFull.wpr-Content--noSidebar{
+        max-width: none;
+    }
+
     // Dashboard: the container is transparent, the main column and the sidebar get their own card.
     // Higher specificity than .isNotFull, which is on every page.
     &.isNotFull[data-page="dashboard"]{

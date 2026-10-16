@@ -36,7 +36,7 @@ settings_errors( $data['slug'] ); ?>
 			</div>
 		</header>
 
-		<section class="wpr-Content">
+		<section class="wpr-Content<?php echo rocket_valid_key() ? '' : ' wpr-Content--noSidebar'; ?>">
 			<?php // Same page lookup as pageManager.js, run before the first paint, at the start of the content so that no section is painted before it: the other sections and the sidebar stay hidden without a flash (pageManager.js removes the style). ?>
 			<script>
 				( function () {
