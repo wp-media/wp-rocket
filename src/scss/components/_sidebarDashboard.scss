@@ -145,67 +145,6 @@
         right: $space;
     }
 
-    // Switch to Remove Unused CSS: message, primary button and secondary link, no close button.
-    .wpr-rucss-switch{
-        display: flex;
-        flex-flow: column;
-        gap: $space*2;
-        padding: $space*2;
-        border-radius: 4px;
-        background: $brightSun;
-        color: $cBlack;
-
-        p{
-            margin: 0;
-        }
-
-        &-message{
-            @include font-size(14,21);
-        }
-
-        &-actions{
-            display: flex;
-            flex-flow: column;
-            align-items: stretch;
-            gap: $space*1.5;
-        }
-
-        &-primary{
-            display: block;
-            width: 100%;
-            padding: $space*1.5 $space*2;
-            border-radius: 4px;
-            background: $bunting;
-            color: $cWhite;
-            text-align: center;
-            text-decoration: none;
-            @include font-size(14,20);
-            font-weight: bold;
-
-            &:hover,
-            &:focus{
-                color: $cWhite;
-            }
-        }
-
-        &-secondary{
-            display: block;
-            padding: $space*1.5 $space*2;
-            border: 1px solid $bunting;
-            border-radius: 4px;
-            color: $bunting;
-            text-align: center;
-            text-decoration: none;
-            @include font-size(14,20);
-            font-weight: bold;
-
-            &:hover,
-            &:focus{
-                color: $bunting;
-            }
-        }
-    }
-
     // Add-on cards (Imagify, RocketCDN): collapsed by default, the benefits list shows when expanded.
     .wpr-addonCard{
         padding: $space*2;
