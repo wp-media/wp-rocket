@@ -29,6 +29,8 @@ class TestGetSubscriber extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
@@ -56,6 +58,9 @@ class TestGetSubscriber extends TestCase {
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'wpserveur':
+				$this->constants['DB_HOST'] = 'db.example.wpserveur.net';
 				break;
 			default:
 				break;
