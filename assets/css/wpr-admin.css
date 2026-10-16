@@ -6488,7 +6488,7 @@ div.wpr-tutorial-item {
   flex-flow: column;
   align-items: stretch;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 0;
   margin-top: 0;
   padding: 16px;
   border-radius: 4px;
@@ -6549,7 +6549,7 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .rocket-promo-banner {
   flex-flow: column;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 0;
   margin-top: 0;
   padding: 16px;
   border-radius: 4px;
@@ -6576,6 +6576,9 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta-block {
   align-items: stretch;
   margin-right: 0;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-deal {
+  margin-top: 4px;
 }
 .wpr-Dashboard-sidebar .rocket-promo-countdown {
   width: 100%;
@@ -6623,6 +6626,12 @@ div.wpr-tutorial-item {
   margin-top: 0;
   font-size: 0.875rem;
   line-height: 1.5;
+}
+.wpr-Dashboard-sidebar .rocket-promo-message > p:last-child,
+.wpr-Dashboard-sidebar .rocket-promo-deal > p:last-child,
+.wpr-Dashboard-sidebar .rocket-renew-message > p:last-child,
+.wpr-Dashboard-sidebar .rocket-expired-message > p:last-child {
+  margin-bottom: 0;
 }
 .wpr-Dashboard-sidebar .rocket-promo-message b,
 .wpr-Dashboard-sidebar .rocket-promo-message strong,
