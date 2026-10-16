@@ -21,19 +21,19 @@ class Test_PageView extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Real subscribers render the License banner on this hook; keep only the test callback.
-		add_filter( 'rocket_dashboard_sidebar_license', [ $this, 'sidebarLicense' ] );
-		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_sidebar_license', 'sidebarLicense' );
+		// Real subscribers (Global score) render on this hook; keep only the test callback.
+		add_action( 'rocket_before_sidebar_content', [ $this, 'beforeSidebarContent' ] );
+		$this->unregisterAllCallbacksExcept( 'rocket_before_sidebar_content', 'beforeSidebarContent' );
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
+		$this->restoreWpHook( 'rocket_before_sidebar_content' );
 
 		parent::tear_down();
 	}
 
-	public function sidebarLicense() {
-		return '<i id="sidebar-hook"></i>';
+	public function beforeSidebarContent() {
+		echo '<i id="sidebar-hook"></i>';
 	}
 
 	/**
