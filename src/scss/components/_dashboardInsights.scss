@@ -34,6 +34,30 @@
 	}
 }
 
+// Rocket Insights disabled / unavailable state (Figma "RI Disabled Banner").
+.wpr-dash-banner {
+	padding: $space * 1.5 $space * 2;
+	border-left: 3px solid $cGreyLighter3;
+	border-radius: 4px;
+	background: $cGreyDark5;
+	box-shadow: 0 1px 1px rgba(20, 20, 20, 0.05);
+
+	&__title,
+	&__text {
+		margin: 0;
+		@include font-size(14, 21);
+	}
+
+	&__title {
+		font-weight: 700;
+		color: $cInk;
+	}
+
+	&__text {
+		color: $cTextSecondary;
+	}
+}
+
 .wpr-dash-score,
 .wpr-dash-recs {
 	margin-bottom: $space * 4;

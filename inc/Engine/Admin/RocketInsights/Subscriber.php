@@ -402,6 +402,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function render_dashboard_global_score(): void {
 		if ( ! $this->context->is_allowed() ) {
+			$this->render->render_dashboard_disabled_state( $this->context->is_reseller_or_non_live() );
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
