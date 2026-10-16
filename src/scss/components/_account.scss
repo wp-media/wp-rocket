@@ -184,6 +184,26 @@
         }
     }
 
+    // Green round check before a valid value, as on the previous Dashboard account block.
+    &-value.wpr-isValid:before,
+    &-planValue.wpr-isValid:not(.wpr-no-icon):before{
+        content: "\e920"; // wpr-icon-check
+        position: relative;
+        top: -1px;
+        display: inline-block;
+        width: 13px;
+        height: 13px;
+        margin-right: 6px;
+        background: $cGreen;
+        border-radius: 50%;
+        color: $cWhite;
+        font-family: 'wpr-icomoon';
+        font-weight: normal;
+        text-align: center;
+        speak: none;
+        @include font-size(8,13);
+    }
+
     &-badge{
         display: inline-flex;
         align-items: center;
@@ -220,6 +240,35 @@
 
         &.wpr-isValid{
             color: $cGreenDark2;
+        }
+    }
+
+    // Paid subscription: label and value on one line, rows separated by a line.
+    &-plan--active{
+        flex: 1 1 auto;
+        gap: 0;
+
+        .wpr-account-planItem{
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: $space;
+
+            // Same line between rows as the WP Rocket card.
+            &:not(:last-child){
+                padding-bottom: 12px;
+            }
+
+            & + .wpr-account-planItem{
+                padding-top: 12px;
+                border-top: 1px solid $cGreyLighter1;
+            }
+        }
+
+        // Same typography as .wpr-account-value (e.g. the license expiration date).
+        .wpr-account-planValue{
+            font-weight: 600;
+            @include font-size(12,16);
         }
     }
 

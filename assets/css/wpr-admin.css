@@ -6390,6 +6390,24 @@ div.wpr-tutorial-item {
 .wpr-account-value.wpr-isInvalid {
   color: #D33F49;
 }
+.wpr-account-value.wpr-isValid:before, .wpr-account-planValue.wpr-isValid:not(.wpr-no-icon):before {
+  content: "\e920";
+  position: relative;
+  top: -1px;
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  margin-right: 6px;
+  background: #3ECE9D;
+  border-radius: 50%;
+  color: #fff;
+  font-family: "wpr-icomoon";
+  font-weight: normal;
+  text-align: center;
+  speak: none;
+  font-size: 0.5rem;
+  line-height: 1.625;
+}
 .wpr-account-badge {
   display: inline-flex;
   align-items: center;
@@ -6423,6 +6441,28 @@ div.wpr-tutorial-item {
 }
 .wpr-account-planValue.wpr-isValid {
   color: #31A670;
+}
+.wpr-account-plan--active {
+  flex: 1 1 auto;
+  gap: 0;
+}
+.wpr-account-plan--active .wpr-account-planItem {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+}
+.wpr-account-plan--active .wpr-account-planItem:not(:last-child) {
+  padding-bottom: 12px;
+}
+.wpr-account-plan--active .wpr-account-planItem + .wpr-account-planItem {
+  padding-top: 12px;
+  border-top: 1px solid #E2E5E9;
+}
+.wpr-account-plan--active .wpr-account-planValue {
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1.3333333333;
 }
 .wpr-account-button {
   display: inline-flex;
