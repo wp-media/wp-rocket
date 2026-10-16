@@ -44,6 +44,8 @@ class Test_PageView extends TestCase {
 
 		$container = apply_filters( 'rocket_container', null );
 		$render    = $container->get( 'settings_render' );
+		$render->set_settings( [] );
+		$render->set_hidden_settings( [] );
 
 		$html = $render->generate(
 			'page',
