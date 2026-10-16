@@ -2,14 +2,19 @@
 /**
  * Dashboard Global Score component.
  *
- * @param array $data Global score data (same data as the global score widget).
+ * @param array $data {
+ *     Global score data (same data as the global score widget).
+ *
+ *     @type array $metric_definitions Label and tooltip of each metric, used for the loading state.
+ * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
 $rocket_has_metrics = ! empty( $data['average_metrics'] ) && isset( $data['average_metrics']['largest_contentful_paint'] ) && is_array( $data['average_metrics']['largest_contentful_paint'] );
+$rocket_is_loading  = ( isset( $data['status'] ) && 'in-progress' === $data['status'] ) || ! empty( $data['is_running'] );
 ?>
-<section class="wpr-dash-score" data-context="<?php echo esc_attr( $data['context'] ?? 'dashboard' ); ?>">
+<section class="wpr-dash-score<?php echo $rocket_is_loading ? ' wpr-dash-score--loading' : ''; ?>" data-context="<?php echo esc_attr( $data['context'] ?? 'dashboard' ); ?>"<?php echo $rocket_is_loading ? ' aria-busy="true"' : ''; ?>>
 	<div class="wpr-dash-section-header">
 		<div class="wpr-dash-section-header__heading">
 			<h3 class="wpr-dash-section-header__title"><?php esc_html_e( 'Rocket Insights Global Score', 'rocket' ); ?></h3>
@@ -61,9 +66,13 @@ $rocket_has_metrics = ! empty( $data['average_metrics'] ) && isset( $data['avera
 				<div class="wpr-dash-score__heading">
 					<span class="wpr-dash-score__title"><?php esc_html_e( 'Rocket Insights Score', 'rocket' ); ?></span>
 					<span class="wpr-dash-score__pages">
-						<?php
-						printf( '%1$s: <span>%2$s</span>', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
-						?>
+						<?php if ( $rocket_is_loading ) : ?>
+							<span class="wpr-dash-score__skeleton wpr-dash-score__skeleton--pages"></span>
+						<?php else : ?>
+							<?php
+							printf( '%1$s: <span>%2$s</span>', esc_html( $data['status_text'] ), intval( $data['pages_num'] ) );
+							?>
+						<?php endif; ?>
 					</span>
 				</div>
 				<ul class="wpr-dash-score__legend">
@@ -74,7 +83,24 @@ $rocket_has_metrics = ! empty( $data['average_metrics'] ) && isset( $data['avera
 			</div>
 		</div>
 
-		<?php if ( $rocket_has_metrics ) : ?>
+		<?php if ( $rocket_is_loading ) : ?>
+			<div class="wpr-dash-score__metrics">
+				<?php foreach ( $data['metric_definitions'] as $rocket_metric ) : ?>
+					<div class="wpr-dash-score__metric">
+						<span class="wpr-dash-score__metric-label">
+							<?php echo esc_html( $rocket_metric['label'] ); ?>
+							<span class="wpr-ri-score-widget__metric-info">
+								<span class="wpr-ri-score-widget__metric-info-icon"></span>
+								<span class="wpr-tooltip">
+									<span class="wpr-tooltip-content"><?php echo esc_html( $rocket_metric['tooltip'] ); ?></span>
+								</span>
+							</span>
+						</span>
+						<span class="wpr-dash-score__metric-value"><span class="wpr-dash-score__skeleton wpr-dash-score__skeleton--metric"></span></span>
+					</div>
+				<?php endforeach; ?>
+			</div>
+		<?php elseif ( $rocket_has_metrics ) : ?>
 			<div class="wpr-dash-score__metrics">
 				<?php foreach ( $data['average_metrics'] as $rocket_metric_key => $rocket_metric ) : ?>
 					<div class="wpr-dash-score__metric">

@@ -21,28 +21,44 @@ defined( 'ABSPATH' ) || exit;
 		</div>
 	</div>
 
-	<?php if ( 'loading' === $data['state'] ) : ?>
-		<?php $this->render_part( 'rocket-insights/recommendations/states/loading' ); ?>
-	<?php elseif ( 'failed' === $data['state'] ) : ?>
-		<?php $this->render_part( 'rocket-insights/recommendations/states/failed' ); ?>
-	<?php elseif ( empty( $data['recommendations'] ) ) : ?>
-		<?php $this->render_part( 'rocket-insights/recommendations/states/success' ); ?>
-	<?php else : ?>
-		<?php
-		$this->render_parts_with_data(
-			'table-list',
-			[
-				'class' => 'wpr-dash-recs__list',
-				'rows'  => $data['rows'],
-			]
-		);
-		?>
+	<?php
+	switch ( $data['state'] ) {
+		case 'loading':
+			?>
+			<div class="wpr-dash-recs__loading" role="status">
+				<?php $this->render_part( 'rocket-insights/loading-dots' ); ?>
+				<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Recommendations loading...', 'rocket' ); ?></p>
+			</div>
+			<?php
+			break;
 
-		<?php if ( $data['show_load_more'] ) : ?>
-			<button type="button" class="wpr-dash-recs__more" aria-expanded="false">
-				<span class="wpr-dash-recs__more-text"><?php esc_html_e( 'More Recommendations', 'rocket' ); ?></span>
-				<span class="wpr-dash-recs__more-text"><?php esc_html_e( 'Less Recommendations', 'rocket' ); ?></span>
-			</button>
-		<?php endif; ?>
-	<?php endif; ?>
+		case 'failed':
+			$this->render_part( 'rocket-insights/recommendations/states/failed' );
+			break;
+
+		case 'completed':
+			if ( empty( $data['recommendations'] ) ) {
+				$this->render_part( 'rocket-insights/recommendations/states/success' );
+				break;
+			}
+
+			$this->render_parts_with_data(
+				'table-list',
+				[
+					'class' => 'wpr-dash-recs__list',
+					'rows'  => $data['rows'],
+				]
+			);
+
+			if ( $data['show_load_more'] ) :
+				?>
+				<button type="button" class="wpr-dash-recs__more" aria-expanded="false">
+					<span class="wpr-dash-recs__more-text"><?php esc_html_e( 'More Recommendations', 'rocket' ); ?></span>
+					<span class="wpr-dash-recs__more-text"><?php esc_html_e( 'Less Recommendations', 'rocket' ); ?></span>
+				</button>
+				<?php
+			endif;
+			break;
+	}
+	?>
 </section>
