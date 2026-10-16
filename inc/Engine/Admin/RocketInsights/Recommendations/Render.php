@@ -62,6 +62,43 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
 	public function get_recommendations_widget( $cached_data ): string {
+		return $this->generate( 'partials/rocket-insights/recommendations/widget', $this->get_widget_data( $cached_data ) );
+	}
+
+	/**
+	 * Render the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return void
+	 */
+	public function render_dashboard_recommendations( $recommendations ): void {
+		echo $this->get_dashboard_recommendations( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return string
+	 */
+	public function get_dashboard_recommendations( $recommendations ): string {
+		$data = $this->get_widget_data( $recommendations );
+
+		// The dashboard shows the first 5 recommendations; the legacy widget shows 3.
+		$data['show_load_more'] = count( $data['recommendations'] ) > 5;
+
+		$data['rows'] = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
+
+		return $this->generate( 'partials/rocket-insights/dashboard-recommendations', $data );
+	}
+
+	/**
+	 * Build the data passed to the recommendations templates.
+	 *
+	 * @param array|false $cached_data Recommendations data or false if not cached.
+	 * @return array
+	 */
+	private function get_widget_data( $cached_data ): array {
 		$widget_data = [
 			'state'           => 'loading',
 			'recommendations' => [],
@@ -74,7 +111,28 @@ class Render extends Abstract_Render {
 			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
 		}
 
-		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
+		return $widget_data;
+	}
+
+	/**
+	 * Build the table-list-row data of a recommendation, used by the dashboard component.
+	 *
+	 * @param array $recommendation Formatted recommendation.
+	 * @return array Row data for the table-list-row partial.
+	 */
+	private function build_dashboard_row( array $recommendation ): array {
+		return [
+			'class'   => 'wpr-dash-recs__item',
+			'columns' => [
+				[
+					'content' => $this->generate( 'partials/rocket-insights/dashboard-recommendation-row', $recommendation ),
+				],
+				[
+					'content' => $this->generate( 'partials/rocket-insights/dashboard-recommendation-activate', $recommendation ),
+					'type'    => 'actions',
+				],
+			],
+		];
 	}
 
 	/**

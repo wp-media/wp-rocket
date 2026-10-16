@@ -74,7 +74,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_license_info'         => 'display_upgrade_section',
+			'rocket_account_license_info'           => 'display_upgrade_section',
 			'rocket_settings_page_footer'           => 'display_upgrade_popin',
 			'rocket_menu_title'                     => [
 				[ 'add_notification_bubble', 10, 2 ],
@@ -85,12 +85,12 @@ class Subscriber implements Subscriber_Interface {
 				[ 'dismiss_notification_bubble' ],
 				[ 'set_dashboard_seen_transient' ],
 			],
-			'rocket_before_dashboard_content'       => [
-				[ 'display_promo_banner' ],
-				[ 'display_renewal_soon_banner', 11 ],
-				[ 'display_renewal_expired_banner', 12 ],
-				[ 'maybe_display_revoked_banner', 13 ],
+			'rocket_dashboard_sidebar_license'      => [
+				[ 'add_renewal_soon_banner', 11 ],
+				[ 'add_renewal_expired_banner', 12 ],
+				[ 'add_revoked_banner', 13 ],
 			],
+			'rocket_dashboard_sidebar_promos'       => [ 'add_promo_banner' ],
 			'wp_ajax_rocket_dismiss_promo'          => 'dismiss_promo_banner',
 			'wp_ajax_rocket_dismiss_renewal'        => 'dismiss_renewal_banner',
 			'rocket_localize_admin_script'          => 'add_localize_script_data',
@@ -155,14 +155,19 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the promotions banner when a promotion is active
+	 * Adds the promotions banner to the dashboard sidebar Promos category when a promotion is active
 	 *
-	 * @since 3.7.4
+	 * @since 3.23.6
 	 *
-	 * @return void
+	 * @param string $html Current HTML of the category.
+	 * @return string
 	 */
-	public function display_promo_banner() {
-		$this->upgrade->display_promo_banner();
+	public function add_promo_banner( $html ): string {
+		if ( '' !== trim( (string) $html ) ) {
+			return $html;
+		}
+
+		return $this->upgrade->get_promo_banner();
 	}
 
 	/**
@@ -209,25 +214,39 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the renewal banner for users expiring in less than 30 days
+	 * Adds the renewal banner for users expiring in less than 30 days to the dashboard sidebar License category.
 	 *
-	 * @since 3.7.5
+	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @return void
+	 * @since 3.23.6
+	 *
+	 * @param string $html Current HTML of the category.
+	 * @return string
 	 */
-	public function display_renewal_soon_banner() {
-		$this->renewal->display_renewal_soon_banner();
+	public function add_renewal_soon_banner( $html ): string {
+		if ( '' !== trim( (string) $html ) ) {
+			return $html;
+		}
+
+		return $this->renewal->get_renewal_soon_banner();
 	}
 
 	/**
-	 * Displays the renewal banner for expired users
+	 * Adds the renewal banner for expired users to the dashboard sidebar License category.
 	 *
-	 * @since 3.7.5
+	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @return void
+	 * @since 3.23.6
+	 *
+	 * @param string $html Current HTML of the category.
+	 * @return string
 	 */
-	public function display_renewal_expired_banner() {
-		$this->renewal->display_renewal_expired_banner();
+	public function add_renewal_expired_banner( $html ): string {
+		if ( '' !== trim( (string) $html ) ) {
+			return $html;
+		}
+
+		return $this->renewal->get_renewal_expired_banner();
 	}
 
 	/**
@@ -295,13 +314,21 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Displays the revoked website banner in the dashboard if the site's license is revoked.
+	 * Adds the revoked website banner to the dashboard sidebar License category if the site's license is revoked.
 	 *
-	 * @since 3.20.4
-	 * @return void
+	 * The first non-empty banner wins, so only one License banner is displayed.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param string $html Current HTML of the category.
+	 * @return string
 	 */
-	public function maybe_display_revoked_banner() {
-		$this->revoked->maybe_display_revoked_banner();
+	public function add_revoked_banner( $html ): string {
+		if ( '' !== trim( (string) $html ) ) {
+			return $html;
+		}
+
+		return $this->revoked->get_revoked_banner();
 	}
 
 	/**

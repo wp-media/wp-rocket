@@ -112,7 +112,89 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			],
 			'wp_ajax_rocket_ignore'                   => [ [ 'track_rocketcdn_notice_dismissed', 5 ] ],
 			'rocket_display_major_release_notice'     => 'maybe_display_major_release_notice',
+			'rocket_dashboard_sidebar_addons'         => [ 'add_rocketcdn_addon_card', 20 ],
 		];
+	}
+
+	/**
+	 * Checks whether the RocketCDN upsell (CDN tab banner and Dashboard sidebar card) can be displayed.
+	 *
+	 * False when the filter says so, for white label accounts, resellers and non-live sites.
+	 * Whether RocketCDN Pro is already running is checked by each caller.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return bool
+	 */
+	public function can_display_rocketcdn_upsell(): bool {
+		/**
+		 * Filters the display of the RocketCDN cta banner.
+		 *
+		 * @param bool $display_cta_banner; true to display, false otherwise.
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_display_rocketcdn_cta', true ) ) {
+			return false;
+		}
+
+		if ( $this->is_white_label_account() ) {
+			return false;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
+			return false;
+		}
+
+		return (bool) rocket_is_live_site();
+	}
+
+	/**
+	 * Appends the RocketCDN card to the add-on cards of the Dashboard sidebar.
+	 *
+	 * Displayed whenever RocketCDN Pro (paid) is not running: no CDN, RocketCDN Free, another CDN,
+	 * or a paid plan that is not running anymore.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array $cards Add-on cards data.
+	 *
+	 * @return array
+	 */
+	public function add_rocketcdn_addon_card( $cards ): array {
+		$cards = (array) $cards;
+
+		if ( ! $this->can_display_rocketcdn_upsell() ) {
+			return $cards;
+		}
+
+		$this->api_client->get_subscription_data();
+
+		if ( $this->subscription_controller->has_active_subscription() && $this->subscription_controller->is_paid() ) {
+			return $cards;
+		}
+
+		$cards[] = [
+			'id'           => 'rocketcdn',
+			'title'        => __( 'Deliver your content faster', 'rocket' ),
+			'image'        => [
+				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-rocketcdn-illustration.png',
+				// Decorative: the title is right next to it.
+				'alt'    => '',
+				'width'  => 266,
+				'height' => 137,
+			],
+			'lead'         => __( 'Propel Your Content at the Speed of Light', 'rocket' ),
+			'text'         => __( 'from 100+ edge locations with unlimited bandwidth.', 'rocket' ),
+			'list'         => [
+				__( 'Faster content delivery across your entire website', 'rocket' ),
+				__( 'No bandwidth limits, no hidden costs', 'rocket' ),
+				__( '100+ edge locations for wider global coverage', 'rocket' ),
+			],
+			'button_label' => __( 'Upgrade Now', 'rocket' ),
+			'button_url'   => '#page_cdn',
+			'is_external'  => false,
+		];
+
+		return $cards;
 	}
 
 	/**
@@ -125,24 +207,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * @return void
 	 */
 	public function display_rocketcdn_cta( array $cta_data ) {
-		/**
-		 * Filters the display of the RocketCDN cta banner.
-		 *
-		 * @param bool $display_cta_banner; true to display, false otherwise.
-		 */
-		if ( ! apply_filters( 'rocket_display_rocketcdn_cta', true ) ) {
-			return;
-		}
-
-		if ( $this->is_white_label_account() ) {
-			return;
-		}
-
-		if ( $this->user->is_reseller_account() ) {
-			return;
-		}
-
-		if ( ! rocket_is_live_site() ) {
+		if ( ! $this->can_display_rocketcdn_upsell() ) {
 			return;
 		}
 

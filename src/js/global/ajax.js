@@ -149,6 +149,28 @@ $(document).ready(function(){
         );
     });
 
+    /**
+     * Hides the Dashboard sidebar category holding a dismissed banner once it has no visible content left,
+     * then the whole sidebar (card and ribbon) once no category is left.
+     *
+     * @param {jQuery} $banner Dismissed banner.
+     */
+    function wprHideEmptiedSidebarCategory( $banner ) {
+        var $category = $banner.closest( '.wpr-Dashboard-sidebar-category' );
+        var $sidebar = $banner.closest( 'aside.wpr-Dashboard-sidebar' );
+
+        // The banner is hidden with an animation: wait for it to end before counting what is visible.
+        $banner.promise().done( function() {
+            if ( $category.length && ! $category.find( ':visible' ).not( '.wpr-Dashboard-sidebar-title' ).length ) {
+                $category.hide();
+            }
+
+            if ( $sidebar.length && ! $sidebar.find( '.wpr-Dashboard-sidebar-category:visible' ).length ) {
+                $sidebar.hide();
+            }
+        } );
+    }
+
     $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
         e.preventDefault();
 
@@ -160,7 +182,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-promo-banner').hide( 'slow' );
+					var $banner = $('#rocket-promo-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );
@@ -177,7 +202,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-renewal-banner').hide( 'slow' );
+					var $banner = $('#rocket-renewal-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );
@@ -290,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
         html: '',
         row_html: '',
 		disabled_btn_html: {
-			global_score_widget: '',
 			rocket_insights: ''
 		}
     };
@@ -428,11 +455,30 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	/**
+	 * Replaces the redesigned dashboard global score component with its freshly rendered HTML.
+	 *
+	 * @param {Object} scoreData Global score payload.
+	 * @param {string} scoreData.dashboard_html Rendered HTML of the dashboard global score component.
+	 */
+	let lastDashboardGlobalScoreHtml = '';
+
+	function updateDashboardGlobalScore(scoreData) {
+		if (!scoreData?.dashboard_html || scoreData.dashboard_html === lastDashboardGlobalScoreHtml) {
+			return;
+		}
+
+		lastDashboardGlobalScoreHtml = scoreData.dashboard_html;
+		$('.wpr-dash-score').replaceWith(scoreData.dashboard_html);
+	}
+
+	/**
 	 * Updates the global score UI widget or table row based on the selected menu.
 	 * When the dashboard or rocket insights menu is clicked, this function updates
 	 * the corresponding global score display after a short delay.
 	 */
 	function decideGlobalScoreToUpdate() {
+		updateDashboardGlobalScore(globalScoreData);
+
 		if ('' === globalScoreData.html) {
 			return;
 		}
@@ -444,13 +490,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Update all global score widget instances.
 		globalScoreWidgets.html(globalScoreData.html);
-
-		// Disable "Add Pages" button on global score widget.
-		if (!('disabled_btn_html' in globalScoreData)) {
-			return;
-		}
-
-		$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 	}
 
 	// ==== AJAX Handlers ====
@@ -479,6 +518,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 					// Update all global score widget instances.
 					$('.wpr-global-score-widget').html(response.global_score_data.html);
+					updateDashboardGlobalScore(response.global_score_data);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
 

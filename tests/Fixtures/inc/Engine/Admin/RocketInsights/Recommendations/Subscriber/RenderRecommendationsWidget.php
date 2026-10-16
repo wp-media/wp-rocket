@@ -79,8 +79,8 @@ return [
 			'state'        => 'completed',
 			'contains'     => [
 				'wpr-recommendations__success',
-				'All done!',
-				'All recommended WP Rocket features are now enabled',
+				'Your website is doing great!',
+				'All recommended settings are enabled!',
 			],
 			'not_contains' => [
 				'wpr-recommendations__loading',
@@ -322,6 +322,93 @@ return [
 			],
 			'not_contains' => [
 				'wpr-recommendation-item__impact-tags',
+			],
+		],
+	],
+
+	'testShouldLinkActivateToThePageOfEachOption'      => [
+		'config'   => [
+			'transient_data' => [
+				'status'          => 'completed',
+				'recommendations' => [
+					[
+						'option_slug' => 'image_dimensions',
+						'priority'    => 1,
+						'title'       => 'Recommendation image_dimensions',
+					],
+					[
+						'option_slug' => 'delay_js',
+						'priority'    => 2,
+						'title'       => 'Recommendation delay_js',
+					],
+					[
+						'option_slug' => 'manual_preload',
+						'priority'    => 3,
+						'title'       => 'Recommendation manual_preload',
+					],
+					[
+						'option_slug' => 'performance_monitoring',
+						'priority'    => 4,
+						'title'       => 'Recommendation performance_monitoring',
+					],
+					[
+						'option_slug' => 'database_revisions',
+						'priority'    => 5,
+						'title'       => 'Recommendation database_revisions',
+					],
+					[
+						'option_slug' => 'cdn',
+						'priority'    => 6,
+						'title'       => 'Recommendation cdn',
+					],
+					[
+						'option_slug' => 'control_heartbeat',
+						'priority'    => 7,
+						'title'       => 'Recommendation control_heartbeat',
+					],
+					[
+						'option_slug' => 'cache_logged_user',
+						'priority'    => 8,
+						'title'       => 'Recommendation cache_logged_user',
+					],
+					[
+						'option_slug' => 'plugin_imagify',
+						'priority'    => 9,
+						'title'       => 'Recommendation plugin_imagify',
+					],
+					[
+						'option_slug' => 'not_a_known_option',
+						'priority'    => 10,
+						'title'       => 'Recommendation not_a_known_option',
+					],
+				],
+				'timestamp'       => time(),
+			],
+		],
+		'expected' => [
+			'state'                => 'completed',
+			'recommendation_count' => 10,
+			'contains'             => [
+				'href="#media"',
+				'data-recommendation="image_dimensions"',
+				'href="#file_optimization"',
+				'data-recommendation="delay_js"',
+				'href="#preload"',
+				'data-recommendation="manual_preload"',
+				'href="#rocket_insights"',
+				'data-recommendation="performance_monitoring"',
+				'href="#database"',
+				'data-recommendation="database_revisions"',
+				'href="#page_cdn"',
+				'data-recommendation="cdn"',
+				'href="#heartbeat"',
+				'data-recommendation="control_heartbeat"',
+				'href="#advanced_cache"',
+				'data-recommendation="cache_logged_user"',
+				'href="#media"',
+				'data-recommendation="plugin_imagify"',
+				'href="#dashboard"',
+				'data-recommendation="not_a_known_option"',
 			],
 		],
 	],

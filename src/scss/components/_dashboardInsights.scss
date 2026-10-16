@@ -1,0 +1,536 @@
+// main: ../main.scss
+
+/**
+ * Dashboard Rocket Insights components
+ *
+ * Global score card and recommendations list displayed in the dashboard main column.
+ */
+
+.wpr-dash-section-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: $space;
+	min-height: 32px;
+	margin-bottom: $space;
+
+	&__title {
+		margin: 0;
+		@include font-size(16, 24);
+		font-weight: 700;
+		color: $cOrange;
+	}
+
+	&__heading {
+		display: flex;
+		align-items: center;
+		gap: $space;
+	}
+
+	&__actions {
+		display: flex;
+		align-items: center;
+		gap: $space;
+	}
+}
+
+.wpr-dash-score,
+.wpr-dash-recs {
+	margin-bottom: $space * 4;
+}
+
+.wpr-dash-score {
+	// 24px between the page header separator and the first section (Figma "Main Column Wrapper").
+	margin-top: $space * 3;
+
+	&__add {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		height: 32px;
+		padding: 6px 12px;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cWhite;
+		color: $cInk;
+		@include font-size(12, 16);
+		font-weight: 700;
+		text-transform: none;
+		text-decoration: none;
+
+		&::before {
+			font-size: 12.8px;
+		}
+
+		&:hover,
+		&:focus {
+			color: $cInk;
+			background: $cGreyLight3;
+		}
+
+		// Page limit reached: keep pointer events so the tooltip shows on hover (the click is blocked by the disabled attribute).
+		.wpr-tooltip {
+			left: auto;
+			right: 0;
+			bottom: auto;
+			top: 100%;
+			transform: none;
+			white-space: nowrap;
+
+			&::before {
+				left: auto;
+				right: $space * 2;
+				transform: none;
+			}
+		}
+
+		&.disabled {
+			border-color: transparent;
+			color: $cWhite;
+
+			&:hover,
+			&:focus {
+				color: $cWhite;
+				background: #a199b1; // Same as the shared disabled add-page button.
+			}
+		}
+	}
+
+	&__card {
+		display: flex;
+		align-items: center;
+		gap: $space * 4;
+		min-height: 92px;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		@include respond-to('xs') {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: $space * 2;
+		}
+	}
+
+	&__summary {
+		display: flex;
+		flex: 1 1 auto;
+		align-items: center;
+		gap: $space * 2;
+		min-width: 0;
+		align-self: stretch;
+		padding-inline-end: $space * 2;
+		border-inline-end: 1px solid $cGreyLighter1;
+
+		@include respond-to('xs') {
+			align-self: auto;
+			padding-inline-end: 0;
+			border-inline-end: 0;
+		}
+	}
+
+	&__gauge {
+		flex: 0 0 60px;
+		width: 60px;
+		height: 60px;
+
+		.wpr-percentage-indicator {
+			width: 60px;
+			height: 60px;
+		}
+
+		.wpr-percentage-indicator .wpr-percentage-circle {
+			box-sizing: border-box;
+			width: 60px;
+			height: 60px;
+			border-width: 3px;
+			font-size: 28px;
+			font-weight: 600;
+		}
+
+		.wpr-score-no-urls {
+			width: 60px;
+			height: 60px;
+			margin: 0;
+		}
+
+		// Loading state: the spinner sits at the top of the 60px score area (Figma "Score" loading).
+		.wpr-loading-container {
+			display: flex;
+			align-items: flex-start;
+			justify-content: center;
+			width: 60px;
+			height: 60px;
+		}
+
+		.wpr-loading-dots {
+			width: 39px;
+			height: 39px;
+		}
+	}
+
+	// Placeholder bar shown instead of the values still being computed.
+	&__skeleton {
+		display: block;
+		border-radius: 4px;
+		// A darker band sweeps diagonally from left to right over the base colour.
+		background: linear-gradient(110deg, $cGreyLighter1 35%, $cGreyLighter2 50%, $cGreyLighter1 65%) $cGreyLighter1;
+		background-size: 200% 100%;
+		animation: wpr-dash-skeleton-shimmer 1.5s linear infinite;
+
+		@media (prefers-reduced-motion: reduce) {
+			animation: none;
+		}
+
+		&--pages {
+			width: 80px;
+			height: 10px;
+		}
+
+		&--metric {
+			width: 40px;
+			height: 14px;
+		}
+	}
+
+	&--loading {
+		.wpr-dash-score__add {
+			opacity: 0.5;
+		}
+
+		.wpr-dash-score__summary {
+			align-items: flex-start;
+		}
+
+		.wpr-dash-score__pages {
+			display: flex;
+			align-items: center;
+			height: 16px;
+		}
+
+		.wpr-dash-score__metric {
+			gap: 2px;
+		}
+
+		.wpr-dash-score__metric-label {
+			gap: 4px;
+
+			.wpr-ri-score-widget__metric-info,
+			.wpr-ri-score-widget__metric-info-icon {
+				width: 12px;
+				height: 12px;
+				background-size: 12px 12px;
+			}
+		}
+
+		.wpr-dash-score__metric-value {
+			display: flex;
+			align-items: center;
+			height: 20px;
+		}
+	}
+
+	&__details {
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		min-width: 0;
+	}
+
+	&__heading {
+		display: flex;
+		flex-direction: column;
+		gap: 2px;
+	}
+
+	&__title {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cInk;
+	}
+
+	&__pages {
+		@include font-size(11, 16);
+		color: $cGreyLighter3;
+	}
+
+	&__legend {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		white-space: nowrap;
+		@include font-size(11, 16);
+		color: $cSlate;
+	}
+
+	&__legend-item {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		margin: 0;
+		padding-inline: $space;
+
+		&:first-child {
+			padding-inline-start: 0;
+		}
+
+		&:last-child {
+			padding-inline-end: 0;
+		}
+
+		& + & {
+			border-inline-start: 1px solid $cGreyLighter1;
+		}
+
+		&::before {
+			content: "";
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: currentColor;
+		}
+
+		&--good::before {
+			color: $cFgSuccess;
+		}
+
+		&--average::before {
+			color: $cFgWarning;
+		}
+
+		&--poor::before {
+			color: $cFgError;
+		}
+	}
+
+	&__metrics {
+		display: flex;
+		flex: 0 0 auto;
+		gap: $space * 3;
+		padding-inline-end: $space * 2;
+
+		@include respond-to('xs') {
+			flex-wrap: wrap;
+			padding-inline-end: 0;
+		}
+	}
+
+	&__metric {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+
+		// The two right-most metrics open their tooltip to the left, so it stays inside the card and the page.
+		&:nth-last-child(-n + 2) .wpr-ri-score-widget__metric-info .wpr-tooltip {
+			left: auto;
+			right: 16px;
+
+			&:before {
+				left: auto;
+				right: -8px;
+				border-right: none;
+				border-left: 8px solid #0e1428;
+			}
+		}
+	}
+
+	&__metric-label {
+		display: inline-flex;
+		align-items: center;
+		gap: 2px;
+		@include font-size(13, 20);
+		font-weight: 600;
+		color: $cInk;
+
+		// Centre the info icon on the label (the shared widget offsets it by -2px).
+		.wpr-ri-score-widget__metric-info {
+			height: 10px;
+			margin-top: 0;
+		}
+	}
+
+	&__metric-value {
+		@include font-size(13, 20);
+		font-weight: 600;
+
+		&--success {
+			color: $cFgSuccess;
+		}
+
+		&--warning {
+			color: $cFgWarning;
+		}
+
+		&--error {
+			color: $cFgError;
+		}
+
+		&--na {
+			color: $cGreyLighter3;
+		}
+	}
+}
+
+.wpr-dash-recs {
+	// Table list (generic component) restyled as one bordered panel, rows separated by a line.
+	&__list {
+		gap: $space * 2;
+		margin-bottom: $space * 2;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLight1;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		.wpr-table-list__row {
+			align-items: flex-start;
+			padding: 0 0 $space * 2;
+			border: 0;
+			border-bottom: 1px solid $cGreyLighter1;
+			border-radius: 0;
+			background: none;
+		}
+
+		.wpr-table-list__cell a {
+			text-decoration: none;
+		}
+
+		// Show only the first 5 rows until expanded; the last visible row has no separator.
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(n + 6) {
+			display: none;
+		}
+
+		&:not(.is-expanded) .wpr-table-list__row:nth-child(5),
+		.wpr-table-list__row:last-child {
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+	}
+
+	&__heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $space;
+		margin-bottom: 4px;
+	}
+
+	&__title {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cInk;
+	}
+
+	&__impact {
+		display: flex;
+		align-items: center;
+		gap: 4px;
+		padding-inline-start: $space;
+		border-inline-start: 1px solid $cGreyLighter1;
+		@include font-size(11, 16);
+		color: $cGreyLighter3;
+	}
+
+	&__tag {
+		padding: 4px $space;
+		border-radius: 2px;
+		background: $cGreyDark5;
+		font-weight: 600;
+		text-transform: uppercase;
+
+		& + & {
+			margin-inline-start: 2px;
+		}
+	}
+
+	&__activate {
+		@include font-size(14, 21);
+		font-weight: 600;
+		color: $cOrange;
+		text-transform: none;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: $cOrangeDark1;
+		}
+	}
+
+	&__description {
+		margin: 0;
+		@include font-size(14, 21);
+		color: $cInk;
+	}
+
+	// Loading state (Figma "Recommendations" loading).
+	&__loading {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: $space * 2;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLight1;
+		border-radius: 4px;
+		background: $cGreyLight3;
+
+		.wpr-loading-dots {
+			flex: 0 0 32px;
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	&__loading-text {
+		margin: 0;
+		@include font-size(14, 21);
+		color: $cGreyLighter3;
+	}
+
+	&__more {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 40px;
+		padding: 6px 12px;
+		box-sizing: border-box;
+		border: 1px solid $cGreyLighter2;
+		border-radius: 4px;
+		background: $cWhite;
+		color: $cInk;
+		@include font-size(14, 18);
+		font-weight: 600;
+		text-transform: uppercase;
+		cursor: pointer;
+
+		&:hover,
+		&:focus {
+			background: $cGreyLight3;
+		}
+
+		.wpr-dash-recs__more-text:last-child,
+		&.is-expanded .wpr-dash-recs__more-text:first-child {
+			display: none;
+		}
+
+		&.is-expanded .wpr-dash-recs__more-text:last-child {
+			display: inline;
+		}
+	}
+}
+
+@keyframes wpr-dash-skeleton-shimmer {
+	from {
+		background-position: 100% 0;
+	}
+
+	to {
+		background-position: 0 0;
+	}
+}
