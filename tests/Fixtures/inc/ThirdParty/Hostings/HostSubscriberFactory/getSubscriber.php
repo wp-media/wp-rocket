@@ -26,5 +26,10 @@ return [
 			'host'     => 'savvii',
 			'expected' => 'WP_Rocket\ThirdParty\Hostings\Savvii',
 		],
+
+		'testShouldReturnPresslabs' => [
+			'host'     => 'presslabs',
+			'expected' => 'WP_Rocket\ThirdParty\Hostings\Presslabs',
+		],
 	],
 ];

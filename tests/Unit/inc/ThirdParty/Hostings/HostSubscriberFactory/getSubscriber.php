@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostSubscriberFactory;
 
+use Mockery;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
@@ -29,6 +30,8 @@ class TestGetSubscriber extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
@@ -56,6 +59,17 @@ class TestGetSubscriber extends TestCase {
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'presslabs':
+				if ( ! defined( 'PL_INSTANCE_REF' ) ) {
+					define( 'PL_INSTANCE_REF', 'test-instance' );
+				}
+				if ( ! defined( 'WP_CONTENT_DIR' ) ) {
+					define( 'WP_CONTENT_DIR', WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Presslabs' );
+				}
+				if ( ! class_exists( '\Presslabs\Cache\CacheHandler' ) ) {
+					Mockery::mock( 'overload:Presslabs\Cache\CacheHandler' );
+				}
 				break;
 			default:
 				break;
