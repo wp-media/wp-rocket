@@ -25,17 +25,18 @@
     &.isNotFull{
         max-width: 960px;
         z-index: 1000;
+
+        // Wide screens: same width as the Dashboard main card (1230px container - sidebar footprint).
+        @media (min-width: $sidebarWideBreakpoint) {
+            max-width: 1230px - $sidebarWideWidth;
+        }
     }
 
-    &-tips{
-        position: absolute;
-        top: $space*6;
-        right: $space*3;
-        font-weight: bold;
-        color: $cGreyDark2;
-
-        @include respond-to('sm') {
-            display: none !important;
-        }
+    // Dashboard: the container is transparent, the main column and the sidebar get their own card.
+    // Higher specificity than .isNotFull, which is on every page.
+    &.isNotFull[data-page="dashboard"]{
+        max-width: 1230px;
+        padding: 0;
+        background: transparent;
     }
 }

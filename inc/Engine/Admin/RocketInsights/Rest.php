@@ -455,8 +455,7 @@ class Rest extends WP_REST_Controller {
 			$data['reach_max_url'] = true;
 
 			$payload['global_score_data']['disabled_btn_html'] = [
-				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
-				'rocket_insights'     => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+				'rocket_insights' => $this->render->get_add_page_btn( 'rocket-insights', $data ),
 			];
 		}
 
