@@ -6585,6 +6585,9 @@ div.wpr-tutorial-item {
   line-height: 1.5;
   font-weight: 400;
 }
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message {
+  margin-top: 0;
+}
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message b,
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message strong {
   font-weight: 590;
