@@ -248,7 +248,7 @@
     .wpr-addonCard{
         padding: $space*2;
         border-radius: 4px;
-        background: $cOrangeLight4;
+        background: $cAddonCard;
         color: $cBlack;
 
         & + .wpr-addonCard{
@@ -256,29 +256,29 @@
         }
 
         &-title{
-            margin: 0 0 $space;
+            margin: 0 0 $space*1.5;
             color: $cOrange;
             @include font-size(16,24);
-            font-weight: 500;
+            font-weight: 590;
         }
 
         &-image{
             display: block;
             width: 100%;
             height: auto;
-            margin: 0 0 $space;
+            margin: 0 0 $space*1.5;
             border-radius: 4px;
         }
 
         &-lead{
             margin: 0;
-            @include font-size(13,20);
-            font-weight: bold;
+            @include font-size(14,20);
+            font-weight: 590;
         }
 
         &-text{
-            margin: 0 0 $space*2;
-            @include font-size(13,20);
+            margin: 0 0 $space*1.5;
+            @include font-size(14,20);
         }
 
         &-toggle{
@@ -298,10 +298,10 @@
         }
 
         &-list{
-            margin: 0 0 $space*2;
+            margin: 0 0 $space;
             padding: 0;
             list-style: none;
-            @include font-size(13,20);
+            @include font-size(14,20);
 
             &[hidden]{
                 display: none;
@@ -312,42 +312,44 @@
                 margin: 0 0 $space;
                 padding-left: $space*3;
 
+                // Orange check icon.
                 &:before{
                     content: "";
                     position: absolute;
-                    top: 4px;
+                    top: 2px;
                     left: 0;
-                    width: 14px;
-                    height: 14px;
-                    background: $cGreen;
-                    border-radius: 50%;
+                    width: 16px;
+                    height: 16px;
+                    background: url(../img/wpr-check-orange.svg) center / contain no-repeat;
                 }
 
-                &:after{
-                    content: "";
-                    position: absolute;
-                    top: 7px;
-                    left: 4px;
-                    width: 6px;
-                    height: 3px;
-                    border-left: 2px solid #fff;
-                    border-bottom: 2px solid #fff;
-                    transform: rotate(-45deg);
+                strong,
+                b{
+                    font-weight: 590;
                 }
             }
         }
 
+
         &-button{
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
             width: 100%;
-            padding: $space*1.5 $space*2;
+            height: $space*5;
+            padding: $space*.75 $space*1.5;
+            border: 1px solid $cOrange;
             border-radius: 4px;
             background: $cOrange;
+            box-shadow: none;
             color: #fff;
+            letter-spacing: normal;
             text-align: center;
             text-decoration: none;
-            @include font-size(14,20);
-            font-weight: bold;
+            text-transform: none;
+            @include font-size(14,21);
+            font-weight: 590;
 
             &:hover,
             &:focus{
@@ -355,5 +357,10 @@
                 color: #fff;
             }
         }
+    }
+
+    // Collapsed add-on card: the text is followed by the button.
+    .wpr-addonCard-list[hidden] + .wpr-addonCard-button{
+        margin-top: $space/2;
     }
 }
