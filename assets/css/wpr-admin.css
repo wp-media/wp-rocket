@@ -6617,6 +6617,7 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .rocket-promo-countdown > .rocket-countdown-item {
   margin-right: 0;
+  margin-bottom: 0;
   padding: 6px 4px;
   border-radius: 4px;
   background: #FFF5D6;
