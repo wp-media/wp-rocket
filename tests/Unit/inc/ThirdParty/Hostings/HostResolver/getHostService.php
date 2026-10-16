@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
 use Brain\Monkey\Functions;
+use Mockery;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -23,6 +24,8 @@ class Test_GetHostResolver extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
@@ -48,6 +51,11 @@ class Test_GetHostResolver extends TestCase {
 				break;
 			case 'onecom':
 				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
+				break;
+			case 'pagely':
+				if ( ! class_exists( 'PagelyCachePurge' ) ) {
+					Mockery::mock( 'overload:PagelyCachePurge' );
+				}
 				break;
 			default:
 				break;
