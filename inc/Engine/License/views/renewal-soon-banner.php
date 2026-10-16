@@ -21,7 +21,7 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 			<?php
 			printf(
 			// translators: %1$s = <strong>, %2$s = </strong>.
-				esc_html__( 'Your %1$sWP Rocket license is about to expire%2$s: you will soon lose access to product updates and support.', 'rocket' ),
+				esc_html__( '%1$sYour WP Rocket license is about to expire%2$s: you will soon lose access to product updates and support.', 'rocket' ),
 				'<strong>',
 				'</strong>'
 			);

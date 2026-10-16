@@ -43,23 +43,18 @@ Method : SUITCSS (modified)
   padding-left: 0;
   padding-right: 24px;
 }
-.wpr-Dashboard-sidebar .wpr-addonCard-list li:before, .wpr-Dashboard-sidebar .wpr-addonCard-list li:after {
-  left: auto;
-}
 .wpr-Dashboard-sidebar .wpr-addonCard-list li:before {
   right: 0;
+  left: auto;
 }
-.wpr-Dashboard-sidebar .wpr-addonCard-list li:after {
-  right: 4px;
-  transform: rotate(45deg);
-}
-.wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-title::before {
-  margin-right: 0;
-  margin-left: 8px;
+.wpr-Dashboard-sidebar .rocket-renew-cta::after {
+  margin-right: 8px;
+  margin-left: 0;
+  transform: scaleX(-1);
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {
   right: auto;
-  left: 8px;
+  left: 12px;
 }
 
 .wpr-Sidebar-notice {

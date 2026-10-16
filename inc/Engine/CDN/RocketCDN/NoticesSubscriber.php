@@ -176,7 +176,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'id'           => 'rocketcdn',
 			'title'        => __( 'Deliver your content faster', 'rocket' ),
 			'image'        => [
-				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-rocketcdn-illustration.png',
+				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-rocketcdn-illustration.svg',
 				// Decorative: the title is right next to it.
 				'alt'    => '',
 				'width'  => 266,

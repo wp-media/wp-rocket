@@ -134,7 +134,6 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			'before_delete_post'                => 'delete_cpcss',
 			'rocket_before_rollback'            => [ 'stop_critical_css_generation', 9 ],
 			'wp_rocket_upgrade'                 => [ 'stop_critical_css_generation', 9 ],
-			'admin_post_switch_to_rucss'        => 'switch_to_rucss',
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -829,30 +828,5 @@ JS;
 		$this->critical_css->stop_generation();
 		delete_transient( 'rocket_critical_css_generation_process_running' );
 		delete_transient( 'rocket_critical_css_generation_process_complete' );
-	}
-
-	/**
-	 * Switch to RUCSS.
-	 *
-	 * @return void
-	 */
-	public function switch_to_rucss() {
-		check_admin_referer( 'rucss_switch' );
-
-		if ( ! current_user_can( 'rocket_manage_options' ) ) {
-			wp_safe_redirect( wp_get_referer() );
-			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
-			// @phpstan-ignore-next-line
-			return; // phpcs:ignore Squiz.PHP.NonExecutableCode.Unreachable
-		}
-
-		$this->options->set( 'async_css', false );
-		$this->options->set( 'remove_unused_css', true );
-		$this->options_api->set( 'settings', $this->options->get_options() );
-
-		rocket_dismiss_box( 'switch_to_rucss_notice' );
-
-		wp_safe_redirect( wp_get_referer() );
-		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 }

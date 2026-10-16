@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\CriticalPath;
 
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\CriticalPath\Admin\{Admin, Post, Settings, Subscriber, SwitchToRucssBanner};
+use WP_Rocket\Engine\CriticalPath\Admin\{Admin, Post, Settings, Subscriber};
 
 /**
  * Service provider for the Critical CSS classes
@@ -29,7 +29,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		'cpcss_post',
 		'cpcss_admin',
 		'critical_css_admin_subscriber',
-		'switch_to_rucss_banner',
 	];
 
 	/**
@@ -133,14 +132,6 @@ class ServiceProvider extends AbstractServiceProvider {
 					'cpcss_post',
 					'cpcss_settings',
 					'cpcss_admin',
-				]
-			);
-		$this->getContainer()->addShared( 'switch_to_rucss_banner', SwitchToRucssBanner::class )
-			->addArguments(
-				[
-					'options',
-					'user',
-					$template_path,
 				]
 			);
 	}

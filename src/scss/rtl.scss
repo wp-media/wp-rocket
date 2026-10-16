@@ -64,30 +64,22 @@ Method : SUITCSS (modified)
             padding-left: 0;
             padding-right: $space*3;
 
-            &:before,
-            &:after{
-                left: auto;
-            }
-
             &:before{
                 right: 0;
-            }
-
-            &:after{
-                right: 4px;
-                transform: rotate(45deg);
+                left: auto;
             }
         }
 
-        // License banners: warning icon before the title, close button on the left.
-        .rocket-renewal-expired-banner .rocket-expired-title::before{
-            margin-right: 0;
-            margin-left: $space;
+        // License banners: close button on the left, arrow of the buttons mirrored.
+        .rocket-renew-cta::after{
+            margin-right: $space;
+            margin-left: 0;
+            transform: scaleX(-1);
         }
 
         .wpr-notice-close{
             right: auto;
-            left: $space;
+            left: $space*1.5;
         }
     }
 }

@@ -144,7 +144,7 @@ class Test_RocketcdnUpsell extends TestCase {
 
 		$this->assertSame( 'rocketcdn', $card['id'] );
 		$this->assertSame( 'Deliver your content faster', $card['title'] );
-		$this->assertSame( 'https://example.org/assets/img/wpr-rocketcdn-illustration.png', $card['image']['src'] );
+		$this->assertSame( 'https://example.org/assets/img/wpr-rocketcdn-illustration.svg', $card['image']['src'] );
 		$this->assertSame( '', $card['image']['alt'] );
 		$this->assertSame( 266, $card['image']['width'] );
 		$this->assertSame( 137, $card['image']['height'] );
