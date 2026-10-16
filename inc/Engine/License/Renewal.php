@@ -48,31 +48,32 @@ class Renewal extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the renewal banner for users expiring in less than 30 days
+	 * Returns the renewal banner HTML for users expiring in less than 30 days
 	 *
+	 * @since 3.23.6
 	 * @since 3.7.5
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function display_renewal_soon_banner() {
+	public function get_renewal_soon_banner(): string {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
-			return;
+			return '';
 		}
 
 		if ( $this->user->is_revoked() ) {
-			return;
+			return '';
 		}
 
 		if ( $this->user->is_license_expired() ) {
-			return;
+			return '';
 		}
 
 		if ( $this->user->is_trial_customer() ) {
-			return;
+			return '';
 		}
 
 		if ( ! $this->is_expired_soon() ) {
-			return;
+			return '';
 		}
 
 		$data              = $this->get_banner_data();
@@ -90,103 +91,88 @@ class Renewal extends Abstract_Render {
 			$data['more_info'] = false;
 		}
 
-		echo $this->generate( 'renewal-soon-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return (string) $this->generate( 'renewal-soon-banner', $data );
 	}
 
 	/**
-	 * Displays the renewal banner for expired users
+	 * Returns the renewal banner HTML for expired users
 	 *
+	 * @since 3.23.6
 	 * @since 3.7.5
 	 *
-	 * @return void
+	 * @return string
 	 */
-	public function display_renewal_expired_banner() {
+	public function get_renewal_expired_banner(): string {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
-			return;
+			return '';
 		}
 
 		if ( 0 === $this->user->get_license_expiration() ) {
-			return;
+			return '';
 		}
 
 		if ( ! $this->user->is_license_expired() ) {
-			return;
+			return '';
 		}
 
 		if ( false !== get_transient( 'rocket_renewal_banner_' . get_current_user_id() ) ) {
-			return;
+			return '';
 		}
 
 		if ( $this->user->is_revoked() ) {
-			return;
+			return '';
 		}
 
 		// Trial customers see the trial-ended banner right away: the auto-renew grace period below does not apply to them.
 		if ( $this->user->is_trial_customer() ) {
-			echo $this->generate( 'trial-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-			return;
+			return (string) $this->generate( 'trial-expired-banner', [ 'renewal_url' => $this->user->get_renewal_url() ] );
 		}
 
 		$expiration    = $this->user->get_license_expiration();
-		$expired_since = ( time() - $expiration ) / DAY_IN_SECONDS;
+		$expired_since = ( $this->get_current_time() - $expiration ) / DAY_IN_SECONDS;
 
 		if (
 			$this->user->is_auto_renew()
 			&&
 			4 > $expired_since
 		) {
-			return;
+			return '';
 		}
 
 		$renewal_url = $this->user->get_renewal_url();
 		$ocd_enabled = $this->options->get( 'optimize_css_delivery', 0 );
 
-		$message = null;
+		$message  = null;
+		$template = 'renewal-expired-banner';
+		$args     = [
+			'renewal_url' => $renewal_url,
+			'message'     => $message,
+		];
 
 		if ( $ocd_enabled ) {
 			if ( 15 > $expired_since ) {
-				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $this->generate(
-					'renewal-expired-banner-ocd',
-					[
-						'renewal_url'   => $renewal_url,
-						'message'       => $message,
-						'disabled_date' => date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS ),
-					]
-				);
-				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+				$template              = 'renewal-expired-banner-ocd';
+				$args['disabled_date'] = date_i18n( get_option( 'date_format' ), $expiration + 15 * DAY_IN_SECONDS );
 			} elseif ( 90 > $expired_since ) {
-				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $this->generate(
-					'renewal-expired-banner-ocd-disabled',
-					[
-						'renewal_url' => $renewal_url,
-						'message'     => $message,
-					]
-				);
-				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
-			} elseif ( 90 < $expired_since ) {
-				// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-				echo $this->generate(
-					'renewal-expired-banner',
-					[
-						'renewal_url' => $renewal_url,
-						'message'     => $message,
-					]
-				);
-				// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
+				$template = 'renewal-expired-banner-ocd-disabled';
+			} elseif ( 90 >= $expired_since ) {
+				// Exactly 90 days: nothing is displayed.
+				return '';
 			}
-		} elseif ( ! $ocd_enabled ) {
-			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-			echo $this->generate(
-				'renewal-expired-banner',
-				[
-					'renewal_url' => $renewal_url,
-					'message'     => $message,
-				]
-			);
-			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
+
+		return (string) $this->generate( $template, $args );
+	}
+
+	/**
+	 * Returns the current timestamp. A seam so the day-based branches can be tested at an exact time.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @return int
+	 */
+	protected function get_current_time(): int {
+		return time();
 	}
 
 	/**

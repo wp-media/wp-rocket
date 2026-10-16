@@ -10,11 +10,11 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Upgrade::display_promo_banner
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::get_promo_banner
  *
  * @group License
  */
-class DisplayPromoBanner extends TestCase {
+class GetPromoBanner extends TestCase {
 	private $pricing;
 	private $user;
 	private $upgrade;
@@ -38,6 +38,29 @@ class DisplayPromoBanner extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->assertSame(
+			is_null( $expected ) ? '' : 'banner html',
+			$this->getBanner( $config, $expected, 'banner html' )
+		);
+	}
+
+	/**
+	 * @dataProvider configNonEmptyData
+	 */
+	public function testShouldReturnEmptyStringWhenGenerateReturnsNull( $config, $expected ) {
+		$this->assertSame( '', $this->getBanner( $config, $expected, null ) );
+	}
+
+	public function configNonEmptyData() {
+		return array_filter(
+			$this->configTestData(),
+			function ( $case ) {
+				return ! is_null( $case['expected'] );
+			}
+		);
+	}
+
+	private function getBanner( $config, $expected, $generated ) {
 		$this->user->shouldReceive( 'get_license_type' )
 			->atMost()
 			->twice()
@@ -137,17 +160,16 @@ class DisplayPromoBanner extends TestCase {
 						return true;
 					} )
 				)
-				->andReturn( '' );
+				->andReturn( $generated );
 
 			$this->user->shouldReceive( 'get_currency' )
 				->andReturn( $config['currency'] ?? 'USD' );
 
-			$this->expectOutputString( '' );
 		} else {
 			$this->upgrade->shouldReceive( 'generate' )
 				->never();
 		}
 
-		$this->upgrade->display_promo_banner();
+		return $this->upgrade->get_promo_banner();
 	}
 }

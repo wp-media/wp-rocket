@@ -70,6 +70,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
+			'rocket_dashboard_sidebar_addons'      => 'add_imagify_addon_card',
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -116,6 +117,19 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 				'source' => 'image & media',
 			]
 		);
+	}
+
+	/**
+	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array $cards Add-on cards data.
+	 *
+	 * @return array
+	 */
+	public function add_imagify_addon_card( $cards ): array {
+		return $this->page->add_imagify_addon_card( (array) $cards );
 	}
 
 	/**

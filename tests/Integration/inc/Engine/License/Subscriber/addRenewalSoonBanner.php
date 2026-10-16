@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::display_promo_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_renewal_soon_banner
  *
  * @group License
  * @group AdminOnly
  */
-class DisplayPromoBanner extends TestCase {
+class AddRenewalSoonBanner extends TestCase {
 	private static $user;
 	private static $pricing;
 	private $original_user;
@@ -32,7 +32,7 @@ class DisplayPromoBanner extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'display_promo_banner', 10 );
+		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_sidebar_license', 'add_renewal_soon_banner', 11 );
 
 		wp_set_current_user( self::$user_id );
 
@@ -41,12 +41,10 @@ class DisplayPromoBanner extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
-
-		delete_transient( 'rocket_promo_banner_' . self::$user_id );
 
 		parent::tear_down();
 	}
@@ -58,10 +56,6 @@ class DisplayPromoBanner extends TestCase {
 		$this->set_reflective_property( $config['user'], 'user', self::$user );
 		$this->set_reflective_property( $config['pricing'], 'pricing', self::$pricing );
 
-		if ( false !== $config['transient'] ) {
-			set_transient( 'rocket_promo_banner_' . self::$user_id, 1, MINUTE_IN_SECONDS );
-		}
-
 		$this->assertSame(
 			$this->format_the_html($expected ),
 			$this->getActualHtml()
@@ -69,9 +63,7 @@ class DisplayPromoBanner extends TestCase {
 	}
 
 	private function getActualHtml() {
-		ob_start();
-		do_action( 'rocket_before_dashboard_content' );
-		$actual = ob_get_clean();
+		$actual = apply_filters( 'rocket_dashboard_sidebar_license', '' );
 
 		return empty( $actual )
 			? $actual
