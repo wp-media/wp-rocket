@@ -6560,7 +6560,21 @@ div.wpr-tutorial-item {
   width: 100%;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-title {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 8px;
+}
+.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-discount {
+  margin: 0;
+  padding: 4px 10px;
+  border-radius: 2px;
+  background: #172153;
+  color: #fff;
+  font-size: 0.75rem;
+  line-height: 1.3333333333;
+  font-weight: 600;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta-block {
   align-items: stretch;
@@ -6574,8 +6588,19 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .rocket-promo-countdown > .rocket-countdown-item {
   margin-right: 0;
+  padding: 6px 4px;
+  border-radius: 4px;
+  background: #FFF5D6;
+  color: #72777C;
   font-size: 0.6875rem;
   line-height: 1.4545454545;
+  font-weight: 500;
+}
+.wpr-Dashboard-sidebar .rocket-promo-countdown > .rocket-countdown-item > .rocket-countdown-value {
+  color: #121116;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 500;
 }
 .wpr-Dashboard-sidebar .rocket-renew-cta,
 .wpr-Dashboard-sidebar .rocket-promo-cta {
@@ -6591,8 +6616,22 @@ div.wpr-tutorial-item {
   border: 0;
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {
-  top: 8px;
-  right: 8px;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: url(../img/wpr-close-thin.svg) center/10px 10px no-repeat;
+  font-size: 0;
+  line-height: 0;
+  cursor: pointer;
+}
+.wpr-Dashboard-sidebar .wpr-notice-close:before {
+  content: none;
+}
+.wpr-Dashboard-sidebar .wpr-notice-close:hover {
+  opacity: 0.7;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard {
   padding: 16px;
