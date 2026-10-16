@@ -122,6 +122,7 @@ PageManager.prototype.detectID = function() {
     this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
 
     // Pages that were merged into another one keep working from old links and saved hashes.
+    // Keep in sync with hashAliases in mixpanel.js and the first-paint script in views/settings/page.php.
     var movedPages = { imagify: 'media' };
     if (movedPages.hasOwnProperty(this.pageId)) {
         this.pageId = movedPages[this.pageId];
