@@ -109,7 +109,7 @@
             flex-flow: column;
             align-items: flex-start;
             gap: $space*1.5;
-            margin-bottom: $space;
+            margin-bottom: 0;
             @include font-size(16,24);
             font-weight: 700;
         }
