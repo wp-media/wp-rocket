@@ -17,7 +17,7 @@
         flex-flow: column;
         align-items: stretch;
         justify-content: flex-start;
-        gap: $space*2;
+        gap: 0;
         margin-top: 0;
         padding: $space*2;
         border-radius: 4px;
@@ -93,7 +93,7 @@
     .rocket-promo-banner{
         flex-flow: column;
         justify-content: flex-start;
-        gap: $space*2;
+        gap: 0;
         margin-top: 0;
         padding: $space*2;
         border-radius: 4px;
@@ -123,6 +123,10 @@
         .rocket-promo-cta-block{
             align-items: stretch;
             margin-right: 0;
+        }
+
+        .rocket-promo-deal{
+            margin-top: $space/2;
         }
     }
 
@@ -171,6 +175,10 @@
         & > p{
             margin-top: 0;
             @include font-size(14,21);
+
+            &:last-child{
+                margin-bottom: 0;
+            }
         }
 
         b,
