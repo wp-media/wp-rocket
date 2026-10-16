@@ -6528,9 +6528,7 @@ div.wpr-tutorial-item {
   width: 100%;
 }
 .wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-title {
-  margin: 0 0 8px;
-  font-size: 1rem;
-  line-height: 1.5;
+  margin: 0;
 }
 .wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-title::before {
   width: 24px;
@@ -6564,10 +6562,6 @@ div.wpr-tutorial-item {
   flex-flow: column;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 0;
-  font-size: 1rem;
-  line-height: 1.5;
-  font-weight: 700;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-discount {
   margin: 0;
@@ -6577,32 +6571,6 @@ div.wpr-tutorial-item {
   color: #fff;
   font-size: 0.6875rem;
   line-height: 1.4545454545;
-  font-weight: 590;
-}
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message,
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-deal {
-  font-size: 0.875rem;
-  line-height: 1.5;
-  font-weight: 400;
-}
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message {
-  margin-top: 0;
-}
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message b,
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-message strong {
-  font-weight: 590;
-}
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-deal {
-  margin-top: 0;
-}
-.wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta {
-  height: 40px;
-  padding: 6px 12px;
-  border: 1px solid #182352;
-  border-radius: 4px;
-  background: #182352;
-  font-size: 0.875rem;
-  line-height: 1.5;
   font-weight: 590;
 }
 .wpr-Dashboard-sidebar .rocket-promo-banner .rocket-promo-cta-block {
@@ -6632,18 +6600,58 @@ div.wpr-tutorial-item {
   line-height: 1.5;
   font-weight: 500;
 }
+.wpr-Dashboard-sidebar .rocket-promo-title,
+.wpr-Dashboard-sidebar .rocket-expired-title {
+  margin-bottom: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 700;
+}
+.wpr-Dashboard-sidebar .rocket-promo-message,
+.wpr-Dashboard-sidebar .rocket-promo-deal,
+.wpr-Dashboard-sidebar .rocket-renew-message,
+.wpr-Dashboard-sidebar .rocket-expired-message {
+  margin-top: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 400;
+}
+.wpr-Dashboard-sidebar .rocket-promo-message > p,
+.wpr-Dashboard-sidebar .rocket-promo-deal > p,
+.wpr-Dashboard-sidebar .rocket-renew-message > p,
+.wpr-Dashboard-sidebar .rocket-expired-message > p {
+  margin-top: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.wpr-Dashboard-sidebar .rocket-promo-message b,
+.wpr-Dashboard-sidebar .rocket-promo-message strong,
+.wpr-Dashboard-sidebar .rocket-promo-deal b,
+.wpr-Dashboard-sidebar .rocket-promo-deal strong,
+.wpr-Dashboard-sidebar .rocket-renew-message b,
+.wpr-Dashboard-sidebar .rocket-renew-message strong,
+.wpr-Dashboard-sidebar .rocket-expired-message b,
+.wpr-Dashboard-sidebar .rocket-expired-message strong {
+  font-weight: 590;
+}
 .wpr-Dashboard-sidebar .rocket-renew-cta,
 .wpr-Dashboard-sidebar .rocket-promo-cta {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
   width: 100%;
-  padding: 12px 16px;
+  height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #182352;
   border-radius: 4px;
+  background: #182352;
+  color: #fff;
   text-align: center;
+  text-decoration: none;
   font-size: 0.875rem;
-  line-height: 1.4285714286;
-}
-.wpr-Dashboard-sidebar .rocket-promo-cta {
-  border: 0;
+  line-height: 1.5;
+  font-weight: 590;
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {
   top: 12px;
