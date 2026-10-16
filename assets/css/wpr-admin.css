@@ -2850,9 +2850,10 @@ div.wpr-upgrade-websites.notstacked {
 .wpr-field--highlighted::before {
   content: "";
   position: absolute;
-  inset-block: 0 calc(-1 * var(--wpr-highlight-end, 0px));
-  inset-inline: -16px;
+  inset-block: var(--wpr-highlight-top, 0px) calc(-1 * var(--wpr-highlight-end, 0px) + var(--wpr-highlight-bottom, 0px));
+  inset-inline: var(--wpr-highlight-inset, -16px);
   z-index: -1;
+  border-radius: 4px;
   background-color: #E0E4F5;
   pointer-events: none;
   animation: wpr-field-highlight 2s ease-out;
@@ -2863,7 +2864,7 @@ div.wpr-upgrade-websites.notstacked {
   }
 }
 .wpr-field--highlighted:first-child::before {
-  inset-block-start: -16px;
+  inset-block-start: var(--wpr-highlight-top, -16px);
 }
 
 @keyframes wpr-field-highlight {

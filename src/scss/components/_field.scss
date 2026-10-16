@@ -318,9 +318,10 @@
         &::before{
             content: "";
             position: absolute;
-            inset-block: 0 calc(-1 * var(--wpr-highlight-end, 0px));
-            inset-inline: -$space*2;
+            inset-block: var(--wpr-highlight-top, 0px) calc(-1 * var(--wpr-highlight-end, 0px) + var(--wpr-highlight-bottom, 0px));
+            inset-inline: var(--wpr-highlight-inset, -#{$space*2});
             z-index: -1;
+            border-radius: 4px;
             background-color: $cPrimarySubtle;
             pointer-events: none;
             animation: wpr-field-highlight 2s ease-out;
@@ -331,7 +332,7 @@
         }
 
         &:first-child::before{
-            inset-block-start: -$space*2;
+            inset-block-start: var(--wpr-highlight-top, -#{$space*2});
         }
     }
 }

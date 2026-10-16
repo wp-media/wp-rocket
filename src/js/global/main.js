@@ -316,7 +316,7 @@ $(document).ready(function(){
 
 		field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
 
-		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted').css('--wpr-highlight-end', '');
+		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted').css({'--wpr-highlight-end': '', '--wpr-highlight-inset': '', '--wpr-highlight-top': '', '--wpr-highlight-bottom': ''});
 		clearTimeout(highlightTimer);
 
 		// Extend the highlight down to the next visible element, or to the bottom of the container, covering the spacing left by hidden child fields.
@@ -326,15 +326,33 @@ $(document).ready(function(){
 			next = next.nextElementSibling;
 		}
 
+		var prev = field.previousElementSibling;
+
+		while (prev && prev.offsetParent === null) {
+			prev = prev.previousElementSibling;
+		}
+
+		// Fields grouped with others are divided by separators: the highlight only spans slightly past their length and stays clear of them and of the container edges.
+		var groupSelector = '.wpr-field, .wpr-warningContainer';
+		var hasPrev = !!prev && prev.matches(groupSelector);
+		var hasNext = !!next && next.matches(groupSelector);
+		var isGrouped = hasPrev || hasNext;
+
 		var fieldBottom = field.getBoundingClientRect().bottom;
 		var containerBottom = field.parentElement.getBoundingClientRect().bottom - parseFloat(getComputedStyle(field.parentElement).borderBottomWidth);
 		var end = next ? next.getBoundingClientRect().top : containerBottom;
 
 		field.style.setProperty('--wpr-highlight-end', Math.max(0, end - fieldBottom) + 'px');
+		field.style.setProperty('--wpr-highlight-inset', isGrouped ? '-8px' : '');
+		field.style.setProperty('--wpr-highlight-top', isGrouped ? (field.matches(':first-child') ? '-8px' : '8px') : '');
+		field.style.setProperty('--wpr-highlight-bottom', isGrouped ? '8px' : '');
 		field.classList.add('wpr-field--highlighted');
 		highlightTimer = setTimeout(function() {
 			field.classList.remove('wpr-field--highlighted');
 			field.style.removeProperty('--wpr-highlight-end');
+			field.style.removeProperty('--wpr-highlight-inset');
+			field.style.removeProperty('--wpr-highlight-top');
+			field.style.removeProperty('--wpr-highlight-bottom');
 		}, 2000);
 	}
 
