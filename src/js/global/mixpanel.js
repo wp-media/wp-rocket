@@ -53,6 +53,22 @@ class RocketMixpanel {
 	_initListeners( self ) {
 		window.addEventListener( 'hashchange', self._onHashChange.bind( self ) );
 		window.addEventListener( 'load', self._onPageLoad.bind( self ) );
+		self._initImagifyBannerListeners();
+	}
+
+	/**
+	 * Tracks clicks on the Imagify banner CTAs through a delegated listener.
+	 */
+	_initImagifyBannerListeners() {
+		document.addEventListener( 'click', ( event ) => {
+			const target = event.target.closest( '.wpr-imagifyBanner [data-mixpanel-button]' );
+
+			if ( !target ) {
+				return;
+			}
+
+			this._sendImagifyBannerClickedEvent( target.dataset.mixpanelButton );
+		} );
 	}
 
 	/**
@@ -149,6 +165,19 @@ class RocketMixpanel {
 			context: rocket_mixpanel_data.context,
 			interaction_channel: 'UI'
 		});
+	}
+
+	_sendImagifyBannerClickedEvent( button ) {
+		mixpanel.track( 'Button Clicked', {
+			button: button,
+			source: 'image & media',
+			path: `/wp-admin/options-general.php?page=wprocket#media`,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			context: rocket_mixpanel_data.context,
+			interaction_channel: 'UI'
+		}, { transport: 'sendBeacon' } );
 	}
 
 	/**

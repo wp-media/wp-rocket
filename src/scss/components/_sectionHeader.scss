@@ -9,7 +9,9 @@
 .wpr-sectionHeader{
     position: relative;
     border-bottom: 1px solid $cGreyLighter1;
-    padding-bottom: $space*3;
+    // The divider sits 6px higher so it lines up with the top border of the first menu item; the margin keeps the content below in place.
+    padding-bottom: $space*3 - 6px;
+    margin-bottom: 6px;
 
     &:before{
         content: '';

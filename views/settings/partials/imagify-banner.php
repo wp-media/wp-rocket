@@ -35,7 +35,7 @@ $rocket_button_url  = ( new \Imagify_Partner( 'wp-rocket' ) )->get_post_install_
 	<div class="wpr-imagifyBanner-content">
 		<div class="wpr-imagifyBanner-list">
 			<?php $this->render_part( 'imagify-banner-benefits' ); ?>
-			<a class="wpr-imagifyBanner-learnMore" href="https://imagify.io/" target="_blank" rel="noopener noreferrer">
+			<a class="wpr-imagifyBanner-learnMore" data-mixpanel-button="imagify banner learn more" href="https://imagify.io/" target="_blank" rel="noopener noreferrer">
 				<img src="<?php echo esc_url( WP_ROCKET_ASSETS_IMG_URL . 'wpr-info.svg' ); ?>" alt="" width="20" height="20">
 				<?php esc_html_e( 'Learn more', 'rocket' ); ?>
 				<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'rocket' ); ?></span>
