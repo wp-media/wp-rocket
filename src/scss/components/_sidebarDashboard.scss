@@ -171,6 +171,7 @@
         // Pale yellow boxes, regular weight digits.
         & > .rocket-countdown-item{
             margin-right: 0;
+            margin-bottom: 0;
             padding: $space*.75 $space/2;
             border-radius: 4px;
             background: $brightSunLight;
