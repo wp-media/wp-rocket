@@ -818,7 +818,7 @@ a:focus, button:focus {
   right: 16px;
   width: 24px;
   height: 32px;
-  background: #F56640;
+  background: #F3704D;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
 }
 .wpr-Dashboard-sidebar-title {
@@ -6531,10 +6531,11 @@ div.wpr-tutorial-item {
   margin: 0;
 }
 .wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-title::before {
-  width: 24px;
-  height: 24px;
-  margin-right: 8px;
-  background: url(../img/warning.svg) center/contain no-repeat;
+  display: block;
+  width: 42px;
+  height: 32px;
+  margin: 0 0 12px;
+  background: url(../img/wpr-warning-picto.svg) center/contain no-repeat;
   content: "";
 }
 .wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-message > p {
@@ -6661,6 +6662,19 @@ div.wpr-tutorial-item {
   font-size: 0.875rem;
   line-height: 1.5;
   font-weight: 590;
+}
+.wpr-Dashboard-sidebar .rocket-renew-cta::after,
+.wpr-Dashboard-sidebar .rocket-promo-cta::after {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin-left: 8px;
+  background: url(../img/wpr-arrow-right-banner.svg) center/contain no-repeat;
+  font-size: 0;
+  content: "";
+}
+.wpr-Dashboard-sidebar .rocket-trial-expired-banner .rocket-renew-cta::after {
+  content: none;
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {
   top: 12px;

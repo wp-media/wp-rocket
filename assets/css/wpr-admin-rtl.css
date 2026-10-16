@@ -53,9 +53,10 @@ Method : SUITCSS (modified)
   right: 4px;
   transform: rotate(45deg);
 }
-.wpr-Dashboard-sidebar .rocket-renewal-expired-banner .rocket-expired-title::before {
-  margin-right: 0;
-  margin-left: 8px;
+.wpr-Dashboard-sidebar .rocket-renew-cta::after {
+  margin-right: 8px;
+  margin-left: 0;
+  transform: scaleX(-1);
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {
   right: auto;
