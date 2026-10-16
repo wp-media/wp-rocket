@@ -53,6 +53,8 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new ProIsp();
 			case 'pressidium':
 				return new Pressidium();
+			case 'flywheel':
+				return new Flywheel();
 			default:
 				return new NullSubscriber();
 		}
