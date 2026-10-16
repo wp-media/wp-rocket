@@ -360,3 +360,29 @@
 		}
 	}
 }
+
+// Recommendations card of the inner pages sidebar. Scoped: the Dashboard main column must not change.
+.wpr-Sidebar {
+	.wpr-recommendations {
+		gap: $space;
+		width: 100%;
+		padding: $space * 2;
+		border-radius: 4px;
+
+		// Orange title, no separator line.
+		.wpr-recommendations__header {
+			justify-content: flex-start;
+			padding-bottom: 0;
+			border-bottom: 0;
+		}
+
+		.wpr-recommendations__title {
+			margin: 0;
+			color: $cOrange;
+		}
+
+		.wpr-recommendation-item__activate {
+			text-transform: none;
+		}
+	}
+}

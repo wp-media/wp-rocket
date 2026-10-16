@@ -230,7 +230,7 @@ HTML
 	</div>
 	<div class="wpr-account-card">
 		<div class="wpr-account-row wpr-account-row--split wpr-flex">
-			<div class="wpr-account-plan wpr-dashboard-plans">
+			<div class="wpr-account-plan wpr-dashboard-plans wpr-account-plan--active">
 				<div class="wpr-account-planItem">
 					<span class="wpr-account-planLabel">Plan</span>
 					<span class="wpr-account-planValue wpr-isValid wpr-no-icon">RocketCDN Pro</span>

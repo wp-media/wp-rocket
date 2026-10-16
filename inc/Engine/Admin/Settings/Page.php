@@ -274,6 +274,25 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
+	 *
+	 * @since 3.23.6
+	 *
+	 * @param array $cards Add-on cards data.
+	 *
+	 * @return array
+	 */
+	public function add_imagify_addon_card( array $cards ): array {
+		$card = $this->render->get_imagify_addon_card_data();
+
+		if ( ! empty( $card ) ) {
+			$cards[] = $card;
+		}
+
+		return $cards;
+	}
+
+	/**
 	 * Adds the async attribute to the Wistia script
 	 *
 	 * @since 3.6.1

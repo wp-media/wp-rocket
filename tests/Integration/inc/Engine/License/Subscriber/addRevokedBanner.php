@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * Test class covering \WP_Rocket\Engine\License\Subscriber::maybe_display_revoked_banner
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_revoked_banner
  *
  * @group License
  * @group AdminOnly
  */
-class MaybeDisplayRevokedBanner extends TestCase {
+class AddRevokedBanner extends TestCase {
 	private static $user;
 	private $original_user;
 
@@ -24,7 +24,7 @@ class MaybeDisplayRevokedBanner extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->unregisterAllCallbacksExcept( 'rocket_before_dashboard_content', 'maybe_display_revoked_banner', 13 );
+		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_sidebar_license', 'add_revoked_banner', 13 );
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -33,7 +33,7 @@ class MaybeDisplayRevokedBanner extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpHook( 'rocket_before_dashboard_content' );
+		$this->restoreWpHook( 'rocket_dashboard_sidebar_license' );
 		$this->restoreWpHook( 'current_screen' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
@@ -58,8 +58,6 @@ class MaybeDisplayRevokedBanner extends TestCase {
 		if ( isset( $config['white_label'] ) && $config['white_label'] ) {
 			$this->white_label = true;
 		}
-		
-        set_current_screen( $config['current_screen'] );
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
@@ -68,9 +66,7 @@ class MaybeDisplayRevokedBanner extends TestCase {
 	}
 
 	private function getActualHtml() {
-		ob_start();
-		do_action( 'rocket_before_dashboard_content' );
-		$actual = ob_get_clean();
+		$actual = apply_filters( 'rocket_dashboard_sidebar_license', '' );
 
 		return empty( $actual )
 			? $actual

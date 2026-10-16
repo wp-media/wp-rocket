@@ -25,7 +25,7 @@ $data = isset( $data ) && is_array( $data ) ? $data : []; // phpcs:ignore WordPr
 		<span class="wpr-account-value wpr-isInvalid"><?php esc_html_e( 'RocketCDN is unavailable on local domains and staging sites.', 'rocket' ); ?></span>
 	<?php else : ?>
 		<div class="wpr-account-row wpr-account-row--split wpr-flex<?php echo esc_attr( $data['container_class'] ); ?>">
-			<div class="wpr-account-plan wpr-dashboard-plans">
+			<div class="wpr-account-plan wpr-dashboard-plans<?php echo ! empty( $data['is_active'] ) ? ' wpr-account-plan--active' : ''; ?>">
 			<?php foreach ( $data['items'] ?? [] as $rocket_plan_item ) : ?>
 				<div class="wpr-account-planItem">
 					<span class="wpr-account-planLabel"><?php echo esc_html( '' !== $rocket_plan_item['label'] ? $rocket_plan_item['label'] : __( 'License', 'rocket' ) ); ?></span>

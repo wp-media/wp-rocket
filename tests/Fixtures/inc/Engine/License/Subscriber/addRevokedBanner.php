@@ -12,7 +12,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => true,
-            'current_screen' => 'settings_page_wprocket',
         ],
         'expected' => '',
     ],
@@ -27,22 +26,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => false,
-            'current_screen' => 'settings_page_wprocket',
-        ],
-        'expected' => '',
-    ],
-    'testShouldNotDisplayBannerWhenNotOnSettingsPage' => [
-        'config' => [
-            'user' => json_decode( json_encode( [
-				'licence_account'    => 1,
-				'has_auto_renew'     => false,
-				'licence_expiration' => strtotime( 'next year' ),
-                'licence' => (object) [
-                    'is_revoked' => true,
-                ],
-			] ) ),
-            'current_user_can' => true,
-            'current_screen' => 'settings_page_wp-crontrol-schedules',
         ],
         'expected' => '',
     ],
@@ -57,7 +40,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => true,
-            'current_screen' => 'settings_page_wprocket',
             'white_label' => true,
         ],
         'expected' => '',
@@ -73,7 +55,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => true,
-            'current_screen' => 'settings_page_wprocket',
         ],
         'expected' => '<section class="rocket-renewal-expired-banner revoked-website-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
@@ -103,7 +84,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => true,
-            'current_screen' => 'settings_page_wprocket',
         ],
         'expected' => '<section class="rocket-renewal-expired-banner revoked-website-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
@@ -133,7 +113,6 @@ return [
                 ],
 			] ) ),
             'current_user_can' => true,
-            'current_screen' => 'settings_page_wprocket',
         ],
         'expected' => '<section class="rocket-renewal-expired-banner revoked-website-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
