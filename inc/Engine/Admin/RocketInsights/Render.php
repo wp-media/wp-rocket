@@ -7,6 +7,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
+use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
 class Render extends Abstract_Render {
 	/**
@@ -180,7 +181,10 @@ class Render extends Abstract_Render {
 	public function get_dashboard_global_score( array $data ): string {
 		return $this->generate(
 			'partials/rocket-insights/dashboard-global-score',
-			$this->prepare_global_score_widget_data( $data )
+			array_merge(
+				$this->prepare_global_score_widget_data( $data ),
+				[ 'metric_definitions' => Calculator::get_metric_definitions() ]
+			)
 		);
 	}
 
@@ -252,6 +256,7 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data, bool $is_ajax = true ): string {
 		$data->has_credit                          = true;
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->metric_definitions                  = Calculator::get_metric_definitions();
 		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
 		if ( $data->rocket_can_show_advanced_indicators ) {
 			++$this->rows_counter;
