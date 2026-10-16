@@ -27,6 +27,14 @@ class RocketMixpanel {
 		file_optimization: 'javascript_css'
 	};
 
+	/**
+	 * Pages that were merged into another one: old hashes are tracked as the new page.
+	 * Keep in sync with `movedPages` in pageManager.js and the first-paint script in views/settings/page.php.
+	 */
+	hashAliases = {
+		imagify: 'media'
+	};
+
 	constructor( config ) {
 		this.config = config;
 	}
@@ -84,7 +92,8 @@ class RocketMixpanel {
 		if (!tabHash || !tabHash.startsWith('#')) {
 			return tabHash;
 		}
-		return tabHash.substring(1);
+		const hash = tabHash.substring(1);
+		return Object.prototype.hasOwnProperty.call( this.hashAliases, hash ) ? this.hashAliases[hash] : hash;
 	}
 
 	_canTrackTab(tabHash) {

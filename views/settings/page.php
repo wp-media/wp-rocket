@@ -43,7 +43,7 @@ settings_errors( $data['slug'] ); ?>
 					try {
 						var page = window.location.hash.slice( 1 ).split( '=' )[0] || window.localStorage.getItem( 'wpr-hash' ) || 'dashboard';
 
-						// Pages merged into another one, as in pageManager.js.
+						// Pages merged into another one, as in pageManager.js and mixpanel.js.
 						if ( 'imagify' === page ) {
 							page = 'media';
 						}
