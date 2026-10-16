@@ -93,7 +93,8 @@ settings_errors( $data['slug'] ); ?>
 		</section>
 
 		<?php
-		$rocket_sidebar = trim( (string) $this->generate( 'partials/sidebar' ) );
+		// The license validation screen only shows the license form: no sidebar (Global score, Recommendations) without a valid key.
+		$rocket_sidebar = rocket_valid_key() ? trim( (string) $this->generate( 'partials/sidebar' ) ) : '';
 
 		if ( '' !== $rocket_sidebar ) :
 			?>
