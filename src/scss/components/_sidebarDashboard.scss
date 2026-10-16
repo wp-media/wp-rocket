@@ -66,8 +66,7 @@
         }
 
         .rocket-expired-title{
-            margin: 0 0 $space;
-            @include font-size(16,24);
+            margin: 0;
 
             // Warning icon, in front of the title.
             &::before{
@@ -109,9 +108,6 @@
             flex-flow: column;
             align-items: flex-start;
             gap: $space*1.5;
-            margin-bottom: 0;
-            @include font-size(16,24);
-            font-weight: 700;
         }
 
         .rocket-promo-discount{
@@ -121,37 +117,6 @@
             background: $cActionPrimary;
             color: $cWhite;
             @include font-size(11,16);
-            font-weight: 590;
-        }
-
-        // Body text: 14px, bold parts at 590.
-        .rocket-promo-message,
-        .rocket-promo-deal{
-            @include font-size(14,21);
-            font-weight: 400;
-        }
-
-        .rocket-promo-message{
-            margin-top: 0;
-        }
-
-        .rocket-promo-message b,
-        .rocket-promo-message strong{
-            font-weight: 590;
-        }
-
-        .rocket-promo-deal{
-            margin-top: 0;
-        }
-
-        // Primary action button.
-        .rocket-promo-cta{
-            height: $space*5;
-            padding: $space*.75 $space*1.5;
-            border: 1px solid $cActionPrimary;
-            border-radius: 4px;
-            background: $cActionPrimary;
-            @include font-size(14,21);
             font-weight: 590;
         }
 
@@ -187,18 +152,50 @@
         }
     }
 
-    .rocket-renew-cta,
-    .rocket-promo-cta{
-        display: block;
-        width: 100%;
-        padding: $space*1.5 $space*2;
-        border-radius: 4px;
-        text-align: center;
-        @include font-size(14,20);
+    // Shared by every banner: title, message and primary button.
+    .rocket-promo-title,
+    .rocket-expired-title{
+        margin-bottom: 0;
+        @include font-size(16,24);
+        font-weight: 700;
     }
 
+    .rocket-promo-message,
+    .rocket-promo-deal,
+    .rocket-renew-message,
+    .rocket-expired-message{
+        margin-top: 0;
+        @include font-size(14,21);
+        font-weight: 400;
+
+        & > p{
+            margin-top: 0;
+            @include font-size(14,21);
+        }
+
+        b,
+        strong{
+            font-weight: 590;
+        }
+    }
+
+    .rocket-renew-cta,
     .rocket-promo-cta{
-        border: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: $space*5;
+        padding: $space*.75 $space*1.5;
+        border: 1px solid $cActionPrimary;
+        border-radius: 4px;
+        background: $cActionPrimary;
+        color: $cWhite;
+        text-align: center;
+        text-decoration: none;
+        @include font-size(14,21);
+        font-weight: 590;
     }
 
     // Thin, light close icon, same on every banner.
