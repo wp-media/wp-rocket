@@ -6564,7 +6564,7 @@ div.wpr-tutorial-item {
   flex-flow: column;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 0;
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 700;
