@@ -43,13 +43,21 @@
             border-radius: 4px;
         }
 
-        // Page header icon drawn from an SVG (Image & Media).
-        &.wpr-icon-zap:before{
-            content: '';
-            background-image: url('../img/wpr-zap.svg');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 23px;
+        // Page header icon drawn from an SVG. Child pages use the icon of their parent menu group.
+        @each $class, $file in (
+            'zap': 'wpr-zap',
+            'refresh': 'wpr-refresh',
+            'database': 'wpr-database',
+            'tools': 'wpr-wrench',
+            'book-open': 'wpr-book-open'
+        ){
+            &.wpr-icon-#{$class}:before{
+                content: '';
+                background-image: url('../img/#{$file}.svg');
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 23px;
+            }
         }
     }
 
