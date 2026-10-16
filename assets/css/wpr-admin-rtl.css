@@ -43,15 +43,9 @@ Method : SUITCSS (modified)
   padding-left: 0;
   padding-right: 24px;
 }
-.wpr-Dashboard-sidebar .wpr-addonCard-list li:before, .wpr-Dashboard-sidebar .wpr-addonCard-list li:after {
-  left: auto;
-}
 .wpr-Dashboard-sidebar .wpr-addonCard-list li:before {
   right: 0;
-}
-.wpr-Dashboard-sidebar .wpr-addonCard-list li:after {
-  right: 4px;
-  transform: rotate(45deg);
+  left: auto;
 }
 .wpr-Dashboard-sidebar .rocket-renew-cta::after {
   margin-right: 8px;
