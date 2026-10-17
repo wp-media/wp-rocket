@@ -651,6 +651,9 @@ a:focus, button:focus {
     max-width: 868px;
   }
 }
+.wpr-Content.isNotFull.wpr-Content--noSidebar {
+  max-width: 1230px;
+}
 .wpr-Content.isNotFull[data-page=dashboard] {
   max-width: 1230px;
   padding: 0;
