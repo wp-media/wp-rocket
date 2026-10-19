@@ -363,16 +363,8 @@ a:focus, button:focus {
   content: url("../img/heartbeat.svg");
 }
 
-.wpr-icon-heartbeat-hover:before {
-  content: url("../img/heartbeat-hover.svg");
-}
-
 .wpr-icon-tutorial:before {
   content: url("../img/play.svg");
-}
-
-.wpr-icon-tutorial-hover:before {
-  content: url("../img/play-hover.svg");
 }
 
 .wpr-icon-tutorial-alt:before {
@@ -381,10 +373,6 @@ a:focus, button:focus {
 
 .wpr-icons-plugins:before {
   content: url("../img/plugins.png");
-}
-
-.wpr-icons-plugins-hover:before {
-  content: url("../img/plugins-hover.png");
 }
 
 .wpr-icon-rocket-insights:before {
@@ -2320,6 +2308,34 @@ div.wpr-upgrade-websites.notstacked {
 .wpr-sectionHeader .wpr-title1.wpr-icon-zap:before {
   content: "";
   background-image: url("../img/wpr-zap.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
+}
+.wpr-sectionHeader .wpr-title1.wpr-icon-refresh:before {
+  content: "";
+  background-image: url("../img/wpr-refresh.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
+}
+.wpr-sectionHeader .wpr-title1.wpr-icon-database:before {
+  content: "";
+  background-image: url("../img/wpr-database.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
+}
+.wpr-sectionHeader .wpr-title1.wpr-icon-tools:before {
+  content: "";
+  background-image: url("../img/wpr-wrench.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 23px;
+}
+.wpr-sectionHeader .wpr-title1.wpr-icon-book-open:before {
+  content: "";
+  background-image: url("../img/wpr-book-open.svg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: 23px;

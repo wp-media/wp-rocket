@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div id="plugins" class="wpr-Page">
 	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icons-plugins-hover"><?php esc_html_e( 'Our Plugins', 'rocket' ); ?></h2>
+		<h2 class="wpr-title1 wpr-icon-book-open"><?php esc_html_e( 'Our Plugins', 'rocket' ); ?></h2>
 	</div>
 	<div class="wpr-fieldsContainer">
 		<div class="wpr-field-description">
