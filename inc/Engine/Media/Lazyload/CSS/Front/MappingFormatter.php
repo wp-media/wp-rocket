@@ -105,7 +105,7 @@ class MappingFormatter {
 	 * @return string
 	 */
 	protected function remove_pseudo_classes( string $selector ): string {
-		$selectors = explode( ',', $selector );
+		$selectors = $this->split_selector_list( $selector );
 
 		$selectors = array_map( [ $this, 'remove_pseudo_classes_for_selector' ], $selectors );
 
@@ -114,5 +114,57 @@ class MappingFormatter {
 		$selector = implode( ',', $selectors );
 
 		return (string) $selector;
+	}
+
+	/**
+	 * Split a selector list on its top-level commas.
+	 *
+	 * Commas inside parentheses (:is(), :where(), :not(), :has()), attribute selectors,
+	 * quoted strings or escaped with a backslash are part of a selector and are kept.
+	 *
+	 * @param string $selector Selector list to split.
+	 * @return string[]
+	 */
+	private function split_selector_list( string $selector ): array {
+		$selectors = [];
+		$current   = '';
+		$depth     = 0;
+		$quote     = '';
+		$length    = strlen( $selector );
+
+		for ( $i = 0; $i < $length; $i++ ) {
+			$char = $selector[ $i ];
+
+			if ( '\\' === $char ) {
+				$current .= $char . ( $selector[ ++$i ] ?? '' );
+				continue;
+			}
+
+			if ( '' !== $quote ) {
+				if ( $char === $quote ) {
+					$quote = '';
+				}
+				$current .= $char;
+				continue;
+			}
+
+			if ( '"' === $char || "'" === $char ) {
+				$quote = $char;
+			} elseif ( '(' === $char || '[' === $char ) {
+				++$depth;
+			} elseif ( ')' === $char || ']' === $char ) {
+				$depth = max( 0, $depth - 1 );
+			} elseif ( ',' === $char && 0 === $depth ) {
+				$selectors[] = $current;
+				$current     = '';
+				continue;
+			}
+
+			$current .= $char;
+		}
+
+		$selectors[] = $current;
+
+		return $selectors;
 	}
 }
