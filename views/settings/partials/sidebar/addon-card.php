@@ -4,7 +4,7 @@
  *
  * One markup for every add-on card, rendered from the data filtered by rocket_dashboard_sidebar_addons.
  *
- * @since 3.23.6
+ * @since 3.24
  *
  * @param array $data {
  *     Card data.

@@ -4,7 +4,7 @@
  *
  * Not a .wpr-notice: those are animated away by main.js.
  *
- * @since 3.23.6
+ * @since 3.24
  *
  * @param array $data {
  *     Banner data.
