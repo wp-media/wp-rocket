@@ -118,7 +118,7 @@ return [
 			'previous_version' => '3.21.0',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
-			'boxes'            => [ 'rocket_major_release_notice_3_23' ],
+			'boxes'            => [ 'rocket_major_release_notice_' . preg_replace( '/^(\d+)\.(\d+).*/', '$1_$2', WP_ROCKET_VERSION ) ],
 		],
 		'expected' => [
 			'display' => false,

@@ -130,7 +130,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	private function extract_major( string $version ): string {
 		$parts = explode( '.', $version );
 
-		return $parts[0] . '.' . ( $parts[1] ?? '0' );
+		return $parts[0] . '.' . (int) ( $parts[1] ?? 0 );
 	}
 
 	/**
