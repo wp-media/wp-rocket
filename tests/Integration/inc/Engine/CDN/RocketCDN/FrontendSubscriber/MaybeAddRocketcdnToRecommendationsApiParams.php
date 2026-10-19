@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Recommendations\SettingsSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\FrontendSubscriber;
 
-use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
- * Test class for SettingsSubscriber::maybe_add_rocketcdn_to_recommendations_api_params()
+ * Test class for FrontendSubscriber::maybe_add_rocketcdn_to_recommendations_api_params()
  *
  * @group RocketInsights
  * @group RocketCDN
