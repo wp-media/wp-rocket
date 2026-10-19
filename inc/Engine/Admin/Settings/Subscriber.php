@@ -122,7 +122,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array $cards Add-on cards data.
 	 *
@@ -258,7 +258,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 *
 	 * They have no page of their own: they open the external resource in a new tab.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array $navigation Array of menu items.
 	 * @return array

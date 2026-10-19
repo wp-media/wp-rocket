@@ -132,7 +132,7 @@ class Render extends Abstract_Render {
 	 *
 	 * Groups only hold other items, they have no page content of their own.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return array[] {
 	 *     Groups keyed by identifier.
@@ -178,7 +178,7 @@ class Render extends Abstract_Render {
 	 * Items belonging to a known group are nested under it. Items without a group, or with an unknown one,
 	 * stay standalone, which keeps items added by third parties through `rocket_settings_menu_navigation` working.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array[] $navigation Normalized navigation items.
 	 *
@@ -306,7 +306,7 @@ class Render extends Abstract_Render {
 	 *
 	 * A category without content is not rendered, title included.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return string
 	 */
@@ -314,7 +314,7 @@ class Render extends Abstract_Render {
 		/**
 		 * Filters the License banner of the dashboard sidebar. The first non-empty value wins, so only one banner is displayed.
 		 *
-		 * @since 3.23.6
+		 * @since 3.24
 		 *
 		 * @param string $html HTML of the License banner.
 		 */
@@ -323,7 +323,7 @@ class Render extends Abstract_Render {
 		/**
 		 * Filters the Promos banners of the dashboard sidebar.
 		 *
-		 * @since 3.23.6
+		 * @since 3.24
 		 *
 		 * @param string $html HTML of the Promos banners.
 		 */
@@ -334,7 +334,7 @@ class Render extends Abstract_Render {
 		 *
 		 * Each callback appends the data of its card, without any HTML: the card is rendered by WP Rocket.
 		 *
-		 * @since 3.23.6
+		 * @since 3.24
 		 *
 		 * @param array $cards {
 		 *     Card data, one array per card.
@@ -400,7 +400,7 @@ class Render extends Abstract_Render {
 	 * Same rules as render_imagify_banner(): nothing for white label accounts, while Imagify is active,
 	 * or when an API key is saved.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return array Card data, empty when the card must not be displayed.
 	 */
@@ -436,7 +436,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Returns the Imagify benefits, shared by the Imagify banner and the Imagify card.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return array[] Benefits, with the image file name and the text (only <strong> tags).
 	 */
@@ -468,7 +468,7 @@ class Render extends Abstract_Render {
 	/**
 	 * Returns the Imagify partner state used by the Imagify card.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return array {
 	 *     @type bool   $activated   Whether Imagify is active.

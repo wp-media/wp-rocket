@@ -2,7 +2,7 @@
 /**
  * Menu item template.
  *
- * @since 3.23.6
+ * @since 3.24
  *
  * @param array $data {
  *     Menu item data.

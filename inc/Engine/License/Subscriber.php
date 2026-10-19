@@ -157,7 +157,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Adds the promotions banner to the dashboard sidebar Promos category when a promotion is active
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param string $html Current HTML of the category.
 	 * @return string
@@ -218,7 +218,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param string $html Current HTML of the category.
 	 * @return string
@@ -236,7 +236,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param string $html Current HTML of the category.
 	 * @return string
@@ -318,7 +318,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param string $html Current HTML of the category.
 	 * @return string

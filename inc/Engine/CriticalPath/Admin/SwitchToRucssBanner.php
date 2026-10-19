@@ -65,7 +65,7 @@ class SwitchToRucssBanner extends Abstract_Render implements Subscriber_Interfac
 	 *
 	 * The first non-empty banner wins, so only one License banner is displayed.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param string $html Current HTML of the category.
 	 *

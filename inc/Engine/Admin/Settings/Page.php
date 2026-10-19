@@ -276,7 +276,7 @@ class Page extends Abstract_Render {
 	/**
 	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array $cards Add-on cards data.
 	 *
@@ -477,7 +477,7 @@ class Page extends Abstract_Render {
 	/**
 	 * Registers Account section.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 */
 	private function account_section() {
 		$this->settings->add_page_section(
