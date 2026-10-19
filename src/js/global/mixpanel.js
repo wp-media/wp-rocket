@@ -27,6 +27,14 @@ class RocketMixpanel {
 		file_optimization: 'javascript_css'
 	};
 
+	/**
+	 * Pages that were merged into another one: old hashes are tracked as the new page.
+	 * Keep in sync with `movedPages` in pageManager.js and the first-paint script in views/settings/page.php.
+	 */
+	hashAliases = {
+		imagify: 'media'
+	};
+
 	constructor( config ) {
 		this.config = config;
 	}
@@ -53,6 +61,22 @@ class RocketMixpanel {
 	_initListeners( self ) {
 		window.addEventListener( 'hashchange', self._onHashChange.bind( self ) );
 		window.addEventListener( 'load', self._onPageLoad.bind( self ) );
+		self._initImagifyBannerListeners();
+	}
+
+	/**
+	 * Tracks clicks on the Imagify banner CTAs through a delegated listener.
+	 */
+	_initImagifyBannerListeners() {
+		document.addEventListener( 'click', ( event ) => {
+			const target = event.target.closest( '.wpr-imagifyBanner [data-mixpanel-button]' );
+
+			if ( !target ) {
+				return;
+			}
+
+			this._sendImagifyBannerClickedEvent( target.dataset.mixpanelButton );
+		} );
 	}
 
 	/**
@@ -84,7 +108,8 @@ class RocketMixpanel {
 		if (!tabHash || !tabHash.startsWith('#')) {
 			return tabHash;
 		}
-		return tabHash.substring(1);
+		const hash = tabHash.substring(1);
+		return Object.prototype.hasOwnProperty.call( this.hashAliases, hash ) ? this.hashAliases[hash] : hash;
 	}
 
 	_canTrackTab(tabHash) {
@@ -149,6 +174,19 @@ class RocketMixpanel {
 			context: rocket_mixpanel_data.context,
 			interaction_channel: 'UI'
 		});
+	}
+
+	_sendImagifyBannerClickedEvent( button ) {
+		mixpanel.track( 'Button Clicked', {
+			button: button,
+			source: 'image & media',
+			path: `/wp-admin/options-general.php?page=wprocket#media`,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			context: rocket_mixpanel_data.context,
+			interaction_channel: 'UI'
+		}, { transport: 'sendBeacon' } );
 	}
 
 	/**

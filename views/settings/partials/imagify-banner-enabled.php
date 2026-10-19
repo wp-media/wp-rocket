@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) || exit;
 				<p class="wpr-imagifyBanner-title"><?php esc_html_e( 'Next step: optimize your existing images', 'rocket' ); ?></p>
 				<p><?php esc_html_e( 'Compress all your images in one click', 'rocket' ); ?></p>
 			</div>
-			<a class="wpr-button wpr-imagifyBanner-button wpr-imagifyBanner-button--arrow" href="<?php echo esc_url( admin_url( 'options-general.php?page=imagify' ) ); ?>"><?php esc_html_e( 'Open Imagify Settings', 'rocket' ); ?></a>
+			<a class="wpr-button wpr-imagifyBanner-button wpr-imagifyBanner-button--arrow" data-mixpanel-button="imagify banner open settings" href="<?php echo esc_url( admin_url( 'options-general.php?page=imagify' ) ); ?>"><?php esc_html_e( 'Open Imagify Settings', 'rocket' ); ?></a>
 		</div>
 	</div>
 </div>

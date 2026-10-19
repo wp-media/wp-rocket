@@ -79,8 +79,8 @@ return [
 			'state'        => 'completed',
 			'contains'     => [
 				'wpr-recommendations__success',
-				'All done!',
-				'All recommended WP Rocket features are now enabled',
+				'Your website is doing great!',
+				'All recommended settings are enabled!',
 			],
 			'not_contains' => [
 				'wpr-recommendations__loading',
