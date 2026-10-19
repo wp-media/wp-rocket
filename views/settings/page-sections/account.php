@@ -2,7 +2,7 @@
 /**
  * Account section template.
  *
- * @since 3.23.6
+ * @since 3.24
  *
  * @param array $data {
  *     Section arguments.
@@ -58,9 +58,9 @@ defined( 'ABSPATH' ) || exit;
 					/**
 					 * Fires when displaying the license information on the account page
 					 *
-					 * @since 3.23.6
+					 * @since 3.24
 					 */
-					rocket_do_action_and_deprecated( 'rocket_account_license_info', [], '3.23.6', 'rocket_dashboard_license_info' );
+					rocket_do_action_and_deprecated( 'rocket_account_license_info', [], '3.24', 'rocket_dashboard_license_info' );
 					?>
 				</div>
 				<div class="wpr-account-actions">
@@ -101,8 +101,8 @@ defined( 'ABSPATH' ) || exit;
 	/**
 	 * Fires after the license information on the WP Rocket settings account page
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 */
-	rocket_do_action_and_deprecated( 'rocket_account_after_license_info', [], '3.23.6', 'rocket_dashboard_after_account_data' );
+	rocket_do_action_and_deprecated( 'rocket_account_after_license_info', [], '3.24', 'rocket_dashboard_after_account_data' );
 	?>
 </div>

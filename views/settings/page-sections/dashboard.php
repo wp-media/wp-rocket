@@ -96,7 +96,7 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 			/**
 			 * Fires in the main column of the dashboard tab content.
 			 *
-			 * @since 3.23.6
+			 * @since 3.24
 			 */
 			do_action( 'rocket_dashboard_content' );
 			?>

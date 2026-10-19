@@ -2,7 +2,7 @@
 /**
  * Dashboard sidebar category template.
  *
- * @since 3.23.6
+ * @since 3.24
  *
  * @param array $data {
  *     Category data.

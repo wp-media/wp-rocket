@@ -51,6 +51,8 @@ class Test_RenderDashboardGlobalScore extends TestCase {
 		if ( null === $expected['data'] ) {
 			$controller->shouldReceive( 'get_global_score' )->never();
 			$render->shouldReceive( 'render_dashboard_global_score' )->never();
+			$context->shouldReceive( 'is_reseller_or_non_live' )->once()->andReturn( $config['is_local'] );
+			$render->shouldReceive( 'render_dashboard_disabled_state' )->once()->with( $expected['disabled_local'] );
 		} else {
 			$controller->shouldReceive( 'get_global_score' )->once()->andReturn( $config['score'] );
 			$controller->shouldReceive( 'get_remaining_url_count' )->once()->andReturn( $config['remaining_urls'] );
