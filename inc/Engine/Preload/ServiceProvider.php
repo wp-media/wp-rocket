@@ -92,6 +92,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'sitemap_parser',
 					'preload_queue',
 					'preload_caches_query',
+					'logger',
 				]
 			);
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
