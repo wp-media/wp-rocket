@@ -131,6 +131,11 @@ class HostResolver {
 			return self::$hostname;
 		}
 
+		if ( class_exists( 'PagelyCachePurge' ) ) {
+			self::$hostname = 'pagely';
+			return 'pagely';
+		}
+
 		return '';
 	}
 

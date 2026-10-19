@@ -20,5 +20,8 @@ return [
 		'testShouldReturnOnecom' => [
 			'expected' => 'onecom',
 		],
+		'testShouldReturnPagely' => [
+			'expected' => 'pagely',
+		],
 	],
 ];
