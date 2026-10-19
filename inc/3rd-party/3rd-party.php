@@ -14,10 +14,6 @@ if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/siteground.php';
 }
 
-if ( defined( 'PL_INSTANCE_REF' ) && class_exists( '\Presslabs\Cache\CacheHandler' ) && file_exists( WP_CONTENT_DIR . '/advanced-cache.php' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/presslabs.php';
-}
-
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/pagely.php';
 require WP_ROCKET_3RD_PARTY_PATH . 'hosting/nginx.php';
 
