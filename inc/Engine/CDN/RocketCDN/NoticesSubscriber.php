@@ -185,9 +185,12 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			'lead'         => __( 'Propel Your Content at the Speed of Light', 'rocket' ),
 			'text'         => __( 'from 100+ edge locations with unlimited bandwidth.', 'rocket' ),
 			'list'         => [
-				__( 'Faster content delivery across your entire website', 'rocket' ),
-				__( 'No bandwidth limits, no hidden costs', 'rocket' ),
-				__( '100+ edge locations for wider global coverage', 'rocket' ),
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				sprintf( esc_html__( 'Faster content delivery across %1$syour entire website%2$s', 'rocket' ), '<strong>', '</strong>' ),
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				sprintf( esc_html__( '%1$sNo bandwidth limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' ),
+				// Translators: %1$s = <strong>, %2$s = </strong>.
+				sprintf( esc_html__( '%1$s100+ edge locations%2$s for wider global coverage', 'rocket' ), '<strong>', '</strong>' ),
 			],
 			'button_label' => __( 'Upgrade Now', 'rocket' ),
 			'button_url'   => '#page_cdn',

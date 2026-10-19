@@ -152,9 +152,9 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->assertSame( 'from 100+ edge locations with unlimited bandwidth.', $card['text'] );
 		$this->assertSame(
 			[
-				'Faster content delivery across your entire website',
-				'No bandwidth limits, no hidden costs',
-				'100+ edge locations for wider global coverage',
+				'Faster content delivery across <strong>your entire website</strong>',
+				'<strong>No bandwidth limits</strong>, no hidden costs',
+				'<strong>100+ edge locations</strong> for wider global coverage',
 			],
 			$card['list']
 		);
