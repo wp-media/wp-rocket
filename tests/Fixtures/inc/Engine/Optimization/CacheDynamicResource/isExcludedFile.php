@@ -48,6 +48,14 @@ return [
 			true,
 		],
 		[
+			'http://example.org/wp/wp-admin/admin-ajax.php',
+			true,
+		],
+		[
+			'http://example.org/a/b/wp-admin/admin-ajax.php',
+			true,
+		],
+		[
 			'https://example.org/wp-content/plugins/test/style.php?data=foo&ver=5.3',
 			true,
 		],
