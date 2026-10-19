@@ -57,7 +57,9 @@ class Test_GetImagifyAddonCardData extends TestCase {
 		$this->assertSame( 'Install Imagify', $card['button_label'] );
 		$this->assertSame( 'https://example.org/install', $card['button_url'] );
 		$this->assertFalse( $card['is_external'] );
-		$this->assertSame( 'https://example.org/assets/img/wpr-imagify-before-after.png', $card['image']['src'] );
+		$this->assertSame( 'https://example.org/assets/img/wpr-imagify-card.jpg', $card['image']['src'] );
+		$this->assertSame( 266, $card['image']['width'] );
+		$this->assertSame( 137, $card['image']['height'] );
 		$this->assertCount( 4, $card['list'] );
 	}
 

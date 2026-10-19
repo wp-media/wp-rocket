@@ -115,7 +115,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>Renew before it is too late, you will pay <strong>$34.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
 		</div>
@@ -144,7 +144,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
 			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
@@ -175,7 +175,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>Renew before it is too late, you will pay <strong>$69.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
 		</div>
@@ -204,7 +204,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 			<p>
 			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
@@ -235,7 +235,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
@@ -263,7 +263,7 @@ return [
 		</ul>
 		<div class="rocket-renew-message">
 			<p>
-				Your <strong>WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
+				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
 			</p>
 		</div>
 		<div class="rocket-renew-cta-container">
