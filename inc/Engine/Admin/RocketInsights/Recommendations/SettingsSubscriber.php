@@ -40,10 +40,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'update_option_wp_rocket_settings'           => [ 'maybe_fetch_after_settings_change', 10, 2 ],
-			'rocket_insights_api_recommendations_params' => [
-				[ 'maybe_add_imagify_to_recommendations_api_params' ],
-				[ 'maybe_add_rocketcdn_to_recommendations_api_params' ],
-			],
+			'rocket_insights_api_recommendations_params' => 'maybe_add_imagify_to_recommendations_api_params',
 		];
 	}
 
@@ -98,28 +95,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 			Imagify_Partner::has_imagify_api_key()
 		) {
 			$params['enabled_options'][] = 'plugin_imagify';
-		}
-
-		return $params;
-	}
-
-	/**
-	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters.
-	 *
-	 * Adds 'plugin_rocketcdn' if white label is enabled, the RocketCDN plugin is active or the CDN option is enabled.
-	 *
-	 * @param array $params The existing API parameters.
-	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
-	 */
-	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
-		if (
-			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false )
-			||
-			! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) )
-			||
-			in_array( 'cdn', $params['enabled_options'] ?? [], true )
-		) {
-			$params['enabled_options'][] = 'plugin_rocketcdn';
 		}
 
 		return $params;
