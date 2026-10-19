@@ -44,5 +44,28 @@
         max-width: 1230px;
         padding: 0;
         background: transparent;
+
+        // The main card is at least as tall as the navigation (the container stretches to it), then grows with its content.
+        display: flex;
+        flex-direction: column;
+
+        // The sections are rendered inside the form: it takes the container height too.
+        > form{
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            align-items: flex-start;
+
+            // pageManager.js sets an inline display on the section, so the row fills it with a min-height instead of a flex layout.
+            > #dashboard{
+                flex: 1 1 auto;
+                align-self: stretch;
+                margin-bottom: 0;
+
+                > .wpr-Page-row{
+                    min-height: 100%;
+                }
+            }
+        }
     }
 }
