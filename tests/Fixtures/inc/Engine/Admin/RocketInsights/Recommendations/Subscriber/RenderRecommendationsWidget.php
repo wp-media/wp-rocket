@@ -62,6 +62,45 @@ return [
 				'wpr-recommendations__loading',
 				'wpr-recommendations__list',
 				'wpr-recommendations__success',
+				'wpr-recommendations__no-pages',
+			],
+		],
+	],
+
+	'testShouldDisplayNoPagesStateWhenNoTrackedPagesAndCachedFailed' => [
+		'config'   => [
+			'pm_data'        => [],
+			'transient_data' => [
+				'status'          => 'failed',
+				'recommendations' => [],
+				'error'           => 'Recommendations unavailable',
+				'timestamp'       => time(),
+			],
+		],
+		'expected' => [
+			'state'        => 'no-pages',
+			'contains'     => [
+				'wpr-recommendations__no-pages',
+				'Add a first page to get performance recommendations.',
+			],
+			'not_contains' => [
+				'wpr-recommendations__failed',
+				'recommendations are currently unavailable',
+			],
+		],
+	],
+
+	'testShouldDisplayNoPagesStateWhenNoTrackedPagesAndNoCache' => [
+		'config'   => [
+			'pm_data' => [],
+		],
+		'expected' => [
+			'state'        => 'no-pages',
+			'contains'     => [
+				'Add a first page to get performance recommendations.',
+			],
+			'not_contains' => [
+				'wpr-recommendations__loading',
 			],
 		],
 	],

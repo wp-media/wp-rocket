@@ -383,7 +383,16 @@ class DataManager implements LoggerAwareInterface {
 		return $data['status'];
 	}
 
+	/**
+	 * Check if at least one page is tracked in Rocket Insights.
+	 *
+	 * @return bool True if there are tracked pages, false otherwise.
+	 */
+	public function has_tracked_pages(): bool {
+		$global_score_data = $this->global_score->get_global_score_data();
 
+		return 'no-url' !== ( $global_score_data['status'] ?? 'no-url' );
+	}
 
 	/**
 	 * Check if required metrics are available for recommendations.
