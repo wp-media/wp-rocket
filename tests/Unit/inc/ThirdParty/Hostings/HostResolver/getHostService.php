@@ -23,6 +23,8 @@ class Test_GetHostResolver extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
@@ -48,6 +50,9 @@ class Test_GetHostResolver extends TestCase {
 				break;
 			case 'onecom':
 				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
+				break;
+			case 'wpserveur':
+				$this->constants['DB_HOST'] = 'db.example.wpserveur.net';
 				break;
 			default:
 				break;
