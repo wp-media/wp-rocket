@@ -651,25 +651,28 @@ a:focus, button:focus {
     max-width: 868px;
   }
 }
-.wpr-Content.isNotFull[data-page=dashboard] {
+.wpr-Content.isNotFull.wpr-Content--noSidebar {
+  max-width: 1230px;
+}
+.wpr-Content.isNotFull[data-page=dashboard]:not(.wpr-Content--noSidebar) {
   max-width: 1230px;
   padding: 0;
   background: transparent;
   display: flex;
   flex-direction: column;
 }
-.wpr-Content.isNotFull[data-page=dashboard] > form {
+.wpr-Content.isNotFull[data-page=dashboard]:not(.wpr-Content--noSidebar) > form {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   align-items: flex-start;
 }
-.wpr-Content.isNotFull[data-page=dashboard] > form > #dashboard {
+.wpr-Content.isNotFull[data-page=dashboard]:not(.wpr-Content--noSidebar) > form > #dashboard {
   flex: 1 1 auto;
   align-self: stretch;
   margin-bottom: 0;
 }
-.wpr-Content.isNotFull[data-page=dashboard] > form > #dashboard > .wpr-Page-row {
+.wpr-Content.isNotFull[data-page=dashboard]:not(.wpr-Content--noSidebar) > form > #dashboard > .wpr-Page-row {
   min-height: 100%;
 }
 
