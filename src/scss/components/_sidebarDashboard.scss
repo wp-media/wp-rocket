@@ -312,14 +312,15 @@
                 margin: 0 0 $space;
                 padding-left: $space*3;
 
-                // Orange check icon.
+                // Orange check icon, centred on the item (also when the text wraps on two lines).
                 &:before{
                     content: "";
                     position: absolute;
-                    top: 2px;
+                    top: 50%;
                     left: 0;
                     width: 16px;
                     height: 16px;
+                    margin-top: -8px;
                     background: url(../img/wpr-check-orange.svg) center / contain no-repeat;
                 }
 
