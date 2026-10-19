@@ -122,7 +122,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * False when the filter says so, for white label accounts, resellers and non-live sites.
 	 * Whether RocketCDN Pro is already running is checked by each caller.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @return bool
 	 */
@@ -153,7 +153,7 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 	 * Displayed whenever RocketCDN Pro (paid) is not running: no CDN, RocketCDN Free, another CDN,
 	 * or a paid plan that is not running anymore.
 	 *
-	 * @since 3.23.6
+	 * @since 3.24
 	 *
 	 * @param array $cards Add-on cards data.
 	 *

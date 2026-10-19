@@ -173,6 +173,25 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Render the dashboard state displayed when Rocket Insights is disabled or unavailable.
+	 *
+	 * @param bool $is_local Whether the site is a local (non-live) site.
+	 * @return void
+	 */
+	public function render_dashboard_disabled_state( bool $is_local ): void {
+		$data = [
+			'title'       => $is_local
+				? __( 'Rocket Insights is unavailable', 'rocket' )
+				: __( 'Rocket Insights is disabled', 'rocket' ),
+			'description' => $is_local
+				? __( 'Performance scores are not available on local sites.', 'rocket' )
+				: __( 'Performance scores are not available for this site.', 'rocket' ),
+		];
+
+		echo $this->generate( 'partials/rocket-insights/dashboard-global-score-disabled', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
 	 * Generate the HTML of the redesigned global score component displayed on the dashboard.
 	 *
 	 * @param array $data Global score data.

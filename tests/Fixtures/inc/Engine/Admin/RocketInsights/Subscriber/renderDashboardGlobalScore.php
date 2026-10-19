@@ -2,17 +2,31 @@
 
 return [
 	'test_data' => [
-		'shouldNotRenderWhenNotAllowed' => [
+		'shouldRenderDisabledStateWhenNotAllowed' => [
 			'config'   => [
 				'is_allowed'     => false,
+				'is_local'       => false,
 				'score'          => [],
 				'remaining_urls' => 0,
 			],
 			'expected' => [
-				'data' => null,
+				'data'           => null,
+				'disabled_local' => false,
 			],
 		],
-		'shouldRenderWithDashboardContext' => [
+		'shouldRenderLocalDisabledStateWhenNotAllowedOnLocalSite' => [
+			'config'   => [
+				'is_allowed'     => false,
+				'is_local'       => true,
+				'score'          => [],
+				'remaining_urls' => 0,
+			],
+			'expected' => [
+				'data'           => null,
+				'disabled_local' => true,
+			],
+		],
+		'shouldRenderWithDashboardContext'        => [
 			'config'   => [
 				'is_allowed'     => true,
 				'score'          => [
