@@ -120,12 +120,16 @@ class getRecommendations extends RESTfulTestCase {
 		if ( isset( $expected['has_error'] ) && $expected['has_error'] ) {
 			$this->assertStringContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['html'] );
 			$this->assertStringNotContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['html'] );
+			$this->assertStringContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['dashboard_html'] );
+			$this->assertStringNotContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['dashboard_html'] );
 		}
 
 		// Check for the no pages message.
 		if ( isset( $expected['has_no_pages'] ) && $expected['has_no_pages'] ) {
 			$this->assertStringContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['html'] );
 			$this->assertStringNotContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['html'] );
+			$this->assertStringContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['dashboard_html'] );
+			$this->assertStringNotContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['dashboard_html'] );
 		}
 	}
 
