@@ -6976,10 +6976,11 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .wpr-addonCard-list li:before {
   content: "";
   position: absolute;
-  top: 2px;
+  top: 50%;
   left: 0;
   width: 16px;
   height: 16px;
+  margin-top: -8px;
   background: url(../img/wpr-check-orange.svg) center/contain no-repeat;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-list li strong,
