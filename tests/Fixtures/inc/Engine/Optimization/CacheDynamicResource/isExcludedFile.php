@@ -1,4 +1,10 @@
 <?php
+$excluded_files = [
+	'/wp-content/plugins/first/',
+	'/second/dynamic',
+	'/third/dynamic',
+];
+
 return [
 	'vfs_dir' => 'public/',
 	'structure' => [],
@@ -74,6 +80,46 @@ return [
 		[
 			'http://123456.rocketcdn.me/wp-content/plugins/test/style.css',
 			true,
+		],
+		[
+			'http://example.org/wp-content/plugins/first/style.php',
+			true,
+			$excluded_files,
+		],
+		[
+			'http://example.org/sub/wp-content/plugins/first/style.php',
+			false,
+			$excluded_files,
+		],
+		[
+			'http://example.org/wp-content/plugins/test/second/dynamic/style.php',
+			true,
+			$excluded_files,
+		],
+		[
+			'http://example.org/wp-content/plugins/test/third/dynamic/script.php',
+			true,
+			$excluded_files,
+		],
+		[
+			'http://example.org/wp-content/themes/test/style.php',
+			false,
+			$excluded_files,
+		],
+		[
+			'http://example.org/wp-admin/admin-ajax.php',
+			true,
+			$excluded_files,
+		],
+		[
+			'http://example.org/wp/wp-admin/admin-ajax.php',
+			true,
+			$excluded_files,
+		],
+		[
+			'http://example.org/a/b/wp-admin/admin-ajax.php',
+			true,
+			$excluded_files,
 		],
 	]
 ];
