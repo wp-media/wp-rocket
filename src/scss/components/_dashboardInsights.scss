@@ -176,6 +176,10 @@
 		}
 
 		.wpr-score-no-urls {
+			background-image: url(../img/pma-light-pulp.svg);
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: contain;
 			width: 60px;
 			height: 60px;
 			margin: 0;
@@ -376,6 +380,13 @@
 		.wpr-ri-score-widget__metric-info {
 			height: 10px;
 			margin-top: 0;
+		}
+
+		// The tooltip sits inside the label: don't inherit its weight/size, match the Rocket Insights tooltip.
+		.wpr-tooltip-content {
+			font-size: 12px;
+			font-weight: 400;
+			line-height: 1.4;
 		}
 	}
 
