@@ -82,7 +82,7 @@ class Renewal extends Abstract_Render {
 		if ( -1 === $this->user->get_license_type() ) {
 			$data['message'] = sprintf(
 			// translators: %1$s WP Rocket plugin name.
-				esc_html__( 'Your %1$s%2$s license is about to expire%3$s: you will soon lose access to product updates and support.', 'rocket' ),
+				esc_html__( '%1$sYour %2$s license is about to expire%3$s: you will soon lose access to product updates and support.', 'rocket' ),
 				'<strong>',
 				WP_ROCKET_PLUGIN_NAME,
 				'</strong>'

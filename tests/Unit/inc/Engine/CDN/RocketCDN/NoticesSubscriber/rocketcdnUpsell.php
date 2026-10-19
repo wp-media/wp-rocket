@@ -144,7 +144,7 @@ class Test_RocketcdnUpsell extends TestCase {
 
 		$this->assertSame( 'rocketcdn', $card['id'] );
 		$this->assertSame( 'Deliver your content faster', $card['title'] );
-		$this->assertSame( 'https://example.org/assets/img/wpr-rocketcdn-illustration.png', $card['image']['src'] );
+		$this->assertSame( 'https://example.org/assets/img/wpr-rocketcdn-illustration.svg', $card['image']['src'] );
 		$this->assertSame( '', $card['image']['alt'] );
 		$this->assertSame( 266, $card['image']['width'] );
 		$this->assertSame( 137, $card['image']['height'] );
@@ -152,9 +152,9 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->assertSame( 'from 100+ edge locations with unlimited bandwidth.', $card['text'] );
 		$this->assertSame(
 			[
-				'Faster content delivery across your entire website',
-				'No bandwidth limits, no hidden costs',
-				'100+ edge locations for wider global coverage',
+				'Faster content delivery across <strong>your entire website</strong>',
+				'<strong>No bandwidth limits</strong>, no hidden costs',
+				'<strong>100+ edge locations</strong> for wider global coverage',
 			],
 			$card['list']
 		);

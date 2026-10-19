@@ -130,7 +130,7 @@ return [
 			'pricing' => $pricing,
 			'transient' => false,
 		],
-		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
+		'expected' => '<section class="rocket-renewal-expired-banner rocket-trial-expired-banner" id="rocket-renewal-banner">
 		<div class="banner-copy">
 		<h3 class="rocket-expired-title">Your WP Rocket trial has ended</h3>
 		<div class="rocket-renewal-expired-banner-container">
@@ -161,7 +161,7 @@ return [
 			'pricing' => $pricing,
 			'transient' => false,
 		],
-		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
+		'expected' => '<section class="rocket-renewal-expired-banner rocket-trial-expired-banner" id="rocket-renewal-banner">
 		<div class="banner-copy">
 		<h3 class="rocket-expired-title">Your WP Rocket trial has ended</h3>
 		<div class="rocket-renewal-expired-banner-container">

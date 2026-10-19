@@ -419,9 +419,9 @@ class Render extends Abstract_Render {
 			'id'           => 'imagify',
 			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
 			'image'        => [
-				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-imagify-before-after.png',
+				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-imagify-card.jpg',
 				'alt'    => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
-				'width'  => 262,
+				'width'  => 266,
 				'height' => 137,
 			],
 			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
