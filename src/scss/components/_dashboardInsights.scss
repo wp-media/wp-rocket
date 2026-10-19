@@ -382,11 +382,10 @@
 			margin-top: 0;
 		}
 
-		// The tooltip sits inside the label: don't inherit its weight/size, match the Rocket Insights tooltip.
+		// The tooltip sits inside the label: don't inherit its weight, match the Rocket Insights tooltip.
 		.wpr-tooltip-content {
-			font-size: 12px;
 			font-weight: 400;
-			line-height: 1.4;
+			text-align: center;
 		}
 	}
 

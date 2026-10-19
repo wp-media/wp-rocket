@@ -5510,9 +5510,8 @@ div.wpr-tutorial-item {
   margin-top: 0;
 }
 .wpr-dash-score__metric-label .wpr-tooltip-content {
-  font-size: 12px;
   font-weight: 400;
-  line-height: 1.4;
+  text-align: center;
 }
 .wpr-dash-score__metric-value {
   font-size: 0.8125rem;
