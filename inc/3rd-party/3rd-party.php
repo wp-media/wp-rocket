@@ -2,10 +2,6 @@
 
 defined( 'ABSPATH' ) || exit;
 
-if ( class_exists( 'FlywheelNginxCompat' ) ) {
-	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/flywheel.php';
-}
-
 if ( defined( 'DB_HOST' ) && strpos( DB_HOST, '.wpserveur.net' ) !== false ) {
 	require WP_ROCKET_3RD_PARTY_PATH . 'hosting/wp-serveur.php';
 }
