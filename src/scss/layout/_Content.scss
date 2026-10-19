@@ -39,7 +39,8 @@
 
     // Dashboard: the container is transparent, the main column and the sidebar get their own card.
     // Higher specificity than .isNotFull, which is on every page.
-    &.isNotFull[data-page="dashboard"]{
+    // Not on the license validation screen, which has no Dashboard columns: its form shows with data-page="dashboard" when the URL has no hash.
+    &.isNotFull[data-page="dashboard"]:not(.wpr-Content--noSidebar){
         max-width: 1230px;
         padding: 0;
         background: transparent;

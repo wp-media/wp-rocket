@@ -654,7 +654,7 @@ a:focus, button:focus {
 .wpr-Content.isNotFull.wpr-Content--noSidebar {
   max-width: 1230px;
 }
-.wpr-Content.isNotFull[data-page=dashboard] {
+.wpr-Content.isNotFull[data-page=dashboard]:not(.wpr-Content--noSidebar) {
   max-width: 1230px;
   padding: 0;
   background: transparent;
