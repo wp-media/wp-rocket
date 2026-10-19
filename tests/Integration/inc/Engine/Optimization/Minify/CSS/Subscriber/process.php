@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\CSS\Subscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\Subscriber::process
@@ -20,10 +21,14 @@ use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
  * @group  Minify
  */
 class Test_Process extends TestCase {
+	use HttpRequestTrait;
+
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/CSS/Subscriber/process.php';
 
 	public function set_up() {
 		parent::set_up();
+
+		$this->setup_http();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'process', 16 );
 
@@ -33,6 +38,8 @@ class Test_Process extends TestCase {
 	}
 
 	public function tear_down() {
+		$this->tear_down_http();
+
 		parent::tear_down();
 
 		$this->restoreWpHook( 'rocket_buffer' );

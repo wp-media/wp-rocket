@@ -54,9 +54,7 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	public function add_data(): array {
-		$payload = [
-			'lcp' => '',
-		];
+		$payload = [];
 
 		check_ajax_referer( 'rocket_beacon', 'rocket_beacon_nonce' );
 
@@ -169,10 +167,11 @@ class Controller implements ControllerInterface {
 				$sanitized_srcset = $this->sanitize_srcset( $raw_srcset );
 
 				if ( empty( $sanitized_srcset ) ) {
-					// srcset is required for this type (no <img> fallback like `picture` has);
-					// reject the whole object, mirroring how array_filter() drops invalid
-					// `picture` sources below. Do not fall back to storing an empty string.
-					return null;
+					// No srcset candidate survived: fall back to a src-only `img` object rather
+					// than losing the LCP. Never store an empty srcset. The src is still checked
+					// by validate_image(), and an object without a src is rejected below.
+					$object->type = 'img';
+					break;
 				}
 
 				$object->srcset = $sanitized_srcset;
@@ -411,44 +410,49 @@ class Controller implements ControllerInterface {
 	 * @return string Sanitized srcset or empty string if invalid.
 	 */
 	private function sanitize_srcset( $srcset ) {
-		// Check for event handlers or malicious content.
-		if ( $this->hasOnAttribute( $srcset ) ) {
-			return '';
-		}
-
-		// Check for quotes, angle brackets, or other HTML-like content.
-		if ( $this->hasQuotes( $srcset ) ) {
-			return '';
-		}
-
 		// Validate srcset format: url [descriptor], url [descriptor], ...
+		// An invalid candidate is skipped (never stored) without rejecting the valid ones.
 		$candidates    = $this->parse_srcset_candidates( $srcset );
 		$clean_sources = [];
 
 		foreach ( $candidates as $candidate ) {
 			list( $url, $descriptor ) = $candidate;
 
-			// Width descriptors are integers, density descriptors may be decimals.
-			// Example: "1x", "1.5x", ".5x" or "480w".
-			if ( '' !== $descriptor && ! preg_match( '/^(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x)$/i', $descriptor ) ) {
-				return '';
+			if ( $this->is_valid_srcset_candidate( $url, $descriptor ) ) {
+				$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
 			}
-
-			// Validate URL format: absolute http(s), protocol-relative or relative, but no other scheme.
-			if (
-				! preg_match( '/^[^\s<>"\']+$/', $url )
-				|| (
-					! preg_match( '/^https?:\/\//i', $url )
-					&& preg_match( '/^[a-z][a-z0-9+.\-]*:/i', $url )
-				)
-			) {
-				return '';
-			}
-
-			$clean_sources[] = $url . ( $descriptor ? ' ' . $descriptor : '' );
 		}
 
 		return implode( ', ', $clean_sources );
+	}
+
+	/**
+	 * Checks a single srcset candidate.
+	 *
+	 * @param string $url        Candidate URL.
+	 * @param string $descriptor Candidate descriptor, empty when none.
+	 * @return bool
+	 */
+	private function is_valid_srcset_candidate( string $url, string $descriptor ): bool {
+		// Check for quotes, angle brackets, whitespace or event handlers in the URL.
+		if (
+			! preg_match( '/^[^\s<>"\']+$/', $url )
+			|| $this->hasOnAttribute( $url )
+		) {
+			return false;
+		}
+
+		// Absolute http(s), protocol-relative or relative URL, but no other scheme (e.g. data:, javascript:).
+		if (
+			! preg_match( '/^https?:\/\//i', $url )
+			&& preg_match( '/^[a-z][a-z0-9+.\-]*:/i', $url )
+		) {
+			return false;
+		}
+
+		// Width descriptors are integers, density descriptors may be decimals.
+		// Example: "1x", "1.5x", ".5x" or "480w".
+		return '' === $descriptor || (bool) preg_match( '/^(?:\d+w|(?:\d+(?:\.\d+)?|\.\d+)x)$/i', $descriptor );
 	}
 
 	/**
@@ -535,18 +539,65 @@ class Controller implements ControllerInterface {
 			return '';
 		}
 
+		// Set aside media range conditions, e.g. "(width >= 1000px)" or "(400px <= width <= 700px)":
+		// they are the only place where `<`, `>` and `=` are accepted. The rest of the value goes
+		// through the checks below unchanged.
+		$ranges = [];
+		$check  = preg_replace_callback(
+			$this->get_media_range_pattern(),
+			function ( $matches ) use ( &$ranges ) {
+				$ranges[] = preg_replace( '/\s+/', ' ', $matches[0] );
+
+				return '(rocket-range-' . ( count( $ranges ) - 1 ) . ')';
+			},
+			$sizes
+		);
+
 		// Check for quotes or angle brackets.
-		if ( $this->hasQuotes( $sizes ) ) {
+		if ( ! is_string( $check ) || $this->hasQuotes( $check ) ) {
 			return '';
 		}
 
 		// Validate sizes format: media_query width, media_query width, ...
-		// Example: "(max-width: 600px) 480px, 800px".
-		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%]+$/i', $sizes ) ) {
+		// Example: "(max-width: 600px) 480px, 800px" or "calc(100vw / 2), calc(50vw + 10px)".
+		// The allow-list is deliberately permissive enough for media queries and calc()
+		// (including / + *); it relies on hasOnAttribute()/hasQuotes() above having already
+		// run, and on the returned value being passed through esc_attr() on output.
+		if ( ! preg_match( '/^[\w\s\(\)\-:,\.vwpxem%\/\+\*]+$/i', $check ) ) {
 			return '';
 		}
 
-		return sanitize_text_field( $sizes );
+		// The range conditions are already strictly validated: put them back after
+		// sanitize_text_field(), which would otherwise encode their `<` as `&lt;`.
+		return (string) preg_replace_callback(
+			'/\(rocket-range-(\d+)\)/',
+			function ( $matches ) use ( $ranges ) {
+				return $ranges[ (int) $matches[1] ] ?? $matches[0];
+			},
+			sanitize_text_field( $check )
+		);
+	}
+
+	/**
+	 * Gets the pattern matching a media range condition.
+	 *
+	 * Matches one parenthesized condition comparing a range media feature to a value, e.g.
+	 * "(width >= 1000px)", "(1000px < width)", "(aspect-ratio > 16/9)" or a two-sided
+	 * "(400px <= width <= 700px)" where both operators point the same way.
+	 *
+	 * @return string
+	 */
+	private function get_media_range_pattern(): string {
+		$feature = '(?:device-width|device-height|aspect-ratio|resolution|width|height)';
+		$value   = '(?:\d*\.?\d+(?:[a-z]{1,4}|%)?(?:\s*\/\s*\d*\.?\d+)?)';
+		$compare = '(?:[<>]=?|=)';
+
+		return '/\(\s*(?:'
+			. $feature . '\s*' . $compare . '\s*' . $value
+			. '|' . $value . '\s*<=?\s*' . $feature . '\s*<=?\s*' . $value
+			. '|' . $value . '\s*>=?\s*' . $feature . '\s*>=?\s*' . $value
+			. '|' . $value . '\s*' . $compare . '\s*' . $feature
+			. ')\s*\)/i';
 	}
 
 	/**
