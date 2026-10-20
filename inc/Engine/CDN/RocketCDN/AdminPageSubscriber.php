@@ -57,7 +57,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data'        => 'display_rocketcdn_status',
+			'rocket_account_after_license_info'          => 'display_rocketcdn_status',
 			'admin_post_rocket_purge_rocketcdn'          => 'purge_cdn_cache',
 			'rocket_settings_page_footer'                => 'add_subscription_modal',
 			'http_request_args'                          => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
@@ -66,7 +66,7 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	}
 
 	/**
-	 * Displays the RocketCDN section on the dashboard tab
+	 * Displays the RocketCDN section on the account tab
 	 *
 	 * @since  3.5
 	 *

@@ -12,6 +12,7 @@
  *     @type string $id             Optional. HTML id attribute for the table container.
  *     @type string $class          Optional. Additional CSS classes for the container.
  *     @type string $rows_hook      Action hook name to fire for rendering rows (each row rendered via table-list-row partial).
+ *     @type array  $rows           Optional. Pre-built rows, each one an array of table-list-row partial data.
  * }
  */
 
@@ -31,6 +32,12 @@ if ( ! empty( $data['class'] ) ) {
 		 * @since 3.22
 		 */
 		do_action( $data['rows_hook'] ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DynamicHooknameFound -- Hook name is passed via data.
+	}
+
+	if ( ! empty( $data['rows'] ) ) {
+		foreach ( $data['rows'] as $rocket_row ) {
+			$this->render_parts_with_data( 'table-list-row', $rocket_row );
+		}
 	}
 	?>
 </div>

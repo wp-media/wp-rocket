@@ -157,7 +157,7 @@ If tracking_enabled is false, tell the user Preload tracking is disabled rather 
 		];
 
 		if ( ! $tracking_enabled ) {
-			$estimate['method'] = __( 'Estimate unavailable: Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Preload to get a completion estimate.', 'rocket' );
+			$estimate['method'] = __( 'Estimate unavailable: Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Cache > Preload to get a completion estimate.', 'rocket' );
 
 			return [
 				'counts'           => $counts,
