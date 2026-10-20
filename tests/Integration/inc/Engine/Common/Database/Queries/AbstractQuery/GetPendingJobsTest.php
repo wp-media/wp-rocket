@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Database\Queries\UsedCSS;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\Database\Queries\AbstractQuery;
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
@@ -10,6 +10,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * Test class covering \WP_Rocket\Engine\Common\Database\Queries\AbstractQuery::get_pending_jobs
  *
  * @group RUCSS
+ * @group RocketInsights
  */
 class GetPendingJobsTest extends TestCase {
 	use DBTrait;
@@ -19,10 +20,12 @@ class GetPendingJobsTest extends TestCase {
 
 		// Install in set_up_before_class because of exists() requiring not temporary table.
 		self::installUsedCssTable();
+		self::installPerformanceMonitoringTable();
 	}
 
 	public static function tear_down_after_class() {
 		self::uninstallUsedCssTable();
+		self::uninstallPerformanceMonitoringTable();
 
 		parent::tear_down_after_class();
 	}
@@ -31,6 +34,7 @@ class GetPendingJobsTest extends TestCase {
 		parent::set_up();
 
 		self::truncateUsedCssTable();
+		self::truncatePerformanceMonitoringTable();
 	}
 
 	/**
@@ -39,7 +43,7 @@ class GetPendingJobsTest extends TestCase {
 	public function testShouldReturnOnlyDueRows( $config, $expected ) {
 		global $wpdb;
 
-		$query = apply_filters( 'rocket_container', null )->get( 'rucss_used_css_query' );
+		$query = apply_filters( 'rocket_container', null )->get( $config['query'] );
 		$now   = time();
 
 		foreach ( $config['rows'] as $name => $row ) {
@@ -48,7 +52,7 @@ class GetPendingJobsTest extends TestCase {
 					'url'        => 'https://example.org/' . $name,
 					'is_mobile'  => false,
 					'job_id'     => $row['job_id'],
-					'queue_name' => 'rucss',
+					'queue_name' => $config['queue_name'],
 					'status'     => $row['status'],
 				]
 			);
@@ -62,7 +66,7 @@ class GetPendingJobsTest extends TestCase {
 				$timestamps['next_retry_time'] = gmdate( 'Y-m-d H:i:s', $now + $row['next_retry_offset'] );
 			}
 
-			$this->assertNotFalse( $wpdb->update( $wpdb->prefix . 'wpr_rucss_used_css', $timestamps, [ 'id' => $id ] ) );
+			$this->assertNotFalse( $wpdb->update( $wpdb->prefix . $config['table'], $timestamps, [ 'id' => $id ] ) );
 		}
 
 		$urls = array_column( $query->get_pending_jobs( $config['count'] ), 'url' );
