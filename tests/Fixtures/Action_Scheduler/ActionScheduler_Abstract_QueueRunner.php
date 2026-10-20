@@ -10,11 +10,15 @@ if(!  class_exists('ActionScheduler_ActionClaim')) {
 
 if(! class_exists('ActionScheduler_Store')) {
 	class ActionScheduler_Store {
+		const STATUS_PENDING = 'pending';
+
 		public function stake_claim( $max_actions = 10, \DateTime $before_date = null, $hooks = array(), $group = '') {}
 
 		public function find_actions_by_claim_id( $claim_id ) {}
 
 		public function release_claim( ActionScheduler_ActionClaim $claim ) {}
+
+		public function query_actions( $query = [], $query_type = 'select' ) {}
 	}
 }
 
