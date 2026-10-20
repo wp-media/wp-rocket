@@ -5474,7 +5474,7 @@ div.wpr-tutorial-item {
   background: currentColor;
 }
 .wpr-dash-score__legend-item--good::before {
-  color: #48C88D;
+  color: #2E8F44;
 }
 .wpr-dash-score__legend-item--average::before {
   color: #E8AE13;
@@ -5532,7 +5532,7 @@ div.wpr-tutorial-item {
   font-weight: 600;
 }
 .wpr-dash-score__metric-value--success {
-  color: #48C88D;
+  color: #2E8F44;
 }
 .wpr-dash-score__metric-value--warning {
   color: #E8AE13;
@@ -6956,7 +6956,8 @@ div.wpr-tutorial-item {
   font-size: 0;
   content: "";
 }
-.wpr-Dashboard-sidebar .rocket-trial-expired-banner .rocket-renew-cta::after {
+.wpr-Dashboard-sidebar .rocket-trial-expired-banner .rocket-renew-cta::after,
+.wpr-Dashboard-sidebar .rocket-promo-cta::after {
   content: none;
 }
 .wpr-Dashboard-sidebar .wpr-notice-close {

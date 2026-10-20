@@ -213,7 +213,8 @@
         }
     }
 
-    .rocket-trial-expired-banner .rocket-renew-cta::after{
+    .rocket-trial-expired-banner .rocket-renew-cta::after,
+    .rocket-promo-cta::after{
         content: none;
     }
 
