@@ -161,22 +161,30 @@ class AdminSubscriber extends AbstractWebp implements Subscriber_Interface {
 
 		if ( ! $this->options_data->get( 'cache_webp', 0 ) ) {
 			// 1.
-			if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
-				$imagify_link = '<a href="#imagify">';
-			} else {
-				// The Imagify page is not displayed.
-				$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
+			$imagify_link       = '';
+			$imagify_link_close = '';
+
+			if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false ) ) {
+				$imagify_link_close = '</a>';
+
+				if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
+					$imagify_link = '<a href="#imagify">';
+				} else {
+					// The Imagify page is not displayed.
+					$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
+				}
 			}
 
 			$cache_webp_field['description'] = sprintf(
-			// Translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-				esc_html__( '%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t already have WebP images on your site consider using %3$sImagify%2$s or another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP do not enable this option.', 'rocket' ),
+			// Translators: %1$s = opening <a> tag of the More info link, %2$s = closing </a> tag of the More info link, %3$s = opening <a> tag of the Imagify link, %4$s = line break, %5$s = opening <strong> tag, %6$s = closing </strong> tag, %7$s = closing </a> tag of the Imagify link.
+				esc_html__( '%5$sWe have not detected any compatible WebP plugin!%6$s%4$s If you don’t already have WebP images on your site consider using %3$sImagify%7$s or another supported plugin. %1$sMore info%2$s %4$s If you are not using WebP do not enable this option.', 'rocket' ),
 				'<a href="' . esc_url( $webp_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $webp_beacon['id'] ) . '" target="_blank" rel="noopener noreferrer">',
 				'</a>',
 				$imagify_link,
 				'<br>',
 				'<strong>',
-				'</strong>'
+				'</strong>',
+				$imagify_link_close
 			);
 			return $cache_webp_field;
 		}
