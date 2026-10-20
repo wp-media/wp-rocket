@@ -4979,6 +4979,21 @@ div.wpr-tutorial-item {
   color: #121116;
   margin: 0;
 }
+.wpr-recommendations__no-pages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 16px;
+}
+.wpr-recommendations__no-pages-title {
+  font-size: 0.875rem;
+  line-height: 1.2857142857;
+  font-weight: 600;
+  color: #121116;
+  margin: 0;
+}
 .wpr-recommendations__failed-message {
   font-size: 0.875rem;
   line-height: 1.2857142857;
@@ -5339,6 +5354,10 @@ div.wpr-tutorial-item {
   font-weight: 600;
 }
 .wpr-dash-score__gauge .wpr-score-no-urls {
+  background-image: url(../img/pma-light-pulp.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
   width: 60px;
   height: 60px;
   margin: 0;
@@ -5507,6 +5526,10 @@ div.wpr-tutorial-item {
 .wpr-dash-score__metric-label .wpr-ri-score-widget__metric-info {
   height: 10px;
   margin-top: 0;
+}
+.wpr-dash-score__metric-label .wpr-tooltip-content {
+  font-weight: 400;
+  text-align: center;
 }
 .wpr-dash-score__metric-value {
   font-size: 0.8125rem;

@@ -9,7 +9,7 @@
  * @param array $data {
  *     Data for recommendations widget.
  *
- *     @type string $state             Current state: 'loading', 'completed', 'failed', 'success'.
+ *     @type string $state             Current state: 'loading', 'completed', 'failed', 'no-pages', 'success'.
  *     @type array  $recommendations   List of recommendation items (for completed state).
  *     @type bool   $show_load_more    Whether to show the "Load More" button.
  * }
@@ -37,6 +37,10 @@ $rocket_ri_show_load_more  = $data['show_load_more'];
 
 			case 'failed':
 				$this->render_part( 'rocket-insights/recommendations/states/failed' );
+				break;
+
+			case 'no-pages':
+				$this->render_part( 'rocket-insights/recommendations/states/no-pages' );
 				break;
 
 			case 'completed':

@@ -5,7 +5,7 @@
  * @param array $data {
  *     Same data as the recommendations widget.
  *
- *     @type string $state           Current state: 'loading', 'completed', 'failed'.
+ *     @type string $state           Current state: 'loading', 'completed', 'failed', 'no-pages'.
  *     @type array  $recommendations List of recommendation items.
  *     @type array  $rows            Rows for the table list, built from the recommendations.
  *     @type bool   $show_load_more  Whether to show the "More Recommendations" button.
@@ -34,6 +34,10 @@ defined( 'ABSPATH' ) || exit;
 
 		case 'failed':
 			$this->render_part( 'rocket-insights/recommendations/states/failed' );
+			break;
+
+		case 'no-pages':
+			$this->render_part( 'rocket-insights/recommendations/states/no-pages' );
 			break;
 
 		case 'completed':
