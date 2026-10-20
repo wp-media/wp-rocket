@@ -80,7 +80,7 @@ class Renewal extends Abstract_Render {
 		$data['more_info'] = true;
 
 		if ( -1 === $this->user->get_license_type() ) {
-			$data['message'] = esc_html__( 'You will soon lose access to product updates and support.', 'rocket' );
+			$data['message']   = esc_html__( 'You will soon lose access to product updates and support.', 'rocket' );
 			$data['more_info'] = false;
 		}
 
