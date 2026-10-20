@@ -184,6 +184,8 @@
     &-sidebar{
         position: relative;
         flex: 0 0 $sidebarWidth + $space*7;
+        // The card hugs its content instead of stretching to the height of the main column.
+        align-self: flex-start;
         padding: $space*3;
         background: #fff;
         border-radius: 4px;
@@ -208,8 +210,10 @@
             margin-top: $space*2;
         }
 
+        // Columns stacked: the card fills the width.
         @include respond-to('md') {
             flex: 0 0 auto;
+            align-self: stretch;
         }
     }
 }
