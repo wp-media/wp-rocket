@@ -814,6 +814,7 @@ a:focus, button:focus {
 .wpr-Dashboard-sidebar {
   position: relative;
   flex: 0 0 346px;
+  align-self: flex-start;
   padding: 24px;
   background: #fff;
   border-radius: 4px;
@@ -837,6 +838,7 @@ a:focus, button:focus {
 @media (max-width: 1239px) {
   .wpr-Dashboard-sidebar {
     flex: 0 0 auto;
+    align-self: stretch;
   }
 }
 
