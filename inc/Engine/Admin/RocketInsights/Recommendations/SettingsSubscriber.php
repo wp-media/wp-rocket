@@ -81,7 +81,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Adds the 'plugin_imagify' option to the recommendations API parameters.
 	 *
-	 * Adds 'plugin_imagify' if Imagify is active, has an API key OR white label is enabled.
+	 * Adds 'plugin_imagify' if Imagify is active OR white label is enabled.
 	 *
 	 * @param array $params The existing API parameters.
 	 * @return array The modified API parameters with 'plugin_imagify' added if applicable.
@@ -89,8 +89,6 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
 		if (
 			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false )
-			||
-			! empty( rocket_get_constant( 'IMAGIFY_VERSION' ) )
 			||
 			Imagify_Partner::has_imagify_api_key()
 		) {

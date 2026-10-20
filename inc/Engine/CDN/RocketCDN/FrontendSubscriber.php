@@ -56,33 +56,10 @@ class FrontendSubscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'get_rocket_option_cdn_cnames'               => [ 'set_cdn_cnames', 9 ],
-			'get_rocket_option_cdn_zone'                 => [ 'set_cdn_zone', 9 ],
-			'rocket_cdn_auto_detect'                     => 'scheduled_auto_detect_pro_subscription',
-			'rocket_insights_api_recommendations_params' => 'maybe_add_rocketcdn_to_recommendations_api_params',
+			'get_rocket_option_cdn_cnames' => [ 'set_cdn_cnames', 9 ],
+			'get_rocket_option_cdn_zone'   => [ 'set_cdn_zone', 9 ],
+			'rocket_cdn_auto_detect'       => 'scheduled_auto_detect_pro_subscription',
 		];
-	}
-
-	/**
-	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters.
-	 *
-	 * Adds 'plugin_rocketcdn' if white label is enabled, the RocketCDN plugin is active or the CDN option is enabled.
-	 *
-	 * @param array $params The existing API parameters.
-	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
-	 */
-	public function maybe_add_rocketcdn_to_recommendations_api_params( array $params ): array {
-		if (
-			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false )
-			||
-			! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) )
-			||
-			in_array( 'cdn', $params['enabled_options'] ?? [], true )
-		) {
-			$params['enabled_options'][] = 'plugin_rocketcdn';
-		}
-
-		return $params;
 	}
 
 	/**
