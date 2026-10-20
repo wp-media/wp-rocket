@@ -2,27 +2,26 @@
 
 return [
 	'test_data' => [
-		'shouldNotClaimWhenNoClaimableActions' => [
+		'shouldNotClaimWhenGroupIsMissing' => [
 			'config'   => [
-				'size'          => 25,
-				'claimable'     => [],
-				'claim_actions' => [],
+				'store'     => 'db',
+				'scheduled' => false,
 			],
-			'expected' => [
-				'claims'    => false,
-				'processed' => 0,
-			],
+			'expected' => 0,
 		],
-		'shouldClaimWhenClaimableActions' => [
+		'shouldClaimAndProcessWhenActionIsDue' => [
 			'config'   => [
-				'size'          => 25,
-				'claimable'     => [ 5 ],
-				'claim_actions' => [],
+				'store'     => 'db',
+				'scheduled' => true,
 			],
-			'expected' => [
-				'claims'    => true,
-				'processed' => 0,
+			'expected' => 1,
+		],
+		'shouldNotClaimWhenGroupIsMissingInHybridStoreNonRegression' => [
+			'config'   => [
+				'store'     => 'hybrid',
+				'scheduled' => false,
 			],
+			'expected' => 0,
 		],
 	],
 ];

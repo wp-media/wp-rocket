@@ -45,7 +45,7 @@ class Test_DoBatch extends TestCase {
 	}
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$store = $this->getStore( $config['store'] );
@@ -60,13 +60,9 @@ class Test_DoBatch extends TestCase {
 		$do_batch      = new ReflectionMethod( $runner, 'do_batch' );
 		$do_batch->setAccessible( true );
 
-		$this->assertSame( $expected['processed'], $do_batch->invoke( $runner, 25, 'WP Cron' ) );
-		$this->assertSame( $expected['executed'], $this->executed );
+		$this->assertSame( $expected, $do_batch->invoke( $runner, 25, 'WP Cron' ) );
+		$this->assertSame( $expected, $this->executed );
 		$this->assertSame( $claims_before, $this->countClaims() );
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__ . '/integration', 'doBatch' )['test_data'];
 	}
 
 	/**

@@ -9,7 +9,7 @@ use ActionScheduler_Store;
 use Brain\Monkey\Functions;
 use DateTime;
 use Mockery;
-use ReflectionClass;
+use ReflectionMethod;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -27,6 +27,8 @@ class Test_DoBatch extends TestCase {
 		$store   = Mockery::mock( ActionScheduler_Store::class );
 		$monitor = Mockery::mock( ActionScheduler_FatalErrorMonitor::class );
 		$claim   = Mockery::mock( ActionScheduler_ActionClaim::class );
+		$runner  = Mockery::mock( RUCSSQueueRunner::class )->makePartial()->shouldAllowMockingProtectedMethods();
+		$actions = $config['scheduled'] ? [ 5 ] : [];
 
 		Functions\expect( 'as_get_datetime_object' )->once()->andReturn( $now );
 		Functions\when( 'wp_using_ext_object_cache' )->justReturn( false );
@@ -45,14 +47,18 @@ class Test_DoBatch extends TestCase {
 					'orderby'      => 'none',
 				]
 			)
-			->andReturn( $config['claimable'] );
+			->andReturn( $actions );
 
-		if ( $expected['claims'] ) {
+		if ( $config['scheduled'] ) {
 			$store->expects( 'stake_claim' )
 				->once()
-				->with( $config['size'], null, [], 'rocket-rucss' )
+				->with( 25, null, [], 'rocket-rucss' )
 				->andReturn( $claim );
-			$claim->expects( 'get_actions' )->andReturn( $config['claim_actions'] );
+			$claim->expects( 'get_actions' )->andReturn( $actions );
+			$claim->expects( 'get_id' )->andReturn( 1 );
+			$store->expects( 'find_actions_by_claim_id' )->with( 1 )->andReturn( $actions );
+			$runner->expects( 'process_action' )->once()->with( 5, 'WP Cron' );
+			$runner->expects( 'batch_limits_exceeded' )->once()->with( 1 )->andReturn( false );
 			$monitor->expects( 'attach' )->once()->with( $claim );
 			$monitor->expects( 'detach' )->once();
 			$store->expects( 'release_claim' )->once()->with( $claim );
@@ -60,10 +66,8 @@ class Test_DoBatch extends TestCase {
 			$store->shouldNotReceive( 'stake_claim' );
 			$store->shouldNotReceive( 'release_claim' );
 			$monitor->shouldNotReceive( 'attach' );
+			$runner->shouldNotReceive( 'process_action' );
 		}
-
-		$reflection = new ReflectionClass( RUCSSQueueRunner::class );
-		$runner     = $reflection->newInstanceWithoutConstructor();
 
 		foreach ( [ 'store' => $store, 'monitor' => $monitor ] as $name => $value ) {
 			$property = new \ReflectionProperty( \ActionScheduler_Abstract_QueueRunner::class, $name );
@@ -71,9 +75,9 @@ class Test_DoBatch extends TestCase {
 			$property->setValue( $runner, $value );
 		}
 
-		$method = $reflection->getMethod( 'do_batch' );
+		$method = new ReflectionMethod( RUCSSQueueRunner::class, 'do_batch' );
 		$method->setAccessible( true );
 
-		$this->assertSame( $expected['processed'], $method->invoke( $runner, $config['size'], 'WP Cron' ) );
+		$this->assertSame( $expected, $method->invoke( $runner, 25, 'WP Cron' ) );
 	}
 }
