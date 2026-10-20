@@ -9,14 +9,6 @@
  *
  *     @type string $id    Page section identifier.
  *     @type string $title Page section title.
- *     @type array  $faq   {
- *         Items to populate the FAQ section.
- *
- *         @type string $id    Documentation item ID.
- *         @type string $url   Documentation item URL.
- *         @type string $title Documentation item title.
- *     }
- *     @type object $customer_data WP Rocket customer data.
  * }
  */
 
@@ -52,184 +44,69 @@ if ( ! $rocket_show_rocketcdn_banner ) {
 }
 ?>
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
-	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
-	</div>
-
-	<?php
-	$rocket_boxes     = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
-	$rocket_cdn_token = get_option( 'rocketcdn_user_token', '' );
-
-	if ( ! $rocket_box_is_dismissed ) :
-		?>
-	<div class="wpr-notice">
-		<div class="wpr-notice-container">
-			<div class="wpr-notice-supTitle"><?php echo esc_html( $rocket_hero_title ); ?></div>
-			<h2 class="wpr-notice-title">
-				<?php echo wp_kses( $rocket_title, [ 'br' => [] ] ); ?>
-			</h2>
-			<div class="wpr-notice-description">
-				<?php echo wp_kses( $rocket_hero_description, [ 'br' => [] ] ); ?>
-			</div>
-			<?php if ( ! empty( $rocket_cdn_token ) && ! empty( $data['rocket_insights_enabled'] ) ) : ?>
-				<div class="wpr-notice-continue">
-					<?php
-					printf(
-						// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-						esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
-						'<strong>',
-						'</strong>'
-					);
-					?>
-				</div>
-			<?php endif; ?>
-			<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
-		</div>
-	</div>
-	<?php endif; ?>
-	<?php
-		/**
-		 * Fires before displaying the dashboard tab content
-		 *
-		 * @since 3.7.4
-		 */
-		do_action( 'rocket_before_dashboard_content' );
-	?>
-	<div class="wpr-Page-row">
-		<div class="wpr-Page-col">
-			<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
-			<div class="wpr-optionHeader">
-				<h3 class="wpr-title2"><?php esc_html_e( 'My Account', 'rocket' ); ?></h3>
-				<?php
-				$this->render_action_button(
-					'button',
-					'refresh_account',
-					[
-						'label'      => __( 'Refresh info', 'rocket' ),
-						'attributes' => [
-							'class' => 'wpr-infoAction wpr-icon-refresh',
-						],
-					]
-				);
-				?>
-			</div>
-
-			<div class="wpr-field wpr-field-account">
-				<div class="wpr-flex">
-					<div class="wpr-infoAccount-License">
-						<span class="wpr-title3"><?php esc_html_e( 'License', 'rocket' ); ?></span>
-						<span class="wpr-infoAccount wpr-isValid" id="wpr-account-data">
-							<?php echo esc_html( $data['customer_data']['license_type'] ); ?>
-						</span>
-						<?php if ( $data['customer_data']['is_from_one_dot_com'] ) : ?>
-							<span>
-								<?php esc_html_e( 'with', 'rocket' ); ?>
-								<img src="<?php echo esc_url( rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'one-com-logo.svg' ); ?>" width="80" alt="One.com">
-							</span>
-						<?php endif; ?>
-						<br>
-						<?php
-						/**
-						 * Fires when displaying the license information
-						 *
-						 * @since 3.7.3
-						 */
-						do_action( 'rocket_dashboard_license_info' );
-						?>
-						<p>
-							<span id="wpr-expiration-label" class="wpr-title3">
-								<?php echo esc_html( $data['customer_data']['license_expiration_label'] ); ?>
-							</span>
-							<span class="wpr-infoAccount <?php echo esc_attr( $data['customer_data']['license_class'] ); ?>" id="wpr-expiration-data"><?php echo esc_html( $data['customer_data']['license_expiration'] ); ?></span>
-						</p>
-						<?php if ( ! defined( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) || ! WP_ROCKET_WHITE_LABEL_ACCOUNT ) : ?>
-						<p>
-							<span class="wpr-title3"><?php esc_html_e( 'Plugin Updates', 'rocket' ); ?></span>
-							<?php if ( ! empty( $data['customer_data']['can_update_plugin'] ) ) : ?>
-								<span class="wpr-infoAccount wpr-isValid wpr-icon-check" id="wpr-plugin-updates-data"></span>
-							<?php else : ?>
-								<span class="wpr-infoAccount wpr-isInvalid" id="wpr-plugin-updates-data"><?php echo esc_html( $data['customer_data']['update_blocked_reason'] ); ?></span>
-							<?php endif; ?>
-						</p>
-						<?php endif; ?>
-					</div>
-					<div>
-						<?php
-						$this->render_action_button(
-							'link',
-							'view_account',
-							[
-								'label'      => __( 'View my account', 'rocket' ),
-								'attributes' => [
-									'target' => '_blank',
-									'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--purple wpr-icon-user',
-								],
-							]
-						);
-						?>
-					</div>
-				</div>
-			</div>
-				<?php
-			endif;
-			/**
-			 * Fires after the account data section on the WP Rocket settings dashboard
-			 *
-			 * @since 3.5
-			 */
-			do_action( 'rocket_dashboard_after_account_data' );
+	<div class="wpr-Page-row wpr-Dashboard">
+		<div class="wpr-Page-col wpr-Dashboard-main">
+		<?php
+		if ( ! $rocket_box_is_dismissed ) :
 			?>
-			<?php $this->render_part( 'getting-started' ); ?>
-			<div class="wpr-optionHeader">
-				<h3 class="wpr-title2"><?php esc_html_e( 'Frequently Asked Questions', 'rocket' ); ?></h3>
-			</div>
-			<div class="wpr-fieldsContainer-fieldset">
-				<div class="wpr-field">
-					<ul class="wpr-field-list">
-					<?php foreach ( $data['faq'] as $rocket_faq_item ) : ?>
-						<li class="wpr-icon-information"><a href="<?php echo esc_url( $rocket_faq_item['url'] ); ?>" data-beacon-article="<?php echo esc_attr( $rocket_faq_item['id'] ); ?>" target="_blank"><?php echo esc_html( $rocket_faq_item['title'] ); ?></a></li>
-					<?php endforeach; ?>
-					</ul>
-				</div>
-				<?php if ( ! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) { ?>
-					<div class="wpr-field">
-						<div class="wpr-flex wpr-flex--egal">
-							<div>
-								<h3 class="wpr-title2"><?php esc_html_e( 'Still cannot find a solution?', 'rocket' ); ?></h3>
-								<p class="wpr-field-description"><?php esc_html_e( 'Submit a ticket and get help from our friendly and knowledgeable Rocketeers.', 'rocket' ); ?></p>
-							</div>
-							<div>
-								<?php
-								$this->render_action_button(
-									'link',
-									'ask_support',
-									[
-										'label'      => __( 'Ask support', 'rocket' ),
-										'attributes' => [
-											'class'  => 'wpr-button wpr-button--icon wpr-button--small wpr-button--blue wpr-icon-help',
-											'target' => '_blank',
-										],
-									]
-								);
-								?>
-							</div>
-						</div>
+		<div class="wpr-Dashboard-main-notice">
+			<div class="wpr-notice">
+				<div class="wpr-notice-container">
+					<div class="wpr-notice-supTitle"><?php echo esc_html( $rocket_hero_title ); ?></div>
+					<h2 class="wpr-notice-title">
+						<?php echo wp_kses( $rocket_title, [ 'br' => [] ] ); ?>
+					</h2>
+					<div class="wpr-notice-description">
+						<?php echo wp_kses( $rocket_hero_description, [ 'br' => [] ] ); ?>
 					</div>
-				<?php } ?>
+					<?php if ( ! empty( $rocket_cdn_token ) && ! empty( $data['rocket_insights_enabled'] ) ) : ?>
+						<div class="wpr-notice-continue">
+							<?php
+							printf(
+								// translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+								esc_html__( 'Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot issues, and get in-depth insights to further optimize your website speed.', 'rocket' ),
+								'<strong>',
+								'</strong>'
+							);
+							?>
+						</div>
+					<?php endif; ?>
+					<a id="wpr-congratulations-notice" class="wpr-notice-close wpr-icon-close rocket-dismiss" href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin-post.php?action=rocket_ignore&box=rocket_activation_notice' ), 'rocket_ignore_rocket_activation_notice' ) ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></a>
+				</div>
 			</div>
 		</div>
+			<?php
+			// Mark the banner as seen on first render so it never shows again, even if it wasn't dismissed.
+			rocket_dismiss_box( 'rocket_activation_notice' );
+		endif;
+		?>
+		<div class="wpr-sectionHeader">
+			<h2 class="wpr-title1 wpr-icon-home"><?php echo esc_html( $data['title'] ); ?></h2>
+		</div>
 
-		<div class="wpr-Page-col wpr-Page-col--fixed">
+		<?php
+			/**
+			 * Fires before displaying the dashboard tab content
+			 *
+			 * @since 3.7.4
+			 */
+			do_action( 'rocket_before_dashboard_content' );
+		?>
 			<?php
 			/**
-			 * Fires in the dashboard sidebar
+			 * Fires in the main column of the dashboard tab content.
+			 *
+			 * @since 3.24
 			 */
-			do_action( 'rocket_dashboard_sidebar' );
-
-			$this->render_part( 'quick-actions' );
-
-			$this->render_part( 'documentation' );
+			do_action( 'rocket_dashboard_content' );
 			?>
 		</div>
+
+		<?php $rocket_dashboard_sidebar = $this->get_dashboard_sidebar(); ?>
+		<?php if ( '' !== $rocket_dashboard_sidebar ) : ?>
+		<aside class="wpr-Dashboard-sidebar">
+			<?php echo $rocket_dashboard_sidebar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in its own view. ?>
+		</aside>
+		<?php endif; ?>
 	</div>
 </div>

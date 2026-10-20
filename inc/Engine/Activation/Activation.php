@@ -43,6 +43,10 @@ class Activation {
 	 * @return void
 	 */
 	public static function activate_plugin() {
+		// Must load before any service provider: the Hostings provider's boot() resolves the host, and the
+		// SiteGround check uses rocket_is_plugin_active(). rocket_init() doesn't run on activation (#8768).
+		require_once WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+
 		$container     = new Container( new IndexedDefinitionAggregate() );
 		$event_manager = new Event_Manager();
 
@@ -81,7 +85,7 @@ class Activation {
 			require WP_ROCKET_INC_PATH . 'domain-mapping.php';
 		}
 
-		require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+		// options.php is required at the top of this method; see the note there (#8768).
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
