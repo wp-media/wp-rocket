@@ -152,7 +152,7 @@ class Iframe {
 	}
 
 	/**
-	 * Replaces the iframe provided by the Youtube thumbnail
+	 * Replaces the iframe provided by the YouTube thumbnail
 	 *
 	 * @param array<string> $iframe Array of matched elements.
 	 *
@@ -178,7 +178,7 @@ class Iframe {
 
 		$title = $atts['title'] ?? '';
 		/**
-		 * Filter the LazyLoad HTML output on Youtube iframes
+		 * Filter the LazyLoad HTML output on YouTube iframes
 		 *
 		 * @since 2.11
 		 *
@@ -191,7 +191,7 @@ class Iframe {
 	}
 
 	/**
-	 * Gets the Youtube ID from the URL provided
+	 * Gets the YouTube ID from the URL provided
 	 *
 	 * @param string $url URL to search.
 	 *
@@ -231,7 +231,7 @@ class Iframe {
 	}
 
 	/**
-	 * Cleans Youtube URL. Keeps only scheme, host and path.
+	 * Cleans YouTube URL. Keeps only scheme, host and path.
 	 *
 	 * @param  string $url URL to be cleaned.
 	 * @return string      Cleaned URL
