@@ -197,6 +197,23 @@
 		margin: 0;
 	}
 
+	// No pages state - neutral box, no error styling
+	&__no-pages {
+		display: flex;
+		flex-direction: column;
+		gap: $space;
+		align-items: flex-start;
+		justify-content: center;
+		padding: $space $space * 2; // 8px 16px
+	}
+
+	&__no-pages-title {
+		@include font-size(14, 18);
+		font-weight: 600;
+		color: $cBlack;
+		margin: 0;
+	}
+
 	&__failed-message {
 		@include font-size(14, 18);
 		font-weight: 400;
