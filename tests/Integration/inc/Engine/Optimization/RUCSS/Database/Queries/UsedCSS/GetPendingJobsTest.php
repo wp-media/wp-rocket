@@ -62,7 +62,7 @@ class GetPendingJobsTest extends TestCase {
 				$timestamps['next_retry_time'] = gmdate( 'Y-m-d H:i:s', $now + $row['next_retry_offset'] );
 			}
 
-			$wpdb->update( $wpdb->prefix . 'wpr_rucss_used_css', $timestamps, [ 'id' => $id ] );
+			$this->assertNotFalse( $wpdb->update( $wpdb->prefix . 'wpr_rucss_used_css', $timestamps, [ 'id' => $id ] ) );
 		}
 
 		$urls = array_column( $query->get_pending_jobs( $config['count'] ), 'url' );
