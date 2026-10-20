@@ -107,20 +107,19 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+			<p>Renew before it is too late, you will pay <strong>$34.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>Renew before it is too late, you will pay <strong>$34.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],
@@ -136,22 +135,21 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+			<p>
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
+			</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>
-			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
-			</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],
@@ -167,20 +165,19 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+			<p>Renew before it is too late, you will pay <strong>$69.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>Renew before it is too late, you will pay <strong>$69.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],
@@ -196,22 +193,21 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+			<p>
+			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
+			</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-			<p>
-			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
-			</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],
@@ -227,19 +223,18 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],
@@ -255,19 +250,18 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
+			<p>You will soon lose access to product updates and support.</p>
+		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
 		</ul>
-		<div class="rocket-renew-message">
-			<p>
-				<strong>Your WP Rocket license is about to expire</strong>: you will soon lose access to product updates and support.
-			</p>
-		</div>
 		<div class="rocket-renew-cta-container">
-			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew now</a>
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
 		</div>
 	</div>',
 	],

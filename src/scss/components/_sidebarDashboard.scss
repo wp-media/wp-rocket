@@ -125,10 +125,6 @@
             align-items: stretch;
             margin-right: 0;
         }
-
-        .rocket-promo-deal{
-            margin-top: $space/2;
-        }
     }
 
     // Shared: countdown and buttons fill the card.
@@ -166,7 +162,6 @@
     }
 
     .rocket-promo-message,
-    .rocket-promo-deal,
     .rocket-renew-message,
     .rocket-expired-message{
         margin-top: 0;
