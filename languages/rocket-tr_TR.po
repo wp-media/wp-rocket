@@ -1375,8 +1375,8 @@ msgid ""
 " install and activate the %1$sMCP Adapter plugin%2$s."
 msgstr ""
 "WP Rocket artık WordPress.org’da bağımsız bir eklenti olarak mevcut olan MCP"
-" Adapter’ı bir araya getirmiyor. MCP’yi WP Rocket ile kullanmaya devam etmek"
-" için lütfen %1$sMCP Adapter eklentisini%2$s yükleyin ve etkinleştirin."
+" Adapter’ı paketine dahil etmiyor. MCP’yi WP Rocket ile kullanmaya devam "
+"etmek için lütfen %1$sMCP Adapter eklentisini%2$s yükleyin ve etkinleştirin."
 
 #: inc/Engine/Abilities/Options/GetOptions.php:426
 msgid "Get WP Rocket options"
