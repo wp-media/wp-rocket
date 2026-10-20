@@ -14,19 +14,30 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  */
 class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
 
+	/**
+	 * Set up the test.
+	 */
 	public function set_up() {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_insights_api_recommendations_params', 'maybe_add_rocketcdn_to_recommendations_api_params', 10 );
 	}
 
+	/**
+	 * Tear down the test.
+	 */
 	public function tear_down() {
 		$this->restoreWpHook( 'rocket_insights_api_recommendations_params' );
 		parent::tear_down();
 	}
 
 	/**
+	 * Test that the RocketCDN param is added to the recommendations API params as expected.
+	 *
 	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Test configuration.
+	 * @param array $expected Expected result.
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->white_label = $config['white_label'];
