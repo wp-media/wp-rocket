@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
 /**
  * Recommendations Render class.
@@ -30,16 +31,25 @@ class Render extends Abstract_Render {
 	private $overrides;
 
 	/**
+	 * Beacon instance.
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string      $template_path Path to the template file.
 	 * @param DataManager $data_manager Recommendations data manager instance.
 	 * @param Overrides   $overrides Recommendation overrides registry.
+	 * @param Beacon      $beacon Beacon instance.
 	 */
-	public function __construct( string $template_path, DataManager $data_manager, Overrides $overrides ) {
+	public function __construct( string $template_path, DataManager $data_manager, Overrides $overrides, Beacon $beacon ) {
 		parent::__construct( $template_path );
 		$this->data_manager = $data_manager;
 		$this->overrides    = $overrides;
+		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -97,8 +107,8 @@ class Render extends Abstract_Render {
 		// The dashboard shows the first 5 recommendations; the legacy widget shows 3.
 		$data['show_load_more'] = count( $data['recommendations'] ) > 5;
 
-		$data['rows']     = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
-		$data['help_url'] = 'https://docs.wp-rocket.me/article/1876-rocket-insights#rocket-insights-recommendations';
+		$data['rows'] = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
+		$data['help'] = $this->beacon->get_suggest( 'rocket_insights' );
 
 		return $this->generate( 'partials/rocket-insights/dashboard-recommendations', $data );
 	}

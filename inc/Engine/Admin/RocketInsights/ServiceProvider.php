@@ -299,6 +299,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'ri_recommendations_data_manager',
 					'ri_recommendation_overrides',
+					'beacon',
 				]
 			);
 
