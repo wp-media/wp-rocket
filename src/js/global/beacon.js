@@ -32,6 +32,7 @@ $(document).ready(function(){
                     window.Beacon("suggest", aID);
 
                     setTimeout(function() {
+                        window.Beacon("navigate", "/answers/");
                         window.Beacon("open");
                     }, 200);
                 } else {
