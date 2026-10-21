@@ -15,6 +15,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  *
  * @group RocketInsights
  * @group Recommendations
+ * @runTestsInSeparateProcesses
  */
 class Test_GetDashboardRecommendations extends TestCase {
 	private const FALLBACK_URL = 'https://docs.wp-rocket.me/article/1876-rocket-insights#rocket-insights-recommendations';
