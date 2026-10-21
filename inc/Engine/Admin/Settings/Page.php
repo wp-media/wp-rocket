@@ -1412,6 +1412,7 @@ class Page extends Abstract_Render {
 						'height' => 87,
 					],
 					'container_class'   => [ 'add-on-container--user-cache' ],
+					'hide_status_label' => true,
 					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
 					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
