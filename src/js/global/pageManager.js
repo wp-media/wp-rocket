@@ -27,17 +27,19 @@ function PageManager(aElem) {
 
     this.$body = document.querySelector('.wpr-body');
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
+    this.$menuGroups = document.querySelectorAll('.wpr-menuGroup');
     this.$submitButton = document.querySelector('.wpr-Content > form > #wpr-options-submit');
     this.$pages = document.querySelectorAll('.wpr-Page');
-    this.$sidebar = document.querySelector('.wpr-Sidebar');
     this.$content = document.querySelector('.wpr-Content');
-    this.$tips = document.querySelector('.wpr-Content-tips');
     this.$links = document.querySelectorAll('.wpr-body a');
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
     this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
+
+    // Clean the preference stored by the former sidebar toggle, once.
+    localStorage.removeItem( 'wpr-show-sidebar' );
 
     refThis.getBodyTop();
 
@@ -65,6 +67,25 @@ function PageManager(aElem) {
             window.location.hash = '#dashboard';
         }
     }
+
+    // Expand / collapse the navigation groups
+    for (var j = 0; j < this.$menuGroups.length; j++) {
+        this.$menuGroups[j].querySelector('.wpr-menuGroup-trigger').addEventListener('click', function() {
+            refThis.toggleGroup(this.closest('.wpr-menuGroup'));
+        });
+    }
+
+    // Close the flyout panels when tapping outside the menu or pressing Escape
+    document.addEventListener('click', function(event) {
+        if (!event.target.closest('.wpr-menuGroup')) {
+            refThis.closeFlyouts();
+        }
+    });
+    document.addEventListener('keydown', function(event) {
+        if ('Escape' === event.key) {
+            refThis.closeFlyouts();
+        }
+    });
 
     // Click link same hash
     for (var i = 0; i < this.$links.length; i++) {
@@ -99,9 +120,19 @@ function PageManager(aElem) {
 PageManager.prototype.detectID = function() {
     this.pageId = window.location.hash.split('#')[1];
     this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
+
+    // Pages that were merged into another one keep working from old links and saved hashes.
+    // Keep in sync with hashAliases in mixpanel.js and the first-paint script in views/settings/page.php.
+    var movedPages = { imagify: 'media' };
+    if (movedPages.hasOwnProperty(this.pageId)) {
+        this.pageId = movedPages[this.pageId];
+        history.replaceState(null, '', '#' + this.pageId);
+    }
+
     localStorage.setItem('wpr-hash', this.pageId);
 
     this.$page = document.querySelector('.wpr-Page#' + this.pageId);
+
     this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
 
     this.change();
@@ -127,6 +158,13 @@ PageManager.prototype.change = function() {
     var refThis = this;
     document.documentElement.scrollTop = refThis.bodyTop;
 
+    // The inline style of the page template only covers the first paint. The inline display styles set
+    // below take over in the same task, so nothing is painted in between, even if this method throws.
+    var firstPaint = document.getElementById('wpr-first-paint');
+    if (firstPaint) {
+        firstPaint.remove();
+    }
+
     // Hide other pages
     for (var i = 0; i < this.$pages.length; i++) {
         this.$pages[i].style.display = 'none';
@@ -139,52 +177,25 @@ PageManager.prototype.change = function() {
     this.$page.style.display = 'block';
     this.$submitButton.style.display = 'block';
 
-    if ( null === localStorage.getItem( 'wpr-show-sidebar' ) ) {
-        localStorage.setItem( 'wpr-show-sidebar', 'on' );
-    }
-
-    if ( 'on' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'flex';
-    } else if ( 'off' === localStorage.getItem('wpr-show-sidebar') ) {
-        this.$sidebar.style.display = 'none';
-        document.querySelector('#wpr-js-tips').removeAttribute( 'checked' );
-    }
-
-    this.$tips.style.display = 'block';
     this.$menuItem.classList.add('isActive');
+    this.updateGroups();
     this.$submitButton.value = this.buttonText;
     this.$content.classList.add('isNotFull');
 
     const pagesWithoutSubmit = [
         'dashboard',
+        'account',
         'addons',
         'database',
         'tools',
         'addons',
-        'imagify',
         'tutorials',
         'plugins',
+        'account',
     ];
 
-    const pagesWithoutSidebarToggle = [
-        'dashboard',
-        'imagify',
-        'page_cdn',
-    ];
-
-    // Exception for dashboard
-    if(this.pageId == "dashboard"){
-        this.$sidebar.style.display = 'none';
-        this.$content.classList.remove('isNotFull');
-    }
-
-    if (this.pageId == "imagify") {
-        this.$sidebar.style.display = 'none';
-    }
-
-    if (pagesWithoutSidebarToggle.includes(this.pageId)) {
-        this.$tips.style.display = 'none';
-    }
+    // The CSS shows or hides the sidebar (and styles the Dashboard container) from this attribute.
+    this.$content.dataset.page = this.pageId;
 
     if (pagesWithoutSubmit.includes(this.pageId)) {
         this.$submitButton.style.display = 'none';
@@ -199,6 +210,69 @@ PageManager.prototype.change = function() {
 			submitButton: this.$submitButton,
 		}
 	} ) );
+};
+
+
+/*
+* Expand or collapse a navigation group
+*/
+PageManager.prototype.setGroupOpen = function($group, isOpen) {
+	$group.classList.toggle('is-open', isOpen);
+	$group.querySelector('.wpr-menuGroup-trigger').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+};
+
+
+/*
+* Close the flyout panels of the icon-only menu
+*/
+PageManager.prototype.closeFlyouts = function() {
+	for (var i = 0; i < this.$menuGroups.length; i++) {
+		this.$menuGroups[i].classList.remove('is-flyout-open');
+	}
+};
+
+
+/*
+* Toggle a navigation group. Only one group is open at a time, so opening one closes the others.
+* On narrow screens the menu only shows icons, so the group opens its sub-items in a panel beside the icon (tap).
+*/
+PageManager.prototype.toggleGroup = function($group) {
+	if (window.matchMedia('(max-width: 783px)').matches) {
+		var willFlyout = !$group.classList.contains('is-flyout-open');
+
+		this.closeFlyouts();
+		$group.classList.toggle('is-flyout-open', willFlyout);
+
+		return;
+	}
+
+	var willOpen = !$group.classList.contains('is-open');
+
+	for (var i = 0; i < this.$menuGroups.length; i++) {
+		this.setGroupOpen(this.$menuGroups[i], willOpen && this.$menuGroups[i] === $group);
+	}
+};
+
+
+/*
+* Open the group holding the current page and close the others
+*/
+PageManager.prototype.updateGroups = function() {
+	this.closeFlyouts();
+
+	for (var i = 0; i < this.$menuGroups.length; i++) {
+		var $group = this.$menuGroups[i];
+		var hasActive = null !== $group.querySelector('.wpr-menuItem.isActive');
+
+		$group.classList.toggle('has-active', hasActive);
+		this.setGroupOpen($group, hasActive);
+	}
+
+	for (var j = 0; j < this.$menuItems.length; j++) {
+		this.$menuItems[j].removeAttribute('aria-current');
+	}
+
+	this.$menuItem.setAttribute('aria-current', 'page');
 };
 
 

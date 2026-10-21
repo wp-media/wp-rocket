@@ -229,6 +229,7 @@ class Page extends Abstract_Render {
 			$this->advanced_cache_section();
 			$this->database_section();
 			$this->heartbeat_section();
+			$this->account_section();
 			$this->addons_section();
 			$this->cloudflare_section();
 			$this->sucuri_section();
@@ -273,6 +274,25 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $cards Add-on cards data.
+	 *
+	 * @return array
+	 */
+	public function add_imagify_addon_card( array $cards ): array {
+		$card = $this->render->get_imagify_addon_card_data();
+
+		if ( ! empty( $card ) ) {
+			$cards[] = $card;
+		}
+
+		return $cards;
+	}
+
+	/**
 	 * Adds the async attribute to the Wistia script
 	 *
 	 * @since 3.6.1
@@ -291,7 +311,7 @@ class Page extends Abstract_Render {
 	}
 
 	/**
-	 * Returns the customer data to display on the dashboard
+	 * Returns the customer data to display on the account page
 	 *
 	 * @since 3.7.3 Update to use the user client class to get the data
 	 * @since 3.0
@@ -308,7 +328,7 @@ class Page extends Abstract_Render {
 			'is_from_one_dot_com'      => false,
 			'can_update_plugin'        => false,
 			'update_blocked_reason'    => '',
-			'license_expiration_label' => __( 'Expiration Date', 'rocket' ),
+			'license_expiration_label' => __( 'Expiration date', 'rocket' ),
 		];
 
 		$data['license_type'] = rocket_get_license_type( $user_data );
@@ -336,7 +356,7 @@ class Page extends Abstract_Render {
 		$data['update_blocked_reason'] = $user->get_update_blocked_reason();
 
 		if ( $user->is_trial_customer() ) {
-			$data['license_expiration_label'] = __( 'Trial End Date', 'rocket' );
+			$data['license_expiration_label'] = __( 'Trial end date', 'rocket' );
 		}
 
 		return $data;
@@ -455,6 +475,22 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Registers Account section.
+	 *
+	 * @since 3.24
+	 */
+	private function account_section() {
+		$this->settings->add_page_section(
+			'account',
+			[
+				'title'            => __( 'Account', 'rocket' ),
+				'menu_description' => __( 'License & billing', 'rocket' ),
+				'customer_data'    => $this->customer_data(),
+			]
+		);
+	}
+
+	/**
 	 * Registers Dashboard section.
 	 *
 	 * @since 3.0
@@ -464,9 +500,7 @@ class Page extends Abstract_Render {
 			'dashboard',
 			[
 				'title'                   => __( 'Dashboard', 'rocket' ),
-				'menu_description'        => __( 'Get help, account info', 'rocket' ),
-				'faq'                     => $this->beacon->get_suggest( 'faq' ),
-				'customer_data'           => $this->customer_data(),
+				'menu_description'        => __( 'Performance overview', 'rocket' ),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
 				'is_rocketcdn_paid_user'  => $this->subscription_controller->is_paid(),
 			]
@@ -514,8 +548,9 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'file_optimization',
 			[
-				'title'            => __( 'File Optimization', 'rocket' ),
+				'title'            => __( 'JavaScript & CSS', 'rocket' ),
 				'menu_description' => __( 'Optimize CSS & JS', 'rocket' ),
+				'group'            => 'page_optimization',
 			]
 		);
 
@@ -532,15 +567,6 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
-				'css' => [
-					'title'  => __( 'CSS Files', 'rocket' ),
-					'help'   => [
-						'id'  => $this->beacon->get_suggest( 'css_section' ),
-						'url' => $files_beacon['url'],
-					],
-					'page'   => 'file_optimization',
-					'helper' => $css_section_helper,
-				],
 				'js'  => [
 					'title'  => __( 'JavaScript Files', 'rocket' ),
 					'help'   => [
@@ -550,6 +576,15 @@ class Page extends Abstract_Render {
 					'page'   => 'file_optimization',
 					// translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP Rocket”.
 					'helper' => rocket_maybe_disable_minify_js() ? sprintf( __( '%1$s Minification is currently activated in <strong>Autoptimize</strong>. If you want to use %2$s’s minification, disable those options in Autoptimize.', 'rocket' ), 'JS', WP_ROCKET_PLUGIN_NAME ) : '',
+				],
+				'css' => [
+					'title'  => __( 'CSS Files', 'rocket' ),
+					'help'   => [
+						'id'  => $this->beacon->get_suggest( 'css_section' ),
+						'url' => $files_beacon['url'],
+					],
+					'page'   => 'file_optimization',
+					'helper' => $css_section_helper,
 				],
 			]
 		);
@@ -894,8 +929,9 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'media',
 			[
-				'title'            => __( 'Media', 'rocket' ),
+				'title'            => __( 'Image & Media', 'rocket' ),
 				'menu_description' => __( 'LazyLoad, image dimensions, font optimization', 'rocket' ),
+				'group'            => 'page_optimization',
 			]
 		);
 
@@ -957,6 +993,11 @@ class Page extends Abstract_Render {
 
 		$this->settings->add_settings_sections(
 			[
+				'imagify_banner_section'    => [
+					'title' => __( 'Imagify', 'rocket' ),
+					'type'  => 'render_imagify_banner',
+					'page'  => 'media',
+				],
 				'lazyload_section'          => [
 					'title'       => __( 'LazyLoad', 'rocket' ),
 					'type'        => 'fields_container',
@@ -981,10 +1022,7 @@ class Page extends Abstract_Render {
 				'font_optimization_section' => [
 					'title' => __( 'Fonts', 'rocket' ),
 					'type'  => 'fields_container',
-					'help'  => [
-						'id'  => $this->beacon->get_suggest( 'fonts_section' ),
-						'url' => $fonts['url'],
-					],
+					'help'  => $fonts,
 					'page'  => 'media',
 				],
 			]
@@ -1120,6 +1158,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Preload', 'rocket' ),
 				'menu_description' => __( 'Generate cache files', 'rocket' ),
+				'group'            => 'cache',
 			]
 		);
 
@@ -1204,8 +1243,9 @@ class Page extends Abstract_Render {
 		$this->settings->add_page_section(
 			'advanced_cache',
 			[
-				'title'            => __( 'Advanced Rules', 'rocket' ),
-				'menu_description' => __( 'Fine-tune cache rules', 'rocket' ),
+				'title'            => __( 'Cache Rules', 'rocket' ),
+				'menu_description' => __( 'Cache Rules', 'rocket' ),
+				'group'            => 'cache',
 			]
 		);
 		$ecommerce_beacon           = $this->beacon->get_suggest( 'ecommerce' );
@@ -1216,6 +1256,7 @@ class Page extends Abstract_Render {
 		$always_purge_beacon        = $this->beacon->get_suggest( 'always_purge' );
 		$cache_life_beacon          = $this->beacon->get_suggest( 'cache_lifespan' );
 		$nonce_beacon               = $this->beacon->get_suggest( 'nonce' );
+		$user_cache_beacon          = $this->beacon->get_suggest( 'user_cache' );
 
 		$ecommerce_plugin = '';
 		$reject_uri_desc  = __( 'Sensitive pages like custom login/logout URLs should be excluded from cache.', 'rocket' );
@@ -1289,6 +1330,12 @@ class Page extends Abstract_Render {
 					'help'        => $cache_query_strings_beacon,
 					'page'        => 'advanced_cache',
 				],
+				'user_cache_section'           => [
+					'title'       => __( 'User Cache', 'rocket' ),
+					'description' => '',
+					'type'        => 'addons_container',
+					'page'        => 'advanced_cache',
+				],
 			]
 		);
 
@@ -1353,6 +1400,25 @@ class Page extends Abstract_Render {
 					'default'           => [],
 					'sanitize_callback' => 'sanitize_textarea',
 				],
+				'cache_logged_user'    => [
+					'type'              => 'one_click_addon',
+					'label'             => __( 'User Cache', 'rocket' ),
+					'logo'              => [
+						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
+						'width'  => 96,
+						'height' => 87,
+					],
+					'container_class'   => [ 'add-on-container--user-cache' ],
+					'hide_status_label' => true,
+					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
+					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
+					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
+					'section'           => 'user_cache_section',
+					'page'              => 'advanced_cache',
+					'settings_page'     => 'user_cache',
+					'default'           => 0,
+					'sanitize_callback' => 'sanitize_checkbox',
+				],
 			]
 		);
 	}
@@ -1374,6 +1440,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Database', 'rocket' ),
 				'menu_description' => __( 'Optimize, reduce bloat', 'rocket' ),
+				'group'            => 'backend',
 			]
 		);
 
@@ -1529,15 +1596,6 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Content Delivery', 'rocket' ),
 				'menu_description' => __( 'Speed up page delivery', 'rocket' ),
-				/**
-				 * Filters the badge label displayed on the Content Delivery settings tab.
-				 *
-				 * Return an empty string to suppress the badge (e.g. for existing paid subscribers).
-				 *
-				 * @param string $badge Badge label. Default 'NEW'.
-				 * @return string
-				 */
-				'badge'            => wpm_apply_filters_typed( 'string', 'rocket_cdn_tab_badge', __( 'NEW', 'rocket' ) ),
 			]
 		);
 
@@ -1651,6 +1709,7 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Heartbeat', 'rocket' ),
 				'menu_description' => __( 'Control WordPress Heartbeat API', 'rocket' ),
+				'group'            => 'backend',
 			]
 		);
 
@@ -1735,7 +1794,7 @@ class Page extends Abstract_Render {
 			'rocket_insights',
 			[
 				'title'            => __( 'Rocket Insights', 'rocket' ),
-				'menu_description' => __( 'Get performance insights', 'rocket' ),
+				'menu_description' => __( 'Page insights & recommendations', 'rocket' ),
 			]
 		);
 
@@ -1811,14 +1870,14 @@ class Page extends Abstract_Render {
 	 * @since 3.0
 	 */
 	private function addons_section() {
-		$webp_beacon       = $this->beacon->get_suggest( 'webp' );
-		$user_cache_beacon = $this->beacon->get_suggest( 'user_cache' );
+		$webp_beacon = $this->beacon->get_suggest( 'webp' );
 
 		$this->settings->add_page_section(
 			'addons',
 			[
 				'title'            => __( 'Add-ons', 'rocket' ),
 				'menu_description' => __( 'Add more features', 'rocket' ),
+				'group'            => 'tools',
 			]
 		);
 
@@ -1840,28 +1899,6 @@ class Page extends Abstract_Render {
 					'description' => __( 'Rocket Add-ons are complementary features extending available options.', 'rocket' ),
 					'type'        => 'addons_container',
 					'page'        => 'addons',
-				],
-			]
-		);
-
-		$this->settings->add_settings_fields(
-			[
-				'cache_logged_user' => [
-					'type'              => 'one_click_addon',
-					'label'             => __( 'User Cache', 'rocket' ),
-					'logo'              => [
-						'url'    => WP_ROCKET_ASSETS_IMG_URL . 'icon-user-cache.svg',
-						'width'  => 152,
-						'height' => 135,
-					],
-					'title'             => __( 'If you need to create a dedicated set of cache files for each logged-in WordPress user, you must activate this add-on.', 'rocket' ),
-					// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-					'description'       => sprintf( __( 'User cache is great when you have user-specific or restricted content on your website.<br>%1$sLearn more%2$s', 'rocket' ), '<a href="' . esc_url( $user_cache_beacon['url'] ) . '" data-beacon-article="' . esc_attr( $user_cache_beacon['id'] ) . '" target="_blank">', '</a>' ),
-					'section'           => 'one_click',
-					'page'              => 'addons',
-					'settings_page'     => 'user_cache',
-					'default'           => 0,
-					'sanitize_callback' => 'sanitize_checkbox',
 				],
 			]
 		);
@@ -1948,7 +1985,7 @@ class Page extends Abstract_Render {
 		}
 
 		if ( rocket_valid_key() && ! \Imagify_Partner::has_imagify_api_key() ) {
-			$imagify_link = '<a href="#imagify">';
+			$imagify_link = '<a href="#media">';
 		} else {
 			$imagify_link = '<a href="https://wordpress.org/plugins/imagify/" target="_blank" rel="noopener noreferrer">';
 		}
@@ -2038,9 +2075,9 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Cloudflare', 'rocket' ),
 				'menu_description' => '',
+				'group'            => 'tools',
 				'class'            => [
 					'wpr-subMenuItem',
-					'wpr-addonSubMenuItem',
 				],
 			]
 		);
@@ -2155,9 +2192,9 @@ class Page extends Abstract_Render {
 			[
 				'title'            => __( 'Sucuri', 'rocket' ),
 				'menu_description' => '',
+				'group'            => 'tools',
 				'class'            => [
 					'wpr-subMenuItem',
-					'wpr-addonSubMenuItem',
 				],
 			]
 		);

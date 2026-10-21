@@ -2,14 +2,15 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 # Translators:
 # Oliver Kardos, 2026
+# Emese Tóth, 2026
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.22.1\n"
+"Project-Id-Version: WP Rocket 3.23.5-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-07-02T08:01:12+00:00\n"
+"POT-Creation-Date: 2026-10-01T14:20:00+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
-"Last-Translator: Oliver Kardos, 2026\n"
+"Last-Translator: Emese Tóth, 2026\n"
 "Language-Team: Hungarian (Hungary) (https://app.transifex.com/wp-media/teams/18133/hu_HU/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,27 +23,27 @@ msgstr ""
 #. Plugin Name of the plugin
 #: wp-rocket.php
 msgid "WP Rocket"
-msgstr ""
+msgstr "WP Rocket"
 
 #. Plugin URI of the plugin
 #: wp-rocket.php
 msgid "https://wp-rocket.me"
-msgstr ""
+msgstr "https://wp-rocket.me"
 
 #. Description of the plugin
 #: wp-rocket.php
 msgid "The best WordPress performance plugin."
-msgstr ""
+msgstr "A legjobb WordPress-teljesítmény-bővítmény."
 
 #. Author of the plugin
 #: wp-rocket.php
 msgid "WP Media"
-msgstr ""
+msgstr "WP Media"
 
 #. Author URI of the plugin
 #: wp-rocket.php
 msgid "https://wp-media.me"
-msgstr ""
+msgstr "https://wp-media.me"
 
 #. Translators: %s = Hosting name.
 #: inc/3rd-party/hosting/flywheel.php:18
@@ -52,7 +53,7 @@ msgstr ""
 #: inc/ThirdParty/Hostings/Dreampress.php:44
 #: inc/ThirdParty/Hostings/Godaddy.php:63
 #: inc/ThirdParty/Hostings/O2Switch.php:49
-#: inc/ThirdParty/Hostings/OneCom.php:153
+#: inc/ThirdParty/Hostings/OneCom.php:155
 #: inc/ThirdParty/Hostings/Pressidium.php:50
 #: inc/ThirdParty/Hostings/ProIsp.php:51 inc/ThirdParty/Hostings/Savvii.php:50
 #: inc/ThirdParty/Hostings/WPEngine.php:46
@@ -152,80 +153,80 @@ msgstr "óra"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = CloudFare API return
 #. message.
-#: inc/Addon/Cloudflare/Subscriber.php:232
-#: inc/Addon/Cloudflare/Subscriber.php:261
+#: inc/Addon/Cloudflare/Subscriber.php:271
+#: inc/Addon/Cloudflare/Subscriber.php:300
 #, php-format
 msgid "%1$sWP Rocket:%2$s %3$s"
-msgstr ""
+msgstr "%1$sWP Rocket:%2$s %3$s"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Addon/Cloudflare/Subscriber.php:250
+#: inc/Addon/Cloudflare/Subscriber.php:289
 #, php-format
 msgid "%1$sWP Rocket:%2$s Cloudflare cache successfully purged."
 msgstr "%1$sWP Rocket:%2$s Cloudflare gyorsítótár sikeresen ürítve."
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:311
+#: inc/Addon/Cloudflare/Subscriber.php:350
 #, php-format
 msgid "Cloudflare development mode error: %s"
 msgstr "Cloudflare fejlesztői üzemmód hiba: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:318
+#: inc/Addon/Cloudflare/Subscriber.php:357
 #, php-format
 msgid "Cloudflare development mode %s"
 msgstr "Cloudflare fejlesztői üzemmód %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:337
+#: inc/Addon/Cloudflare/Subscriber.php:376
 #, php-format
 msgid "Cloudflare cache level error: %s"
 msgstr "Cloudflare gyorsítótár szint hiba:%s"
 
-#: inc/Addon/Cloudflare/Subscriber.php:344
+#: inc/Addon/Cloudflare/Subscriber.php:383
 msgctxt "Cloudflare caching level"
 msgid "standard"
 msgstr "általános"
 
 #. translators: %s is the caching level returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:350
+#: inc/Addon/Cloudflare/Subscriber.php:389
 #, php-format
 msgid "Cloudflare cache level set to %s"
 msgstr "Cloudflare gyorsítótár szint beállítva %s-re"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:368
+#: inc/Addon/Cloudflare/Subscriber.php:407
 #, php-format
 msgid "Cloudflare rocket loader error: %s"
 msgstr "Cloudflare rocket loader hiba: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:375
+#: inc/Addon/Cloudflare/Subscriber.php:414
 #, php-format
 msgid "Cloudflare rocket loader %s"
 msgstr "Cloudflare rocket loader %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:393
+#: inc/Addon/Cloudflare/Subscriber.php:432
 #, php-format
 msgid "Cloudflare browser cache error: %s"
 msgstr "Cloudflare böngésző gyorsítótár hiba: %s"
 
 #. translators: %s is the message returned by the CloudFlare API.
-#: inc/Addon/Cloudflare/Subscriber.php:400
+#: inc/Addon/Cloudflare/Subscriber.php:439
 #, php-format
 msgid "Cloudflare browser cache set to %s"
 msgstr "Cloudflare böngésző gyorsítótár beállítve erre: %s"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/Addon/Cloudflare/Subscriber.php:507
+#: inc/Addon/Cloudflare/Subscriber.php:546
 #, php-format
 msgid "%1$sWP Rocket:%2$s Optimal settings activated for Cloudflare:"
 msgstr ""
 "%1$sWP Rocket:%2$s aktiváltuk a Cloudflare-hez optimális beállításokat:"
 
 #. translators: %1$s = strong opening tag, %2$s = strong closing tag.
-#: inc/Addon/Cloudflare/Subscriber.php:516
+#: inc/Addon/Cloudflare/Subscriber.php:555
 #, php-format
 msgid ""
 "%1$sWP Rocket:%2$s Optimal settings deactivated for Cloudflare, reverted to "
@@ -234,7 +235,7 @@ msgstr ""
 "%1$sWP Rocket:%2$s Deaktiváltuk a Cloudflare-hez optimális beállításokat, "
 "visszaállítottuk a korábbi beállításokat:"
 
-#: inc/Addon/Cloudflare/Subscriber.php:632 inc/admin/options.php:165
+#: inc/Addon/Cloudflare/Subscriber.php:671 inc/admin/options.php:169
 #: inc/classes/subscriber/Tools/class-detect-missing-tags-subscriber.php:148
 msgid "WP Rocket: "
 msgstr "WP Rocket: "
@@ -388,7 +389,7 @@ msgid "FAQ"
 msgstr "GYIK"
 
 #: inc/admin/admin.php:24 inc/common/admin-bar.php:71
-#: inc/Engine/Admin/Settings/Page.php:1738
+#: inc/Engine/Admin/Settings/Page.php:1746
 msgid "Settings"
 msgstr "Beállítások"
 
@@ -409,11 +410,15 @@ msgstr "Beállítások importálása sikertelen: nem lett fájl feltöltve."
 msgid ""
 "Settings import failed: incorrect filename. Only JSON format is supported."
 msgstr ""
+"A beállítások importálása sikertelen: helytelen fájlnév. Csak a JSON "
+"formátum támogatott."
 
 #: inc/admin/admin.php:413
 msgid ""
 "Settings import failed: only JSON format is supported for security reasons."
 msgstr ""
+"A beállítások importálása sikertelen: biztonsági okokból kizárólag a JSON "
+"formátum támogatott."
 
 #: inc/admin/admin.php:423
 msgid "Settings import failed: "
@@ -427,62 +432,62 @@ msgstr "Beállítások importálása sikertelen: váratlan fájl tartalom."
 msgid "Settings imported and saved."
 msgstr "Beállítások importálva és elmentve."
 
-#: inc/admin/options.php:102 inc/Engine/Admin/Settings/Page.php:583
+#: inc/admin/options.php:106 inc/Engine/Admin/Settings/Page.php:591
 msgid "Excluded CSS Files"
 msgstr "Kizárt CSS fájlok"
 
-#: inc/admin/options.php:103 inc/Engine/Admin/Settings/Page.php:731
+#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:739
 msgid "Excluded Inline JavaScript"
 msgstr "Kihagyott beágyazott JavaScript kódok"
 
-#: inc/admin/options.php:104 inc/Engine/Admin/Settings/Page.php:749
-#: inc/Engine/Admin/Settings/Page.php:782
-#: inc/Engine/Admin/Settings/Page.php:832
+#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:757
+#: inc/Engine/Admin/Settings/Page.php:790
+#: inc/Engine/Admin/Settings/Page.php:840
 msgid "Excluded JavaScript Files"
 msgstr "Kihagyott javascript fájlok"
 
-#: inc/admin/options.php:105
+#: inc/admin/options.php:109
 msgid "Defer JavaScript Files"
 msgstr "Késleltetett javascript fájlok (Defer)"
 
-#: inc/admin/options.php:106
+#: inc/admin/options.php:110
 msgid "Excluded Delay JavaScript Files"
 msgstr "Késleltetésből kizárt JavaScript fájlok"
 
-#: inc/admin/options.php:107 inc/Engine/Admin/Settings/Page.php:1252
+#: inc/admin/options.php:111 inc/Engine/Admin/Settings/Page.php:1260
 msgid "Never Cache URL(s)"
 msgstr "Soha ne gyorsítótárazzuk az alábbi URL(eke)t"
 
-#: inc/admin/options.php:108 inc/Engine/Admin/Settings/Page.php:1266
+#: inc/admin/options.php:112 inc/Engine/Admin/Settings/Page.php:1274
 msgid "Never Cache User Agent(s)"
 msgstr "Soha ne gyorsítótárazzunk az alábbi user agent-eknél"
 
-#: inc/admin/options.php:109 inc/Engine/Admin/Settings/Page.php:1272
+#: inc/admin/options.php:113 inc/Engine/Admin/Settings/Page.php:1280
 msgid "Always Purge URL(s)"
 msgstr "Mindig ürítsd az alábbi URL(ek) gyorsítótárát"
 
-#: inc/admin/options.php:110
+#: inc/admin/options.php:114
 msgid "Exclude files from CDN"
 msgstr "Zárj ki fájlokat a CDN-ről"
 
 #. translators: 1 and 2 can be anything.
-#: inc/admin/options.php:131
+#: inc/admin/options.php:135
 #, php-format
 msgid "%1$s: <em>%2$s</em>"
 msgstr "%1$s: <em>%2$s</em>"
 
-#: inc/admin/options.php:141
+#: inc/admin/options.php:145
 msgid "The following pattern is invalid and has been removed:"
 msgid_plural "The following patterns are invalid and have been removed:"
 msgstr[0] "Az alábbi minta érvénytelen, és ezért törölve lett:"
 msgstr[1] "Az alábbi minták érvénytelenek, és ezért törölve lettek:"
 
-#: inc/admin/options.php:157
+#: inc/admin/options.php:161
 #: views/settings/partials/rocket-insights/recommendations/item.php:76
 msgid "More info"
 msgstr "Bővebb információ"
 
-#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:680
+#: inc/admin/ui/meta-boxes.php:37 inc/admin/ui/notices.php:640
 msgid "Clear cache"
 msgstr "Gyorsítótár ürítése"
 
@@ -563,14 +568,14 @@ msgstr ""
 "miatt."
 
 #. translators: This is a doc title! %1$s = opening link; %2$s = closing link
-#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:828
+#: inc/admin/ui/notices.php:303 inc/admin/ui/notices.php:788
 #, php-format
 msgid "Troubleshoot: %1$sHow to make system files writeable%2$s"
 msgstr "Hibaelhárítás: %1$sHogyan tedd írhatóvá a rendszerfájlokat%2$s"
 
 #. translators: Documentation exists in EN, DE, FR, ES, IT; use loaclised URL
 #. if applicable
-#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:830
+#: inc/admin/ui/notices.php:305 inc/admin/ui/notices.php:790
 msgid ""
 "https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-"
 "config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket"
@@ -594,23 +599,7 @@ msgstr ""
 "Az optimális teljesítmény érdekében javasoljuk, hogy vedd fel az alábbi "
 "sorokat a .htaccess fájlodba (nem kötelező):"
 
-#. translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong>
-#: inc/admin/ui/notices.php:458
-#, php-format
-msgid "%1$s %2$s is good to go! %3$s Your website is already faster."
-msgstr ""
-
-#. translators: %1$s = plugin name, %2$s = opening link tag, %3$s = closing
-#. link tag
-#: inc/admin/ui/notices.php:470
-#, php-format
-msgid ""
-"%1$s %2$s is good to go! %3$s Your website is already faster. Visit %4$s "
-"Rocket Insights %5$s to check your homepage's performance, add more pages to"
-" measure WP Rocket's impact, and keep your site fast."
-msgstr ""
-
-#: inc/admin/ui/notices.php:514
+#: inc/admin/ui/notices.php:474
 msgid ""
 "Would you allow WP Rocket to collect non-sensitive diagnostic data from this"
 " website?"
@@ -618,16 +607,16 @@ msgstr ""
 "Megengeded a WP Rocket-nek, hogy névtelen, nem-érzékeny diagnosztikai "
 "adatokat gyűjtsünk a weboldaladról?"
 
-#: inc/admin/ui/notices.php:515
+#: inc/admin/ui/notices.php:475
 msgid "This would help us to improve WP Rocket for you in the future."
 msgstr "Ez segít nekünk abban, hogy jobbá tehessük a WP Rocketet a jövőben."
 
 #. translators: button text, click will expand data collection preview
-#: inc/admin/ui/notices.php:521
+#: inc/admin/ui/notices.php:481
 msgid "What info will we collect?"
 msgstr "Milyen adatokat gyűjtünk?"
 
-#: inc/admin/ui/notices.php:526
+#: inc/admin/ui/notices.php:486
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect if granted "
 "permission. WP Rocket will never transmit any domain names or email "
@@ -640,100 +629,105 @@ msgstr ""
 "vagy külső félhez tartozó API kulcsokat."
 
 #. translators: button text for data collection opt-in
-#: inc/admin/ui/notices.php:535
+#: inc/admin/ui/notices.php:495
 msgid "Yes, allow"
 msgstr "Igen, engedélyezés"
 
 #. translators: button text for data collection opt-in
-#: inc/admin/ui/notices.php:538
+#: inc/admin/ui/notices.php:498
 msgid "No, thanks"
 msgstr "Nem, köszönöm"
 
 #. translators: %1$s = opening strong tag; %2$s = closing strong tag; %3$s =
 #. plugin name
-#: inc/admin/ui/notices.php:576
+#: inc/admin/ui/notices.php:536
 #, php-format
 msgid "%1$sThank you!%2$s The data you share helps us improve %3$s."
 msgstr ""
+"%1$sKöszönjük szépen!%2$s Az Ön által megosztott adatok segítenek nekünk a "
+"szolgáltatásunk fejlesztésében %3$s."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:613
+#: inc/admin/ui/notices.php:573
 #, php-format
 msgid "%s: Cache cleared."
 msgstr "%s: Gyorsítótár ürítve."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:620
+#: inc/admin/ui/notices.php:580
 #, php-format
 msgid "%s: Post cache cleared."
 msgstr "%s: Bejegyzések gyorsítótára ürítve."
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:627
+#: inc/admin/ui/notices.php:587
 #, php-format
 msgid "%s: Term cache cleared."
 msgstr "%s kifejezés gyorsítótár ürítve."
 
 #. translators: %s = plugin name).
-#: inc/admin/ui/notices.php:634
+#: inc/admin/ui/notices.php:594
 #, php-format
 msgid "%s: User cache cleared."
 msgstr "%s: Felhasználói gyorsítótár ürítve."
 
-#: inc/admin/ui/notices.php:670 inc/Engine/License/views/promo-banner.php:38
+#: inc/admin/ui/notices.php:630 inc/Engine/License/views/promo-banner.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd-disabled.php:38
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:48
 #: inc/Engine/License/views/renewal-expired-banner.php:37
+#: inc/Engine/License/views/trial-expired-banner.php:27
 #: views/settings/page-sections/dashboard.php:86
 msgid "Dismiss this notice"
 msgstr "Tüntesd el ezt az értesítést"
 
-#: inc/admin/ui/notices.php:691 inc/Engine/Saas/Admin/AdminBar.php:51
+#: inc/admin/ui/notices.php:651 inc/Engine/Saas/Admin/AdminBar.php:51
 msgid "Clear Used CSS"
 msgstr "Ürítsd a használt CSS-ek gyorsítótárát"
 
-#: inc/admin/ui/notices.php:694
+#: inc/admin/ui/notices.php:654
 msgid "Stop Preload"
 msgstr "Előtöltés megállítása"
 
-#: inc/admin/ui/notices.php:700
+#: inc/admin/ui/notices.php:660
 msgid "Turn on Remove Unused CSS"
 msgstr "Kapcsold be a Nem-használt CSS kódok eltávolítását"
 
-#: inc/admin/ui/notices.php:706
+#: inc/admin/ui/notices.php:666
 msgid "Enable “Separate Cache Files for Mobile Devices” now"
 msgstr ""
 "Engedélyezd a \"Különálló gyorsítótár fájlok Mobil Eszközök számára\" "
 "funkciót most"
 
-#: inc/admin/ui/notices.php:724
+#: inc/admin/ui/notices.php:684
 msgid "Force deactivation "
 msgstr "Kényszerített deaktiválás"
 
-#: inc/admin/ui/notices.php:728
+#: inc/admin/ui/notices.php:688
 msgid "Run the test now!"
-msgstr ""
+msgstr "Futtassa most a tesztet!"
 
-#: inc/admin/ui/notices.php:741
+#: inc/admin/ui/notices.php:701
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:652
 msgid "Add your pages now"
-msgstr ""
+msgstr "Adja hozzá most az oldalait!"
 
-#: inc/admin/ui/notices.php:755
+#: inc/admin/ui/notices.php:715
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:468
 msgid "Start with my homepage"
-msgstr ""
+msgstr "Kezdjük a főoldalammal"
 
-#: inc/admin/ui/notices.php:785
+#: inc/admin/ui/notices.php:745
 msgid "The following code should have been written to this file:"
 msgstr "Az alábbi kódnak kellene bekerülnie ebbe a fájlba:"
 
 #. translators: %s = plugin name.
-#: inc/admin/ui/notices.php:816
+#: inc/admin/ui/notices.php:776
 #, php-format
 msgid "%s cannot configure itself due to missing writing permissions."
 msgstr "%snem tudja önmagát beállítani a hiányzó írási jogosultság miatt."
 
 #. translators: %s = file/folder name
-#: inc/admin/ui/notices.php:822
+#: inc/admin/ui/notices.php:782
 #, php-format
 msgid "Affected file/folder: %s"
 msgstr "Érintett fájl/mappa: %s"
@@ -861,6 +855,8 @@ msgid ""
 "Boost your site's performance by compressing images with Imagify, developed "
 "by WP Rocket."
 msgstr ""
+"Növelje webhelye teljesítményét az Imagify segítségével, amelyet a WP Rocket"
+" fejlesztett ki."
 
 #. translators: %1$s = Plugin Name.
 #: inc/Dependencies/WPMedia/PluginFamily/Controller/PluginFamily.php:554
@@ -1202,7 +1198,7 @@ msgid "Add URL"
 msgstr "URL hozzáadása"
 
 #: inc/deprecated/deprecated.php:1245
-#: inc/Engine/Admin/Settings/Settings.php:430
+#: inc/Engine/Admin/Settings/Settings.php:438
 msgid "Settings saved."
 msgstr "Beállítások elmentve."
 
@@ -1220,7 +1216,7 @@ msgstr ""
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Válassz egy fájlt a gépedről (maximum méret: %s)"
 
-#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:568
+#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:570
 msgid "Upload file and import settings"
 msgstr "Fájl feltöltés és importálás beállítások"
 
@@ -1308,21 +1304,21 @@ msgstr "CDN"
 msgid "Advanced"
 msgstr "Haladó"
 
-#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1368
+#: inc/deprecated/deprecated.php:1775 inc/Engine/Admin/Settings/Page.php:1376
 msgid "Database"
 msgstr "Adatbázis"
 
-#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1113
+#: inc/deprecated/deprecated.php:1776 inc/Engine/Admin/Settings/Page.php:1121
 msgid "Preload"
 msgstr "Előtöltés"
 
 #: inc/deprecated/deprecated.php:1786
 #: inc/Engine/Admin/Settings/Subscriber.php:202
-#: views/settings/page-sections/tools.php:33
+#: views/settings/page-sections/tools.php:39
 msgid "Tools"
 msgstr "Eszközök"
 
-#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:400
+#: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:408
 #: views/settings/page-sections/dashboard.php:120
 msgid "License"
 msgstr "Licenc"
@@ -1368,11 +1364,11 @@ msgstr ""
 msgid "weekly"
 msgstr "heti"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:42
+#: inc/Engine/Abilities/Options/GetOptions.php:426
 msgid "Get WP Rocket options"
-msgstr ""
+msgstr "A WP Rocket beállításainak megtekintése"
 
-#: inc/Engine/Abilities/Options/GetOptions.php:43
+#: inc/Engine/Abilities/Options/GetOptions.php:427
 msgctxt "Ability description"
 msgid ""
 "Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
@@ -1380,12 +1376,16 @@ msgid ""
 "Always call this before set-option when changing an array-type option, to avoid overwriting existing values. Do not show internal, credential, or read-only keys to the user.\n"
 "Unless the user asks for another format, present settings as a grouped dashboard with cards for Caching, File Optimisation, Media, CDN, Database, and Heartbeat. Each card should show a group-level badge, setting rows, status pills, impact bars, and plain-language descriptions using the approved colors."
 msgstr ""
+"A WP Rocket aktuális beállításait szimpla kulcs-érték objektumként tölti be, beleértve a kapcsolókat és a tömb típusú beállításokat is.\n"
+"Ezt akkor használja, ha a felhasználó azt kérdezi, hogy mi van engedélyezve, letiltva vagy kizárva. Ne használja beállítások módosítására; helyette a set-option parancsot használja.\n"
+"Tömb típusú beállítás módosításakor mindig hívja meg ezt a set-option előtt, hogy elkerülje a meglévő értékek felülírását. Ne mutassa meg a felhasználónak a belső, hitelesítő adatokat tartalmazó vagy csak olvasható kulcsokat.\n"
+"Hacsak a felhasználó nem kér más formátumot, a beállításokat csoportosított irányítópultként jelenítse meg, a „Caching”, „File Optimisation”, „Media”, „CDN”, „Database” és „Heartbeat” kártyákkal. Minden kártyán megjelenjen egy csoportszintű jelvény, beállítási sorok, állapotjelzők, hatásjelző sávok és közérthető leírások a jóváhagyott színek használatával."
 
-#: inc/Engine/Abilities/Options/SetOption.php:135
+#: inc/Engine/Abilities/Options/SetOption.php:179
 msgid "Set a WP Rocket option"
-msgstr ""
+msgstr "A WP Rocket beállításának megadása"
 
-#: inc/Engine/Abilities/Options/SetOption.php:136
+#: inc/Engine/Abilities/Options/SetOption.php:180
 msgctxt "Ability description"
 msgid ""
 "Writes one WP Rocket option using option_name and option_value. update_mode defaults to update, which appends to arrays; use replace to overwrite a full array.\n"
@@ -1393,69 +1393,77 @@ msgid ""
 "Confirmation is required before calling. First show the setting name and the current value to new value. Then ask: `Confirm this change?` and wait for a clear yes or no.\n"
 "A user request such as `enable it` or `disable it` is not enough confirmation. Only call this ability after the user gives an affirmative answer in the same turn."
 msgstr ""
+"Egy WP Rocket-beállítás értékét írja az option_name és az option_value használatával. Az update_mode alapértelmezett értéke update, amely új elemeket fűz a tömbökhöz; egy teljes tömb felülírásához a replace értéket kell használni.\n"
+"Akkor kell használni, ha a felhasználó egy adott beállítást szeretne engedélyezni, letiltani vagy módosítani. Tömb típusú beállításoknál mindig először a get-options műveletet kell meghívni.\n"
+"A meghívás előtt megerősítés szükséges. Először meg kell jeleníteni a beállítás nevét, valamint a jelenlegi és az új értékét. Ezután fel kell tenni a következő kérdést: `Megerősíti a módosítást?`, és meg kell várni az egyértelmű igen vagy nem választ.\n"
+"Az olyan felhasználói kérés, mint az `engedélyezze` vagy a `tiltsa le`, nem elegendő megerősítés. Ez a képesség csak akkor hívható meg, ha a felhasználó ugyanabban a fordulóban igenlő választ ad."
 
-#: inc/Engine/Abilities/Options/SetOption.php:150
+#: inc/Engine/Abilities/Options/SetOption.php:194
 msgid "The name of the WP Rocket option to set"
-msgstr ""
+msgstr "A megadni kívánt WP Rocket-beállítás neve"
 
-#: inc/Engine/Abilities/Options/SetOption.php:162
+#: inc/Engine/Abilities/Options/SetOption.php:207
 msgid "The value to set for the specified WP Rocket option"
-msgstr ""
+msgstr "A megadott WP Rocket-beállításhoz beállítandó érték"
 
-#: inc/Engine/Abilities/Options/SetOption.php:167
+#: inc/Engine/Abilities/Options/SetOption.php:212
 msgid ""
 "For array and textarea options: \"update\" (default) adds new entries to the"
 " existing list; \"replace\" overwrites the entire list."
 msgstr ""
+"Tömb típusú és többsoros szövegmezőben megadható beállításoknál: az "
+"\"update\" (alapértelmezett) új elemeket ad a meglévő listához; a "
+"\"replace\" felülírja a teljes listát."
 
-#: inc/Engine/Abilities/Options/SetOption.php:177
+#: inc/Engine/Abilities/Options/SetOption.php:222
 msgid "Indicates whether the option was successfully set"
-msgstr ""
+msgstr "Jelzi, hogy sikerült-e megadni a beállítás értékét"
 
-#: inc/Engine/Abilities/Options/SetOption.php:181
+#: inc/Engine/Abilities/Options/SetOption.php:226
 msgid "Error message if the option could not be set"
-msgstr ""
+msgstr "Hibaüzenet, ha nem sikerült megadni a beállítás értékét"
 
-#: inc/Engine/Abilities/Options/SetOption.php:193
+#: inc/Engine/Abilities/Options/SetOption.php:238
 msgid "The previous value of the option before it was updated"
-msgstr ""
+msgstr "A beállítás módosítás előtti értéke"
 
-#: inc/Engine/Abilities/Options/SetOption.php:205
+#: inc/Engine/Abilities/Options/SetOption.php:250
 msgid "The new value of the option after it was updated"
-msgstr ""
+msgstr "A beállítás módosítás utáni új értéke"
 
 #. translators: %s: option name
-#: inc/Engine/Abilities/Options/SetOption.php:252
+#: inc/Engine/Abilities/Options/SetOption.php:303
 #, php-format
 msgid "Invalid option name: %s. This option cannot be set via the ability."
 msgstr ""
+"Érvénytelen beállításnév: %s. Ez a beállítás nem módosítható a képességgel."
 
 #: inc/Engine/Abilities/Options/Subscriber.php:79
 msgid "Abilities that retrieve or update WP Rocket options"
-msgstr ""
+msgstr "A WP Rocket beállításait lekérő vagy módosító képességek"
 
 #: inc/Engine/Admin/Database/Optimization.php:33
-#: inc/Engine/Admin/Settings/Page.php:1412
+#: inc/Engine/Admin/Settings/Page.php:1420
 msgid "Revisions"
 msgstr "Változatok"
 
 #: inc/Engine/Admin/Database/Optimization.php:34
-#: inc/Engine/Admin/Settings/Page.php:1422
+#: inc/Engine/Admin/Settings/Page.php:1430
 msgid "Auto Drafts"
 msgstr "Automatikus piszkozatok"
 
 #: inc/Engine/Admin/Database/Optimization.php:35
-#: inc/Engine/Admin/Settings/Page.php:1432
+#: inc/Engine/Admin/Settings/Page.php:1440
 msgid "Trashed Posts"
 msgstr "Lomtárba helyezett bejegyzések"
 
 #: inc/Engine/Admin/Database/Optimization.php:36
-#: inc/Engine/Admin/Settings/Page.php:1442
+#: inc/Engine/Admin/Settings/Page.php:1450
 msgid "Spam Comments"
 msgstr "Spam kommentek"
 
 #: inc/Engine/Admin/Database/Optimization.php:37
-#: inc/Engine/Admin/Settings/Page.php:1452
+#: inc/Engine/Admin/Settings/Page.php:1460
 msgid "Trashed Comments"
 msgstr "Lomtárba helyezett hozzászólások"
 
@@ -1510,7 +1518,7 @@ msgstr "WP Rocket konfigurációs fájlok újragenerálása most"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:98
 msgid "Add Page Insights"
-msgstr ""
+msgstr "Oldalelemzés hozzáadása"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:99
 msgctxt "Ability description"
@@ -1520,25 +1528,29 @@ msgid ""
 "Confirm the exact URL with the user before calling. This action is non-idempotent, so calling it twice for the same URL may return an error.\n"
 "On success, tell the user the first score may take a few minutes and offer to trigger an immediate test with retest-page-insights Recheck every minute in the background and poll results with get-page-insights-score."
 msgstr ""
+"Hozzáad egy URL-t a Rocket Insights figyeléséhez. Érvényes URI szükséges hozzá.\n"
+"Akkor kell használni, ha a felhasználó egy új oldalt szeretne figyelni. Nem szabad használni, ha az oldal figyelése már folyamatban van; ilyenkor a retest-page-insights műveletet kell használni.\n"
+"A meghívás előtt meg kell erősíttetni a felhasználóval a pontos URL-t. Ez a művelet nem idempotens, ezért ugyanarra az URL-re kétszer meghívva hibát adhat vissza.\n"
+"Siker esetén tájékoztatni kell a felhasználót, hogy az első pontszám megjelenése néhány percet vehet igénybe, és fel kell ajánlani egy azonnali teszt indítását a retest-page-insights művelettel. A háttérben percenként újra kell ellenőrizni, és a get-page-insights-score művelettel le kell kérdezni az eredményeket."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:123
 msgid "Indicates whether the page was successfully added"
-msgstr ""
+msgstr "Jelzi, hogy sikerült-e hozzáadni az oldalt"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:127
 msgid "Error message if the page could not be added"
-msgstr ""
+msgstr "Hibaüzenet, ha nem sikerült hozzáadni az oldalt"
 
-#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:178
+#: inc/Engine/Admin/RocketInsights/Abilities/AddPageInsights.php:185
 #: inc/Engine/Admin/RocketInsights/Controller.php:132
 #: inc/Engine/Admin/RocketInsights/Rest.php:378
-#: inc/Engine/CDN/RocketCDN/Rest.php:264
+#: inc/Engine/CDN/RocketCDN/Rest.php:387
 msgid "Homepage"
 msgstr "Kezdőlap"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:50
 msgid "Get Rocket Insights Score"
-msgstr ""
+msgstr "Rocket Insights-pontszám lekérése"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetInsightsScore.php:51
 msgctxt "Ability description"
@@ -1550,10 +1562,16 @@ msgid ""
 "Always open with a one-line global verdict, such as `Global score: 84/100 - 3 pages healthy, 2 need attention.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"A webhely egészére vonatkozó Rocket Insights-összesítést ad vissza a global_score, pages_monitored és is_running mezőkkel, valamint az oldalankénti eredményekkel. Az include_metrics: true beállítást kell használni, kivéve, ha a felhasználó kifejezetten csak az összesített pontszámot kéri.\n"
+"A GTmetrix report_url hivatkozásait nem szabad megnyitni vagy elolvasni. Kiegészítő jelentéshivatkozásként megjeleníthetők.\n"
+"Akkor kell használni, ha a felhasználó összesített pontszámot, a teljes webhely áttekintését vagy az összes figyelt oldalt kéri. Egy adott oldalhoz nem szabad használni; ilyenkor a get-page-insights-score műveletet kell használni.\n"
+"Ha az is_running értéke true, vagy bármelyik eredmény még nem készült el, tájékoztatni kell a felhasználót, hogy a tesztek még folyamatban vannak, és csak az elkészült eredményeket szabad megjeleníteni. Percenként újra kell ellenőrizni, amíg a fennmaradó eredmények is elérhetővé nem válnak. Ha minden eredmény elkészült, nem szabad állapotot megjeleníteni. Az is_running csak akkor jeleníthető meg, ha legalább egy oldal eredményében is_running: true szerepel.\n"
+"Mindig egysoros összesített értékeléssel kell kezdeni, például: `Összesített pontszám: 84/100 - 3 oldal megfelelő, 2 figyelmet igényel.` Az eredményeket az elérhető legszemléletesebb formátumban kell bemutatni: elsőként diagramokkal, ezek hiányában Markdown-táblázattal, végül tagolt szöveggel.\n"
+"Pontszámok vagy mérőszámok megjelenítésekor kizárólag a jóváhagyott teljesítményszíneket és küszöbértékeket szabad használni."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:50
 msgid "Get Rocket Insights Score for a Page"
-msgstr ""
+msgstr "Egy oldal Rocket Insights-pontszámának lekérése"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetPageInsightsScore.php:51
 msgctxt "Ability description"
@@ -1564,10 +1582,15 @@ msgid ""
 "Always open with a one-line verdict, such as `Score: 94/100 - page is healthy.` Present results using the richest available format: charts first, then a Markdown table, then structured prose.\n"
 "Do not open or read GTmetrix report_url links. You may show them as complementary report links. When showing scores or metrics, use only the approved performance colors and thresholds."
 msgstr ""
+"Egy adott URL legfrissebb Rocket Insights-pontszámát adja vissza. URI szükséges hozzá, és a score, status, report_url és metric_data mezőket adja vissza, olyan mérőszámokkal, mint az LCP, FCP és TBT.\n"
+"Akkor kell használni, ha a felhasználó egy oldal teljesítményéről vagy pontszámáról kérdez. Új tesztekhez nem szabad használni; ilyenkor a retest-page-insights műveletet kell használni. Az összes oldalhoz nem szabad használni; ilyenkor a get-insights-scores műveletet kell használni.\n"
+"Ha az exists értéke false, tájékoztatni kell a felhasználót, hogy az URL figyelése nincs beállítva, és fel kell ajánlani a hozzáadását az add-page-insights művelettel. Ez a képesség csak olvasási műveletet végez, és nem indít új tesztet.\n"
+"Mindig egysoros értékeléssel kell kezdeni, például: `Pontszám: 94/100 - az oldal megfelelő.` Az eredményeket az elérhető legszemléletesebb formátumban kell bemutatni: elsőként diagramokkal, ezek hiányában Markdown-táblázattal, végül tagolt szöveggel.\n"
+"A GTmetrix report_url hivatkozásait nem szabad megnyitni vagy elolvasni. Kiegészítő jelentéshivatkozásként megjeleníthetők. Pontszámok vagy mérőszámok megjelenítésekor kizárólag a jóváhagyott teljesítményszíneket és küszöbértékeket szabad használni."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:82
 msgid "Get Rocket Insights Recommendations"
-msgstr ""
+msgstr "Rocket Insights-javaslatok lekérése"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/GetRecommendations.php:83
 msgid ""
@@ -1576,10 +1599,14 @@ msgid ""
 "Check the status first. If status is loading, retry in a few minutes. If status is completed, show the recommendations. If status is failed or expired, tell the user no recommendation data is available.\n"
 "For each recommendation, mcp_actionable: true means it can be applied with set-option and may be suggested for activation. mcp_actionable: false means the recommendation requires a manual step."
 msgstr ""
+"A WP Rocket saját, az adott webhelyre vonatkozó teljesítményjavítási javaslatait adja vissza.\n"
+"Akkor kell használni, ha a felhasználó azt kérdezi, min érdemes javítani, vagy fontossági sorrendbe rendezett optimalizálási javaslatokat szeretne. Pontszámokhoz vagy teszteredményekhez nem szabad használni; ilyenkor a get-insights-scores vagy a get-page-insights-score műveletet kell használni.\n"
+"Először az állapotot kell ellenőrizni. Ha a status értéke loading, néhány perc múlva újra kell próbálkozni. Ha a status értéke completed, meg kell jeleníteni a javaslatokat. Ha a status értéke failed vagy expired, tájékoztatni kell a felhasználót, hogy nem állnak rendelkezésre javaslatadatok.\n"
+"Az egyes javaslatoknál az mcp_actionable: true azt jelenti, hogy a javaslat a set-option művelettel alkalmazható, és az aktiválása ajánlható. Az mcp_actionable: false azt jelenti, hogy a javaslat kézi lépést igényel."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:52
 msgid "Remove Page Insights"
-msgstr ""
+msgstr "Oldalelemzés eltávolítása"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:53
 msgctxt "Ability description"
@@ -1588,22 +1615,25 @@ msgid ""
 "Use this only when the user explicitly asks to stop monitoring a page and accepts data deletion. Do not use it for pausing or retesting.\n"
 "This action is destructive and non-idempotent. Before calling, explicitly confirm the exact URL with the user. Never remove multiple pages in bulk; require separate confirmation for each URL."
 msgstr ""
+"Véglegesen eltávolít egy URL-t a Rocket Insights figyeléséből, és törli a korábbi pontszámadatait.\n"
+"Csak akkor szabad használni, ha a felhasználó kifejezetten egy oldal figyelésének leállítását kéri, és elfogadja az adatok törlését. Szüneteltetéshez vagy újrateszteléshez nem szabad használni.\n"
+"Ez a művelet adatvesztéssel jár, és nem idempotens. A meghívás előtt kifejezetten meg kell erősíttetni a felhasználóval a pontos URL-t. Soha nem szabad több oldalt egyszerre eltávolítani; minden URL-hez külön megerősítés szükséges."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:67
 msgid "Full URL of the page to remove from Rocket Insights monitoring."
-msgstr ""
+msgstr "A Rocket Insights figyeléséből eltávolítandó oldal teljes URL-je."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:77
 msgid "Indicates whether the page was successfully removed"
-msgstr ""
+msgstr "Jelzi, hogy sikerült-e eltávolítani az oldalt"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RemovePageInsights.php:81
 msgid "Error message if the page could not be removed"
-msgstr ""
+msgstr "Hibaüzenet, ha nem sikerült eltávolítani az oldalt"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:75
 msgid "Retest Page Insights"
-msgstr ""
+msgstr "Oldal teljesítménytesztjének megismétlése"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:76
 msgid ""
@@ -1612,26 +1642,33 @@ msgid ""
 "Handle response statuses as follows: triggered means the test was queued and results should be polled with get-page-insights-score; running means a test is already in progress and should not be triggered again; not_found means the page is not tracked and add-page-insights should be offered; failed means an error occurred.\n"
 "If the user wants results, wait and check every minute with get-page-insights-score, since the test may take a few minutes."
 msgstr ""
+"Új Rocket Insights-teljesítménytesztet indít egy már figyelt URL-hez. Érvényes URI szükséges.\n"
+"Akkor használja, ha a felhasználó új tesztet szeretne egy figyelt oldalhoz. Ne hívja meg, amíg már folyamatban van egy teszt.\n"
+"A válasz állapotait a következőképpen kezelje: triggered esetén a teszt várólistára került, és az eredményeket a get-page-insights-score segítségével kell lekérdezni; running esetén már folyamatban van egy teszt, ezért nem szabad újra elindítani; not_found esetén az oldal nincs a figyelt oldalak között, ezért fel kell ajánlani az add-page-insights használatát; failed esetén hiba történt.\n"
+"Ha a felhasználó az eredményeket szeretné látni, várjon, és percenként ellenőrizze őket a get-page-insights-score segítségével, mivel a teszt néhány percig is eltarthat."
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:99
 msgid "Whether the retest was triggered"
-msgstr ""
+msgstr "Elindult-e az ismételt teszt"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:104
 msgid ""
 "Current job status: running = test already in flight; triggered = retest "
 "queued; not_found = URL not tracked; failed = error"
 msgstr ""
+"A feladat aktuális állapota: running = a teszt már folyamatban van; "
+"triggered = az ismételt teszt várólistára került; not_found = az URL nincs a"
+" figyelt oldalak között; failed = hiba"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/RetestPageInsights.php:108
 msgid "Error message if retest could not be triggered"
-msgstr ""
+msgstr "Hibaüzenet, ha az ismételt tesztet nem sikerült elindítani"
 
 #: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:125
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:256
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:264
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
-#: inc/Engine/Admin/Settings/Page.php:1730
+#: inc/Engine/Admin/Settings/Page.php:1738
 msgid "Rocket Insights"
 msgstr "Rocket Insights"
 
@@ -1639,10 +1676,12 @@ msgstr "Rocket Insights"
 msgid ""
 "Abilities related to Rocket Insights performance monitoring and scoring."
 msgstr ""
+"A Rocket Insights teljesítményfigyeléséhez és pontozásához kapcsolódó "
+"képességek."
 
 #: inc/Engine/Admin/RocketInsights/Controller.php:306
 msgid "month"
-msgstr ""
+msgstr "hónap"
 
 #. Translators: %1$s = opening strong tag, %2$s = closing strong tag, %3$s =
 #. number of pages as a limit.
@@ -1674,6 +1713,8 @@ msgid ""
 "Time until the largest visible content element renders and the main content "
 "becomes visible."
 msgstr ""
+"A legnagyobb látható tartalmi elem megjelenítéséig és a fő tartalom "
+"láthatóvá válásáig eltelt idő."
 
 #: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:121
 #: views/settings/partials/rocket-insights/table-row.php:147
@@ -1681,6 +1722,8 @@ msgid ""
 "Total time the main thread is blocked before the page becomes interactive "
 "during loading."
 msgstr ""
+"Az oldal betöltése során a fő szál blokkolásának teljes időtartama, mielőtt "
+"az oldal interaktívvá válik."
 
 #: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:126
 #: views/settings/partials/rocket-insights/table-row.php:158
@@ -1688,6 +1731,8 @@ msgid ""
 "Total amount of unexpected layout shifts during page loading, affecting "
 "visual stability."
 msgstr ""
+"Az oldal betöltése során bekövetkező, a vizuális stabilitást befolyásoló "
+"váratlan elrendezés-eltolódások összesített mértéke."
 
 #: inc/Engine/Admin/RocketInsights/GlobalMetrics/Calculator.php:131
 #: views/settings/partials/rocket-insights/table-row.php:169
@@ -1695,11 +1740,13 @@ msgid ""
 "Time from the request until the server responds, determining how soon the "
 "page starts loading."
 msgstr ""
+"A kéréstől a kiszolgáló válaszáig eltelt idő, amely meghatározza, hogy "
+"milyen hamar kezdődik el az oldal betöltése."
 
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:221
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:38
 msgid "Test the page"
-msgstr ""
+msgstr "Oldal tesztelése"
 
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:224
 #: inc/Engine/Admin/RocketInsights/Rest.php:413
@@ -1709,7 +1756,7 @@ msgstr "Elérted a licenszed által megengedett maximális számú URL-t."
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:225
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:88
 msgid "Analyzing your page (~1 min)."
-msgstr ""
+msgstr "Az oldal elemzése folyamatban (~1 perc)."
 
 #: inc/Engine/Admin/RocketInsights/Render.php:356
 msgid "Monitored Pages"
@@ -1727,10 +1774,12 @@ msgid ""
 "You've %1$sreached the page limit%2$s. Please remove at least one page to "
 "continue."
 msgstr ""
+"%1$sElérte az oldalak számára vonatkozó korlátot%2$s. A folytatáshoz "
+"távolítson el legalább egy oldalt."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:340
 msgid "You are not allowed to access this item."
-msgstr ""
+msgstr "Nincs jogosultsága hozzáférni ehhez az elemhez."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:398
 msgid "Not valid inputs"
@@ -1738,15 +1787,15 @@ msgstr "Érvénytelen bevitt adatok"
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:515
 msgid "You are not allowed to create this item."
-msgstr ""
+msgstr "Nincs jogosultsága létrehozni ezt az elemet."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:530
 msgid "Invalid item ID."
-msgstr ""
+msgstr "Érvénytelen elemazonosító."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:558
 msgid "You are not allowed to delete this item."
-msgstr ""
+msgstr "Nincs jogosultsága törölni ezt az elemet."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:573
 msgid "No ID was provided."
@@ -1754,68 +1803,95 @@ msgstr "Nem lett megadva azonosító."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:581
 msgid "Item not found."
-msgstr ""
+msgstr "Az elem nem található."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:602
 msgid "Unable to reset performance test. Please try again."
 msgstr ""
+"Nem sikerült alaphelyzetbe állítani a teljesítménytesztet. Próbálja újra."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:699
 msgid "You are not allowed to update this item."
-msgstr ""
+msgstr "Nincs jogosultsága frissíteni ezt az elemet."
 
 #: inc/Engine/Admin/RocketInsights/Rest.php:733
 #: inc/Engine/Admin/RocketInsights/Rest.php:790
 msgid "You are not allowed to access items."
-msgstr ""
+msgstr "Nincs jogosultsága hozzáférni az elemekhez."
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:57
 msgid "No Subscription"
 msgstr "Nincs előfizetésed"
 
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:64
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:92
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:106
 msgid "Next Billing Date"
 msgstr "Következő számlázás dátuma:"
 
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:221
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:225
 msgid ""
 "Upgrade your plan to get access to re-test performance or run new tests"
 msgstr ""
 "Újítsd meg az előfizetésedet, hogy hozzáférést szerezz a teljesítmény "
 "teszteléséhez vagy új tesztek futtatásához"
 
+#. translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing
+#. strong, %4$s = opening link tag, %5$s = closing link.
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:451
+#, php-format
+msgid ""
+"%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket"
+" Insights%5$s to check your performance, get recommendations, and keep your "
+"site fast."
+msgstr ""
+"%1$s%2$s használatra kész!%3$s A webhely máris gyorsabb. A %4$sRocket "
+"Insights%5$s segítségével ellenőrizheti a teljesítményt, ajánlásokat kaphat,"
+" és megőrizheti a webhely gyorsaságát."
+
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:466
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:510
+msgid "Dismiss"
+msgstr "Elvetés"
+
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
 #. tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:671
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:743
 #, php-format
 msgid ""
 "%1$sNew in %2$s: Meet Rocket Insights, your built-in performance tracking "
 "tool!%3$s"
 msgstr ""
+"%1$sÚjdonság a %2$s bővítményben: ismerje meg a Rocket Insights beépített "
+"teljesítményfigyelő eszközt!%3$s"
 
 #. translators: %1$s opening tag, %2$s is WP Rocket plugin name, %3$s closing
 #. tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:682
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:754
 #, php-format
 msgid ""
 "%1$sStarting from %2$s 3.20, you can track your key pages’ performance "
 "directly from your dashboard and get in-depth insights.%3$s"
 msgstr ""
+"%1$sA %2$s 3.20-as verziójától kezdve közvetlenül a vezérlőpulton követheti "
+"a fontos oldalak teljesítményét, és részletes elemzéseket kaphat.%3$s"
 
 #. translators: %1$s opening tag, %3$s closing tag.
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:693
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:765
 #, php-format
 msgid "%1$sAdd your first page, run the test, and keep your site fast.%2$s"
 msgstr ""
+"%1$sAdja hozzá az első oldalt, futtassa a tesztet, és tartsa gyorsan a "
+"webhelyét.%2$s"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag
-#: inc/Engine/Admin/RocketInsights/Subscriber.php:785
+#: inc/Engine/Admin/RocketInsights/Subscriber.php:857
 #, php-format
 msgid ""
 "Your Rocket Insights results aren’t updated yet. %1$sRun a new test%2$s to "
 "get the latest recommendations."
 msgstr ""
+"A Rocket Insights eredményei még nem frissültek. %1$sFuttasson új "
+"tesztet%2$s a legfrissebb javaslatokért."
 
 #: inc/Engine/Admin/Settings/Page.php:245
 msgid "Save Changes"
@@ -1825,41 +1901,49 @@ msgstr "Módosítások mentése"
 msgid "Validate License"
 msgstr "Licenc ellenőrzése"
 
-#: inc/Engine/Admin/Settings/Page.php:303 inc/functions/admin.php:559
+#: inc/Engine/Admin/Settings/Page.php:306 inc/functions/admin.php:572
 msgid "Unavailable"
 msgstr "Nem elérhető"
 
-#: inc/Engine/Admin/Settings/Page.php:321
-msgid "Ended"
-msgstr ""
+#: inc/Engine/Admin/Settings/Page.php:311
+msgid "Expiration Date"
+msgstr "Lejárat dátuma:"
 
-#: inc/Engine/Admin/Settings/Page.php:417
+#: inc/Engine/Admin/Settings/Page.php:325
+msgid "Ended"
+msgstr "Befejeződött"
+
+#: inc/Engine/Admin/Settings/Page.php:339
+msgid "Trial End Date"
+msgstr "A próbaidőszak befejezésének dátuma"
+
+#: inc/Engine/Admin/Settings/Page.php:425
 msgid "API key"
 msgstr "API kulcs"
 
-#: inc/Engine/Admin/Settings/Page.php:432
+#: inc/Engine/Admin/Settings/Page.php:440
 msgid "Email address"
 msgstr "Email cím"
 
-#: inc/Engine/Admin/Settings/Page.php:458
+#: inc/Engine/Admin/Settings/Page.php:466
 msgid "Dashboard"
 msgstr "Vezérlőpult"
 
-#: inc/Engine/Admin/Settings/Page.php:459
+#: inc/Engine/Admin/Settings/Page.php:467
 msgid "Get help, account info"
 msgstr "Segítség, fiók-információ"
 
-#: inc/Engine/Admin/Settings/Page.php:509
+#: inc/Engine/Admin/Settings/Page.php:517
 msgid "File Optimization"
 msgstr "Fájl optimizálás"
 
-#: inc/Engine/Admin/Settings/Page.php:510
+#: inc/Engine/Admin/Settings/Page.php:518
 msgid "Optimize CSS & JS"
 msgstr "CSS & JS optimizálás"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:518
+#: inc/Engine/Admin/Settings/Page.php:526
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -1870,17 +1954,17 @@ msgstr ""
 "miniatűrizálást szeretnéd használni, akkor kapcsold ki ezt az opciót az "
 "Autoptimize-ban."
 
-#: inc/Engine/Admin/Settings/Page.php:528
+#: inc/Engine/Admin/Settings/Page.php:536
 msgid "CSS Files"
 msgstr "CSS fájlok"
 
-#: inc/Engine/Admin/Settings/Page.php:537
+#: inc/Engine/Admin/Settings/Page.php:545
 msgid "JavaScript Files"
 msgstr "JavaScript fájlok"
 
 #. translators: %1$s = type of minification (HTML, CSS or JS), %2$s = “WP
 #. Rocket”.
-#: inc/Engine/Admin/Settings/Page.php:544
+#: inc/Engine/Admin/Settings/Page.php:552
 #, php-format
 msgid ""
 "%1$s Minification is currently activated in <strong>Autoptimize</strong>. If"
@@ -1891,7 +1975,7 @@ msgstr ""
 "jét, akkor tiltsd le az erre vonatkozó opciókat az Autoptimize-ban először."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:551
+#: inc/Engine/Admin/Settings/Page.php:559
 #, php-format
 msgid ""
 "Also, please check our %1$sdocumentation%2$s for a list of compatibility "
@@ -1900,7 +1984,7 @@ msgstr ""
 "Továbbá, kérlek tanulmányozd a %1$sdokumentációnkat%2$s a kompatibilitási "
 "kivételek teljes listájáért."
 
-#: inc/Engine/Admin/Settings/Page.php:556
+#: inc/Engine/Admin/Settings/Page.php:564
 msgid ""
 "Internal scripts are excluded by default to prevent issues. Remove them to "
 "take full advantage of this option."
@@ -1910,7 +1994,7 @@ msgstr ""
 "funkciónak az előnyeit."
 
 #. translators: %1$s = opening </a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:559
+#: inc/Engine/Admin/Settings/Page.php:567
 #, php-format
 msgid ""
 "If this causes trouble, restore the default exclusions, found %1$shere%2$s"
@@ -1918,24 +2002,24 @@ msgstr ""
 "Ha ez problémát okozna, akkor állítsd vissza az alapértelmezett kizárásokat,"
 " amiket %1$sitt%2$stalálsz."
 
-#: inc/Engine/Admin/Settings/Page.php:568
+#: inc/Engine/Admin/Settings/Page.php:576
 msgid "Minify CSS files"
 msgstr "CSS fájlok miniatűrizálása"
 
-#: inc/Engine/Admin/Settings/Page.php:569
+#: inc/Engine/Admin/Settings/Page.php:577
 msgid "Minify CSS removes whitespace and comments to reduce the file size."
 msgstr ""
 "A CSS miniatűrizálás kiszedi a felesleges szóközöket és kommenteket, ezáltal"
 " csökkenti a fájlméretet."
 
-#: inc/Engine/Admin/Settings/Page.php:584
+#: inc/Engine/Admin/Settings/Page.php:592
 msgid ""
 "Specify URLs of CSS files to be excluded from minification (one per line)."
 msgstr ""
 "Sorold fel a CSS fájlok URL-jeit, amiket szeretnél kizárni a miniatűrizálási"
 " folyamatból. (Soronként egyet adj meg)."
 
-#: inc/Engine/Admin/Settings/Page.php:585
+#: inc/Engine/Admin/Settings/Page.php:593
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).css wildcards to exclude all CSS files located at a "
@@ -1946,7 +2030,7 @@ msgstr ""
 "szeretnéd kizárni egy bizonyos útvonalon."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:587
+#: inc/Engine/Admin/Settings/Page.php:595
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -1956,12 +2040,12 @@ msgstr ""
 "meg, vagy csak a domain nevet ahhoz, hogy kizárhasd a külső féltől származó "
 "CSS-t. %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:600
-#: inc/Engine/Admin/Settings/Page.php:622
+#: inc/Engine/Admin/Settings/Page.php:608
+#: inc/Engine/Admin/Settings/Page.php:630
 msgid "Optimize CSS delivery"
 msgstr "CSS kiküldés optimizálása"
 
-#: inc/Engine/Admin/Settings/Page.php:605
+#: inc/Engine/Admin/Settings/Page.php:613
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1972,7 +2056,7 @@ msgstr ""
 "eltávolítása opciót javasoljuk inkább a jobb teljesítmény érdekében, de az "
 "csak az aktív licensszel rendelkező felhasználóknak elérhető."
 
-#: inc/Engine/Admin/Settings/Page.php:605
+#: inc/Engine/Admin/Settings/Page.php:613
 msgid ""
 "Optimize CSS delivery eliminates render-blocking CSS on your website. Only "
 "one method can be selected. Remove Unused CSS is recommended for optimal "
@@ -1985,7 +2069,7 @@ msgstr ""
 " legjobb teljesítmény érdekében."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:615
+#: inc/Engine/Admin/Settings/Page.php:623
 #, php-format
 msgid ""
 "Optimize CSS Delivery features are disabled on local environments. %1$sLearn"
@@ -1994,13 +2078,13 @@ msgstr ""
 "Az optimizált CSS kiküldés funkciók nem elérhetőek helyi környezetben. "
 "%1$sTudj meg többet%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:635
+#: inc/Engine/Admin/Settings/Page.php:643
 #: inc/Engine/Optimization/RUCSS/Admin/OptionSubscriber.php:74
 msgid "Remove Unused CSS"
 msgstr "Nem-használt CSS kódok eltávolítása"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:638
+#: inc/Engine/Admin/Settings/Page.php:646
 #, php-format
 msgid ""
 "Removes unused CSS per page and helps to reduce page size and HTTP requests."
@@ -2011,13 +2095,13 @@ msgstr ""
 "legjobb teljesítmény érdekében, azonban alaposan teszteld! %1$sTovábbi "
 "információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:640
-#: inc/Engine/Admin/Settings/Page.php:724
+#: inc/Engine/Admin/Settings/Page.php:648
+#: inc/Engine/Admin/Settings/Page.php:732
 msgid "This could break things!"
 msgstr "Ez elronthat dolgokat az oldalon!"
 
-#: inc/Engine/Admin/Settings/Page.php:641
-#: inc/Engine/Admin/Settings/Page.php:725
+#: inc/Engine/Admin/Settings/Page.php:649
+#: inc/Engine/Admin/Settings/Page.php:733
 msgid ""
 "If you notice any errors on your website after having activated this "
 "setting, just deactivate it again, and your site will be back to normal."
@@ -2026,15 +2110,15 @@ msgstr ""
 "opciót, akkor egyszerűen kapcsold ki itt és az oldalad újra rendesen fog "
 "működni."
 
-#: inc/Engine/Admin/Settings/Page.php:642
+#: inc/Engine/Admin/Settings/Page.php:650
 msgid "Activate Remove Unused CSS"
 msgstr "Aktiváld a nem-használt CSS eltávolító funkciót"
 
-#: inc/Engine/Admin/Settings/Page.php:648
+#: inc/Engine/Admin/Settings/Page.php:656
 msgid "CSS safelist"
 msgstr "Védett/biztonságos CSS kódok listája"
 
-#: inc/Engine/Admin/Settings/Page.php:649
+#: inc/Engine/Admin/Settings/Page.php:657
 msgid ""
 "Specify CSS filenames, IDs or classes that should not be removed (one per "
 "line)."
@@ -2043,13 +2127,13 @@ msgstr ""
 "ek nevét, amiket nem szabad eltávolítanunk ezen funkció keretében. (Minden "
 "sorba egyet írj)"
 
-#: inc/Engine/Admin/Settings/Page.php:664
+#: inc/Engine/Admin/Settings/Page.php:672
 #: inc/Engine/CriticalPath/Admin/Subscriber.php:201
 msgid "Load CSS asynchronously"
 msgstr "Aszinkron CSS betöltés"
 
 #. translators: %1$s = plugin name.
-#: inc/Engine/Admin/Settings/Page.php:667
+#: inc/Engine/Admin/Settings/Page.php:675
 #, php-format
 msgctxt "WP Critical CSS compatibility"
 msgid ""
@@ -2061,7 +2145,7 @@ msgstr ""
 "tiltsd le az %1$s bővítményt."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:669
+#: inc/Engine/Admin/Settings/Page.php:677
 #, php-format
 msgid ""
 "Generates critical path CSS and loads CSS asynchronously. %1$sMore info%2$s"
@@ -2069,12 +2153,12 @@ msgstr ""
 "Létrehozza a kritikus útvonalú CSS-eket és aszinkron módon tölti be a CSS-"
 "eket. %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:675
+#: inc/Engine/Admin/Settings/Page.php:683
 msgid "Fallback critical CSS"
 msgstr "Tartalék kritikus CSS"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:677
+#: inc/Engine/Admin/Settings/Page.php:685
 #, php-format
 msgid ""
 "Provides a fallback if auto-generated critical path CSS is incomplete. "
@@ -2084,18 +2168,18 @@ msgstr ""
 "kritikus útvonalú CSS lista nem megfelelő, vagy hiányos. %1$sTovábbi "
 "információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:692
+#: inc/Engine/Admin/Settings/Page.php:700
 msgid "Minify JavaScript files"
 msgstr "JavaScript fájlok miniatűrizálása"
 
-#: inc/Engine/Admin/Settings/Page.php:693
+#: inc/Engine/Admin/Settings/Page.php:701
 msgid ""
 "Minify JavaScript removes whitespace and comments to reduce the file size."
 msgstr ""
 "A Javascript miniatűrizálás kiszedi a felesleges szóközöket és kommenteket, "
 "ezáltal csökkenti a fájlméretet."
 
-#: inc/Engine/Admin/Settings/Page.php:707
+#: inc/Engine/Admin/Settings/Page.php:715
 msgid ""
 "Combine JavaScript files <em>(Enable Minify JavaScript files to select)</em>"
 msgstr ""
@@ -2103,7 +2187,7 @@ msgstr ""
 " ehhez)</em>"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:709
+#: inc/Engine/Admin/Settings/Page.php:717
 #, php-format
 msgid ""
 "Combine JavaScript files combines your site’s internal, 3rd party and inline"
@@ -2115,8 +2199,7 @@ msgstr ""
 "csökkentve a HTTP kéréseket. Ez nem ajánlott ha az oldalad HTTP/2-t használ."
 "  %1$sbővebb információ%2$s"
 
-#. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:710
+#: inc/Engine/Admin/Settings/Page.php:718
 msgid ""
 "For compatibility and best results, this option is disabled when delay "
 "javascript execution is enabled."
@@ -2124,12 +2207,12 @@ msgstr ""
 "A legjobb kompatibilitás érdekében ez az opció le van tiltva, ha a "
 "javascript késleltetett futtatása funkció engedélyezve van."
 
-#: inc/Engine/Admin/Settings/Page.php:726
+#: inc/Engine/Admin/Settings/Page.php:734
 msgid "Activate combine JavaScript"
 msgstr "Aktiváld a Javascript fájlok összevonását"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:733
+#: inc/Engine/Admin/Settings/Page.php:741
 #, php-format
 msgid ""
 "Specify patterns of inline JavaScript to be excluded from concatenation (one"
@@ -2138,7 +2221,7 @@ msgstr ""
 "Adj meg beágyazott JavaScript mintákat amiket kizárunk az összevonásból. "
 "(soronként egyet) %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:750
+#: inc/Engine/Admin/Settings/Page.php:758
 msgid ""
 "Specify URLs of JavaScript files to be excluded from minification and "
 "concatenation (one per line)."
@@ -2146,7 +2229,7 @@ msgstr ""
 "Itt adhatod meg azon JavaScript fájlok elérési útvonalát (URL-t) amiket ki "
 "szeretnél zárni a miniatűrizálásból és összevonásból. (Soronként egyet írj)"
 
-#: inc/Engine/Admin/Settings/Page.php:751
+#: inc/Engine/Admin/Settings/Page.php:759
 msgid ""
 "<strong>Internal:</strong> The domain part of the URL will be stripped "
 "automatically. Use (.*).js wildcards to exclude all JS files located at a "
@@ -2157,7 +2240,7 @@ msgstr ""
 "zárni az adott elérési útvonalon."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:753
+#: inc/Engine/Admin/Settings/Page.php:761
 #, php-format
 msgid ""
 "<strong>3rd Party:</strong> Use either the full URL path or only the domain "
@@ -2167,13 +2250,13 @@ msgstr ""
 "vagy csak a domain nevet, hogy kizárd a külső forrásból származó JS. "
 "%1$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:769
+#: inc/Engine/Admin/Settings/Page.php:777
 #: inc/Engine/Optimization/DeferJS/AdminSubscriber.php:76
 msgid "Load JavaScript deferred"
 msgstr "JavaScript párhuzamos betöltése"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:771
+#: inc/Engine/Admin/Settings/Page.php:779
 #, php-format
 msgid ""
 "Load JavaScript deferred eliminates render-blocking JS on your site and can "
@@ -2185,7 +2268,7 @@ msgstr ""
 " információ%2$s"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:784
+#: inc/Engine/Admin/Settings/Page.php:792
 #, php-format
 msgid ""
 "Specify URLs or keywords of JavaScript files to be excluded from defer (one "
@@ -2195,13 +2278,13 @@ msgstr ""
 "szeretnél zárni a párhuzamos betöltésből. (Soronként egyet írj). %1$sBővebb "
 "információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:800
+#: inc/Engine/Admin/Settings/Page.php:808
 #: inc/Engine/Optimization/DelayJS/Admin/Subscriber.php:210
 msgid "Delay JavaScript execution"
 msgstr "Késleltesd a JavaScript futtatását"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:802
+#: inc/Engine/Admin/Settings/Page.php:810
 #, php-format
 msgid ""
 "Improves performance by delaying the loading of JavaScript files until user "
@@ -2211,23 +2294,28 @@ msgstr ""
 "betöltését egészen addig amíg nem történik valamilyen felhasználói "
 "interakció (pl. kattintás, görgetés). %1$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:811
+#: inc/Engine/Admin/Settings/Page.php:819
 msgid "One-click exclusions"
 msgstr "Egy-kattintásos kivételek"
 
-#: inc/Engine/Admin/Settings/Page.php:812
+#: inc/Engine/Admin/Settings/Page.php:820
 msgid ""
 "When using the Delay JavaScript feature, you might notice that some elements"
 " in the viewport take time to appear."
 msgstr ""
+"A JavaScript késleltetése funkció használatakor előfordulhat, hogy a látható"
+" területen egyes elemek csak később jelennek meg."
 
-#: inc/Engine/Admin/Settings/Page.php:813
+#: inc/Engine/Admin/Settings/Page.php:821
 msgid ""
 "If you need these elements to load immediately, select the related plugins, "
 "themes, or services below to ensure they appear without delay."
 msgstr ""
+"Ha ezeknek az elemeknek azonnal be kell töltődniük, válassza ki alább a "
+"kapcsolódó bővítményeket, sablonokat vagy szolgáltatásokat, hogy az elemek "
+"késleltetés nélkül jelenjenek meg."
 
-#: inc/Engine/Admin/Settings/Page.php:833
+#: inc/Engine/Admin/Settings/Page.php:841
 msgid ""
 "Specify URLs or keywords that can identify inline or JavaScript files to be "
 "excluded from delaying execution (one per line)."
@@ -2236,20 +2324,20 @@ msgstr ""
 "ágyazott JavaScript fájlok vagy kódrészletek, amiket ki szeretnél zárni a "
 "késleltetett betöltésből. (soronként egy)"
 
-#: inc/Engine/Admin/Settings/Page.php:847
+#: inc/Engine/Admin/Settings/Page.php:855
 msgid "Safe Mode for Delay JavaScript Execution"
 msgstr "Csökkentett mód a Késleltetett JavaScript Végrehajtás-nál"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:849
+#: inc/Engine/Admin/Settings/Page.php:857
 msgid "The Safe Mode mode prevents all internal scripts from being delayed."
 msgstr "A csökkentett mód megakadályozza minden belső script késleltetését."
 
-#: inc/Engine/Admin/Settings/Page.php:865
+#: inc/Engine/Admin/Settings/Page.php:873
 msgid "Performance impact"
 msgstr "Teljesítmény hatás"
 
-#: inc/Engine/Admin/Settings/Page.php:866
+#: inc/Engine/Admin/Settings/Page.php:874
 msgid ""
 "By enabling Safe Mode, you significantly reduce your website performance "
 "improvements. We recommend using it only as a temporary solution. If you’re "
@@ -2262,28 +2350,28 @@ msgstr ""
 "Végrehajtás funkcióval, akkor a támogatási csapatunk szívesen segít Neked "
 "elhárítani a hibát."
 
-#: inc/Engine/Admin/Settings/Page.php:867
+#: inc/Engine/Admin/Settings/Page.php:875
 msgid "ACTIVATE SAFE MODE"
 msgstr "CSÖKKENTETT MÓD BEKAPCSOLÁSA"
 
-#: inc/Engine/Admin/Settings/Page.php:889
+#: inc/Engine/Admin/Settings/Page.php:897
 msgid "Media"
 msgstr "Média"
 
-#: inc/Engine/Admin/Settings/Page.php:890
+#: inc/Engine/Admin/Settings/Page.php:898
 msgid "LazyLoad, image dimensions, font optimization"
 msgstr "LazyLoad, képméretek, betűtípusok optimizálása"
 
-#: inc/Engine/Admin/Settings/Page.php:899
+#: inc/Engine/Admin/Settings/Page.php:907
 msgid "Autoptimize"
 msgstr "Autoptimize"
 
-#: inc/Engine/Admin/Settings/Page.php:953
+#: inc/Engine/Admin/Settings/Page.php:961
 msgid "LazyLoad"
 msgstr "LazyLoad"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:956
+#: inc/Engine/Admin/Settings/Page.php:964
 #, php-format
 msgid ""
 "It can improve actual and perceived loading time as images, iframes, and "
@@ -2296,7 +2384,7 @@ msgstr ""
 "információ%2$s"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:963
+#: inc/Engine/Admin/Settings/Page.php:971
 #, php-format
 msgid ""
 "LazyLoad is currently activated in %2$s. If you want to use WP Rocket’s "
@@ -2305,12 +2393,12 @@ msgstr ""
 "LazyLoad jelenleg aktiválva van a(z) %2$s-ben. Ha szeretnéd inkább a WP "
 "Rocket LazyLoad-ját használni akkor tiltsd le ezt az opciót a  %2$s-ben."
 
-#: inc/Engine/Admin/Settings/Page.php:966
+#: inc/Engine/Admin/Settings/Page.php:974
 msgid "Image Dimensions"
 msgstr "Képméretek"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:969
+#: inc/Engine/Admin/Settings/Page.php:977
 #, php-format
 msgid ""
 "Add missing width and height attributes to images. Helps prevent layout "
@@ -2322,16 +2410,16 @@ msgstr ""
 "ezáltal javítja az olvasási élményt a látogatóid számára. %1$sBővebb "
 "információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:974
+#: inc/Engine/Admin/Settings/Page.php:982
 msgid "Fonts"
 msgstr "Betűtípusok"
 
-#: inc/Engine/Admin/Settings/Page.php:997
+#: inc/Engine/Admin/Settings/Page.php:1005
 msgid "Enable for images"
 msgstr "Engedélyezés képek számára"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin names.
-#: inc/Engine/Admin/Settings/Page.php:1009
+#: inc/Engine/Admin/Settings/Page.php:1017
 #, php-format
 msgid ""
 "LazyLoad for images is currently activated in %2$s. If you want to use "
@@ -2340,20 +2428,20 @@ msgstr ""
 "A LazyLoad képekhez engedélyezve van itt: %2$s. Ha inkább a %1$s LazyLoad-"
 "ját szeretnéd használni akkor tiltsd le ezt az opciót itt: %2$s."
 
-#: inc/Engine/Admin/Settings/Page.php:1017
+#: inc/Engine/Admin/Settings/Page.php:1025
 msgid "Enable for CSS background images"
 msgstr "Engedélyezés a CSS-beli háttérképek számára"
 
-#: inc/Engine/Admin/Settings/Page.php:1032
+#: inc/Engine/Admin/Settings/Page.php:1040
 msgid "Enable for iframes and videos"
 msgstr "Engedélyezés iframe-k és videók számára"
 
-#: inc/Engine/Admin/Settings/Page.php:1047
+#: inc/Engine/Admin/Settings/Page.php:1055
 msgid "Replace YouTube iframe with preview image"
 msgstr "Cseréld ki a YouTube iframe-eket egy előnézeti képpel"
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1049
+#: inc/Engine/Admin/Settings/Page.php:1057
 #, php-format
 msgid "Replace YouTube iframe with preview image is not compatible with %2$s."
 msgstr ""
@@ -2361,7 +2449,7 @@ msgstr ""
 "%2$s."
 
 #. translators: %1$s = “WP Rocket”, %2$s = a list of plugin or themes names.
-#: inc/Engine/Admin/Settings/Page.php:1049
+#: inc/Engine/Admin/Settings/Page.php:1057
 msgid ""
 "This can significantly improve your loading time if you have a lot of "
 "YouTube videos on a page."
@@ -2369,68 +2457,80 @@ msgstr ""
 "Ez jelentősen javíthatja a betöltési idődet, ha sok YouTube videód van egy "
 "oldalon."
 
-#: inc/Engine/Admin/Settings/Page.php:1064
+#: inc/Engine/Admin/Settings/Page.php:1072
 msgid "Excluded images or iframes"
 msgstr "Kizárt/kihagyott képek és iframek"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1066
+#: inc/Engine/Admin/Settings/Page.php:1074
 #, php-format
 msgid ""
 "Specify keywords (e.g. image filename, CSS filename, CSS class, domain) from"
 " the image or iframe code to be excluded (one per line). %1$sMore info%2$s"
 msgstr ""
+"Adja meg a kizárandó képek vagy iframe-ek kódjában szereplő kulcsszavakat "
+"(pl. képfájlnév, CSS-fájlnév, CSS-osztály, domain), soronként egyet. "
+"%1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1074
+#: inc/Engine/Admin/Settings/Page.php:1082
 msgid "Add missing image dimensions"
 msgstr "Hiányzó képméretek beírása"
 
-#: inc/Engine/Admin/Settings/Page.php:1082
+#: inc/Engine/Admin/Settings/Page.php:1090
 msgid "Preload fonts"
 msgstr "Betűtípusok előtöltése"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1084
+#: inc/Engine/Admin/Settings/Page.php:1092
 #, php-format
 msgid ""
 "Preload above-the-fold fonts to enhance layout stability and optimize text-"
 "based LCP elements. %1$sMore info%2$s"
 msgstr ""
+"A görgetés nélkül látható területen használt betűkészletek előtöltése az "
+"elrendezés stabilitásának javításához és a szöveges LCP-elemek "
+"optimalizálásához. %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1092
+#: inc/Engine/Admin/Settings/Page.php:1100
 msgid "Self-host Google Fonts"
-msgstr ""
+msgstr "Google Fonts-betűkészletek kiszolgálása saját szerverről"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1094
+#: inc/Engine/Admin/Settings/Page.php:1102
 #, php-format
 msgid ""
 "Download and serve fonts directly from your server. Reduces connections to "
 "external servers and minimizes font shifts. %1$sMore info%2$s"
 msgstr ""
+"A betűkészletek letöltése és kiszolgálása közvetlenül a saját szerverről. "
+"Csökkenti a külső szerverekhez való kapcsolódások számát, és minimalizálja a"
+" betűkészletek okozta elmozdulásokat. %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1114
+#: inc/Engine/Admin/Settings/Page.php:1122
 msgid "Generate cache files"
-msgstr ""
+msgstr "Gyorsítótárfájlok létrehozása"
 
-#: inc/Engine/Admin/Settings/Page.php:1126
+#: inc/Engine/Admin/Settings/Page.php:1134
 msgid "Preload Cache"
 msgstr "Gyorsítótár előtöltése"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1129
+#: inc/Engine/Admin/Settings/Page.php:1137
 msgid ""
 "When you enable preloading WP Rocket will automatically detect your sitemaps"
 " and save all URLs to the database. The plugin will make sure that your "
 "cache is always preloaded."
 msgstr ""
+"Az előtöltés engedélyezésekor a WP Rocket automatikusan felismeri a "
+"webhelytérképeket, és az összes URL-t az adatbázisba menti. A bővítmény "
+"gondoskodik arról, hogy a gyorsítótár mindig elő legyen töltve."
 
-#: inc/Engine/Admin/Settings/Page.php:1137
+#: inc/Engine/Admin/Settings/Page.php:1145
 msgid "Preload Links"
 msgstr "Linkek előtöltése"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1140
+#: inc/Engine/Admin/Settings/Page.php:1148
 #, php-format
 msgid ""
 "Link preloading improves the perceived load time by downloading a page when "
@@ -2440,16 +2540,16 @@ msgstr ""
 "azáltal, hogy már akkor letölti az oldalt amikor a felhasználó ráviszi az "
 "egerét a linkre. %1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1154
+#: inc/Engine/Admin/Settings/Page.php:1162
 msgid "Activate Preloading"
 msgstr "Előtöltés aktiválása"
 
-#: inc/Engine/Admin/Settings/Page.php:1165
+#: inc/Engine/Admin/Settings/Page.php:1173
 msgid "Exclude URLs"
 msgstr "URL-ek kizárása"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1170
+#: inc/Engine/Admin/Settings/Page.php:1178
 #, php-format
 msgid ""
 "Specify URLs to be excluded from the preload feature (one per line). "
@@ -2458,53 +2558,53 @@ msgstr ""
 "Sorolj fel URL-eket, amiket szeretnél kizárni az előtöltés funkcióból. "
 "(soronként egyet adj meg). %1$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1181
+#: inc/Engine/Admin/Settings/Page.php:1189
 msgid "Enable link preloading"
 msgstr "Link előtöltés engedélyezése"
 
-#: inc/Engine/Admin/Settings/Page.php:1200
+#: inc/Engine/Admin/Settings/Page.php:1208
 msgid "Advanced Rules"
 msgstr "Haladó beállítások"
 
-#: inc/Engine/Admin/Settings/Page.php:1201
+#: inc/Engine/Admin/Settings/Page.php:1209
 msgid "Fine-tune cache rules"
 msgstr "Gyorsítótár szabályok finomhangolása"
 
-#: inc/Engine/Admin/Settings/Page.php:1214
+#: inc/Engine/Admin/Settings/Page.php:1222
 msgid ""
 "Sensitive pages like custom login/logout URLs should be excluded from cache."
 msgstr ""
 "Az érzékeny adatokkal dolgozó oldalakat, mint pl. az egyéni "
 "bejelentkező/kijelentkező URL-eket célszerű kizárni a gyorsítótárazásból."
 
-#: inc/Engine/Admin/Settings/Page.php:1217
+#: inc/Engine/Admin/Settings/Page.php:1225
 msgctxt "plugin name"
 msgid "WooCommerce"
 msgstr "WooCommerce"
 
-#: inc/Engine/Admin/Settings/Page.php:1219
+#: inc/Engine/Admin/Settings/Page.php:1227
 msgctxt "plugin name"
 msgid "Easy Digital Downloads"
 msgstr "Easy Digital Downloads"
 
-#: inc/Engine/Admin/Settings/Page.php:1221
+#: inc/Engine/Admin/Settings/Page.php:1229
 msgctxt "plugin name"
 msgid "iThemes Exchange"
 msgstr "iThemes Exchange"
 
-#: inc/Engine/Admin/Settings/Page.php:1223
+#: inc/Engine/Admin/Settings/Page.php:1231
 msgctxt "plugin name"
 msgid "Jigoshop"
 msgstr "Jigoshop"
 
-#: inc/Engine/Admin/Settings/Page.php:1225
+#: inc/Engine/Admin/Settings/Page.php:1233
 msgctxt "plugin name"
 msgid "WP-Shop"
 msgstr "WP-Shop"
 
 #. translators: %1$s = opening <a> tag, %2$s = plugin name, %3$s closing </a>
 #. tag.
-#: inc/Engine/Admin/Settings/Page.php:1231
+#: inc/Engine/Admin/Settings/Page.php:1239
 #, php-format
 msgid ""
 "<br>Cart, checkout and \"my account\" pages set in "
@@ -2514,12 +2614,12 @@ msgstr ""
 "<strong>%1$s%2$s%3$s</strong> automatikusan érzékelve vannak és nem lesznek "
 "soha gyorsítótárazva alapbeállításként."
 
-#: inc/Engine/Admin/Settings/Page.php:1241
+#: inc/Engine/Admin/Settings/Page.php:1249
 msgid "Cache Lifespan"
 msgstr "Gyorsítótár élettartama"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1244
+#: inc/Engine/Admin/Settings/Page.php:1252
 #, php-format
 msgid ""
 "Cache files older than the specified lifespan will be deleted.<br>Enable "
@@ -2531,16 +2631,16 @@ msgstr ""
 "preloadingot%2$s annak érdekében, hogy a gyorsítótárat automatikusan "
 "újraépíthessük ha lejárt az élettartama."
 
-#: inc/Engine/Admin/Settings/Page.php:1260
+#: inc/Engine/Admin/Settings/Page.php:1268
 msgid "Never Cache Cookies"
 msgstr "Soha ne gyorsítótárazzuk ezeket a sütiket"
 
-#: inc/Engine/Admin/Settings/Page.php:1278
+#: inc/Engine/Admin/Settings/Page.php:1286
 msgid "Cache Query String(s)"
 msgstr "Gyorsítótár lekérő sztring(ek)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1281
+#: inc/Engine/Admin/Settings/Page.php:1289
 #, php-format
 msgid ""
 "%1$sCache for query strings%2$s enables you to force caching for specific "
@@ -2549,7 +2649,7 @@ msgstr ""
 "%1$sGyorsítótár az alábbi lekérő sztringekhez%2$s lehetővé teszi számodra "
 "hogy kényszerítsd a gyorsítótárazást bizonyos GET paraméterek esetén."
 
-#: inc/Engine/Admin/Settings/Page.php:1292
+#: inc/Engine/Admin/Settings/Page.php:1300
 msgid ""
 "Specify time after which the global cache is cleared<br>(0 = unlimited )"
 msgstr ""
@@ -2557,7 +2657,7 @@ msgstr ""
 "gyorsítótár<br>(0=soha)"
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1294
+#: inc/Engine/Admin/Settings/Page.php:1302
 #, php-format
 msgid ""
 "Reduce lifespan to 10 hours or less if you notice issues that seem to appear"
@@ -2566,27 +2666,27 @@ msgstr ""
 "Csökkentsd 10 órára vagy kevesebbre az élettartamot, ha olyan problémákat "
 "tapasztalsz ami csak időnként, de rendszeresen előfordul. %1$sMiért?%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1300
+#: inc/Engine/Admin/Settings/Page.php:1308
 #: inc/Engine/License/views/promo-banner.php:32
 #: inc/Engine/License/views/renewal-soon-banner.php:15
 msgid "Hours"
 msgstr "Órák"
 
-#: inc/Engine/Admin/Settings/Page.php:1301
+#: inc/Engine/Admin/Settings/Page.php:1309
 #: inc/Engine/License/views/promo-banner.php:31
 #: inc/Engine/License/views/renewal-soon-banner.php:14
 msgid "Days"
 msgstr "Napok"
 
-#: inc/Engine/Admin/Settings/Page.php:1306
+#: inc/Engine/Admin/Settings/Page.php:1314
 msgid ""
 "Specify URLs of pages or posts that should never be cached (one per line)"
 msgstr ""
 "Add meg bejegyzések vagy oldalak URL-jeit amiket soha nem szeretnél "
 "gyorsítótárazni (soronként egyet)"
 
-#: inc/Engine/Admin/Settings/Page.php:1307
-#: inc/Engine/Admin/Settings/Page.php:1335
+#: inc/Engine/Admin/Settings/Page.php:1315
+#: inc/Engine/Admin/Settings/Page.php:1343
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to address multiple URLs under a given path."
@@ -2594,7 +2694,7 @@ msgstr ""
 "Az URL domain-része automatikusan törölve lesz. <br>Használj (.*) wildcard-"
 "okat hogy több URL-t is érvényesíthess egy elérési útvonal alatt."
 
-#: inc/Engine/Admin/Settings/Page.php:1316
+#: inc/Engine/Admin/Settings/Page.php:1324
 msgid ""
 "Specify full or partial IDs of cookies that, when set in the visitor's "
 "browser, should prevent a page from getting cached (one per line)"
@@ -2603,18 +2703,18 @@ msgstr ""
 "állíva a látogató böngészőjében akkor meg szretnéd akadályozni az adott "
 "oldal gyorsítótárazását (soronként egyet írj)"
 
-#: inc/Engine/Admin/Settings/Page.php:1324
+#: inc/Engine/Admin/Settings/Page.php:1332
 msgid ""
 "Specify user agent strings that should never see cached pages (one per line)"
 msgstr ""
 "Adj meg user agent string-eket itt, amiknél nem szeretnéd ha gyorítótárazás "
 "lenne. (soronként egy)"
 
-#: inc/Engine/Admin/Settings/Page.php:1325
+#: inc/Engine/Admin/Settings/Page.php:1333
 msgid "Use (.*) wildcards to detect parts of UA strings."
 msgstr "Használj (.*) wildcardokat hogy UA sztringek részleteit ismerd fel. "
 
-#: inc/Engine/Admin/Settings/Page.php:1334
+#: inc/Engine/Admin/Settings/Page.php:1342
 msgid ""
 "Specify URLs you always want purged from cache whenever you update any post "
 "or page (one per line)"
@@ -2622,19 +2722,19 @@ msgstr ""
 "Adj meg URL-eket amiket mindig üríteni szeretnél a gyorsítótárazásból amikor"
 " frissítessz bármilyen bejegyzést vagy oldalt. (soronként egyet)"
 
-#: inc/Engine/Admin/Settings/Page.php:1343
+#: inc/Engine/Admin/Settings/Page.php:1351
 msgid "Specify query strings for caching (one per line)"
 msgstr "Adj meg lekérdező sztringeket a gyorsítótárazáshoz (soronként egyet)"
 
-#: inc/Engine/Admin/Settings/Page.php:1369
+#: inc/Engine/Admin/Settings/Page.php:1377
 msgid "Optimize, reduce bloat"
 msgstr "Optimizálás, szemetek törlése"
 
-#: inc/Engine/Admin/Settings/Page.php:1376
+#: inc/Engine/Admin/Settings/Page.php:1384
 msgid "Post Cleanup"
 msgstr "Bejegyzés takarítás"
 
-#: inc/Engine/Admin/Settings/Page.php:1378
+#: inc/Engine/Admin/Settings/Page.php:1386
 msgid ""
 "Post revisions and drafts will be permanently deleted. Do not use this "
 "option if you need to retain revisions or drafts."
@@ -2643,19 +2743,19 @@ msgstr ""
 "ezt az opciót, ha meg szeretnéd tartani a bejegyzések előző verziót vagy a "
 "piszkozatokat."
 
-#: inc/Engine/Admin/Settings/Page.php:1383
+#: inc/Engine/Admin/Settings/Page.php:1391
 msgid "Comments Cleanup"
 msgstr "Kommentek takarítása"
 
-#: inc/Engine/Admin/Settings/Page.php:1385
+#: inc/Engine/Admin/Settings/Page.php:1393
 msgid "Spam and trashed comments will be permanently deleted."
 msgstr "A spam és lomtárba helyezett kommentek végleg törölve lesznek"
 
-#: inc/Engine/Admin/Settings/Page.php:1389
+#: inc/Engine/Admin/Settings/Page.php:1397
 msgid "Transients Cleanup"
 msgstr "Tranziensek törlése"
 
-#: inc/Engine/Admin/Settings/Page.php:1391
+#: inc/Engine/Admin/Settings/Page.php:1399
 msgid ""
 "Transients are temporary options; they are safe to remove. They will be "
 "automatically regenerated as your plugins require them."
@@ -2663,21 +2763,21 @@ msgstr ""
 "A tranziensek ideiglenes opciók, biztonságosan törölhetőek. Automatikusan "
 "újra lesznek generálva ha a pluginjaidnak kellenek."
 
-#: inc/Engine/Admin/Settings/Page.php:1395
+#: inc/Engine/Admin/Settings/Page.php:1403
 msgid "Database Cleanup"
 msgstr "Adatbázis takarítás"
 
-#: inc/Engine/Admin/Settings/Page.php:1397
+#: inc/Engine/Admin/Settings/Page.php:1405
 msgid "Reduces overhead of database tables"
 msgstr "Törli a felesleges adatokat az adatbázis táblából"
 
-#: inc/Engine/Admin/Settings/Page.php:1401
+#: inc/Engine/Admin/Settings/Page.php:1409
 msgid "Automatic Cleanup"
 msgstr "Automatikus takarítás"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1414
+#: inc/Engine/Admin/Settings/Page.php:1422
 #, php-format
 msgid "%s revision in your database."
 msgid_plural "%s revisions in your database."
@@ -2686,7 +2786,7 @@ msgstr[1] "%s változat van az adatbázisodban."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1424
+#: inc/Engine/Admin/Settings/Page.php:1432
 #, php-format
 msgid "%s draft in your database."
 msgid_plural "%s drafts in your database."
@@ -2695,7 +2795,7 @@ msgstr[1] "%s piszkozat van az adatbázisodban."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1434
+#: inc/Engine/Admin/Settings/Page.php:1442
 #, php-format
 msgid "%s trashed post in your database."
 msgid_plural "%s trashed posts in your database."
@@ -2704,7 +2804,7 @@ msgstr[1] "%s törölt bejegyzés van az adatbázisodban."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1444
+#: inc/Engine/Admin/Settings/Page.php:1452
 #, php-format
 msgid "%s spam comment in your database."
 msgid_plural "%s spam comments in your database."
@@ -2713,92 +2813,93 @@ msgstr[1] "%s spam komment van az adatbázisodban."
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1454
+#: inc/Engine/Admin/Settings/Page.php:1462
 #, php-format
 msgid "%s trashed comment in your database."
 msgid_plural "%s trashed comments in your database."
 msgstr[0] "%slomtárba helyezett komment van az adatbázisodban."
 msgstr[1] "%slomtárba helyezett komment van az adatbázisodban."
 
-#: inc/Engine/Admin/Settings/Page.php:1462
+#: inc/Engine/Admin/Settings/Page.php:1470
 msgid "All transients"
 msgstr "Minden tranziens"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1464
+#: inc/Engine/Admin/Settings/Page.php:1472
 #, php-format
 msgid "%s transient in your database."
 msgid_plural "%s transients in your database."
 msgstr[0] "%stranziens van az adatbázisodban."
 msgstr[1] "%s tranziens van az adatbázisodban."
 
-#: inc/Engine/Admin/Settings/Page.php:1472
+#: inc/Engine/Admin/Settings/Page.php:1480
 msgid "Optimize Tables"
 msgstr "Táblák optimizálása"
 
 #. translators: %s is the number of revisions found in the database. It's a
 #. formatted number, don't use %d.
-#: inc/Engine/Admin/Settings/Page.php:1474
+#: inc/Engine/Admin/Settings/Page.php:1482
 #, php-format
 msgid "%s table to optimize in your database."
 msgid_plural "%s tables to optimize in your database."
 msgstr[0] "%s táblát kell optimizálni az adatbázisodban."
 msgstr[1] "%s táblát kell optimizálni az adatbázisodban."
 
-#: inc/Engine/Admin/Settings/Page.php:1485
+#: inc/Engine/Admin/Settings/Page.php:1493
 msgid "Schedule Automatic Cleanup"
 msgstr "Ütemezd az automatikus takarítást"
 
-#: inc/Engine/Admin/Settings/Page.php:1497
+#: inc/Engine/Admin/Settings/Page.php:1505
 msgid "Frequency"
 msgstr "Gyakoriság"
 
-#: inc/Engine/Admin/Settings/Page.php:1505
-#: inc/Engine/Admin/Settings/Page.php:1789
+#: inc/Engine/Admin/Settings/Page.php:1513
+#: inc/Engine/Admin/Settings/Page.php:1797
 msgid "Daily"
 msgstr "Naponta"
 
-#: inc/Engine/Admin/Settings/Page.php:1506
-#: inc/Engine/Admin/Settings/Page.php:1790
+#: inc/Engine/Admin/Settings/Page.php:1514
+#: inc/Engine/Admin/Settings/Page.php:1798
 msgid "Weekly"
 msgstr "Hetente"
 
-#: inc/Engine/Admin/Settings/Page.php:1507
-#: inc/Engine/Admin/Settings/Page.php:1791
+#: inc/Engine/Admin/Settings/Page.php:1515
+#: inc/Engine/Admin/Settings/Page.php:1799
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:134
 msgid "Monthly"
 msgstr "Havonta"
 
-#: inc/Engine/Admin/Settings/Page.php:1523
+#: inc/Engine/Admin/Settings/Page.php:1531
 msgid "Content Delivery"
-msgstr ""
+msgstr "Tartalomkiszolgálás"
 
-#: inc/Engine/Admin/Settings/Page.php:1524
+#: inc/Engine/Admin/Settings/Page.php:1532
 msgid "Speed up page delivery"
-msgstr ""
-
-#: inc/Engine/Admin/Settings/Page.php:1533
-msgid "NEW"
-msgstr ""
+msgstr "Az oldalkiszolgálás gyorsítása"
 
 #: inc/Engine/Admin/Settings/Page.php:1541
-#: views/settings/partials/cdn/cdn-driver-tabs.php:39
+#: inc/Engine/Admin/Settings/Subscriber.php:204
+msgid "NEW"
+msgstr "ÚJ"
+
+#: inc/Engine/Admin/Settings/Page.php:1549
+#: views/settings/partials/cdn/cdn-driver-tabs.php:40
 msgid "Your CDN"
-msgstr ""
+msgstr "Saját CDN"
 
-#: inc/Engine/Admin/Settings/Page.php:1553
+#: inc/Engine/Admin/Settings/Page.php:1561
+#: inc/Engine/CDN/Render/Controller.php:524
 msgid "Your CDN is active on your website"
-msgstr ""
+msgstr "A saját CDN aktív a webhelyen"
 
-#: inc/Engine/Admin/Settings/Page.php:1554
-#: inc/Engine/CDN/Render/Controller.php:838
+#: inc/Engine/Admin/Settings/Page.php:1562
 msgid "RocketCDN is paused"
-msgstr ""
+msgstr "A RocketCDN szünetel"
 
 #. translators: %1$s = opening em tag, %2$l = list of add-on name(s), %3$s =
 #. closing em tag.
-#: inc/Engine/Admin/Settings/Page.php:1586
+#: inc/Engine/Admin/Settings/Page.php:1594
 #, php-format
 msgid ""
 "%1$s%2$l Add-on%3$s is currently enabled. Configuration of the CDN settings "
@@ -2813,28 +2914,28 @@ msgstr[1] ""
 "%1$s%2$l Kiegészítők%3$svannak jelenleg engedélyezve. A CDN beállítása nem "
 "szükséges a %2$l -hez hogy működjön az oldaladon"
 
-#: inc/Engine/Admin/Settings/Page.php:1612
+#: inc/Engine/Admin/Settings/Page.php:1620
 msgid "Enable Content Delivery Network"
 msgstr "Engedélyezd a CDN-t"
 
-#: inc/Engine/Admin/Settings/Page.php:1622
+#: inc/Engine/Admin/Settings/Page.php:1630
 msgid "CDN CNAME(s)"
 msgstr "CDN CNAME(ek)"
 
-#: inc/Engine/Admin/Settings/Page.php:1623
+#: inc/Engine/Admin/Settings/Page.php:1631
 msgid "Specify the CNAME(s) below"
 msgstr "Add meg a CNAME(eket) alább"
 
-#: inc/Engine/Admin/Settings/Page.php:1645
 #: inc/Engine/Admin/Settings/Page.php:1653
+#: inc/Engine/Admin/Settings/Page.php:1661
 msgid "Heartbeat"
 msgstr "Heartbeat"
 
-#: inc/Engine/Admin/Settings/Page.php:1646
+#: inc/Engine/Admin/Settings/Page.php:1654
 msgid "Control WordPress Heartbeat API"
 msgstr "Vezéreld a WordPress Heartbeat API-t"
 
-#: inc/Engine/Admin/Settings/Page.php:1654
+#: inc/Engine/Admin/Settings/Page.php:1662
 msgid ""
 "Reducing or disabling the Heartbeat API’s activity can help save some of "
 "your server’s resources."
@@ -2842,11 +2943,11 @@ msgstr ""
 "A Heartbeat API aktivitásának csökkentése vagy letiltása segíthet némiképp "
 "spórolni a szervered erőforrásaival."
 
-#: inc/Engine/Admin/Settings/Page.php:1660
+#: inc/Engine/Admin/Settings/Page.php:1668
 msgid "Reduce or disable Heartbeat activity"
 msgstr "Csökkentsd vagy tiltsd le a Heartbeat működését"
 
-#: inc/Engine/Admin/Settings/Page.php:1661
+#: inc/Engine/Admin/Settings/Page.php:1669
 msgid ""
 "Reducing activity will change Heartbeat frequency from one hit each minute "
 "to one hit every 2 minutes."
@@ -2854,71 +2955,73 @@ msgstr ""
 "Az aktivitás csökkentése megváltoztatja a Heartbeat frekvenciáját "
 "percenkénti egy ütemről, 2 percenként egyre."
 
-#: inc/Engine/Admin/Settings/Page.php:1661
+#: inc/Engine/Admin/Settings/Page.php:1669
 msgid ""
 "Disabling Heartbeat entirely may break plugins and themes using this API."
 msgstr ""
 "Ha teljesen letiltod a Heartbeat-et, akkor működésképtelenné válhat néhány "
 "bővítmény és téma am iezt az API-t használja."
 
-#: inc/Engine/Admin/Settings/Page.php:1675
+#: inc/Engine/Admin/Settings/Page.php:1683
 msgid "Do not limit"
 msgstr "Ne legyen korlátozva"
 
-#: inc/Engine/Admin/Settings/Page.php:1676
+#: inc/Engine/Admin/Settings/Page.php:1684
 msgid "Reduce activity"
 msgstr "Aktivitás csökkentése"
 
-#: inc/Engine/Admin/Settings/Page.php:1677
+#: inc/Engine/Admin/Settings/Page.php:1685
 msgid "Disable"
 msgstr "Letiltás"
 
-#: inc/Engine/Admin/Settings/Page.php:1685
+#: inc/Engine/Admin/Settings/Page.php:1693
 msgid "Control Heartbeat"
 msgstr "Heartbeat szabályzása"
 
-#: inc/Engine/Admin/Settings/Page.php:1694
+#: inc/Engine/Admin/Settings/Page.php:1702
 msgid "Behavior in backend"
 msgstr "Viselkedés a backenden"
 
-#: inc/Engine/Admin/Settings/Page.php:1701
+#: inc/Engine/Admin/Settings/Page.php:1709
 msgid "Behavior in post editor"
 msgstr "Viselkedés a bejegyzés-szerkesztőben"
 
-#: inc/Engine/Admin/Settings/Page.php:1707
+#: inc/Engine/Admin/Settings/Page.php:1715
 msgid "Behavior in frontend"
 msgstr "Viselkedés a frontenden"
 
-#: inc/Engine/Admin/Settings/Page.php:1731
+#: inc/Engine/Admin/Settings/Page.php:1739
 msgid "Get performance insights"
-msgstr ""
+msgstr "Teljesítményelemzések lekérése"
 
-#: inc/Engine/Admin/Settings/Page.php:1761
+#: inc/Engine/Admin/Settings/Page.php:1769
 msgid "Performance Monitoring"
-msgstr ""
+msgstr "Teljesítményfigyelés"
 
-#: inc/Engine/Admin/Settings/Page.php:1762
+#: inc/Engine/Admin/Settings/Page.php:1770
 msgid "Enable automatic performance testing for your pages."
-msgstr ""
+msgstr "Az oldalak automatikus teljesítménytesztelésének engedélyezése."
 
-#: inc/Engine/Admin/Settings/Page.php:1773
+#: inc/Engine/Admin/Settings/Page.php:1781
 msgid "Upgrade your plan to get access to automatic performance tests"
 msgstr ""
+"Váltson magasabb szintű csomagra az automatikus teljesítménytesztek "
+"eléréséhez"
 
-#: inc/Engine/Admin/Settings/Page.php:1813
+#: inc/Engine/Admin/Settings/Page.php:1821
 #: views/settings/page-sections/tutorials.php:38
 msgid "Add-ons"
 msgstr "Bővítmények"
 
-#: inc/Engine/Admin/Settings/Page.php:1814
+#: inc/Engine/Admin/Settings/Page.php:1822
 msgid "Add more features"
 msgstr "Több funkció hozzáadása"
 
-#: inc/Engine/Admin/Settings/Page.php:1821
+#: inc/Engine/Admin/Settings/Page.php:1829
 msgid "One-click Rocket Add-ons"
 msgstr "Egy kattintásos Rocket bővítmények"
 
-#: inc/Engine/Admin/Settings/Page.php:1822
+#: inc/Engine/Admin/Settings/Page.php:1830
 msgid ""
 "One-Click Add-ons are features extending available options without "
 "configuration needed. Switch the option \"on\" to enable from this screen."
@@ -2927,44 +3030,49 @@ msgstr ""
 "lehetőségeidet úgy, hogy semmilyen konfigurációt nem igényelnek. Egyszerűen "
 "állítsd \"be\" állásra a kapcsolót a bekapcsoláshoz ezen a képernyőn."
 
-#: inc/Engine/Admin/Settings/Page.php:1832
+#: inc/Engine/Admin/Settings/Page.php:1840
 msgid "Rocket Add-ons"
 msgstr "Rocket bővítmények"
 
-#: inc/Engine/Admin/Settings/Page.php:1833
+#: inc/Engine/Admin/Settings/Page.php:1841
 msgid "Rocket Add-ons are complementary features extending available options."
 msgstr ""
 "A Rocket bővítmények ajándék funkciók, amik plusz funkciókat nyújtanak a "
 "Rocket szolgáltatásain felül."
 
-#: inc/Engine/Admin/Settings/Page.php:1844
+#: inc/Engine/Admin/Settings/Page.php:1852
 msgid "User Cache"
 msgstr "Bejelentkezett felhasználói gyorsítótár"
 
-#: inc/Engine/Admin/Settings/Page.php:1850
+#: inc/Engine/Admin/Settings/Page.php:1858
 msgid ""
 "If you need to create a dedicated set of cache files for each logged-in "
 "WordPress user, you must activate this add-on."
 msgstr ""
+"Ha minden bejelentkezett WordPress-felhasználóhoz külön gyorsítótárfájlokat "
+"kell létrehozni, ezt a kiegészítőt be kell kapcsolni."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1852
+#: inc/Engine/Admin/Settings/Page.php:1860
 #, php-format
 msgid ""
 "User cache is great when you have user-specific or restricted content on "
 "your website.<br>%1$sLearn more%2$s"
 msgstr ""
+"A felhasználói gyorsítótár különösen hasznos, ha a webhelyen "
+"felhasználóspecifikus vagy korlátozott hozzáférésű tartalom "
+"található.<br>%1$sTovábbi információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1865
-#: inc/Engine/Admin/Settings/Page.php:2034
+#: inc/Engine/Admin/Settings/Page.php:1873
+#: inc/Engine/Admin/Settings/Page.php:2042
 msgid "Cloudflare"
 msgstr "Cloudflare"
 
-#: inc/Engine/Admin/Settings/Page.php:1871
+#: inc/Engine/Admin/Settings/Page.php:1879
 msgid "Integrate your Cloudflare account with this add-on."
 msgstr "Integráld a Cloudflare fiókodat ezen bővítménnyel."
 
-#: inc/Engine/Admin/Settings/Page.php:1872
+#: inc/Engine/Admin/Settings/Page.php:1880
 msgid ""
 "Provide your account email, global API key, and domain to use options such "
 "as clearing the Cloudflare cache and enabling optimal settings with WP "
@@ -2975,26 +3083,29 @@ msgstr ""
 "optimálisra beállíthassuk az együttműködését a WP Rockettel."
 
 #. translators: %1$s = opening span tag, %2$s = closing span tag.
-#: inc/Engine/Admin/Settings/Page.php:1875
+#: inc/Engine/Admin/Settings/Page.php:1883
 #, php-format
 msgid ""
 "%1$sPlanning on using Automatic Platform Optimization (APO)?%2$s Just "
 "activate the official Cloudflare plugin and configure it. WP Rocket will "
 "automatically enable compatibility."
 msgstr ""
+"%1$sAz Automatic Platform Optimization (APO) használatát tervezi?%2$s Csak "
+"kapcsolja be a hivatalos Cloudflare bővítményt, és állítsa be. A WP Rocket "
+"automatikusan engedélyezi a kompatibilitást."
 
-#: inc/Engine/Admin/Settings/Page.php:1923
+#: inc/Engine/Admin/Settings/Page.php:1931
 msgid "Varnish"
 msgstr "Varnish"
 
-#: inc/Engine/Admin/Settings/Page.php:1929
+#: inc/Engine/Admin/Settings/Page.php:1937
 msgid "If Varnish runs on your server, you must activate this add-on."
 msgstr ""
 "Ha a Varnish üzemel a szervereden akkor mindenképp engedélyezned kell ezt a "
 "bővítményt."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1931
+#: inc/Engine/Admin/Settings/Page.php:1939
 #, php-format
 msgid ""
 "Varnish cache will be purged each time WP Rocket clears its cache to ensure "
@@ -3004,16 +3115,16 @@ msgstr ""
 "üríti a saját gyorsítótárát, ezáltal biztosítva hogy mindig naprakész legyen"
 " a tartalom.<br>%1$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1966
+#: inc/Engine/Admin/Settings/Page.php:1974
 msgid "WebP Compatibility"
 msgstr "WebP kompatibilitás"
 
-#: inc/Engine/Admin/Settings/Page.php:1972
+#: inc/Engine/Admin/Settings/Page.php:1980
 msgid "Improve browser compatibility for WebP images."
 msgstr "Javítja a böngészők kompatibitását a WebP bővítményekhez"
 
 #. translators: %1$s and %3$s = opening <a> tag, %2$s = closing </a> tag.
-#: inc/Engine/Admin/Settings/Page.php:1976
+#: inc/Engine/Admin/Settings/Page.php:1984
 #, php-format
 msgid ""
 "Enable this option if you would like WP Rocket to serve WebP images to "
@@ -3026,12 +3137,12 @@ msgstr ""
 "nem tud létrehozni WebP képeket Neked. WebP képek létrehozásához az  "
 "%1$sImagify%2$s-t ajánljuk. %3$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:1996
+#: inc/Engine/Admin/Settings/Page.php:2004
 msgid "Clear the Sucuri cache when WP Rocket’s cache is cleared."
 msgstr ""
 "Ürítsd a Sucuri gyorsítótárt amikor a WP Rocket gyorsítótára ürítve van."
 
-#: inc/Engine/Admin/Settings/Page.php:1999
+#: inc/Engine/Admin/Settings/Page.php:2007
 msgid ""
 "Provide your API key to clear the Sucuri cache when WP Rocket’s cache is "
 "cleared."
@@ -3039,49 +3150,49 @@ msgstr ""
 "Add meg az API kulcsodat hogy üríteni tudjuk a Sucuri gyorsítótáradat is, "
 "amikor a WP Rocket gyorsítótára ürítve lesz."
 
-#: inc/Engine/Admin/Settings/Page.php:2007
-#: inc/Engine/Admin/Settings/Page.php:2151
+#: inc/Engine/Admin/Settings/Page.php:2015
+#: inc/Engine/Admin/Settings/Page.php:2159
 msgid "Sucuri"
 msgstr "Sucuri"
 
-#: inc/Engine/Admin/Settings/Page.php:2013
+#: inc/Engine/Admin/Settings/Page.php:2021
 msgid "Synchronize Sucuri cache with this add-on."
 msgstr "Szinkronizáld a Sucuri gyorsítótáradat ezzel a bővítménnyel."
 
-#: inc/Engine/Admin/Settings/Page.php:2051
+#: inc/Engine/Admin/Settings/Page.php:2059
 msgid "Cloudflare credentials"
 msgstr "Cloudflare belépési adatok"
 
-#: inc/Engine/Admin/Settings/Page.php:2060
+#: inc/Engine/Admin/Settings/Page.php:2068
 msgid "Cloudflare settings"
 msgstr "Cloudflare beállítások"
 
-#: inc/Engine/Admin/Settings/Page.php:2074
+#: inc/Engine/Admin/Settings/Page.php:2082
 msgctxt "Cloudflare"
 msgid "Global API key:"
 msgstr "Globális API kulcs"
 
-#: inc/Engine/Admin/Settings/Page.php:2075
+#: inc/Engine/Admin/Settings/Page.php:2083
 msgctxt "Cloudflare"
 msgid "Find your API key"
 msgstr "Találd meg az API kulcsodat"
 
-#: inc/Engine/Admin/Settings/Page.php:2087
+#: inc/Engine/Admin/Settings/Page.php:2095
 msgctxt "Cloudflare"
 msgid "Account email"
 msgstr "A fiókhoz tartozó email"
 
-#: inc/Engine/Admin/Settings/Page.php:2096
+#: inc/Engine/Admin/Settings/Page.php:2104
 msgctxt "Cloudflare"
 msgid "Zone ID"
 msgstr "Zóna azonosító"
 
-#: inc/Engine/Admin/Settings/Page.php:2106
+#: inc/Engine/Admin/Settings/Page.php:2114
 msgid "Development mode"
 msgstr "Fejlesztői üzemmód"
 
 #. translators: %1$s = link opening tag, %2$s = link closing tag.
-#: inc/Engine/Admin/Settings/Page.php:2108
+#: inc/Engine/Admin/Settings/Page.php:2116
 #, php-format
 msgid ""
 "Temporarily activate development mode on your website. This setting will "
@@ -3090,11 +3201,11 @@ msgstr ""
 "Aktiválhatod ideiglenesen a fejlesztői módot a weboldaladon. Ez 3 óra múlva "
 "magától kikapcsol. %1$sBővebb információ%2$s"
 
-#: inc/Engine/Admin/Settings/Page.php:2116
+#: inc/Engine/Admin/Settings/Page.php:2124
 msgid "Optimal settings"
 msgstr "Optimális beállítások"
 
-#: inc/Engine/Admin/Settings/Page.php:2117
+#: inc/Engine/Admin/Settings/Page.php:2125
 msgid ""
 "Automatically enhances your Cloudflare configuration for speed, performance "
 "grade and compatibility."
@@ -3102,11 +3213,11 @@ msgstr ""
 "Automatikusan javítja a Cloudflare beállításaidat a legjobb sebesség, "
 "teljesítmény, osztályzat és kompatibilitás érdekében."
 
-#: inc/Engine/Admin/Settings/Page.php:2125
+#: inc/Engine/Admin/Settings/Page.php:2133
 msgid "Relative protocol"
 msgstr "Relatív protokoll"
 
-#: inc/Engine/Admin/Settings/Page.php:2126
+#: inc/Engine/Admin/Settings/Page.php:2134
 msgid ""
 "Should only be used with Cloudflare's flexible SSL feature. URLs of static "
 "files (CSS, JS, images) will be rewritten to use // instead of http:// or "
@@ -3116,18 +3227,20 @@ msgstr ""
 " fájlok URLjei (pl. CSS, JS, és képek) át lesznek írva úgy, hogy // t "
 "használjanak a http:// vagy https:// helyett."
 
-#: inc/Engine/Admin/Settings/Page.php:2164
+#: inc/Engine/Admin/Settings/Page.php:2172
 msgid "Sucuri credentials"
 msgstr "Sucuri belépési adatok"
 
-#: inc/Engine/Admin/Settings/Page.php:2177
+#: inc/Engine/Admin/Settings/Page.php:2185
 msgctxt "Sucuri"
 msgid ""
 "Firewall API key (for plugin), must be in format {32 characters}/{32 "
 "characters}:"
 msgstr ""
+"Tűzfal API-kulcsa (a bővítményhez), kötelező formátuma: {32 characters}/{32 "
+"characters}:"
 
-#: inc/Engine/Admin/Settings/Page.php:2178
+#: inc/Engine/Admin/Settings/Page.php:2186
 msgctxt "Sucuri"
 msgid "Find your API key"
 msgstr "Találd meg az API kulcsodat"
@@ -3140,7 +3253,7 @@ msgstr ""
 "Sucuri bővítmény: a Sucuri tűzfalhoz tartozó API kulcsnak az alábbi "
 "formátumban kell lennie: <code>{32 karakter}/{32 karakter}</code>"
 
-#: inc/Engine/Admin/Settings/Settings.php:552
+#: inc/Engine/Admin/Settings/Settings.php:560
 msgid ""
 "Sorry! Adding /(.*) in Advanced Rules > Never Cache URL(s) was not saved "
 "because it disables caching and optimizations for every page on your site."
@@ -3150,35 +3263,142 @@ msgstr ""
 "gyorsítótárazást és az optimalizálást az egész weboldaladon."
 
 #: inc/Engine/Admin/Settings/Subscriber.php:203
-msgid "Import, Export, Rollback"
-msgstr "Import, Export, Visszaállítás"
+msgid "Export, import, rollback, and set up MCP"
+msgstr "Exportálás, importálás, visszaállítás és az MCP beállítása"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:228
+#: inc/Engine/Admin/Settings/Subscriber.php:229
 #: views/settings/page-sections/imagify.php:14
 msgid "Image Optimization"
 msgstr "Kép optimalizálás"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:229
+#: inc/Engine/Admin/Settings/Subscriber.php:230
 msgid "Compress your images"
 msgstr "Képek tömörítése"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:246
+#: inc/Engine/Admin/Settings/Subscriber.php:247
 #: views/settings/page-sections/tutorials.php:47
 msgid "Tutorials"
 msgstr "Útmutatók"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:247
+#: inc/Engine/Admin/Settings/Subscriber.php:248
 msgid "Getting started and how to videos"
 msgstr "Tananyagok, segítő videók"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:313
+#: inc/Engine/Admin/Settings/Subscriber.php:314
 #: views/settings/page-sections/plugins.php:13
 msgid "Our Plugins"
-msgstr ""
+msgstr "Bővítményeink"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:314
+#: inc/Engine/Admin/Settings/Subscriber.php:315
 msgid "Build Better, Faster, Safer"
+msgstr "Építsen jobbat, gyorsabbat, biztonságosabbat"
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:23
+msgid "Clear URL cache"
+msgstr "URL gyorsítótárának törlése"
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:24
+msgctxt "Ability description"
+msgid ""
+"Clears WP Rocket cache for specific URL(s), not a full purge. Before "
+"calling: list the URL(s), ask \"Confirm you want to clear cache for this "
+"url?\" (use \"these\" if plural), and wait for a yes in the same turn. On "
+"success (success: true, error empty): say the cache was cleared and will "
+"regenerate on next visit. On failure: error is an object of url => reason; "
+"report each failed URL with its own reason, not a generic message."
 msgstr ""
+"Törli a WP Rocket gyorsítótárát a megadott URL-ekhez, nem végez teljes "
+"ürítést. A meghívás előtt: fel kell sorolni az URL-eket, fel kell tenni a "
+"kérdést: \"Megerősíti, hogy törölni szeretné ennek az URL-nek a "
+"gyorsítótárát?\" (több URL esetén: \"ezeknek az URL-eknek\"), és ugyanabban "
+"a fordulóban meg kell várni az igenlő választ. Siker esetén (success: true, "
+"az error üres): közölni kell, hogy a gyorsítótár törlése megtörtént, és a "
+"következő látogatáskor újra létrejön. Hiba esetén: az error egy url => "
+"reason felépítésű objektum; minden sikertelenül kezelt URL-t a saját "
+"hibaokával kell jelenteni, nem általános üzenettel."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:48
+msgid "A single URL or an array of URLs whose cache should be purged."
+msgstr "Egyetlen URL vagy URL-ek tömbje, amelyek gyorsítótárát üríteni kell."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:58
+msgid "Indicates whether the url cache was succesfully purged"
+msgstr "Jelzi, hogy sikerült-e üríteni az URL gyorsítótárát"
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:65
+msgid ""
+"Object keyed by URL for each URL whose cache could not be purged, with the "
+"reason as the value."
+msgstr ""
+"Objektum, amelynek kulcsai azok az URL-ek, amelyek gyorsítótárát nem "
+"sikerült üríteni, az értékek pedig a hiba okai."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:121
+msgid "URL format is invalid."
+msgstr "Az URL formátuma érvénytelen."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:127
+msgid "URL does not belong to this site."
+msgstr "Az URL nem ehhez a webhelyhez tartozik."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:133
+msgid "URL is an admin page."
+msgstr "Az URL egy adminisztrációs oldalra mutat."
+
+#: inc/Engine/Cache/Abilities/ClearUrlCache.php:152
+msgid ""
+"No cache found for this URL, or a file permission issue prevented cache "
+"clearing."
+msgstr ""
+"Ehhez az URL-hez nem található gyorsítótár, vagy egy fájljogosultsági "
+"probléma megakadályozta a gyorsítótár törlését."
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:23
+msgid "Clear website cache"
+msgstr "Webhely gyorsítótárának törlése"
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:24
+msgctxt "Ability description"
+msgid ""
+"Clears the full WP Rocket cache for the entire website. Use this when the "
+"user asks to clear, purge, or refresh all cached pages for the site. This is"
+" a site-wide destructive cache action. Do not use it for a single page; use "
+"clear-url-cache instead. Confirmation is required before calling"
+msgstr ""
+"Törli a teljes webhely WP Rocket-gyorsítótárát. Akkor használható, ha a "
+"felhasználó a webhely összes gyorsítótárazott oldalának törlését, ürítését "
+"vagy frissítését kéri. Ez a teljes webhelyet érintő, a gyorsítótár tartalmát"
+" törlő művelet. Egyetlen oldalhoz nem használható; helyette a clear-url-"
+"cache használandó. A meghívás előtt megerősítés szükséges"
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:36
+msgid "Indicates whether the website cache was successfully cleared"
+msgstr "Jelzi, hogy sikerült-e törölni a webhely gyorsítótárát"
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:40
+msgid "Reason the cache could not be cleared, empty on success."
+msgstr ""
+"Annak oka, hogy miért nem sikerült törölni a gyorsítótárat; siker esetén "
+"üres."
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:87
+msgid "Unable to clear cache: a content import is currently in progress."
+msgstr ""
+"A gyorsítótár nem törölhető: jelenleg tartalomimportálás van folyamatban."
+
+#: inc/Engine/Cache/Abilities/ClearWebsiteCache.php:96
+msgid "Unable to clear cache: no cacheable URLs were found for this site."
+msgstr ""
+"A gyorsítótár nem törölhető: nem található gyorsítótárazható URL ezen a "
+"webhelyen."
+
+#: inc/Engine/Cache/Abilities/Subscriber.php:84
+msgid "WP Rocket Cache"
+msgstr "WP Rocket-gyorsítótár"
+
+#: inc/Engine/Cache/Abilities/Subscriber.php:85
+msgid "Abilities related to WP Rocket Cache."
+msgstr "A WP Rocket gyorsítótárához kapcsolódó képességek."
 
 #: inc/Engine/Cache/PurgeExpired/Subscriber.php:75
 msgid "WP Rocket Expired Cache Interval"
@@ -3212,79 +3432,90 @@ msgstr "WP_CACHE nincs beállítva"
 msgid "WP_CACHE is set to false"
 msgstr "WP_CACHE false -ra van állítva"
 
-#: inc/Engine/CDN/Render/Controller.php:139
-#: inc/Engine/CDN/Render/Controller.php:201
-#: views/settings/partials/cdn/cdn-driver-tabs.php:25
+#: inc/Engine/CDN/Render/Controller.php:202
+#: inc/Engine/CDN/Render/Controller.php:280
+#: views/settings/partials/cdn/cdn-driver-tabs.php:26
 #: views/settings/partials/cdn/cdn-driver-tabs.php:29
 msgid "RocketCDN"
-msgstr ""
+msgstr "RocketCDN"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
-#: inc/Engine/CDN/Render/Controller.php:172
+#: inc/Engine/CDN/Render/Controller.php:244
 #, php-format
 msgid ""
 "%1$sWant full-site Content Delivery coverage?%2$s Extend RocketCDN to all "
 "your pages with unlimited bandwidth."
 msgstr ""
+"%1$sA teljes webhelyre kiterjedő tartalomkézbesítést szeretne?%2$s Terjessze"
+" ki a RocketCDN használatát az összes oldalra, korlátlan sávszélességgel."
 
 #. translators: %1$s = opening strong tag, %2$s = number of pages allowed,
 #. %3$s = closing strong tag.
-#: inc/Engine/CDN/Render/Controller.php:179
+#: inc/Engine/CDN/Render/Controller.php:251
 #, php-format
 msgid "%1$sNice work! You’re using RocketCDN on %2$s key pages!%3$s "
 msgstr ""
+"%1$sSzép munka! Már %2$s fontos oldalon használja a RocketCDN "
+"szolgáltatást!%3$s "
 
-#: inc/Engine/CDN/Render/Controller.php:185
+#: inc/Engine/CDN/Render/Controller.php:257
 msgid ""
 "Upgrade to RocketCDN Pro to extend faster content delivery across all your "
 "pages from 100+ edge locations worldwide."
 msgstr ""
+"Váltson RocketCDN Pro csomagra, hogy a webhely minden oldalának tartalmát "
+"gyorsabban szolgálhassa ki világszerte több mint 100 peremhálózati "
+"kiszolgálópontról."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:243
+#: inc/Engine/CDN/Render/Controller.php:343
 #, php-format
 msgid "Purge %s Cache"
-msgstr ""
+msgstr "A %s gyorsítótárának ürítése"
 
 #. translators: %s = CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:247
+#: inc/Engine/CDN/Render/Controller.php:347
 #, php-format
 msgid "Purges %s cached resources for your website."
-msgstr ""
+msgstr "Törli a webhely %s által gyorsítótárazott erőforrásait."
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
-#: inc/Engine/CDN/Render/Controller.php:285
+#: inc/Engine/CDN/Render/Controller.php:385
 #, php-format
 msgid "Manage %s Exclusions"
-msgstr ""
+msgstr "Kizárások kezelése (%s)"
 
-#: inc/Engine/CDN/Render/Controller.php:321
+#: inc/Engine/CDN/Render/Controller.php:421
 msgid "Exclude Pages from CDN"
-msgstr ""
+msgstr "Oldalak kizárása a CDN-ből"
 
-#: inc/Engine/CDN/Render/Controller.php:322
+#: inc/Engine/CDN/Render/Controller.php:422
 msgid ""
 "Specify URL(s) of pages that should not get served via CDN (one per line)."
 msgstr ""
+"Adja meg azoknak az oldalaknak az URL-címét, amelyeket nem a CDN-en "
+"keresztül kell kiszolgálni (soronként egyet)."
 
-#: inc/Engine/CDN/Render/Controller.php:323
+#: inc/Engine/CDN/Render/Controller.php:423
 msgid ""
 "Use (.*) wildcards to exclude all files of a given file type located at a "
 "specific path."
 msgstr ""
+"A (.*) helyettesítő karakterekkel kizárható az adott elérési úton található "
+"összes, adott típusú fájl."
 
-#: inc/Engine/CDN/Render/Controller.php:339
+#: inc/Engine/CDN/Render/Controller.php:439
 msgid "Exclude Files from CDN"
-msgstr ""
+msgstr "Fájlok kizárása a CDN-ből"
 
-#: inc/Engine/CDN/Render/Controller.php:340
+#: inc/Engine/CDN/Render/Controller.php:440
 msgid ""
 "Specify URL(s) of files that should not get served via CDN (one per line)."
 msgstr ""
 "Add meg azon fájl(ok) URL-jeit amit nem szeretnél a CDN-en keresztül "
 "kiszolgálni (soronként egyet)."
 
-#: inc/Engine/CDN/Render/Controller.php:341
+#: inc/Engine/CDN/Render/Controller.php:441
 msgid ""
 "The domain part of the URL will be stripped automatically.<br>Use (.*) "
 "wildcards to exclude all files of a given file type located at a specific "
@@ -3294,82 +3525,113 @@ msgstr ""
 "okat hogy minden fájlt kizárj egy bizonyos fájltípusból a megadott elérési "
 "útvonalon."
 
-#: inc/Engine/CDN/Render/Controller.php:622
-msgid "Serving files from 10 edge locations. Covering up to 3 pages."
-msgstr ""
+#: inc/Engine/CDN/Render/Controller.php:902
+msgid "This option is managed by your host and can’t be changed here."
+msgstr "Ezt a beállítást a tárhelyszolgáltató kezeli, itt nem módosítható."
 
-#: inc/Engine/CDN/Render/Controller.php:627
+#: inc/Engine/CDN/Render/Controller.php:920
 msgid ""
-"RocketCDN is currently paused because your WPRocket licence has expired."
+"RocketCDN is currently being activated. Please wait, this should only take a"
+" moment."
 msgstr ""
+"A RocketCDN aktiválása folyamatban van. Kérjük, várjon, ez várhatóan csak "
+"egy pillanatig tart."
 
-#: inc/Engine/CDN/Render/Controller.php:652
-msgid "Serving files from 100+ edge locations"
-msgstr ""
+#: inc/Engine/CDN/Render/Controller.php:924
+msgid "Renew to use RocketCDN Free."
+msgstr "A RocketCDN Free használatához megújítás szükséges."
 
-#: inc/Engine/CDN/Render/Controller.php:653
-msgid "RocketCDN is active on your website"
+#: inc/Engine/CDN/Render/Controller.php:928
+msgid "Contact support to find out how to restore access."
 msgstr ""
+"A hozzáférés helyreállításának módjáról az ügyfélszolgálattól kérhet "
+"tájékoztatást."
 
-#: inc/Engine/CDN/Render/Controller.php:657
-msgid ""
-"RocketCDN is currently paused because your RocketCDN subscription was "
-"cancelled. Please wait up to two days before resuming."
-msgstr ""
+#: inc/Engine/CDN/Render/Controller.php:932
+msgid "Cancelling your subscription."
+msgstr "Az előfizetés lemondása folyamatban van."
 
-#: inc/Engine/CDN/Render/Controller.php:727
-msgid "Remove page"
-msgstr ""
-
-#: inc/Engine/CDN/Render/Controller.php:839
-msgid "RocketCDN is active"
-msgstr ""
-
-#: inc/Engine/CDN/Render/Controller.php:840
-msgid ""
-"RocketCDN is currently paused. Click Resume CDN to re-enable content "
-"delivery."
-msgstr ""
+#: inc/Engine/CDN/Render/Controller.php:936
+msgid "Renew to use RocketCDN."
+msgstr "A RocketCDN használatához megújítás szükséges."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
-#: inc/Engine/CDN/Render/Controller.php:844
+#: inc/Engine/CDN/Render/Controller.php:1050
 #, php-format
 msgid ""
 "%1$sStart with your homepage and add up to 2 more key pages.%2$s Includes "
 "unlimited traffic across 10 edge locations."
 msgstr ""
+"%1$sKezdje a kezdőlappal, és adjon hozzá legfeljebb 2 további fontos "
+"oldalt.%2$s Korlátlan adatforgalmat biztosít 10 peremhálózati "
+"kiszolgálóponton."
 
-#: inc/Engine/CDN/Render/Controller.php:877
+#: inc/Engine/CDN/Render/Controller.php:1063
+msgid "Renew now to keep using RocketCDN Free."
+msgstr ""
+"Újítsa meg most, hogy továbbra is használhassa a RocketCDN Free "
+"szolgáltatást."
+
+#: inc/Engine/CDN/Render/Controller.php:1094
+msgid ""
+"RocketCDN delivers every page of your site from 100+ edge locations "
+"worldwide."
+msgstr ""
+"A RocketCDN világszerte több mint 100 peremhálózati kiszolgálópontról "
+"szolgálja ki a webhely minden oldalát."
+
+#: inc/Engine/CDN/Render/Controller.php:1191
+msgid "Remove page"
+msgstr "Oldal eltávolítása"
+
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag,
+#. %3$s = line breaking <br /> tag.
+#: inc/Engine/CDN/Render/Controller.php:1306
+#, php-format
+msgid ""
+"%1$sOne more step to a faster website:%2$s add your most important page, and"
+" RocketCDN Free will speed it up for your visitors everywhere."
+msgstr ""
+"%1$sMég egy lépés a gyorsabb webhelyhez:%2$s adja hozzá a legfontosabb "
+"oldalt, és a RocketCDN Free felgyorsítja annak betöltését a látogatók "
+"számára, bárhol is legyenek."
+
+#: inc/Engine/CDN/Render/Controller.php:1340
 msgid "Creating your subscription..."
-msgstr ""
+msgstr "Előfizetés létrehozása..."
 
-#: inc/Engine/CDN/Render/Controller.php:878
-msgid "Please wait, RocketCDN will be ready in about 30s."
+#: inc/Engine/CDN/Render/Controller.php:1341
+msgid ""
+"Please wait, RocketCDN will be ready and active shortly. This usually takes "
+"about 90 seconds."
 msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:87
-msgid "Plan"
-msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:88
-msgid "RocketCDN Pro"
-msgstr ""
+"Kérjük, várjon, a RocketCDN hamarosan használatra kész és aktív lesz. Ez "
+"általában körülbelül 90 másodpercet vesz igénybe."
 
 #: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:101
-msgid "No RocketCDN Pro Subscription"
-msgstr ""
+msgid "Plan"
+msgstr "Csomag"
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:162
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:102
+msgid "RocketCDN Pro"
+msgstr "RocketCDN Pro"
+
+#: inc/Engine/CDN/RocketCDN/AdminPageSubscriber.php:115
+msgid "No RocketCDN Pro Subscription"
+msgstr "Nincs RocketCDN Pro-előfizetés"
+
+#: inc/Engine/CDN/RocketCDN/APIClient.php:232
 msgid "Missing required parameters for subscription activation."
-msgstr ""
+msgstr "Hiányoznak az előfizetés aktiválásához szükséges paraméterek."
 
 #. translators: %d: HTTP response code
-#: inc/Engine/CDN/RocketCDN/APIClient.php:193
+#: inc/Engine/CDN/RocketCDN/APIClient.php:263
 #, php-format
 msgid "Failed to activate RocketCDN subscription. API returned %d."
 msgstr ""
+"Nem sikerült aktiválni a RocketCDN-előfizetést. Az API válaszkódja: %d."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:217
+#: inc/Engine/CDN/RocketCDN/APIClient.php:287
 msgid ""
 "We could not fetch the current price because RocketCDN API returned an "
 "unexpected error code."
@@ -3377,163 +3639,201 @@ msgstr ""
 "Nem tudtuk lekérdezni az aktuális árat mert a RocketCDN API váratlan "
 "hibakódot adott vissza."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:223
+#: inc/Engine/CDN/RocketCDN/APIClient.php:293
 msgid "RocketCDN is not available at the moment. Please retry later."
 msgstr "A RocketCDN nem elérhető jelenleg. Kérlek próbáld újra később."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:260
+#: inc/Engine/CDN/RocketCDN/APIClient.php:330
 msgid "RocketCDN cache purge failed: Missing identifier parameter."
 msgstr "RocketCDN gyorsítótár ürítés sikertelen: hiányzó azonosító paraméter."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:269
+#: inc/Engine/CDN/RocketCDN/APIClient.php:339
 msgid "RocketCDN cache purge failed: Missing user token."
 msgstr "RocketCDN gyorsítótár ürítés sikertelen: hiányzó felhasználói token."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:295
+#: inc/Engine/CDN/RocketCDN/APIClient.php:365
 msgid ""
 "RocketCDN cache purge failed: The API returned an unexpected response code."
 msgstr ""
 "RocketCDN gyorsítótár ürítés sikertelen: az API váratlan hibakódot adott "
 "vissza."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:304
+#: inc/Engine/CDN/RocketCDN/APIClient.php:374
 msgid "RocketCDN cache purge failed: The API returned an empty response."
 msgstr "RocketCDN gyorsítótár ürítés sikertelen: az API üres választ küldött."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:313
+#: inc/Engine/CDN/RocketCDN/APIClient.php:383
 msgid "RocketCDN cache purge failed: The API returned an unexpected response."
 msgstr ""
 "RocketCDN gyorsítótár ürítés sikertelen: az API váratlan választ küldött."
 
 #. translators: %s = message returned by the API.
-#: inc/Engine/CDN/RocketCDN/APIClient.php:322
+#: inc/Engine/CDN/RocketCDN/APIClient.php:392
 #, php-format
 msgid "RocketCDN cache purge failed: %s."
 msgstr "RocketCDN gyorsítótár ürítés sikertelen: %s."
 
-#: inc/Engine/CDN/RocketCDN/APIClient.php:330
+#: inc/Engine/CDN/RocketCDN/APIClient.php:400
 msgid "RocketCDN cache purge successful."
 msgstr "RocketCDN gyorsítótár ürítés sikeres volt."
 
 #. translators: %1$is = opening link tag, %2$s = closing link tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:173
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:267
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:179
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:294
 #, php-format
 msgid "%1$sMore Info%2$s"
 msgstr "%1$sBővebb információ%2$s"
 
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:258
+msgid "Nice work!  You're using RocketCDN on all available pages."
+msgstr "Szép munka!  A RocketCDN minden elérhető oldalon használatban van."
+
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:259
+msgid "RocketCDN covers up to 3 pages, and you're all set."
+msgstr "A RocketCDN legfeljebb 3 oldalt szolgál ki, és már minden készen áll."
+
 #. translators: %1$s = Old CName, %2$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:336
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:363
 #, php-format
 msgid "We've updated your RocketCDN CNAME from %1$s to %2$s."
-msgstr ""
+msgstr "A RocketCDN korábbi CNAME-értéke (%1$s) erre frissült: %2$s."
 
 #. translators: %1$s = New CName.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:338
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:365
 #, php-format
 msgid ""
 "The change is already applied to the plugin settings. If you were using the "
 "CNAME in your code, make sure to update it to: %1$s."
 msgstr ""
+"A módosítás már érvényes a bővítmény beállításaiban. Ha a CNAME szerepel a "
+"kódban, frissítse erre: %1$s."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:347
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:374
 msgid "contact support"
-msgstr ""
+msgstr "kapcsolatfelvétel az ügyfélszolgálattal"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:395
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:422
 msgid "RocketCDN activation incomplete"
-msgstr ""
+msgstr "A RocketCDN aktiválása nem fejeződött be"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:396
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:423
 msgid "RocketCDN isn’t active on this website yet."
-msgstr ""
+msgstr "A RocketCDN még nem aktív ezen a webhelyen."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:397
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:424
 msgid ""
 "Click below to complete the activation. You’ll be redirected to checkout to "
 "confirm your subscription."
 msgstr ""
+"Az aktiválás befejezéséhez kattintson az alábbi gombra. A rendszer "
+"átirányítja a pénztárhoz az előfizetés megerősítéséhez."
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:409
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:436
 msgid "Complete activation"
-msgstr ""
+msgstr "Aktiválás befejezése"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:495
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:489
 #, php-format
 msgid "%1$sNew in WP Rocket: Faster loading for your key pages%2$s"
 msgstr ""
+"%1$sÚjdonság a WP Rocketben: a legfontosabb oldalak gyorsabb betöltése%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:505
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:499
 #, php-format
 msgid ""
 "%1$sYou can now use Content Delivery, powered by RocketCDN, to speed up your"
 " homepage and 2 more pages, at no extra cost.%2$s"
 msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:516
-msgid "Dismiss"
-msgstr ""
+"%1$sMostantól a RocketCDN által működtetett Content Delivery funkcióval "
+"külön költség nélkül gyorsítható a kezdőlap és további 2 oldal.%2$s"
 
 #. translators: %1$s opening <strong> tag, %2$s closing </strong> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:530
+#. translators: %1$s = opening strong+paragraph tags, %2$s = closing
+#. strong+paragraph tags.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:524
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:619
 #, php-format
 msgid "%1$sUse RocketCDN for free to boost up to 3 pages 🚀%2$s"
 msgstr ""
+"%1$sGyorsítson fel akár 3 oldalt ingyen a RocketCDN használatával 🚀%2$s"
 
 #. translators: %1$s opening <p> tag, %2$s closing </p> tag.
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:540
+#. translators: %1$s = opening paragraph tag, %2$s = closing paragraph tag.
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:534
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:629
 #, php-format
 msgid ""
 "%1$sAs a WP Rocket user, you can now activate RocketCDN for free on up to 3 "
 "pages. Choose your top pages and speed up their performance worldwide!%2$s"
 msgstr ""
+"%1$sA WP Rocket felhasználójaként mostantól akár 3 oldalon is ingyenesen "
+"aktiválhatod a RocketCDN szolgáltatást. Válaszd ki a legnépszerűbb "
+"oldalaidat, és gyorsítsd fel azok működését világszerte!%2$s"
 
-#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:551
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:545
+#: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:650
 msgid "Check it later"
-msgstr ""
+msgstr "Megtekintés később"
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:237
+#: inc/Engine/CDN/RocketCDN/Rest.php:259
 msgid "Addition of pages to RocketCDN is disabled for local environment."
 msgstr ""
+"Helyi környezetben nem lehet oldalakat hozzáadni a RocketCDN "
+"szolgáltatáshoz."
 
 #. translators: %d: maximum number of free pages
-#: inc/Engine/CDN/RocketCDN/Rest.php:247
+#: inc/Engine/CDN/RocketCDN/Rest.php:274
 #, php-format
 msgid ""
 "Page limit of %d has been reached. Remove a page before adding a new one."
 msgstr ""
+"Az oldalak száma elérte a megengedett maximumot (%d). Új oldal hozzáadása "
+"előtt távolítson el egy oldalt."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:275
+#: inc/Engine/CDN/RocketCDN/Rest.php:296
+msgid "Adding page is disabled by the filter."
+msgstr "A szűrő letiltotta az oldal hozzáadását."
+
+#: inc/Engine/CDN/RocketCDN/Rest.php:305
+msgid "Failed to save page to the database."
+msgstr "Nem sikerült menteni az oldalt az adatbázisba."
+
+#: inc/Engine/CDN/RocketCDN/Rest.php:353 inc/Engine/CDN/RocketCDN/Rest.php:589
+msgid "RocketCDN cannot be activated in its current state."
+msgstr "A RocketCDN jelenlegi állapotában nem aktiválható."
+
+#: inc/Engine/CDN/RocketCDN/Rest.php:380
 msgid "This page is already registered for RocketCDN delivery."
 msgstr ""
+"Ez az oldal már regisztrálva van a RocketCDN-en keresztüli kiszolgálásra."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:293
-msgid "Adding page is disabled by the filter."
-msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/Rest.php:310
-msgid "Failed to save page to the database."
-msgstr ""
-
-#: inc/Engine/CDN/RocketCDN/Rest.php:370
+#: inc/Engine/CDN/RocketCDN/Rest.php:460
 msgid "The specified page was not found."
-msgstr ""
+msgstr "A megadott oldal nem található."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:550
+#: inc/Engine/CDN/RocketCDN/Rest.php:597
+msgid "A RocketCDN paid subscription is required to activate this mode."
+msgstr "Az üzemmód aktiválásához fizetős RocketCDN-előfizetés szükséges."
+
+#: inc/Engine/CDN/RocketCDN/Rest.php:612
+msgid "Failed to create RocketCDN subscription."
+msgstr "Nem sikerült létrehozni a RocketCDN-előfizetést."
+
+#: inc/Engine/CDN/RocketCDN/Rest.php:729
 msgid "Invalid URL provided."
-msgstr ""
+msgstr "A megadott URL érvénytelen."
 
-#: inc/Engine/CDN/RocketCDN/Rest.php:556
+#: inc/Engine/CDN/RocketCDN/Rest.php:735
 msgid "URL must be on the same domain as the site."
-msgstr ""
+msgstr "Az URL-nek a webhelyével azonos domainhez kell tartoznia."
 
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:169
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:170
 msgid "RocketCDN enabled"
 msgstr "RocketCDN engedélyezve"
 
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:192
+#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:193
 msgid "RocketCDN disabled"
 msgstr "RocketCDN letiltva"
 
@@ -3545,27 +3845,29 @@ msgid "Valid until %s only!"
 msgstr "Csak %s -ig érvényes!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:87
-#: views/settings/sections/cdn/rocketcdn-paid.php:29
+#: views/settings/sections/cdn/rocketcdn-paid.php:34
 msgid "Pro"
-msgstr ""
+msgstr "Pro"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:93
 #, php-format
 msgid "Faster content delivery across %1$syour entire website%2$s"
-msgstr ""
+msgstr "Gyorsabb tartalomkézbesítés %1$sa teljes webhelyen%2$s"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:99
 #, php-format
 msgid "%1$sNo bandwidth limits%2$s, no hidden costs"
-msgstr ""
+msgstr "%1$sKorlátlan sávszélesség%2$s, rejtett költségek nélkül"
 
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:105
 #, php-format
 msgid "%1$s100+ edge locations%2$s for wider global coverage"
 msgstr ""
+"%1$sTöbb mint 100 peremhálózati helyszín%2$s a szélesebb globális "
+"lefedettségért"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:109
 msgid "Learn more about RocketCDN"
@@ -3583,29 +3885,29 @@ msgstr ""
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:135
 msgid "Yearly"
-msgstr ""
+msgstr "Éves"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:137
 msgid "2 Months Free!"
-msgstr ""
+msgstr "2 hónap ingyen!"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:166
 msgid "Billed Monthly."
-msgstr ""
+msgstr "Havi számlázással."
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:167
 msgid "per month, billed yearly"
-msgstr ""
+msgstr "havonta, éves számlázással"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:169
 msgid "excl. VAT"
-msgstr ""
+msgstr "áfa nélkül"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:173
 #: views/settings/partials/rocket-insights/urls-table.php:42
 #: views/settings/partials/rocket-insights/urls-table.php:59
 msgid "Upgrade Now"
-msgstr ""
+msgstr "Váltás magasabb csomagra most"
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:22
 msgid "RocketCDN is unavailable on local domains and staging sites."
@@ -3613,43 +3915,46 @@ msgstr "RocketCDN nem elérhető helyi domaineken és tesztoldalakon."
 
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:35
 msgid "Get RocketCDN Pro"
-msgstr ""
+msgstr "RocketCDN Pro beszerzése"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:190
 msgid "WP Rocket process pending jobs"
-msgstr ""
+msgstr "WP Rocket: függőben lévő feladatok feldolgozása"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:209
 msgid "WP Rocket clear failed jobs"
-msgstr ""
+msgstr "WP Rocket: sikertelen feladatok törlése"
 
 #: inc/Engine/Common/JobManager/Cron/Subscriber.php:226
 msgid "WP Rocket process on submit jobs"
-msgstr ""
+msgstr "WP Rocket: beküldéskori feladatok feldolgozása"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:44
 msgid "Clear Priority Elements"
-msgstr ""
+msgstr "Kiemelt elemek törlése"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:79
 msgid "Clear Priority Elements of this URL"
-msgstr ""
+msgstr "Az URL kiemelt elemeinek törlése"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:100
 msgid "Priority Elements"
-msgstr ""
+msgstr "Kiemelt elemek"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:101
 #: inc/Engine/Saas/Admin/AdminBar.php:134
 #: views/settings/partials/quick-actions.php:27
 msgid "Clear"
-msgstr ""
+msgstr "Törlés"
 
 #: inc/Engine/Common/PerformanceHints/Admin/AdminBar.php:103
 msgid ""
 "Reset stored optimizations related to Automatic Lazy Rendering, Critical "
 "Images, Preconnect to External Domains, and Preload Fonts."
 msgstr ""
+"Az automatikus késleltetett megjelenítéshez, a kritikus képekhez, a külső "
+"domainekhez való előzetes kapcsolódáshoz és a betűkészletek előtöltéséhez "
+"tárolt optimalizálások alaphelyzetbe állítása."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Common/PerformanceHints/Admin/Controller.php:144
@@ -3659,20 +3964,24 @@ msgid ""
 "Images, Preconnect to External Domains, and Preload Fonts has been cleared! "
 "New data will be generated as needed."
 msgstr ""
+"%1$s: Töröltük az automatikus késleltetett megjelenítéshez, a kritikus "
+"képekhez, a külső domainekhez való előzetes kapcsolódáshoz és a "
+"betűkészletek előtöltéséhez tárolt optimalizálási adatokat! Szükség esetén "
+"új adatok jönnek létre."
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:19
 msgid "Script error"
-msgstr ""
+msgstr "Szkripthiba"
 
 #: inc/Engine/Common/PerformanceHints/AJAX/AJAXControllerTrait.php:22
 msgid "Script timeout"
-msgstr ""
+msgstr "A szkript túllépte az időkorlátot"
 
 #. Translators: %s is the exception message.
 #: inc/Engine/Common/Queue/Cleaner.php:87
 #, php-format
 msgid "It was not possible to determine a valid cut-off time: %s."
-msgstr ""
+msgstr "Nem sikerült érvényes határidőpontot meghatározni: %s."
 
 #: inc/Engine/Common/Queue/RUCSSQueueRunner.php:272
 msgid "Every minute"
@@ -3706,7 +4015,6 @@ msgstr "%l a funkció használatához."
 msgid "Publish the %s"
 msgstr "Publikáld a %s-t"
 
-#. translators: %s = post type.
 #: inc/Engine/CriticalPath/Admin/Post.php:223
 msgid "Enable Load CSS asynchronously in WP Rocket settings"
 msgstr "Engedélyezd a CSS aszinkron betöltését a WP Rocket beállításaiban"
@@ -3826,10 +4134,13 @@ msgid ""
 "We highly recommend the %1$supdated Remove Unused CSS%2$s for a better CSS "
 "optimization. Load CSS Asynchronously is always available as a back-up."
 msgstr ""
+"A hatékonyabb CSS-optimalizáláshoz kifejezetten ajánlott a %1$smegújult Nem "
+"használt CSS eltávolítása%2$s funkció. A CSS aszinkron betöltése mindig "
+"elérhető tartalék megoldásként."
 
 #: inc/Engine/CriticalPath/CriticalCSSSubscriber.php:891
 msgid "Stay with the old option"
-msgstr ""
+msgstr "A régi beállítás megtartása"
 
 #. translators: %s = item URL.
 #: inc/Engine/CriticalPath/DataManager.php:68
@@ -3947,99 +4258,112 @@ msgstr "Kritikus útvonalú CSS generálásának állapota"
 
 #: inc/Engine/License/API/User.php:249
 msgid "Get Rocket Insights"
-msgstr ""
+msgstr "Rocket Insights beszerzése"
 
 #: inc/Engine/License/API/User.php:253
 msgid "Your plan"
-msgstr ""
+msgstr "Előfizetési csomag"
 
 #: inc/Engine/License/API/User.php:314
 msgid ""
 "See how your top pages perform and quickly spot and optimize what slows your"
 " site down."
 msgstr ""
+"Tekintse meg a legfontosabb oldalak teljesítményét, és gyorsan azonosítsa és"
+" optimalizálja a webhelyet lassító tényezőket."
 
 #: inc/Engine/License/API/User.php:335
 msgid ""
 "* Billed monthly. You can cancel at any time, each month started is due."
 msgstr ""
+"* Havi számlázás. Bármikor lemondható, de minden megkezdett hónap díját ki "
+"kell fizetni."
 
 #. translators: %1$s opening strong tag, %2$s number of pages, %3$s closing
 #. strong tag.
 #: inc/Engine/License/API/User.php:361
 #, php-format
 msgid "Up to %1$s%2$s pages%3$s tracked"
-msgstr ""
+msgstr "Legfeljebb %1$s%2$s oldal%3$s nyomon követése"
 
 #. translators: %1$s opening strong tag, %2$s closing strong tag.
 #: inc/Engine/License/API/User.php:367
 #, php-format
 msgid "Automatic %1$sperformance monitoring%2$s"
-msgstr ""
+msgstr "Automatikus %1$steljesítményfigyelés%2$s"
 
 #. translators: %1$s opening strong tag, %2$s closing strong tag.
 #: inc/Engine/License/API/User.php:373
 #, php-format
 msgid "Unlimited %1$son-demand tests%2$s"
-msgstr ""
+msgstr "Korlátlan számú %1$sigény szerinti teszt%2$s"
 
 #. translators: %1$s opening strong tag, %2$s closing strong tag.
 #: inc/Engine/License/API/User.php:379
 #, php-format
 msgid "Full %1$sGTmetrix performance reports%2$s"
-msgstr ""
+msgstr "Teljes körű %1$sGTmetrix-teljesítményjelentések%2$s"
 
 #: inc/Engine/License/API/User.php:449
 msgid "Launch Offer"
-msgstr ""
+msgstr "Bevezető ajánlat"
 
 #: inc/Engine/License/API/User.php:469
 msgid ""
 "Launch price valid for the first 12 months, after which standard pricing "
 "applies."
 msgstr ""
+"A bevezető ár az első 12 hónapra érvényes, ezt követően a normál díjszabás "
+"alkalmazandó."
 
-#: inc/Engine/License/API/User.php:575
+#: inc/Engine/License/API/User.php:601
 msgid "There was an error updating the plugin."
-msgstr ""
+msgstr "Hiba történt a bővítmény frissítésekor."
 
 #. translators: %s: ban reason
-#: inc/Engine/License/API/User.php:583
+#: inc/Engine/License/API/User.php:609
 #, php-format
 msgid "because %s"
-msgstr ""
+msgstr "mert %s"
 
-#: inc/Engine/License/API/User.php:606
+#: inc/Engine/License/API/User.php:632
 msgid "your website is banned"
-msgstr ""
+msgstr "a webhely le van tiltva"
 
 #. translators: %1$s WP Rocket plugin name.
-#: inc/Engine/License/Renewal.php:81
+#: inc/Engine/License/Renewal.php:85
 #, php-format
 msgid ""
 "Your %1$s%2$s license is about to expire%3$s: you will soon lose access to "
 "product updates and support."
 msgstr ""
+"A %1$s %2$slicence hamarosan lejár%3$s: rövidesen megszűnik a hozzáférés a "
+"termékfrissítésekhez és a támogatáshoz."
+
+#: inc/Engine/License/Renewal.php:201
+msgid "(excl. taxes)"
+msgstr "(adók nélkül)"
 
 #. translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-#: inc/Engine/License/Renewal.php:194
+#: inc/Engine/License/Renewal.php:205
 #, php-format
 msgid "Renew before it is too late, you will pay %1$s%3$s%2$s."
 msgstr ""
+"Újítsa meg, mielőtt túl késő lenne, így a fizetendő összeg %1$s%3$s%2$s."
 
 #. translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>,
 #. %4$s = discount price.
-#: inc/Engine/License/Renewal.php:203
+#: inc/Engine/License/Renewal.php:214
 #, php-format
 msgid ""
 "Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay "
-"%1$s%4$s%3$s!"
+"%1$s%4$s%3$s"
 msgstr ""
-"Újítsd meg most egy %1$s%2$skedvezménnyel%3$s mielőtt túl késő, csak "
-"%1$s%4$s%3$s-t kellene fizetned!"
+"Újítsa meg %1$s%2$s kedvezménnyel%3$s, mielőtt túl késő lenne, így a "
+"fizetendő összeg mindössze %1$s%4$s%3$s"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:527
+#: inc/Engine/License/Renewal.php:538
 #, php-format
 msgid ""
 "You need a valid license to continue using this feature. %1$sRenew now%2$s "
@@ -4049,7 +4373,7 @@ msgstr ""
 "%1$sÚjítsd meg most%2$s hogy ne veszítsd el a hozzáférést!"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:548
+#: inc/Engine/License/Renewal.php:559
 #, php-format
 msgid "You need an active license to enable this option. %1$sRenew now%2$s."
 msgstr ""
@@ -4057,7 +4381,7 @@ msgstr ""
 "meg most%2$s"
 
 #. translators: %1$s = <a>, %2$s = </a>.
-#: inc/Engine/License/Renewal.php:576
+#: inc/Engine/License/Renewal.php:587
 #, php-format
 msgid "You need an active license to enable this option. %1$sMore info%2$s."
 msgstr ""
@@ -4073,6 +4397,9 @@ msgid ""
 " features to %1$sboost speed%2$s and deliver a %3$stop-notch user "
 "experience%4$s."
 msgstr ""
+"Mivel a licenc már nem aktív, megszűnt a hozzáférés a WP Rocket hatékony "
+"funkcióihoz, amelyek %1$snövelik a sebességet%2$s és %3$skiváló felhasználói"
+" élményt%4$s biztosítanak."
 
 #. translators: %1$s = <strong>, %2$s = WP Rocket plugin name, %3$s =
 #. </strong>, %4$s = <a>, %5$s = percentage, %6$s = </a>.
@@ -4082,25 +4409,29 @@ msgid ""
 "%1$s%2$s%3$s: Your license has been revoked and your site is no longer "
 "optimized for speed. %4$sGet WP Rocket at %5$s off%6$s"
 msgstr ""
+"%1$s%2$s%3$s: A licencet visszavonták, és a webhely már nincs sebességre "
+"optimalizálva. %4$sSzerezze be a WP Rocket bővítményt %5$s kedvezménnyel%6$s"
 
 #. translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s =
 #. promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
-#: inc/Engine/License/Upgrade.php:263
+#: inc/Engine/License/Upgrade.php:271
 #, php-format
 msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to %6$s!%5$s"
 msgstr ""
+"Gyorsítson fel több webhelyet a következő akcióval: %1$s.%2$s %3$s%4$s "
+"kedvezmény%5$s jár, ha %3$s%6$s csomagra váltja a licencét!%5$s"
 
-#: inc/Engine/License/Upgrade.php:272
+#: inc/Engine/License/Upgrade.php:280
 msgid "or"
-msgstr ""
+msgstr "vagy"
 
 #. translators: %1$s = domain.
 #: inc/Engine/License/views/dashboard-addon-status.php:31
 #, php-format
 msgid "%s is unavailable on local domains and staging sites."
-msgstr ""
+msgstr "%s nem érhető el helyi domaineken és tesztwebhelyeken."
 
 #. translators: %s = promotion discount percentage.
 #: inc/Engine/License/views/promo-banner.php:18
@@ -4166,7 +4497,7 @@ msgstr "Újítsd meg most"
 
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:14
 msgid "You will soon lose access to some features."
-msgstr ""
+msgstr "Hamarosan megszűnik a hozzáférés egyes funkciókhoz."
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Engine/License/views/renewal-expired-banner-ocd.php:21
@@ -4192,6 +4523,8 @@ msgstr ""
 #, php-format
 msgid "These features will be %1$sautomatically disabled on %3$s%2$s."
 msgstr ""
+"A rendszer ezeket a funkciókat %1$sautomatikusan letiltja a következő "
+"időpontban: %3$s%2$s."
 
 #: inc/Engine/License/views/renewal-expired-banner.php:14
 msgid "Your WP Rocket license is expired!"
@@ -4204,6 +4537,8 @@ msgid ""
 "Your website could be much faster if it could take advantage of our %1$snew "
 "features and enhancements%2$s. 🚀"
 msgstr ""
+"A webhely sokkal gyorsabb lehetne, ha kihasználná az %1$súj funkcióinkat és "
+"fejlesztéseinket%2$s. 🚀"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
 #: inc/Engine/License/views/renewal-soon-banner.php:24
@@ -4217,29 +4552,51 @@ msgstr ""
 
 #: inc/Engine/License/views/revoked-website-banner.php:14
 msgid "Your WP Rocket license has been revoked!"
-msgstr ""
+msgstr "A WP Rocket-licencet visszavonták!"
 
 #: inc/Engine/License/views/revoked-website-banner.php:24
 msgid "GET WP ROCKET AT 20% OFF"
+msgstr "WP Rocket megvásárlása 20% kedvezménnyel"
+
+#: inc/Engine/License/views/trial-expired-banner.php:14
+msgid "Your WP Rocket trial has ended"
+msgstr "A WP Rocket próbaidőszaka lejárt"
+
+#: inc/Engine/License/views/trial-expired-banner.php:18
+msgid ""
+"Your site is no longer optimized, and key features have stopped working. "
+"You've also lost plugin updates and support. Buy WP Rocket now to get it all"
+" back."
 msgstr ""
+"A webhely optimalizálása megszűnt, és a kulcsfontosságú funkciók már nem "
+"működnek. A bővítményfrissítések és a támogatás sem érhetők el többé. "
+"Vásárolja meg most a WP Rocketet, hogy mindez újra elérhető legyen."
+
+#: inc/Engine/License/views/trial-expired-banner.php:24
+msgid "Get WP Rocket back"
+msgstr "A WP Rocket újbóli beszerzése"
 
 #: inc/Engine/License/views/upgrade-item.php:17
 msgid "Save"
-msgstr ""
+msgstr "Megtakarítás"
 
-#: inc/Engine/License/views/upgrade-item.php:49
-#: inc/Engine/License/views/upgrade-item.php:64
+#: inc/Engine/License/views/upgrade-item.php:41
+msgid "excl. taxes"
+msgstr "adók nélkül"
+
+#: inc/Engine/License/views/upgrade-item.php:50
+#: inc/Engine/License/views/upgrade-item.php:65
 msgid "Websites"
-msgstr ""
+msgstr "Webhelyek"
 
 #. translators: %s = number of websites.
-#: inc/Engine/License/views/upgrade-item.php:72
+#: inc/Engine/License/views/upgrade-item.php:73
 #, php-format
 msgid "%s websites"
 msgstr "%s weboldalak"
 
 #. translators: %s = license name.
-#: inc/Engine/License/views/upgrade-item.php:80
+#: inc/Engine/License/views/upgrade-item.php:81
 #, php-format
 msgid "Upgrade to %s"
 msgstr "Válts %s-ra"
@@ -4287,77 +4644,79 @@ msgstr "LazyLoad iframe-k/videók számára"
 
 #: inc/Engine/Media/Lazyload/CSS/Admin/Subscriber.php:49
 msgid "LazyLoad CSS backgrounds"
-msgstr ""
+msgstr "CSS-háttérképek késleltetett betöltése"
 
 #: inc/Engine/Media/Lazyload/Subscriber.php:262
 msgid "Play Youtube video"
-msgstr ""
+msgstr "Youtube-videó lejátszása"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:244
 msgid "Analytics & Trackers"
-msgstr ""
+msgstr "Analitika és követők"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:249
 msgid "Ad Networks"
-msgstr ""
+msgstr "Hirdetési hálózatok"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:254
 msgid "Payment Processors"
-msgstr ""
+msgstr "Fizetésfeldolgozók"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:259
 msgid "Other Services"
-msgstr ""
+msgstr "Egyéb szolgáltatások"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:267
 msgid "Themes"
-msgstr ""
+msgstr "Sablonok"
 
 #: inc/Engine/Optimization/DelayJS/Admin/SiteList.php:272
 msgid "Plugins"
-msgstr ""
+msgstr "Bővítmények"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:101
 msgid ""
 "You need an active license to get the latest version of the lists from our "
 "server."
 msgstr ""
+"Aktív licenc szükséges a listák legújabb verziójának letöltéséhez a "
+"szerverünkről."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:109
 msgid "Default Lists"
-msgstr ""
+msgstr "Alapértelmezett listák"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:110
 msgid "Delay JavaScript Execution Exclusion Lists"
-msgstr ""
+msgstr "Kivétellisták a JavaScript-végrehajtás késleltetéséhez"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:111
 msgid "Incompatible plugins Lists"
-msgstr ""
+msgstr "Nem kompatibilis bővítmények listái"
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:121
 msgid "Could not get updated lists from server."
-msgstr ""
+msgstr "Nem sikerült letölteni a frissített listákat a szerverről."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:130
 msgid "Lists are up to date."
-msgstr ""
+msgstr "A listák naprakészek."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:139
 msgid "Could not update lists."
-msgstr ""
+msgstr "Nem sikerült frissíteni a listákat."
 
 #: inc/Engine/Optimization/DynamicLists/DynamicLists.php:149
 msgid "Lists are successfully updated."
-msgstr ""
+msgstr "A listák frissítése sikeres."
 
 #: inc/Engine/Optimization/Minify/AdminSubscriber.php:65
 msgid "Minify/combine JavaScript"
-msgstr ""
+msgstr "JavaScript tömörítése/összevonása"
 
 #: inc/Engine/Optimization/Minify/CSS/AdminSubscriber.php:144
 msgid "Minify CSS"
-msgstr ""
+msgstr "CSS tömörítése"
 
 #. translators: %1$s = plugin name, %2$s = table name, %3$s = <a> open tag,
 #. %4$s = </a> closing tag.
@@ -4368,12 +4727,128 @@ msgid ""
 " the Remove Unused CSS feature to work. Please check our "
 "%3$sdocumentation%4$s."
 msgstr ""
+"%1$s: Nem sikerült létrehozni az adatbázisban a(z) %2$s táblát, amely a nem "
+"használt CSS eltávolításához szükséges. További információ a "
+"%3$sdokumentációban%4$s található."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Optimization/RUCSS/Admin/Subscriber.php:279
 #, php-format
 msgid "%1$s: Used CSS cache cleared!"
 msgstr "%1$s: A felhasznált CSS gyorsítótára ürítve!"
+
+#: inc/Engine/Plugin/Admin/NoticeSubscriber.php:54
+msgid "You do not have sufficient permissions to perform this action."
+msgstr "Nincs megfelelő jogosultsága a művelet végrehajtásához."
+
+#. translators: %1$s = <strong>, %2$s = plugin name, %3$s = </strong>
+#: inc/Engine/Plugin/Admin/NoticeSubscriber.php:144
+#, php-format
+msgid "%1$s %2$s is good to go! %3$s Your website is already faster."
+msgstr "%1$s %2$s használatra kész! %3$s A webhely máris gyorsabb."
+
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:52
+msgid "Get WP Rocket cache health"
+msgstr "A WP Rocket gyorsítótár állapotának felmérése"
+
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:53
+msgctxt "Ability description"
+msgid ""
+"Returns sitewide Preload queue counts (pending, in-progress, completed, failed) and an estimated time remaining until preloading finishes.\n"
+"The estimate is always a projection (is_estimate is always true), based on the configured maximum batch size and cron interval, not a live measurement. Use this to answer \"is my cache warm\" or \"how long until preload finishes\".\n"
+"If tracking_enabled is false, tell the user Preload tracking is disabled rather than presenting a stale or empty estimate as current."
+msgstr ""
+"Visszaadja az előtöltési várólista elemszámát állapotonként (pending, in-progress, completed, failed) a teljes webhelyre vonatkozóan, valamint az előtöltés befejezéséig hátralévő idő becslését.\n"
+"A becslés mindig előrejelzés (az is_estimate értéke mindig true), amely a beállított maximális kötegméreten és a cron időközén alapul, nem pedig valós idejű mérésen. Ezzel válaszolhatók meg az olyan kérdések, mint „fel van töltve a gyorsítótár?” vagy „mennyi idő van hátra az előtöltés befejezéséig?”.\n"
+"Ha a tracking_enabled értéke false, tájékoztassa a felhasználót arról, hogy az előtöltés nyomon követése ki van kapcsolva, ne tüntessen fel elavult vagy üres becslést aktuálisként."
+
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:161
+msgid ""
+"Estimate unavailable: Preload tracking is disabled. Enable \"Preload Cache\""
+" in Settings > WP Rocket > Preload to get a completion estimate."
+msgstr ""
+"A becslés nem érhető el: az előtöltés nyomon követése ki van kapcsolva. A "
+"befejezési idő becsléséhez kapcsolja be a „Gyorsítótár előtöltése” "
+"beállítást a Beállítások > WP Rocket > Előtöltés menüpontban."
+
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:171
+msgid "No pending URLs to preload."
+msgstr "Nincs előtöltésre váró URL."
+
+#. translators: 1: number of pending URLs, 2: configured maximum batch size,
+#. 3: cron interval in seconds
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:185
+#, php-format
+msgid ""
+"Estimate = ceil(%1$d pending URLs / %2$d max URLs per cron tick) x %3$d "
+"seconds per tick. %2$d is the configured maximum batch size "
+"(rocket_preload_cache_pending_jobs_cron_rows_count filter), not a live "
+"measurement of actual throughput."
+msgstr ""
+"Becslés = ceil(%1$d várakozó URL / cron-futásonként legfeljebb %2$d URL) x "
+"futásonként %3$d másodperc. A(z) %2$d a beállított maximális kötegméret "
+"(rocket_preload_cache_pending_jobs_cron_rows_count szűrő), nem pedig a "
+"tényleges feldolgozási sebesség valós idejű mérése."
+
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:193
+msgid ""
+"Doubled because a separate desktop and mobile cache file is generated "
+"sequentially for each URL (do_caching_mobile_files is enabled)."
+msgstr ""
+"Megduplázva, mert minden URL-hez egymás után külön asztali és mobil "
+"gyorsítótárfájl készül (a do_caching_mobile_files engedélyezve van)."
+
+#. translators: %s: human-readable duration, e.g. "12 minutes"
+#: inc/Engine/Preload/Abilities/CheckCacheHealth.php:199
+#, php-format
+msgid "~%s"
+msgstr "~%s"
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:52
+msgid "Get WP Rocket cache status"
+msgstr "A WP Rocket gyorsítótár állapotának lekérése"
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:53
+msgctxt "Ability description"
+msgid ""
+"Returns the Preload queue status for one URL, post, or term: tracked, status (pending, in-progress, completed, or failed), modified, and last_accessed.\n"
+"Provide exactly one of url, post_id, or term_id together with taxonomy. This reports Preload queue tracking, not a raw filesystem check.\n"
+"If tracked is false, tell the user the URL is not currently tracked by Preload (tracking may be disabled, or the URL was excluded or not crawled yet) rather than implying the page is not cached."
+msgstr ""
+"Visszaadja az előtöltési várólista állapotát egy URL-hez, bejegyzéshez vagy kifejezéshez: tracked, status (pending, in-progress, completed vagy failed), modified és last_accessed.\n"
+"Pontosan egyet adjon meg az alábbiak közül: url, post_id vagy term_id a taxonomy paraméterrel együtt. Ez az előtöltési várólista nyomon követési adatait jelenti, nem közvetlen fájlrendszer-ellenőrzést.\n"
+"Ha a tracked értéke false, tájékoztassa a felhasználót arról, hogy az előtöltés jelenleg nem követi nyomon az URL-t (a nyomon követés ki lehet kapcsolva, vagy az URL ki lett zárva, esetleg még nem térképezte fel a rendszer), ahelyett, hogy azt sugallná, hogy az oldal nincs a gyorsítótárban."
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:159
+msgid "Could not resolve a URL for the given identifier."
+msgstr "Nem sikerült meghatározni a megadott azonosítóhoz tartozó URL-t."
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:174
+msgid ""
+"This URL is not currently tracked by Preload. It may be excluded from "
+"preloading, or it has not been crawled yet."
+msgstr ""
+"Az előtöltés jelenleg nem követi nyomon ezt az URL-t. Lehet, hogy ki van "
+"zárva az előtöltésből, vagy a rendszer még nem térképezte fel."
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:175
+msgid ""
+"Preload tracking is disabled. Enable \"Preload Cache\" in Settings > WP "
+"Rocket > Preload to track cache status."
+msgstr ""
+"Az előtöltés nyomon követése ki van kapcsolva. A gyorsítótár állapotának "
+"nyomon követéséhez kapcsolja be a „Gyorsítótár előtöltése” beállítást a "
+"Beállítások > WP Rocket > Előtöltés menüpontban."
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:207
+msgid "The taxonomy parameter is required when term_id is provided."
+msgstr "A term_id megadásakor a taxonomy paraméter megadása is kötelező."
+
+#: inc/Engine/Preload/Abilities/CheckCacheStatus.php:213
+msgid "Provide exactly one of url, post_id, or term_id+taxonomy."
+msgstr ""
+"Pontosan egyet adjon meg az alábbiak közül: url, post_id vagy "
+"term_id+taxonomy."
 
 #. translators: %1$s = plugin name.
 #: inc/Engine/Preload/Admin/Settings.php:76
@@ -4383,14 +4858,17 @@ msgid ""
 "continue to cache all your pages whenever they are purged. No further action"
 " is needed."
 msgstr ""
+"%1$s: Az előtöltési szolgáltatás most már aktív. A kezdeti előtöltés után "
+"továbbra is gyorsítótárazza az összes oldalt, valahányszor törlődik a "
+"gyorsítótáruk. Nincs szükség további teendőre."
 
 #: inc/Engine/Preload/Cron/Subscriber.php:138
 msgid "WP Rocket Preload pending jobs"
-msgstr ""
+msgstr "WP Rocket előtöltés: várakozó feladatok"
 
 #: inc/Engine/Preload/Cron/Subscriber.php:166
 msgid "WP Rocket Preload revert stuck failed jobs"
-msgstr ""
+msgstr "WP Rocket előtöltés: elakadt, sikertelen feladatok visszaállítása"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:106
 msgid "Clear Used CSS of this URL"
@@ -4398,11 +4876,11 @@ msgstr "Ürítsd ezen URL felhasznált CSS-eit"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:133
 msgid "Used CSS"
-msgstr ""
+msgstr "Használt CSS"
 
 #: inc/Engine/Saas/Admin/AdminBar.php:136
 msgid "This action will clear the used CSS files."
-msgstr ""
+msgstr "Ez a művelet törli a használt CSS-fájlokat."
 
 #. translators: %1$s = plugin name, %2$s = number of seconds.
 #: inc/Engine/Saas/Admin/Notices.php:91
@@ -4411,6 +4889,9 @@ msgid ""
 "%1$s: Please wait %2$s seconds. The Remove Unused CSS service is processing "
 "your pages, the plugin is optimizing LCP and the images above the fold."
 msgstr ""
+"%1$s: Kérjük, várjon %2$s másodpercet. A nem használt CSS eltávolítására "
+"szolgáló szolgáltatás feldolgozza az oldalakat, a bővítmény pedig "
+"optimalizálja az LCP-t és a görgetés nélkül látható képeket."
 
 #. translators: %1$s = plugin name, %2$s = number of URLs, %3$s = number of
 #. seconds.
@@ -4420,12 +4901,15 @@ msgid ""
 "%1$s: The LCP element has been optimized, and the images above the fold were excluded from lazyload. The Used CSS of your homepage has been processed.\n"
 "\t\t\t WP Rocket will continue to generate Used CSS for up to %2$s URLs per %3$s second(s)."
 msgstr ""
+"%1$s: Az LCP-elem optimalizálása megtörtént, a hajtás feletti képek pedig kimaradtak a késleltetett betöltésből. A kezdőlap használt CSS-ének feldolgozása befejeződött.\n"
+"\t\t\t A WP Rocket továbbra is létrehozza a használt CSS-t, %3$s másodpercenként legfeljebb %2$s URL-hez."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:157
 #, php-format
 msgid "We suggest enabling %1$sPreload%2$s for the fastest results."
 msgstr ""
+"A leggyorsabb eredmény érdekében javasolt az %1$selőtöltés%2$s bekapcsolása."
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: inc/Engine/Saas/Admin/Notices.php:167
@@ -4461,14 +4945,17 @@ msgid ""
 "accessing the SaaS features. IPs listed %1$shere in our documentation%2$s "
 "should be added to your allowlists:"
 msgstr ""
+"Úgy tűnik, egy biztonsági bővítmény vagy a szerver tűzfala megakadályozza, "
+"hogy a WP Rocket hozzáférjen a SaaS-funkciókhoz. A %1$sdokumentációnkban itt"
+" felsorolt%2$s IP-címeket hozzá kell adni az engedélyezési listákhoz:"
 
 #: inc/Engine/Saas/Admin/Notices.php:286
 msgid "- In the security plugin, if you are using one"
-msgstr ""
+msgstr "- A biztonsági bővítményben, ha van ilyen használatban"
 
 #: inc/Engine/Saas/Admin/Notices.php:287
 msgid "- In the server's firewall. Your host can help you with this"
-msgstr ""
+msgstr "- A szerver tűzfalában. Ebben a tárhelyszolgáltató tud segíteni"
 
 #: inc/functions/admin.php:21
 msgid ""
@@ -4526,19 +5013,19 @@ msgstr "Melyik WP Rocket beállítások aktívak"
 
 #: inc/functions/admin.php:433
 msgid "Anonymized WP Rocket statistics:"
-msgstr ""
+msgstr "Anonimizált WP Rocket-statisztikák:"
 
 #: inc/functions/admin.php:436
 msgid "How WP Rocket features function and perform."
-msgstr ""
+msgstr "A WP Rocket funkcióinak működése és teljesítménye."
 
 #: inc/functions/admin.php:442
 msgid "WP Rocket license type"
-msgstr ""
+msgstr "A WP Rocket licencének típusa"
 
-#: inc/functions/admin.php:563
+#: inc/functions/admin.php:576
 msgid "Revoked"
-msgstr ""
+msgstr "Visszavonva"
 
 #: inc/functions/options.php:429
 msgid "The provided license data are not valid."
@@ -4632,6 +5119,7 @@ msgstr "Kérlek kövesd %1$sezt a leírást %2$s bővebb információért."
 #: inc/functions/options.php:529
 msgid "License validation failed. This website is revoked."
 msgstr ""
+"A licenc ellenőrzése sikertelen. A webhely jogosultságát visszavonták."
 
 #. Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening
 #. link tag, %4$s closing link tag.
@@ -4746,6 +5234,9 @@ msgid ""
 "%1$s: Cloudflare's HTTP/2 Server Push is incompatible with the features of "
 "Remove Unused CSS and Combine CSS files. We strongly recommend disabling it."
 msgstr ""
+"%1$s: A Cloudflare HTTP/2 Server Push funkciója nem kompatibilis a Nem "
+"használt CSS eltávolítása és a CSS-fájlok összevonása funkciókkal. "
+"Kikapcsolása erősen ajánlott."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:173
 msgid ""
@@ -4753,12 +5244,17 @@ msgid ""
 "Cloudflare auto-purge for compatibility. If you have APO activated, it is "
 "also compatible."
 msgstr ""
+"A webhely a hivatalos Cloudflare bővítményt használja. A kompatibilitás "
+"érdekében bekapcsoltuk a Cloudflare gyorsítótárának automatikus ürítését. A "
+"bekapcsolt APO is kompatibilis ezzel."
 
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:174
 msgid ""
 "Cloudflare cache will be purged each time WP Rocket clears its cache to "
 "ensure content is always up-to-date."
 msgstr ""
+"A Cloudflare gyorsítótára minden alkalommal kiürül, amikor a WP Rocket üríti"
+" a saját gyorsítótárát, így a tartalom mindig naprakész marad."
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:218
@@ -4767,6 +5263,8 @@ msgid ""
 "%1$sWP Rocket:%2$s You are using \"Dynamic Cookies Cache\". Cloudflare APO "
 "is not yet compatible with that feature."
 msgstr ""
+"%1$sWP Rocket:%2$s A „Dinamikus sütik gyorsítótárazása” funkció használatban"
+" van. A Cloudflare APO még nem kompatibilis ezzel a funkcióval."
 
 #. Translators:%1$s = opening <a> tag, %2$s = closing </a> tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:224
@@ -4776,6 +5274,10 @@ msgid ""
 "requiring the use of “Dynamic Cookies Cache” developers for an alternative "
 "way to be page-cache friendly. %1$sMore info%2$s"
 msgstr ""
+"Kapcsolja ki a Cloudflare APO-t, vagy érdeklődjön a „Dinamikus sütik "
+"gyorsítótárazása” funkciót igénylő sablon vagy bővítmény fejlesztőinél egy "
+"másik, az oldalak gyorsítótárazásával kompatibilis megoldásról. %1$sTovábbi "
+"információ%2$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag, %3$s =
 #. opening <a> tag, %4$s = closing </a> tag, %5$s = opening <a> tag.
@@ -4786,6 +5288,10 @@ msgid ""
 "devices\". You need to activate \"Cache by Device Type\" %3$ssetting%5$s on "
 "Cloudflare APO to serve the right version of the cache. %4$sMore info%5$s"
 msgstr ""
+"%1$sWP Rocket:%2$s A „Külön gyorsítótárfájlok mobileszközökhöz” funkció "
+"használatban van. A megfelelő gyorsítótár-verzió kiszolgálásához be kell "
+"kapcsolni a Cloudflare APO „Gyorsítótárazás eszköztípus szerint” "
+"%3$sbeállítását%5$s. %4$sTovábbi információ%5$s"
 
 #. Translators: %1$s = strong opening tag, %2$s = strong closing tag.
 #: inc/ThirdParty/Plugins/CDN/Cloudflare.php:296
@@ -4796,6 +5302,11 @@ msgid ""
 "mobile and desktop, we suggest you enable our “Separate Cache Files for "
 "Mobiles Devices” to ensure the generated cache is accurate."
 msgstr ""
+"%1$sWP Rocket:%2$s A Cloudflare APO „Gyorsítótárazás eszköztípus szerint” "
+"beállítása be van kapcsolva. Ha a webhelyhez szükségesnek tartja a külön "
+"gyorsítótár használatát mobilon és asztali gépen, javasolt bekapcsolni a "
+"„Külön gyorsítótárfájlok mobileszközökhöz” funkciónkat, hogy a létrehozott "
+"gyorsítótár megfelelő legyen."
 
 #. translators: %1$s is WP Rocket plugin name, %2$s is opening <a> tag, %3$s
 #. is closing </a> tag.
@@ -4810,7 +5321,7 @@ msgstr ""
 
 #. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
 #. tag
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:75
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:85
 #, php-format
 msgid ""
 "%1$sWP Rocket: %2$sWe have detected that Autoptimize's JavaScript "
@@ -4826,7 +5337,7 @@ msgstr ""
 
 #. Translators: %1$s is an opening <strong> tag; %2$s is a closing </strong>
 #. tag
-#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:130
+#: inc/ThirdParty/Plugins/Optimization/Autoptimize.php:140
 #, php-format
 msgid ""
 "%1$sWP Rocket: %2$sWe have detected that Autoptimize's Aggregate Inline CSS "
@@ -4921,11 +5432,14 @@ msgstr ""
 "%1$s %2$sasset optimization%3$s összeférhetetlen a WP Rocket %2$sfile "
 "optimization%3$s-ével"
 
-#: inc/ThirdParty/Plugins/Optimization/Perfmatters.php:38
+#: inc/ThirdParty/Plugins/Optimization/Perfmatters.php:44
 msgid ""
 "Remove Unused CSS is currently activated in Perfmatters. If you want to use "
 "WP Rocket's Remove Unused CSS feature, disable this option in Perfmatters."
 msgstr ""
+"A Perfmatters bővítményben jelenleg be van kapcsolva a Nem használt CSS "
+"eltávolítása funkció. A WP Rocket Nem használt CSS eltávolítása funkciójának"
+" használatához kapcsolja ki ezt a beállítást a Perfmatters bővítményben."
 
 #: inc/ThirdParty/Plugins/Optimization/RapidLoad.php:39
 msgid ""
@@ -4933,6 +5447,10 @@ msgid ""
 "for Autoptimize. If you want to use WP Rocket's Remove Unused CSS feature, "
 "disable the  RapidLoad Power-Up for Autoptimize plugin."
 msgstr ""
+"A RapidLoad Power-Up for Autoptimize bővítményben jelenleg be van kapcsolva "
+"a nem használt CSS automatikus eltávolítása. A WP Rocket Nem használt CSS "
+"eltávolítása funkciójának használatához kapcsolja ki a  RapidLoad Power-Up "
+"for Autoptimize bővítményt."
 
 #. translators: %1$s = plugin name.
 #: inc/ThirdParty/Plugins/Optimization/WPMeteor.php:42
@@ -4957,6 +5475,8 @@ msgid ""
 "Your Divi template was updated. Clear the Used CSS if the layout, design or "
 "CSS styles were changed."
 msgstr ""
+"A Divi-sablon frissült. Törölje a használt CSS-t, ha az elrendezés, a "
+"megjelenés vagy a CSS-stílusok megváltoztak."
 
 #: views/cpcss/activate-cpcss-mobile.php:13
 msgid "Load CSS asynchronously for mobile"
@@ -5068,6 +5588,8 @@ msgid ""
 "and export WP Rocket settings %1$s(Recommended as current settings will be "
 "deleted)%2$s"
 msgstr ""
+"és a WP Rocket beállításainak exportálása %1$s(Ajánlott, mivel a jelenlegi "
+"beállítások törlődnek)%2$s"
 
 #: views/deactivation-intent/form.php:76
 msgid "No, deactivate and snooze this message for"
@@ -5106,10 +5628,13 @@ msgid ""
 "and enhancements of this major version. You need an active license to use "
 "them on your website, don’t miss out! %6$sRenew Now%5$s"
 msgstr ""
+" Elérhető a %1$sWP Rocket %2$s%3$s. %4$sTovábbi információ%5$s a főverzió "
+"frissítéseiről és fejlesztéseiről. Ezek webhelyen történő használatához "
+"aktív licenc szükséges, ne maradjon le! %6$sMegújítás most%5$s"
 
 #: views/settings/dynamic-lists-update.php:14
 msgid "Update Inclusion and Exclusion Lists"
-msgstr ""
+msgstr "Bevonási és kizárási listák frissítése"
 
 #. translators: %1$s = opening link tag, %2$s = closing link tag.
 #: views/settings/dynamic-lists-update.php:19
@@ -5118,10 +5643,12 @@ msgid ""
 "Compatibility lists are downloaded automatically every week. Click the "
 "button if you want to update them manually. %1$sMore info%2$s"
 msgstr ""
+"A kompatibilitási listák hetente automatikusan letöltődnek. A kézi "
+"frissítéshez kattintson a gombra. %1$sTovábbi információ%2$s"
 
 #: views/settings/dynamic-lists-update.php:29
 msgid "Update lists"
-msgstr ""
+msgstr "Listák frissítése"
 
 #: views/settings/enable-google-fonts.php:13
 msgid "Enable Google Font Optimization"
@@ -5154,40 +5681,40 @@ msgstr "Ürítsd a gyorsítótárat ennyi idő után:"
 
 #: views/settings/fields/categorized_multiselect.php:54
 msgid "3rd parties"
-msgstr ""
+msgstr "Harmadik felek"
 
 #: views/settings/fields/categorized_multiselect.php:82
 #: views/settings/fields/categorized_multiselect.php:142
 msgid "Select all"
-msgstr ""
+msgstr "Összes kijelölése"
 
 #: views/settings/fields/categorized_multiselect.php:114
 msgid "WordPress"
-msgstr ""
+msgstr "WordPress"
 
 #: views/settings/fields/cnames.php:42 views/settings/fields/cnames.php:77
 msgid "For All Files"
-msgstr ""
+msgstr "Minden fájlhoz"
 
 #: views/settings/fields/cnames.php:43 views/settings/fields/cnames.php:78
 msgid "For CSS"
-msgstr ""
+msgstr "CSS-fájlokhoz"
 
 #: views/settings/fields/cnames.php:55 views/settings/fields/cnames.php:90
 msgid "For Images"
-msgstr ""
+msgstr "Képekhez"
 
 #: views/settings/fields/cnames.php:57 views/settings/fields/cnames.php:92
 msgid "For JavaScript"
-msgstr ""
+msgstr "JavaScript-fájlokhoz"
 
 #: views/settings/fields/cnames.php:58 views/settings/fields/cnames.php:93
 msgid "For CSS & JavaScript"
-msgstr ""
+msgstr "CSS- és JavaScript-fájlokhoz"
 
 #: views/settings/fields/cnames.php:73
 msgid "Enter a page URL: cdn.example.com"
-msgstr ""
+msgstr "Adjon meg egy oldal-URL-t: cdn.example.com"
 
 #: views/settings/fields/import-form.php:29
 msgid "Import settings"
@@ -5214,7 +5741,6 @@ msgid "Purges RocketCDN cached resources for your website. %s"
 msgstr ""
 "Üríti a RocketCDN által gyorsítótárazott erőforrásokat a weboldaladhoz.%s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/fields/rocket-cdn.php:63
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
@@ -5231,15 +5757,15 @@ msgstr "Mobil gyorsítótár"
 
 #: views/settings/mobile-cache.php:14
 msgid "Speed your site for mobile visitors."
-msgstr ""
+msgstr "Gyorsítsa fel a webhelyet a mobilról érkező látogatók számára."
 
 #: views/settings/mobile-cache.php:28
 msgid "Mobile Cache is now enabled for your site."
-msgstr ""
+msgstr "A mobil-gyorsítótárazás mostantól engedélyezve van a webhelyen."
 
 #: views/settings/mobile-cache.php:34
 msgid "Enable Mobile Cache"
-msgstr ""
+msgstr "Mobil-gyorsítótárazás engedélyezése"
 
 #: views/settings/page-sections/cloudflare.php:27
 msgid "Cloudflare Cache"
@@ -5252,7 +5778,6 @@ msgstr "Cloudflare Cache"
 msgid "Purges cached resources for your website. %s"
 msgstr "Üríti az oldaladhoz tartozó gyorsítótárazott erőforrásokat. %s"
 
-#. translators: %s is a "Learn more" link.
 #: views/settings/page-sections/cloudflare.php:36
 msgid "https://support.cloudflare.com/hc/en-us/articles/200169246"
 msgstr "https://support.cloudflare.com/hc/en-us/articles/200169246"
@@ -5290,11 +5815,13 @@ msgstr ""
 
 #: views/settings/page-sections/dashboard.php:49
 msgid "NEW!"
-msgstr ""
+msgstr "ÚJ!"
 
 #: views/settings/page-sections/dashboard.php:50
 msgid "You can now enable RocketCDN for free on up to 3 pages of your choice!"
 msgstr ""
+"Mostantól akár 3 tetszőlegesen kiválasztott oldalon is ingyenesen "
+"engedélyezhető a RocketCDN!"
 
 #: views/settings/page-sections/dashboard.php:51
 msgid ""
@@ -5303,6 +5830,10 @@ msgid ""
 "Delivery tab, choose up to 3 pages, and add them to RocketCDN to improve "
 "their performance globally."
 msgstr ""
+"A RocketCDN a látogatókhoz közelebbi helyekről szolgálja ki a tartalmat, így"
+" a legfontosabb oldalak világszerte gyorsabban töltődhetnek be. Nyissa meg a"
+" Tartalomkézbesítés lapot, válasszon ki legfeljebb 3 oldalt, és adja hozzá "
+"őket a RocketCDN-hez, hogy világszerte javuljon a teljesítményük."
 
 #. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
 #: views/settings/page-sections/dashboard.php:79
@@ -5311,6 +5842,9 @@ msgid ""
 "Check the %1$sRocket Insights%2$s tab to track your top pages, quickly spot "
 "issues, and get in-depth insights to further optimize your website speed."
 msgstr ""
+"A %1$sRocket Insights%2$s lapon nyomon követhetők a legfontosabb oldalak, "
+"gyorsan felismerhetők a problémák, és részletes elemzések segítik a webhely "
+"sebességének további optimalizálását."
 
 #: views/settings/page-sections/dashboard.php:102
 msgid "My Account"
@@ -5324,33 +5858,29 @@ msgstr "Frissítés"
 msgid "with"
 msgstr "vele:"
 
-#: views/settings/page-sections/dashboard.php:140
-msgid "Expiration Date"
-msgstr "Lejárat dátuma:"
-
-#: views/settings/page-sections/dashboard.php:145
+#: views/settings/page-sections/dashboard.php:147
 msgid "Plugin Updates"
-msgstr ""
+msgstr "Bővítményfrissítések"
 
-#: views/settings/page-sections/dashboard.php:160
+#: views/settings/page-sections/dashboard.php:162
 msgid "View my account"
 msgstr "Fiókom megtekintése"
 
-#: views/settings/page-sections/dashboard.php:182
+#: views/settings/page-sections/dashboard.php:184
 msgid "Frequently Asked Questions"
 msgstr "Gyakori kérdések"
 
-#: views/settings/page-sections/dashboard.php:196
+#: views/settings/page-sections/dashboard.php:198
 msgid "Still cannot find a solution?"
 msgstr "Nem találtál megoldást?"
 
-#: views/settings/page-sections/dashboard.php:197
+#: views/settings/page-sections/dashboard.php:199
 msgid ""
 "Submit a ticket and get help from our friendly and knowledgeable Rocketeers."
 msgstr ""
 "Küldj egy levelet és segítséget kapsz a barátságos és okos Rakétáinktól"
 
-#: views/settings/page-sections/dashboard.php:205
+#: views/settings/page-sections/dashboard.php:207
 msgid "Ask support"
 msgstr "Kérdezd meg az ügyfélszolgálatot"
 
@@ -5373,10 +5903,12 @@ msgstr "Mentsd a változásokat és optimizálás indítása"
 msgid ""
 "%1$sWP Rocket created IMAGIFY to give your website an extra speed boost!%2$s"
 msgstr ""
+"%1$sA WP Rocket azért hozta létre az IMAGIFY-t, hogy még gyorsabbá tegye a "
+"webhelyet!%2$s"
 
 #: views/settings/page-sections/imagify.php:28
 msgid "Images can account for 50% of your loading time!"
-msgstr ""
+msgstr "A képek betöltése a betöltési idő 50%-át is kiteheti!"
 
 #: views/settings/page-sections/imagify.php:31
 msgid ""
@@ -5385,36 +5917,42 @@ msgid ""
 "compresses, and converts your images to WebP and AVIF formats without "
 "sacrificing quality."
 msgstr ""
+"Az Imagify automatikusan optimalizálja az összes képet, így értékes "
+"másodpercekkel rövidíti a webhely betöltési idejét, miközben időt takarít "
+"meg Önnek. Egyetlen kattintással átméretezi, tömöríti és WebP- és AVIF-"
+"formátumba alakítja a képeket, minőségromlás nélkül."
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:41
 #, php-format
 msgid "%1$sCompress%2$s all your images in one click"
-msgstr ""
+msgstr "Az összes kép %1$stömörítése%2$s egyetlen kattintással"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:49
 #, php-format
 msgid "%1$sConvert%2$s images to WebP and Avif"
-msgstr ""
+msgstr "Képek %1$sátalakítása%2$s WebP- és Avif-formátumba"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:57
 #, php-format
 msgid "%1$sResize%2$s your images on the fly"
-msgstr ""
+msgstr "Képek %1$sátméretezése%2$s menet közben"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:65
 #, php-format
 msgid "%1$sFree plan%2$s includes 20MB/month (around 200 images)"
 msgstr ""
+"Az %1$singyenes csomag%2$s havi 20 MB-ot tartalmaz (körülbelül 200 kép)"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #: views/settings/page-sections/imagify.php:93
 #, php-format
 msgid "%1$sInstall Imagify, the Easiest WordPress Image Optimizer%2$s"
 msgstr ""
+"%1$sTelepítse az Imagify-t, a legegyszerűbb WordPress-képoptimalizálót%2$s"
 
 #: views/settings/page-sections/imagify.php:120
 msgid "Install Imagify"
@@ -5457,6 +5995,8 @@ msgid ""
 "Content Delivery speeds up loading time and improves Time to First Byte "
 "(TTFB) by serving your website’s files faster."
 msgstr ""
+"A tartalomszolgáltatás lerövidíti a betöltési időt és az első bájtig eltelt "
+"időt (TTFB) azáltal, hogy gyorsabban szolgálja ki a webhely fájljait."
 
 #: views/settings/page-sections/plugins.php:18
 msgid ""
@@ -5464,10 +6004,15 @@ msgid ""
 "build better, faster, and safer websites. Each one is crafted with our "
 "unique blend of expertise, simplicity, and outstanding support."
 msgstr ""
+"A WP Rocket mellett egy egész bővítménycsalád segít jobb, gyorsabb és "
+"biztonságosabb webhelyeket készíteni. Mindegyikben egyedülálló módon "
+"ötvöződik a szakértelmünk, az egyszerűség és a kiemelkedő támogatás."
 
 #: views/settings/page-sections/plugins.php:22
 msgid "Combine our plugins below to build incredible WordPress websites!"
 msgstr ""
+"Készítsen lenyűgöző WordPress-webhelyeket az alábbi bővítményeink "
+"kombinálásával!"
 
 #: views/settings/page-sections/plugins.php:60
 msgid "Learn More"
@@ -5478,6 +6023,8 @@ msgid ""
 "Rocket Insights is powered by GTmetrix to run tests and generate your "
 "performance results and recommendations."
 msgstr ""
+"A Rocket Insights a GTmetrix segítségével futtatja a teszteket, és állítja "
+"össze a teljesítménymérési eredményeket és javaslatokat."
 
 #: views/settings/page-sections/sucuri.php:46
 msgid "Clear all Sucuri cache files"
@@ -5485,47 +6032,59 @@ msgstr "Ürítsd a Sucuri gyorsítótár fájlokat"
 
 #. translators: %1$s = formatted file size, %2$s = formatted number of entries
 #. (don't use %2$d).
-#: views/settings/page-sections/tools.php:20
+#: views/settings/page-sections/tools.php:26
 #, php-format
 msgid "Files size: %1$s. Number of entries: %2$s."
 msgstr "Fájlok mérete: %1$s. Bejegyzések száma: %2$s."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: views/settings/page-sections/tools.php:23
+#: views/settings/page-sections/tools.php:29
 #, php-format
 msgid "%1$sDownload the file%2$s."
 msgstr "%1$sTöltsd le a fájlt %2$s."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
-#: views/settings/page-sections/tools.php:26
+#: views/settings/page-sections/tools.php:32
 #, php-format
 msgid "%1$sDelete the file%2$s."
 msgstr "%1$sTöröld a fájlt%2$s."
 
-#: views/settings/page-sections/tools.php:37
+#: views/settings/page-sections/tools.php:43
+msgid "MCP Server"
+msgstr "MCP-szerver"
+
+#: views/settings/page-sections/tools.php:44
+msgid "Connect your AI tool to WP Rocket"
+msgstr "AI-eszköz csatlakoztatása a WP Rockethez"
+
+#: views/settings/page-sections/tools.php:52
+msgid "How to set up MCP"
+msgstr "Az MCP beállításának menete"
+
+#: views/settings/page-sections/tools.php:68
 msgid "Export settings"
 msgstr "Beállítások exportálása"
 
-#: views/settings/page-sections/tools.php:38
+#: views/settings/page-sections/tools.php:69
 msgid "Download a backup file of your settings"
 msgstr "Tölts le egy tartalék másolatot a beállításaidról"
 
-#: views/settings/page-sections/tools.php:46
+#: views/settings/page-sections/tools.php:77
 msgid "Download settings"
 msgstr "Letöltési beállítások"
 
-#: views/settings/page-sections/tools.php:60
+#: views/settings/page-sections/tools.php:91
 msgid "Rollback"
 msgstr "Visszaállás korábbi verzióra"
 
 #. translators: %s = WP Rocket version number.
-#: views/settings/page-sections/tools.php:64
+#: views/settings/page-sections/tools.php:95
 #, php-format
 msgid "Has version %s caused an issue on your website?"
 msgstr "Problémát okozott a %s-s verzió a weboldaladon?"
 
 #. translators: %s = <br>.
-#: views/settings/page-sections/tools.php:69
+#: views/settings/page-sections/tools.php:100
 #, php-format
 msgid ""
 "You can rollback to the previous major version here.%sThen send us a support"
@@ -5533,16 +6092,16 @@ msgid ""
 msgstr "Visszatérhetsz a korábbi főverzióra itt. %s Utána írj nekünk levelet."
 
 #. translators: %s = WP Rocket previous version.
-#: views/settings/page-sections/tools.php:80
+#: views/settings/page-sections/tools.php:111
 #, php-format
 msgid "Reinstall version %s"
 msgstr "Telepítsd újra a %s verziót"
 
-#: views/settings/page-sections/tools.php:106
+#: views/settings/page-sections/tools.php:137
 msgid "Debug mode"
 msgstr "Hibakereső üzemmód"
 
-#: views/settings/page-sections/tools.php:111
+#: views/settings/page-sections/tools.php:142
 msgid "Create a debug log file."
 msgstr "Hibakereső naplófájl létrehozása"
 
@@ -5580,7 +6139,7 @@ msgstr "Hogyan javítsuk az LCP-t a WP Rocket-tel"
 
 #: views/settings/page-sections/tutorials.php:25
 msgid "How to improve INP with WP Rocket"
-msgstr ""
+msgstr "Hogyan javítható az INP a WP Rocket segítségével?"
 
 #: views/settings/page-sections/tutorials.php:26
 msgid "How to improve CLS with WP Rocket"
@@ -5606,26 +6165,26 @@ msgstr "Hogyan lassítja le a külső tartalom a weboldaladat"
 msgid "Set Up the Cloudflare Add-on"
 msgstr "Állítsd be a Cloudflare bővítményt"
 
-#: views/settings/page.php:16
+#: views/settings/page.php:20
 msgid "WP Rocket Settings"
 msgstr "WP Rocket beállítások"
 
 #. translators: %s = Plugin version number.
-#: views/settings/page.php:30
+#: views/settings/page.php:34
 #, php-format
 msgid "version %s"
 msgstr "verzió %s"
 
-#: views/settings/page.php:61
+#: views/settings/page.php:65
 msgid "Show Sidebar"
 msgstr "Oldalsáv megjelenítése"
 
-#: views/settings/page.php:76 views/settings/sections/optin.php:21
+#: views/settings/page.php:80 views/settings/sections/optin.php:21
 msgid "Rocket Analytics"
 msgstr "Rocket Analytics"
 
 #. translators: %1$s = <strong>, %2$s = </strong>.
-#: views/settings/page.php:83
+#: views/settings/page.php:87
 #, php-format
 msgid ""
 "Below is a detailed view of all data WP Rocket will collect %1$sif granted "
@@ -5634,7 +6193,7 @@ msgstr ""
 "Alább részletes listát látsz mindazon adatokról amiket a WP Rocket gyűjteni "
 "fog ha %1$smegadod az engedélyt.%2$s"
 
-#: views/settings/page.php:89
+#: views/settings/page.php:93
 msgid ""
 "WP Rocket will never transmit any domain names or email addresses (except "
 "for license validation), IP addresses, or third-party API keys."
@@ -5642,37 +6201,74 @@ msgstr ""
 "A WP Rocket soha nem fog továbbítani domain neveket email címeket  (kivéve a"
 " licensz-ellenőrzéshez), IP címeket vagy külső félhez tartozó API kulcsokat."
 
-#: views/settings/page.php:91
+#: views/settings/page.php:95
 msgid "Activate Rocket analytics"
 msgstr "Aktiváld a Rocket analitikát"
 
+#: views/settings/partials/cdn/cdn-driver-tabs.php:30
 #: views/settings/partials/cdn/cdn-driver-tabs.php:44
+msgid "Active"
+msgstr "Aktív"
+
+#: views/settings/partials/cdn/cdn-driver-tabs.php:43
 msgid "Other CDN"
-msgstr ""
+msgstr "Másik CDN"
 
-#: views/settings/partials/cdn/cdn-driver-tabs.php:49
-msgid "You can only use one CDN at a time"
-msgstr ""
+#: views/settings/partials/cdn/cdn-mode-toggle.php:55
+msgid "On"
+msgstr "Be"
 
-#: views/settings/partials/cdn/cdn-status-indicator.php:63
-msgid "PAUSE CDN"
-msgstr ""
+#: views/settings/partials/cdn/cdn-mode-toggle.php:55
+msgid "Off"
+msgstr "Ki"
 
-#: views/settings/partials/cdn/cdn-status-indicator.php:64
-msgid "RESUME CDN"
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/cdn-pro-retry-notice.php:26
+#, php-format
+msgid ""
+"%1$sOops, we couldn't confirm your RocketCDN Pro subscription%2$s. No "
+"worries: let's do a manual check."
 msgstr ""
+"%1$sHoppá, nem sikerült ellenőrizni a RocketCDN Pro-előfizetést%2$s. Semmi "
+"gond: végezzen kézi ellenőrzést."
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:23
-msgid "Your WPRocket license has expired"
-msgstr ""
+#: views/settings/partials/cdn/cdn-pro-retry-notice.php:35
+msgid "Retry"
+msgstr "Újrapróbálkozás"
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:25
-msgid "Please renew it to keep using RocketCDN."
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/wpr-cancelled-notice.php:19
+#, php-format
+msgid ""
+"%1$sRocketCDN Pro subscription is being cancelled.%2$s RocketCDN Pro can’t "
+"be reactivated until the process is complete."
 msgstr ""
+"%1$sA RocketCDN Pro-előfizetés lemondása folyamatban van.%2$s A RocketCDN "
+"Pro nem aktiválható újra, amíg a folyamat be nem fejeződik."
 
-#: views/settings/partials/cdn/wpr-licence-expired-notice.php:28
-msgid "Renew Licence"
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/wpr-licence-banned-notice.php:22
+#, php-format
+msgid ""
+"%1$sYour WP Rocket license has been banned%2$s. Contact support for more "
+"information."
 msgstr ""
+"%1$sA WP Rocket-licencet letiltották%2$s. További információért forduljon az"
+" ügyfélszolgálathoz."
+
+#. translators: %1$s = opening <strong> tag, %2$s = closing </strong> tag.
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:27
+#, php-format
+msgid ""
+"%1$sYour WP Rocket license has expired%2$s. Renew now to keep using "
+"RocketCDN Free."
+msgstr ""
+"%1$sA WP Rocket-licenc lejárt%2$s. Újítsa meg most, hogy továbbra is "
+"használhassa a RocketCDN Free szolgáltatást."
+
+#: views/settings/partials/cdn/wpr-licence-expired-notice.php:36
+msgid "Renew"
+msgstr "Megújítás"
 
 #: views/settings/partials/documentation.php:15
 msgid "It is a great starting point to fix some of the most common issues."
@@ -5692,19 +6288,19 @@ msgstr "Gyors műveletek"
 
 #: views/settings/partials/quick-actions.php:20
 msgid "Cache Files"
-msgstr ""
+msgstr "Gyorsítótárfájlok"
 
 #: views/settings/partials/quick-actions.php:21
 msgid "Clear and preload all the cache files."
-msgstr ""
+msgstr "Az összes gyorsítótárfájl törlése és előtöltése."
 
 #: views/settings/partials/quick-actions.php:21
 msgid "Clear all the cache files."
-msgstr ""
+msgstr "Az összes gyorsítótárfájl törlése."
 
 #: views/settings/partials/quick-actions.php:27
 msgid "Clear and preload"
-msgstr ""
+msgstr "Törlés és előtöltés"
 
 #: views/settings/partials/quick-actions.php:41
 #: views/settings/partials/quick-actions.php:47
@@ -5713,161 +6309,164 @@ msgstr "Kritikus útvonalú CSS újragenerálása"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:9
 msgid "Add Pages"
-msgstr ""
+msgstr "Oldalak hozzáadása"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:9
 msgid "Add Homepage"
-msgstr ""
+msgstr "Kezdőlap hozzáadása"
 
 #: views/settings/partials/rocket-insights/buttons/global-score-widget.php:25
-#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:20
+#: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:23
 msgid "You have reached your maximum page limit"
-msgstr ""
+msgstr "Elérte az oldalak maximális számát"
 
 #: views/settings/partials/rocket-insights/buttons/rocket-insights-panel.php:9
-msgid "Add page +"
-msgstr ""
+msgid "Add page"
+msgstr "Oldal hozzáadása"
 
 #: views/settings/partials/rocket-insights/global-score-widget.php:14
 msgid "Rocket Insights Score"
-msgstr ""
+msgstr "Rocket Insights-pontszám"
 
 #: views/settings/partials/rocket-insights/license-banner.php:17
 msgid "Unlock Your Site’s True Performance!"
-msgstr ""
+msgstr "Hozza ki a webhelyből a benne rejlő teljesítményt!"
 
 #: views/settings/partials/rocket-insights/license-banner.php:51
 msgid "Taxes may apply depending on your country of residence"
-msgstr ""
+msgstr "A lakóhely szerinti országtól függően adók is felszámíthatók"
 
 #: views/settings/partials/rocket-insights/license-banner.php:54
 msgid "GET STARTED"
-msgstr ""
+msgstr "Kezdés"
 
 #: views/settings/partials/rocket-insights/performance-score.php:34
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:173
 msgid "Something went wrong with this URL"
-msgstr ""
+msgstr "Hiba történt ezzel az URL-lel kapcsolatban"
 
 #: views/settings/partials/rocket-insights/performance-score.php:34
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:102
 msgid "Upgrade your plan to see your score"
-msgstr ""
+msgstr "A pontszám megtekintéséhez váltson magasabb szintű csomagra"
 
 #: views/settings/partials/rocket-insights/recommendations/item.php:56
 msgid "Impact on"
-msgstr ""
+msgstr "Hatás erre:"
 
 #: views/settings/partials/rocket-insights/recommendations/states/completed.php:36
 msgid "More Recommendations"
-msgstr ""
+msgstr "Több javaslat"
 
 #: views/settings/partials/rocket-insights/recommendations/states/completed.php:39
 msgid "Less Recommendations"
-msgstr ""
+msgstr "Kevesebb javaslat"
 
 #: views/settings/partials/rocket-insights/recommendations/states/failed.php:15
 msgid "We’re sorry, recommendations are currently unavailable."
-msgstr ""
+msgstr "Sajnáljuk, a javaslatok jelenleg nem érhetők el."
 
 #: views/settings/partials/rocket-insights/recommendations/states/loading.php:15
 msgid "Loading recommendations..."
-msgstr ""
+msgstr "Javaslatok betöltése..."
 
 #: views/settings/partials/rocket-insights/recommendations/states/loading.php:17
 msgid "Almost there!"
-msgstr ""
+msgstr "Mindjárt kész!"
 
 #: views/settings/partials/rocket-insights/recommendations/states/success.php:15
 msgid "All done!"
-msgstr ""
+msgstr "Minden kész!"
 
 #: views/settings/partials/rocket-insights/recommendations/states/success.php:19
 msgid "All recommended WP Rocket features are now enabled."
-msgstr ""
+msgstr "Most már minden javasolt WP Rocket-funkció be van kapcsolva."
 
 #: views/settings/partials/rocket-insights/recommendations/widget.php:27
 msgid "Recommendations"
-msgstr ""
+msgstr "Javaslatok"
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:43
 msgid "This page is a draft and cannot be tested."
-msgstr ""
+msgstr "Ez az oldal vázlat, ezért nem tesztelhető."
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:67
 #: views/settings/partials/rocket-insights/table-row.php:63
 msgid "Re-test"
-msgstr ""
+msgstr "Újratesztelés"
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:85
 msgid "Loading..."
-msgstr ""
+msgstr "Betöltés..."
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:114
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:149
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:153
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:185
 msgid "View Details"
-msgstr ""
+msgstr "Részletek megtekintése"
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:118
 msgid "Upgrade to view detailed metrics"
 msgstr ""
+"A részletes mérőszámok megtekintéséhez váltson magasabb szintű csomagra"
 
 #. translators: %s = human-readable time difference (e.g., "5 minutes").
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:135
 #, php-format
 msgid "Tested %s ago"
-msgstr ""
+msgstr "Tesztelés: %s ezelőtt"
 
 #: views/settings/partials/rocket-insights/rocket-insights-column.php:189
 msgid "Test failed - no details available"
-msgstr ""
+msgstr "A teszt sikertelen – nem állnak rendelkezésre részletek"
 
 #: views/settings/partials/rocket-insights/table-row.php:43
 msgid "Analyzing your page (~1 min)"
-msgstr ""
+msgstr "Az oldal elemzése (~1 perc)"
 
 #: views/settings/partials/rocket-insights/table-row.php:45
 msgid "ago"
-msgstr ""
+msgstr "ezelőtt"
 
 #: views/settings/partials/rocket-insights/table-row.php:60
 msgid "Re-Test"
-msgstr ""
+msgstr "Újratesztelés"
 
 #: views/settings/partials/rocket-insights/table-row.php:76
 msgid ""
 "You’ve reached your free monthly plan limit. Upgrade now to unlock unlimited"
 " on-demand tests."
 msgstr ""
+"Elérte az ingyenes csomag havi korlátját. Váltson magasabb csomagra, hogy "
+"korlátlan számú tesztet futtathasson igény szerint."
 
 #: views/settings/partials/rocket-insights/table-row.php:87
 msgid "See GTmetrix Report"
-msgstr ""
+msgstr "GTmetrix-jelentés megtekintése"
 
 #: views/settings/partials/rocket-insights/table-row.php:104
 msgid "Upgrade your plan to see the report"
-msgstr ""
+msgstr "A jelentés megtekintéséhez váltson magasabb csomagra"
 
 #: views/settings/partials/rocket-insights/table-row.php:116
 msgid "Delete"
-msgstr ""
+msgstr "Törlés"
 
 #: views/settings/partials/rocket-insights/table-row.php:188
 msgid "Upgrade your plan to see more details."
-msgstr ""
+msgstr "További részletek megtekintéséhez váltson magasabb csomagra."
 
 #: views/settings/partials/rocket-insights/urls-table.php:17
 msgid "Performance Summary"
-msgstr ""
+msgstr "Teljesítmény-összefoglaló"
 
 #: views/settings/partials/rocket-insights/urls-table.php:19
 #: views/settings/sections/addons-container.php:24
 #: views/settings/sections/cdn/purge-cdn-cache.php:27
-#: views/settings/sections/cdn/rocketcdn-free.php:35
-#: views/settings/sections/cdn/rocketcdn-paid.php:32
-#: views/settings/sections/cdn/your-own-cdn.php:29
+#: views/settings/sections/cdn/rocketcdn-free.php:60
+#: views/settings/sections/cdn/rocketcdn-paid.php:50
+#: views/settings/sections/cdn/your-own-cdn.php:49
 #: views/settings/sections/fields-container.php:28
 #: views/settings/sections/nocontainer-with-title.php:39
 msgid "Need Help?"
@@ -5880,6 +6479,9 @@ msgid ""
 "%1$sCongrats!%2$s You fully enjoyed your free plan. Upgrade to keep testing,"
 " or wait for your free limit to reset."
 msgstr ""
+"%1$sGratulálunk!%2$s Teljesen kihasználta az ingyenes csomagot. A tesztelés "
+"folytatásához váltson magasabb csomagra, vagy várja meg, amíg az ingyenes "
+"keret megújul."
 
 #. Translators: %1$s = opening strong tag, %2$s: number of pages, %3$s =
 #. closing strong tag, %4$s: number of tests available.
@@ -5889,40 +6491,68 @@ msgid ""
 "You can analyze up to %1$s%2$s pages%3$s and run %1$s%4$s tests per "
 "month%3$s. Want more?"
 msgstr ""
+"Legfeljebb %1$s%2$s oldal%3$s elemezhető, és %1$shavonta %4$s teszt%3$s "
+"futtatható. Többre van szüksége?"
 
 #: views/settings/partials/rocket-insights/urls-table.php:82
 msgid "Enter a page URL to monitor"
-msgstr ""
+msgstr "Adja meg a figyelni kívánt oldal URL-címét"
 
 #: views/settings/sections/cdn/purge-cdn-cache.php:48
 msgid "Learn more about Purge"
-msgstr ""
+msgstr "További információ a gyorsítótár ürítéséről"
 
 #. translators: %s is the CDN driver, wrapped in a span for JS targeting.
 #: views/settings/sections/cdn/purge-cdn-cache.php:59
 #, php-format
 msgid "CLEAR ALL %s CACHE FILES"
-msgstr ""
+msgstr "Az összes %s gyorsítótárfájl törlése"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:32
+#: views/settings/sections/cdn/rocketcdn-free.php:37
 msgid "Free"
-msgstr ""
+msgstr "Ingyenes"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:69
+#: views/settings/sections/cdn/rocketcdn-free.php:46
+msgid "Enable RocketCDN Free"
+msgstr "RocketCDN Free engedélyezése"
+
+#: views/settings/sections/cdn/rocketcdn-free.php:55
+msgid "Upgrade to PRO"
+msgstr "Váltás PRO csomagra"
+
+#: views/settings/sections/cdn/rocketcdn-free.php:95
 msgid "Enter a page URL to add to RocketCDN"
-msgstr ""
+msgstr "Adja meg a RocketCDN-hez hozzáadni kívánt oldal URL-címét"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:72
+#: views/settings/sections/cdn/rocketcdn-free.php:98
 msgid "ADD HOMEPAGE"
-msgstr ""
+msgstr "Kezdőlap hozzáadása"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:78
+#: views/settings/sections/cdn/rocketcdn-free.php:104
 msgid "ADD PAGE"
-msgstr ""
+msgstr "Oldal hozzáadása"
 
-#: views/settings/sections/cdn/rocketcdn-free.php:82
+#: views/settings/sections/cdn/rocketcdn-free.php:108
 msgid "You have reached the limit of 3 free pages."
+msgstr "Elérte a 3 ingyenes oldalra vonatkozó korlátot."
+
+#: views/settings/sections/cdn/rocketcdn-paid.php:43
+msgid "Enable RocketCDN Paid"
+msgstr "RocketCDN Paid engedélyezése"
+
+#: views/settings/sections/cdn/your-own-cdn.php:42
+msgid "Enable Other CDN"
+msgstr "Másik CDN engedélyezése"
+
+#: views/settings/sections/cdn/your-own-cdn.php:71
+msgid ""
+"Add the CNAME provided by your CDN service to configure your own CDN, then "
+"save to apply it. If you don't have a CNAME, you can use RocketCDN Free "
+"without any setup."
 msgstr ""
+"Saját CDN beállításához adja meg a CDN-szolgáltatótól kapott CNAME-et, majd "
+"mentse a beállítást az alkalmazásához. Ha nincs CNAME-je, a RocketCDN Free "
+"beállítás nélkül is használható."
 
 #. translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 #: views/settings/sections/optin.php:27

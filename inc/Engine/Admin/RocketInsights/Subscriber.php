@@ -165,7 +165,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
 			'rocket_before_sidebar_content'               => 'render_global_score_widget_sidebar',
-			'rocket_dashboard_sidebar'                    => 'render_global_score_widget_dashboard',
+			'rocket_dashboard_content'                    => 'render_dashboard_global_score',
 			'rocket_insights_tab_content'                 => [
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'render_performance_urls_table', 20 ],
@@ -231,9 +231,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
 
 		$data['global_score_data'] = [
-			'data'     => $global_score_data,
-			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
-			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+			'data'           => $global_score_data,
+			'html'           => $this->render->get_global_score_widget_content( $global_score_data ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $global_score_data ),
+			'row_html'       => $this->render->get_global_score_row( $global_score_data ),
 		];
 
 		return $data;
@@ -395,18 +396,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the global performance score widget in the dashboard sidebar.
+	 * Render the redesigned global score component in the dashboard content.
 	 *
 	 * @return void
 	 */
-	public function render_global_score_widget_dashboard(): void {
+	public function render_dashboard_global_score(): void {
 		if ( ! $this->context->is_allowed() ) {
+			$this->render->render_dashboard_disabled_state( $this->context->is_reseller_or_non_live() );
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$data['context']        = 'dashboard';
-		$this->render->render_global_score_widget( $data );
+		$this->render->render_dashboard_global_score( $data );
 	}
 
 	/**
