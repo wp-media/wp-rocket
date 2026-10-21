@@ -172,7 +172,7 @@ class UsedCSS extends AbstractQuery {
 	 * @param int $up_to_id Inclusive upper bound of the ID range.
 	 * @param int $limit    Maximum number of rows to delete.
 	 *
-	 * @return int|false Number of rows deleted, false on a database error or when no row of a non-empty batch could be deleted.
+	 * @return int|false Number of rows found in the range (so a full batch means more may remain), false on a database error or when no row of a non-empty batch could be deleted.
 	 */
 	public function delete_older_duplicates( int $after_id, int $up_to_id, int $limit ) {
 		$db = $this->get_db();
@@ -208,6 +208,6 @@ class UsedCSS extends AbstractQuery {
 			return false;
 		}
 
-		return $deleted;
+		return count( $ids );
 	}
 }
