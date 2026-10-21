@@ -3116,6 +3116,9 @@ div.wpr-upgrade-websites.notstacked {
   letter-spacing: 0;
   color: #0C0F1F;
 }
+.add-on-container--user-cache .wpr-radio {
+  min-height: 22.8125px;
+}
 .add-on-container--user-cache .wpr-addon {
   padding: 16px 0;
 }

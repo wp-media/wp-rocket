@@ -115,6 +115,11 @@
         color: $cTextPrimary;
     }
 
+    // The status text is visually hidden: keep the toggle box as tall as it was with the text.
+    .wpr-radio{
+        min-height: 22.8125px;
+    }
+
     .wpr-addon{
         padding: $space*2 0;
     }
