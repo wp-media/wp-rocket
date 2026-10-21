@@ -108,6 +108,13 @@ class DuplicatesCleanup {
 		set_transient( self::LOCK, time(), 5 * $minute );
 
 		$progress = $this->get_progress();
+
+		if ( false === $progress ) {
+			delete_transient( self::LOCK );
+
+			return 'error';
+		}
+
 		$deadline = (int) $this->clock->current_time( 'timestamp', true ) + self::TIME_BUDGET;
 
 		while ( $progress['cursor'] < $progress['max'] ) {
@@ -147,9 +154,9 @@ class DuplicatesCleanup {
 	/**
 	 * Gets the saved progress, or starts a new walk bounded by the current highest ID.
 	 *
-	 * @return array{cursor: int, max: int}
+	 * @return array{cursor: int, max: int}|false False when the highest ID cannot be read.
 	 */
-	private function get_progress(): array {
+	private function get_progress() {
 		$progress = $this->options_api->get( self::PROGRESS_OPTION, [] );
 
 		if ( isset( $progress['cursor'], $progress['max'] ) ) {
@@ -159,9 +166,15 @@ class DuplicatesCleanup {
 			];
 		}
 
+		$max_id = $this->query->get_max_id();
+
+		if ( false === $max_id ) {
+			return false;
+		}
+
 		$progress = [
 			'cursor' => 0,
-			'max'    => $this->query->get_max_id(),
+			'max'    => $max_id,
 		];
 
 		// Created without autoload: it is only read by the cron job. Later writes keep that setting.

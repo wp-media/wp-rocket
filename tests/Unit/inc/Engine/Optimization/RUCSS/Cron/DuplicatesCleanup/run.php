@@ -63,7 +63,7 @@ class Test_Run extends TestCase {
 		if ( empty( $config['progress'] ) ) {
 			$this->query->expects( $this->once() )->method( 'get_max_id' )->willReturn( $config['max_id'] );
 			Functions\expect( 'add_option' )
-				->once()
+				->times( false === $config['max_id'] ? 0 : 1 )
 				->with( 'wp_rocket_' . DuplicatesCleanup::PROGRESS_OPTION, [ 'cursor' => 0, 'max' => $config['max_id'] ], '', false );
 		} else {
 			$this->query->expects( $this->never() )->method( 'get_max_id' );

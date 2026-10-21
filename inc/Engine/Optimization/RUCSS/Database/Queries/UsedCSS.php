@@ -144,16 +144,22 @@ class UsedCSS extends AbstractQuery {
 	/**
 	 * Get the highest row ID.
 	 *
-	 * @return int
+	 * @return int|false The highest ID, 0 for an empty table, false on a database error.
 	 */
-	public function get_max_id(): int {
+	public function get_max_id() {
 		$db = $this->get_db();
 
 		if ( ! $db ) {
-			return 0;
+			return false;
 		}
 
-		return (int) $db->get_var( "SELECT MAX(id) FROM `{$db->{$this->table_name}}`" );
+		$max_id = $db->get_var( "SELECT MAX(id) FROM `{$db->{$this->table_name}}`" );
+
+		if ( ! empty( $db->last_error ) ) {
+			return false;
+		}
+
+		return (int) $max_id;
 	}
 
 	/**
@@ -166,7 +172,7 @@ class UsedCSS extends AbstractQuery {
 	 * @param int $up_to_id Inclusive upper bound of the ID range.
 	 * @param int $limit    Maximum number of rows to delete.
 	 *
-	 * @return int|false Number of rows deleted, false on a database error.
+	 * @return int|false Number of rows deleted, false on a database error or when no row of a non-empty batch could be deleted.
 	 */
 	public function delete_older_duplicates( int $after_id, int $up_to_id, int $limit ) {
 		$db = $this->get_db();
@@ -190,10 +196,18 @@ class UsedCSS extends AbstractQuery {
 			return false;
 		}
 
+		$deleted = 0;
+
 		foreach ( $ids as $id ) {
-			$this->delete_item( (int) $id );
+			if ( false !== $this->delete_item( (int) $id ) ) {
+				++$deleted;
+			}
 		}
 
-		return count( $ids );
+		if ( ! empty( $ids ) && 0 === $deleted ) {
+			return false;
+		}
+
+		return $deleted;
 	}
 }

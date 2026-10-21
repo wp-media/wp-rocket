@@ -109,6 +109,25 @@ class Test_DeleteOlderDuplicates extends TestCase {
 		$this->assertSame( [ $ids[0], $ids[2], $ids[3] ], $this->remainingIds() );
 	}
 
+	public function testShouldReturnFalseWhenNoRowOfTheBatchCanBeDeleted() {
+		global $wpdb;
+
+		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/a' ] );
+
+		$break_deletes = function ( $sql ) {
+			return 0 === strpos( $sql, 'DELETE FROM' ) ? 'DELETE FROMM' : $sql;
+		};
+
+		add_filter( 'query', $break_deletes );
+		$previous = $wpdb->suppress_errors( true );
+		$result   = $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 );
+		$wpdb->suppress_errors( $previous );
+		remove_filter( 'query', $break_deletes );
+
+		$this->assertFalse( $result );
+		$this->assertSame( $ids, $this->remainingIds() );
+	}
+
 	public function testShouldReturnZeroOnACleanTable() {
 		$this->insertRows( [ 'http://example.org/a', 'http://example.org/b' ] );
 

@@ -311,9 +311,11 @@ class UsedCSS extends AbstractTable {
 			return false;
 		}
 
-		$success = $this->add_url_hash_column_and_key();
-
-		$this->release_upgrade_lock( $lock );
+		try {
+			$success = $this->add_url_hash_column_and_key();
+		} finally {
+			$this->release_upgrade_lock( $lock );
+		}
 
 		if ( ! $success ) {
 			set_transient( self::UPGRADE_RETRY, time(), (int) rocket_get_constant( 'HOUR_IN_SECONDS', 3600 ) );

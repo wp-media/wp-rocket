@@ -164,6 +164,21 @@ return [
 				'saves'  => [],
 			],
 		],
+		'shouldReturnErrorWithoutFlaggingDoneWhenMaxIdCannotBeRead' => [
+			'config'   => [
+				'done'     => false,
+				'locked'   => false,
+				'progress' => [],
+				'max_id'   => false,
+				'clock'    => [ $start ],
+				'calls'    => [],
+				'supports' => true,
+			],
+			'expected' => [
+				'result' => 'error',
+				'saves'  => [],
+			],
+		],
 		'shouldReturnErrorWhenQueryFails'              => [
 			'config'   => [
 				'done'     => false,
