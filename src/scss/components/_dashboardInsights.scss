@@ -325,7 +325,7 @@
 		}
 
 		&--good::before {
-			color: $cFgSuccess;
+			color: $successDark;
 		}
 
 		&--average::before {
@@ -394,7 +394,7 @@
 		font-weight: 600;
 
 		&--success {
-			color: $cFgSuccess;
+			color: $successDark;
 		}
 
 		&--warning {

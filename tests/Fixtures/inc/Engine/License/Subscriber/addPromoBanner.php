@@ -229,8 +229,6 @@ return [
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
-		<p class="rocket-promo-deal">
-		Hurry Up! Deal ends in:</p>
 		<ul class="rocket-promo-countdown" id="rocket-promo-countdown">
 		<li class="rocket-countdown-item">
 		<span class="rocket-countdown-value rocket-countdown-days">
@@ -250,7 +248,7 @@ return [
 		Seconds</li>
 		</ul>
 		<button class="rocket-promo-cta wpr-popin-upgrade-toggle">
-		Upgrade now</button>
+		Upgrade WP Rocket</button>
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
@@ -327,8 +325,6 @@ return [
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
-		<p class="rocket-promo-deal">
-		Hurry Up! Deal ends in:</p>
 		<ul class="rocket-promo-countdown" id="rocket-promo-countdown">
 		<li class="rocket-countdown-item">
 		<span class="rocket-countdown-value rocket-countdown-days">
@@ -348,7 +344,7 @@ return [
 		Seconds</li>
 		</ul>
 		<button class="rocket-promo-cta wpr-popin-upgrade-toggle">
-		Upgrade now</button>
+		Upgrade WP Rocket</button>
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
