@@ -7,6 +7,7 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Render;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -46,7 +47,7 @@ class Test_GetDashboardRecommendations extends TestCase {
 		$data_manager->shouldReceive( 'has_tracked_pages' )->andReturn( true );
 		$beacon->shouldReceive( 'get_suggest' )->with( 'rocket_insights' )->once()->andReturn( $help );
 
-		return new Render( dirname( __DIR__, 8 ) . '/views/settings', $data_manager, $beacon );
+		return new Render( dirname( __DIR__, 8 ) . '/views/settings', $data_manager, new Overrides(), $beacon );
 	}
 
 	/**
