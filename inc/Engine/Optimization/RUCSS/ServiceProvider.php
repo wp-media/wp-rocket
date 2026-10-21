@@ -18,6 +18,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSSTable;
 use WP_Rocket\Engine\Optimization\RUCSS\Frontend\Subscriber as FrontendSubscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\{Manager, Factory};
 use WP_Rocket\Engine\Optimization\RUCSS\Context\RUCSSContextSaas;
+use WP_Rocket\Engine\Optimization\RUCSS\Cron\DuplicatesCleanup;
 use WP_Rocket\Engine\Optimization\RUCSS\Cron\Subscriber as CronSubscriber;
 
 /**
@@ -44,6 +45,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rucss_manager',
 		'rucss_context_saas',
 		'rucss_factory',
+		'rucss_duplicates_cleanup',
 		'rucss_cron_subscriber',
 		'rucss_context',
 		'rucss_optimize_context',
@@ -147,11 +149,20 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rucss_context',
 				]
 			);
+		$this->getContainer()->addShared( 'rucss_duplicates_cleanup', DuplicatesCleanup::class )
+			->addArguments(
+				[
+					'rucss_used_css_query',
+					'options_api',
+					'wpr_clock',
+				]
+			);
 		$this->getContainer()->addShared( 'rucss_cron_subscriber', CronSubscriber::class )
 			->addArguments(
 				[
 					'job_processor',
 					'rucss_used_css_query',
+					'rucss_duplicates_cleanup',
 				]
 			);
 	}

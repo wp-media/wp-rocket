@@ -51,15 +51,17 @@ class AbstractQuery extends Query implements QueryInterface {
 	 *
 	 * @param string $url Page Url.
 	 * @param bool   $is_mobile if the request is for mobile page.
+	 * @param bool   $use_cache Use the DB cache or not.
 	 *
 	 * @return false|mixed
 	 */
-	public function get_row( string $url, bool $is_mobile = false ) {
+	public function get_row( string $url, bool $is_mobile = false, bool $use_cache = true ) {
 		$query = $this->query(
 			[
 				'url'       => untrailingslashit( $url ),
 				'is_mobile' => $is_mobile,
-			]
+			],
+			$use_cache
 		);
 
 		if ( empty( $query[0] ) ) {
