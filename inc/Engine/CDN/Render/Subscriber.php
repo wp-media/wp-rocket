@@ -52,7 +52,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_cdn_driver_tabs'                  => 'render_cdn_driver_tabs',
 			'rocket_cdn_settings_fields'              => 'add_exclusions_fields',
 			'rocket_display_rocketcdn_cta'            => 'maybe_display_rocketcdn_cta',
-			'rocket_cdn_tab_badge'                    => 'maybe_hide_cdn_tab_badge',
 			'pre_get_rocket_option_cdn'               => 'maybe_turn_off_rocketcdn_for_inactive_subscription',
 			'rocket_cdn_free_before_status_indicator' => [
 				[ 'render_expired_wpr_licence_notice', 9 ],
@@ -192,19 +191,6 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function maybe_display_rocketcdn_cta( bool $display = true ): bool {
 		return $this->controller->maybe_display_rocketcdn_cta( $display );
-	}
-
-	/**
-	 * Removes the "NEW" badge from the Content Delivery tab for existing paid subscribers.
-	 *
-	 * @since 3.22
-	 *
-	 * @param string $badge Current badge label.
-	 *
-	 * @return string
-	 */
-	public function maybe_hide_cdn_tab_badge( string $badge ): string {
-		return $this->controller->maybe_hide_cdn_tab_badge( $badge );
 	}
 
 	/**
