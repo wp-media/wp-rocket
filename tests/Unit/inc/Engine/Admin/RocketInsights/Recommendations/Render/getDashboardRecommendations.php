@@ -18,8 +18,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @runTestsInSeparateProcesses
  */
 class Test_GetDashboardRecommendations extends TestCase {
-	private const FALLBACK_URL = 'https://docs.wp-rocket.me/article/1876-rocket-insights#rocket-insights-recommendations';
-
 	/**
 	 * Stubs the WordPress functions used by the view.
 	 */
@@ -52,9 +50,9 @@ class Test_GetDashboardRecommendations extends TestCase {
 	}
 
 	/**
-	 * Renders the Beacon id and keeps the anchored docs URL as the fallback href.
+	 * Renders the Beacon id and uses the language-aware Beacon article URL as the href.
 	 */
-	public function testShouldRenderBeaconIdAndAnchoredFallbackHref() {
+	public function testShouldRenderBeaconIdAndBeaconUrlHref() {
 		$render = $this->get_render(
 			[
 				'id'  => '68beeaab7f1dbe419d37a71c',
@@ -65,12 +63,12 @@ class Test_GetDashboardRecommendations extends TestCase {
 		$html = $render->get_dashboard_recommendations( false );
 
 		$this->assertStringContainsString( 'data-beacon-id="68beeaab7f1dbe419d37a71c"', $html );
-		$this->assertStringContainsString( 'href="' . self::FALLBACK_URL . '"', $html );
+		$this->assertStringContainsString( 'href="https://docs.wp-rocket.me/article/1876-rocket-insights?utm_source=wp_plugin"', $html );
 		$this->assertStringContainsString( 'wpr-infoAction--help', $html );
 	}
 
 	/**
-	 * Omits the Beacon id attribute when the Beacon provides none.
+	 * Omits the Beacon id attribute and renders an empty href when the Beacon provides no help data.
 	 */
 	public function testShouldNotRenderBeaconIdWhenEmpty() {
 		$render = $this->get_render(
@@ -83,6 +81,6 @@ class Test_GetDashboardRecommendations extends TestCase {
 		$html = $render->get_dashboard_recommendations( false );
 
 		$this->assertStringNotContainsString( 'data-beacon-id', $html );
-		$this->assertStringContainsString( 'href="' . self::FALLBACK_URL . '"', $html );
+		$this->assertStringContainsString( 'href=""', $html );
 	}
 }
