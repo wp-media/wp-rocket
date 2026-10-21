@@ -35,6 +35,7 @@ class TestAddHashes extends TestCase {
 		$html   = '<html><body><div class="' . $class . '"><p>Content</p></div></body></html>';
 		$result = $this->processor->add_hashes( $html );
 
+		$this->assertSame( 1, substr_count( $result, 'data-rocket-location-hash=' ) );
 		$this->assertMatchesRegularExpression(
 			'/^<html><body><div data-rocket-location-hash="[a-f0-9]{32}" class="' . preg_quote( $class, '/' ) . '"><p>Content<\/p>/',
 			$result
@@ -43,9 +44,9 @@ class TestAddHashes extends TestCase {
 
 	public function providerBackreferenceLikeValues() {
 		return [
-			'dollar zero'  => [ '$0 onanimationstart=alert(1)' ],
-			'dollar brace' => [ '${0} onanimationstart=alert(1)' ],
-			'backslash'    => [ '\\0 onanimationstart=alert(1)' ],
+			'dollar zero'  => [ '$0 foo' ],
+			'dollar brace' => [ '${0} foo' ],
+			'backslash'    => [ '\\0 foo' ],
 		];
 	}
 }
