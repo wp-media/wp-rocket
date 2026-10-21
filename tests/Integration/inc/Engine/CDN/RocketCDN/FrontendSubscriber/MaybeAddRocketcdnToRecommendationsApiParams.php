@@ -42,6 +42,13 @@ class Test_MaybeAddRocketcdnToRecommendationsApiParams extends TestCase {
 	public function testShouldDoAsExpected( $config, $expected ) {
 		$this->white_label = $config['white_label'];
 
+		add_filter(
+			'pre_get_rocket_option_cdn_state',
+			function () use ( $config ) {
+				return $config['cdn_state'];
+			}
+			);
+
 		$this->assertSame(
 			$expected['params'],
 			wpm_apply_filters_typed( 'array', 'rocket_insights_api_recommendations_params', $config['params'] )

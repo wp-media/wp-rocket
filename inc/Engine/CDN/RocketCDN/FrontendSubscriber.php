@@ -66,7 +66,8 @@ class FrontendSubscriber implements Subscriber_Interface {
 	/**
 	 * Adds the 'plugin_rocketcdn' option to the recommendations API parameters.
 	 *
-	 * Adds 'plugin_rocketcdn' if white label is enabled, the RocketCDN plugin is active or the CDN option is enabled.
+	 * Adds 'plugin_rocketcdn' if white label is enabled, the RocketCDN plugin is active or RocketCDN Paid is active.
+	 * Otherwise (RocketCDN Free, no RocketCDN) the recommendation is kept.
 	 *
 	 * @param array $params The existing API parameters.
 	 * @return array The modified API parameters with 'plugin_rocketcdn' added if applicable.
@@ -77,7 +78,7 @@ class FrontendSubscriber implements Subscriber_Interface {
 			||
 			! empty( rocket_get_constant( 'ROCKETCDN_VERSION' ) )
 			||
-			in_array( 'cdn', $params['enabled_options'] ?? [], true )
+			Context::ROCKETCDN_PAID_TYPE === $this->context->get_cdn_state()
 		) {
 			$params['enabled_options'][] = 'plugin_rocketcdn';
 		}

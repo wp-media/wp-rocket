@@ -25,6 +25,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Queue\Queue as RIQueue,
 	Recommendations\APIClient as RecommendationsAPIClient,
 	Recommendations\DataManager,
+	Recommendations\Overrides\Overrides,
 	Recommendations\Render as RecommendationsRender,
 	Recommendations\Subscriber as RecommendationsSubscriber,
 	Recommendations\Rest as RecommendationsRest,
@@ -73,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'ri_global_metrics_subscriber',
 		'ri_recommendations_data_manager',
 		'ri_recommendations_render',
+		'ri_recommendation_overrides',
 		'ri_recommendations_rest',
 		'ri_recommendations_subscriber',
 		'ri_recommendations_settings_subscriber',
@@ -286,12 +288,17 @@ class ServiceProvider extends AbstractServiceProvider {
 				]
 			);
 
+		// Recommendation overrides: composed here only, not extensible by third parties.
+		$this->getContainer()->addShared( 'ri_recommendation_overrides', Overrides::class )
+			->addMethodCall( 'add', [ 'rocketcdn_recommendation_override' ] );
+
 		// Recommendations Render.
 		$this->getContainer()->add( 'ri_recommendations_render', RecommendationsRender::class )
 			->addArguments(
 				[
 					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings/' ),
 					'ri_recommendations_data_manager',
+					'ri_recommendation_overrides',
 				]
 			);
 
