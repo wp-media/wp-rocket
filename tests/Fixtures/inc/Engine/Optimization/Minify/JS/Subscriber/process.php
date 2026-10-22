@@ -725,7 +725,7 @@ return [
 			],
 		],
 
-		'shouldCombineJSFilesWithoutExternalJSReturning404' => [
+		'shouldCombineJSFilesAndKeepExternalJSReturning404' => [
 			'original' => '<html>
 				<head>
 					<title>Sample Page</title>
@@ -747,6 +747,7 @@ return [
 				'html'  => '<html>
 					<head>
 						<title>Sample Page</title>
+						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js"></script>
 						<script>
 						nonce = "nonce";
 						</script>
