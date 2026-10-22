@@ -25,17 +25,47 @@
     &.isNotFull{
         max-width: 960px;
         z-index: 1000;
+
+        // Wide screens: same width as the Dashboard main card (1230px container - sidebar footprint).
+        @media (min-width: $sidebarWideBreakpoint) {
+            max-width: 1230px - $sidebarWideWidth;
+        }
     }
 
-    &-tips{
-        position: absolute;
-        top: $space*6;
-        right: $space*3;
-        font-weight: bold;
-        color: $cGreyDark2;
+    // No sidebar (license validation screen): back to the base width, as before isNotFull was applied on every page.
+    &.isNotFull.wpr-Content--noSidebar{
+        max-width: calc(960px + 270px);
+    }
 
-        @include respond-to('sm') {
-            display: none !important;
+    // Dashboard: the container is transparent, the main column and the sidebar get their own card.
+    // Higher specificity than .isNotFull, which is on every page.
+    // Not on the license validation screen, which has no Dashboard columns: its form shows with data-page="dashboard" when the URL has no hash.
+    &.isNotFull[data-page="dashboard"]:not(.wpr-Content--noSidebar){
+        max-width: 1230px;
+        padding: 0;
+        background: transparent;
+
+        // The main card is at least as tall as the navigation (the container stretches to it), then grows with its content.
+        display: flex;
+        flex-direction: column;
+
+        // The sections are rendered inside the form: it takes the container height too.
+        > form{
+            display: flex;
+            flex: 1 1 auto;
+            flex-direction: column;
+            align-items: flex-start;
+
+            // pageManager.js sets an inline display on the section, so the row fills it with a min-height instead of a flex layout.
+            > #dashboard{
+                flex: 1 1 auto;
+                align-self: stretch;
+                margin-bottom: 0;
+
+                > .wpr-Page-row{
+                    min-height: 100%;
+                }
+            }
         }
     }
 }

@@ -135,8 +135,6 @@ abstract class Abstract_Render implements Render_Interface {
 			case 'rocket_export':
 			case 'rocket_generate_critical_css':
 			case 'rocket_purge_rocketcdn':
-			case 'rocket_clean_saas':
-			case 'rocket_clean_performance_hints':
 			case 'rocket_rocket_insights_add_homepage':
 				$referer = '';
 

@@ -166,44 +166,16 @@
   content: url("../img/heartbeat.svg");
 }
 
-.wpr-icon-heartbeat-hover:before {
-  content: url("../img/heartbeat-hover.svg");
-}
-
-.wpr-icon-imagify:before {
-  content: url("../img/imagify.svg");
-}
-
-.wpr-icon-imagify-hover:before {
-  content: url("../img/imagify-hover.svg");
-}
-
 .wpr-icon-tutorial:before {
   content: url("../img/play.svg");
-}
-
-.wpr-icon-tutorial-hover:before {
-  content: url("../img/play-hover.svg");
 }
 
 .wpr-icon-tutorial-alt:before {
   content: url("../img/play-alt.svg");
 }
 
-.wpr-imagify-info:before {
-  content: url("../img/imagify-info.svg");
-}
-
-.wpr-imagify-install:before {
-  content: url("../img/imagify-install.svg");
-}
-
 .wpr-icons-plugins:before {
   content: url("../img/plugins.png");
-}
-
-.wpr-icons-plugins-hover:before {
-  content: url("../img/plugins-hover.png");
 }
 
 .wpr-icon-rocket-insights:before {
@@ -249,6 +221,15 @@
   width: 22.857px;
   height: 24px;
   aspect-ratio: 20/21;
+}
+
+.wpr-icon-mcp:before {
+  display: block;
+  content: "";
+  background: url("../img/mcp.svg") no-repeat center center;
+  background-size: contain;
+  width: 45px;
+  height: 45px;
 }
 
 .wp-list-table th.column-rocket_insights,
@@ -578,7 +559,7 @@
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled,
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions a.wpr-ri-action--disabled {
-  color: #8796a9 !important;
+  color: rgb(134.5094339623, 150.0566037736, 169.4905660377) !important;
   cursor: not-allowed;
 }
 .wpr-ri-column .wpr-ri-results .wpr-ri-actions button.wpr-ri-action--disabled:focus,
