@@ -330,7 +330,6 @@ return [
 			],
 		],
 
-
 		'shouldKeepExternalLinkWhenRemoteReturns404' => [
 			'original' => '<html>
 				<head>
