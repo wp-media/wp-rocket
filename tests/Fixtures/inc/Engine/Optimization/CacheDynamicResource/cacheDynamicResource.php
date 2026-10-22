@@ -230,5 +230,29 @@ return [
 				'cdn_zone'   => [],
 			],
 		],
+
+		// Test Data: should not replace URL when the dynamic file returns an error.
+		[
+			'style_loader_src',
+			'http://example.org/wp-content/themes/twentytwenty/missing-style.php',
+			'http://example.org/wp-content/themes/twentytwenty/missing-style.php',
+			[
+				'cdn'        => 0,
+				'cdn_cnames' => [],
+				'cdn_zone'   => [],
+			],
+			404,
+		],
+		[
+			'script_loader_src',
+			'http://example.org/wp-content/themes/twentytwenty/assets/missing-script.php',
+			'http://example.org/wp-content/themes/twentytwenty/assets/missing-script.php',
+			[
+				'cdn'        => 0,
+				'cdn_cnames' => [],
+				'cdn_zone'   => [],
+			],
+			404,
+		],
 	],
 ];
