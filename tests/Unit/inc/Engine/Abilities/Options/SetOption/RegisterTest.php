@@ -78,6 +78,7 @@ class RegisterTest extends TestCase {
 
 		$this->assertSame( array_values( $enum ), $enum );
 		$this->assertSame( $expected['enum'], $enum );
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode
 		$this->assertSame( $expected['enum_json'], json_encode( $enum ) );
 		$this->assertNotContains( 'cdn_state', $enum );
 	}

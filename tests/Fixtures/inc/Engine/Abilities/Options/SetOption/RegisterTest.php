@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldReturnListEnumWhenReadOnlyOptionIsMidList'      => [
+	'testShouldReturnListEnumWhenReadOnlyOptionIsMidList' => [
 		'config'   => [
 			'allowed_keys' => [ 'cache_webp', 'cdn_state', 'minify_css' ],
 		],
@@ -24,7 +24,7 @@ return [
 		],
 	],
 
-	'testShouldReturnListEnumWhenReadOnlyOptionIsAbsent'       => [
+	'testShouldReturnListEnumWhenReadOnlyOptionIsAbsent'  => [
 		'config'   => [
 			'allowed_keys' => [ 'cache_webp', 'minify_css' ],
 		],
