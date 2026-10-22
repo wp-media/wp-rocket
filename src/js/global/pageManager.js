@@ -41,6 +41,11 @@ function PageManager(aElem) {
     // Clean the preference stored by the former sidebar toggle, once.
     localStorage.removeItem( 'wpr-show-sidebar' );
 
+    // Without a valid license only the license form is rendered: no page to manage, keep the saved hash untouched.
+    if ( 0 === this.$pages.length ) {
+        return;
+    }
+
     refThis.getBodyTop();
 
     // If url page change
@@ -118,24 +123,47 @@ function PageManager(aElem) {
 * Page detect ID
 */
 PageManager.prototype.detectID = function() {
-    this.pageId = window.location.hash.split('#')[1];
-    this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
+    var pageId = window.location.hash.slice(1).split('=')[0];
 
     // Pages that were merged into another one keep working from old links and saved hashes.
     // Keep in sync with hashAliases in mixpanel.js and the first-paint script in views/settings/page.php.
     var movedPages = { imagify: 'media' };
-    if (movedPages.hasOwnProperty(this.pageId)) {
-        this.pageId = movedPages[this.pageId];
-        history.replaceState(null, '', '#' + this.pageId);
+    if (movedPages.hasOwnProperty(pageId)) {
+        pageId = movedPages[pageId];
+        history.replaceState(null, '', '#' + pageId);
     }
 
+    if (!this.resolvePage(pageId)) {
+        pageId = 'dashboard';
+        history.replaceState(null, '', '#dashboard');
+
+        if (!this.resolvePage(pageId)) {
+            return;
+        }
+    }
+
+    this.pageId = pageId;
     localStorage.setItem('wpr-hash', this.pageId);
 
-    this.$page = document.querySelector('.wpr-Page#' + this.pageId);
-
-    this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
-
     this.change();
+}
+
+
+/*
+* Resolve the page section and its navigation item, both must exist
+*/
+PageManager.prototype.resolvePage = function(pageId) {
+    var $page = document.getElementById(pageId);
+    var $menuItem = document.getElementById('wpr-nav-' + pageId);
+
+    if (!$page || !$page.classList.contains('wpr-Page') || !$menuItem) {
+        return false;
+    }
+
+    this.$page = $page;
+    this.$menuItem = $menuItem;
+
+    return true;
 }
 
 
