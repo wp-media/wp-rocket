@@ -3966,8 +3966,8 @@ msgid ""
 "Speed up your entire site worldwide by delivering content from servers "
 "closer to your visitors."
 msgstr ""
-"Accélérez votre site partout dans le monde en diffusant votre contenu à "
-"partir de serveurs situés plus près de vos visiteurs."
+"Accélérez votre site mondialement en diffusant votre contenu depuis des "
+"serveurs proches de vos visiteurs."
 
 #: inc/Engine/CDN/RocketCDN/RecommendationOverride.php:63
 msgid "Upgrade"
