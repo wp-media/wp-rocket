@@ -830,10 +830,18 @@ class Cache extends Abstract_Buffer {
 
 		foreach ( $cache_dynamic_cookies as $key => $cookie_name ) {
 			if ( is_array( $cookie_name ) ) {
-				if ( isset( $_COOKIE[ $key ] ) ) {
+				if ( isset( $cookies[ $key ] ) ) {
+					$sent = is_array( $cookies[ $key ] ) ? $cookies[ $key ] : [];
+
 					foreach ( $cookie_name as $cookie_key ) {
-						if ( '' !== $cookies[ $key ][ $cookie_key ] ) {
-							$cache_key = $cookies[ $key ][ $cookie_key ];
+						if ( ! isset( $sent[ $cookie_key ] ) ) {
+							$filename .= '-';
+
+							continue;
+						}
+
+						if ( '' !== $sent[ $cookie_key ] ) {
+							$cache_key = $sent[ $cookie_key ];
 							$cache_key = preg_replace( '/[^a-z0-9_\-]/i', '-', $cache_key );
 							$filename .= '-' . $cache_key;
 						}

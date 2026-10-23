@@ -308,4 +308,42 @@
 		}
 	  }
 	}
+
+    // Highlight applied after a recommendation scrolls the field into view.
+    // Drawn behind the field so the field's own spacing never changes, it extends into the spacing around it.
+    &--highlighted{
+        position: relative;
+        isolation: isolate;
+
+        &::before{
+            content: "";
+            position: absolute;
+            inset-block: var(--wpr-highlight-top, 0px) calc(-1 * var(--wpr-highlight-end, 0px) + var(--wpr-highlight-bottom, 0px));
+            inset-inline: var(--wpr-highlight-inset, -#{$space*2});
+            z-index: -1;
+            border-radius: 4px;
+            background-color: $cPrimarySubtle;
+            pointer-events: none;
+            animation: wpr-field-highlight 2s ease-out;
+
+            @media (prefers-reduced-motion: reduce){
+                animation: none;
+            }
+        }
+
+        &:first-child::before{
+            inset-block-start: var(--wpr-highlight-top, -#{$space*2});
+        }
+    }
+}
+
+@keyframes wpr-field-highlight{
+    0%,
+    75%{
+        background-color: $cPrimarySubtle;
+    }
+
+    100%{
+        background-color: transparent;
+    }
 }

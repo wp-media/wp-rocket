@@ -1,6 +1,12 @@
 // main: ../main.scss
 
 $space: 8px;
+$sidebarWidth: 290px;
+// Inner pages sidebar on wide screens: two cards of 322px between 20px paddings. Its 362px footprint is the
+// one of the Dashboard sidebar (346px) plus the 16px gap, so both main cards get the same width.
+$sidebarWideWidth: 322px + $space*5;
+// The content column keeps at least about 660px: viewport - 192 (WP menu and page) - 274 (nav) - 362 >= 660.
+$sidebarWideBreakpoint: 1500px;
 $wpr-radio-track-height: 22px;
 
 //* -- Breakpoints -- */
@@ -16,6 +22,9 @@ $breakpoints: (
 
 // Main colors
 $cBlack: #121116;
+$cTextPrimary: #0C0F1F;
+$cSurfacePrimary: #182352;
+$cTextSecondary: #464F59;
 $cWhite: #fff;
 $cBlue: #1EADBF;
 $cGreen: #3ECE9D;
@@ -25,7 +34,12 @@ $cPurple: #2D1656;
 $cRed: #D33F49;
 $jaffa: #F56F46;
 $brightSun: #FFD147;
+$brightSunLight: #FFF5D6;
+$cActionPrimary: #182352;
+$cRibbon: #F3704D;
+$cAddonCard: #FFF1ED;
 $bunting: #172153;
+$cTextPrimary: #0C0F1F;
 
 // Fifty shades of Blue
 $cBlueLight1: #40BACB;
@@ -45,6 +59,9 @@ $cGreenLight4: #EBFAF5;
 $cGreenDark1: #00A66B;
 $cGreenDark2: #31A670;
 
+// Highlight of a field targeted by a recommendation
+$cPrimarySubtle: #E0E4F5;
+
 
 // Fifty shades of Grey
 $cGreyLighter1: #E2E5E9;
@@ -58,6 +75,9 @@ $cGreyDark1: #444444;
 $cGreyDark2: #666666;
 $cGreyDark3: #72777C;
 $cGreyDark4: #121116;
+
+// Navigation menu text
+$cNavTextSecondary: #464F59;
 $cGreyDark5: #F0F0F1;
 
 
@@ -83,6 +103,19 @@ $cRedLight2: #F08DA1;
 $cRedLight3: #F7BAC7;
 $cRedLight4: #FAE6EE;
 $cRedDark1: #D60E5B;
+
+// Dashboard redesign colors
+$cInk: #0C0F1F;
+$cSlate: #464F59;
+$cBrandSubtle: #FFF1ED;
+$cFgError: #E23A3A;
+$cFgWarning: #E8AE13;
+$cFgSuccess: #48C88D;
+
+// Account page colors
+$cTextPrimary: #0C0F1F;
+$cTextSecondary: #464F59;
+$cSuccessSubtle: #EBFBF5;
 
 // Performance score colors
 

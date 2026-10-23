@@ -26,55 +26,11 @@
 		flex: 0 1 50%;
 	}
 
-    &-col--fixed{
-        margin-left: $space*3;
-        flex: 0 0 325px;
-
-        @include respond-to('md') {
-            margin-left: 0;
-        }
-    }
-
     &#dashboard{ // Exception for dashboard
-
-        #wpr-action-refresh_account{
-            &:before{
-                transition: all 200ms ease-out;
-                opacity: 1;
-                transform: translateY(0);
-            }
-
-            &.wpr-isLoading:before{
-                animation: loading 1.2s infinite;
-            }
-            &.wpr-isHidden:before{
-                opacity: 0;
-            }
-            &.wpr-isShown:before{
-                opacity: 1;
-            }
-        }
 
         @keyframes loading {
             from{transform: rotate(0);}
             to{transform: rotate(360deg);}
-        }
-
-        .wpr-documentation{
-            margin-top: 48px;
-            padding: 43px $space*2;
-
-            @include respond-to('md') {
-                margin-top: $space*5;
-            }
-
-            .wpr-button{
-                margin-top: $space;
-            }
-
-            i{
-                @include font-size(54,54);
-            }
         }
 
         .wpr-radio{
@@ -184,4 +140,80 @@
             }
         }
 	}
+}
+
+/*-----------------------------------------------*\
+
+    Dashboard: main column + sidebar column
+
+\*-----------------------------------------------*/
+
+.wpr-Dashboard{
+    gap: $space*2;
+
+    &-main{
+        min-width: 0;
+        padding: $space*4 $space*3;
+        background: #fff;
+        border-radius: 0 4px 4px 0;
+
+        // The hero notice dismiss slide (main.js, 40px) must not overshoot the card edge.
+        // Only the notice wrapper clips: tooltips of the score component must stay visible.
+        &-notice{
+            overflow: hidden;
+
+            // The card padding is enough: no extra top margin.
+            // Space before the section title. main.js tweens marginTop and marginBottom to 0 on dismiss,
+            // so the gap collapses with the notice.
+            .wpr-notice{
+                margin-top: 0;
+                margin-bottom: $space*3;
+            }
+        }
+
+        // Columns stacked: the card is no longer attached to the navigation.
+        @include respond-to('md') {
+            border-radius: 4px;
+        }
+
+        @include respond-to('xs') {
+            padding: $space*3 $space*2;
+        }
+    }
+
+    &-sidebar{
+        position: relative;
+        flex: 0 0 $sidebarWidth + $space*7;
+        // The card hugs its content instead of stretching to the height of the main column.
+        align-self: flex-start;
+        padding: $space*3;
+        background: #fff;
+        border-radius: 4px;
+
+        // Orange ribbon, top right corner.
+        &:before{
+            content: "";
+            position: absolute;
+            top: 0;
+            right: $space*2;
+            width: $space*3;
+            height: $space*3.5;
+            background: $cRibbon;
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 70%, 0 100%);
+        }
+
+        &-title{
+            margin: 0 0 $space*2;
+        }
+
+        &-category + &-category{
+            margin-top: $space*2;
+        }
+
+        // Columns stacked: the card fills the width.
+        @include respond-to('md') {
+            flex: 0 0 auto;
+            align-self: stretch;
+        }
+    }
 }
