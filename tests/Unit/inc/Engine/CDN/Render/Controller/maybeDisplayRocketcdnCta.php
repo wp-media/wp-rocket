@@ -87,10 +87,8 @@ class Test_MaybeDisplayRocketcdnCta extends TestCase {
 	 * @return void
 	 */
 	public function testShouldReturnExpectedResult( array $config, bool $expected ): void {
-		if ( isset( $config['is_loading'] ) ) {
-			$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-				->andReturn( $config['is_loading'] );
-		}
+		// The creation loader is not this filter's concern: it must never be consulted.
+		$this->subscription_controller->shouldNotReceive( 'is_subscription_creation_loading' );
 
 		if ( isset( $config['is_reseller'] ) ) {
 			$this->user->shouldReceive( 'is_reseller_account' )

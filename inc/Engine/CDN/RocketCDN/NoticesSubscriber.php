@@ -221,6 +221,11 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return;
 		}
 
+		// The CDN tab shows its own loading state while the free subscription is being created.
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return;
+		}
+
 		$this->api_client->get_subscription_data();
 
 		if ( $this->subscription_controller->has_active_subscription() && $this->subscription_controller->is_paid() ) {

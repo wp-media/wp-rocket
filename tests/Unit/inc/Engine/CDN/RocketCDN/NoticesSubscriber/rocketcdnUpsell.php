@@ -135,6 +135,20 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->assertSame( 'imagify', $cards[0]['id'] );
 	}
 
+	public function testCardShownForFreePlanWhileCreationIsLoading() {
+		$this->configure( [] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )->once();
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( true );
+		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->andReturn( '' );
+
+		$cards = $this->subscriber->add_rocketcdn_addon_card( [] );
+
+		$this->assertCount( 1, $cards );
+		$this->assertSame( 'rocketcdn', $cards[0]['id'] );
+	}
+
 	public function testCardDataShape() {
 		$this->configure( [] );
 		$this->api_client->shouldReceive( 'get_subscription_data' )->once();

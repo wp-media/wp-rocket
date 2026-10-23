@@ -7,12 +7,13 @@ return [
 		],
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenSubscriptionLoading'   => [
+	'testShouldReturnTrueWhenSubscriptionLoading'    => [
 		'config'   => [
-			'display'    => true,
-			'is_loading' => true,
+			'display'     => true,
+			'is_loading'  => true,
+			'is_reseller' => false,
 		],
-		'expected' => false,
+		'expected' => true,
 	],
 	'testShouldReturnFalseForResellerAccount'        => [
 		'config'   => [

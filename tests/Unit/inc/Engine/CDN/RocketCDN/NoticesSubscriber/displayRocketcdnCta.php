@@ -119,7 +119,21 @@ class Test_DisplayRocketcdnCta extends TestCase {
 			return;
 		}
 
-		// get_subscription_data is always called after the live-site check (result unused).
+		$is_loading = $config['is_loading'] ?? false;
+
+		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
+			->andReturn( $is_loading );
+
+		// While loading, bail before any API call.
+		if ( $is_loading ) {
+			$this->api_client->shouldNotReceive( 'get_subscription_data' );
+			$this->api_client->shouldNotReceive( 'get_pricing_data' );
+			$this->subscriber->shouldNotReceive( 'generate' );
+			$this->subscriber->display_rocketcdn_cta( $this->buildCtaData() );
+			return;
+		}
+
+		// get_subscription_data is called after the live-site and loading checks (result unused).
 		$this->api_client->shouldReceive( 'get_subscription_data' )
 			->andReturn( [
 				'subscription_status' => $config['subscription_status'] ?? 'cancelled',

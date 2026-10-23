@@ -571,10 +571,6 @@ class Controller extends Abstract_Render {
 			return false;
 		}
 
-		if ( $this->is_subscription_loading() ) {
-			return false;
-		}
-
 		if ( $this->user->is_reseller_account() ) {
 			return false;
 		}

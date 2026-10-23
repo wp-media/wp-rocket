@@ -8,6 +8,13 @@ return [
 		'expected' => false,
 	],
 
+	'testShouldDisplayNothingWhileSubscriptionCreationIsLoading' => [
+		'config'   => [
+			'is_loading' => true,
+		],
+		'expected' => false,
+	],
+
 	'testShouldNotDisplayNoticeWhenPlanIsPaid'            => [
 		'config'   => [
 			'subscription_status'     => 'running',
