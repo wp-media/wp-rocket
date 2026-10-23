@@ -448,7 +448,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		$message = sprintf(
 			// translators: %1$s = opening strong tag, %2$s = plugin name, %3$s = closing strong tag.
-			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit the dashboard to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit WP Rocket dashboard to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
 			'<strong>',
 			WP_ROCKET_PLUGIN_NAME,
 			'</strong>'
