@@ -6,6 +6,8 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Unit\TestCase;
+use WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare;
+use WP_Rocket\ThirdParty\Plugins\ContactForm7;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
 use WP_Rocket\ThirdParty\Plugins\Cookie\Termly;
 use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
@@ -134,6 +136,12 @@ class Test_HookCollisionScan extends TestCase {
 			'perfmatters',
 			'rapidload',
 		],
+		// admin_notices is an action, not a collector filter: each callback renders
+		// its own notice independently of registration order.
+		'admin_notices:10'                           => [
+			'autoptimize',
+			'cloudflare_plugin_subscriber',
+		],
 	];
 
 	/**
@@ -201,6 +209,8 @@ class Test_HookCollisionScan extends TestCase {
 			'optimus_webp_subscriber'      => Optimus_Subscriber::class,
 			'rapidload'                    => RapidLoad::class,
 			'all_in_one_seo_pack'          => AllInOneSEOPack::class,
+			'contactform7'                 => ContactForm7::class,
+			'cloudflare_plugin_subscriber' => Cloudflare::class,
 		];
 	}
 
