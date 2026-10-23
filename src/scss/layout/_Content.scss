@@ -28,7 +28,7 @@
 
         // Wide screens: same width as the Dashboard main card (1230px container - sidebar footprint).
         @media (min-width: $sidebarWideBreakpoint) {
-            max-width: 1230px - $sidebarWideWidth;
+            max-width: 1230px - $sidebarFootprint;
         }
     }
 
