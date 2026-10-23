@@ -447,25 +447,25 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		$message = sprintf(
-			// translators: %1$s = opening strong tags, %2$s = plugin name, %3$s = closing strong, %4$s = opening link tag, %5$s = closing link.
-			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$sRocket Insights%5$s to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+			// translators: %1$s = opening strong tag, %2$s = plugin name, %3$s = closing strong tag.
+			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit the dashboard to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
 			'<strong>',
 			WP_ROCKET_PLUGIN_NAME,
-			'</strong>',
-			'<a href="' . esc_url( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) ) . '">',
-			'</a>'
+			'</strong>'
 		);
 
+		$dashboard_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=activation_notice#dashboard' );
+
 		$action_url = wp_nonce_url(
-			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
-			'rocket_insights_add_homepage_notice'
+			admin_url( 'admin-post.php?action=rocket_ignore&box=' . $dismiss_key . '&redirect=' . rawurlencode( $dashboard_url ) ),
+			'rocket_ignore_' . $dismiss_key
 		);
 
 		$notice_info = [
 			'dismiss_button'  => $dismiss_key,
 			'dismiss_message' => __( 'Dismiss', 'rocket' ),
 			'message'         => $message,
-			'action'          => '<a class="button button-primary" href="' . esc_url( $action_url ) . '">' . esc_html__( 'Start with my homepage', 'rocket' ) . '</a>',
+			'action'          => '<a class="button button-primary" href="' . esc_url( $action_url ) . '">' . esc_html__( 'Visit WP Rocket dashboard', 'rocket' ) . '</a>',
 			'status'          => 'success',
 		];
 
