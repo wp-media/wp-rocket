@@ -16,7 +16,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
  *
  * Public method :
      detectID - Detect ID with hash
-     getBodyTop - Get body top position
 	 change - Displays the corresponding page
  *
  */
@@ -25,7 +24,6 @@ function PageManager(aElem) {
 
     var refThis = this;
 
-    this.$body = document.querySelector('.wpr-body');
     this.$menuItems = document.querySelectorAll('.wpr-menuItem');
     this.$menuGroups = document.querySelectorAll('.wpr-menuGroup');
     this.$submitButton = document.querySelector('.wpr-Content > form > #wpr-options-submit');
@@ -35,13 +33,10 @@ function PageManager(aElem) {
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
-    this.bodyTop = 0;
     this.buttonText = this.$submitButton.value;
 
     // Clean the preference stored by the former sidebar toggle, once.
     localStorage.removeItem( 'wpr-show-sidebar' );
-
-    refThis.getBodyTop();
 
     // If url page change
     window.onhashchange = function() {
@@ -50,12 +45,10 @@ function PageManager(aElem) {
 
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
-        this.bodyTop = 0;
         this.detectID();
     }
     else{
         var session = localStorage.getItem('wpr-hash');
-        this.bodyTop = 0;
 
         if(session){
             window.location.hash = session;
@@ -90,7 +83,6 @@ function PageManager(aElem) {
     // Click link same hash
     for (var i = 0; i < this.$links.length; i++) {
         this.$links[i].onclick = function() {
-            refThis.getBodyTop();
             var hrefSplit = this.href.split('#')[1];
             if(hrefSplit == refThis.pageId && hrefSplit != undefined){
                 refThis.detectID();
@@ -141,22 +133,11 @@ PageManager.prototype.detectID = function() {
 
 
 /*
-* Get body top position
-*/
-PageManager.prototype.getBodyTop = function() {
-    var bodyPos = this.$body.getBoundingClientRect();
-    this.bodyTop = bodyPos.top + window.pageYOffset - 47; // #wpadminbar + padding-top .wpr-wrap - 1 - 47
-}
-
-
-
-/*
 * Page change
 */
 PageManager.prototype.change = function() {
 
-    var refThis = this;
-    document.documentElement.scrollTop = refThis.bodyTop;
+    window.scrollTo( 0, 0 );
 
     // The inline style of the page template only covers the first paint. The inline display styles set
     // below take over in the same task, so nothing is painted in between, even if this method throws.
