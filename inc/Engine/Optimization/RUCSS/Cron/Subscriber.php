@@ -94,9 +94,9 @@ class Subscriber implements Subscriber_Interface {
 		$result = $this->duplicates_cleanup->run();
 
 		if ( 'partial' === $result ) {
-			wp_schedule_single_event( time() + (int) rocket_get_constant( 'MINUTE_IN_SECONDS', 60 ), DuplicatesCleanup::HOOK );
+			wp_schedule_single_event( time() + MINUTE_IN_SECONDS, DuplicatesCleanup::HOOK );
 		} elseif ( 'error' === $result ) {
-			wp_schedule_single_event( time() + (int) rocket_get_constant( 'HOUR_IN_SECONDS', 3600 ), DuplicatesCleanup::HOOK );
+			wp_schedule_single_event( time() + HOUR_IN_SECONDS, DuplicatesCleanup::HOOK );
 		}
 	}
 

@@ -318,7 +318,7 @@ class UsedCSS extends AbstractTable {
 		}
 
 		if ( ! $success ) {
-			set_transient( self::UPGRADE_RETRY, time(), (int) rocket_get_constant( 'HOUR_IN_SECONDS', 3600 ) );
+			set_transient( self::UPGRADE_RETRY, time(), HOUR_IN_SECONDS );
 		}
 
 		return $this->is_success( $success );
@@ -388,7 +388,8 @@ class UsedCSS extends AbstractTable {
 
 		$current = $db->get_var( $db->prepare( "SELECT option_value FROM `{$db->options}` WHERE option_name = %s", self::UPGRADE_LOCK ) );
 
-		if ( ! is_string( $current ) || (int) $current > $now - $this->get_upgrade_lock_ttl() ) {
+		// 15 minutes cover a slow ALTER on MySQL 5.7.
+		if ( ! is_string( $current ) || (int) $current > $now - 15 * MINUTE_IN_SECONDS ) {
 			return '';
 		}
 
@@ -411,14 +412,5 @@ class UsedCSS extends AbstractTable {
 		$db = $this->get_db();
 
 		$db->query( $db->prepare( "DELETE FROM `{$db->options}` WHERE option_name = %s AND option_value = %s", self::UPGRADE_LOCK, $token ) );
-	}
-
-	/**
-	 * Seconds after which an upgrade lock is considered abandoned (covers a slow ALTER on MySQL 5.7).
-	 *
-	 * @return int
-	 */
-	private function get_upgrade_lock_ttl(): int {
-		return 15 * (int) rocket_get_constant( 'MINUTE_IN_SECONDS', 60 );
 	}
 }

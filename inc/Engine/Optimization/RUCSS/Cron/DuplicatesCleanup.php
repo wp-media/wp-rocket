@@ -102,10 +102,8 @@ class DuplicatesCleanup {
 			return 'locked';
 		}
 
-		$minute = (int) rocket_get_constant( 'MINUTE_IN_SECONDS', 60 );
-
 		// The lock only limits cost: the deletions are idempotent, so overlapping runs are safe.
-		set_transient( self::LOCK, time(), 5 * $minute );
+		set_transient( self::LOCK, time(), 5 * MINUTE_IN_SECONDS );
 
 		$progress = $this->get_progress();
 

@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group RUCSS
  * @group JobManager
  */
-class Test_AddUrlToTheQueue extends TestCase {
+class Test_AddUrlToTheQueueRace extends TestCase {
 	private $url = 'http://example.org/sample-page';
 
 	public function set_up() {
@@ -19,22 +19,21 @@ class Test_AddUrlToTheQueue extends TestCase {
 
 		self::installUsedCssTable();
 
-		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'enable_rucss' ] );
+		add_filter( 'pre_get_rocket_option_remove_unused_css', '__return_true' );
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'enable_rucss' ] );
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', '__return_true' );
 
 		self::uninstallUsedCssTable();
 
 		parent::tear_down();
 	}
 
-	public function enable_rucss() {
-		return 1;
-	}
-
-	public function testShouldReturnTheWinnerRowWithoutResettingItWhenTheInsertLosesTheRace() {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnTheRowIdWithoutResettingTheWinner( $config, $expected ) {
 		global $wpdb;
 
 		$manager = apply_filters( 'rocket_container', null )->get( 'rucss_manager' );
@@ -63,7 +62,9 @@ class Test_AddUrlToTheQueue extends TestCase {
 			return $sql;
 		};
 
-		add_filter( 'query', $insert_winner );
+		if ( $config['race'] ) {
+			add_filter( 'query', $insert_winner );
+		}
 
 		$previous = $wpdb->suppress_errors( true );
 		$result   = $manager->add_url_to_the_queue( $this->url, false );
@@ -71,22 +72,12 @@ class Test_AddUrlToTheQueue extends TestCase {
 
 		remove_filter( 'query', $insert_winner );
 
-		$this->assertTrue( $raced );
+		$this->assertSame( $config['race'], $raced );
 		$this->assertSame( 1, (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" ) );
 
 		$row = $wpdb->get_row( "SELECT id, status, job_id FROM {$table}" );
 		$this->assertSame( (int) $row->id, $result );
-		$this->assertSame( 'pending', $row->status );
-		$this->assertSame( 'W', $row->job_id );
-	}
-
-	public function testShouldInsertTheRowWhenNoneExists() {
-		global $wpdb;
-
-		$manager = apply_filters( 'rocket_container', null )->get( 'rucss_manager' );
-		$result  = $manager->add_url_to_the_queue( $this->url, false );
-
-		$this->assertGreaterThan( 0, $result );
-		$this->assertSame( 1, (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpr_rucss_used_css" ) );
+		$this->assertSame( $expected['status'], $row->status );
+		$this->assertSame( $expected['job_id'], $row->job_id );
 	}
 }

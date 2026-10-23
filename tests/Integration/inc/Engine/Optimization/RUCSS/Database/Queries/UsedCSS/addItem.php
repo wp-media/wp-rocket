@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddItem extends TestCase {
 	private $query;
-	private $url = 'http://example.org/sample-page';
 
 	public function set_up() {
 		parent::set_up();
@@ -28,53 +27,38 @@ class Test_AddItem extends TestCase {
 		parent::tear_down();
 	}
 
-	public function testShouldStoreTheExactMd5OfTheUrl() {
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldStoreTheHashAndEnforceTheUniqueKey( $config, $expected ) {
 		global $wpdb;
 
-		$id = $this->query->add_item( $this->item( $this->url ) );
-
-		$this->assertNotFalse( $id );
-		$this->assertSame(
-			md5( $this->url ),
-			$wpdb->get_var( $wpdb->prepare( "SELECT url_hash FROM {$wpdb->prefix}wpr_rucss_used_css WHERE id = %d", $id ) )
-		);
-	}
-
-	public function testShouldRejectTheSameUrlAndDevice() {
-		global $wpdb;
-
-		$this->assertNotFalse( $this->query->add_item( $this->item( $this->url ) ) );
-
+		$results  = [];
 		$previous = $wpdb->suppress_errors( true );
-		$result   = $this->query->add_item( $this->item( $this->url ) );
+
+		foreach ( $config['items'] as list( $url, $is_mobile ) ) {
+			$results[] = (bool) $this->query->add_item(
+				[
+					'url'       => $url,
+					'is_mobile' => $is_mobile,
+					'status'    => 'to-submit',
+				]
+			);
+		}
+
 		$wpdb->suppress_errors( $previous );
 
-		$this->assertEmpty( $result );
-		$this->assertSame( 1, (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpr_rucss_used_css" ) );
-	}
+		$this->assertSame( $expected['results'], $results );
+		$this->assertSame( $expected['rows'], (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->prefix}wpr_rucss_used_css" ) );
 
-	public function testShouldAcceptTheOtherDevice() {
-		$this->assertNotFalse( $this->query->add_item( $this->item( $this->url ) ) );
-		$this->assertNotFalse( $this->query->add_item( $this->item( $this->url, true ) ) );
-	}
+		foreach ( $wpdb->get_results( "SELECT url, url_hash FROM {$wpdb->prefix}wpr_rucss_used_css" ) as $row ) {
+			$this->assertSame( md5( $row->url ), $row->url_hash );
+		}
 
-	public function testShouldAcceptACaseVariantOfTheUrl() {
-		$this->assertNotFalse( $this->query->add_item( $this->item( $this->url ) ) );
-		$this->assertNotFalse( $this->query->add_item( $this->item( 'http://example.org/Sample-Page' ) ) );
-	}
+		if ( null !== $config['job_id'] ) {
+			$this->query->make_status_pending( $config['items'][0][0], $config['job_id'], 'EU', $config['items'][0][1] );
 
-	public function testShouldNotCacheTheRowByJobId() {
-		$this->query->add_item( $this->item( $this->url ) );
-		$this->query->make_status_pending( $this->url, 'job-42', 'EU', false );
-
-		$this->assertFalse( wp_cache_get( 'job-42', 'wpr_used_css-by-job_id' ) );
-	}
-
-	private function item( string $url, bool $is_mobile = false ): array {
-		return [
-			'url'       => $url,
-			'is_mobile' => $is_mobile,
-			'status'    => 'to-submit',
-		];
+			$this->assertFalse( wp_cache_get( $config['job_id'], 'wpr_used_css-by-job_id' ) );
+		}
 	}
 }

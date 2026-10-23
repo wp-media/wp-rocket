@@ -57,109 +57,48 @@ class Test_DeleteOlderDuplicates extends TestCase {
 		parent::tear_down();
 	}
 
-	public function testShouldKeepOnlyTheNewestRowOfAnExactTriplicate() {
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/a', 'http://example.org/a' ] );
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDeleteTheOlderDuplicatesOfTheRange( $config, $expected ) {
+		global $wpdb;
 
-		$this->assertSame( 2, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 ) );
-		$this->assertSame( [ $ids[2] ], $this->remainingIds() );
-	}
+		$ids = $this->insertRows( $config['rows'] );
 
-	public function testShouldTreatCaseVariantsAsDuplicates() {
-		$ids = $this->insertRows( [ 'http://example.org/Page', 'http://example.org/page' ] );
+		// Positions are 1-based; 0 stands for "before the first row".
+		$id_at = function ( $position ) use ( $ids ) {
+			return 0 === $position ? 0 : $ids[ $position - 1 ];
+		};
 
-		$this->assertSame( 1, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 ) );
-		$this->assertSame( [ $ids[1] ], $this->remainingIds() );
-	}
+		$this->assertSame( $id_at( $expected['max_id'] ), $this->query->get_max_id() );
 
-	public function testShouldKeepDesktopAndMobileRows() {
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/a' ], [ 0, 1 ] );
+		$results = [];
 
-		$this->assertSame( 0, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 ) );
-		$this->assertSame( $ids, $this->remainingIds() );
-	}
+		foreach ( $config['calls'] as $call ) {
+			$up_to_id = 'max' === $call['up_to'] ? $this->query->get_max_id() : $id_at( $call['up_to'] );
 
-	public function testShouldKeepUrlsSharingALongPrefix() {
-		$prefix = 'http://example.org/' . str_repeat( 'a', 160 );
-		$ids    = $this->insertRows( [ $prefix . '-one', $prefix . '-two' ] );
+			$break_delete = function ( $sql ) use ( $call, $ids ) {
+				if ( null === $call['broken_delete'] || 0 !== strpos( $sql, 'DELETE FROM' ) ) {
+					return $sql;
+				}
 
-		$this->assertSame( 0, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 ) );
-		$this->assertSame( $ids, $this->remainingIds() );
-	}
+				$is_broken = 'all' === $call['broken_delete'] || false !== strpos( $sql, "`id` = '{$ids[ $call['broken_delete'] - 1 ]}'" );
 
-	public function testShouldDeleteNoMoreRowsThanTheLimit() {
-		$urls = [];
-		foreach ( range( 1, 5 ) as $number ) {
-			$urls[] = "http://example.org/{$number}";
-			$urls[] = "http://example.org/{$number}";
+				return $is_broken ? 'DELETE FROMM' : $sql;
+			};
+
+			add_filter( 'query', $break_delete );
+			$previous  = $wpdb->suppress_errors( true );
+			$results[] = $this->query->delete_older_duplicates( $id_at( $call['after'] ), $up_to_id, $call['limit'] );
+			$wpdb->suppress_errors( $previous );
+			remove_filter( 'query', $break_delete );
 		}
-		$this->insertRows( $urls );
 
-		$this->assertSame( 3, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 3 ) );
-		$this->assertCount( 7, $this->remainingIds() );
-
-		$this->assertSame( 2, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 3 ) );
-		$this->assertCount( 5, $this->remainingIds() );
-	}
-
-	public function testShouldOnlyScanTheGivenIdRange() {
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/b', 'http://example.org/a', 'http://example.org/b' ] );
-
-		// Rows 2 and 3 only: the older "b" (row 2) goes, the older "a" (row 1) is out of range.
-		$this->assertSame( 1, $this->query->delete_older_duplicates( $ids[0], $ids[2], 100 ) );
-		$this->assertSame( [ $ids[0], $ids[2], $ids[3] ], $this->remainingIds() );
-	}
-
-	public function testShouldReturnFalseWhenNoRowOfTheBatchCanBeDeleted() {
-		global $wpdb;
-
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/a' ] );
-
-		$break_deletes = function ( $sql ) {
-			return 0 === strpos( $sql, 'DELETE FROM' ) ? 'DELETE FROMM' : $sql;
-		};
-
-		add_filter( 'query', $break_deletes );
-		$previous = $wpdb->suppress_errors( true );
-		$result   = $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 );
-		$wpdb->suppress_errors( $previous );
-		remove_filter( 'query', $break_deletes );
-
-		$this->assertFalse( $result );
-		$this->assertSame( $ids, $this->remainingIds() );
-	}
-
-	public function testShouldReturnTheBatchSizeWhenOnlyOneDeletionFails() {
-		global $wpdb;
-
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/a', 'http://example.org/a', 'http://example.org/a' ] );
-
-		$break_one_delete = function ( $sql ) use ( $ids ) {
-			return false !== strpos( $sql, "`id` = '{$ids[0]}'" ) && 0 === strpos( $sql, 'DELETE FROM' ) ? 'DELETE FROMM' : $sql;
-		};
-
-		add_filter( 'query', $break_one_delete );
-		$previous = $wpdb->suppress_errors( true );
-		$result   = $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 3 );
-		$wpdb->suppress_errors( $previous );
-		remove_filter( 'query', $break_one_delete );
-
-		$this->assertSame( 3, $result );
-		$this->assertSame( [ $ids[0], $ids[3] ], $this->remainingIds() );
-	}
-
-	public function testShouldReturnZeroOnACleanTable() {
-		$this->insertRows( [ 'http://example.org/a', 'http://example.org/b' ] );
-
-		$this->assertSame( 0, $this->query->delete_older_duplicates( 0, $this->query->get_max_id(), 100 ) );
-		$this->assertCount( 2, $this->remainingIds() );
-	}
-
-	public function testShouldReturnTheHighestId() {
-		$this->assertSame( 0, $this->query->get_max_id() );
-
-		$ids = $this->insertRows( [ 'http://example.org/a', 'http://example.org/b' ] );
-
-		$this->assertSame( $ids[1], $this->query->get_max_id() );
+		$this->assertSame( $expected['results'], $results );
+		$this->assertSame(
+			array_map( $id_at, $expected['remaining'] ),
+			$this->remainingIds()
+		);
 	}
 
 	/**
@@ -180,22 +119,21 @@ class Test_DeleteOlderDuplicates extends TestCase {
 	/**
 	 * Inserts rows without a url_hash, like the rows that predate the unique key.
 	 *
-	 * @param array $urls      Urls, one per row.
-	 * @param array $is_mobile is_mobile flag per row.
+	 * @param array $rows [ url, is_mobile ] pairs, one per row.
 	 *
 	 * @return int[] Inserted ids.
 	 */
-	private function insertRows( array $urls, array $is_mobile = [] ): array {
+	private function insertRows( array $rows ): array {
 		global $wpdb;
 
 		$ids = [];
 
-		foreach ( $urls as $index => $url ) {
+		foreach ( $rows as list( $url, $is_mobile ) ) {
 			$wpdb->insert(
 				$this->table_name,
 				[
 					'url'       => $url,
-					'is_mobile' => $is_mobile[ $index ] ?? 0,
+					'is_mobile' => $is_mobile,
 					'status'    => 'to-submit',
 				]
 			);

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
-use ReflectionMethod;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS as UsedCSS_Table;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -42,6 +41,73 @@ class Test_AddUrlHashUniqueKey extends TestCase {
 	}
 
 	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldUpgradeTheTableAsExpected( $config, $expected ) {
+		global $wpdb;
+
+		if ( $config['column_first'] ) {
+			$wpdb->query( "ALTER TABLE {$this->table_name} ADD COLUMN url_hash varchar(32) NULL default NULL" );
+		}
+
+		if ( $config['legacy_rows'] ) {
+			$this->insertRows( 'http://example.org/legacy', [ null, null ] );
+		}
+
+		if ( $config['duplicate_hashes'] ) {
+			$this->insertRows( 'http://example.org/dup', [ md5( 'http://example.org/dup' ), md5( 'http://example.org/dup' ) ] );
+		}
+
+		if ( $config['lock'] ) {
+			$age = 'stale' === $config['lock'] ? 16 * MINUTE_IN_SECONDS : 0;
+
+			$wpdb->insert(
+				$wpdb->options,
+				[
+					'option_name'  => UsedCSS_Table::UPGRADE_LOCK,
+					'option_value' => ( time() - $age ) . ':other',
+					'autoload'     => 'no',
+				]
+			);
+		}
+
+		if ( $config['throttled'] ) {
+			set_transient( UsedCSS_Table::UPGRADE_RETRY, time(), 60 );
+		}
+
+		$upgrade = $this->get_reflective_method( 'add_url_hash_unique_key', get_class( $this->table ) );
+		$results = [];
+
+		// The duplicate scenario makes the first ADD UNIQUE fail with a logged database error.
+		$previous = $wpdb->suppress_errors( true );
+
+		for ( $run = 0; $run < $config['runs']; $run++ ) {
+			$results[] = $upgrade->invoke( $this->table );
+		}
+
+		$wpdb->suppress_errors( $previous );
+
+		$this->assertSame( $expected['results'], $results );
+		$this->assertSame( $expected['column'], $this->table->column_exists( 'url_hash' ) );
+		$this->assertSame( $expected['index'], $this->table->index_exists( 'url_hash_is_mobile' ) );
+		$this->assertSame( $expected['lock_row'], $this->lockRowExists() );
+		$this->assertSame( $expected['throttled'], false !== get_transient( UsedCSS_Table::UPGRADE_RETRY ) );
+
+		if ( $expected['index'] ) {
+			$index = $wpdb->get_row( "SHOW INDEX FROM {$this->table_name} WHERE Key_name = 'url_hash_is_mobile'" );
+
+			$this->assertSame( '0', (string) $index->Non_unique );
+		}
+
+		if ( null !== $expected['null_hash_rows'] ) {
+			$this->assertSame(
+				$expected['null_hash_rows'],
+				(int) $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name} WHERE url_hash IS NULL" )
+			);
+		}
+	}
+
+	/**
 	 * Removes the lock and throttle left by a test.
 	 *
 	 * ALTER TABLE commits implicitly, so what the upgrade writes would survive the rollback of the
@@ -55,131 +121,28 @@ class Test_AddUrlHashUniqueKey extends TestCase {
 		$wpdb->query( 'COMMIT' );
 	}
 
-	public function testShouldAddColumnAndKeyAndKeepLegacyRows() {
-		$this->insertLegacyDuplicates();
-
-		$this->assertTrue( $this->upgrade() );
-
-		$this->assertTrue( $this->table->column_exists( 'url_hash' ) );
-		$this->assertTrue( $this->table->index_exists( 'url_hash_is_mobile' ) );
-		$this->assertSame( '0', $this->unique_flag() );
-		$this->assertSame( 2, $this->countRows( 'url_hash IS NULL' ) );
-		$this->assertFalse( $this->lockRowExists() );
-		$this->assertFalse( get_transient( UsedCSS_Table::UPGRADE_RETRY ) );
-	}
-
-	public function testShouldBeIdempotent() {
-		$this->assertTrue( $this->upgrade() );
-		$this->assertTrue( $this->upgrade() );
-		$this->assertTrue( $this->table->index_exists( 'url_hash_is_mobile' ) );
-	}
-
-	public function testShouldReturnFalseWithoutThrottleWhenLockIsHeld() {
+	/**
+	 * Inserts one row per given hash, a null hash standing for a row that predates the column.
+	 *
+	 * @param string $url    Row url.
+	 * @param array  $hashes url_hash of each row.
+	 */
+	private function insertRows( string $url, array $hashes ) {
 		global $wpdb;
 
-		$wpdb->insert(
-			$wpdb->options,
-			[
-				'option_name'  => UsedCSS_Table::UPGRADE_LOCK,
-				'option_value' => time() . ':other',
-				'autoload'     => 'no',
-			]
-		);
+		foreach ( $hashes as $index => $hash ) {
+			$data = [
+				'url'       => $url,
+				'is_mobile' => 0,
+				'status'    => 0 === $index ? 'to-submit' : 'pending',
+			];
 
-		$this->assertFalse( $this->upgrade() );
+			if ( null !== $hash ) {
+				$data['url_hash'] = $hash;
+			}
 
-		$this->assertFalse( $this->table->column_exists( 'url_hash' ) );
-		$this->assertFalse( get_transient( UsedCSS_Table::UPGRADE_RETRY ) );
-		$this->assertTrue( $this->lockRowExists() );
-	}
-
-	public function testShouldReclaimStaleLock() {
-		global $wpdb;
-
-		$wpdb->insert(
-			$wpdb->options,
-			[
-				'option_name'  => UsedCSS_Table::UPGRADE_LOCK,
-				'option_value' => ( time() - 16 * MINUTE_IN_SECONDS ) . ':gone',
-				'autoload'     => 'no',
-			]
-		);
-
-		$this->assertTrue( $this->upgrade() );
-
-		$this->assertTrue( $this->table->index_exists( 'url_hash_is_mobile' ) );
-		$this->assertFalse( $this->lockRowExists() );
-	}
-
-	public function testShouldNullDuplicateHashesAndRetryTheKey() {
-		global $wpdb;
-
-		$wpdb->query( "ALTER TABLE {$this->table_name} ADD COLUMN url_hash varchar(32) NULL default NULL" );
-
-		foreach ( [ 'to-submit', 'pending' ] as $status ) {
-			$wpdb->insert(
-				$this->table_name,
-				[
-					'url'       => 'http://example.org/dup',
-					'url_hash'  => md5( 'http://example.org/dup' ),
-					'is_mobile' => 0,
-					'status'    => $status,
-				]
-			);
+			$wpdb->insert( $this->table_name, $data );
 		}
-
-		$previous = $wpdb->suppress_errors( true );
-		$result   = $this->upgrade();
-		$wpdb->suppress_errors( $previous );
-
-		$this->assertTrue( $result );
-		$this->assertTrue( $this->table->index_exists( 'url_hash_is_mobile' ) );
-		$this->assertSame( 2, $this->countRows( 'url_hash IS NULL' ) );
-		$this->assertFalse( get_transient( UsedCSS_Table::UPGRADE_RETRY ) );
-	}
-
-	public function testShouldDoNothingWhileThrottled() {
-		set_transient( UsedCSS_Table::UPGRADE_RETRY, time(), 60 );
-
-		$this->assertFalse( $this->upgrade() );
-		$this->assertFalse( $this->table->column_exists( 'url_hash' ) );
-		$this->assertFalse( $this->lockRowExists() );
-	}
-
-	private function upgrade() {
-		$method = new ReflectionMethod( $this->table, 'add_url_hash_unique_key' );
-		$method->setAccessible( true );
-
-		return $method->invoke( $this->table );
-	}
-
-	private function insertLegacyDuplicates() {
-		global $wpdb;
-
-		foreach ( [ 'to-submit', 'pending' ] as $status ) {
-			$wpdb->insert(
-				$this->table_name,
-				[
-					'url'       => 'http://example.org/legacy',
-					'is_mobile' => 0,
-					'status'    => $status,
-				]
-			);
-		}
-	}
-
-	private function countRows( string $where ): int {
-		global $wpdb;
-
-		return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$this->table_name} WHERE {$where}" );
-	}
-
-	private function unique_flag(): string {
-		global $wpdb;
-
-		$rows = $wpdb->get_results( "SHOW INDEX FROM {$this->table_name} WHERE Key_name = 'url_hash_is_mobile'" );
-
-		return (string) $rows[0]->Non_unique;
 	}
 
 	private function lockRowExists(): bool {
