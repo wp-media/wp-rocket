@@ -112,7 +112,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>$34.3! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>$34.3 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -132,7 +132,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>34.3€! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>34.3€ <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -151,7 +151,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>$34.3! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>$34.3 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -171,7 +171,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>34.3€! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>34.3€ <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true
 		],
@@ -190,7 +190,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.5! <span class="renewal-tax__info">(excl. taxes)</span></strong>',
+			'message' => 'Renew now at <strong>$24.5 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'more_info' => true,
 			'countdown' => $countdown,
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -210,7 +210,7 @@ return [
 			'pricing'   => $pricing,
 		],
 		'expected' => [
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>24.5€! <span class="renewal-tax__info">(excl. taxes)</span></strong>',
+			'message' => 'Renew now at <strong>24.5€ <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'more_info' => true,
 			'countdown' => $countdown,
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
@@ -232,7 +232,7 @@ return [
 		'expected' => [
 			'more_info' => true,
 			'countdown' => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>$69.3! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>$69.3 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -252,7 +252,7 @@ return [
 		'expected' => [
 			'more_info' => true,
 			'countdown' => $countdown,
-			'message' => 'Renew before it is too late, you will pay <strong>69.3€! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'message' => 'Renew now at <strong>69.3€ <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 		],
 	],
@@ -271,7 +271,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.5! <span class="renewal-tax__info">(excl. taxes)</span></strong>',
+			'message' => 'Renew now at <strong>$49.5 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true,
 		],
@@ -291,7 +291,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>49.5€! <span class="renewal-tax__info">(excl. taxes)</span></strong>',
+			'message' => 'Renew now at <strong>49.5€ <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => true,
 		],
@@ -311,7 +311,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
@@ -331,7 +331,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
@@ -351,7 +351,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
@@ -371,7 +371,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
@@ -391,7 +391,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
@@ -424,7 +424,7 @@ return [
 		],
 		'expected' => [
 			'countdown'        => $countdown,
-			'message' => 'You will soon lose access to product updates and support.',
+			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],
