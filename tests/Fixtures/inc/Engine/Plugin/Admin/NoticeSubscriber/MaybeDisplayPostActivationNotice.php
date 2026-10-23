@@ -52,26 +52,16 @@ return [
 			'html_absent' => [ 'Rocket Insights', 'Start with my homepage' ],
 		],
 	],
-	'shouldRedirectButtonToDashboardAfterDismiss'         => [
+	'shouldUseAddHomepageActionForButton'                 => [
 		'config'   => [
 			'previous_version' => '',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
 		],
 		'expected' => [
-			'display' => true,
-			'html'    => 'action=rocket_ignore&#038;box=rocket_new_user_activation_notice&#038;redirect=',
-		],
-	],
-	'shouldRedirectButtonToDashboardHash'                 => [
-		'config'   => [
-			'previous_version' => '',
-			'role'             => 'administrator',
-			'screen'           => 'dashboard',
-		],
-		'expected' => [
-			'display' => true,
-			'html'    => '%23dashboard',
+			'display'     => true,
+			'html'        => 'action=rocket_insights_add_homepage_notice',
+			'html_absent' => [ 'redirect=' ],
 		],
 	],
 	'shouldDisplayActivationNoticeDismissButton'             => [

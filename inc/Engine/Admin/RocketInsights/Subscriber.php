@@ -454,11 +454,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'</strong>'
 		);
 
-		$dashboard_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=activation_notice#dashboard' );
-
 		$action_url = wp_nonce_url(
-			admin_url( 'admin-post.php?action=rocket_ignore&box=' . $dismiss_key . '&redirect=' . rawurlencode( $dashboard_url ) ),
-			'rocket_ignore_' . $dismiss_key
+			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
+			'rocket_insights_add_homepage_notice'
 		);
 
 		$notice_info = [
