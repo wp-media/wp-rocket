@@ -144,8 +144,13 @@ PageManager.prototype.detectID = function() {
 * Get body top position
 */
 PageManager.prototype.getBodyTop = function() {
+    var adminBar = document.getElementById('wpadminbar');
+    var adminBarHeight = adminBar ? adminBar.offsetHeight : 0;
+    var wrapPadding = parseFloat(window.getComputedStyle(this.$body.parentElement).paddingTop) || 0;
     var bodyPos = this.$body.getBoundingClientRect();
-    this.bodyTop = bodyPos.top + window.pageYOffset - 47; // #wpadminbar + padding-top .wpr-wrap - 1 - 47
+
+    // Scroll distance that leaves the body start right under the admin bar and the wrapper padding
+    this.bodyTop = Math.max(0, bodyPos.top + window.pageYOffset - adminBarHeight - wrapPadding);
 }
 
 
