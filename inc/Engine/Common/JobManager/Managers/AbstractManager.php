@@ -44,6 +44,9 @@ trait AbstractManager {
 	/**
 	 * Send the request to add url into the queue.
 	 *
+	 * When the insert loses a race against a concurrent request for the same url, the winner's row
+	 * is returned untouched.
+	 *
 	 * @param string $url page URL.
 	 * @param bool   $is_mobile page is for mobile.
 	 * @param array  $additional_details Additional details to be saved into DB.
@@ -58,7 +61,16 @@ trait AbstractManager {
 		$row = $this->query->get_row( $url, (bool) $is_mobile );
 
 		if ( empty( $row ) ) {
-			return $this->query->create_new_job( $url, '', '', $is_mobile, $additional_details );
+			$row_id = $this->query->create_new_job( $url, '', '', $is_mobile, $additional_details );
+
+			if ( $row_id ) {
+				return $row_id;
+			}
+
+			// Bypass the cache, which may still hold the empty result read before the winner inserted.
+			$row = $this->query->get_row( $url, (bool) $is_mobile, false );
+
+			return empty( $row ) ? false : (int) $row->id;
 		}
 		$this->query->reset_job( (int) $row->id, '', $additional_details );
 
