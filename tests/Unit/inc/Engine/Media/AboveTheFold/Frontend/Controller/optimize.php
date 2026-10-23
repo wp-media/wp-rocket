@@ -119,4 +119,54 @@ class Test_optimize extends TestCase {
 		$this->assertIsString( $result );
 		$this->assertSame( $expected, $result );
 	}
+
+	/**
+	 * @dataProvider providerSpecialCharacters
+	 */
+	public function testShouldKeepSpecialCharactersLiteralInPreloadTag( $src ) {
+		$this->stubEscapeFunctions();
+		$this->stubWpParseUrl();
+
+		Functions\expect( 'rocket_bypass' )
+			->atMost()
+			->once()
+			->andReturn( false );
+
+		Functions\when( 'wp_http_validate_url' )->justReturn( false );
+
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
+		$html = '<html><head><title>Test</title></head><body><img src="' . $src . '" alt="test"></body></html>';
+
+		$row = $this->getMockBuilder( ATFRow::class )
+					->disableOriginalConstructor()
+					->getMock();
+
+		$row->expects( $this->once() )
+			->method( 'has_lcp' )
+			->willReturn( true );
+
+		$row->lcp = json_encode(
+			(object) [
+				'type' => 'img',
+				'src'  => $src,
+			]
+		);
+
+		$result = $this->controller->optimize( $html, $row );
+
+		$this->assertStringContainsString( '<title>Test</title><link rel="preload" data-rocket-preload as="image" href="' . $src . '"', $result );
+		$this->assertSame( 1, substr_count( $result, 'rel="preload"' ) );
+	}
+
+	public function providerSpecialCharacters() {
+		return [
+			'dollar one'   => [ 'image$1.jpg' ],
+			'dollar brace' => [ 'image${0}.jpg' ],
+			'backslash'    => [ 'image\\1.jpg' ],
+		];
+	}
 }
