@@ -60,6 +60,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public static function get_subscribed_events(): array {
 		return [
 			'rocket_sidebar'                              => 'render_recommendations_widget',
+			'rocket_dashboard_content'                    => [ 'render_dashboard_recommendations', 20 ],
 			'rocket_insights_global_score_status_changed' => 'handle_status_change',
 			'rocket_insights_recommendations_rest_response' => 'output_recommendations_rest_response',
 			'wp_rocket_upgrade'                           => [ 'force_global_metrics_recalculation', 10, 2 ],
@@ -87,6 +88,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
+	 * Render the redesigned recommendations component in the dashboard content.
+	 *
+	 * @return void
+	 */
+	public function render_dashboard_recommendations(): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$this->render->render_dashboard_recommendations( $this->maybe_fetch_recommendations_on_page_load() );
+	}
+
+	/**
 	 * Output recommendations in the REST API response.
 	 *
 	 * @param array $response_data Existing response data.
@@ -95,7 +109,8 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function output_recommendations_rest_response( array $response_data ): array {
 		$recommendations                  = $this->data_manager->get_recommendations();
 		$response_data['recommendations'] = [
-			'html' => $this->render->render_recommendations_widget( $recommendations, false ),
+			'html'           => $this->render->render_recommendations_widget( $recommendations, false ),
+			'dashboard_html' => $this->render->get_dashboard_recommendations( $recommendations ),
 		];
 
 		return $response_data;

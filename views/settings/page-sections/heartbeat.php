@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 
 <div id="<?php echo esc_attr( $data['id'] ); ?>" class="wpr-Page">
 	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-heartbeat-hover"><?php echo esc_html( $data['title'] ); ?></h2>
+		<h2 class="wpr-title1 wpr-icon-database"><?php echo esc_html( $data['title'] ); ?></h2>
 	</div>
 	<?php $this->render_settings_sections( $data['id'] ); ?>
 </div>
