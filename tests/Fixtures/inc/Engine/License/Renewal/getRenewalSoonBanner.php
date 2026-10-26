@@ -59,6 +59,15 @@ $multi_pricing = $pricing + [
 	] ) ),
 ];
 
+$multi_without_renewal_pricing = $pricing + [
+	'by_websites' => json_decode( json_encode( [
+		'prices'   => [
+			'regular' => 499.95,
+		],
+		'websites' => 500,
+	] ) ),
+];
+
 $countdown = [
 	'days'    => 0,
 	'hours'   => 0,
@@ -476,6 +485,27 @@ return [
 				'creation_date'      => strtotime( 'this year' ),
 			],
 			'pricing'   => $pricing,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew before it is too late, you will pay <strong>$174.3! <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => true,
+		],
+	],
+
+
+	'testShouldReturnDataWithInfinitePriceWhenMatchedTierHasNoRenewalPrices' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 500,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'this year' ),
+			],
+			'pricing'   => $multi_without_renewal_pricing,
 		],
 		'expected' => [
 			'countdown'        => $countdown,

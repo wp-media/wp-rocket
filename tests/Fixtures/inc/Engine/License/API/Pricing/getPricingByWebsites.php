@@ -37,6 +37,18 @@ return [
 		'websites' => -1,
 		'expected' => null,
 	],
+	'testShouldReturnNullWhenOnlyNonNumericWebsitesAndPositiveSize' => [
+		'data'     => json_decode( json_encode( [
+			'licenses' => [
+				'infinite' => [
+					'prices'   => [],
+					'websites' => 'unlimited',
+				],
+			],
+		] ) ),
+		'websites' => 5,
+		'expected' => null,
+	],
 	'testShouldReturnNullWhenWebsitesIsZero' => [
 		'data'     => json_decode( json_encode( $licenses ) ),
 		'websites' => 0,
