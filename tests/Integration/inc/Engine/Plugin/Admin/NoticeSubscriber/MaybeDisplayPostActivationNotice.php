@@ -29,6 +29,9 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 
 		delete_option( 'rocketcdn_user_token' );
 
+		// Rocket Insights is blocked on local hosts, so simulate a live site.
+		add_filter( 'home_url', [ $this, 'liveHomeUrl' ] );
+
 		if ( ! function_exists( 'rocket_notice_html' ) ) {
 			require_once WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
 		}
@@ -47,7 +50,17 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 		);
 	}
 
+	/**
+	 * Returns a non-local home URL.
+	 *
+	 * @return string
+	 */
+	public function liveHomeUrl(): string {
+		return 'https://example.org';
+	}
+
 	public function tear_down() {
+		remove_filter( 'home_url', [ $this, 'liveHomeUrl' ] );
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_false', 20 );
 
 		delete_option( 'rocketcdn_user_token' );
@@ -102,6 +115,13 @@ class Test_MaybeDisplayPostActivationNotice extends TestCase {
 				$this->format_the_html( $expected['html'] ),
 				$actual
 			);
+
+			foreach ( $expected['html_absent'] ?? [] as $absent ) {
+				$this->assertStringNotContainsStringIgnoringCase(
+					$this->format_the_html( $absent ),
+					$actual
+				);
+			}
 
 			return;
 		}

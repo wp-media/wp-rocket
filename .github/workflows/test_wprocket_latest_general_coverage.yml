@@ -39,19 +39,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    env:
-      ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
-      ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
-      ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
-      ROCKETCDN_URL: ${{ secrets.ROCKETCDN_URL }}
-      ROCKETCDN_WEBSITE_ID: ${{ secrets.ROCKETCDN_WEBSITE_ID }}
-      ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
-      ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
-      ROCKET_CLOUDFLARE_API_KEY: ${{ secrets.ROCKET_CLOUDFLARE_API_KEY }}
-      ROCKET_CLOUDFLARE_EMAIL: ${{ secrets.ROCKET_CLOUDFLARE_EMAIL }}
-      ROCKET_CLOUDFLARE_SITE_URL: ${{ secrets.ROCKET_CLOUDFLARE_SITE_URL }}
-      ROCKET_CLOUDFLARE_ZONE_ID: ${{ secrets.ROCKET_CLOUDFLARE_ZONE_ID }}
-
     steps:
     - name: Checkout
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -84,7 +71,9 @@ jobs:
     - name: Code Coverage Report
       run: composer report-code-coverage
 
+    # Secrets aren't available to pull requests from forks.
     - name: Run codacy-coverage-reporter
+      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
       uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}

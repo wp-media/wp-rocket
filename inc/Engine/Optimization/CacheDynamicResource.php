@@ -80,7 +80,7 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
 		$excluded_files   = (array) apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
-		$excluded_files[] = '/wp-admin/admin-ajax.php';
+		$excluded_files[] = '.*/wp-admin/admin-ajax\.php'; // Leading .* also covers subdirectory installs.
 
 		foreach ( $excluded_files as $i => $excluded_file ) {
 			// Escape character for future use in regex pattern.

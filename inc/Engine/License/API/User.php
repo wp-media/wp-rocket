@@ -44,6 +44,17 @@ class User {
 	}
 
 	/**
+	 * Gets the user license type slug, e.g. single, plus, infinite or multi500
+	 *
+	 * Unlike the licence size, it tells apart the multi licenses, which report the same size as infinite.
+	 *
+	 * @return string
+	 */
+	public function get_license_type_slug(): string {
+		return (string) ( $this->user->licence->type ?? '' );
+	}
+
+	/**
 	 * Gets the user license expiration timestamp
 	 *
 	 * @return int

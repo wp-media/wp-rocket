@@ -47,8 +47,8 @@ return [
 
 	'testShouldReturnSameArgsWhenAuthorizationHeadersCorrect' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',
@@ -61,8 +61,8 @@ return [
 
 	'testShouldReturnCorrectTokenWhenAuthorizationHeadersEmpty' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',
@@ -80,8 +80,8 @@ return [
 
 	'testShouldReturnCorrectTokenWhenAuthorizationHeadersIncorrect' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',
