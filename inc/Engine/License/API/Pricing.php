@@ -71,38 +71,24 @@ class Pricing {
 	}
 
 	/**
-	 * Gets the pricing data of the license allowing the given number of websites
+	 * Gets the pricing data of the license with the given type (e.g. multi500)
 	 *
-	 * @param int $websites Number of websites allowed by the license.
+	 * @param string $type License type, as in the keys of the licenses pricing data.
 	 *
 	 * @return null|object
 	 */
-	public function get_pricing_by_websites( int $websites ) {
+	public function get_pricing_by_type( string $type ) {
 		if (
-			$websites <= 0
+			'' === $type
 			||
-			! isset( $this->pricing->licenses )
+			! isset( $this->pricing->licenses->$type )
 			||
-			! is_object( $this->pricing->licenses )
+			! is_object( $this->pricing->licenses->$type )
 		) {
 			return null;
 		}
 
-		foreach ( $this->pricing->licenses as $license ) {
-			if (
-				is_object( $license )
-				&&
-				isset( $license->websites )
-				&&
-				is_numeric( $license->websites )
-				&&
-				(int) $license->websites === $websites
-			) {
-				return $license;
-			}
-		}
-
-		return null;
+		return $this->pricing->licenses->$type;
 	}
 
 	/**

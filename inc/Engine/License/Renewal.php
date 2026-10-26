@@ -394,6 +394,12 @@ class Renewal extends Abstract_Render {
 	 * @return object|null
 	 */
 	private function get_license_pricing_data() {
+		$type_pricing = $this->pricing->get_pricing_by_type( $this->user->get_license_type_slug() );
+
+		if ( isset( $type_pricing->prices->renewal ) ) {
+			return $type_pricing;
+		}
+
 		$license       = $this->user->get_license_type();
 		$plus_websites = $this->pricing->get_plus_websites_count();
 
@@ -405,12 +411,6 @@ class Renewal extends Abstract_Render {
 			$license < $plus_websites
 		) {
 			return $this->pricing->get_single_pricing();
-		}
-
-		$license_pricing = $this->pricing->get_pricing_by_websites( $license );
-
-		if ( isset( $license_pricing->prices->renewal ) ) {
-			return $license_pricing;
 		}
 
 		return $this->pricing->get_infinite_pricing();

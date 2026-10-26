@@ -6,10 +6,6 @@ $licenses = [
 			'prices'   => [],
 			'websites' => 1,
 		],
-		'plus'     => [
-			'prices'   => [],
-			'websites' => 3,
-		],
 		'infinite' => [
 			'prices'   => [],
 			'websites' => 'unlimited',
@@ -24,39 +20,27 @@ $licenses = [
 return [
 	'testShouldReturnNullWhenLicensesNotSet' => [
 		'data'     => json_decode( json_encode( [] ) ),
-		'websites' => 500,
+		'type'     => 'multi500',
+		'expected' => null,
+	],
+	'testShouldReturnNullWhenTypeIsEmpty' => [
+		'data'     => json_decode( json_encode( $licenses ) ),
+		'type'     => '',
 		'expected' => null,
 	],
 	'testShouldReturnNullWhenNoLicenseMatches' => [
 		'data'     => json_decode( json_encode( $licenses ) ),
-		'websites' => 200,
+		'type'     => 'multi200',
 		'expected' => null,
 	],
-	'testShouldReturnNullWhenWebsitesIsUnlimited' => [
-		'data'     => json_decode( json_encode( $licenses ) ),
-		'websites' => -1,
-		'expected' => null,
-	],
-	'testShouldReturnNullWhenOnlyNonNumericWebsitesAndPositiveSize' => [
-		'data'     => json_decode( json_encode( [
-			'licenses' => [
-				'infinite' => [
-					'prices'   => [],
-					'websites' => 'unlimited',
-				],
-			],
-		] ) ),
-		'websites' => 5,
-		'expected' => null,
-	],
-	'testShouldReturnNullWhenWebsitesIsZero' => [
-		'data'     => json_decode( json_encode( $licenses ) ),
-		'websites' => 0,
+	'testShouldReturnNullWhenEntryIsNotAnObject' => [
+		'data'     => json_decode( json_encode( [ 'licenses' => [ 'multi500' => 'invalid' ] ] ) ),
+		'type'     => 'multi500',
 		'expected' => null,
 	],
 	'testShouldReturnMatchingLicense' => [
 		'data'     => json_decode( json_encode( $licenses ) ),
-		'websites' => 500,
+		'type'     => 'multi500',
 		'expected' => (object) [
 			'prices'   => (object) [ 'regular' => 499.95 ],
 			'websites' => 500,
