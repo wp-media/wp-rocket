@@ -11,25 +11,14 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
-		<h3 class="rocket-expired-title"><?php esc_html_e( 'You will soon lose access to some features.', 'rocket' ); ?></h3>
+		<h3 class="rocket-expired-title"><?php esc_html_e( 'Your license has expired. Keep your speed gains!', 'rocket' ); ?></h3>
 		<div class="rocket-renewal-expired-banner-container">
 			<div class="rocket-expired-message">
 				<p>
 					<?php
 					printf(
-						// translators: %1$s = <strong>, %2$s = </strong>.
-						esc_html__( 'You need an %1$sactive license to continue optimizing your CSS delivery%2$s.', 'rocket' ),
-						'<strong>',
-						'</strong>'
-					);
-					?>
-					<br>
-					<?php esc_html_e( 'The Remove Unused CSS and Load CSS asynchronously features are great options to address the PageSpeed Insights recommendations and improve your website performance.', 'rocket' ); ?>
-					<br>
-					<?php
-					printf(
 						// translators: %1$s = <strong>, %2$s = </strong>, %3$s = date.
-						esc_html__( 'These features will be %1$sautomatically disabled on %3$s%2$s.', 'rocket' ),
+						esc_html__( "Your CSS optimization will stop working on %1\$s%3\$s%2\$s, and your pages will slow down, affecting your traffic and conversions. You'll also lose access to plugin updates and support.", 'rocket' ),
 						'<strong>',
 						'</strong>',
 						esc_html( $data['disabled_date'] )

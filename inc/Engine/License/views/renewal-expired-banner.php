@@ -11,18 +11,11 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 ?>
 <section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
 	<div class="banner-copy">
-		<h3 class="rocket-expired-title"><?php esc_html_e( 'Your WP Rocket license is expired!', 'rocket' ); ?></h3>
+		<h3 class="rocket-expired-title"><?php esc_html_e( 'Your WP Rocket license has expired!', 'rocket' ); ?></h3>
 		<div class="rocket-renewal-expired-banner-container">
 			<div class="rocket-expired-message">
 				<p>
-					<?php
-					printf(
-					// translators: %1$s = <strong>, %2$s = </strong>.
-						esc_html__( 'Your website could be much faster if it could take advantage of our %1$snew features and enhancements%2$s. 🚀', 'rocket' ),
-						'<strong>',
-						'</strong>'
-					);
-					?>
+					<?php esc_html_e( "Your site has stopped getting faster. You're missing out on the latest speed boosts, new features, and enhancements.", 'rocket' ); ?>
 				</p>
 				<?php if ( ! empty( $data['message'] ) ) : ?>
 				<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
