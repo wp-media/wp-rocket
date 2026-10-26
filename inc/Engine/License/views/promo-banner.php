@@ -20,7 +20,7 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 			</span>
 			<?php
 			// translators: %s = promotion name.
-			printf( esc_html__( '%s promotion is live!', 'rocket' ), esc_html( $data['name'] ) );
+			printf( esc_html__( "It's %s!", 'rocket' ), esc_html( $data['name'] ) );
 			?>
 		</h3>
 		<p class="rocket-promo-message"><?php echo wp_kses_post( $data['message'] ); ?></p>
@@ -32,7 +32,7 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes"><?php echo esc_html( $data['countdown']['minutes'] ); ?></span> <?php esc_html_e( 'Minutes', 'rocket' ); ?></li>
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds"><?php echo esc_html( $data['countdown']['seconds'] ); ?></span> <?php esc_html_e( 'Seconds', 'rocket' ); ?></li>
 		</ul>
-		<button class="rocket-promo-cta wpr-popin-upgrade-toggle"><?php esc_html_e( 'Upgrade WP Rocket', 'rocket' ); ?></button>
+		<button class="rocket-promo-cta wpr-popin-upgrade-toggle"><?php esc_html_e( 'Upgrade Now', 'rocket' ); ?></button>
 	</div>
 	<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></button>
 </div>
