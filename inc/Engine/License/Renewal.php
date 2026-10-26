@@ -153,7 +153,8 @@ class Renewal extends Abstract_Render {
 			}
 		}
 
-		if ( 'renewal-expired-banner-ocd' !== $template ) {
+		// No price line when the pricing data is unavailable, rather than a misleading "$0.00".
+		if ( 'renewal-expired-banner-ocd' !== $template && 0 < $this->get_price() ) {
 			$args['message'] = sprintf(
 				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = renewal price.
 				esc_html__( 'Renew your license now at %1$s%3$s%2$s.', 'rocket' ),
