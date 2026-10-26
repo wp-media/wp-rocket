@@ -101,13 +101,14 @@ return [
 		],
 		'expected' => '<section class="rocket-renewal-expired-banner" id="rocket-renewal-banner">
 		<div class="banner-copy">
-		<h3 class="rocket-expired-title">Your WP Rocket license is expired!</h3>
+		<h3 class="rocket-expired-title">Your WP Rocket license has expired!</h3>
 		<div class="rocket-renewal-expired-banner-container">
 			<div class="rocket-expired-message">
 
 				<p>
-				Your website could be much faster if it could take advantage of our <strong>new features and enhancements</strong>. 🚀
+				Your site has stopped getting faster. You&#039;re missing out on the latest speed boosts, new features, and enhancements.
 				</p>
+				<p>Renew your license now at <strong>$34.30 <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
 			</div>
 			</div>
 			</div>

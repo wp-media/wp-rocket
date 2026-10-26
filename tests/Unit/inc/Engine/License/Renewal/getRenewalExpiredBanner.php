@@ -146,6 +146,9 @@ class GetRenewalExpiredBanner extends TestCase {
 
 			Functions\when( 'number_format_i18n' )->returnArg();
 
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['user']['currency'] ?? 'USD' );
+
 			$this->pricing->shouldReceive( 'get_renewals_data' )
 				->andReturn( $config['pricing']['renewals'] );
 

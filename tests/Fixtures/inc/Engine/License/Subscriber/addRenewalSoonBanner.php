@@ -108,9 +108,9 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
-			<p>Renew before it is too late, you will pay <strong>$34.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>Renew now at <strong>$34.30 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
@@ -136,10 +136,10 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
 			<p>
-			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$24.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
+			Renew now at <strong>$24.50 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.
 			</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
@@ -166,9 +166,9 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
-			<p>Renew before it is too late, you will pay <strong>$69.30! <span class="renewal-tax__info">(excl. taxes)</span></strong>.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>Renew now at <strong>$69.30 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
@@ -194,10 +194,10 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
 			<p>
-			Renew with a <strong>20% discount</strong> before it is too late, you will only pay <strong>$49.50! <span class="renewal-tax__info">(excl. taxes)</span></strong>
+			Renew now at <strong>$49.50 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.
 			</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
@@ -224,8 +224,8 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
@@ -251,8 +251,8 @@ return [
 		],
 		'expected' => '<div class="rocket-renewal-banner">
 		<div class="rocket-renew-message">
-			<h3 class="rocket-promo-title">Your WP Rocket license is about to expire.</h3>
-			<p>You will soon lose access to product updates and support.</p>
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
 		</div>
 		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
 			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
