@@ -177,6 +177,13 @@ class GetRenewalExpiredBanner extends TestCase {
 				->once()
 				->andReturn( $config['pricing']['infinite'] );
 
+			$this->user->shouldReceive( 'get_license_type_slug' )
+				->andReturn( '' );
+
+			$this->pricing->shouldReceive( 'get_pricing_by_type' )
+				->with( '' )
+				->andReturn( null );
+
 			Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
 
 			Functions\when( 'get_option' )->justReturn( 'Ymd' );
