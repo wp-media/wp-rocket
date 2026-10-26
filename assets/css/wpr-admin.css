@@ -789,6 +789,8 @@ a:focus, button:focus {
   gap: 16px;
 }
 .wpr-Dashboard-main {
+  flex: 0 1 auto;
+  width: calc(100% - 362px);
   min-width: 0;
   padding: 32px 24px;
   background: #fff;
@@ -803,6 +805,7 @@ a:focus, button:focus {
 }
 @media (max-width: 1239px) {
   .wpr-Dashboard-main {
+    width: auto;
     border-radius: 4px;
   }
 }
@@ -3115,6 +3118,9 @@ div.wpr-upgrade-websites.notstacked {
   font-weight: 600;
   letter-spacing: 0;
   color: #0C0F1F;
+}
+.add-on-container--user-cache .wpr-radio {
+  min-height: 22.8125px;
 }
 .add-on-container--user-cache .wpr-addon {
   padding: 16px 0;

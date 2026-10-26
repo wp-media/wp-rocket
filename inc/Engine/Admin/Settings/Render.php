@@ -352,7 +352,9 @@ class Render extends Abstract_Render {
 		 *         @type string   $text         Text following the lead, next to the "Learn more" toggle.
 		 *         @type string[] $list         Benefits shown when the card is expanded. Only <strong> is allowed.
 		 *         @type string   $button_label Button label.
-		 *         @type string   $button_url   Button URL.
+		 *         @type string   $button_url   Button URL. When empty, a <button> is rendered if a class or attributes are given.
+		 *         @type string   $button_class Optional extra CSS classes for the button.
+		 *         @type array    $button_attributes Optional HTML attributes of the button, as attribute name => value.
 		 *         @type bool     $is_external  Whether the button opens an external site in a new tab.
 		 *     }
 		 * }

@@ -21,7 +21,9 @@
  *     @type string   $text         Text following the lead.
  *     @type string[] $list         Benefits shown when the card is expanded. Only <strong> is allowed.
  *     @type string   $button_label Button label.
- *     @type string   $button_url   Button URL.
+ *     @type string   $button_url   Button URL. When empty, a <button> is rendered if a class or attributes are given.
+ *     @type string   $button_class Optional extra CSS classes for the button.
+ *     @type array    $button_attributes Optional HTML attributes of the button, as attribute name => value.
  *     @type bool     $is_external  Whether the button opens an external site in a new tab.
  * }
  */
@@ -31,15 +33,17 @@ defined( 'ABSPATH' ) || exit;
 $rocket_card = wp_parse_args(
 	$data,
 	[
-		'id'           => '',
-		'title'        => '',
-		'image'        => [],
-		'lead'         => '',
-		'text'         => '',
-		'list'         => [],
-		'button_label' => '',
-		'button_url'   => '',
-		'is_external'  => false,
+		'id'                => '',
+		'title'             => '',
+		'image'             => [],
+		'lead'              => '',
+		'text'              => '',
+		'list'              => [],
+		'button_label'      => '',
+		'button_url'        => '',
+		'button_class'      => '',
+		'button_attributes' => [],
+		'is_external'       => false,
 	]
 );
 
@@ -74,7 +78,17 @@ $rocket_card_image = wp_parse_args(
 			<?php endforeach; ?>
 		</ul>
 	<?php endif; ?>
+	<?php
+	$rocket_card_button_class = trim( 'wpr-button wpr-addonCard-button ' . $rocket_card['button_class'] );
+	$rocket_card_button_attrs = '';
+
+	foreach ( (array) $rocket_card['button_attributes'] as $rocket_card_attr => $rocket_card_value ) {
+		$rocket_card_button_attrs .= ' ' . esc_attr( (string) $rocket_card_attr ) . '="' . esc_attr( (string) $rocket_card_value ) . '"';
+	}
+	?>
 	<?php if ( ! empty( $rocket_card['button_url'] ) ) : ?>
-		<a class="wpr-button wpr-addonCard-button" href="<?php echo esc_url( $rocket_card['button_url'] ); ?>"<?php echo $rocket_card['is_external'] ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $rocket_card['button_label'] ); ?></a>
+		<a class="<?php echo esc_attr( $rocket_card_button_class ); ?>" href="<?php echo esc_url( $rocket_card['button_url'] ); ?>"<?php echo $rocket_card['is_external'] ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>><?php echo esc_html( $rocket_card['button_label'] ); ?></a>
+	<?php elseif ( ! empty( $rocket_card['button_class'] ) || ! empty( $rocket_card['button_attributes'] ) ) : ?>
+		<button type="button" class="<?php echo esc_attr( $rocket_card_button_class ); ?>"<?php echo $rocket_card_button_attrs; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Escaped when built above. ?>><?php echo esc_html( $rocket_card['button_label'] ); ?></button>
 	<?php endif; ?>
 </div>
