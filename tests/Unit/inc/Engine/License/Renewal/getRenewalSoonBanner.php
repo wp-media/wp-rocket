@@ -123,6 +123,10 @@ class GetRenewalSoonBanner extends TestCase {
 			$this->pricing->shouldReceive( 'get_infinite_pricing' )
 				->andReturn( $config['pricing']['infinite'] );
 
+			$this->pricing->shouldReceive( 'get_pricing_by_websites' )
+				->with( $config['user']['licence_account'] )
+				->andReturn( $config['pricing']['by_websites'] ?? null );
+
 			Functions\when( 'number_format_i18n' )->returnArg();
 
 			$this->renewal->shouldReceive( 'generate' )

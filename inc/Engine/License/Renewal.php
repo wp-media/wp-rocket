@@ -407,7 +407,9 @@ class Renewal extends Abstract_Render {
 			return $this->pricing->get_single_pricing();
 		}
 
-		return $this->pricing->get_infinite_pricing();
+		$license_pricing = $this->pricing->get_pricing_by_websites( $license );
+
+		return $license_pricing ?? $this->pricing->get_infinite_pricing();
 	}
 
 	/**

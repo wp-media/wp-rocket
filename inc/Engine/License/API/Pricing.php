@@ -71,6 +71,41 @@ class Pricing {
 	}
 
 	/**
+	 * Gets the pricing data of the license allowing the given number of websites
+	 *
+	 * @param int $websites Number of websites allowed by the license.
+	 *
+	 * @return null|object
+	 */
+	public function get_pricing_by_websites( int $websites ) {
+		if (
+			$websites <= 0
+			||
+			! isset( $this->pricing->licenses )
+			||
+			! is_object( $this->pricing->licenses )
+		) {
+			return null;
+		}
+
+		foreach ( $this->pricing->licenses as $license ) {
+			if (
+				is_object( $license )
+				&&
+				isset( $license->websites )
+				&&
+				is_numeric( $license->websites )
+				&&
+				(int) $license->websites === $websites
+			) {
+				return $license;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Gets the license renewal pricing data
 	 *
 	 * @return null|object
