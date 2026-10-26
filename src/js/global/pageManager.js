@@ -36,12 +36,11 @@ function PageManager(aElem) {
     this.$page = null;
     this.pageId = null;
     this.bodyTop = 0;
+    this.isReady = false;
     this.buttonText = this.$submitButton.value;
 
     // Clean the preference stored by the former sidebar toggle, once.
     localStorage.removeItem( 'wpr-show-sidebar' );
-
-    refThis.getBodyTop();
 
     // If url page change
     window.onhashchange = function() {
@@ -68,6 +67,10 @@ function PageManager(aElem) {
         }
     }
 
+    // Page changes after the first one scroll to the start of the body. Restoring the page from the
+    // hash or the saved session is not a navigation, so the hashchange it triggers must not scroll.
+    setTimeout(function() { refThis.isReady = true; }, 0);
+
     // Expand / collapse the navigation groups
     for (var j = 0; j < this.$menuGroups.length; j++) {
         this.$menuGroups[j].querySelector('.wpr-menuGroup-trigger').addEventListener('click', function() {
@@ -90,7 +93,6 @@ function PageManager(aElem) {
     // Click link same hash
     for (var i = 0; i < this.$links.length; i++) {
         this.$links[i].onclick = function() {
-            refThis.getBodyTop();
             var hrefSplit = this.href.split('#')[1];
             if(hrefSplit == refThis.pageId && hrefSplit != undefined){
                 refThis.detectID();
@@ -144,8 +146,13 @@ PageManager.prototype.detectID = function() {
 * Get body top position
 */
 PageManager.prototype.getBodyTop = function() {
+    var adminBar = document.getElementById('wpadminbar');
+    var adminBarHeight = adminBar ? adminBar.offsetHeight : 0;
+    var wrapPadding = parseFloat(window.getComputedStyle(this.$body.parentElement).paddingTop) || 0;
     var bodyPos = this.$body.getBoundingClientRect();
-    this.bodyTop = bodyPos.top + window.pageYOffset - 47; // #wpadminbar + padding-top .wpr-wrap - 1 - 47
+
+    // Scroll distance that leaves the body start right under the admin bar and the wrapper padding
+    this.bodyTop = Math.max(0, bodyPos.top + window.pageYOffset - adminBarHeight - wrapPadding);
 }
 
 
@@ -156,7 +163,6 @@ PageManager.prototype.getBodyTop = function() {
 PageManager.prototype.change = function() {
 
     var refThis = this;
-    document.documentElement.scrollTop = refThis.bodyTop;
 
     // The inline style of the page template only covers the first paint. The inline display styles set
     // below take over in the same task, so nothing is painted in between, even if this method throws.
@@ -202,6 +208,13 @@ PageManager.prototype.change = function() {
     }
 
     this.updateSubmitDisabledState();
+
+    // Scroll once the new page is displayed, measured on the final layout. Measuring before the swap
+    // used the previous page's height and pending admin notices, so the result changed between tabs.
+    if (this.isReady) {
+        this.getBodyTop();
+        document.documentElement.scrollTop = this.bodyTop;
+    }
 
 	// Dispatch custom event after page navigation for other scripts to hook into.
 	document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
