@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\UserClient;
 
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\TestCredentials;
 use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
@@ -14,16 +14,12 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group AdminOnly
  */
 class Test_GetUserData extends TestCase {
-	use ApiTrait;
 	use HttpRequestTrait;
 
-	protected static $api_credentials_config_file = 'license.php';
 	private static $client;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 
 		$container = apply_filters( 'rocket_container', null );
 
@@ -71,10 +67,10 @@ class Test_GetUserData extends TestCase {
 	}
 
 	public function set_consumer_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+		return TestCredentials::EMAIL;
 	}
 
 	public function set_consumer_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+		return TestCredentials::KEY;
 	}
 }
