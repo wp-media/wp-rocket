@@ -52,6 +52,10 @@ $countdown = [
 	'seconds' => 0,
 ];
 
+// Pricing endpoint unreachable: no renewal price available for the license.
+$pricing_unavailable           = $pricing;
+$pricing_unavailable['single'] = json_decode( json_encode( [ 'websites' => 1 ] ) );
+
 return [
 	'testShouldReturnNullWhenLicenseIsExpired' => [
 		'config'   => [
@@ -425,6 +429,44 @@ return [
 		'expected' => [
 			'countdown'        => $countdown,
 			'message' => 'You will soon lose the features that keep your site fast, plus access to updates and support.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
+		],
+	],
+	'testShouldHidePriceLineWhenPricingUnavailableAndNotGrandfathered' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( 'this year' ),
+			],
+			'pricing'   => $pricing_unavailable,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew now at <strong>$0 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
+			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+			'more_info' => false,
+		],
+	],
+	'testShouldHidePriceLineWhenPricingUnavailableAndGrandfathered' => [
+		'config'   => [
+			'user' => [
+				'licence_account'    => 1,
+				'licence_expired'    => false,
+				'auto_renew'         => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'creation_date'      => strtotime( '2021-01-10' ),
+			],
+			'pricing'   => $pricing_unavailable,
+		],
+		'expected' => [
+			'countdown'        => $countdown,
+			'message' => 'Renew now at <strong>$0 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.',
 			'renewal_url'      => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
 			'more_info' => false,
 		],

@@ -77,7 +77,8 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
-		$data['more_info'] = true;
+		// No price line when the pricing data is unavailable, rather than a misleading "$0.00".
+		$data['more_info'] = 0 < $this->get_price();
 
 		if ( -1 === $this->user->get_license_type() ) {
 			$data['message']   = esc_html__( 'You will soon lose the features that keep your site fast, plus access to updates and support.', 'rocket' );
