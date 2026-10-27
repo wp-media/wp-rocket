@@ -66,9 +66,38 @@ return [
 			'input'    => 'var c = html`${ /* {`\'" */ x.map(i => html`<b> ${i} </b>`) }` ;',
 			'expected' => 'var c=html`${ /* {`\'" */ x.map(i => html`<b> ${i} </b>`) }`',
 		],
+		'shouldKeepNestedLiteralAfterPostIncrementDivision' => [
+			'input'    => 'var p = html`<a>${ i++ / 2 }</a> ${ x.map(i => html`<b> ${i} </b>`) }` ; var  q = a / b ;',
+			'expected' => 'var p=html`<a>${ i++ / 2 }</a> ${ x.map(i => html`<b> ${i} </b>`) }`;var q=a/b',
+		],
+		'shouldKeepNestedLiteralAfterBacktickInTopLevelRegex' => [
+			'input'    => 'var  r = s.split(/`/) ; var  t = html`<a> ${ x.map(i => html`<b> ${i} </b>`) }</a>` ;',
+			'expected' => 'var r=s.split(/`/);var t=html`<a> ${ x.map(i => html`<b> ${i} </b>`) }</a>`',
+		],
+		'shouldKeepNestedLiteralAfterBacktickInTopLevelComment' => [
+			'input'    => "// it's `x`\nvar  t = html`<a> \${ x.map(i => html`<b> \${i} </b>`) }</a>` ;",
+			'expected' => "var t=html`<a> \${ x.map(i => html`<b> \${i} </b>`) }</a>`",
+		],
+		'shouldKeepEscapedSubstitution' => [
+			'input'    => 'var  e = `a \${b}  c` ;',
+			'expected' => 'var e=`a \${b}  c`',
+		],
+		'shouldKeepTaggedTemplate' => [
+			'input'    => 'var  t = tag`a  ${ b }  c` ;',
+			'expected' => 'var t=tag`a  ${ b }  c`',
+		],
 		'shouldFallBackToNaiveMatchWhenSubstitutionIsUnparsable' => [
 			'input'    => 'var f = `a ${ x.map(y => { return /\'/.test(y) }) } b` ; var  k = 4 ;',
 			'expected' => 'var f=`a ${ x.map(y => { return /\'/.test(y) }) } b`;var k=4',
+		],
+		// Known limitation: a regex after a keyword isn't detected, so the previous behaviour applies.
+		'shouldKeepPreviousBehaviourForRegexAfterReturn' => [
+			'input'    => 'var f = `a ${ x.map(y => { return /`/.test(y) }) } b` ; var  k = 4 ;',
+			'expected' => 'var f=`a ${ x.map(y => { return /`/.test(y)})}b`;var k=4',
+		],
+		'shouldKeepPreviousBehaviourForUnterminatedLiteral' => [
+			'input'    => 'var  u = `a  b ; var  k = 1 ;',
+			'expected' => 'var u=`a b;var k=1',
 		],
 		'shouldMinifyCodeAroundLiterals' => [
 			'input'    => 'var  t = `a  ${b}`;  if ( t ) { go ( `c  d` ) ; }',

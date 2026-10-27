@@ -159,7 +159,7 @@ class JS extends Minify
 		 * Comments will be removed altogether, strings and regular expressions
 		 * will be replaced by placeholder text, which we'll restore later.
 		 */
-		// WP Rocket patch (#8834): registered first so it wins over the naive backtick match below.
+		// WP Rocket patch (#8834): registered before extractStrings() so it wins the backtick match.
 		$this->extractTemplateLiterals();
 		$this->extractStrings('\'"`');
 		$this->stripComments();
@@ -193,13 +193,7 @@ class JS extends Minify
 	}
 
 	/**
-	 * WP Rocket patch (#8834): extract whole template literals, including nested ones.
-	 *
-	 * The naive backtick match in extractStrings() ends a literal at the first
-	 * nested backtick, exposing template content to whitespace stripping. This
-	 * pattern balances `${...}` substitutions (braces, strings, comments, regex
-	 * and nested literals) so the outermost literal is kept verbatim. When it
-	 * can't match, the naive match still applies, as before.
+	 * WP Rocket patch (#8834): extract whole template literals, balancing nested `${...}`.
 	 */
 	protected function extractTemplateLiterals()
 	{
@@ -211,11 +205,11 @@ class JS extends Minify
 			return $placeholder;
 		};
 
-		// chars after which a `/` starts a regex rather than a division (up to 2 spaces between)
+		// chars after which a `/` starts a regex rather than a division (up to 2 spaces between, not after ++/--)
 		$regexContext = '[(,=:\[!&|?{};+\-*%<>~^]';
 		$strings = '\'(?:[^\'\\\\\n]++|\\\\.)*+\'|"(?:[^"\\\\\n]++|\\\\.)*+"';
 		$comments = '//[^\n]*+|/\*(?:[^*]++|\*(?!/))*+\*/';
-		$regex = '(?<='.$regexContext.'|'.$regexContext.'\s|'.$regexContext.'\s\s)/(?![/*])(?:[^/\\\\\[\n]++|\\\\.|\[(?:[^\]\\\\\n]++|\\\\.)*+\])++/[a-z]*+';
+		$regex = '(?<='.$regexContext.'|'.$regexContext.'\s|'.$regexContext.'\s\s)(?<!\+\+|--|\+\+\s|--\s|\+\+\s\s|--\s\s)/(?![/*])(?:[^/\\\\\[\n]++|\\\\.|\[(?:[^\]\\\\\n]++|\\\\.)*+\])++/[a-z]*+';
 		$expr = '(?:[^{}`\'"\\\\/]++|\\\\.|'.$strings.'|'.$comments.'|'.$regex.'|/|(?&tpl)|\{(?&expr)\})*+';
 
 		$this->registerPattern('#(?<tpl>`(?:[^`\\\\$]++|\\\\.|\$(?!\{)|\$\{(?&expr)\})*+`)(?(DEFINE)(?<expr>'.$expr.'))#s', $callback);
