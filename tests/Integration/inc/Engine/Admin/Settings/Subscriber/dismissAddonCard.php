@@ -87,7 +87,8 @@ class Test_DismissAddonCard extends AjaxTestCase {
 		$_POST['nonce']   = wp_create_nonce( 'rocket-ajax' );
 		$_POST['card_id'] = 'imagify';
 
-		$this->callAjaxAction();
+		rocket_dismiss_box( 'rocket_addon_card_imagify' );
+
 		$response = $this->callAjaxAction();
 
 		$this->assertTrue( $response->success );
