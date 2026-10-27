@@ -60,6 +60,9 @@ $rocket_card_image = wp_parse_args(
 );
 ?>
 <div class="wpr-addonCard wpr-addonCard--<?php echo esc_attr( $rocket_card_id ); ?>" id="wpr-addonCard-<?php echo esc_attr( $rocket_card_id ); ?>">
+	<?php if ( '' !== $rocket_card_id ) : ?>
+		<button type="button" class="wpr-notice-close wpr-icon-close wpr-addonCard-close" data-card-id="<?php echo esc_attr( $rocket_card_id ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></button>
+	<?php endif; ?>
 	<h4 class="wpr-addonCard-title"><?php echo esc_html( $rocket_card['title'] ); ?></h4>
 	<?php if ( ! empty( $rocket_card_image['src'] ) ) : ?>
 		<img class="wpr-addonCard-image" src="<?php echo esc_url( $rocket_card_image['src'] ); ?>" alt="<?php echo esc_attr( $rocket_card_image['alt'] ); ?>"<?php echo $rocket_card_image['width'] && $rocket_card_image['height'] ? ' width="' . esc_attr( (string) $rocket_card_image['width'] ) . '" height="' . esc_attr( (string) $rocket_card_image['height'] ) . '"' : ''; ?>>

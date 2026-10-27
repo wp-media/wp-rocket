@@ -368,6 +368,10 @@ class Render extends Abstract_Render {
 				continue;
 			}
 
+			if ( $this->is_addon_card_dismissed( (string) ( $card['id'] ?? '' ) ) ) {
+				continue;
+			}
+
 			$addons .= (string) $this->generate( 'partials/sidebar/addon-card', $card );
 		}
 
@@ -394,6 +398,38 @@ class Render extends Abstract_Render {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Returns the key under which the dismissal of an add-on card is stored in the user's dismissed boxes.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $id Card identifier.
+	 *
+	 * @return string
+	 */
+	public function get_addon_card_box_key( string $id ): string {
+		return 'rocket_addon_card_' . sanitize_key( $id );
+	}
+
+	/**
+	 * Checks if the current user dismissed an add-on card of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $id Card identifier.
+	 *
+	 * @return bool
+	 */
+	public function is_addon_card_dismissed( string $id ): bool {
+		if ( '' === $id ) {
+			return false;
+		}
+
+		$boxes = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		return in_array( $this->get_addon_card_box_key( $id ), $boxes, true );
 	}
 
 	/**
