@@ -1,0 +1,268 @@
+<?php
+
+$pricing = json_decode( json_encode( [
+	'licenses' => [
+		'single'=> [
+			'prices'=> [
+				'renewal'=> [
+					'is_grandfather'=> 24.5,
+					'is_grandmother'=> 24.5,
+					'not_grandfather'=> 34.3,
+					'is_expired'=> 39.2
+				]
+			],
+			'websites'=> 1
+		],
+		'plus'=> [
+			'prices'=> [
+				'renewal'=> [
+					'is_grandfather'=> 49.5,
+					'is_grandmother'=> 49.5,
+					'not_grandfather'=> 69.3,
+					'is_expired'=> 79.2
+				]
+			],
+			'websites'=> 3
+		],
+		'infinite'=> [
+			'prices'=> [
+				'renewal'=> [
+					'is_grandfather'=> 124.5,
+					'is_grandmother'=> 124.5,
+					'not_grandfather'=> 174.3,
+					'is_expired'=> 199.2
+				]
+			],
+		],
+	],
+	'renewals' => [
+		'extra_days'=> 90,
+		'grandfather_date'=> 1567296000,
+		'grandmother_date'=> 315532800,
+		'discount_percent'=> [
+			'is_grandfather' => 20,
+			'not_grandfather'=> 0,
+			'is_expired'     => 0,
+		],
+	],
+] ) );
+
+return [
+	'testShouldReturnNullWhenLicenseIsExpired' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'last year' ),
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
+	'testShouldReturnNullWhenLicenseAutoRenew' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => true,
+				'licence_expiration' => strtotime( 'next week' ),
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
+	'testShouldReturnNullWhenLicenseNotExpireSoon' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next year' ),
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
+	'testShouldReturnNullWhenLicenseIsRevoked' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'licence' => (object) [
+                    'is_revoked' => true,
+                ],
+			] ) ),
+			'pricing' => $pricing,
+		],
+		'expected' => '',
+	],
+	'testShouldReturnDataWhenLicenseAndSingleAndNotGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>Renew now at <strong>$34.30 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+	'testShouldReturnDataWhenLicenseSingleAndGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( '2019/08/01' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>
+			Renew now at <strong>$24.50 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.
+			</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+	'testShouldReturnDataWhenLicensePlusAndNotGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 3,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>Renew now at <strong>$69.30 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+	'testShouldReturnDataWhenLicensePlusAndGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => 3,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( '2019/08/01' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+			<p>
+			Renew now at <strong>$49.50 <span class="renewal-tax__info">(excl. taxes)</span></strong> and keep your site optimized.
+			</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+	'testShouldReturnDataWhenLicenseInfiniteAndNotGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+	'testShouldReturnDataWhenLicenseInfiniteAndGrandfathered' => [
+		'config'   => [
+			'user' => json_decode( json_encode( [
+				'licence_account'    => -1,
+				'has_auto_renew'     => false,
+				'licence_expiration' => strtotime( 'next week' ),
+				'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				'date_created'      => strtotime( '2019/08/01' ),
+			] ) ),
+			'pricing'   => $pricing,
+		],
+		'expected' => '<div class="rocket-renewal-banner">
+		<div class="rocket-renew-message">
+			<h3 class="rocket-promo-title">Your license is about to expire!</h3>
+			<p>You will soon lose the features that keep your site fast, plus access to updates and support.</p>
+		</div>
+		<ul class="rocket-promo-countdown" id="rocket-renew-countdown">
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-days">0</span> Days</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-hours">0</span> Hours</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-minutes">0</span> Minutes</li>
+			<li class="rocket-countdown-item"><span class="rocket-countdown-value rocket-countdown-seconds">0</span> Seconds</li>
+		</ul>
+		<div class="rocket-renew-cta-container">
+			<a href="https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer">Renew Now</a>
+		</div>
+	</div>',
+	],
+];
