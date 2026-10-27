@@ -6985,6 +6985,7 @@ div.wpr-tutorial-item {
   opacity: 0.7;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard {
+  position: relative;
   padding: 16px;
   border-radius: 4px;
   background: #FFF1ED;
@@ -6995,6 +6996,7 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-title {
   margin: 0 0 12px;
+  padding-right: 24px;
   color: #F56640;
   font-size: 1rem;
   line-height: 1.5;
