@@ -154,11 +154,10 @@ If tracking_enabled is false, tell the user Preload tracking is disabled rather 
 			'mobile_cache_active'         => $mobile_active,
 			'estimated_seconds_remaining' => null,
 			'estimated_completion_human'  => null,
-			'method'                      => '',
 		];
 
 		if ( ! $tracking_enabled ) {
-			$estimate['method'] = __( 'Estimate unavailable: Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Preload to get a completion estimate.', 'rocket' );
+			$estimate['method'] = __( 'Estimate unavailable: Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Cache > Preload to get a completion estimate.', 'rocket' );
 
 			return [
 				'counts'           => $counts,

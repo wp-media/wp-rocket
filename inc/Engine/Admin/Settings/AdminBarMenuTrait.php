@@ -103,30 +103,4 @@ trait AdminBarMenuTrait {
 			]
 		);
 	}
-
-	/**
-	 * Add button to dashboard
-	 *
-	 * @param bool   $context The feature context.
-	 * @param string $title The button title.
-	 * @param string $label Button label.
-	 * @param string $action Button action.
-	 * @param string $description Button description text.
-	 *
-	 * @return void
-	 */
-	public function dashboard_button( bool $context, string $title, string $label, string $action, string $description = '' ): void {
-		if ( ! $context ) {
-			return;
-		}
-
-		$data = [
-			'action'      => $action,
-			'title'       => $title,
-			'label'       => $label,
-			'description' => $description,
-		];
-
-		echo $this->generate( 'sections/clean-section', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	}
 }

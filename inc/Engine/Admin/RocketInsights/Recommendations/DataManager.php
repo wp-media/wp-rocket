@@ -70,14 +70,14 @@ class DataManager implements LoggerAwareInterface {
 		'schedule_automatic_cleanup'   => 'database',
 		'cdn'                          => 'page_cdn',
 		'control_heartbeat'            => 'heartbeat',
-		'cache_logged_user'            => 'addons',
+		'cache_logged_user'            => 'advanced_cache',
 		'minify_concatenate_js'        => 'file_optimization',
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
 
 		'plugin_rocketcdn'             => 'page_cdn',
-		'plugin_imagify'               => 'imagify',
+		'plugin_imagify'               => 'media',
 	];
 
 	/**
@@ -383,7 +383,16 @@ class DataManager implements LoggerAwareInterface {
 		return $data['status'];
 	}
 
+	/**
+	 * Check if at least one page is tracked in Rocket Insights.
+	 *
+	 * @return bool True if there are tracked pages, false otherwise.
+	 */
+	public function has_tracked_pages(): bool {
+		$global_score_data = $this->global_score->get_global_score_data();
 
+		return 'no-url' !== ( $global_score_data['status'] ?? 'no-url' );
+	}
 
 	/**
 	 * Check if required metrics are available for recommendations.
@@ -551,7 +560,7 @@ class DataManager implements LoggerAwareInterface {
 			$value = $this->get_option_value( $option_key, $options );
 
 			// Check if option is enabled.
-			if ( $this->is_option_enabled( $option_key, $value ) ) {
+			if ( $this->is_option_enabled( $value ) ) {
 				$enabled[] = $option_key;
 			}
 		}
@@ -567,11 +576,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Check if a specific option is enabled.
 	 *
-	 * @param string $option_key Option key.
-	 * @param mixed  $value      Option value.
+	 * @param mixed $value Option value.
 	 * @return bool True if enabled, false otherwise.
 	 */
-	private function is_option_enabled( string $option_key, $value ): bool {
+	private function is_option_enabled( $value ): bool {
 		// Boolean options.
 		return ! empty( $value ) && 1 === (int) $value;
 	}

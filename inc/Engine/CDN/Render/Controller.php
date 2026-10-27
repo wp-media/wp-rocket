@@ -333,9 +333,6 @@ class Controller extends Abstract_Render {
 	public function add_purge_cdn_cache_section( array $sections ): array {
 		$cdn_beacon = $this->beacon->get_suggest( 'purge_cdn' );
 
-		if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
-			$referer_url = filter_var( wp_unslash( $_SERVER['REQUEST_URI'] ), FILTER_SANITIZE_URL );
-		}
 		$classes = [ 'rocketcdn', 'rocketcdn-shared-section' ];
 
 		$sections['purge_cdn_cache_section'] = [
@@ -583,26 +580,6 @@ class Controller extends Abstract_Render {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Removes the "NEW" badge from the Content Delivery tab for existing paid RocketCDN subscribers.
-	 *
-	 * Paid users already know RocketCDN — the badge is only relevant for users
-	 * discovering the service for the first time via the free tier.
-	 *
-	 * @since 3.22
-	 *
-	 * @param string $badge Current badge label.
-	 *
-	 * @return string Empty string for paid subscribers, original badge otherwise.
-	 */
-	public function maybe_hide_cdn_tab_badge( string $badge ): string {
-		if ( $this->subscription_controller->is_paid() ) {
-			return '';
-		}
-
-		return $badge;
 	}
 
 	/**

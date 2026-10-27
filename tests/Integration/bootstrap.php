@@ -22,7 +22,7 @@ define( 'WP_ROCKET_IS_TESTING', true );
  * @param string $url     The request URL.
  * @return mixed
  */
-function block_bootstrap_http_request( $preempt, $args, $url ) {
+function block_bootstrap_http_request( $preempt, $args, $url ) { // @phpstan-ignore function.unusedParameter ($args precedes $url in the pre_http_request signature.)
 	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
 		return $preempt;
 	}
@@ -360,6 +360,9 @@ tests_add_filter(
 		remove_action( 'admin_init', '_maybe_update_core' );
 		remove_action( 'admin_init', '_maybe_update_plugins' );
 		remove_action( 'admin_init', '_maybe_update_themes' );
+
+		// Action Scheduler's async runner posts a loopback to admin-ajax.php at shutdown. No test needs it.
+		add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );
 
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';

@@ -2,8 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
@@ -15,20 +15,10 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group RocketCDNAdminPage
  */
 class Test_PreserveAuthorizationToken extends TestCase {
-	use ApiTrait;
-
-	protected static $api_credentials_config_file = 'rocketcdn.php';
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
-
 	public function set_up() {
 		parent::set_up();
 
-		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
+		add_option( 'rocketcdn_user_token', TestCredentials::ROCKETCDN_TOKEN );
 	}
 
 	public function tear_down() {
@@ -41,8 +31,8 @@ class Test_PreserveAuthorizationToken extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldPreserveAuthorizationToken( $config, $expected, $sent = null ) {
-		if ( isset( $config['getApiCredential'] ) ) {
-			$expected['headers']['Authorization'] .= static::getApiCredential( 'ROCKETCDN_TOKEN' );
+		if ( isset( $config['append_token'] ) ) {
+			$expected['headers']['Authorization'] .= TestCredentials::ROCKETCDN_TOKEN;
 		}
 
 		if ( is_null( $sent ) ) {

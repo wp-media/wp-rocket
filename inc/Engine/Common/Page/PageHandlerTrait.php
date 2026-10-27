@@ -81,7 +81,6 @@ trait PageHandlerTrait {
 	protected function get_page_url_validation_payload( string $url ): array {
 		$payload = [
 			'error'         => false,
-			'message'       => '',
 			'processed_url' => '',
 			'data'          => [
 				'status' => 400,

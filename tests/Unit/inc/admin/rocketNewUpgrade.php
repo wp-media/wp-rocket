@@ -44,6 +44,7 @@ class Test_RocketNewUpgrade extends TestCase {
 			->once()->with( 'wp_rocket_pricing' );
 		Functions\expect( 'flush_rewrite_rules' )
 			->once();
+		Functions\when( 'get_users' )->justReturn( [] );
 		rocket_new_upgrade( '3.7', '3.4.4' );
 	}
 
@@ -61,6 +62,7 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 		Functions\when( 'delete_transient' )->justReturn( true );
 
+		Functions\when( 'get_users' )->justReturn( [] );
 		Functions\expect( 'flush_rewrite_rules' )
 			->once();
 
@@ -81,9 +83,53 @@ class Test_RocketNewUpgrade extends TestCase {
 		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
 		Functions\when( 'delete_transient' )->justReturn( true );
 
+		Functions\when( 'get_users' )->justReturn( [] );
 		Functions\expect( 'flush_rewrite_rules' )
 			->never();
 
 		rocket_new_upgrade( '3.24', '3.23' );
+	}
+
+	public function testShouldRewriteTheConfigFileAndCleanTheDomainWhenUpdatingFromBeforeThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->once();
+		Functions\expect( 'rocket_clean_domain' )
+			->once();
+		Functions\when( 'get_users' )->justReturn( [] );
+
+		rocket_new_upgrade( '3.24', '3.23.3.3' );
+	}
+
+	public function testShouldMarkTheActivationBannerAsSeenForAdministratorsWhenUpdatingFromBeforeThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\expect( 'get_users' )
+			->once()
+			->with( [ 'role' => 'administrator', 'fields' => 'ID' ] )
+			->andReturn( [ 1, 2 ] );
+		Functions\expect( 'get_user_meta' )
+			->with( 1, 'rocket_boxes', true )->once()->andReturn( [ 'rocket_activation_notice' ] );
+		Functions\expect( 'get_user_meta' )
+			->with( 2, 'rocket_boxes', true )->once()->andReturn( '' );
+		Functions\expect( 'update_user_meta' )
+			->with( 1, 'rocket_boxes', [ 'rocket_activation_notice' ] )->once();
+		Functions\expect( 'update_user_meta' )
+			->with( 2, 'rocket_boxes', [ 'rocket_activation_notice' ] )->once();
+
+		rocket_new_upgrade( '3.24', '3.23.3.3' );
+	}
+
+	public function testShouldNotTouchAnythingWhenAlreadyUpdatedPastThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->never();
+		Functions\expect( 'rocket_clean_domain' )
+			->never();
+
+		rocket_new_upgrade( '3.24.1', '3.24' );
 	}
 }

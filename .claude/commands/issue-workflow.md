@@ -1,1 +1,0 @@
-../skills/issue-workflow/SKILL.md

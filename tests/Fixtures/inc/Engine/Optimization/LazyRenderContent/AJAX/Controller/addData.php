@@ -89,6 +89,40 @@ return [
 			],
 		],
 	],
+	'testShouldOnlyAddMaxNumberOfHashes' => [
+		'config'   => [
+			'filter'     => true,
+			'url'        => 'http://example.org',
+			'is_mobile'  => false,
+			'max_number' => 1,
+			'results'    => json_encode(
+				[
+					'lrc' => [ $valid_hash_1, $valid_hash_2 ],
+				],
+			),
+		],
+		'expected' => [
+			'item'    => [
+				'url'            => 'http://example.org',
+				'is_mobile'      => false,
+				'status'         => 'completed',
+				'below_the_fold' => json_encode( [ $valid_hash_1 ] ),
+				'last_accessed'  => '2024-01-01 00:00:00',
+				'created_at'     => '2024-01-01 00:00:00',
+				'error_message'  => '',
+			],
+			'result'  => true,
+			'message' => [
+				'url'            => 'http://example.org',
+				'is_mobile'      => false,
+				'status'         => 'completed',
+				'error_message'  => '',
+				'below_the_fold' => json_encode( [ $valid_hash_1 ] ),
+				'last_accessed'  => '2024-01-01 00:00:00',
+				'created_at'     => '2024-01-01 00:00:00',
+			],
+		],
+	],
 	'testShouldAddItemToDBWhenMobile' => [
 		'config'   => [
 			'filter'    => true,
