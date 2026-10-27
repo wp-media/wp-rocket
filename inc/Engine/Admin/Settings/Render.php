@@ -340,7 +340,7 @@ class Render extends Abstract_Render {
 		 *     Card data, one array per card.
 		 *
 		 *     @type array $card {
-		 *         @type string   $id           Unique card identifier, 40 characters max (longer ids cannot be dismissed).
+		 *         @type string   $id           Unique card identifier, 40 characters max (a longer id gets no close button).
 		 *         @type string   $title        Card title.
 		 *         @type array    $image        {
 		 *             @type string $src    Image URL, empty for no image.

@@ -60,7 +60,7 @@ $rocket_card_image = wp_parse_args(
 );
 ?>
 <div class="wpr-addonCard wpr-addonCard--<?php echo esc_attr( $rocket_card_id ); ?>" id="wpr-addonCard-<?php echo esc_attr( $rocket_card_id ); ?>">
-	<?php if ( '' !== $rocket_card_id ) : ?>
+	<?php if ( '' !== $rocket_card_id && strlen( $rocket_card_id ) <= 40 ) : // 40 characters is the limit accepted by the dismiss handler. ?>
 		<button type="button" class="wpr-notice-close wpr-icon-close wpr-addonCard-close" data-card-id="<?php echo esc_attr( $rocket_card_id ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></button>
 	<?php endif; ?>
 	<h4 class="wpr-addonCard-title"><?php echo esc_html( $rocket_card['title'] ); ?></h4>
