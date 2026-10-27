@@ -25,6 +25,9 @@ class Test_GetDashboardSidebar extends TestCase {
 		parent::setUp();
 
 		Functions\stubTranslationFunctions();
+		Functions\when( 'sanitize_key' )->returnArg();
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( '' );
 
 		$this->render = Mockery::mock( Render::class, [ 'vfs://views', Mockery::mock( PluginFamily::class ) ] )->makePartial();
 	}
@@ -113,5 +116,56 @@ class Test_GetDashboardSidebar extends TestCase {
 		$this->render->shouldReceive( 'generate' )->never();
 
 		$this->assertSame( '', $this->render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldSkipTheDismissedAddonCard() {
+		$imagify = [ 'id' => 'imagify', 'title' => 'Imagify' ];
+		$cdn     = [ 'id' => 'rocketcdn', 'title' => 'CDN' ];
+
+		Functions\when( 'get_user_meta' )->justReturn( [ 'rocket_addon_card_imagify' ] );
+
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->andReturn( [ $imagify, $cdn ] );
+
+		$this->render->shouldReceive( 'generate' )->once()->with( 'partials/sidebar/addon-card', $cdn )->andReturn( '<i>2</i>' );
+		$this->render->shouldReceive( 'generate' )
+			->once()
+			->with( 'partials/sidebar/category', [ 'title' => 'Add-ons', 'content' => '<i>2</i>' ] )
+			->andReturn( '<div>Add-ons</div>' );
+
+		$this->assertSame( '<div>Add-ons</div>', $this->render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldNotRenderTheAddonsCategoryWhenEveryCardIsDismissed() {
+		$imagify = [ 'id' => 'imagify', 'title' => 'Imagify' ];
+
+		Functions\when( 'get_user_meta' )->justReturn( [ 'rocket_addon_card_imagify' ] );
+
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->andReturn( [ $imagify ] );
+
+		$this->render->shouldReceive( 'generate' )->never();
+
+		$this->assertSame( '', $this->render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldNeverDismissACardWithoutId() {
+		$card = [ 'title' => 'No id' ];
+
+		Functions\expect( 'get_user_meta' )->never();
+
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->andReturn( [ $card ] );
+
+		$this->render->shouldReceive( 'generate' )->once()->with( 'partials/sidebar/addon-card', $card )->andReturn( '<i>1</i>' );
+		$this->render->shouldReceive( 'generate' )
+			->once()
+			->with( 'partials/sidebar/category', [ 'title' => 'Add-ons', 'content' => '<i>1</i>' ] )
+			->andReturn( '<div>Add-ons</div>' );
+
+		$this->assertSame( '<div>Add-ons</div>', $this->render->get_dashboard_sidebar() );
 	}
 }

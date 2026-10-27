@@ -60,12 +60,15 @@ $rocket_card_image = wp_parse_args(
 );
 ?>
 <div class="wpr-addonCard wpr-addonCard--<?php echo esc_attr( $rocket_card_id ); ?>" id="wpr-addonCard-<?php echo esc_attr( $rocket_card_id ); ?>">
+	<?php if ( '' !== $rocket_card_id && strlen( $rocket_card_id ) <= 40 ) : // 40 characters is the limit accepted by the dismiss handler. ?>
+		<button type="button" class="wpr-notice-close wpr-icon-close wpr-addonCard-close" data-card-id="<?php echo esc_attr( $rocket_card_id ); ?>"><span class="screen-reader-text"><?php esc_html_e( 'Dismiss this notice', 'rocket' ); ?></span></button>
+	<?php endif; ?>
 	<h4 class="wpr-addonCard-title"><?php echo esc_html( $rocket_card['title'] ); ?></h4>
 	<?php if ( ! empty( $rocket_card_image['src'] ) ) : ?>
 		<img class="wpr-addonCard-image" src="<?php echo esc_url( $rocket_card_image['src'] ); ?>" alt="<?php echo esc_attr( $rocket_card_image['alt'] ); ?>"<?php echo $rocket_card_image['width'] && $rocket_card_image['height'] ? ' width="' . esc_attr( (string) $rocket_card_image['width'] ) . '" height="' . esc_attr( (string) $rocket_card_image['height'] ) . '"' : ''; ?>>
 	<?php endif; ?>
-	<p class="wpr-addonCard-lead"><?php echo esc_html( $rocket_card['lead'] ); ?></p>
 	<p class="wpr-addonCard-text">
+		<strong class="wpr-addonCard-lead"><?php echo esc_html( $rocket_card['lead'] ); ?></strong>
 		<?php echo esc_html( $rocket_card['text'] ); ?>
 		<?php if ( ! empty( $rocket_card['list'] ) ) : ?>
 			<button type="button" class="wpr-addonCard-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $rocket_card_list ); ?>" data-label-more="<?php esc_attr_e( 'Learn more', 'rocket' ); ?>" data-label-less="<?php esc_attr_e( 'Show less', 'rocket' ); ?>"><?php esc_html_e( 'Learn more', 'rocket' ); ?></button>

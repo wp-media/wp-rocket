@@ -70,6 +70,12 @@ Method : SUITCSS (modified)
             }
         }
 
+        // Add-on cards: room for the close button on the left.
+        .wpr-addonCard-title{
+            padding-right: 0;
+            padding-left: $space*3;
+        }
+
         // License banners: close button on the left, arrow of the buttons mirrored.
         .rocket-renew-cta::after{
             margin-right: $space;

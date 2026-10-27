@@ -2354,6 +2354,35 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Callback method for the AJAX request dismissing an add-on card of the Dashboard sidebar.
+	 *
+	 * The dismissal is permanent and per user.
+	 *
+	 * @since 3.24
+	 *
+	 * @return void
+	 */
+	public function dismiss_addon_card(): void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return; // @phpstan-ignore-line
+		}
+
+		$id = isset( $_POST['card_id'] ) ? sanitize_key( wp_unslash( $_POST['card_id'] ) ) : '';
+
+		if ( '' === $id || strlen( $id ) > 40 ) {
+			wp_send_json_error();
+			return; // @phpstan-ignore-line
+		}
+
+		rocket_dismiss_box( $this->render->get_addon_card_box_key( $id ) );
+
+		wp_send_json_success();
+	}
+
+	/**
 	 * Enable Separate cache files option on upgrade.
 	 *
 	 * @return void
