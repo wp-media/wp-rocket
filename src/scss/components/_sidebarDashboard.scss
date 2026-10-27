@@ -242,6 +242,7 @@
 
     // Add-on cards (Imagify, RocketCDN): collapsed by default, the benefits list shows when expanded.
     .wpr-addonCard{
+        position: relative;
         padding: $space*2;
         border-radius: 4px;
         background: $cAddonCard;
@@ -253,6 +254,7 @@
 
         &-title{
             margin: 0 0 $space*1.5;
+            padding-right: $space*3;
             color: $cOrange;
             @include font-size(16,24);
             font-weight: 700;
