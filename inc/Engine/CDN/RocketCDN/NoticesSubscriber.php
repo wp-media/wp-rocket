@@ -187,13 +187,13 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 				'width'  => 266,
 				'height' => 137,
 			],
-			'lead'              => __( 'Propel Your Content at the Speed of Light', 'rocket' ),
-			'text'              => __( 'from 100+ edge locations with unlimited bandwidth.', 'rocket' ),
+			'lead'              => __( 'Speed up your content from 100+ locations worldwide,', 'rocket' ),
+			'text'              => __( 'with unlimited bandwidth.', 'rocket' ),
 			'list'              => [
 				// Translators: %1$s = <strong>, %2$s = </strong>.
 				sprintf( esc_html__( 'Faster content delivery across %1$syour entire website%2$s', 'rocket' ), '<strong>', '</strong>' ),
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				sprintf( esc_html__( '%1$sNo bandwidth limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' ),
+				sprintf( esc_html__( '%1$sNo traffic limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' ),
 				// Translators: %1$s = <strong>, %2$s = </strong>.
 				sprintf( esc_html__( '%1$s100+ edge locations%2$s for wider global coverage', 'rocket' ), '<strong>', '</strong>' ),
 			],

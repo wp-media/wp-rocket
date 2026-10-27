@@ -455,15 +455,15 @@ class Render extends Abstract_Render {
 
 		return [
 			'id'           => 'imagify',
-			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
+			'title'        => __( 'Make images up to 80% lighter', 'rocket' ),
 			'image'        => [
 				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-imagify-card.jpg',
 				'alt'    => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
 				'width'  => 266,
 				'height' => 137,
 			],
-			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
-			'text'         => __( 'Images can account for 50% of your loading time.', 'rocket' ),
+			'lead'         => __( 'Give your website an extra speed boost.', 'rocket' ),
+			'text'         => __( 'Optimize your images in one click with Imagify.', 'rocket' ),
 			'list'         => array_column( $this->get_imagify_benefits(), 'text' ),
 			'button_label' => __( 'Install Imagify', 'rocket' ),
 			'button_url'   => $imagify['url'],
@@ -493,12 +493,12 @@ class Render extends Abstract_Render {
 			[
 				'image' => 'wpr-imagify-benefit-3.png',
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				'text'  => sprintf( esc_html__( '%1$sResize your image%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
+				'text'  => sprintf( esc_html__( '%1$sResize your images%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
 			],
 			[
 				'image' => 'wpr-imagify-benefit-4.png',
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				'text'  => sprintf( esc_html__( '%1$sFree plan includes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
+				'text'  => sprintf( esc_html__( 'Free plan %1$sincludes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
 			],
 		];
 	}
