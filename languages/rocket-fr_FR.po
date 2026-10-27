@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.24-beta3\n"
+"Project-Id-Version: WP Rocket 3.24-beta4\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-10-26T15:11:20+00:00\n"
+"POT-Creation-Date: 2026-10-27T10:05:27+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -385,7 +385,7 @@ msgstr ""
 
 #: inc/admin/admin.php:18 inc/common/admin-bar.php:274
 #: inc/deprecated/deprecated.php:1787
-#: inc/Engine/Admin/Settings/Subscriber.php:269
+#: inc/Engine/Admin/Settings/Subscriber.php:281
 msgid "Support"
 msgstr "Support"
 
@@ -690,6 +690,7 @@ msgstr "%s : Cache Utilisateur vidé."
 #: inc/Engine/License/views/renewal-expired-banner.php:30
 #: inc/Engine/License/views/trial-expired-banner.php:27
 #: views/settings/page-sections/dashboard.php:56
+#: views/settings/partials/sidebar/addon-card.php:64
 msgid "Dismiss this notice"
 msgstr "Ne pas tenir compte de cet avertissement."
 
@@ -852,7 +853,7 @@ msgstr "Vider cache Sucuri"
 msgid "Purge RocketCDN cache"
 msgstr "Purger le cache de RocketCDN"
 
-#: inc/common/admin-bar.php:250 inc/Engine/Admin/Settings/Subscriber.php:284
+#: inc/common/admin-bar.php:250 inc/Engine/Admin/Settings/Subscriber.php:296
 msgid "Documentation"
 msgstr "Documentation"
 
@@ -1232,7 +1233,7 @@ msgstr ""
 msgid "Choose a file from your computer (maximum size: %s)"
 msgstr "Choisissez un fichier sur votre ordinateur (taille maximum : %s)"
 
-#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:859
+#: inc/deprecated/deprecated.php:1294 inc/Engine/Admin/Settings/Render.php:895
 msgid "Upload file and import settings"
 msgstr "Envoyer le fichier et importer les réglages"
 
@@ -1329,13 +1330,13 @@ msgid "Preload"
 msgstr "Préchargement"
 
 #: inc/deprecated/deprecated.php:1786 inc/Engine/Admin/Settings/Render.php:163
-#: inc/Engine/Admin/Settings/Subscriber.php:248
+#: inc/Engine/Admin/Settings/Subscriber.php:260
 #: views/settings/page-sections/tools.php:39
 msgid "Tools"
 msgstr "Outils"
 
 #: inc/deprecated/deprecated.php:1789 inc/Engine/Admin/Settings/Page.php:417
-#: inc/Engine/Admin/Settings/Render.php:375
+#: inc/Engine/Admin/Settings/Render.php:379
 #: inc/Engine/CDN/RocketCDN/views/dashboard-status.php:31
 #: views/settings/page-sections/account.php:48
 msgid "License"
@@ -3089,7 +3090,7 @@ msgstr ""
 "automatiques."
 
 #: inc/Engine/Admin/Settings/Page.php:1866
-#: inc/Engine/Admin/Settings/Render.php:377
+#: inc/Engine/Admin/Settings/Render.php:381
 #: views/settings/page-sections/tutorials.php:38
 msgid "Add-ons"
 msgstr "Add-ons"
@@ -3336,15 +3337,15 @@ msgstr "Aide"
 msgid "Support & resources"
 msgstr "Support & ressources"
 
-#: inc/Engine/Admin/Settings/Render.php:376
+#: inc/Engine/Admin/Settings/Render.php:380
 msgid "Promos"
 msgstr "Promos"
 
-#: inc/Engine/Admin/Settings/Render.php:422
-msgid "Reduce image size by 20%"
-msgstr "Réduit la taille des images de 20 %"
+#: inc/Engine/Admin/Settings/Render.php:458
+msgid "Make images up to 80% lighter"
+msgstr "Allégez vos images jusqu'à -80 %"
 
-#: inc/Engine/Admin/Settings/Render.php:425
+#: inc/Engine/Admin/Settings/Render.php:461
 #: views/settings/partials/imagify-banner.php:46
 msgid ""
 "Comparison between an unoptimized 1.4MB image and the same image optimized "
@@ -3353,42 +3354,41 @@ msgstr ""
 "Comparaison entre une image non optimisée de 1,4 Mo et la même image "
 "optimisée avec Imagify, dont la taille est de 0,4 Mo"
 
-#: inc/Engine/Admin/Settings/Render.php:429
-msgid "Give your website an extra speed boost"
-msgstr "Donnez un coup de boost à votre site web"
+#: inc/Engine/Admin/Settings/Render.php:465
+msgid "Give your website an extra speed boost."
+msgstr "Donnez un coup de boost à votre site web !"
 
-#: inc/Engine/Admin/Settings/Render.php:430
-#: views/settings/partials/imagify-banner.php:30
-msgid "Images can account for 50% of your loading time."
-msgstr "Les images peuvent représenter 50 % du temps de chargement."
+#: inc/Engine/Admin/Settings/Render.php:466
+msgid "Optimize your images in one click with Imagify."
+msgstr "Optimisez vos images en un clic avec Imagify."
 
-#: inc/Engine/Admin/Settings/Render.php:432
+#: inc/Engine/Admin/Settings/Render.php:468
 msgid "Install Imagify"
 msgstr "Installer Imagify"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/Admin/Settings/Render.php:450
+#: inc/Engine/Admin/Settings/Render.php:486
 #, php-format
 msgid "%1$sCompress all your images%2$s in one click"
 msgstr "%1$sCompressez toutes vos images%2$s en un clic"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/Admin/Settings/Render.php:455
+#: inc/Engine/Admin/Settings/Render.php:491
 #, php-format
 msgid "%1$sConvert images%2$s to WebP and Avif"
 msgstr "%1$sConvertissez les images%2$s en WebP et Avif"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/Admin/Settings/Render.php:460
+#: inc/Engine/Admin/Settings/Render.php:496
 #, php-format
-msgid "%1$sResize your image%2$s on the fly"
+msgid "%1$sResize your images%2$s on the fly"
 msgstr "%1$sRedimensionnez vos images%2$s à la volée"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
-#: inc/Engine/Admin/Settings/Render.php:465
+#: inc/Engine/Admin/Settings/Render.php:501
 #, php-format
-msgid "%1$sFree plan includes 20MB/month%2$s (around 200 images)"
-msgstr "%1$sPlan gratuit inclus 20MB/mois%2$s (environ 200 images)"
+msgid "Free plan %1$sincludes 20MB/month%2$s (around 200 images)"
+msgstr "Le Plan gratuit %1$sinclut 20MB/mois%2$s (environ 200 images)"
 
 #: inc/Engine/Admin/Settings/Settings.php:334
 msgid ""
@@ -3407,33 +3407,33 @@ msgstr ""
 "ces URL(s) n'a pas été sauvegardé car cette valeur désactive le cache et les"
 " optimisations sur toutes les pages du site."
 
-#: inc/Engine/Admin/Settings/Subscriber.php:249
+#: inc/Engine/Admin/Settings/Subscriber.php:261
 msgid "Export, import, rollback, and set up MCP"
 msgstr "Exporter, importer, restaurer et configurer MCP"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:270
+#: inc/Engine/Admin/Settings/Subscriber.php:282
 msgid "Get help from our team"
 msgstr "Obtenez l'aide de notre équipe"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:285
+#: inc/Engine/Admin/Settings/Subscriber.php:297
 msgid "Read the documentation"
 msgstr "Lire la documentation"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:305
+#: inc/Engine/Admin/Settings/Subscriber.php:317
 #: views/settings/page-sections/tutorials.php:47
 msgid "Tutorials"
 msgstr "Tutoriels"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:306
+#: inc/Engine/Admin/Settings/Subscriber.php:318
 msgid "Getting started and how to videos"
 msgstr "Prise en main et tutos vidéos"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:373
+#: inc/Engine/Admin/Settings/Subscriber.php:385
 #: views/settings/page-sections/plugins.php:13
 msgid "Our plugins"
 msgstr "Nos extensions"
 
-#: inc/Engine/Admin/Settings/Subscriber.php:374
+#: inc/Engine/Admin/Settings/Subscriber.php:386
 msgid "Build Better, Faster, Safer"
 msgstr " Des sites meilleurs, plus rapides et plus sécurisés."
 
@@ -3818,12 +3818,12 @@ msgid "Deliver your content faster"
 msgstr "Diffusez votre contenu plus rapidement"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:190
-msgid "Propel Your Content at the Speed of Light"
-msgstr "Propulsez votre contenu à la vitesse de la lumière"
+msgid "Speed up your content from 100+ locations worldwide,"
+msgstr "Accélérez votre contenu depuis +100 emplacements edge,"
 
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:191
-msgid "from 100+ edge locations with unlimited bandwidth."
-msgstr "depuis +100 emplacements edge avec bande passante illimitée."
+msgid "with unlimited bandwidth."
+msgstr "avec bande passante illimitée."
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
@@ -3836,12 +3836,10 @@ msgstr ""
 "web%2$s"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
-#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
 #: inc/Engine/CDN/RocketCDN/NoticesSubscriber.php:196
-#: inc/Engine/CDN/RocketCDN/views/cta-big.php:99
 #, php-format
-msgid "%1$sNo bandwidth limits%2$s, no hidden costs"
-msgstr "%1$sPas de limite de bande passante%2$s, pas de frais cachés"
+msgid "%1$sNo traffic limits%2$s, no hidden costs"
+msgstr "%1$sPas de limite de trafic%2$s , pas de frais cachés"
 
 #. Translators: %1$s = <strong>, %2$s = </strong>.
 #. translators: %1$s = opening strong tag, %2$s = closing strong tag.
@@ -4046,6 +4044,12 @@ msgstr "Valable uniquement jusqu'au %s !"
 #: views/settings/sections/cdn/rocketcdn-paid.php:34
 msgid "Pro"
 msgstr "Pro"
+
+#. translators: %1$s = opening strong tag, %2$s = closing strong tag.
+#: inc/Engine/CDN/RocketCDN/views/cta-big.php:99
+#, php-format
+msgid "%1$sNo bandwidth limits%2$s, no hidden costs"
+msgstr "%1$sPas de limite de bande passante%2$s, pas de frais cachés"
 
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:109
 msgid "Learn more about RocketCDN"
@@ -5861,7 +5865,7 @@ msgstr "Purge les ressources mises en cache par RocketCDN. %s"
 #: views/settings/page-sections/cloudflare.php:36
 #: views/settings/page-sections/sucuri.php:37
 #: views/settings/partials/imagify-banner.php:40
-#: views/settings/partials/sidebar/addon-card.php:71
+#: views/settings/partials/sidebar/addon-card.php:74
 msgid "Learn more"
 msgstr "En savoir plus"
 
@@ -6307,6 +6311,10 @@ msgstr "Ouvrir les réglages d'Imagify"
 msgid "Give your website an extra speed boost!"
 msgstr "Donnez un coup de boost à votre site web !"
 
+#: views/settings/partials/imagify-banner.php:30
+msgid "Images can account for 50% of your loading time."
+msgstr "Les images peuvent représenter 50 % du temps de chargement."
+
 #: views/settings/partials/imagify-banner.php:41
 msgid "(opens in a new tab)"
 msgstr "(s'ouvre dans un nouvel onglet)"
@@ -6544,7 +6552,7 @@ msgstr ""
 msgid "Enter a page URL to monitor"
 msgstr "Entrez l'URL d'une page à surveiller"
 
-#: views/settings/partials/sidebar/addon-card.php:71
+#: views/settings/partials/sidebar/addon-card.php:74
 msgid "Show less"
 msgstr "Afficher moins"
 
