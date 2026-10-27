@@ -67,8 +67,8 @@ $rocket_card_image = wp_parse_args(
 	<?php if ( ! empty( $rocket_card_image['src'] ) ) : ?>
 		<img class="wpr-addonCard-image" src="<?php echo esc_url( $rocket_card_image['src'] ); ?>" alt="<?php echo esc_attr( $rocket_card_image['alt'] ); ?>"<?php echo $rocket_card_image['width'] && $rocket_card_image['height'] ? ' width="' . esc_attr( (string) $rocket_card_image['width'] ) . '" height="' . esc_attr( (string) $rocket_card_image['height'] ) . '"' : ''; ?>>
 	<?php endif; ?>
-	<p class="wpr-addonCard-lead"><?php echo esc_html( $rocket_card['lead'] ); ?></p>
 	<p class="wpr-addonCard-text">
+		<strong class="wpr-addonCard-lead"><?php echo esc_html( $rocket_card['lead'] ); ?></strong>
 		<?php echo esc_html( $rocket_card['text'] ); ?>
 		<?php if ( ! empty( $rocket_card['list'] ) ) : ?>
 			<button type="button" class="wpr-addonCard-toggle" aria-expanded="false" aria-controls="<?php echo esc_attr( $rocket_card_list ); ?>" data-label-more="<?php esc_attr_e( 'Learn more', 'rocket' ); ?>" data-label-less="<?php esc_attr_e( 'Show less', 'rocket' ); ?>"><?php esc_html_e( 'Learn more', 'rocket' ); ?></button>
