@@ -81,6 +81,22 @@ class Test_DismissAddonCard extends AjaxTestCase {
 		$this->assertNotContains( 'rocket_addon_card_imagify', (array) get_user_meta( self::$other_admin_id, 'rocket_boxes', true ) );
 	}
 
+	public function testShouldSucceedAndKeepASingleEntryWhenTheCardIsAlreadyDismissed() {
+		wp_set_current_user( self::$admin_id );
+
+		$_POST['nonce']   = wp_create_nonce( 'rocket-ajax' );
+		$_POST['card_id'] = 'imagify';
+
+		$this->callAjaxAction();
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertCount(
+			1,
+			array_keys( (array) get_user_meta( self::$admin_id, 'rocket_boxes', true ), 'rocket_addon_card_imagify', true )
+		);
+	}
+
 	public function testShouldFailWhenUserCannotManageOptions() {
 		wp_set_current_user( self::$editor_id );
 

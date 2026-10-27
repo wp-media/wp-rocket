@@ -211,7 +211,7 @@ $(document).ready(function(){
         );
     } );
 
-    // Exception to the "no new jQuery in admin JS" rule: kept with the Promo and Renewal handlers to reuse their helper.
+    // jQuery on purpose: reuses wprHideEmptiedSidebarCategory() like the Promo and Renewal handlers above.
     $( document ).on( 'click', '.wpr-addonCard-close', function( e ) {
         e.preventDefault();
 
