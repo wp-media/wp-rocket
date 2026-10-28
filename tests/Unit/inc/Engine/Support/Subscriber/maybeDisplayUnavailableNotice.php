@@ -57,6 +57,55 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 	}
 
 	/**
+	 * The library is not loaded in this process, so its availability cannot even be checked.
+	 */
+	public function testShouldNotDisplayWhenTheWapClientIsMissing() {
+		$this->set_screen( 'settings_page_wprocket' );
+		$this->options->shouldNotReceive( 'get' );
+
+		Functions\expect( 'rocket_notice_html' )->never();
+
+		$this->subscriber->maybe_display_unavailable_notice();
+
+		$this->assertFalse( class_exists( 'GroupOne\WapClient\AppPasswordManager', false ) );
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testShouldNotDisplayWithoutTheCapability() {
+		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
+		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
+		$manager->shouldNotReceive( 'are_app_passwords_available' );
+
+		Functions\when( 'current_user_can' )->justReturn( false );
+		$this->set_screen( 'settings_page_wprocket' );
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+
+		Functions\expect( 'rocket_notice_html' )->never();
+
+		$this->subscriber->maybe_display_unavailable_notice();
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testShouldNotDisplayWithoutAScreen() {
+		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
+		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
+		$manager->shouldNotReceive( 'are_app_passwords_available' );
+
+		Functions\when( 'get_current_screen' )->justReturn( null );
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+
+		Functions\expect( 'rocket_notice_html' )->never();
+
+		$this->subscriber->maybe_display_unavailable_notice();
+	}
+
+	/**
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */

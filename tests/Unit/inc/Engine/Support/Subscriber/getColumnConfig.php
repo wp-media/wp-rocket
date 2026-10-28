@@ -77,6 +77,26 @@ class TestGetColumnConfig extends TestCase {
 		$this->assertSame( 'https://wp-rocket.me/wp-json/grnd/v1/token', $config['grnd']['issuer_url'] );
 	}
 
+	public function testShouldFallBackToTheLiveUrlsWhenTheConstantsAreEmpty() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+
+		$constants = [
+			'WP_ROCKET_WAP_SERVER_URL' => '',
+			'WP_ROCKET_WAP_ISSUER_URL' => '',
+		];
+
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $name, $default = null ) use ( $constants ) {
+				return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
+			}
+		);
+
+		$config = $this->subscriber->get_column_config();
+
+		$this->assertSame( 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one', $config['server_url'] );
+		$this->assertSame( 'https://wp-rocket.me/wp-json/grnd/v1/token', $config['grnd']['issuer_url'] );
+	}
+
 	public function testShouldUseTheUrlsFromTheConstants() {
 		$this->set_licence( 'test-consumer-key', 'user@example.org' );
 
