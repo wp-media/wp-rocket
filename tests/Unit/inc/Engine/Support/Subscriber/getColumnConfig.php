@@ -105,6 +105,6 @@ class TestGetColumnConfig extends TestCase {
 	}
 
 	public function testShouldMapTheWapCapabilityToWpRocketCapability() {
-		$this->assertSame( 'rocket_manage_options', $this->subscriber->get_rocket_capability( 'wap_use_ai' ) );
+		$this->assertSame( 'rocket_manage_options', $this->subscriber->get_rocket_capability() );
 	}
 }

@@ -188,10 +188,11 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Maps the WAP capability to WP Rocket's own capability so no separate activation is needed.
 	 *
-	 * @param string $_capability The default WAP capability name (unused; we always return ours).
+	 * The filter passes the default WAP capability, which is not needed: this always returns ours.
+	 *
 	 * @return string
 	 */
-	public function get_rocket_capability( string $_capability ): string {
+	public function get_rocket_capability(): string {
 		return 'rocket_manage_options';
 	}
 }
