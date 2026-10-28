@@ -35,6 +35,18 @@ return [
 			'expected' => false
 		],
 
+		'testLinkWithValidIntegrityAttributeAndRemote404' => [
+			'config' => [
+				'asset' => [
+					0 => '<link rel="stylesheet" href="http://external-domain.org/path/to/style.css" integrity="sha384-Iwk3Na27oumffZOWcRt56FelXSzZqulFKATFo2oGfWyNRov+XJlD798hbG25kbVd" type="text/css" media="all">',
+					'url' => 'http://external-domain.org/path/to/style.css'
+				],
+				'file_contents' => 'external css content',
+				'response_code' => 404,
+			],
+			'expected' => false
+		],
+
 		'testLinkWithNotValidIntegrityAttributeHashAlgorithm' => [
 			'config' => [
 				'asset' => [
