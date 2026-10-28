@@ -43,12 +43,14 @@ class Test_ServeCacheFile extends TestCase {
 	 * @param string $suffix Suffix of the cache file.
 	 */
 	public function testShouldReturnFalseWithoutOutputWhenCacheFileCannotBeRead( $method, $suffix ) {
-		$file = tempnam( sys_get_temp_dir(), 'wpr-cache' ) . $suffix;
+		$base = tempnam( sys_get_temp_dir(), 'wpr-cache' );
+		$file = $base . $suffix;
 		file_put_contents( $file, 'content' );
 		chmod( $file, 0000 );
 
 		if ( is_readable( $file ) ) {
 			unlink( $file );
+			$this->cleanUpBase( $base, $file );
 			$this->markTestSkipped( 'Permissions are not enforced for this user.' );
 		}
 
@@ -59,9 +61,22 @@ class Test_ServeCacheFile extends TestCase {
 
 		chmod( $file, 0600 );
 		unlink( $file );
+		$this->cleanUpBase( $base, $file );
 
 		$this->assertFalse( $result['result'] );
 		$this->assertSame( '', $result['output'] );
+	}
+
+	/**
+	 * Removes the file created by tempnam() when the cache file has a different name.
+	 *
+	 * @param string $base Path returned by tempnam().
+	 * @param string $file Path of the cache file.
+	 */
+	private function cleanUpBase( $base, $file ) {
+		if ( $base !== $file && file_exists( $base ) ) {
+			unlink( $base );
+		}
 	}
 
 	/**
