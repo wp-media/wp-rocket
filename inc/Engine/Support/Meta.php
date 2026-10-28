@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 class Meta {
@@ -22,14 +23,23 @@ class Meta {
 	private $options;
 
 	/**
+	 * Rocket Insights context instance
+	 *
+	 * @var Context
+	 */
+	private $context;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param MobileDetect $mobile_detect Mobile Detect instance.
 	 * @param Options_Data $options Options instance.
+	 * @param Context      $context Rocket Insights context instance.
 	 */
-	public function __construct( MobileDetect $mobile_detect, Options_Data $options ) {
+	public function __construct( MobileDetect $mobile_detect, Options_Data $options, Context $context ) {
 		$this->mobile_detect = $mobile_detect;
 		$this->options       = $options;
+		$this->context       = $context;
 	}
 
 	/**
@@ -116,6 +126,11 @@ class Meta {
 		$dns_prefetch = rocket_get_dns_prefetch_domains();
 		if ( $dns_prefetch && ( ! $options->get( 'cdn', false ) || count( $dns_prefetch ) > 1 ) ) {
 			$features[] = 'wpr_dns_prefetch';
+		}
+
+		// Rocket Insights.
+		if ( $this->context->is_schedule_allowed() && ! $this->context->is_reseller_or_non_live() ) {
+			$features[] = 'wpr_insights';
 		}
 
 		if ( ! $features ) {
