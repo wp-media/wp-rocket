@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -38,16 +39,25 @@ class Subscriber implements Subscriber_Interface {
 	private Options_Data $options;
 
 	/**
+	 * License data of the customer.
+	 *
+	 * @var User
+	 */
+	private User $user;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Rest         $rest Rest instance.
 	 * @param Meta         $meta Meta instance.
 	 * @param Options_Data $options Plugin options.
+	 * @param User         $user License data of the customer.
 	 */
-	public function __construct( Rest $rest, Meta $meta, Options_Data $options ) {
+	public function __construct( Rest $rest, Meta $meta, Options_Data $options, User $user ) {
 		$this->rest    = $rest;
 		$this->meta    = $meta;
 		$this->options = $options;
+		$this->user    = $user;
 	}
 
 	/**
@@ -121,9 +131,10 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'id'              => 'wp-rocket-support',
 			'product'         => 'wprocket',
-			'brand'           => 'wprocket',
-			// WAP selects the agent role `wprocket:support` from the product and this page context.
-			'page_context'    => 'support',
+			// The design system only publishes stylesheets for some brands. An unknown brand loads an empty one and the launcher disappears.
+			'brand'           => 'group-one',
+			// WAP selects the agent role `wprocket:<page context>` from the product and this page context.
+			'page_context'    => $this->get_page_context(),
 			'server_url'      => wpm_apply_filters_typed( 'string', 'rocket_wap_server_url', self::WAP_SERVER_URL ),
 			'grnd'            => [
 				'issuer_url'  => wpm_apply_filters_typed( 'string', 'rocket_wap_issuer_url', self::WAP_ISSUER_URL ),
@@ -134,7 +145,26 @@ class Subscriber implements Subscriber_Interface {
 			'site_access_url' => self::SITE_ACCESS_URL,
 			'screens'         => [ 'settings_page_wprocket' ],
 			'column'          => [ 'side' => 'right' ],
+			'layout'          => [
+				// The agent follows the license (see get_page_context()), so customers don't pick one.
+				'showAgentSelector' => false,
+			],
 		];
+	}
+
+	/**
+	 * Gets the WAP page context, which selects the support agent for the customer's license.
+	 *
+	 * An unknown expiration is not treated as expired, so a failed license lookup doesn't change the agent.
+	 *
+	 * @return string
+	 */
+	private function get_page_context(): string {
+		if ( $this->user->get_license_expiration() > 0 && $this->user->is_license_expired() ) {
+			return 'support-expired';
+		}
+
+		return 'support';
 	}
 
 	/**
