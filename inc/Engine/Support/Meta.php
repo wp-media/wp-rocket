@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 class Meta {
@@ -23,23 +22,14 @@ class Meta {
 	private $options;
 
 	/**
-	 * Rocket Insights context instance
-	 *
-	 * @var Context
-	 */
-	private $context;
-
-	/**
 	 * Instantiate the class
 	 *
 	 * @param MobileDetect $mobile_detect Mobile Detect instance.
 	 * @param Options_Data $options Options instance.
-	 * @param Context      $context Rocket Insights context instance.
 	 */
-	public function __construct( MobileDetect $mobile_detect, Options_Data $options, Context $context ) {
+	public function __construct( MobileDetect $mobile_detect, Options_Data $options ) {
 		$this->mobile_detect = $mobile_detect;
 		$this->options       = $options;
-		$this->context       = $context;
 	}
 
 	/**
@@ -128,14 +118,8 @@ class Meta {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
-		// Rocket Insights, gated only by the rocket_rocket_insights_enabled filter.
-		if ( $this->context->is_available() ) {
-			$features[] = 'wpr_insights';
-		}
-
-		if ( ! $features ) {
-			return '';
-		}
+		// Always report Rocket Insights, so the tag exists on every page.
+		$features[] = 'wpr_insights';
 
 		// Check if WP Rocket version should be included.
 		$version = wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content_version', true )

@@ -53,7 +53,6 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'mobile_detect',
 					'options',
-					'ri_context',
 				]
 			);
 		$this->getContainer()->addShared( 'support_subscriber', Subscriber::class )
