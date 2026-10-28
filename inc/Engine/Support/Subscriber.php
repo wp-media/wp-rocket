@@ -9,8 +9,11 @@ use WP_Rocket\Engine\License\API\User;
 
 class Subscriber implements Subscriber_Interface {
 
-	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-staging.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
-	private const WAP_ISSUER_URL = 'https://www-sandbox2.wp-rocket.me/wp-json/grnd/v1/token';
+	/**
+	 * Live URLs. Define WP_ROCKET_WAP_SERVER_URL and WP_ROCKET_WAP_ISSUER_URL to use another environment, for example staging.
+	 */
+	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+	private const WAP_ISSUER_URL = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 	private const TERMS_URL   = 'https://wp-rocket.me/terms/';
 	private const PRIVACY_URL = 'https://wp-rocket.me/privacy-policy/';
@@ -135,9 +138,9 @@ class Subscriber implements Subscriber_Interface {
 			'brand'           => 'group-one',
 			// WAP selects the agent role `wprocket:<page context>` from the product and this page context.
 			'page_context'    => $this->get_page_context(),
-			'server_url'      => wpm_apply_filters_typed( 'string', 'rocket_wap_server_url', self::WAP_SERVER_URL ),
+			'server_url'      => rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', self::WAP_SERVER_URL ),
 			'grnd'            => [
-				'issuer_url'  => wpm_apply_filters_typed( 'string', 'rocket_wap_issuer_url', self::WAP_ISSUER_URL ),
+				'issuer_url'  => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', self::WAP_ISSUER_URL ),
 				'license_key' => $license_key . '|' . $email,
 			],
 			'terms_url'       => self::TERMS_URL,

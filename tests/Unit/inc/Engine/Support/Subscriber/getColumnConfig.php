@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 
-use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
@@ -71,12 +71,36 @@ class TestGetColumnConfig extends TestCase {
 		$this->assertFalse( $config['layout']['showAgentSelector'] );
 	}
 
-	public function testShouldUseTheFilteredServerAndIssuerUrls() {
+	public function testShouldUseTheLiveUrlsByDefault() {
 		$this->set_licence( 'test-consumer-key', 'user@example.org' );
 		$this->set_expiration( time() + 3600, false );
 
-		Filters\expectApplied( 'rocket_wap_server_url' )->once()->andReturn( 'https://wap.example.org' );
-		Filters\expectApplied( 'rocket_wap_issuer_url' )->once()->andReturn( 'https://issuer.example.org/token' );
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $name, $default = null ) {
+				return $default;
+			}
+		);
+
+		$config = $this->subscriber->get_column_config();
+
+		$this->assertSame( 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one', $config['server_url'] );
+		$this->assertSame( 'https://wp-rocket.me/wp-json/grnd/v1/token', $config['grnd']['issuer_url'] );
+	}
+
+	public function testShouldUseTheUrlsFromTheConstants() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		$this->set_expiration( time() + 3600, false );
+
+		$constants = [
+			'WP_ROCKET_WAP_SERVER_URL' => 'https://wap.example.org',
+			'WP_ROCKET_WAP_ISSUER_URL' => 'https://issuer.example.org/token',
+		];
+
+		Functions\when( 'rocket_get_constant' )->alias(
+			function ( $name, $default = null ) use ( $constants ) {
+				return $constants[ $name ] ?? $default;
+			}
+		);
 
 		$config = $this->subscriber->get_column_config();
 
