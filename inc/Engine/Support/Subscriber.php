@@ -129,9 +129,13 @@ class Subscriber implements Subscriber_Interface {
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
 			'page_context'    => 'support',
-			'server_url'      => $this->get_url( 'WP_ROCKET_WAP_SERVER_URL', self::WAP_SERVER_URL ),
+			'server_url'      => rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
+				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
+				: self::WAP_SERVER_URL,
 			'grnd'            => [
-				'issuer_url'  => $this->get_url( 'WP_ROCKET_WAP_ISSUER_URL', self::WAP_ISSUER_URL ),
+				'issuer_url'  => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+					? rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+					: self::WAP_ISSUER_URL,
 				'license_key' => $license_key . '|' . $email,
 			],
 			'terms_url'       => self::TERMS_URL,
@@ -144,22 +148,6 @@ class Subscriber implements Subscriber_Interface {
 				'showAgentSelector' => false,
 			],
 		];
-	}
-
-	/**
-	 * Gets a URL from a constant, falling back to the default when the constant is not defined or is empty.
-	 *
-	 * An empty URL would make the widget fail silently.
-	 *
-	 * @param string $constant Name of the constant that overrides the default.
-	 * @param string $default  Default URL.
-	 *
-	 * @return string
-	 */
-	private function get_url( string $constant, string $default ): string {
-		$url = rocket_get_constant( $constant, $default );
-
-		return is_string( $url ) && '' !== $url ? $url : $default;
 	}
 
 	/**
