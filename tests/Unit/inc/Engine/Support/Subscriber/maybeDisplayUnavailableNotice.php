@@ -6,7 +6,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -29,11 +28,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		}
 
 		$this->options    = Mockery::mock( Options_Data::class );
-		$user = Mockery::mock( User::class );
-		$user->shouldReceive( 'get_license_expiration' )->andReturn( time() + 3600 );
-		$user->shouldReceive( 'is_license_expired' )->andReturn( false );
-
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $user );
+		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
