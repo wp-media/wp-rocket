@@ -45,6 +45,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 	 * @param bool $https_missing Whether HTTPS is missing.
 	 */
 	private function mock_app_password_manager( $available, $https_missing = false ) {
+		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
 		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
 		$manager->shouldReceive( 'are_app_passwords_available' )->andReturn( $available );
 		$manager->shouldReceive( 'is_https_missing' )->andReturn( $https_missing );
