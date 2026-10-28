@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Common\JobManager\Cron\Subscriber::check_job_status
@@ -11,8 +10,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group JobManager
  */
 class Test_CheckJobStatus extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Common/JobManager/Cron/Subscriber/checkJobStatus.php';
 
 	protected $config;
@@ -35,8 +32,6 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 
 		self::installPreloadCacheTable();
 
-		$this->setup_http();
-
 		add_filter( 'rocket_rucss_hash', [ $this, 'rucss_hash' ] );
 	}
 
@@ -45,8 +40,6 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 
 		remove_filter( 'rocket_rucss_hash', [ $this, 'rucss_hash' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
