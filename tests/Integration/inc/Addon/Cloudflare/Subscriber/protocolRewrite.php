@@ -26,10 +26,13 @@ class TestProtocolRewrite extends TestCase {
 
 		$this->setup_http();
 
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'protocol_rewrite', PHP_INT_MAX );
 	}
 
 	public function tear_down() {
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 		remove_filter( 'pre_get_rocket_option_do_cloudflare', [ $this, 'set_cloudflare'] );
 		remove_filter( 'pre_get_rocket_option_cloudflare_protocol_rewrite', [ $this, 'set_rewrite'] );
 		remove_filter( 'do_rocket_protocol_rewrite', [ $this, 'set_filter'] );
