@@ -172,29 +172,36 @@ class NoticesSubscriber extends Abstract_Render implements Subscriber_Interface 
 			return $cards;
 		}
 
+		$express_url = $this->subscription_controller->get_express_checkout_url();
+
+		// Without an express checkout URL (PayPal), the shared RocketCDN modal opens instead.
+		$button_attributes = empty( $express_url ) ? [ 'data-micromodal-trigger' => 'wpr-rocketcdn-modal' ] : [];
+
 		$cards[] = [
-			'id'           => 'rocketcdn',
-			'title'        => __( 'Deliver your content faster', 'rocket' ),
-			'image'        => [
+			'id'                => 'rocketcdn',
+			'title'             => __( 'Deliver your content faster', 'rocket' ),
+			'image'             => [
 				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-rocketcdn-illustration.svg',
 				// Decorative: the title is right next to it.
 				'alt'    => '',
 				'width'  => 266,
 				'height' => 137,
 			],
-			'lead'         => __( 'Propel Your Content at the Speed of Light', 'rocket' ),
-			'text'         => __( 'from 100+ edge locations with unlimited bandwidth.', 'rocket' ),
-			'list'         => [
+			'lead'              => __( 'Speed up your content from 100+ locations worldwide,', 'rocket' ),
+			'text'              => __( 'with unlimited bandwidth.', 'rocket' ),
+			'list'              => [
 				// Translators: %1$s = <strong>, %2$s = </strong>.
 				sprintf( esc_html__( 'Faster content delivery across %1$syour entire website%2$s', 'rocket' ), '<strong>', '</strong>' ),
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				sprintf( esc_html__( '%1$sNo bandwidth limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' ),
+				sprintf( esc_html__( '%1$sNo traffic limits%2$s, no hidden costs', 'rocket' ), '<strong>', '</strong>' ),
 				// Translators: %1$s = <strong>, %2$s = </strong>.
 				sprintf( esc_html__( '%1$s100+ edge locations%2$s for wider global coverage', 'rocket' ), '<strong>', '</strong>' ),
 			],
-			'button_label' => __( 'Upgrade Now', 'rocket' ),
-			'button_url'   => '#page_cdn',
-			'is_external'  => false,
+			'button_label'      => __( 'Upgrade Now', 'rocket' ),
+			'button_url'        => $express_url,
+			'button_class'      => 'wpr-rocketcdn-open',
+			'button_attributes' => $button_attributes,
+			'is_external'       => false,
 		];
 
 		return $cards;

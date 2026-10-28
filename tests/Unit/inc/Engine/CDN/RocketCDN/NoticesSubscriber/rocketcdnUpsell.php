@@ -112,10 +112,10 @@ class Test_RocketcdnUpsell extends TestCase {
 
 	public function subscriptionCases() {
 		return [
-			'noSubscription'  => [ false, false, true ],
-			'freePlan'        => [ true, false, true ],
-			'paidNotRunning'  => [ false, true, true ],
-			'paidRunning'     => [ true, true, false ],
+			'noSubscription' => [ false, false, true ],
+			'freePlan'       => [ true, false, true ],
+			'paidNotRunning' => [ false, true, true ],
+			'paidRunning'    => [ true, true, false ],
 		];
 	}
 
@@ -127,6 +127,7 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->api_client->shouldReceive( 'get_subscription_data' )->once();
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( $active );
 		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( $paid );
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->andReturn( '' );
 
 		$cards = $this->subscriber->add_rocketcdn_addon_card( [ [ 'id' => 'imagify' ] ] );
 
@@ -139,6 +140,7 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->api_client->shouldReceive( 'get_subscription_data' )->once();
 		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( false );
 		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->andReturn( 'https://example.org/checkout' );
 
 		$card = $this->subscriber->add_rocketcdn_addon_card( [] )[0];
 
@@ -148,19 +150,35 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->assertSame( '', $card['image']['alt'] );
 		$this->assertSame( 266, $card['image']['width'] );
 		$this->assertSame( 137, $card['image']['height'] );
-		$this->assertSame( 'Propel Your Content at the Speed of Light', $card['lead'] );
-		$this->assertSame( 'from 100+ edge locations with unlimited bandwidth.', $card['text'] );
+		$this->assertSame( 'Speed up your content from 100+ locations worldwide,', $card['lead'] );
+		$this->assertSame( 'with unlimited bandwidth.', $card['text'] );
 		$this->assertSame(
 			[
 				'Faster content delivery across <strong>your entire website</strong>',
-				'<strong>No bandwidth limits</strong>, no hidden costs',
+				'<strong>No traffic limits</strong>, no hidden costs',
 				'<strong>100+ edge locations</strong> for wider global coverage',
 			],
 			$card['list']
 		);
 		$this->assertSame( 'Upgrade Now', $card['button_label'] );
-		$this->assertSame( '#page_cdn', $card['button_url'] );
+		$this->assertSame( 'https://example.org/checkout', $card['button_url'] );
+		$this->assertSame( 'wpr-rocketcdn-open', $card['button_class'] );
+		$this->assertSame( [], $card['button_attributes'] );
 		$this->assertFalse( $card['is_external'] );
+	}
+
+	public function testCardOpensTheModalWhenThereIsNoExpressCheckoutUrl() {
+		$this->configure( [] );
+		$this->api_client->shouldReceive( 'get_subscription_data' )->once();
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'is_paid' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->andReturn( '' );
+
+		$card = $this->subscriber->add_rocketcdn_addon_card( [] )[0];
+
+		$this->assertSame( '', $card['button_url'] );
+		$this->assertSame( 'wpr-rocketcdn-open', $card['button_class'] );
+		$this->assertSame( [ 'data-micromodal-trigger' => 'wpr-rocketcdn-modal' ], $card['button_attributes'] );
 	}
 
 	public function hiddenCases() {

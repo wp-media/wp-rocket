@@ -340,7 +340,7 @@ class Render extends Abstract_Render {
 		 *     Card data, one array per card.
 		 *
 		 *     @type array $card {
-		 *         @type string   $id           Unique card identifier.
+		 *         @type string   $id           Unique card identifier, 40 characters max (a longer id gets no close button).
 		 *         @type string   $title        Card title.
 		 *         @type array    $image        {
 		 *             @type string $src    Image URL, empty for no image.
@@ -352,7 +352,9 @@ class Render extends Abstract_Render {
 		 *         @type string   $text         Text following the lead, next to the "Learn more" toggle.
 		 *         @type string[] $list         Benefits shown when the card is expanded. Only <strong> is allowed.
 		 *         @type string   $button_label Button label.
-		 *         @type string   $button_url   Button URL.
+		 *         @type string   $button_url   Button URL. When empty, a <button> is rendered if a class or attributes are given.
+		 *         @type string   $button_class Optional extra CSS classes for the button.
+		 *         @type array    $button_attributes Optional HTML attributes of the button, as attribute name => value.
 		 *         @type bool     $is_external  Whether the button opens an external site in a new tab.
 		 *     }
 		 * }
@@ -363,6 +365,10 @@ class Render extends Abstract_Render {
 
 		foreach ( $cards as $card ) {
 			if ( ! is_array( $card ) ) {
+				continue;
+			}
+
+			if ( $this->is_addon_card_dismissed( (string) ( $card['id'] ?? '' ) ) ) {
 				continue;
 			}
 
@@ -395,6 +401,38 @@ class Render extends Abstract_Render {
 	}
 
 	/**
+	 * Returns the key under which the dismissal of an add-on card is stored in the user's dismissed boxes.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $id Card identifier.
+	 *
+	 * @return string
+	 */
+	public function get_addon_card_box_key( string $id ): string {
+		return 'rocket_addon_card_' . sanitize_key( $id );
+	}
+
+	/**
+	 * Checks if the current user dismissed an add-on card of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param string $id Card identifier.
+	 *
+	 * @return bool
+	 */
+	public function is_addon_card_dismissed( string $id ): bool {
+		if ( '' === $id ) {
+			return false;
+		}
+
+		$boxes = (array) get_user_meta( get_current_user_id(), 'rocket_boxes', true );
+
+		return in_array( $this->get_addon_card_box_key( $id ), $boxes, true );
+	}
+
+	/**
 	 * Returns the data of the Imagify card of the Dashboard sidebar.
 	 *
 	 * Same rules as render_imagify_banner(): nothing for white label accounts, while Imagify is active,
@@ -417,15 +455,15 @@ class Render extends Abstract_Render {
 
 		return [
 			'id'           => 'imagify',
-			'title'        => __( 'Reduce image size by 20%', 'rocket' ),
+			'title'        => __( 'Make images up to 80% lighter', 'rocket' ),
 			'image'        => [
 				'src'    => rocket_get_constant( 'WP_ROCKET_ASSETS_IMG_URL' ) . 'wpr-imagify-card.jpg',
 				'alt'    => __( 'Comparison between an unoptimized 1.4MB image and the same image optimized with Imagify at 0.4MB', 'rocket' ),
 				'width'  => 266,
 				'height' => 137,
 			],
-			'lead'         => __( 'Give your website an extra speed boost', 'rocket' ),
-			'text'         => __( 'Images can account for 50% of your loading time.', 'rocket' ),
+			'lead'         => __( 'Give your website an extra speed boost.', 'rocket' ),
+			'text'         => __( 'Optimize your images in one click with Imagify.', 'rocket' ),
 			'list'         => array_column( $this->get_imagify_benefits(), 'text' ),
 			'button_label' => __( 'Install Imagify', 'rocket' ),
 			'button_url'   => $imagify['url'],
@@ -455,12 +493,12 @@ class Render extends Abstract_Render {
 			[
 				'image' => 'wpr-imagify-benefit-3.png',
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				'text'  => sprintf( esc_html__( '%1$sResize your image%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
+				'text'  => sprintf( esc_html__( '%1$sResize your images%2$s on the fly', 'rocket' ), '<strong>', '</strong>' ),
 			],
 			[
 				'image' => 'wpr-imagify-benefit-4.png',
 				// Translators: %1$s = <strong>, %2$s = </strong>.
-				'text'  => sprintf( esc_html__( '%1$sFree plan includes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
+				'text'  => sprintf( esc_html__( 'Free plan %1$sincludes 20MB/month%2$s (around 200 images)', 'rocket' ), '<strong>', '</strong>' ),
 			],
 		];
 	}

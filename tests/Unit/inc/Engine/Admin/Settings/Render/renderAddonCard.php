@@ -37,6 +37,9 @@ class Test_RenderAddonCard extends TestCase {
 			}
 		);
 		Functions\when( 'sanitize_html_class' )->returnArg();
+		Functions\when( 'sanitize_key' )->returnArg();
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( '' );
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'wp_kses' )->returnArg();
 
@@ -51,7 +54,12 @@ class Test_RenderAddonCard extends TestCase {
 				[
 					'id'           => 'imagify',
 					'title'        => 'Reduce image size by 20%',
-					'image'        => [ 'src' => 'https://example.org/img.png', 'alt' => 'alt', 'width' => 266, 'height' => 137 ],
+					'image'        => [
+						'src'    => 'https://example.org/img.png',
+						'alt'    => 'alt',
+						'width'  => 266,
+						'height' => 137,
+					],
 					'lead'         => 'Lead',
 					'text'         => 'Text',
 					'list'         => [ '<strong>One</strong> thing', 'Two' ],
@@ -60,14 +68,46 @@ class Test_RenderAddonCard extends TestCase {
 					'is_external'  => false,
 				],
 				[
-					'id'           => 'rocketcdn',
-					'title'        => 'Deliver your content faster',
-					'image'        => [ 'src' => '', 'alt' => '' ],
-					'lead'         => 'Propel',
-					'text'         => 'from 100+ edge locations',
-					'list'         => [ 'Faster' ],
+					'id'                => 'rocketcdn',
+					'title'             => 'Deliver your content faster',
+					'image'             => [
+						'src' => '',
+						'alt' => '',
+					],
+					'lead'              => 'Propel',
+					'text'              => 'from 100+ edge locations',
+					'list'              => [ 'Faster' ],
+					'button_label'      => 'Upgrade Now',
+					'button_url'        => '',
+					'button_class'      => 'wpr-rocketcdn-open',
+					'button_attributes' => [ 'data-micromodal-trigger' => 'wpr-rocketcdn-modal' ],
+					'is_external'       => false,
+				],
+				[
+					'id'           => 'rocketcdn-stripe',
+					'title'        => 'Stripe',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
 					'button_label' => 'Upgrade Now',
-					'button_url'   => '#page_cdn',
+					'button_url'   => 'https://example.org/checkout',
+					'button_class' => 'wpr-rocketcdn-open',
+					'is_external'  => false,
+				],
+				[
+					'id'           => str_repeat( 'a', 41 ),
+					'title'        => 'Long id',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => 'https://example.org/long',
+					'is_external'  => false,
+				],
+				[
+					'title'        => 'No id',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => 'https://example.org/go',
 					'is_external'  => false,
 				],
 			]
@@ -80,7 +120,15 @@ class Test_RenderAddonCard extends TestCase {
 
 	public function testShouldRenderTheCategoryTitleOnce() {
 		$this->assertSame( 1, substr_count( $this->html, 'Add-ons' ) );
-		$this->assertSame( 2, substr_count( $this->html, 'class="wpr-addonCard wpr-addonCard--' ) );
+		$this->assertSame( 5, substr_count( $this->html, 'class="wpr-addonCard wpr-addonCard--' ) );
+	}
+
+	public function testShouldRenderOneAccessibleCloseButtonPerCardWithAnIdOfAtMost40Characters() {
+		$this->assertSame( 3, substr_count( $this->html, 'class="wpr-notice-close wpr-icon-close wpr-addonCard-close"' ) );
+		$this->assertStringContainsString( '<button type="button" class="wpr-notice-close wpr-icon-close wpr-addonCard-close" data-card-id="imagify"><span class="screen-reader-text">Dismiss this notice</span></button>', $this->html );
+		$this->assertStringContainsString( 'data-card-id="rocketcdn"', $this->html );
+		$this->assertStringContainsString( 'data-card-id="rocketcdn-stripe"', $this->html );
+		$this->assertStringNotContainsString( 'data-card-id="' . str_repeat( 'a', 41 ), $this->html );
 	}
 
 	public function testShouldRenderAccessibleToggleButtons() {
@@ -95,10 +143,17 @@ class Test_RenderAddonCard extends TestCase {
 	}
 
 	public function testShouldRenderTheButtonsAsPlainLinks() {
-		$this->assertStringContainsString( 'href="#page_cdn">Upgrade Now</a>', $this->html );
-		$this->assertStringContainsString( 'href="https://example.org/install">Install Imagify</a>', $this->html );
+		$this->assertStringContainsString( '<a class="wpr-button wpr-addonCard-button" href="https://example.org/install">Install Imagify</a>', $this->html );
 		$this->assertStringNotContainsString( 'target="_blank"', $this->html );
-		$this->assertStringNotContainsString( 'data-micromodal', $this->html );
+	}
+
+	public function testShouldRenderTheLinkWithTheExtraClass() {
+		$this->assertStringContainsString( '<a class="wpr-button wpr-addonCard-button wpr-rocketcdn-open" href="https://example.org/checkout">Upgrade Now</a>', $this->html );
+	}
+
+	public function testShouldRenderAButtonWithTheModalTriggerWhenThereIsNoUrl() {
+		$this->assertStringContainsString( '<button type="button" class="wpr-button wpr-addonCard-button wpr-rocketcdn-open" data-micromodal-trigger="wpr-rocketcdn-modal">Upgrade Now</button>', $this->html );
+		$this->assertSame( 1, substr_count( $this->html, 'data-micromodal-trigger' ) );
 	}
 
 	public function testShouldOnlyRenderTheImageWhenThereIsOne() {

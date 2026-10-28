@@ -77,10 +77,11 @@ class Renewal extends Abstract_Render {
 
 		$data              = $this->get_banner_data();
 		$data['countdown'] = $this->get_countdown_data();
-		$data['more_info'] = true;
+		// No price line when the pricing data is unavailable, rather than a misleading "$0.00".
+		$data['more_info'] = 0 < $this->get_price();
 
 		if ( -1 === $this->user->get_license_type() ) {
-			$data['message']   = esc_html__( 'You will soon lose access to product updates and support.', 'rocket' );
+			$data['message']   = esc_html__( 'You will soon lose the features that keep your site fast, plus access to updates and support.', 'rocket' );
 			$data['more_info'] = false;
 		}
 
@@ -153,6 +154,17 @@ class Renewal extends Abstract_Render {
 			}
 		}
 
+		// No price line when the pricing data is unavailable, rather than a misleading "$0.00".
+		if ( 'renewal-expired-banner-ocd' !== $template && 0 < $this->get_price() ) {
+			$args['message'] = sprintf(
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = renewal price.
+				esc_html__( 'Renew your license now at %1$s%3$s%2$s.', 'rocket' ),
+				'<strong>',
+				'</strong>',
+				$this->get_renewal_price_html()
+			);
+		}
+
 		return (string) $this->generate( $template, $args );
 	}
 
@@ -175,12 +187,11 @@ class Renewal extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_banner_data() {
-		$price = Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() )
-			. '! <span class="renewal-tax__info">' . esc_html__( '(excl. taxes)', 'rocket' ) . '</span>';
+		$price = $this->get_renewal_price_html();
 
 		$message = sprintf(
-			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = discount price.
-			esc_html__( 'Renew before it is too late, you will pay %1$s%3$s%2$s.', 'rocket' ),
+			// translators: %1$s = <strong>, %2$s = </strong>, %3$s = renewal price.
+			esc_html__( 'Renew now at %1$s%3$s%2$s and keep your site optimized.', 'rocket' ),
 			'<strong>',
 			'</strong>',
 			$price
@@ -188,10 +199,9 @@ class Renewal extends Abstract_Render {
 
 		if ( $this->is_grandfather() ) {
 			$message = sprintf(
-			// translators: %1$s = <strong>, %2$s = discount percentage, %3$s = </strong>, %4$s = discount price.
-				esc_html__( 'Renew with a %1$s%2$s discount%3$s before it is too late, you will only pay %1$s%4$s%3$s', 'rocket' ),
+				// translators: %1$s = <strong>, %2$s = </strong>, %3$s = renewal price.
+				esc_html__( 'Renew now at %1$s%3$s%2$s and keep your site optimized.', 'rocket' ),
 				'<strong>',
-				esc_html( $this->get_discount_percent() . '%' ),
 				'</strong>',
 				$price
 			);
@@ -201,6 +211,16 @@ class Renewal extends Abstract_Render {
 			'message'     => $message,
 			'renewal_url' => $this->user->get_renewal_url(),
 		];
+	}
+
+	/**
+	 * Gets the formatted renewal price followed by the tax information
+	 *
+	 * @return string
+	 */
+	private function get_renewal_price_html(): string {
+		return Currency::format_price_with_currency_symbol( number_format_i18n( $this->get_price(), 2 ), $this->user->get_currency() )
+			. ' <span class="renewal-tax__info">' . esc_html__( '(excl. taxes)', 'rocket' ) . '</span>';
 	}
 
 	/**
@@ -394,6 +414,12 @@ class Renewal extends Abstract_Render {
 	 * @return object|null
 	 */
 	private function get_license_pricing_data() {
+		$type_pricing = $this->pricing->get_pricing_by_type( $this->user->get_license_type_slug() );
+
+		if ( isset( $type_pricing->prices->renewal ) ) {
+			return $type_pricing;
+		}
+
 		$license       = $this->user->get_license_type();
 		$plus_websites = $this->pricing->get_plus_websites_count();
 

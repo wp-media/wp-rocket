@@ -47,6 +47,10 @@ Method : SUITCSS (modified)
   right: 0;
   left: auto;
 }
+.wpr-Dashboard-sidebar .wpr-addonCard-title {
+  padding-right: 0;
+  padding-left: 24px;
+}
 .wpr-Dashboard-sidebar .rocket-renew-cta::after {
   margin-right: 8px;
   margin-left: 0;
