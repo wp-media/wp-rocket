@@ -128,8 +128,8 @@ class Meta {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
-		// Rocket Insights.
-		if ( $this->context->is_schedule_allowed() && ! $this->context->is_reseller_or_non_live() ) {
+		// Rocket Insights, gated only by the rocket_rocket_insights_enabled filter.
+		if ( $this->context->is_available() ) {
 			$features[] = 'wpr_insights';
 		}
 

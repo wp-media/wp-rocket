@@ -83,6 +83,16 @@ class Context implements ContextInterface {
 	}
 
 	/**
+	 * Check if Rocket Insights is available on this site, regardless of the current user or settings.
+	 *
+	 * @return bool
+	 */
+	public function is_available(): bool {
+		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php (is_allowed()).
+		return wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
+	}
+
+	/**
 	 * Check if the current user is on the free plan or not.
 	 *
 	 * @return bool

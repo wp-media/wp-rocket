@@ -55,20 +55,10 @@ class TestAddMetaGenerator extends TestCase {
 		}
 
 		if ( ! empty( $config['context_not_called'] ) ) {
-			$this->context->shouldNotReceive( 'is_schedule_allowed' );
-			$this->context->shouldNotReceive( 'is_reseller_or_non_live' );
+			$this->context->shouldNotReceive( 'is_available' );
 		} else {
-			$schedule_allowed = $config['insights_schedule_allowed'] ?? false;
-
-			$this->context->shouldReceive( 'is_schedule_allowed' )
-				->andReturn( $schedule_allowed );
-
-			if ( $schedule_allowed ) {
-				$this->context->shouldReceive( 'is_reseller_or_non_live' )
-					->andReturn( $config['insights_non_live'] ?? false );
-			} else {
-				$this->context->shouldNotReceive( 'is_reseller_or_non_live' );
-			}
+			$this->context->shouldReceive( 'is_available' )
+				->andReturn( $config['insights_available'] ?? false );
 		}
 
 		Functions\when( 'is_user_logged_in' )->justReturn( $config['is_user_logged_in'] ?? false );
