@@ -3279,7 +3279,7 @@ div.wpr-upgrade-websites.notstacked {
   overflow: hidden;
 }
 .wpr-notice-container {
-  padding: 24px 25% 24px 40px;
+  padding: 24px 10% 24px 40px;
 }
 .wpr-notice-supTitle {
   font-size: 1rem;
@@ -6985,6 +6985,7 @@ div.wpr-tutorial-item {
   opacity: 0.7;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard {
+  position: relative;
   padding: 16px;
   border-radius: 4px;
   background: #FFF1ED;
@@ -6995,6 +6996,7 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-title {
   margin: 0 0 12px;
+  padding-right: 24px;
   color: #F56640;
   font-size: 1rem;
   line-height: 1.5;
@@ -7008,9 +7010,6 @@ div.wpr-tutorial-item {
   border-radius: 4px;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-lead {
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.4285714286;
   font-weight: 590;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-text {

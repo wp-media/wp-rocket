@@ -48,7 +48,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCacheDynamicResource( $event, $src, $expected, $settings ) {
+	public function testCacheDynamicResource( $event, $src, $expected, $settings, $response_code = 200 ) {
 		// Set up the test.
 		$this->isCSSTestData = ( 'style_loader_src' === $event );
 		$this->src = $src;
@@ -69,7 +69,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			$src => [
 				'headers'  => [],
 				'body'     => 'test',
-				'response' => [],
+				'response' => [ 'code' => $response_code ],
 				'cookies'  => [],
 				'filename' => '',
 			],

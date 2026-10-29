@@ -121,7 +121,7 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
@@ -137,7 +137,7 @@ return [
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Growth!</strong>',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Growth!</strong> Hurry up, deal ends in:',
 		],
 	],
 	'testShouldReturnDataWhenPromoNotSeenAndLicenseBetweenSingleAndPlus' => [
@@ -161,7 +161,7 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 			'upgrades' => [
 				(object) [
 					'name' => 'Multi',
@@ -177,7 +177,7 @@ return [
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Multi!</strong>',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Multi!</strong> Hurry up, deal ends in:',
 		],
 	],
 	'testShouldReturnDataWhenPromoNotSeenAndLicenseIsPlus' => [
@@ -201,7 +201,7 @@ return [
 					'websites' => 3,
 				],
 			],
-			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
+			'message' => 'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 			'upgrades' => [
 				(object) [
 					'name' => 'Growth',
@@ -217,7 +217,7 @@ return [
 		'expected' => [
 			'name' => 'Halloween',
 			'discount_percent' => 20,
-			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Growth!</strong>',
+			'message' => 'Take advantage of Halloween to speed up more websites:<br> get a <strong>20% off</strong> for <strong>upgrading your license to Growth!</strong> Hurry up, deal ends in:',
 		],
 	],
 ];
