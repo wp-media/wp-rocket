@@ -577,6 +577,7 @@ class Render extends Abstract_Render {
 				'help'        => '',
 				'helper'      => '',
 				'page'        => '',
+				'page_title'  => $this->settings[ $page ]['title'] ?? '',
 			];
 
 			$args = wp_parse_args( $args, $default );

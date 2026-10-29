@@ -150,3 +150,31 @@
 		}
 	}
 }
+
+/*-----------------------------------------------*\
+    WAP support chat launcher button
+\*-----------------------------------------------*/
+.wap-chat-column__launcher {
+    padding: 10px 16px 10px 12px !important;
+    width: auto !important;
+    background-color: rgb(64, 186, 203) !important;
+    border-color: rgb(64, 186, 203) !important;
+    color: $cWhite !important;
+    transition: transform 200ms ease;
+    height: 60px !important;
+
+    &::after {
+        content: "Ask support";
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 14px;
+    }
+
+    &:hover,
+    &:focus {
+        transform: scale(1.15);
+        opacity: 1 !important;
+    }
+}
