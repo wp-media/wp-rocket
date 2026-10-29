@@ -86,14 +86,33 @@ return [
 			'input'    => 'var  t = tag`a  ${ b }  c` ;',
 			'expected' => 'var t=tag`a  ${ b }  c`',
 		],
-		'shouldFallBackToNaiveMatchWhenSubstitutionIsUnparsable' => [
+		'shouldKeepLiteralWithRegexAfterReturn' => [
+			'input'    => 'var f = `a ${ x.map(y => { return /`/.test(y) }) } b` ; var  k = 4 ;',
+			'expected' => 'var f=`a ${ x.map(y => { return /`/.test(y) }) } b`;var k=4',
+		],
+		'shouldKeepLiteralWithQuoteRegexAfterReturn' => [
 			'input'    => 'var f = `a ${ x.map(y => { return /\'/.test(y) }) } b` ; var  k = 4 ;',
 			'expected' => 'var f=`a ${ x.map(y => { return /\'/.test(y) }) } b`;var k=4',
 		],
-		// Known limitation: a regex after a keyword isn't detected, so the previous behaviour applies.
-		'shouldKeepPreviousBehaviourForRegexAfterReturn' => [
-			'input'    => 'var f = `a ${ x.map(y => { return /`/.test(y) }) } b` ; var  k = 4 ;',
-			'expected' => 'var f=`a ${ x.map(y => { return /`/.test(y)})}b`;var k=4',
+		'shouldKeepNestedLiteralAfterPropertyDivision' => [
+			'input'    => 'var p = html`<a>${ x.in / 2 }</a> ${ x.map(i => html`<b> ${i} </b>`) }` ;',
+			'expected' => 'var p=html`<a>${ x.in / 2 }</a> ${ x.map(i => html`<b> ${i} </b>`) }`',
+		],
+		'shouldKeepLiteralsAfterTypeofRegexWithBacktick' => [
+			'input'    => 'var t88 = css`https://e.com/p ${ c ? `<x-el .p="1"> t </x-el>it\'s <x-el .p="1"> t </x-el><b> x </b>` : \'\' } a  b `;
+var t50 = css`${ c ? html` a  b ${ c ? html` a  b ${ typeof /`/ }` : \'\' }it\'s  a  b ` : \'\' }it\'s `;
+var u = \'https://x.org/y\';',
+			'expected' => 'var t88=css`https://e.com/p ${ c ? `<x-el .p="1"> t </x-el>it\'s <x-el .p="1"> t </x-el><b> x </b>` : \'\' } a  b `;var t50=css`${ c ? html` a  b ${ c ? html` a  b ${ typeof /`/ }` : \'\' }it\'s  a  b ` : \'\' }it\'s `;var u=\'https://x.org/y\'',
+		],
+		// Expected is develop's output: when a literal can't be parsed, the whole file is minified as before.
+		'shouldMatchPreviousBehaviourWhenALiteralFallsBack' => [
+			'input'    => 'var t88 = css`https://e.com/p ${ c ? `<x-el .p="1"> t </x-el>it\'s <x-el .p="1"> t </x-el><b> x </b>` : \'\' } a  b `;
+var t50 = css`${ c ? html` a  b ${ c ? html` a  b ${ (
+      /`/) }` : \'\' }it\'s  a  b ` : \'\' }it\'s `;
+var u = \'https://x.org/y\';',
+			'expected' => 'var t88=css`https://e.com/p ${ c ? `<x-el.p="1">t</x-el>it\'s <x-el .p="1"> t </x-el><b> x </b>` : \'\' } a  b `;
+var t50 = css`${ c ? html` a  b ${ c ? html` a  b ${ (
+      /`/) }` : \'\' }it\'s a b ` : \'\' }it\'s `;var u=\'https://x.org/y\'',
 		],
 		'shouldKeepPreviousBehaviourForUnterminatedLiteral' => [
 			'input'    => 'var  u = `a  b ; var  k = 1 ;',

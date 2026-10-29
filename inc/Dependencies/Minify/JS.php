@@ -120,6 +120,20 @@ class JS extends Minify
 	protected $operatorsAfter = array();
 
 	/**
+	 * WP Rocket patch (#8834): index of the template literal pattern in $patterns.
+	 *
+	 * @var int
+	 */
+	protected $templatePattern = 0;
+
+	/**
+	 * WP Rocket patch (#8834): template literals extracted from the current file.
+	 *
+	 * @var int
+	 */
+	protected $templateLiterals = 0;
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function __construct()
@@ -169,7 +183,7 @@ class JS extends Minify
 		foreach ($this->data as $source => $js) {
 			// take out strings, comments & regex (for which we've registered
 			// the regexes just a few lines earlier)
-			$js = $this->replace($js);
+			$js = $this->replaceTemplateSafe($js);
 
 			$js = $this->propertyNotation($js);
 			$js = $this->shortenBools($js);
@@ -193,6 +207,41 @@ class JS extends Minify
 	}
 
 	/**
+	 * WP Rocket patch (#8834): replace(), redone without the template literal pattern when
+	 * a literal fell back to the naive backtick match, as later backticks can't be trusted.
+	 *
+	 * @param string $js
+	 *
+	 * @return string
+	 */
+	protected function replaceTemplateSafe($js)
+	{
+		$extracted = $this->extracted;
+		$this->templateLiterals = 0;
+		$result = $this->replace($js);
+
+		$backticks = 0;
+		foreach (array_keys(array_diff_key($this->extracted, $extracted)) as $placeholder) {
+			if (strpos($placeholder, '`') === 0) {
+				$backticks++;
+			}
+		}
+
+		if ($backticks === $this->templateLiterals) {
+			return $result;
+		}
+
+		$this->extracted = $extracted;
+		$patterns = $this->patterns;
+		unset($this->patterns[$this->templatePattern]);
+		$this->patterns = array_values($this->patterns);
+		$result = $this->replace($js);
+		$this->patterns = $patterns;
+
+		return $result;
+	}
+
+	/**
 	 * WP Rocket patch (#8834): extract whole template literals, balancing nested `${...}`.
 	 */
 	protected function extractTemplateLiterals()
@@ -201,17 +250,28 @@ class JS extends Minify
 		$callback = function ($match) use ($minifier) {
 			$placeholder = '`'.count($minifier->extracted).'`';
 			$minifier->extracted[$placeholder] = $match[0];
+			$minifier->templateLiterals++;
 
 			return $placeholder;
 		};
 
-		// chars after which a `/` starts a regex rather than a division (up to 2 spaces between, not after ++/--)
-		$regexContext = '[(,=:\[!&|?{};+\-*%<>~^]';
+		// a `/` after these chars or keywords starts a regex rather than a division (up to 2 spaces between, not after ++/--)
+		$regexContext = array('[(,=:\[!&|?{};+\-*%<>~^]');
+		foreach (array('return', 'typeof', 'instanceof', 'in', 'of', 'new', 'delete', 'void', 'throw', 'case', 'do', 'else', 'yield', 'await') as $keyword) {
+			$regexContext[] = '(?<![.$])\b'.$keyword;
+		}
+		$lookbehind = array();
+		foreach ($regexContext as $context) {
+			array_push($lookbehind, $context, $context.'\s', $context.'\s\s');
+		}
 		$strings = '\'(?:[^\'\\\\\n]++|\\\\.)*+\'|"(?:[^"\\\\\n]++|\\\\.)*+"';
 		$comments = '//[^\n]*+|/\*(?:[^*]++|\*(?!/))*+\*/';
-		$regex = '(?<='.$regexContext.'|'.$regexContext.'\s|'.$regexContext.'\s\s)(?<!\+\+|--|\+\+\s|--\s|\+\+\s\s|--\s\s)/(?![/*])(?:[^/\\\\\[\n]++|\\\\.|\[(?:[^\]\\\\\n]++|\\\\.)*+\])++/[a-z]*+';
-		$expr = '(?:[^{}`\'"\\\\/]++|\\\\.|'.$strings.'|'.$comments.'|'.$regex.'|/|(?&tpl)|\{(?&expr)\})*+';
+		$regex = '(?<='.implode('|', $lookbehind).')(?<!\+\+|--|\+\+\s|--\s|\+\+\s\s|--\s\s)/(?![/*])(?:[^/\\\\\[\n]++|\\\\.|\[(?:[^\]\\\\\n]++|\\\\.)*+\])++/[a-z]*+';
+		// any other `/` must clearly be a division, else the match fails and falls back
+		$division = '(?<=[\w$)\]\'"`]|[\w$)\]\'"`]\s|[\w$)\]\'"`]\s\s|\+\+|--|\+\+\s|--\s|\+\+\s\s|--\s\s)/';
+		$expr = '(?:[^{}`\'"\\\\/]++|\\\\.|'.$strings.'|'.$comments.'|'.$regex.'|'.$division.'|(?&tpl)|\{(?&expr)\})*+';
 
+		$this->templatePattern = count($this->patterns);
 		$this->registerPattern('#(?<tpl>`(?:[^`\\\\$]++|\\\\.|\$(?!\{)|\$\{(?&expr)\})*+`)(?(DEFINE)(?<expr>'.$expr.'))#s', $callback);
 	}
 
