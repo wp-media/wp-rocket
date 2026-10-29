@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\ModPagespeed;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
@@ -13,8 +12,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group ThirdParty
  */
 class Test_ShowAdminNotice extends TestCase {
-	use HttpRequestTrait;
-
 	private static $admin_user_id  = 0;
 	private static $editor_user_id = 0;
 
@@ -32,8 +29,6 @@ class Test_ShowAdminNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 
@@ -46,8 +41,6 @@ class Test_ShowAdminNotice extends TestCase {
 
 		// IsolateHookTrait keeps a single backup, so only admin_notices can be restored; core restores current_screen.
 		$this->restoreWpHook( 'admin_notices' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

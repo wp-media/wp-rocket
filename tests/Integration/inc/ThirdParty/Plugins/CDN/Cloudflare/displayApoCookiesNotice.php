@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_apo_cookies_notice
@@ -13,8 +12,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group CloudflarePlugin
  */
 class Test_displayApoCookiesNotice extends AdminTestCase {
-	use HttpRequestTrait;
-
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
 
@@ -31,8 +28,6 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 	public function set_up()
 	{
 		parent::set_up();
-
-		$this->setup_http();
 
 		add_filter('pre_option_automatic_platform_optimization', [$this, 'automatic_platform_optimization']);
 		add_filter('rocket_cache_mandatory_cookies', [$this, 'mandatory_cookies']);
@@ -60,8 +55,6 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
 		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
 		$this->restoreWpHook( 'admin_notices' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
