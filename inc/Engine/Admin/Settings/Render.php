@@ -568,6 +568,8 @@ class Render extends Abstract_Render {
 			return;
 		}
 
+		$assistant_available = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
+
 		foreach ( $this->settings[ $page ]['sections'] as $args ) {
 			$default = [
 				'type'        => 'fields_container',
@@ -586,8 +588,32 @@ class Render extends Abstract_Render {
 				$args['class'] = implode( ' ', array_map( 'sanitize_html_class', $args['class'] ) );
 			}
 
+			if ( ! $assistant_available ) {
+				$args = $this->hide_need_help( $args );
+			}
+
 			call_user_func_array( [ $this, $args['type'] ], [ $args ] );
 		}
+	}
+
+	/**
+	 * Removes the "Need Help?" data of a section.
+	 *
+	 * The purge section also prints its documentation link from `help`, so it keeps it and gets a flag instead.
+	 *
+	 * @param array $args Section arguments.
+	 * @return array
+	 */
+	private function hide_need_help( array $args ): array {
+		if ( 'purge_cdn_cache_section' === $args['type'] ) {
+			$args['hide_need_help'] = true;
+
+			return $args;
+		}
+
+		$args['help'] = '';
+
+		return $args;
 	}
 
 	/**

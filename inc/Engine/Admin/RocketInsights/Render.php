@@ -139,6 +139,10 @@ class Render extends Abstract_Render {
 		$data['page_title']    = __( 'Add-ons', 'rocket' );
 		$data['section_title'] = __( 'Performance Summary', 'rocket' );
 
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true ) ) {
+			$data['help'] = [];
+		}
+
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
