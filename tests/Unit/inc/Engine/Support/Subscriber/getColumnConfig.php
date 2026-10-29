@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -19,13 +20,18 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestGetColumnConfig extends TestCase {
 	private $options;
+	private $user_client;
 	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user_client = Mockery::mock( UserClient::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user_client );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] )->byDefault();
 	}
 
 	private function set_licence( $key, $email ) {
@@ -126,5 +132,34 @@ class TestGetColumnConfig extends TestCase {
 
 	public function testShouldMapTheWapCapabilityToWpRocketCapability() {
 		$this->assertSame( 'rocket_manage_options', $this->subscriber->get_rocket_capability() );
+	}
+
+	public function testShouldReturnEmptyWhenTheUserCannotUseTheAssistant() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => false ] );
+
+		$this->assertSame( [], $this->subscriber->get_column_config() );
+	}
+
+	public function testShouldReturnTheConfigurationWhenTheFlagIsMissing() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'licence_account' => 3 ] );
+
+		$this->assertSame( 'wprocket', $this->subscriber->get_column_config()['product'] );
+	}
+
+	public function testShouldReturnTheConfigurationWhenTheUserDataCannotBeRead() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( false );
+
+		$this->assertSame( 'wprocket', $this->subscriber->get_column_config()['product'] );
+	}
+
+	public function testShouldReturnEmptyWithoutReadingTheUserDataWhenTheKeyIsNotValid() {
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		Functions\when( 'rocket_valid_key' )->justReturn( false );
+		$this->user_client->shouldNotReceive( 'get_user_data' );
+
+		$this->assertSame( [], $this->subscriber->get_column_config() );
 	}
 }
