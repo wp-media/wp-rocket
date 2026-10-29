@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Rest;
 
@@ -15,22 +16,28 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Support
  */
 class Test_GetSupportData extends TestCase {
+	private Data $support_data;
+	private Rest $rest;
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->support_data = Mockery::mock( Data::class );
+		$this->rest         = new Rest( $this->support_data, Mockery::mock( Options_Data::class ) );
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $support_data, $expected ) {
-		$data = Mockery::mock( Data::class );
-		$rest = new Rest( $data, Mockery::mock( Options_Data::class ) );
-
-		$data->shouldReceive( 'get_support_data' )
-			->atMost()
+	public function testShouldReturnExpected( $config, $expected ) {
+		$this->support_data->shouldReceive( 'get_support_data' )
 			->once()
-			->andReturn( $support_data );
+			->andReturn( $config );
 
 		Functions\expect( 'rest_ensure_response' )
 			->once()
 			->with( $expected );
-	
-		$rest->get_support_data();
+
+		$this->rest->get_support_data();
 	}
 }
