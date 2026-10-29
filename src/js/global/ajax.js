@@ -37,6 +37,11 @@ $(document).ready(function(){
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
                         }, 250);
+
+                        // The assistant entries are rendered by PHP, so a changed access needs a new page.
+                        if ( typeof response.data.assistant_available !== 'undefined' && response.data.assistant_available !== rocket_ajax_data.assistant_available ) {
+                            window.location.reload();
+                        }
                     }
                     else{
                         setTimeout(function() {
