@@ -80,7 +80,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		if ( false === $expected ) {
 			$this->assertNull( $actual );
 		} else {
-			$this->assertEquals( $expected, $actual );
+			// Compare only the fixture's keys: core adds node defaults over time (e.g. `icon` in WP 7.2).
+			$this->assertEquals( $expected, (object) array_intersect_key( get_object_vars( $actual ), get_object_vars( $expected ) ) );
 		}
 	}
 

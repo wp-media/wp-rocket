@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\AssetsLocalCache;
 use WP_Error;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
@@ -13,15 +12,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  AssetsLocalCache
  */
 class Test_GetContent extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/getContent.php';
-
-	public function set_up() {
-		parent::set_up();
-
-		$this->setup_http();
-	}
 
 	/**
 	 * @dataProvider providerTestData
@@ -56,11 +47,5 @@ class Test_GetContent extends FilesystemTestCase {
 			'headers'  => $response['headers'],
 			'response' => [ 'code' => $response['code'] ],
 		];
-	}
-
-	public function tear_down() {
-		$this->tear_down_http();
-
-		parent::tear_down();
 	}
 }

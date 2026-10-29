@@ -199,7 +199,7 @@ class AbstractQuery extends Query implements QueryInterface {
 	}
 
 	/**
-	 * Get pending jobs.
+	 * Get pending jobs that are due for a status check; the table needs a `next_retry_time` column.
 	 *
 	 * @param int $count Number of rows.
 	 *
@@ -224,9 +224,17 @@ class AbstractQuery extends Query implements QueryInterface {
 				'job_id__not_in' => [
 					'not_in' => '',
 				],
+				'date_query'     => [
+					[
+						'column'    => 'next_retry_time',
+						'before'    => current_time( 'mysql', true ),
+						'inclusive' => false,
+					],
+				],
 				'orderby'        => 'modified',
 				'order'          => 'asc',
-			]
+			],
+			false
 		);
 	}
 

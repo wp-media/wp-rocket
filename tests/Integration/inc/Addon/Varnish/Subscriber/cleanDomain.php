@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\Addon\Varnish\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Addon\Varnish\Subscriber::clean_domain
@@ -11,24 +10,12 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  Addon
  */
 class Test_CleanDomain extends TestCase {
-	use HttpRequestTrait;
-
 	private $filter;
 	private $option;
-	private $purge_requests = [];
-
-	public function set_up() {
-		parent::set_up();
-
-		$this->setup_http();
-	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option' ] );
 		remove_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter' ] );
-		remove_filter( 'pre_http_request', [ $this, 'record_purge_request' ], 5 );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -66,32 +53,22 @@ class Test_CleanDomain extends TestCase {
 			]
 		);
 
-		add_filter( 'pre_http_request', [ $this, 'record_purge_request' ], 5, 3 );
-
 		do_action( 'before_rocket_clean_domain', 'wp-rocket/cache', '', 'http://example.org' );
 
-		$this->assertSame( $purges, $this->purge_requests );
-	}
+		$requests = array_map(
+			static function ( $request ) {
+				return [
+					'url'         => $request['url'],
+					'method'      => $request['args']['method'],
+					'blocking'    => $request['args']['blocking'],
+					'redirection' => $request['args']['redirection'],
+					'headers'     => $request['args']['headers'],
+				];
+			},
+			$this->get_http_requests()
+		);
 
-	/**
-	 * Records the purge requests Varnish sends, without answering them.
-	 *
-	 * @param mixed  $preempt Preemptive response.
-	 * @param array  $args    Request arguments.
-	 * @param string $url     Request URL.
-	 *
-	 * @return mixed
-	 */
-	public function record_purge_request( $preempt, $args, $url ) {
-		$this->purge_requests[] = [
-			'url'         => $url,
-			'method'      => $args['method'],
-			'blocking'    => $args['blocking'],
-			'redirection' => $args['redirection'],
-			'headers'     => $args['headers'],
-		];
-
-		return $preempt;
+		$this->assertSame( $purges, $requests );
 	}
 
 	public function set_option() {

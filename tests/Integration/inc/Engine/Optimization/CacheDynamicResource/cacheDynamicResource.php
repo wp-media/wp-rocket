@@ -3,15 +3,12 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResource;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/cacheDynamicResource.php';
 	protected $cnames;
 	protected $zones;
@@ -22,8 +19,6 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$this->isCSSTestData = false;
 		$this->minify_type   = '';
@@ -39,8 +34,6 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 		}
 
 		$this->unset_settings( $this->options );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
