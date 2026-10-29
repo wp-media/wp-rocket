@@ -6,7 +6,6 @@ use WP_Error;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::set_cdn_state
@@ -18,8 +17,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  CDNOptionsManager
  */
 class Test_SetCdnState extends TestCase {
-	use HttpRequestTrait;
-
 	const VALID_KEY_ENDPOINT = 'https://api.wp-rocket.me/valid_key.php';
 
 	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/CDNOptionsManager/setCdnState.php';
@@ -35,8 +32,6 @@ class Test_SetCdnState extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// R1: set_cdn_state() writes through Options::set(), which runs sanitize_callback(),
 		// which calls rocket_check_key() when rocket_valid_key() is false.
@@ -64,8 +59,6 @@ class Test_SetCdnState extends TestCase {
 		remove_filter( 'sanitize_option_wp_rocket_settings', $this->sanitize_callback );
 
 		$GLOBALS['wp_settings_errors'] = [];
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

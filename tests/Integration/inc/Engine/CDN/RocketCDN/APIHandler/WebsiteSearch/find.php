@@ -3,10 +3,8 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 
-use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch::find
@@ -16,8 +14,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group CDN
  */
 class Test_Find extends TestCase {
-	use HttpRequestTrait;
-
 	const SEARCH_ENDPOINT = 'https://rocketcdn.me/api/website/search/?url=http://example.org';
 
 	protected static $use_settings_trait = true;
@@ -33,25 +29,12 @@ class Test_Find extends TestCase {
 	 */
 	private $website_search;
 
-	/**
-	 * Number of times the mocked website-search endpoint was actually hit.
-	 *
-	 * @var int
-	 */
-	private $request_count = 0;
-
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$container            = apply_filters( 'rocket_container', null );
 		$this->website_search = $container->get( 'rocketcdn_website_search_api_client' );
 		$this->website_search->set_site_url( 'http://example.org' );
-
-		$this->request_count = 0;
-
-		add_filter( 'pre_http_request', [ $this, 'count_search_request' ], 9, 3 );
 
 		delete_transient( 'rocket_cdn_website_search' );
 		delete_option( 'rocketcdn_user_token' );
@@ -59,13 +42,9 @@ class Test_Find extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'count_search_request' ], 9 );
-
 		delete_transient( 'rocket_cdn_website_search' );
 		delete_option( 'rocketcdn_user_token' );
 		delete_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -87,25 +66,6 @@ class Test_Find extends TestCase {
 		];
 	}
 
-	/**
-	 * Counts calls to the RocketCDN website-search endpoint. Registered at priority 9,
-	 * ahead of the trait's own mock at priority 10, so it observes every request without
-	 * altering the response.
-	 *
-	 * @param false|array|WP_Error $response Preemptive response as received.
-	 * @param array                $_args    Unused request arguments.
-	 * @param string               $url      Requested URL.
-	 *
-	 * @return false|array|WP_Error
-	 */
-	public function count_search_request( $response, $_args, $url ) {
-		if ( self::SEARCH_ENDPOINT === $url ) {
-			$this->request_count++;
-		}
-
-		return $response;
-	}
-
 	public function testShouldReturnCachedTransientWithoutHittingApi() {
 		$cached = [
 			'subscription_status' => 'running',
@@ -118,14 +78,14 @@ class Test_Find extends TestCase {
 		// No fixture entry: an unmocked request fails the test, proving the transient
 		// short-circuits before any HTTP call is attempted.
 		$this->assertSame( $cached, $this->website_search->find() );
-		$this->assertSame( 0, $this->request_count, 'A populated transient must short-circuit the API call entirely.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SEARCH_ENDPOINT ), 'A populated transient must short-circuit the API call entirely.' );
 	}
 
 	public function testShouldReturnFalseWithoutApiCallWhenTokenMissing() {
 		// No fixture entry: an unmocked request fails the test, proving no call is made
 		// without a saved token.
 		$this->assertFalse( $this->website_search->find() );
-		$this->assertSame( 0, $this->request_count, 'No API request should be made without a saved token.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SEARCH_ENDPOINT ), 'No API request should be made without a saved token.' );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ), 'No lock should be taken when the request never reaches the API.' );
 	}
 
@@ -134,7 +94,7 @@ class Test_Find extends TestCase {
 		$this->mock_search_endpoint( 200, null );
 
 		$this->assertFalse( $this->website_search->find() );
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ) );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ) );
 	}
 
@@ -160,13 +120,13 @@ class Test_Find extends TestCase {
 			],
 			$result
 		);
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ) );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ), 'The lock must be released once the fetch completes.' );
 
 		// A second call within the same request must reuse the transient it just
 		// set, not fire another request against the API.
 		$this->website_search->find();
-		$this->assertSame( 1, $this->request_count, 'A second call must reuse the freshly cached transient.' );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ), 'A second call must reuse the freshly cached transient.' );
 	}
 
 	public function testShouldNotFireDuplicateRequestWhenAnotherFetchIsInFlight() {
@@ -184,7 +144,7 @@ class Test_Find extends TestCase {
 
 		$result = $this->website_search->find();
 
-		$this->assertSame( 0, $this->request_count, 'A held lock must prevent firing a duplicate outbound API call.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SEARCH_ENDPOINT ), 'A held lock must prevent firing a duplicate outbound API call.' );
 		$this->assertFalse( $result, 'Without a populated transient, the loser falls back to false.' );
 
 		// The loser must not touch a lock it doesn't own.
@@ -202,7 +162,7 @@ class Test_Find extends TestCase {
 		$result = $this->website_search->find();
 
 		$this->assertIsArray( $result );
-		$this->assertSame( 1, $this->request_count, 'A stale lock must be reclaimed so the fetch can proceed.' );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ), 'A stale lock must be reclaimed so the fetch can proceed.' );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ), 'The lock must be released once the reclaiming fetch completes.' );
 	}
 
@@ -211,7 +171,7 @@ class Test_Find extends TestCase {
 		$this->mock_search_endpoint( 500 );
 
 		$this->assertFalse( $this->website_search->find() );
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ) );
 		$this->assertFalse( get_option( WebsiteSearch::WEBSITE_SEARCH_FETCH_LOCK ), 'The lock must be released even when the API call does not succeed.' );
 	}
 
@@ -231,7 +191,7 @@ class Test_Find extends TestCase {
 		$second_client->set_site_url( 'http://example.org' );
 		$loser = $second_client->find();
 
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SEARCH_ENDPOINT ) );
 		$this->assertIsArray( $winner );
 		$this->assertSame( $winner, $loser );
 	}
