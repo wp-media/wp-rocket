@@ -15,7 +15,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Support
  */
 class Test_GetSupportData extends TestCase {
-	private Options_Data $options;
+	/**
+	 * @var Options_Data|Mockery\MockInterface
+	 */
+	private $options;
 	private Data $data;
 
 	public function set_up() {
