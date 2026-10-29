@@ -68,6 +68,21 @@ class User {
 	}
 
 	/**
+	 * Checks if the support assistant is allowed for this user
+	 *
+	 * Only an explicit answer that is not boolean true turns it off, so a missing or null field keeps it allowed.
+	 *
+	 * @return bool
+	 */
+	public function can_use_ai(): bool {
+		if ( ! isset( $this->user->can_use_ai ) ) {
+			return true;
+		}
+
+		return true === $this->user->can_use_ai;
+	}
+
+	/**
 	 * Checks if the user license is expired
 	 *
 	 * @return boolean
