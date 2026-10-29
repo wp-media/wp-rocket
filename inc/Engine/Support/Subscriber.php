@@ -236,6 +236,8 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Passes whether the assistant is available to the admin script.
 	 *
+	 * The script receives the value as a string, '1' or ''.
+	 *
 	 * @since 3.24
 	 *
 	 * @param array $data Localize script data.

@@ -38,8 +38,8 @@ $(document).ready(function(){
                             button.addClass('wpr-icon-check');
                         }, 250);
 
-                        // The assistant entries are rendered by PHP, so a changed access needs a new page.
-                        if ( typeof response.data.assistant_available !== 'undefined' && response.data.assistant_available !== rocket_ajax_data.assistant_available ) {
+                        // PHP renders the assistant entries and localized values are strings ('1' or ''), so compare numbers.
+                        if ( typeof response.data.assistant_available !== 'undefined' && typeof rocket_ajax_data.assistant_available !== 'undefined' && Number( response.data.assistant_available ) !== Number( rocket_ajax_data.assistant_available ) ) {
                             window.location.reload();
                         }
                     }
