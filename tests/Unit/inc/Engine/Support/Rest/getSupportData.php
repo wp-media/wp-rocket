@@ -16,7 +16,10 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Support
  */
 class Test_GetSupportData extends TestCase {
-	private Data $support_data;
+	/**
+	 * @var Data|Mockery\MockInterface
+	 */
+	private $support_data;
 	private Rest $rest;
 
 	public function set_up() {
