@@ -72,6 +72,8 @@ class User {
 	 *
 	 * Only an explicit answer that is not boolean true turns it off, so a missing or null field keeps it allowed.
 	 *
+	 * @since 3.24
+	 *
 	 * @return bool
 	 */
 	public function can_use_ai(): bool {

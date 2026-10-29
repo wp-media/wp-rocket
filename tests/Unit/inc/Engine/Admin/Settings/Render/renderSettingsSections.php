@@ -36,6 +36,8 @@ class Test_RenderSettingsSections extends TestCase {
 		);
 		Functions\when( 'sanitize_html_class' )->returnArg();
 		Functions\when( 'esc_url' )->returnArg();
+		Functions\when( 'checked' )->justReturn( '' );
+		Functions\when( 'disabled' )->justReturn( '' );
 
 		$filesystem = Mockery::mock();
 		$filesystem->shouldReceive( 'is_readable' )->andReturn( true );
@@ -66,6 +68,17 @@ class Test_RenderSettingsSections extends TestCase {
 							'description' => 'Section description',
 							'page'        => 'page_slug',
 							'purge_url'   => 'https://example.org/purge',
+							// Data read by the CDN section templates.
+							'is_active'        => false,
+							'is_forced_off'    => false,
+							'toggle_tooltip'   => '',
+							'cta_data'         => [],
+							'status_indicator' => [
+								'is_active'           => false,
+								'status_text'         => '',
+								'no_status_indicator' => true,
+								'pages_count'         => 0,
+							],
 							'help'        => [
 								'id'  => 'abc',
 								'url' => 'https://docs.example.org/help',
@@ -88,6 +101,9 @@ class Test_RenderSettingsSections extends TestCase {
 			'add-ons container'      => [ 'addons_container' ],
 			'no container and title' => [ 'nocontainer_with_title' ],
 			'purge section'          => [ 'purge_cdn_cache_section' ],
+			'other CDN'              => [ 'your_own_cdn' ],
+			'RocketCDN free'         => [ 'rocketcdn_free' ],
+			'RocketCDN paid'         => [ 'rocketcdn_paid' ],
 		];
 	}
 

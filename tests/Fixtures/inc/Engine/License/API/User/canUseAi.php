@@ -64,4 +64,19 @@ return [
 		] ) ),
 		'expected' => false,
 	],
+	'testShouldReturnTrueWhenLicenceIsExpiredAndFlagMissing' => [
+		'data'     => json_decode( json_encode( [
+			'ID'                 => 1,
+			'licence_expiration' => 1000000000,
+		] ) ),
+		'expected' => true,
+	],
+	'testShouldReturnTrueWhenLicenceIsRevokedAndFlagMissing' => [
+		'data'     => json_decode( json_encode( [
+			'ID'                 => 1,
+			'licence_expiration' => 1000000000,
+			'licence'            => [ 'is_revoked' => true ],
+		] ) ),
+		'expected' => true,
+	],
 ];

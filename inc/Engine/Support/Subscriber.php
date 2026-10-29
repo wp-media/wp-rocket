@@ -220,8 +220,9 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback of the `rocket_ai_assistant_available` filter.
 	 *
-	 * The filter tells whether the support assistant and its "Need Help?" controls are available. It is true by default
-	 * and false when the licence key fails the local check or the user data does not allow the assistant.
+	 * The filter controls the "Need Help?" controls and the value passed to the admin script. It is true by default
+	 * and false when the licence key fails the local check or the user data does not allow the assistant. The chat
+	 * column is decided by the same check in get_column_config() and does not apply this filter.
 	 *
 	 * @since 3.24
 	 *
@@ -247,6 +248,7 @@ class Subscriber implements Subscriber_Interface {
 	public function add_localize_script_data( $data ): array {
 		$data = (array) $data;
 
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
 		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		return $data;

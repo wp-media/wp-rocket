@@ -568,6 +568,19 @@ class Render extends Abstract_Render {
 			return;
 		}
 
+		/**
+		 * Filters whether the "Need Help?" controls are shown.
+		 *
+		 * They open the support assistant, so they are hidden when the assistant is not allowed for this customer
+		 * or the licence key fails the local check. The same value is passed to the admin script. The chat column
+		 * itself is decided by the same check in the support subscriber and does not apply this filter.
+		 *
+		 * @since 3.24
+		 *
+		 * @param bool $available True when the "Need Help?" controls should be shown.
+		 *
+		 * @return bool
+		 */
 		$assistant_available = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		foreach ( $this->settings[ $page ]['sections'] as $args ) {

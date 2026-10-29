@@ -112,6 +112,7 @@ class Render extends Abstract_Render {
 		$data['page_title']    = __( 'Dashboard', 'rocket' );
 		$data['section_title'] = __( 'Recommendations', 'rocket' );
 
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
 		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true ) ) {
 			$data['help'] = [];
 		}
