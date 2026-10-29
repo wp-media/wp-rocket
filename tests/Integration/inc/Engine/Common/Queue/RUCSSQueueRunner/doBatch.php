@@ -8,7 +8,6 @@ use ActionScheduler_DBStore;
 use ActionScheduler_HybridStore;
 use ActionScheduler_SimpleSchedule;
 use ActionScheduler_Store;
-use ReflectionMethod;
 use WP_Rocket\Engine\Common\Queue\RUCSSQueueRunner;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -36,12 +35,17 @@ class Test_DoBatch extends TestCase {
 
 	public function tear_down() {
 		remove_action( self::HOOK, [ $this, 'count_execution' ] );
+		$this->restoreActionsQueries();
 
 		parent::tear_down();
 	}
 
 	public function count_execution() {
 		++$this->executed;
+	}
+
+	public function break_actions_query( $query ) {
+		return str_replace( 'actionscheduler_actions', 'actionscheduler_missing', $query );
 	}
 
 	/**
@@ -57,10 +61,13 @@ class Test_DoBatch extends TestCase {
 
 		$claims_before = $this->countClaims();
 		$runner        = new RUCSSQueueRunner( $store );
-		$do_batch      = new ReflectionMethod( $runner, 'do_batch' );
-		$do_batch->setAccessible( true );
 
-		$this->assertSame( $expected, $do_batch->invoke( $runner, 25, 'WP Cron' ) );
+		if ( $config['query_error'] ) {
+			$this->breakActionsQueries();
+		}
+
+		$this->assertSame( $expected, $this->get_reflective_method( 'do_batch', RUCSSQueueRunner::class )->invoke( $runner, 25, 'WP Cron' ) );
+		$this->restoreActionsQueries();
 		$this->assertSame( $expected, $this->executed );
 		$this->assertSame( $claims_before, $this->countClaims() );
 	}
@@ -103,6 +110,25 @@ class Test_DoBatch extends TestCase {
 		foreach ( $term_ids as $term_id ) {
 			wp_delete_term( (int) $term_id, 'action-group' );
 		}
+	}
+
+	/**
+	 * Makes every query on the actions table fail with a database error.
+	 *
+	 * @return void
+	 */
+	private function breakActionsQueries(): void {
+		global $wpdb;
+
+		$wpdb->suppress_errors( true );
+		add_filter( 'query', [ $this, 'break_actions_query' ] );
+	}
+
+	private function restoreActionsQueries(): void {
+		global $wpdb;
+
+		remove_filter( 'query', [ $this, 'break_actions_query' ] );
+		$wpdb->suppress_errors( false );
 	}
 
 	private function countClaims(): int {

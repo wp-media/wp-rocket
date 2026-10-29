@@ -237,8 +237,12 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * Checks if the group has pending, due and unclaimed actions, mirroring the claim query filters.
 	 *
 	 * @return bool
+	 *
+	 * @throws \RuntimeException When the query fails, so do_batch() logs the database error.
 	 */
 	private function has_claimable_actions(): bool {
+		global $wpdb;
+
 		$actions = $this->store->query_actions(
 			[
 				'group'        => $this->group,
@@ -250,6 +254,10 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 				'orderby'      => 'none',
 			]
 		);
+
+		if ( empty( $actions ) && ! empty( $wpdb->last_error ) ) {
+			throw new \RuntimeException( sprintf( 'Unable to query claimable actions. Database error: %s', esc_html( $wpdb->last_error ) ) );
+		}
 
 		return ! empty( $actions );
 	}
