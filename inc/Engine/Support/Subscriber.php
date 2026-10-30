@@ -4,8 +4,21 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Admin\Options_Data;
 
 class Subscriber implements Subscriber_Interface {
+
+	/**
+	 * Live URLs. Define WP_ROCKET_WAP_SERVER_URL and WP_ROCKET_WAP_ISSUER_URL to use another environment, for example staging.
+	 */
+	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+	private const WAP_ISSUER_URL = 'https://wp-rocket.me/wp-json/grnd/v1/token';
+
+	private const TERMS_URL   = 'https://wp-rocket.me/terms/';
+	private const PRIVACY_URL = 'https://wp-rocket.me/privacy-policy/';
+	// The privacy policy stands in until there is a page explaining the assistant's access to the site.
+	private const SITE_ACCESS_URL = self::PRIVACY_URL;
+
 	/**
 	 * Rest instance
 	 *
@@ -21,14 +34,23 @@ class Subscriber implements Subscriber_Interface {
 	private $meta;
 
 	/**
+	 * Plugin options.
+	 *
+	 * @var Options_Data
+	 */
+	private Options_Data $options;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param Rest $rest Rest instance.
-	 * @param Meta $meta Meta instance.
+	 * @param Rest         $rest Rest instance.
+	 * @param Meta         $meta Meta instance.
+	 * @param Options_Data $options Plugin options.
 	 */
-	public function __construct( Rest $rest, Meta $meta ) {
-		$this->rest = $rest;
-		$this->meta = $meta;
+	public function __construct( Rest $rest, Meta $meta, Options_Data $options ) {
+		$this->rest    = $rest;
+		$this->meta    = $meta;
+		$this->options = $options;
 	}
 
 	/**
@@ -38,8 +60,11 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => 'register_support_route',
-			'rocket_buffer' => [ 'add_meta_generator', PHP_INT_MAX ],
+			'rest_api_init'         => 'register_support_route',
+			'rocket_buffer'         => [ 'add_meta_generator', PHP_INT_MAX ],
+			'admin_init'            => 'register_column',
+			'admin_notices'         => 'maybe_display_unavailable_notice',
+			'wap_client_capability' => 'get_rocket_capability',
 		];
 	}
 
@@ -62,5 +87,116 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_meta_generator( $html ): string {
 		return $this->meta->add_meta_generator( $html );
+	}
+
+	/**
+	 * Registers the WAP support chat column on the WP Rocket settings screen.
+	 *
+	 * @return void
+	 */
+	public function register_column(): void {
+		if ( ! class_exists( 'WapClient' ) ) {
+			return;
+		}
+
+		$config = $this->get_column_config();
+
+		if ( empty( $config ) ) {
+			return;
+		}
+
+		\WapClient::register_chat_column( $config );
+	}
+
+	/**
+	 * Gets the configuration of the WAP support chat column.
+	 *
+	 * @return array<string, mixed> The column configuration, or an empty array when the licence data is missing.
+	 */
+	public function get_column_config(): array {
+		$license_key = $this->options->get( 'consumer_key', '' );
+		$email       = $this->options->get( 'consumer_email', '' );
+
+		if ( empty( $license_key ) || empty( $email ) ) {
+			return [];
+		}
+
+		return [
+			'id'              => 'wp-rocket-support',
+			'product'         => 'wprocket',
+			// The design system only publishes stylesheets for some brands. An unknown brand loads an empty one and the launcher disappears.
+			'brand'           => 'group-one',
+			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
+			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
+			'page_context'    => 'support',
+			'server_url'      => rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
+				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
+				: self::WAP_SERVER_URL,
+			'grnd'            => [
+				'issuer_url'  => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+					? rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+					: self::WAP_ISSUER_URL,
+				'license_key' => $license_key . '|' . $email,
+			],
+			'terms_url'       => self::TERMS_URL,
+			'privacy_url'     => self::PRIVACY_URL,
+			'site_access_url' => self::SITE_ACCESS_URL,
+			'screens'         => [ 'settings_page_wprocket' ],
+			'column'          => [ 'side' => 'right' ],
+			'layout'          => [
+				// WAP picks the agent from the license through the token, so customers don't pick one.
+				'showAgentSelector' => false,
+			],
+		];
+	}
+
+	/**
+	 * Explains on the settings page why the support chat can't connect when WordPress Application Passwords are unavailable.
+	 *
+	 * The chat authenticates with an Application Password, so without one the widget can only fail to connect.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_unavailable_notice(): void {
+		if ( ! class_exists( '\GroupOne\WapClient\AppPasswordManager' ) || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id || empty( $this->get_column_config() ) ) {
+			return;
+		}
+
+		if ( \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available() ) {
+			return;
+		}
+
+		$reason = \GroupOne\WapClient\AppPasswordManager::is_https_missing()
+			? __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' )
+			: __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+
+		rocket_notice_html(
+			[
+				'status'      => 'warning',
+				'dismissible' => '',
+				'message'     => sprintf(
+					'<strong>%1$s</strong>: %2$s',
+					WP_ROCKET_PLUGIN_NAME,
+					$reason
+				),
+			]
+		);
+	}
+
+	/**
+	 * Maps the WAP capability to WP Rocket's own capability so no separate activation is needed.
+	 *
+	 * The filter passes the default WAP capability, which is not needed: this always returns ours.
+	 *
+	 * @return string
+	 */
+	public function get_rocket_capability(): string {
+		return 'rocket_manage_options';
 	}
 }
