@@ -125,4 +125,89 @@ class UsedCSS extends AbstractQuery {
 			]
 		);
 	}
+
+	/**
+	 * Add a row, storing the md5 of its exact url to back the (url_hash, is_mobile) unique key.
+	 *
+	 * @param array $data Row data.
+	 *
+	 * @return int|false Inserted row ID, false on failure (including a duplicate url and is_mobile pair).
+	 */
+	public function add_item( $data = [] ) {
+		if ( isset( $data['url'] ) ) {
+			$data['url_hash'] = md5( (string) $data['url'] );
+		}
+
+		return parent::add_item( $data );
+	}
+
+	/**
+	 * Get the highest row ID.
+	 *
+	 * @return int|false The highest ID, 0 for an empty table, false on a database error.
+	 */
+	public function get_max_id() {
+		$db = $this->get_db();
+
+		if ( ! $db ) {
+			return false;
+		}
+
+		$max_id = $db->get_var( "SELECT MAX(id) FROM `{$db->{$this->table_name}}`" );
+
+		if ( ! empty( $db->last_error ) ) {
+			return false;
+		}
+
+		return (int) $max_id;
+	}
+
+	/**
+	 * Delete the rows of an ID range having a newer row with the same url and is_mobile.
+	 *
+	 * The newest row of each group is kept: it is the one url-keyed writes target. Urls are
+	 * compared with the column collation, like get_row() does.
+	 *
+	 * @param int $after_id Exclusive lower bound of the ID range.
+	 * @param int $up_to_id Inclusive upper bound of the ID range.
+	 * @param int $limit    Maximum number of rows to delete.
+	 *
+	 * @return int|false Number of rows found in the range (so a full batch means more may remain), false on a database error or when no row of a non-empty batch could be deleted.
+	 */
+	public function delete_older_duplicates( int $after_id, int $up_to_id, int $limit ) {
+		$db = $this->get_db();
+
+		if ( ! $db ) {
+			return false;
+		}
+
+		$table = $db->{$this->table_name};
+
+		$ids = $db->get_col(
+			$db->prepare(
+				"SELECT DISTINCT t1.id FROM `{$table}` t1 INNER JOIN `{$table}` t2 ON t2.url = t1.url AND t2.is_mobile = t1.is_mobile AND t2.id > t1.id WHERE t1.id > %d AND t1.id <= %d LIMIT %d",
+				$after_id,
+				$up_to_id,
+				$limit
+			)
+		);
+
+		if ( ! empty( $db->last_error ) ) {
+			return false;
+		}
+
+		$deleted = 0;
+
+		foreach ( $ids as $id ) {
+			if ( false !== $this->delete_item( (int) $id ) ) {
+				++$deleted;
+			}
+		}
+
+		if ( ! empty( $ids ) && 0 === $deleted ) {
+			return false;
+		}
+
+		return count( $ids );
+	}
 }
