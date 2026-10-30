@@ -96,7 +96,7 @@ class Controller implements ControllerInterface {
 
 		$preload .= $this->preload_tag( $lcp );
 
-		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+		$replace = preg_replace( '#' . preg_quote( $title, '#' ) . '#', addcslashes( $preload, '\\$' ), $html, 1 );
 
 		if ( null === $replace ) {
 			return $html;
