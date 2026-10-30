@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -18,6 +19,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestMaybeDisplayUnavailableNotice extends TestCase {
 	private $options;
+	private $user_client;
 	private $subscriber;
 
 	public function set_up() {
@@ -27,8 +29,12 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 			define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 		}
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user_client = Mockery::mock( UserClient::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user_client );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] )->byDefault();
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
@@ -141,6 +147,21 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		$this->mock_app_password_manager( true );
 		$this->set_screen( 'settings_page_wprocket' );
 		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+
+		Functions\expect( 'rocket_notice_html' )->never();
+
+		$this->subscriber->maybe_display_unavailable_notice();
+	}
+
+	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testShouldNotDisplayWhenTheUserCannotUseTheAssistant() {
+		$this->mock_app_password_manager( false );
+		$this->set_screen( 'settings_page_wprocket' );
+		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => false ] );
 
 		Functions\expect( 'rocket_notice_html' )->never();
 

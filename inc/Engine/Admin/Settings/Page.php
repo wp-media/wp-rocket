@@ -326,6 +326,9 @@ class Page extends Abstract_Render {
 			return $data;
 		}
 
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
+
 		if ( ! empty( $user_data->licence_expiration ) ) {
 			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_revoked() ) ? 'wpr-isValid' : 'wpr-isInvalid';
 		}
