@@ -43,14 +43,9 @@
     text-transform: uppercase;
 }
 
-.rocket-promo-message,
-.rocket-promo-deal {
+.rocket-promo-message {
     @include font-size(16,24);
     margin-bottom: 0;
-}
-
-.rocket-promo-deal {
-    margin-top: $space;
 }
 
 .rocket-promo-cta-block {

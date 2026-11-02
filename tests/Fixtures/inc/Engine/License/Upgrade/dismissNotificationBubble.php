@@ -80,6 +80,23 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShouldDoNothingWhenUserIsTrialCustomer' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'       => strtotime( 'last year' ),
+			'is_trial_customer'  => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+				],
+			],
+		],
+		'expected' => false,
+	],
 	'testShouldSetTransientWhenPromoNotSeen' => [
 		'config'   => [
 			'licence_account'    => 1,

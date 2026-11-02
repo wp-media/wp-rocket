@@ -490,4 +490,40 @@ class Controller {
 
 		wp_send_json_success();
 	}
+
+	/**
+	 * Tracks the home page event after the user opts in to analytics.
+	 *
+	 * This method checks if the analytics notice has already been displayed and dismissed to ensure events are not tracked multiple times.
+	 * If not, it triggers the tracking of the Rocket Insights test.
+	 *
+	 * @param bool $status Indicates the current status of the analytics opt-in.
+	 *
+	 * @return void
+	 */
+	public function track_home_after_analytics_optin( bool $status ): void {
+		// Bail out if user disabled analytics.
+		if ( ! $status ) {
+			return;
+		}
+
+		// Bail out if analytics already enabled before and notice was dismissed.
+		if ( 1 === (int) get_option( 'rocket_analytics_notice_displayed' ) ) {
+			return;
+		}
+
+		$row_details = $this->query->get_row( home_url(), true );
+
+		// Bail out if row details is not found.
+		if ( empty( $row_details ) ) {
+			return;
+		}
+
+		// Bail out if test is still in progress.
+		if ( ! in_array( $row_details->status, [ 'completed', 'failed' ], true ) ) {
+			return;
+		}
+
+		$this->tracking->track_rocket_insights_test( $row_details, [], $this->plan->get_current_plan() );
+	}
 }

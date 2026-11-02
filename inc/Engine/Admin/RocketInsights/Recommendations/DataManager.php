@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
@@ -69,11 +70,14 @@ class DataManager implements LoggerAwareInterface {
 		'schedule_automatic_cleanup'   => 'database',
 		'cdn'                          => 'page_cdn',
 		'control_heartbeat'            => 'heartbeat',
-		'cache_logged_user'            => 'addons',
+		'cache_logged_user'            => 'advanced_cache',
 		'minify_concatenate_js'        => 'file_optimization',
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
+
+		'plugin_rocketcdn'             => 'page_cdn',
+		'plugin_imagify'               => 'media',
 	];
 
 	/**
@@ -115,18 +119,27 @@ class DataManager implements LoggerAwareInterface {
 	private $metric_formatter;
 
 	/**
+	 * RocketInsights Query instance.
+	 *
+	 * @var RocketInsightsQuery
+	 */
+	private RocketInsightsQuery $ri_query;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param APIClient       $api_client   API Client instance.
-	 * @param Options_Data    $options      Options instance.
-	 * @param GlobalScore     $global_score Global Score instance.
-	 * @param MetricFormatter $metric_formatter Metric Formatter instance.
+	 * @param APIClient           $api_client       API Client instance.
+	 * @param Options_Data        $options          Options instance.
+	 * @param GlobalScore         $global_score     Global Score instance.
+	 * @param MetricFormatter     $metric_formatter Metric Formatter instance.
+	 * @param RocketInsightsQuery $ri_query         RocketInsights Query instance.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score, MetricFormatter $metric_formatter ) {
+	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score, MetricFormatter $metric_formatter, RocketInsightsQuery $ri_query ) {
 		$this->api_client       = $api_client;
 		$this->options          = $options;
 		$this->global_score     = $global_score;
 		$this->metric_formatter = $metric_formatter;
+		$this->ri_query         = $ri_query;
 	}
 
 	/**
@@ -252,14 +265,16 @@ class DataManager implements LoggerAwareInterface {
 			);
 
 			// Track Mixpanel event immediately.
-			$this->track_event(
-				'Rocket Insights Recommendation',
-				[
-					'status'   => 'success',
-					'quantity' => $quantity,
-					'duration' => $duration,
-				]
-			);
+			$channel    = $this->get_triggering_channel();
+			$event_data = [
+				'status'   => 'success',
+				'quantity' => $quantity,
+				'duration' => $duration,
+			];
+			if ( '' !== $channel ) {
+				$event_data['interaction_channel'] = $channel;
+			}
+			$this->track_event( 'Rocket Insights Recommendation', $event_data );
 
 			return true;
 		}
@@ -289,14 +304,16 @@ class DataManager implements LoggerAwareInterface {
 		);
 
 		// Track Mixpanel event immediately.
-		$this->track_event(
-			'Rocket Insights Recommendation',
-			[
-				'status'   => 'error',
-				'quantity' => 0,
-				'duration' => $duration,
-			]
-		);
+		$channel    = $this->get_triggering_channel();
+		$event_data = [
+			'status'   => 'error',
+			'quantity' => 0,
+			'duration' => $duration,
+		];
+		if ( '' !== $channel ) {
+			$event_data['interaction_channel'] = $channel;
+		}
+		$this->track_event( 'Rocket Insights Recommendation', $event_data );
 
 		return false;
 	}
@@ -366,7 +383,16 @@ class DataManager implements LoggerAwareInterface {
 		return $data['status'];
 	}
 
+	/**
+	 * Check if at least one page is tracked in Rocket Insights.
+	 *
+	 * @return bool True if there are tracked pages, false otherwise.
+	 */
+	public function has_tracked_pages(): bool {
+		$global_score_data = $this->global_score->get_global_score_data();
 
+		return 'no-url' !== ( $global_score_data['status'] ?? 'no-url' );
+	}
 
 	/**
 	 * Check if required metrics are available for recommendations.
@@ -431,6 +457,15 @@ class DataManager implements LoggerAwareInterface {
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		$this->logger::debug( 'Recommendations: Transient extended (no changes detected)' );
+	}
+
+	/**
+	 * Get the interaction channel from the most recently completed Rocket Insights job.
+	 *
+	 * @return string
+	 */
+	private function get_triggering_channel(): string {
+		return $this->ri_query->get_last_completed_channel();
 	}
 
 	/**
@@ -525,7 +560,7 @@ class DataManager implements LoggerAwareInterface {
 			$value = $this->get_option_value( $option_key, $options );
 
 			// Check if option is enabled.
-			if ( $this->is_option_enabled( $option_key, $value ) ) {
+			if ( $this->is_option_enabled( $value ) ) {
 				$enabled[] = $option_key;
 			}
 		}
@@ -541,11 +576,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Check if a specific option is enabled.
 	 *
-	 * @param string $option_key Option key.
-	 * @param mixed  $value      Option value.
+	 * @param mixed $value Option value.
 	 * @return bool True if enabled, false otherwise.
 	 */
-	private function is_option_enabled( string $option_key, $value ): bool {
+	private function is_option_enabled( $value ): bool {
 		// Boolean options.
 		return ! empty( $value ) && 1 === (int) $value;
 	}
@@ -684,14 +718,16 @@ class DataManager implements LoggerAwareInterface {
 		);
 
 		// Track Mixpanel event immediately.
-		$this->track_event(
-			'Rocket Insights Recommendation',
-			[
-				'status'   => 'error',
-				'quantity' => 0,
-				'duration' => $duration,
-			]
-		);
+		$channel    = $this->get_triggering_channel();
+		$event_data = [
+			'status'   => 'error',
+			'quantity' => 0,
+			'duration' => $duration,
+		];
+		if ( '' !== $channel ) {
+			$event_data['interaction_channel'] = $channel;
+		}
+		$this->track_event( 'Rocket Insights Recommendation', $event_data );
 	}
 
 	/**

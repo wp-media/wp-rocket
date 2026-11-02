@@ -543,16 +543,18 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  * @param string|array              $urls       URLs of cache files to be deleted.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  * @param bool                      $run_actions Run actions.
+ *
+ * @return array Associative array of the given URLs and whether their cache was actually cleared.
  */
 function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -574,7 +576,12 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
+	$results = [];
+
 	foreach ( $urls as $url_key => $url ) {
+		$original_url = $url;
+		$cleared      = false;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
@@ -621,6 +628,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 						$current_file = $item->getPath() . DIRECTORY_SEPARATOR . $item->getFilename();
 						if ( $filesystem->exists( $current_file ) ) {
 							$filesystem->delete( $current_file );
+							$cleared = true;
 						}
 					}
 					// Remove the regex part from the url.
@@ -638,8 +646,13 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				} else {
 					$filesystem->delete( $entry );
 				}
+
+				$cleared = true;
 			}
 		}
+
+		$results[ $original_url ] = $cleared;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires after the cache file is deleted.
@@ -652,7 +665,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	}
 
 	if ( ! $run_actions ) {
-		return;
+		return $results;
 	}
 
 	/**
@@ -663,6 +676,8 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	 */
 	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	return $results;
 }
 
 /**

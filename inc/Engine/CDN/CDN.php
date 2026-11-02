@@ -232,6 +232,7 @@ class CDN {
 		 */
 		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zones );
 		$hosts = array_filter( $hosts );
+
 		$hosts = array_flip( array_flip( $hosts ) );
 		$hosts = array_values( $hosts );
 

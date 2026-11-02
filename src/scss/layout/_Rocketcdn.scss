@@ -5,359 +5,330 @@
     RocketCDN Banners & CTA
 
 \*-----------------------------------------------*/
+.wpr-rocketcdn-notice{
+	border-radius: 0;
+	margin: 15px 0 0 0;
+	border-left: 4px solid;
+	.wpr-notice-container{
+		padding: 10px 20px 10px 15px;
+	}
+	&__warning{
+		background:#FFF8E6;
+		border-color:#E8AE13;
+	}
+	p{
+		margin: 0;
+	}
+}
+.wpr-rocketcdn-btn{
+	background-color: #fff;
+	border-radius: 4px;
+	color: #0C0F1F;
+	text-decoration: none;
+	position: relative;
+	font-weight: 600;
+	display: inline-flex;
+	align-items: center;
+	padding:10px;
+	transition: all 200ms ease-out;
+    -webkit-transition: all 200ms ease-out;
+	&::before {
+		content: "";
+		display: inline-block;
+		line-height: 1;
+		background-image: url("../img/arrow-icon.svg");
+		background-size: contain;
+		background-repeat: no-repeat;
+		margin-right: 6px;
+		width: 16px;
+		height: 16px;
+	}
+	&:hover{
+		transform: translateY(-2px);
+		box-shadow: 0 7px 14px rgba(50, 50, 93, 0.25), 0 3px 6px rgba(0, 0, 0, 0.2);
+	}
+	&_retry{
+		display: inline-flex;
+		&::before {
+			background-image: url("../img/wpr-purge.svg");
+		}
+	}
+}
+.rocketcdn--upgrade_btn{
+	margin-right:30px;
+	color:#464F59;
+	font-weight: 500;
+	text-decoration: none;
+}
 .wpr-rocketcdn-cta-small {
-    border-radius: 5px;
-    margin: $space * 3 0;
-    padding: $space * 2;
+	border-radius: 5px;
+	margin: $space * 3 0;
+	padding: $space * 2;
 
-    &.wpr-isHidden{
-        display: none;
-    }
+	&.wpr-isHidden{
+		display: none;
+	}
 
-    .notice-title {
-        font-weight: 700;
-    }
+	.notice-title {
+		font-weight: 700;
+	}
 
-    .wpr-flex{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+	.wpr-flex{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
 
-        @include respond-to('xs') {
-            text-align: start;
-            flex-direction: column;
-        }
-    }
+		@include respond-to('xs') {
+			text-align: start;
+			flex-direction: column;
+		}
+	}
 }
 
 .wpr-rocketcdn-cta {
-    margin:10px 0;
-    position: relative;
+	margin:10px 0;
+	position: relative;
+	background: $cGreyLight3;
+	border: 1px solid $cGreyLighter1;
+	border-radius: 4px;
+	padding: $space * 2;
+	display: flex;
+	flex-direction: column;
+	gap: $space * 2;
 
-    &.wpr-isHidden{
-        display: none;
-    }
+	&-toggle {
+		display: flex;
+		align-items: flex-start;
+		gap: $space;
+		width: 100%;
+		cursor: pointer;
 
-    &-close {
-        position: absolute;
-        top: $space *2;
-        right: $space * 2;
-        background: transparent;
-        border: 0;
-        color: rgba( 255, 255, 255, 0.5 );
+		&__check {
+			width: 16px;
+			height: 16px;
+			flex-shrink: 0;
+			margin-top: 4px;
+			background-image: url("../img/rocketcdn-check.svg");
+			background-size: contain;
+			background-repeat: no-repeat;
+		}
 
-        @include respond-to('sm') {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
+		&__text {
+			margin: 0;
+			flex: 1;
+			@include font-size(14, 24);
+			color: #0c0f1f;
 
-        &--no-promo {
-            position: relative;
-            border: none;
-            background: none;
-            padding: 0;
-            margin: 0;
-            cursor: pointer;
-            outline: none;
-            width: 14px;
-            height: 16px;
-            flex-shrink: 0;
-            top:0;
-            right:0;
+			strong {
+				font-weight: 700;
+			}
 
-            @include respond-to('sm') {
-                position: absolute;
-                top: 20px;
-                right: 20px;
+            span {
+               font-size: 14px; 
+               color: #464F59;
             }
+		}
 
-            &:before {
-                content: url(../img/wpr-close.svg);
-            }
+		&__icon {
+			position: relative;
+			width: 24px;
+			height: 24px;
+			flex-shrink: 0;
+            align-self: center;
 
-            &:hover {
-                opacity: 0.7;
-            }
+			&:before {
+				content: '';
+				position: absolute;
+				top: 6px;
+				left: 7px;
+				width: 9px;
+				height: 9px;
+				border-right: 2px solid #121116;
+				border-bottom: 2px solid #121116;
+				transform: rotate(45deg);
+				transition: transform 0.2s ease;
+			}
+		}
+
+        &--max-limit {
+            display: none;
         }
-
-        &:before {
-            content: "\2715";
-		    color: $cBlack;
-		    font-weight: 700;
-		    @include font-size(24,32);
-        }
-    }
-
-    .wpr-rocketcdn-promo {
-        background: $brightSun;
-        border-top-left-radius: 2px;
-        border-top-right-radius: 2px;
-        padding: $space *2 $space *6 $space *2 $space *2;
-
-	  &-title {
-		font-weight: 700;
-		@include font-size(24,32);
-	  }
-
-        &-date {
-            margin: 0;
-		    font-weight: 500;
-		    @include font-size(16,24);
-        }
-    }
-
-    &-subtitle {
-        color: $cGreyDark1;
-        margin-top: 0;
-        @include font-size(14,24);
-    }
-
-    &-content {
-        background: $cGreyLight3;
-        border-top: 1px solid $cGreyLight1;
-        border-left: 1px solid $cGreyLight1;
-        border-right: 1px solid $cGreyLight1;
-        padding: $space * 2;
-
-        &--no-promo {
-            border-top-left-radius: 2px;
-            border-top-right-radius: 2px;
-            background: $cGreyLight3;
-            border: 1px solid $cGreyLight1;
-            padding: 32px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 24px;
-            flex: 1 0 0;
-        }
-    }
-
-    .wpr-flex{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: stretch;
-        gap: 24px;
-        flex: 1;
-        min-width: 0;
-
-        @include respond-to('xs') {
-            text-align: start;
-            flex-direction: column;
-        }
-    }
-
-    .wpr-rocketcdn-features {
-        margin: 0;
-        padding-right: $space *2;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 24px;
-        align-self: stretch;
-
-        @include respond-to('xs') {
-            border-right: none;
-        }
-    }
-
-    .wpr-rocketcdn-card-left {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: stretch;
-        gap: 24px;
-        flex: 1;
-        min-width: 0;
-    }
-
-    .wpr-rocketcdn-header {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: stretch;
-        gap: 8px;
-        color: #0c0f1f;
-        padding: 0 5px;
-
-        &--title{
-            font-size: 18px;
-            font-weight: 600;
-            line-height: 1.3;
-            margin: 0;
-        }
-
-        &--subtitle{
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.3;
-            margin: 0;
-        }
-    }
-
-    .wpr-rocketcdn-feature{
-        min-height: 30px;
-        padding-left: 62px;
-        position: relative;
-
-        &:before {
-            position: absolute;
-            top: 50%;
-            left: 5px;
-            transform: translateY(-50%);
-            width: 42px;
-            height: 32px;
-        }
-
-        &--content {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: stretch;
-            gap: 4px;
-            flex: 1;
-            min-width: 0;
-        }
-        &--title {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.3;
-            color: #0c0f1f;
-            margin: 0;
-        }
-        &--description {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.3;
-            color: #738191;
-            margin: 0;
-        }
-    }
-
-    .wpr-rocketcdn-bandwidth:before {
-        content: url(../img/bandwidth.svg);
-    }
-
-    .wpr-rocketcdn-configuration:before {
-        content: url(../img/configuration.svg);
-    }
-
-    .wpr-rocketcdn-automatic:before {
-        content: url(../img/automatic.svg);
-    }
-
-    &-footer {
-	    color: $cGreyDark4;
-        font-weight: 600;
-        padding: 0 $space 0 $space;
-	    @include font-size(14,22);
-
-        & a {
-		  	position: relative;
-		  	padding-left: 22px;
-
-            &:before {
-                content: '';
-			  	position: absolute;
-				width: 14px;
-				height: 15px;
-			  	background: url("../img/icon-i-circle.svg") no-repeat center center;
-				top: 3px;
-				left: 0;
-            }
-        }
-
-        &--cancel-notice {
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 4px;
-            font-family: "Roboto", sans-serif;
-            font-size: 11px;
-            font-weight: 600;
-            line-height: 1.3;
-            color: #738191;
-
-            span::after {
-                position: absolute;
-                content: url(../img/icon-i-circle.svg);
-                margin-left: 4px;
-                margin-top: 1px;
-            }
-        }
-    }
-
-    &-promo-footer {
-	    color: $cGreyDark4;
-	    padding: $space * 2 $space $space;
-	    @include font-size(14,22);
 	}
 
-    .wpr-rocketcdn-pricing {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        background-color: #ffffff;
-        border-radius: 4px;
-        width: 310px;
-        flex-shrink: 0;
-        align-self: flex-start;
-
-        &.has-regular-price {
-            max-height: 400px;
+    &.wpr-rocketcdn-cta---max-limit {
+        .wpr-rocketcdn-cta-toggle--default {
+            display: none;
         }
 
-
-        @include respond-to('xs') {
-            width: auto;
-        }
-
-        &-regular {
-            color: $cGreyDark3;
-
-            &-price.wpr-isHidden {
-                display: none;
-            }
-        }
-
-        &--logo {
+        .wpr-rocketcdn-cta-toggle--max-limit {
             display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 6px;
-            width: 100%;
-            padding: 24px 0;
-            border-bottom: 1px solid #e2e5e9;
-
-            &-icon {
-                width: auto;
-                height: 24px;
-            }
-
-            &-text {
-                width: auto;
-                height: 15px;
-            }
         }
+    }
 
-        &--content {
+	&-separator {
+		width: 100%;
+		height: 1px;
+		background: $cGreyLighter1;
+	}
+
+	&-expandable {
+		display: block;
+	}
+
+	&--collapsed {
+		.wpr-rocketcdn-cta-separator,
+		.wpr-rocketcdn-cta-expandable {
+			display: none;
+		}
+
+		.wpr-rocketcdn-cta-toggle__icon:before {
+			transform: rotate(-45deg);
+		}
+
+		.wpr-rocketcdn-cta-close {
+			display: none;
+		}
+	}
+
+	&.wpr-isHidden{
+		display: none;
+	}
+
+	&-close {
+		position: absolute;
+		top: $space *2;
+		right: $space * 2;
+		background: transparent;
+		border: 0;
+		color: rgba( 255, 255, 255, 0.5 );
+
+		&--no-promo {
+			position: absolute;
+			top: $space *2;
+			right: $space * 2;
+			background: transparent;
+			border: 0;
+			color: rgba( 0, 0, 0, 0.5 );
+
+			&:before {
+				content: "\2715";
+				font-weight: 700;
+				@include font-size(24,32);
+			}
+		}
+
+		&:before {
+			content: "\2715";
+			color: $cBlack;
+			font-weight: 700;
+			@include font-size(24,32);
+		}
+	}
+
+	.wpr-rocketcdn-promo {
+		background: $brightSun;
+		border-top-left-radius: 2px;
+		border-top-right-radius: 2px;
+		padding: $space *2 $space *6 $space *2 $space *2;
+
+		&-title {
+			font-weight: 700;
+			@include font-size(24,32);
+		}
+
+		&-date {
+			margin: 0;
+			font-weight: 500;
+			@include font-size(16,24);
+		}
+	}
+
+	&-subtitle {
+		color: $cGreyDark1;
+		margin-top: 0;
+		@include font-size(14,24);
+	}
+
+	&-content {
+		background: $cGreyLight3;
+
+		padding: $space * 2;
+
+		&--no-promo {
+			border-top-left-radius: 2px;
+			border-top-right-radius: 2px;
+			background: $cGreyLight3;
+		}
+	}
+
+	.wpr-flex{
+		display: flex;
+		justify-content: space-between;
+
+		@include respond-to('xs') {
+			text-align: start;
+			flex-direction: column;
+		}
+	}
+
+	.wpr-rocketcdn-features {
+		margin: 0;
+		padding-right: $space *2;
+
+		@include respond-to('xs') {
+			border-right: none;
+		}
+	}
+
+	.wpr-rocketcdn-pricing {
+		background-color: $cWhite;
+		align-items: center;
+		display: flex;
+		flex-direction: column;
+		width: calc( 100% / 2.5 );
+		max-width: 310px;
+
+		@include respond-to('xs') {
+			width: auto;
+		}
+
+		&-regular {
+			color: $cGreyDark3;
+			margin-bottom: $space;
+		}
+
+		.wpr-rocketcdn-cta-billing-detail {
+			margin-bottom: $space * 2;
+			@include font-size(16,22);
+		}
+
+		.wpr-rocketcdn-cta-currency {
+
+			&-major {
+				font-weight: 700;
+				@include font-size(48,56);
+			}
+
+			&-minor {
+				font-weight: 700;
+				vertical-align: top;
+				@include font-size(24,32);
+			}
+		}
+
+		&--content {
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
-            gap: 32px;
+            gap: 20px;
             width: 100%;
             padding: 24px;
             box-sizing: border-box;
             position: relative;
         }
 
-        &--toggle {
+		&--toggle {
             position: relative;
             display: flex;
             flex-direction: column;
@@ -366,7 +337,7 @@
             width: 100%;
             gap: 8px;
 
-            .wpr-rocketcdn-toggle--input {
+			.wpr-rocketcdn-toggle--input {
                 opacity: 0;
                 width: 0;
                 height: 0;
@@ -388,17 +359,17 @@
                     background-color: #a4caf9;
                     color: #0d5ec3;
                 }
-            }
+			}
 
-            .wpr-rocketcdn-toggle {
-                position: relative;
+			.wpr-rocketcdn-toggle {
+				position: relative;
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-start;
                 align-items: center;
                 gap: 8px;
 
-                &--slider {
+				&--slider {
                     position: relative;
                     cursor: pointer;
                     top: 0;
@@ -424,9 +395,9 @@
                         border-radius: 50%;
                     }
                 }
-            }
+			}
 
-            &-label {
+			&-label {
                 font-family: "Roboto", sans-serif;
                 font-size: 14px;
                 font-weight: 600;
@@ -441,9 +412,9 @@
                     order: 3;
                 }
             }
-        }
+		}
 
-        &--badge {
+		&--badge {
             font-family: "Roboto", sans-serif;
             font-size: 11px;
             font-weight: 600;
@@ -475,7 +446,7 @@
             }
         }
 
-        &--currency {
+		&--currency {
             font-size: 34px;
             line-height: 1.2;
         }
@@ -526,7 +497,7 @@
             }
         }
 
-        &--cta {
+		&--cta {
             font-family: "Roboto", sans-serif;
             font-size: 14px;
             font-weight: 600;
@@ -545,14 +516,70 @@
                 transform: translateY(1px);
             }
         }
-    }
+	}
+
+	.wpr-rocketcdn-feature{
+		margin: $space * 3 0;
+		min-height: 30px;
+		padding-left: 55px;
+		position: relative;
+
+		&:before {
+			position: absolute;
+			top: 50%;
+			left: 5px;
+			transform: translateY(-50%);
+		}
+	}
+
+	.wpr-rocketcdn-bandwidth:before {
+		content: url(../img/rocketcdn-speed.svg);
+	}
+
+	.wpr-rocketcdn-configuration:before {
+		left: 0;
+		content: url(../img/rocketcdn-bandwidth.svg);
+	}
+
+	.wpr-rocketcdn-automatic:before {
+		left: 0;
+		content: url(../img/rocketcdn-location.svg);
+	}
+
+	&-footer {
+		color: $cGreyDark4;
+		font-weight: 600;
+		padding: $space * 2 $space $space;
+		@include font-size(14,22);
+
+		& a {
+			position: relative;
+			padding-left: 22px;
+
+			&:before {
+				content: '';
+				position: absolute;
+				width: 14px;
+				height: 15px;
+				background: url("../img/icon-i-circle.svg") no-repeat center center;
+				top: 3px;
+				left: 0;
+			}
+		}
+	}
+
+	&-promo-footer {
+		color: $cGreyDark4;
+		padding: $space * 2 $space $space;
+		@include font-size(14,22);
+	}
 }
 
 .wpr-rocketcdn-subscription {
-    text-align: end;
+	text-align: end;
 
-    .wpr-rocketcdn-open {
-        color: $cGreyDark2;
-        text-decoration: underline;
-    }
+	.wpr-rocketcdn-open {
+		color: $cGreyDark2;
+		text-decoration: underline;
+	}
 }

@@ -90,5 +90,98 @@ return [
 				'total_blocking_time'      => null,
 			],
 		],
+
+		'shouldReturnNullWhenAllTestsHaveNullMetricData' => [
+			'config'   => [
+				'tests' => [
+					null,
+					null,
+					null,
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => null,
+				'time_to_first_byte'       => null,
+				'cumulative_layout_shift'  => null,
+				'total_blocking_time'      => null,
+			],
+		],
+
+		'shouldReturnNullWhenOnlyOneTestAvailableWithNullMetricData' => [
+			'config'   => [
+				'tests' => [
+					null,
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => null,
+				'time_to_first_byte'       => null,
+				'cumulative_layout_shift'  => null,
+				'total_blocking_time'      => null,
+			],
+		],
+
+		'shouldHandleNullMetricsGracefullyWhenOnlyOneTestMetricDataIsNull' => [
+			'config'   => [
+				'tests' => [
+					'{"largest_contentful_paint":2000,"time_to_first_byte":500,"cumulative_layout_shift":0.05,"total_blocking_time":200}',
+					null,
+					'{"largest_contentful_paint":3000,"time_to_first_byte":1000,"cumulative_layout_shift":0.15,"total_blocking_time":400}',
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => 2500.0,   // (2000 + 3000) / 2
+				'time_to_first_byte'       => 750.0,  // (500 + 1000) / 2
+				'cumulative_layout_shift'  => (0.05 + 0.15) / 2,   // (0.05 + 0.15) / 2
+				'total_blocking_time'      => 300.0,   // (200 + 400) / 2
+			],
+		],
+
+		'shouldHandleEmptyMetricsGracefullyWhenOnlyOneTestMetricDataIsEmpty' => [
+			'config'   => [
+				'tests' => [
+					'{"largest_contentful_paint":2000,"time_to_first_byte":500,"cumulative_layout_shift":0.05,"total_blocking_time":200}',
+					'',
+					'{"largest_contentful_paint":3000,"time_to_first_byte":1000,"cumulative_layout_shift":0.15,"total_blocking_time":400}',
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => 2500.0,   // (2000 + 3000) / 2
+				'time_to_first_byte'       => 750.0,  // (500 + 1000) / 2
+				'cumulative_layout_shift'  => (0.05 + 0.15) / 2,   // (0.05 + 0.15) / 2
+				'total_blocking_time'      => 300.0,   // (200 + 400) / 2
+			],
+		],
+
+		'shouldReturnNullWhenOnlyOneTestAvailableWithEmptyMetricData' => [
+			'config'   => [
+				'tests' => [
+					'',
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => null,
+				'time_to_first_byte'       => null,
+				'cumulative_layout_shift'  => null,
+				'total_blocking_time'      => null,
+			],
+		],
+
+		'shouldReturnNullWhenAllTestsHaveEmptyMetricData' => [
+			'config'   => [
+				'tests' => [
+					'',
+					'',
+					'',
+				],
+			],
+			'expected' => [
+				'largest_contentful_paint' => null,
+				'time_to_first_byte'       => null,
+				'cumulative_layout_shift'  => null,
+				'total_blocking_time'      => null,
+			],
+		],
+
 	],
 ];

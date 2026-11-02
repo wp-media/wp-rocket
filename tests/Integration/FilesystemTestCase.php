@@ -3,12 +3,15 @@
 namespace WP_Rocket\Tests\Integration;
 
 use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	use HttpRequestTrait;
 	use DBTrait;
 	use SettingsTrait;
 	use StubTrait;
@@ -60,6 +63,9 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		$this->initDefaultStructure();
 		$this->init();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
@@ -80,5 +86,8 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 		unset( $GLOBALS['debug_fs'] );
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 }

@@ -65,6 +65,24 @@ return [
 			],
 		],
 
+		'shouldReturnNoPagesMessageWhenNoTrackedPagesAndCachedFailed' => [
+			'config'   => [
+				'user_role'           => 'administrator',
+				'global_score_status' => 'no-url',
+				'transient_data'      => [
+					'status'          => 'failed',
+					'recommendations' => [],
+					'metadata'        => [],
+					'timestamp'       => time(),
+					'error'           => 'Recommendations unavailable',
+				],
+			],
+			'expected' => [
+				'status'       => 'failed',
+				'has_no_pages' => true,
+			],
+		],
+
 		'shouldReturnFailedStatusWithError' => [
 			'config'   => [
 				'user_role'      => 'administrator',

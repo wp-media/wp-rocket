@@ -11,11 +11,13 @@ class Test_addPreconnectCdn extends TestCase {
 	public function set_up() {
 		$this->unregisterAllCallbacksExcept( 'wp_resource_hints', 'add_preconnect_cdn', 10 );
 
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ] );
 		parent::set_up();
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'wp_resource_hints' );
+		delete_transient( 'rocketcdn_status' );
 
 		parent::tear_down();
 	}

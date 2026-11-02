@@ -37,6 +37,7 @@ class WPRocketUninstall {
 		'rocket_analytics_notice_displayed',
 		'rocketcdn_user_token',
 		'rocketcdn_process',
+		'rocket_rocketcdn_forced_pause_state',
 		'wp_rocket_hide_deactivation_form',
 		'wp_rocket_last_base_url',
 		'wp_rocket_no_licence',
@@ -45,6 +46,9 @@ class WPRocketUninstall {
 		'wp_rocket_rocketcdn_old_url',
 		'plugin_family_dismiss_promote_imagify',
 		'rocket_mixpanel_optin',
+		'rocketcdn_status_fetch_lock',
+		'rocket_cdn_website_search_fetch_lock',
+		'rocket_cdn_retry_pro_detection_attempts',
 	];
 
 	/**
@@ -64,6 +68,7 @@ class WPRocketUninstall {
 		'rocketcdn_status',
 		'rocketcdn_pricing',
 		'rocketcdn_purge_cache_response',
+		'rocketcdn_purchase_tracked',
 		'rocket_cloudflare_ips',
 		'rocket_cloudflare_is_api_keys_valid',
 		'rocket_preload_triggered',
@@ -95,6 +100,20 @@ class WPRocketUninstall {
 		'wpr_global_score_data',
 		'wp_rocket_log_file_size_check',
 		'wpr_ri_recommendations',
+		'rocket_cdn_website_search',
+		'rocket_mixpanel_reseller_synced',
+		'rocket_cdn_pro_detection_failed',
+		'rocket_cdn_check_status_request_timeout',
+		'rocket_cdn_check_status_request_timeout_active',
+	];
+
+	/**
+	 * Prefixes of WP Rocket transients with dynamic suffixes.
+	 *
+	 * @var array
+	 */
+	private $transient_prefixes = [
+		'rocket_cname_valid_',
 	];
 
 	/**
@@ -118,6 +137,9 @@ class WPRocketUninstall {
 		'rocket_preload_clean_rows_time_event',
 		'rocket_preload_process_pending',
 		'rocket_preload_revert_old_failed_rows',
+		'rocket_cdn_create_request_timeout',
+		'rocket_cdn_create_request_timeout_active',
+		'rocket_cron_refresh_trial_customer_data',
 	];
 
 	/**
@@ -240,6 +262,7 @@ class WPRocketUninstall {
 		}
 
 		array_walk( $this->transients, 'delete_transient' );
+		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
 
 		foreach ( $this->events as $event ) {
@@ -248,6 +271,27 @@ class WPRocketUninstall {
 			}
 			wp_clear_scheduled_hook( $event );
 		}
+	}
+
+	/**
+	 * Deletes all transients whose names start with the given prefix.
+	 *
+	 * Used for transients with a dynamic suffix (e.g. rocket_cname_valid_<md5>).
+	 *
+	 * @param string $prefix Transient name prefix (without the _transient_ storage prefix).
+	 * @return void
+	 */
+	private function delete_transients_by_prefix( string $prefix ): void {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+				$wpdb->esc_like( '_transient_' . $prefix ) . '%',
+				$wpdb->esc_like( '_transient_timeout_' . $prefix ) . '%'
+			)
+		);
 	}
 
 	/**

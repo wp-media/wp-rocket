@@ -47,7 +47,7 @@ class DisplayUpgradeSection extends TestCase {
 
 	private function getActualHtml() {
 		ob_start();
-		do_action( 'rocket_dashboard_license_info' );
+		do_action( 'rocket_account_license_info' );
 		$actual = ob_get_clean();
 
 		return empty( $actual )

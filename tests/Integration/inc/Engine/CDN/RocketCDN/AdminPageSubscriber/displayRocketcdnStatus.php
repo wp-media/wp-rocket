@@ -29,13 +29,22 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
-		$this->unregisterAllCallbacksExcept( 'rocket_dashboard_after_account_data', 'display_rocketcdn_status' );
+		// AdminPageSubscriber is only wired onto rocket_account_after_license_info at
+		// bootstrap when is_admin() was true at Plugin::__construct() time -- evaluated
+		// once, before this (or any) test's set_current_screen() call can influence it.
+		// Register it explicitly here so unregisterAllCallbacksExcept() always has a
+		// matching callback to isolate, regardless of that one-time bootstrap timing.
+		$container  = apply_filters( 'rocket_container', null );
+		$subscriber = $container->get( 'rocketcdn_admin_subscriber' );
+		add_action( 'rocket_account_after_license_info', [ $subscriber, 'display_rocketcdn_status' ] );
+
+		$this->unregisterAllCallbacksExcept( 'rocket_account_after_license_info', 'display_rocketcdn_status' );
 	}
 
 	public function tear_down() {
 		delete_transient( 'rocketcdn_status' );
 
-		$this->restoreWpHook( 'rocket_dashboard_after_account_data' );
+		$this->restoreWpHook( 'rocket_account_after_license_info' );
 
 		parent::tear_down();
 	}
@@ -48,8 +57,12 @@ class Test_DisplayRocketcdnStatus extends TestCase {
 		$this->home_url    = $config['home_url'];
 		set_transient( 'rocketcdn_status', $rocketcdn_status, MINUTE_IN_SECONDS );
 
+		$container = apply_filters( 'rocket_container', null );
+		$user      = $container->get( 'user' );
+		$user->set_user( (object) [ 'is_reseller' => $config['is_reseller'] ?? false ] );
+
 		ob_start();
-		do_action( 'rocket_dashboard_after_account_data' );
+		do_action( 'rocket_account_after_license_info' );
 		$actual = ob_get_clean();
 
 		$this->assertSame(

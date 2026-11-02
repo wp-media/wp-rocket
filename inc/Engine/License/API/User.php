@@ -44,6 +44,17 @@ class User {
 	}
 
 	/**
+	 * Gets the user license type slug, e.g. single, plus, infinite or multi500
+	 *
+	 * Unlike the licence size, it tells apart the multi licenses, which report the same size as infinite.
+	 *
+	 * @return string
+	 */
+	public function get_license_type_slug(): string {
+		return (string) ( $this->user->licence->type ?? '' );
+	}
+
+	/**
 	 * Gets the user license expiration timestamp
 	 *
 	 * @return int
@@ -509,6 +520,15 @@ class User {
 	}
 
 	/**
+	 * Checks if the customer is on a trial license (active, cancelled or expired, until converted to paid).
+	 *
+	 * @return bool
+	 */
+	public function is_trial_customer(): bool {
+		return ( $this->user->is_trial_cancelled ?? false ) || ( $this->user->is_trial_customer ?? false );
+	}
+
+	/**
 	 * Retrieves the Rocket Insights plan data associated with the specified SKU.
 	 *
 	 * @param string $sku The SKU identifier used to find the corresponding Rocket Insights plan.
@@ -545,6 +565,23 @@ class User {
 	 */
 	public function ban_reason() {
 		return $this->user->licence->plugin_updates_ban_reason ?? '';
+	}
+
+	/**
+	 * Checks if the current website is a reseller account whose license was specifically banned.
+	 *
+	 * This is the single source of truth for "reseller-banned" state, combining reseller
+	 * scoping with the specific `BANNED_WEBSITE` ban reason so it is not confused with
+	 * other revocation causes (non-payment, fraud, chargeback, etc.).
+	 *
+	 * @since 3.23.1
+	 *
+	 * @return bool
+	 */
+	public function is_reseller_license_banned(): bool {
+		return $this->is_reseller_account()
+			&& $this->is_revoked()
+			&& 'BANNED_WEBSITE' === $this->ban_reason();
 	}
 
 	/**
@@ -609,5 +646,27 @@ class User {
 			return '';
 		}
 		return $reasons[ $reason_code ];
+	}
+
+	/**
+	 * Get currency from user data.
+	 *
+	 * @return string
+	 */
+	public function get_currency() {
+		return $this->user->currency ?? 'USD';
+	}
+
+	/**
+	 * Gets the user rocketcdn free url.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_free_url() {
+		if ( ! isset( $this->user->rocketcdn->cdn_free_url ) ) {
+			return '';
+		}
+
+		return (string) $this->user->rocketcdn->cdn_free_url;
 	}
 }

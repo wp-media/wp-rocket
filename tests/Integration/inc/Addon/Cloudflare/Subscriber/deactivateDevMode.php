@@ -10,6 +10,24 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestDeactivateDevmode extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
+	public function set_up() {
+		parent::set_up();
+
+		// deactivate_devmode() itself saves the settings option, which would otherwise trigger
+		// display_settings_notice()'s real zone lookup as a side effect unrelated to this test.
+		$this->unregisterAllCallbacks( 'pre_update_option_wp_rocket_settings' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
+
+		parent::tear_down();
+	}
+
 	public function testShouldDoExpected() {
 		do_action( 'rocket_cron_deactivate_cloudflare_devmode' );
 

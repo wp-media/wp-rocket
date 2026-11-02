@@ -1,0 +1,363 @@
+// main: ../main.scss
+
+/*-----------------------------------------------*\
+
+    Dashboard sidebar: license and promo banners
+
+    The banner templates keep their horizontal markup and layout (_Renewals.scss, _Promotion.scss).
+    Everything here is scoped under .wpr-Dashboard-sidebar and turns them into a column card.
+
+\*-----------------------------------------------*/
+
+.wpr-Dashboard-sidebar{
+
+    // Expiring soon: text, then the countdown, then the button.
+    .rocket-renewal-banner{
+        display: flex;
+        flex-flow: column;
+        align-items: stretch;
+        justify-content: flex-start;
+        gap: 0;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        .rocket-renew-message{
+            order: 1;
+            width: 100%;
+            margin: 0;
+
+            & > p{
+                margin: 0 0 $space;
+                @include font-size(14,21);
+            }
+        }
+
+        .rocket-promo-countdown{
+            order: 2;
+        }
+
+        .rocket-renew-cta-container{
+            order: 3;
+            width: 100%;
+        }
+    }
+
+    // Expired, trial ended and revoked.
+    .rocket-renewal-expired-banner{
+        display: flex;
+        flex-flow: column;
+        gap: $space*2;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        .banner-copy,
+        &.revoked-website-banner .banner-copy{
+            width: 100%;
+        }
+
+        .rocket-renewal-expired-banner-container{
+            flex-flow: column;
+
+            & > div{
+                width: 100%;
+            }
+        }
+
+        .rocket-expired-title{
+            margin: 0;
+
+            // Warning icon, on its own line above the title.
+            &::before{
+                display: block;
+                width: 42px;
+                height: 32px;
+                margin: 0 0 $space*1.5;
+                background: url(../img/wpr-warning-picto.svg) center / contain no-repeat;
+                content: "";
+            }
+        }
+
+        .rocket-expired-message > p{
+            margin: 0 0 $space;
+            padding-left: 0;
+            @include font-size(14,21);
+        }
+
+        .rocket-expired-cta-container{
+            align-self: stretch;
+        }
+    }
+
+    // Promo.
+    .rocket-promo-banner{
+        flex-flow: column;
+        justify-content: flex-start;
+        gap: 0;
+        margin-top: 0;
+        padding: $space*2;
+        border-radius: 4px;
+
+        & > div{
+            width: 100%;
+        }
+
+        // Discount: small navy label above the title.
+        .rocket-promo-title{
+            display: flex;
+            flex-flow: column;
+            align-items: flex-start;
+            gap: $space*1.5;
+        }
+
+        .rocket-promo-discount{
+            margin: 0;
+            padding: $space/2 $space;
+            border-radius: 2px;
+            background: $cActionPrimary;
+            color: $cWhite;
+            @include font-size(11,16);
+            font-weight: 590;
+        }
+
+        .rocket-promo-cta-block{
+            align-items: stretch;
+            margin-right: 0;
+        }
+    }
+
+    // Shared: countdown and buttons fill the card.
+    .rocket-promo-countdown{
+        width: 100%;
+        margin: $space*1.5 0 $space*2;
+        padding: 0;
+        gap: $space;
+
+        // Pale yellow boxes, regular weight digits.
+        & > .rocket-countdown-item{
+            margin-right: 0;
+            margin-bottom: 0;
+            padding: $space*.75 $space/2;
+            border-radius: 4px;
+            background: $brightSunLight;
+            color: $cGreyDark3;
+            @include font-size(11,16);
+            font-weight: 500;
+
+            & > .rocket-countdown-value{
+                color: $cBlack;
+                @include font-size(16,24);
+                font-weight: 500;
+            }
+        }
+    }
+
+    // Shared by every banner: title, message and primary button.
+    .rocket-promo-title,
+    .rocket-expired-title{
+        margin-bottom: 0;
+        @include font-size(16,24);
+        font-weight: 700;
+    }
+
+    .rocket-promo-message,
+    .rocket-renew-message,
+    .rocket-expired-message{
+        margin-top: 0;
+        @include font-size(14,21);
+        font-weight: 400;
+
+        & > p{
+            margin-top: 0;
+            @include font-size(14,21);
+
+            &:last-child{
+                margin-bottom: 0;
+            }
+        }
+
+        b,
+        strong{
+            font-weight: 590;
+        }
+    }
+
+    .rocket-renew-cta,
+    .rocket-promo-cta{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: $space*5;
+        padding: $space*.75 $space*1.5;
+        border: 1px solid $cActionPrimary;
+        border-radius: 4px;
+        background: $cActionPrimary;
+        color: $cWhite;
+        text-align: center;
+        text-decoration: none;
+        @include font-size(14,21);
+        font-weight: 590;
+
+        // Arrow icon after the label (not on the expired trial banner or the promo CTA, as in the design).
+        &::after{
+            flex: 0 0 20px;
+            width: 20px;
+            height: 20px;
+            margin-left: $space;
+            background: url(../img/wpr-arrow-right-banner.svg) center / contain no-repeat;
+            font-size: 0;
+            content: "";
+        }
+    }
+
+    .rocket-trial-expired-banner .rocket-renew-cta::after,
+    .rocket-promo-cta::after{
+        content: none;
+    }
+
+    // Thin, light close icon, same on every banner.
+    .wpr-notice-close{
+        top: $space*1.5;
+        right: $space*1.5;
+        width: $space*3;
+        height: $space*3;
+        padding: 0;
+        border: 0;
+        background: url(../img/wpr-close-thin.svg) center / 10px 10px no-repeat;
+        font-size: 0;
+        line-height: 0;
+        cursor: pointer;
+
+        &:before{
+            content: none;
+        }
+
+        &:hover{
+            opacity: .7;
+        }
+    }
+
+    // Add-on cards (Imagify, RocketCDN): collapsed by default, the benefits list shows when expanded.
+    .wpr-addonCard{
+        position: relative;
+        padding: $space*2;
+        border-radius: 4px;
+        background: $cAddonCard;
+        color: $cBlack;
+
+        & + .wpr-addonCard{
+            margin-top: $space*2;
+        }
+
+        &-title{
+            margin: 0 0 $space*1.5;
+            padding-right: $space*3;
+            color: $cOrange;
+            @include font-size(16,24);
+            font-weight: 700;
+        }
+
+        &-image{
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0 0 $space*1.5;
+            border-radius: 4px;
+        }
+
+        &-lead{
+            font-weight: 590;
+        }
+
+        &-text{
+            margin: 0 0 $space*1.5;
+            @include font-size(14,20);
+        }
+
+        &-toggle{
+            display: inline;
+            padding: 0;
+            border: 0;
+            background: none;
+            color: inherit;
+            font: inherit;
+            text-decoration: underline;
+            cursor: pointer;
+
+            &:focus-visible{
+                outline: 2px solid $cOrange;
+                outline-offset: 2px;
+            }
+        }
+
+        &-list{
+            margin: 0 0 $space;
+            padding: 0;
+            list-style: none;
+            @include font-size(14,20);
+
+            &[hidden]{
+                display: none;
+            }
+
+            li{
+                position: relative;
+                margin: 0 0 $space;
+                padding-left: $space*3;
+
+                // Orange check icon, centred on the item (also when the text wraps on two lines).
+                &:before{
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    width: 16px;
+                    height: 16px;
+                    margin-top: -8px;
+                    background: url(../img/wpr-check-orange.svg) center / contain no-repeat;
+                }
+
+                strong,
+                b{
+                    font-weight: 590;
+                }
+            }
+        }
+
+
+        &-button{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            width: 100%;
+            height: $space*5;
+            padding: $space*.75 $space*1.5;
+            border: 1px solid $cOrange;
+            border-radius: 4px;
+            background: $cOrange;
+            box-shadow: none;
+            color: #fff;
+            letter-spacing: normal;
+            text-align: center;
+            text-decoration: none;
+            text-transform: none;
+            @include font-size(14,21);
+            font-weight: 590;
+
+            &:hover,
+            &:focus{
+                background: $cOrangeLight1;
+                color: #fff;
+            }
+        }
+    }
+
+    // Collapsed add-on card: the text is followed by the button.
+    .wpr-addonCard-list[hidden] + .wpr-addonCard-button{
+        margin-top: $space/2;
+    }
+}

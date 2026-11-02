@@ -3,8 +3,8 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Abstract_Render;
-use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -21,59 +21,51 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	private $api_client;
 
 	/**
-	 * WP Rocket options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
-	 * Beacon instance
-	 *
-	 * @var Beacon
-	 */
-	private $beacon;
-
-	/**
 	 * UserClient instance
 	 *
-	 * @var \WP_Rocket\Engine\License\API\UserClient
+	 * @var UserClient
 	 */
 	private $user_client;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient                                $api_client    RocketCDN API Client instance.
-	 * @param Options_Data                             $options       WP Rocket options instance.
-	 * @param Beacon                                   $beacon        Beacon instance.
-	 * @param \WP_Rocket\Engine\License\API\UserClient $user_client   UserClient instance.
-	 * @param string                                   $template_path Path to the templates.
+	 * @param APIClient  $api_client    RocketCDN API Client instance.
+	 * @param UserClient $user_client   UserClient instance.
+	 * @param User       $user          User instance.
+	 * @param string     $template_path Path to the templates.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, Beacon $beacon, $user_client, $template_path ) {
+	public function __construct( APIClient $api_client, $user_client, User $user, $template_path ) {
 		parent::__construct( $template_path );
 
 		$this->api_client  = $api_client;
-		$this->options     = $options;
-		$this->beacon      = $beacon;
 		$this->user_client = $user_client;
+		$this->user        = $user;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_dashboard_after_account_data' => 'display_rocketcdn_status',
-			'rocket_cdn_settings_fields'          => 'rocketcdn_field',
-			'admin_post_rocket_purge_rocketcdn'   => 'purge_cdn_cache',
-			'rocket_settings_page_footer'         => 'add_subscription_modal',
-			'http_request_args'                   => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
+			'rocket_account_after_license_info' => 'display_rocketcdn_status',
+			'admin_post_rocket_purge_rocketcdn' => 'purge_cdn_cache',
+			'rocket_settings_page_footer'       => 'add_subscription_modal',
+			'http_request_args'                 => [ 'preserve_authorization_token', PHP_INT_MAX, 2 ],
 		];
 	}
 
 	/**
-	 * Displays the RocketCDN section on the dashboard tab
+	 * Displays the RocketCDN section on the account tab
 	 *
 	 * @since  3.5
 	 *
@@ -93,94 +85,46 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 			return;
 		}
 
+		if ( $this->user->is_reseller_account() ) {
+			return;
+		}
+
 		$subscription_data = $this->api_client->get_subscription_data();
 
 		$container_class = '';
-		$status_class    = '';
-		$label           = '';
-		$status_text     = '';
 		$is_active       = false;
+		$items           = [];
 
-		if ( 'running' === $subscription_data['subscription_status'] ) {
-			$label        = __( 'Next Billing Date', 'rocket' );
-			$status_class = ' wpr-isValid';
-			$status_text  = date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) );
-			$is_active    = true;
+		if ( 'running' === $subscription_data['subscription_status'] && 'paid' === $subscription_data['plan_type'] ) {
+			$items[] = [
+				'label' => __( 'Plan', 'rocket' ),
+				'value' => __( 'RocketCDN Pro', 'rocket' ),
+				'class' => ' wpr-isValid wpr-no-icon',
+			];
+			$items[] = [
+				'label' => __( 'Next Billing Date', 'rocket' ),
+				'value' => date_i18n( get_option( 'date_format' ), strtotime( $subscription_data['subscription_next_date_update'] ) ),
+				'class' => ' wpr-isValid',
+			];
+
+			$is_active = true;
 		} else {
-			$status_class    = ' wpr-isInvalid';
+			$items[]         = [
+				'label' => '',
+				'value' => __( 'No RocketCDN Pro Subscription', 'rocket' ),
+				'class' => ' wpr-isInvalid',
+			];
 			$container_class = ' wpr-flex--egal';
-			$status_text     = __( 'No Subscription', 'rocket' );
 		}
 
 		$data = [
 			'is_live_site'    => rocket_is_live_site(),
 			'container_class' => $container_class,
-			'label'           => $label,
-			'status_class'    => $status_class,
-			'status_text'     => $status_text,
 			'is_active'       => $is_active,
+			'items'           => $items,
 		];
 
 		echo $this->generate( 'dashboard-status', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
-	}
-
-	/**
-	 * Adds the RocketCDN fields to the CDN section
-	 *
-	 * @since  3.5
-	 *
-	 * @param array $fields CDN settings fields.
-	 *
-	 * @return array
-	 */
-	public function rocketcdn_field( $fields ) {
-		if ( $this->is_white_label_account() ) {
-			return $fields;
-		}
-
-		$subscription_data = $this->api_client->get_subscription_data();
-
-		if ( 'running' !== $subscription_data['subscription_status'] ) {
-			return $fields;
-		}
-
-		$helper_text = __( 'Your RocketCDN subscription is currently active.', 'rocket' );
-		$cdn_cnames  = $this->options->get( 'cdn_cnames', [] );
-
-		if ( empty( $cdn_cnames ) || $cdn_cnames[0] !== $subscription_data['cdn_url'] ) {
-			$helper_text = sprintf(
-				// translators: %1$s = opening <code> tag, %2$s = CDN URL, %3$s = closing </code> tag.
-				__( 'To use RocketCDN, replace your CNAME with %1$s%2$s%3$s.', 'rocket' ),
-				'<code>',
-				$subscription_data['cdn_url'],
-				'</code>'
-			);
-		}
-
-		$beacon = $this->beacon->get_suggest( 'rocketcdn' );
-
-		$more_info = sprintf(
-			// translators: %1$is = opening link tag, %2$s = closing link tag.
-			__( '%1$sMore Info%2$s', 'rocket' ),
-			'<a href="' . esc_url( $beacon['url'] ) . '" data-beacon-article="' . esc_attr( $beacon['id'] ) . '" rel="noopener noreferrer" target="_blank">',
-			'</a>'
-		);
-
-		$fields['cdn_cnames'] = [
-			'type'        => 'rocket_cdn',
-			'label'       => __( 'CDN CNAME(s)', 'rocket' ),
-			'description' => __( 'Specify the CNAME(s) below', 'rocket' ),
-			'helper'      => $helper_text . ' ' . $more_info,
-			'default'     => '',
-			'section'     => 'cnames_section',
-			'page'        => 'page_cdn',
-			'beacon'      => [
-				'url' => $beacon['url'],
-				'id'  => $beacon['id'],
-			],
-		];
-
-		return $fields;
 	}
 
 	/**
@@ -214,6 +158,10 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 	 */
 	public function add_subscription_modal() {
 		if ( $this->is_white_label_account() ) {
+			return;
+		}
+
+		if ( $this->user->is_reseller_account() ) {
 			return;
 		}
 
@@ -251,14 +199,14 @@ class AdminPageSubscriber extends Abstract_Render implements Subscriber_Interfac
 		);
 		?>
 		<script type="text/javascript">
-			window.rocketcdnButtonUrl = '<?php echo $button_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>';
+			window.rocketcdnButtonUrl = <?php echo wp_json_encode( $button_url ); ?>;
 		</script>
 		<div class="wpr-rocketcdn-modal" id="wpr-rocketcdn-modal" aria-hidden="true">
 			<div class="wpr-rocketcdn-modal__overlay" tabindex="-1" data-micromodal-close>
 				<div class="wpr-loader" id="wpr-rocketcdn-modal-loader"></div>
 				<div class="wpr-rocketcdn-modal__container" role="dialog" aria-modal="true" aria-labelledby="wpr-rocketcdn-modal-title">
 					<div id="wpr-rocketcdn-modal-content">
-						<iframe id="rocketcdn-iframe" src="<?php echo esc_url( $iframe_src ); ?>" loading="lazy" width="674" height="425"></iframe>
+						<iframe id="rocketcdn-iframe" data-src="<?php echo esc_url( $iframe_src ); ?>" loading="lazy" width="674" height="425"></iframe>
 					</div>
 				</div>
 			</div>

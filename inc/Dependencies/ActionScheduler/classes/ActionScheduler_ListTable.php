@@ -67,6 +67,13 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	protected static $did_notification = false;
 
 	/**
+	 * Statuses for which the Claim ID column is shown.
+	 *
+	 * @var string[]
+	 */
+	private static $statuses_with_claim_id = array( 'in-progress', 'failed' );
+
+	/**
 	 * Array of seconds for common time periods, like week or month, alongside an internationalised string representation, i.e. "Day" or "Days"
 	 *
 	 * @var array
@@ -108,6 +115,12 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			'group',
 		);
 
+		/*
+		 * Only the emptiness of this property matters here: it is what causes the search box to be
+		 * rendered. The individual entries are unused, because this class overrides prepare_items()
+		 * and delegates searching to the store, rather than using the parent's
+		 * get_items_query_search().
+		 */
 		$this->search_by = array(
 			'hook',
 			'args',
@@ -118,7 +131,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 
 		if ( empty( $request_status ) ) {
 			$this->sort_by[] = 'status';
-		} elseif ( in_array( $request_status, array( 'in-progress', 'failed' ), true ) ) {
+		} elseif ( in_array( $request_status, self::$statuses_with_claim_id, true ) ) {
 			$this->columns  += array( 'claim_id' => __( 'Claim ID', 'action-scheduler' ) );
 			$this->sort_by[] = 'claim_id';
 		}
@@ -323,6 +336,22 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 	}
 
 	/**
+	 * Render the hook name and action ID.
+	 *
+	 * @param array $row Action data.
+	 * @return string
+	 */
+	public function column_hook( $row ) {
+		$action_id = sprintf(
+			/* translators: %d: Action ID. */
+			__( 'ID: %d', 'action-scheduler' ),
+			absint( $row['ID'] )
+		);
+
+		return esc_html( $row['hook'] ) . '<br><small>' . esc_html( $action_id ) . '</small>' . $this->maybe_render_actions( $row, 'hook' );
+	}
+
+	/**
 	 * Only display row actions for pending actions.
 	 *
 	 * @param array  $row         Row to render.
@@ -361,7 +390,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			foreach ( $table_list as $table_name ) {
 				if ( ! in_array( $wpdb->prefix . $table_name, $found_tables, true ) ) {
 					$this->admin_notices[] = array(
-						'class'   => 'error',
+						'type'    => 'error',
 						'message' => __( 'It appears one or more database tables were missing. Attempting to re-create the missing table(s).', 'action-scheduler' ),
 					);
 					$this->recreate_tables();
@@ -375,7 +404,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		if ( $this->runner->has_maximum_concurrent_batches() ) {
 			$claim_count           = $this->store->get_claim_count();
 			$this->admin_notices[] = array(
-				'class'   => 'updated',
+				'type'    => 'info',
 				'message' => sprintf(
 					/* translators: %s: amount of claims */
 					_n(
@@ -387,7 +416,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 					$claim_count
 				),
 			);
-		} elseif ( $this->store->has_pending_actions_due() ) {
+		} elseif ( ! empty( $this->status_counts['past-due'] ) ) {
 
 			$async_request_lock_expiration = ActionScheduler::lock()->get_expiration( 'async-request-runner' );
 
@@ -402,7 +431,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			}
 
 			$this->admin_notices[] = array(
-				'class'   => 'notice notice-info',
+				'type'    => 'info',
 				'message' => $async_request_message,
 			);
 		}
@@ -415,8 +444,8 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			$action           = $this->store->fetch_action( $notification['action_id'] );
 			$action_hook_html = '<strong><code>' . $action->get_hook() . '</code></strong>';
 
-			if ( 1 === absint( $notification['success'] ) ) {
-				$class = 'updated';
+			if ( 1 === (int) $notification['success'] ) {
+				$type = 'success';
 				switch ( $notification['row_action_type'] ) {
 					case 'run':
 						/* translators: %s: action HTML */
@@ -432,15 +461,15 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 						break;
 				}
 			} else {
-				$class = 'error';
+				$type = 'error';
 				/* translators: 1: action HTML 2: action ID 3: error message */
-				$action_message_html = sprintf( __( 'Could not process change for action: "%1$s" (ID: %2$d). Error: %3$s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ), esc_html( $notification['error_message'] ) );
+				$action_message_html = sprintf( __( 'Could not process change for action: %1$s (ID: %2$d). Error: %3$s', 'action-scheduler' ), $action_hook_html, esc_html( $notification['action_id'] ), esc_html( $notification['error_message'] ) );
 			}
 
 			$action_message_html = apply_filters( 'action_scheduler_admin_notice_html', $action_message_html, $action, $notification );
 
 			$this->admin_notices[] = array(
-				'class'   => $class,
+				'type'    => $type,
 				'message' => $action_message_html,
 			);
 		}
@@ -618,6 +647,7 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 		$total_items = $this->store->query_actions( $query, 'count' );
 
 		$status_labels = $this->store->get_status_labels();
+		$show_claim_id = in_array( $this->get_request_status(), self::$statuses_with_claim_id, true );
 
 		foreach ( $this->store->query_actions( $query ) as $action_id ) {
 			try {
@@ -628,15 +658,16 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 			if ( is_a( $action, 'ActionScheduler_NullAction' ) ) {
 				continue;
 			}
+			$status_name               = $this->store->get_status( $action_id );
 			$this->items[ $action_id ] = array(
 				'ID'          => $action_id,
 				'hook'        => $action->get_hook(),
-				'status_name' => $this->store->get_status( $action_id ),
-				'status'      => $status_labels[ $this->store->get_status( $action_id ) ],
+				'status_name' => $status_name,
+				'status'      => $status_labels[ $status_name ],
 				'args'        => $action->get_args(),
 				'group'       => $action->get_group(),
 				'log_entries' => $this->logger->get_logs( $action_id ),
-				'claim_id'    => $this->store->get_claim_id( $action_id ),
+				'claim_id'    => $show_claim_id ? $this->store->get_claim_id( $action_id ) : null,
 				'recurrence'  => $this->get_recurrence( $action ),
 				'schedule'    => $action->get_schedule(),
 			);
@@ -649,21 +680,15 @@ class ActionScheduler_ListTable extends ActionScheduler_Abstract_ListTable {
 				'total_pages' => ceil( $total_items / $per_page ),
 			)
 		);
-	}
 
-	/**
-	 * Prints the available statuses so the user can click to filter.
-	 */
-	protected function display_filter_by_status() {
 		$this->status_counts = $this->store->action_counts() + $this->store->extra_action_counts();
-		parent::display_filter_by_status();
 	}
 
 	/**
 	 * Get the text to display in the search box on the list table.
 	 */
 	protected function get_search_box_button_text() {
-		return __( 'Search hook, args and claim ID', 'action-scheduler' );
+		return __( 'Search hook, args, action ID and claim ID', 'action-scheduler' );
 	}
 
 	/**

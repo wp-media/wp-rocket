@@ -256,17 +256,10 @@ class Assets {
 
 		$image_url = 'https://i.ytimg.com/' . $extension_uri . '/ID/' . $args['resolution'] . '.' . $args['extension'];
 
-		$image = '<img src="' . $image_url . '" alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '">';
-
-		if ( isset( $args['lazy_image'] ) && $args['lazy_image'] ) {
-			$attributes = 'alt="" width="' . $allowed_resolutions[ $args['resolution'] ]['width'] . '" height="' . $allowed_resolutions[ $args['resolution'] ]['height'] . '"';
-
-			$image = '<img data-lazy-src="' . $image_url . '" ' . $attributes . '><noscript><img src="' . $image_url . '" ' . $attributes . '></noscript>';
-
-			if ( $args['native'] ) {
-				$image = '<img loading="lazy" src="' . $image_url . '" ' . $attributes . '>';
-			}
-		}
+		$width      = $allowed_resolutions[ $args['resolution'] ]['width'];
+		$height     = $allowed_resolutions[ $args['resolution'] ]['height'];
+		$native     = ( isset( $args['native'] ) && $args['native'] ) ? 'true' : 'false';
+		$lazy_image = ( isset( $args['lazy_image'] ) && $args['lazy_image'] ) ? 'true' : 'false';
 
 		$button_aria_label = $args['button_aria_label'];
 
@@ -283,7 +276,65 @@ class Assets {
 
 		$excluded_patterns = wp_json_encode( $excluded_patterns );
 
-		return "<script>function lazyLoadThumb(e,alt,l){var t='{$image}',a='<button class=\"play\" aria-label=\"{$button_aria_label}\"></button>';if(l){t=t.replace('data-lazy-','');t=t.replace('loading=\"lazy\"','');t=t.replace(/<noscript>.*?<\/noscript>/g,'');}t=t.replace('alt=\"\"','alt=\"'+alt+'\"');return t.replace(\"ID\",e)+a}function lazyLoadYoutubeIframe(){var e=document.createElement(\"iframe\"),t=\"ID?autoplay=1\";t+=0===this.parentNode.dataset.query.length?\"\":\"&\"+this.parentNode.dataset.query;e.setAttribute(\"src\",t.replace(\"ID\",this.parentNode.dataset.src)),e.setAttribute(\"frameborder\",\"0\"),e.setAttribute(\"allowfullscreen\",\"1\"),e.setAttribute(\"allow\",\"accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture\"),this.parentNode.parentNode.replaceChild(e,this.parentNode)}document.addEventListener(\"DOMContentLoaded\",function(){var exclusions={$excluded_patterns};var e,t,p,u,l,a=document.getElementsByClassName(\"rll-youtube-player\");for(t=0;t<a.length;t++)(e=document.createElement(\"div\")),(u='{$image_url}'),(u=u.replace('ID',a[t].dataset.id)),(l=exclusions.some(exclusion=>u.includes(exclusion))),e.setAttribute(\"data-id\",a[t].dataset.id),e.setAttribute(\"data-query\",a[t].dataset.query),e.setAttribute(\"data-src\",a[t].dataset.src),(e.innerHTML=lazyLoadThumb(a[t].dataset.id,a[t].dataset.alt,l)),a[t].appendChild(e),(p=e.querySelector(\".play\")),(p.onclick=lazyLoadYoutubeIframe)});</script>";
+		// phpcs:disable Generic.Files.LineLength.TooLong
+		return '<script>'
+			. 'function lazyLoadImg(id,l){'
+			. "var s='{$image_url}'.replace(\"ID\",id),img=document.createElement(\"img\");"
+			. "if({$lazy_image}&&!l&&{$native}){img.setAttribute(\"loading\",\"lazy\");img.setAttribute(\"src\",s);}"
+			. "else if({$lazy_image}&&!l&&!{$native}){img.setAttribute(\"data-lazy-src\",s);}"
+			. 'else{img.setAttribute("src",s);}'
+			. "img.setAttribute(\"width\",\"{$width}\");"
+			. "img.setAttribute(\"height\",\"{$height}\");"
+			. 'return img;'
+			. '}'
+			. 'function lazyLoadThumb(id,alt,l){'
+			. 'if(!/^[A-Za-z0-9_-]{11}$/.test(id)){return null;}'
+			. 'var frag=document.createDocumentFragment(),img=lazyLoadImg(id,l);'
+			. 'img.setAttribute("alt",alt);'
+			. 'frag.appendChild(img);'
+			. 'var btn=document.createElement("button");'
+			. 'btn.setAttribute("class","play");'
+			. "btn.setAttribute(\"aria-label\",\"{$button_aria_label}\");"
+			. 'frag.appendChild(btn);'
+			. 'return frag;'
+			. '}'
+			. 'function lazyLoadYoutubeIframe(){'
+			. 'var src=this.parentNode.dataset.src,url;'
+			. 'try{url=new URL(src,"https://www.youtube.com");}catch(err){return;}'
+			. 'if("https:"!==url.protocol&&"http:"!==url.protocol){return;}'
+			. 'if(["youtube.com","www.youtube.com","youtube-nocookie.com","www.youtube-nocookie.com"].indexOf(url.hostname)===-1){return;}'
+			. 'if(url.username||url.password||url.port){return;}'
+			. 'if(!/^\/embed\/[A-Za-z0-9_-]{11}\/?$/.test(url.pathname)){return;}'
+			. 'url=new URL("https://"+url.hostname+url.pathname.replace(/\/$/,""));'
+			. 'var query=this.parentNode.dataset.query||"";'
+			. 'new URLSearchParams(query).forEach(function(v,k){url.searchParams.set(k,v);});'
+			. 'url.searchParams.set("autoplay","1");'
+			. 'var e=document.createElement("iframe");'
+			. 'e.setAttribute("src",url.href);'
+			. 'e.setAttribute("frameborder","0");'
+			. 'e.setAttribute("allowfullscreen","1");'
+			. 'e.setAttribute("allow","accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture");'
+			. 'this.parentNode.parentNode.replaceChild(e,this.parentNode);'
+			. '}'
+			. 'document.addEventListener("DOMContentLoaded",function(){'
+			. "var exclusions={$excluded_patterns};"
+			. 'var e,t,frag,u,l,a=document.getElementsByClassName("rll-youtube-player");'
+			. 'for(t=0;t<a.length;t++){'
+			. "u='{$image_url}'.replace(\"ID\",a[t].dataset.id);"
+			. 'l=exclusions.some(function(exclusion){return u.indexOf(exclusion)!==-1;});'
+			. 'e=document.createElement("div");'
+			. 'e.setAttribute("data-id",a[t].dataset.id);'
+			. 'e.setAttribute("data-query",a[t].dataset.query);'
+			. 'e.setAttribute("data-src",a[t].dataset.src);'
+			. 'frag=lazyLoadThumb(a[t].dataset.id,a[t].dataset.alt,l);'
+			. 'if(!frag){continue;}'
+			. 'e.appendChild(frag);'
+			. 'a[t].appendChild(e);'
+			. 'e.querySelector(".play").onclick=lazyLoadYoutubeIframe;'
+			. '}'
+			. '});'
+			. '</script>';
+		// phpcs:enable Generic.Files.LineLength.TooLong
 	}
 
 	/**

@@ -96,15 +96,10 @@ class JobProcessor implements LoggerAwareInterface {
 			'3.16',
 			'rocket_rucss_process_pending_jobs_start'
 		);
-		$this->logger::debug( 'RUCSS: Start processing pending jobs inside cron.' );
 
 		if ( ! $this->is_allowed() ) {
-			$this->logger::debug( 'Stop processing cron iteration for pending jobs.' );
-
 			return;
 		}
-
-		$this->logger::debug( 'Start processing pending jobs inside cron.' );
 
 		// Get some items from the DB with status=pending & job_id isn't empty.
 
@@ -161,10 +156,8 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function check_job_status( string $url, bool $is_mobile, string $optimization_type ) {
-
 		$row_details = $this->get_single_job( $url, $is_mobile, $optimization_type );
 		if ( ! is_object( $row_details ) ) {
-			$this->logger::debug( 'Url - ' . $url . ' not found for is_mobile -  ' . (int) $is_mobile );
 			// Nothing in DB, bailout.
 			return;
 		}
@@ -227,8 +220,6 @@ class JobProcessor implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function process_on_submit_jobs() {
-		$this->logger::debug( 'Start processing on submit jobs for adding jobs to queue.' );
-
 		/**
 		 * Fires at the start of the process on submit jobs.
 		 *
@@ -242,8 +233,6 @@ class JobProcessor implements LoggerAwareInterface {
 		);
 
 		if ( ! $this->is_allowed() ) {
-			$this->logger::debug( 'Stop processing cron iteration for to-submit jobs.' );
-
 			return;
 		}
 
@@ -309,7 +298,6 @@ class JobProcessor implements LoggerAwareInterface {
 			);
 		}
 
-		$this->logger::debug( 'End processing on submit jobs for adding jobs to queue.' );
 		/**
 		 * Fires at the end of the process pending jobs.
 		 *

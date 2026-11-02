@@ -9,6 +9,14 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class Test_addCdnHelperMessage extends TestCase {
+    // Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+    // Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+    protected static $use_settings_trait = false;
+
+    public function tear_down()
+    {
+        parent::tear_down();
+    }
 
     /**
      * @dataProvider configTestData

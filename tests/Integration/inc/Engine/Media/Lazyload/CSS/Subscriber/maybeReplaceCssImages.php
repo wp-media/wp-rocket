@@ -22,19 +22,18 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 
 		add_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		add_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
-		add_filter('pre_http_request', [$this, 'mock_http'], 10, 3);
 		add_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash'], 10, 2);
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
-		remove_filter('pre_http_request', [$this, 'mock_http']);
 		remove_filter('rocket_lazyload_excluded_src', [$this, 'exclude_lazyload']);
 		remove_filter('pre_get_rocket_option_lazyload_css_bg_img', [$this, 'lazyload_css_bg_img']);
 		remove_filter('rocket_lazyload_css_hash', [$this, 'rocket_lazyload_css_hash']);
 		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->restoreWpHook('rocket_buffer');
+
 		parent::tear_down();
 	}
 
@@ -42,7 +41,11 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		$this->config = $config;
+		$this->config         = $config;
+		$this->config['http'] = [
+			$config['no_background']['url'] => $config['no_background']['response'],
+			$config['external']['url']      => $config['external']['response'],
+		];
 
 		Functions\when('current_time')->justReturn($config['current_time']);
 
@@ -91,19 +94,6 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 			return $this->config['hash_mapping'][ $url_tag['url'] ];
 		}
 		return $hash;
-	}
-
-	public function mock_http( $response, $args, $url ) {
-
-		if ( $url === $this->config['no_background']['url'] ) {
-			return $this->config['no_background']['response'];
-		}
-
-		if ( $url === $this->config['external']['url'] ) {
-			return $this->config['external']['response'];
-		}
-
-		return $response;
 	}
 
 	public function exclude_lazyload() {

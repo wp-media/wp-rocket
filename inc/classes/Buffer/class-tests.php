@@ -142,36 +142,26 @@ class Tests {
 
 		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
 		if ( $this->is_rejected_file() ) {
-			$this->set_error( 'Robots.txt or .htaccess file is excluded.' );
 			return false;
 		}
 
 		// Don't process disallowed file extensions (like php, xml, xsl).
 		if ( $this->is_rejected_extension() ) {
-			$this->set_error( 'PHP, XML, or XSL file is excluded.' );
 			return false;
 		}
 
 		// Don't cache if in admin or ajax.
 		if ( $this->is_admin() ) {
-			$this->set_error( 'Admin or AJAX URL is excluded.' );
 			return false;
 		}
 
 		// Don't process the customizer preview.
 		if ( $this->is_customizer_preview() ) {
-			$this->set_error( 'Customizer preview is excluded.' );
 			return false;
 		}
 
 		// Don't process without GET method.
 		if ( ! $this->is_allowed_request_method() ) {
-			$this->set_error(
-				'Request method is not allowed. Page cannot be cached.',
-				[
-					'request_method' => $this->get_request_method(),
-				]
-			);
 			return false;
 		}
 

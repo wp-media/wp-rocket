@@ -36,7 +36,7 @@ class ActionScheduler_WPCLI_Clean_Command extends WP_CLI_Command {
 		$batches = absint( \WP_CLI\Utils\get_flag_value( $assoc_args, 'batches', 0 ) );
 		$status  = explode( ',', WP_CLI\Utils\get_flag_value( $assoc_args, 'status', '' ) );
 		$status  = array_filter( array_map( 'trim', $status ) );
-		$before  = \WP_CLI\Utils\get_flag_value( $assoc_args, 'before', '' );
+		$before  = \WP_CLI\Utils\get_flag_value( $assoc_args, 'before', '31 days ago' );
 		$sleep   = \WP_CLI\Utils\get_flag_value( $assoc_args, 'pause', 0 );
 
 		$batches_completed = 0;

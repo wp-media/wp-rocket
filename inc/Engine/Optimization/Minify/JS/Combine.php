@@ -55,6 +55,13 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	private $move_after = [];
 
 	/**
+	 * External script tags kept in the page because their content could not be fetched
+	 *
+	 * @var array
+	 */
+	private $failed_scripts = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
@@ -87,7 +94,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
@@ -97,28 +103,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			return $html;
 		}
 
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' `<script>` tag(s).',
-			[
-				'js combine process',
-				'tags' => $scripts,
-			]
-		);
-
 		$combine_scripts = $this->parse( $scripts );
 
 		if ( empty( $combine_scripts ) ) {
 			Logger::debug( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
 			return $html;
 		}
-
-		Logger::debug(
-			count( $combine_scripts ) . ' `<script>` tag(s) remaining.',
-			[
-				'js combine process',
-				'tags' => $combine_scripts,
-			]
-		);
 
 		$content = $this->get_content();
 
@@ -147,16 +137,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
 		foreach ( $combine_scripts as $script ) {
+			if ( in_array( $script[0], $this->failed_scripts, true ) ) {
+				continue;
+			}
+
 			$html = str_replace( $script[0], '', $html );
 		}
-
-		Logger::info(
-			'Combined JS file successfully added.',
-			[
-				'js combine process',
-				'url' => $minify_url,
-			]
-		);
 
 		return $this->add_meta_comment( 'minify_concatenate_js', $html );
 	}
@@ -195,6 +181,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						$this->scripts[] = [
 							'type'    => 'url',
 							'content' => $matches['url'],
+							'tag'     => $script[0],
 						];
 
 						return $script;
@@ -336,7 +323,20 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 				$this->add_to_minify( $file_content );
 			} elseif ( 'url' === $script['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
-				$content     .= $file_content;
+
+				if ( '' === $file_content ) {
+					Logger::debug(
+						'External script could not be fetched.',
+						[
+							'js combine process',
+							'url' => $script['content'],
+						]
+					);
+					$this->failed_scripts[] = $script['tag'];
+					continue;
+				}
+
+				$content .= $file_content;
 
 				$this->add_to_minify( $file_content );
 			} elseif ( 'inline' === $script['type'] ) {

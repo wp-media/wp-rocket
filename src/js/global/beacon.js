@@ -4,9 +4,13 @@ $(document).ready(function(){
         /**
          * Show beacons on button "help" click
          */
-        var $help = $('.wpr-infoAction--help');
-        $help.on('click', function(e){
-            var ids = $(this).data('beacon-id');
+        $(document).on('click', '.wpr-infoAction--help[data-beacon-id]', function(e){
+            var ids = $(this).attr('data-beacon-id');
+
+            if ( ! ids ) {
+                return true;
+            }
+
             var button = $(this).data('wpr_track_button') || 'Beacon Help';
             var context = $(this).data('wpr_track_context') || 'Settings';
 
@@ -28,6 +32,7 @@ $(document).ready(function(){
                     window.Beacon("suggest", aID);
 
                     setTimeout(function() {
+                        window.Beacon("navigate", "/answers/");
                         window.Beacon("open");
                     }, 200);
                 } else {
@@ -38,7 +43,7 @@ $(document).ready(function(){
     }
 
 	$( '.wpr-ri-report' ).on( 'click', function() {
-		wprTrackHelpButton( 'rocket insights see report', 'performance summary' );
+		wprTrackHelpButton( 'rocket insights see gtmetrix report', 'performance summary' );
 	} );
 
     // MixPanel tracking function
@@ -61,7 +66,8 @@ $(document).ready(function(){
                 'brand': rocket_mixpanel_data.brand,
                 'application': rocket_mixpanel_data.app,
                 'context': rocket_mixpanel_data.context,
-                'path': rocket_mixpanel_data.path
+                'path': rocket_mixpanel_data.path,
+                'interaction_channel': 'UI'
             });
         }
     }

@@ -34,7 +34,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		wp_set_current_user( self::$user_id );
 
-		$this->pagenow         = $GLOBALS['pagenow'];
+		$this->pagenow         = $GLOBALS['pagenow'] ?? null;
 		$this->option_name     = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		$this->options         = get_option( $this->option_name );
 		$this->user_boxes      = get_user_meta( self::$user_id, 'rocket_boxes', true );

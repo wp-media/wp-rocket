@@ -79,6 +79,14 @@ class ActionScheduler_HybridStore extends Store {
 	}
 
 	/**
+	 * Flush all store caches.
+	 */
+	public function flush_caches() {
+		$this->primary_store->flush_caches();
+		$this->secondary_store->flush_caches();
+	}
+
+	/**
 	 * When the actions table is created, set its autoincrement
 	 * value to be one higher than the posts table to ensure that
 	 * there are no ID collisions.
@@ -400,9 +408,13 @@ class ActionScheduler_HybridStore extends Store {
 		}
 
 		foreach ( $stores as $store ) {
-			$action = $store->fetch_action( $action_id );
-			if ( ! is_a( $action, 'ActionScheduler_NullAction' ) ) {
-				return $store;
+			try {
+				// Probe by fetching the action status: if entry is corrupted, the object construction is not feasible.
+				if ( null !== $store->get_status( $action_id ) ) {
+					return $store;
+				}
+			} catch ( \InvalidArgumentException | \RuntimeException $e ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+				// A missing or corrupted/empty status just means this store can't resolve the action; keep probing.
 			}
 		}
 		return null;
@@ -432,7 +444,7 @@ class ActionScheduler_HybridStore extends Store {
 	}
 
 	/**
-	 * Release a claim in the table data store.
+	 * Release a claim in the table data store on any pending actions.
 	 *
 	 * @param ActionScheduler_ActionClaim $claim Claim object.
 	 */

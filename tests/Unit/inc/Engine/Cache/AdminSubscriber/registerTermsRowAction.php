@@ -22,7 +22,7 @@ class Test_RegisterTermsRowAction extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->event_manager = Mockery::mock( Event_manager::class );
+		$this->event_manager = Mockery::mock( Event_Manager::class );
 		$this->subscriber    = new AdminSubscriber(
 			Mockery::mock( AdvancedCache::class ),
 			Mockery::mock( WPCache::class ),

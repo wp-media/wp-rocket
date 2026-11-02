@@ -49,6 +49,7 @@ return [
 			]
 		],
 		'expected' => [
+			'log' => 'Sitemap fetch failed for http://example.com: error_data',
 			'children_exists' => false,
 			'links_exists' => false,
 			'children' => [
@@ -63,6 +64,48 @@ return [
 			]
 		],
 	],
+	'nonOkResponseShouldAddNoJob' => [
+		'config' => [
+			'sitemap_url' => 'http://example.com',
+			'process_generate' => [
+				'code' => 404,
+				'response' => $sitemap
+			]
+		],
+		'expected' => [
+			'log' => 'Sitemap fetch failed for http://example.com: unexpected response code 404',
+			'children_exists' => false,
+			'links_exists' => false,
+			'children' => [
+				'http://www.photoshoptuto.com/sitemap/2',
+			],
+			'links' => [
+				'http://www.photoshoptuto.com/',
+				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
+			]
+		],
+	],
+	'emptyBodyShouldAddNoJob' => [
+		'config' => [
+			'sitemap_url' => 'http://example.com',
+			'process_generate' => [
+				'empty_body' => true,
+				'response' => $sitemap
+			]
+		],
+		'expected' => [
+			'log' => 'Sitemap fetch failed for http://example.com: empty response body',
+			'children_exists' => false,
+			'links_exists' => false,
+			'children' => [
+				'http://www.photoshoptuto.com/sitemap/2',
+			],
+			'links' => [
+				'http://www.photoshoptuto.com/',
+				'http://www.photoshoptuto.com/tuto/epouvantail-effrayant-1018',
+			]
+		],
+	],
 	'fetchSitemapShouldCreateJobs' => [
 		'config' => [
 			'sitemap_url' => 'http://example.com',
@@ -71,6 +114,7 @@ return [
 			]
 		],
 		'expected' => [
+			'log' => null,
 			'children_exists' => true,
 			'links_exists' => true,
 			'children' => [

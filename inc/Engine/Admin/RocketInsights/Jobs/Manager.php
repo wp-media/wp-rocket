@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Common\JobManager\Managers\AbstractManager;
 use WP_Rocket\Engine\Common\JobManager\Managers\ManagerInterface;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 
 /**
  * Rocket Insights Jobs Manager
@@ -47,20 +48,30 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	protected $plan;
 
 	/**
+	 * ChannelDetector instance.
+	 *
+	 * @var ChannelDetector
+	 */
+	private ChannelDetector $channel_detector;
+
+	/**
 	 * Instantiate the class.
 	 *
-	 * @param RocketInsightsQuery $query Rocket Insights Query instance.
-	 * @param ContextInterface    $context Rocket Insights Context.
-	 * @param Plan                $plan Plan instance.
+	 * @param RocketInsightsQuery $query            Rocket Insights Query instance.
+	 * @param ContextInterface    $context          Rocket Insights Context.
+	 * @param Plan                $plan             Plan instance.
+	 * @param ChannelDetector     $channel_detector Channel Detector instance.
 	 */
 	public function __construct(
 		RocketInsightsQuery $query,
 		ContextInterface $context,
-		Plan $plan
+		Plan $plan,
+		ChannelDetector $channel_detector
 	) {
-		$this->query   = $query;
-		$this->context = $context;
-		$this->plan    = $plan;
+		$this->query            = $query;
+		$this->context          = $context;
+		$this->plan             = $plan;
+		$this->channel_detector = $channel_detector;
 	}
 
 	/**
@@ -70,12 +81,9 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $num_rows ): array {
-		$this->logger::debug( "Rocket Insights: Start getting number of {$num_rows} pending jobs." );
-
 		$pending_jobs = $this->query->get_pending_jobs( $num_rows );
 
 		if ( ! $pending_jobs ) {
-			$this->logger::debug( 'Rocket Insights: No pending jobs are there.' );
 			return [];
 		}
 
@@ -95,11 +103,12 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		$additional_details['data'] = wp_parse_args(
 			$additional_details['data'] ?? [],
 			[
-				'start_time' => time(),
-				'is_retest'  => false,
-				'source'     => 'performance monitoring',
+				'start_time'          => time(),
+				'is_retest'           => false,
+				'source'              => 'performance monitoring',
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
-			);
+		);
 		$additional_details['data'] = wp_json_encode( $additional_details['data'] );
 		return $this->add_url_to_the_queue( $url, $is_mobile, $additional_details );
 	}
@@ -157,24 +166,10 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 		}
 
 		if ( ! empty( $job_details['status'] ) && 'pending' === $job_details['status'] ) {
-			$this->logger::info(
-				'Rocket Insights: Revert to pending because of API status is pending',
-				[
-					'job_id' => $row_details->job_id,
-				]
-			);
-
 			$this->query->revert_to_pending( $row_details->id );
+
 			return;
 		}
-
-		$this->logger::info(
-			'Rocket Insights: Test completed successfully',
-			[
-				'job_id' => $row_details->job_id,
-				'score'  => $job_details['performance_score'] ?? null,
-			]
-		);
 
 		$this->query->make_status_completed( $row_details->id, 'completed', $this->parse_test_results( $job_details ) );
 
