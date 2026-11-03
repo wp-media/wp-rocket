@@ -32,7 +32,6 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 
 		self::installPreloadCacheTable();
 
-		add_filter( 'pre_http_request', [ $this, 'mock_http' ], 10, 3 );
 		add_filter( 'rocket_rucss_hash', [ $this, 'rucss_hash' ] );
 	}
 
@@ -40,8 +39,8 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 		self::uninstallPreloadCacheTable();
 
 		remove_filter( 'rocket_rucss_hash', [ $this, 'rucss_hash' ] );
-		remove_filter( 'pre_http_request', [ $this, 'mock_http' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
+
 		parent::tear_down();
 	}
 
@@ -52,6 +51,7 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		$this->config = $config;
+		$this->config['http'] = $this->http_fixture( $config );
 		self::addResource( $config['row'] );
 
 		do_action( 'rocket_saas_job_check_status', $config['row']['url'], $config['row']['is_mobile'], $config['optimization_type'] );
@@ -65,17 +65,21 @@ class Test_CheckJobStatus extends FilesystemTestCase {
 	}
 
 
-	public function mock_http( $response, $args, $url ) {
-		if ( $url === $this->config['request']['url'] && $args['method'] === $this->config['request']['method'] ) {
-			return $this->config['request']['response'];
+	/**
+	 * Builds the fixture: the status check (GET) comes first, then the re-submission (POST) on the same URL.
+	 *
+	 * @param array $config Data set config.
+	 *
+	 * @return array
+	 */
+	private function http_fixture( array $config ): array {
+		if ( ! isset( $config['create'] ) ) {
+			return [ $config['request']['url'] => $config['request']['response'] ];
 		}
 
-		if ( $url === $this->config['create']['url'] && $args['method'] === $this->config['create']['method'] ) {
-			return $this->config['create']['response'];
-		}
-
-		return $response;
+		return [ $config['request']['url'] => [ $config['request']['response'], $config['create']['response'] ] ];
 	}
+
 	public function rucss_hash() {
 		return $this->config['hash'];
 	}

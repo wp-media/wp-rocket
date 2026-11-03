@@ -192,4 +192,41 @@ class RocketInsights extends AbstractQuery {
 
 		return $db->query( "UPDATE `$prefixed_table_name` SET is_blurred = '0' WHERE status = 'completed' AND is_blurred = '1'" );
 	}
+
+	/**
+	 * Get metrics_data for completed tests.
+	 *
+	 * @return array
+	 */
+	public function get_completed_metrics(): array {
+		return $this->query(
+			[
+				'fields' => 'metric_data',
+				'status' => 'completed',
+			]
+		);
+	}
+
+	/**
+	 * Get the interaction channel from the most recently completed job.
+	 *
+	 * @return string Channel value, or empty string if not available.
+	 */
+	public function get_last_completed_channel(): string {
+		$rows = $this->query(
+			[
+				'status'  => 'completed',
+				'orderby' => 'modified',
+				'order'   => 'desc',
+				'number'  => 1,
+			]
+		);
+
+		if ( empty( $rows ) ) {
+			return '';
+		}
+
+		$row = reset( $rows );
+		return $row->data['interaction_channel'] ?? '';
+	}
 }

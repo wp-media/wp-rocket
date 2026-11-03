@@ -41,7 +41,7 @@ class ServiceProvider extends AbstractServiceProvider {
 	 * @return void
 	 */
 	public function register(): void {
-		$this->getContainer()->add( 'saas_admin_bar', Adminbar::class )
+		$this->getContainer()->add( 'saas_admin_bar', AdminBar::class )
 			->addArguments(
 				[
 					'options',

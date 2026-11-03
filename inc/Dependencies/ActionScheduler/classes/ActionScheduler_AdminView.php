@@ -213,28 +213,29 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 		);
 
 		// Print notice.
-		echo '<div class="notice notice-warning"><p>';
-		printf(
-			wp_kses(
-				// translators: 1) is the number of affected actions, 2) is a link to an admin screen.
-				_n(
-					'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due action</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
-					'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due actions</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
-					$num_pastdue_actions,
-					'action-scheduler'
-				),
-				array(
-					'strong' => array(),
-					'a'      => array(
-						'href'   => true,
-						'target' => true,
-					),
-				)
+		$message = wp_kses(
+			// translators: 1) is the number of affected actions, 2) is a link to an admin screen.
+			_n(
+				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due action</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
+				'<strong>Action Scheduler:</strong> %1$d <a href="%2$s">past-due actions</a> found; something may be wrong. <a href="https://actionscheduler.org/faq/#my-site-has-past-due-actions-what-can-i-do" target="_blank">Read documentation &raquo;</a>',
+				$num_pastdue_actions,
+				'action-scheduler'
 			),
-			absint( $num_pastdue_actions ),
-			esc_attr( esc_url( $actions_url ) )
+			array(
+				'strong' => array(),
+				'a'      => array(
+					'href'   => true,
+					'target' => true,
+				),
+			)
 		);
-		echo '</p></div>';
+		wp_admin_notice(
+			$message,
+			array(
+				'type'           => 'warning',
+				'paragraph_wrap' => true,
+			)
+		);
 
 		// Facilitate third-parties to evaluate and print notices.
 		do_action( 'action_scheduler_pastdue_actions_extra_notices', $query_args );
@@ -250,7 +251,20 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 			return;
 		}
 
-		$as_version = ActionScheduler_Versions::instance()->latest_version();
+		$as_version       = ActionScheduler_Versions::instance()->latest_version();
+		$as_source        = ActionScheduler_SystemInformation::active_source();
+		$as_source_path   = ActionScheduler_SystemInformation::active_source_path();
+		$as_source_markup = sprintf( '<code>%s</code>', esc_html( $as_source_path ) );
+
+		if ( ! empty( $as_source ) ) {
+			$as_source_markup = sprintf(
+				'%s: <abbr title="%s">%s</abbr>',
+				ucfirst( $as_source['type'] ),
+				esc_attr( $as_source_path ),
+				esc_html( $as_source['name'] )
+			);
+		}
+
 		$screen->add_help_tab(
 			array(
 				'id'      => 'action_scheduler_about',
@@ -260,6 +274,19 @@ class ActionScheduler_AdminView extends ActionScheduler_AdminView_Deprecated {
 					'<h2>' . sprintf( __( 'About Action Scheduler %s', 'action-scheduler' ), $as_version ) . '</h2>' .
 					'<p>' .
 						__( 'Action Scheduler is a scalable, traceable job queue for background processing large sets of actions. Action Scheduler works by triggering an action hook to run at some time in the future. Scheduled actions can also be scheduled to run on a recurring schedule.', 'action-scheduler' ) .
+					'</p>' .
+					'<h3>' . esc_html__( 'Source', 'action-scheduler' ) . '</h3>' .
+					'<p>' .
+						esc_html__( 'Action Scheduler is currently being loaded from the following location. This can be useful when debugging, or if requested by the support team.', 'action-scheduler' ) .
+					'</p>' .
+					'<p>' . $as_source_markup . '</p>' .
+					'<h3>' . esc_html__( 'WP CLI', 'action-scheduler' ) . '</h3>' .
+					'<p>' .
+						sprintf(
+							/* translators: %1$s is WP CLI command (not translatable) */
+							esc_html__( 'WP CLI commands are available: execute %1$s for a list of available commands.', 'action-scheduler' ),
+							'<code>wp help action-scheduler</code>'
+						) .
 					'</p>',
 			)
 		);

@@ -2,7 +2,18 @@
 /vendor/*
 /tests/env/local/
 composer.lock
-vfs:/
 /tests/Integration/.phpunit.result.cache
 /tests/Unit/.phpunit.result.cache
 package-lock.json
+
+# Local issue sync cache
+/.TemporaryItems
+/.qa-screenshot
+/.e2e-temp
+.pipeline-logs/
+.playwright-mcp/
+.playwright-cli/
+.claude/graph/
+
+# Claude Code user-local settings
+.claude/settings.local.json

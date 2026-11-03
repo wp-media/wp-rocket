@@ -28,19 +28,6 @@ class Optimization extends Abstract_Buffer {
 	 */
 	protected $tests;
 
-	/**
-	 * Constructor.
-	 *
-	 * @since  3.3
-	 *
-	 * @param Tests $tests Tests instance.
-	 */
-	public function __construct( Tests $tests ) {
-		parent::__construct( $tests );
-
-		$this->log( 'OPTIMIZATION PROCESS STARTED.', [], 'info' );
-	}
-
 	/** ----------------------------------------------------------------------------------------- */
 	/** CACHE =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */

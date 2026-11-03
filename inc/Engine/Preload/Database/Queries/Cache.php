@@ -427,6 +427,37 @@ class Cache extends AbstractQuery {
 	}
 
 	/**
+	 * Get the number of rows for each tracked status.
+	 *
+	 * Uses the indexed `status` column with a `count` query per status to avoid
+	 * ever loading full rows or running an unbounded `SELECT *`, matching the
+	 * approach already used by `has_pending_jobs()`.
+	 *
+	 * @return array<string,int> Associative array keyed by status (pending, in-progress, completed, failed).
+	 */
+	public function get_status_counts(): array {
+		$statuses = [
+			'pending',
+			'in-progress',
+			'completed',
+			'failed',
+		];
+
+		$counts = [];
+
+		foreach ( $statuses as $status ) {
+			$counts[ $status ] = (int) $this->query(
+				[
+					'count'  => true,
+					'status' => $status,
+				]
+			);
+		}
+
+		return $counts;
+	}
+
+	/**
 	 * Check if pending jobs are remaining.
 	 *
 	 * @return bool

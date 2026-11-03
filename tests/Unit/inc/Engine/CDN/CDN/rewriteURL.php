@@ -20,8 +20,9 @@ class Test_RewriteURL extends TestCase {
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options  = Mockery::mock( Options_Data::class );
+
+		$this->cdn = new CDN( $this->options );
 	}
 	/**
 	 * @dataProvider providerTestData
@@ -64,6 +65,10 @@ class Test_RewriteURL extends TestCase {
 				'value' => [
 					'/wp-content/uploads/post.css',
 				],
+			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
 			],
 		];
 

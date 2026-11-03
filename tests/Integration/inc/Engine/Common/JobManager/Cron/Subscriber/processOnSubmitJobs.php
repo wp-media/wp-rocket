@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Common\JobManager\Cron\Subscriber;
 
-use WP_Rocket\Tests\HTTPCallTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,9 +10,6 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group JobManager
  */
 class Test_ProcessOnSubmitJobs extends TestCase {
-
-	use HTTPCallTrait;
-
 	protected $config;
 
 	public static function set_up_before_class() {
@@ -38,12 +34,9 @@ class Test_ProcessOnSubmitJobs extends TestCase {
 		add_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
 		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
-		$this->setup_http();
 	}
 
 	public function tear_down() {
-		$this->tear_down_http();
-
 		remove_filter( 'rocket_saas_max_pending_jobs', [ $this, 'max_rows' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss_enabled' ] );
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );

@@ -1,9 +1,11 @@
 // directories
+.claude export-ignore
 bin export-ignore
 src export-ignore
 tests export-ignore
 
 // files
+AGENTS.md export-ignore
 .babelrc export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore

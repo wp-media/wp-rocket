@@ -20,7 +20,6 @@ trait StubTrait {
 	protected $white_label = false;
 	protected $white_label_footprint = null;
 	protected $plugin_name = 'WP Rocket';
-	protected $rucss_api = 'http://localhost';
 	protected $constants = [];
 	protected $dontasynccss = false;
 	protected $rest_request = false;
@@ -57,6 +56,18 @@ trait StubTrait {
 		Functions\when( 'rocket_get_constant' )->alias(
 			function ( $constant_name, $default = null ) {
 				return $this->getConstant( $constant_name, $default );
+			}
+		);
+	}
+
+	protected function stubRocketHasConstant() {
+		if ( ! $this->mock_rocket_get_constant ) {
+			return;
+		}
+
+		Functions\when( 'rocket_has_constant' )->alias(
+			function ( $constant_name ) {
+				return array_key_exists( $constant_name, $this->constants ) || defined( $constant_name );
 			}
 		);
 	}
@@ -160,9 +171,6 @@ trait StubTrait {
 			case 'WP_ROCKET_PLUGIN_NAME':
 				return $this->plugin_name;
 
-			case 'WP_ROCKET_SAAS_API_URL':
-				return $this->rucss_api;
-
 			default:
 				if ( isset( $this->constants[ $constant_name ] ) ) {
 					return $this->constants[ $constant_name ];
@@ -177,20 +185,50 @@ trait StubTrait {
 	}
 
 	protected function stubWpNormalizePath() {
+		// wp_normalize_path() uses wp_is_stream() to keep stream wrappers (e.g. vfs://) intact.
+		$this->stubWpIsStream();
+
+		// Mirrors WordPress core's wp_normalize_path(), minus its static cache.
 		Functions\when( 'wp_normalize_path' )->alias(
 			function ( $path ) {
 				if ( true === $this->just_return_path ) {
 					return $path;
 				}
 
+				$path    = (string) $path;
+				$wrapper = '';
+
+				if ( wp_is_stream( $path ) ) {
+					list( $wrapper, $path ) = explode( '://', $path, 2 );
+
+					$wrapper .= '://';
+				}
+
 				$path = str_replace( '\\', '/', $path );
-				$path = preg_replace( '|(?<=.)/+|', '/', $path );
+				$path = (string) preg_replace( '|(?<=.)/+|', '/', $path );
 
 				if ( ':' === substr( $path, 1, 1 ) ) {
 					$path = ucfirst( $path );
 				}
 
-				return $path;
+				return $wrapper . $path;
+			}
+		);
+	}
+
+	protected function stubWpIsStream() {
+		// Mirrors WordPress core's wp_is_stream().
+		Functions\when( 'wp_is_stream' )->alias(
+			function ( $path ) {
+				$scheme_separator = strpos( $path, '://' );
+
+				if ( false === $scheme_separator ) {
+					return false;
+				}
+
+				$stream = substr( $path, 0, $scheme_separator );
+
+				return in_array( $stream, stream_get_wrappers(), true );
 			}
 		);
 	}

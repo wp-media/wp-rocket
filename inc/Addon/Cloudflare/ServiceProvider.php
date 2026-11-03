@@ -7,8 +7,8 @@ use WP_Rocket\Addon\Cloudflare\Admin\Subscriber as CloudflareAdminSubscriber;
 use WP_Rocket\Addon\Cloudflare\API\{Client, Endpoints};
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Addon\Cloudflare\Subscriber as CloudflareSubscriber;
+use WP_Rocket\Addon\Cloudflare\Auth\APIKeyFactory;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WPMedia\Cloudflare\Auth\APIKeyFactory;
 
 /**
  * Service provider for Cloudflare Addon.

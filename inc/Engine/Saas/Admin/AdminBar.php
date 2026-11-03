@@ -113,27 +113,4 @@ class AdminBar extends Abstract_Render {
 			$this->rucss_url_context->is_allowed()
 		);
 	}
-
-	/**
-	 * Display the dashboard button to clean SaaS features
-	 *
-	 * @return void
-	 */
-	public function display_dashboard_button() {
-		if (
-			'local' === wp_get_environment_type()
-			&&
-			$this->rucss_url_context->is_allowed()
-		) {
-			return;
-		}
-
-		$this->dashboard_button(
-			$this->rucss_url_context->is_allowed(),
-			__( 'Used CSS', 'rocket' ),
-			esc_html__( 'Clear', 'rocket' ),
-			'rocket_clean_saas',
-			esc_html__( 'This action will clear the used CSS files.', 'rocket' )
-		);
-	}
 }

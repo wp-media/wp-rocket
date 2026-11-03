@@ -32,13 +32,6 @@ class test_WriteFontCss extends FilesystemTestCase {
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn( $config['css_content'] );
 
-		Functions\when('rocket_mkdir_p')->alias(function($dir) {
-			if (!file_exists($dir)) {
-				mkdir($dir, 0777, true);
-			}
-			return true;
-		});
-
 		Functions\when( 'wp_safe_remote_get' )
 			->justReturn( $config['response'] );
 

@@ -7,16 +7,9 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
-use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
+use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
 class Render extends Abstract_Render {
-	/**
-	 * Plan instance.
-	 *
-	 * @var Plan
-	 */
-	private $plan;
-
 	/**
 	 * Context instance.
 	 *
@@ -43,7 +36,7 @@ class Render extends Abstract_Render {
 	 *
 	 * @var MetricFormatter
 	 */
-	private $metric_formatter;
+	protected $metric_formatter;
 
 	/**
 	 * Rows counter to keep track of the number of rows rendered, used for auto-expand the first row for now.
@@ -58,16 +51,13 @@ class Render extends Abstract_Render {
 	 * Initializes the Render instance with the provided template path and CreditManager.
 	 *
 	 * @param string          $template_path    Path to the template file.
-	 * @param Plan            $plan             Plan instance.
 	 * @param Context         $context          Instance of PerformanceMonitoringContext for managing performance monitoring context.
 	 * @param Beacon          $beacon           Beacon instance.
 	 * @param Query           $query            Query instance.
 	 * @param MetricFormatter $metric_formatter MetricFormatter instance.
 	 */
-	public function __construct( $template_path, Plan $plan, Context $context, Beacon $beacon, Query $query, MetricFormatter $metric_formatter ) {
+	public function __construct( $template_path, Context $context, Beacon $beacon, Query $query, MetricFormatter $metric_formatter ) {
 		parent::__construct( $template_path );
-
-		$this->plan             = $plan;
 		$this->context          = $context;
 		$this->beacon           = $beacon;
 		$this->query            = $query;
@@ -84,7 +74,7 @@ class Render extends Abstract_Render {
 		$score_data = [
 			'score'        => $row->score,
 			'status'       => $row->status,
-			'is_blurred'   => $row->is_blurred,
+			'is_blurred'   => false,
 			'is_dashboard' => false,
 		];
 
@@ -142,7 +132,7 @@ class Render extends Abstract_Render {
 	public function render_rocket_insights_urls_table( array $data ) {
 		$rocket_insights_beacon = $this->beacon->get_suggest( 'rocket_insights' );
 
-		$data['has_credit']    = $this->plan->has_credit();
+		$data['has_credit']    = true;
 		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 		$data['help']          = $rocket_insights_beacon;
@@ -170,6 +160,51 @@ class Render extends Abstract_Render {
 	 */
 	public function render_global_score_widget( array $data ) {
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Render the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return void
+	 */
+	public function render_dashboard_global_score( array $data ): void {
+		echo $this->get_dashboard_global_score( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Render the dashboard state displayed when Rocket Insights is disabled or unavailable.
+	 *
+	 * @param bool $is_local Whether the site is a local (non-live) site.
+	 * @return void
+	 */
+	public function render_dashboard_disabled_state( bool $is_local ): void {
+		$data = [
+			'title'       => $is_local
+				? __( 'Rocket Insights is unavailable', 'rocket' )
+				: __( 'Rocket Insights is disabled', 'rocket' ),
+			'description' => $is_local
+				? __( 'Performance scores are not available on local sites.', 'rocket' )
+				: __( 'Performance scores are not available for this site.', 'rocket' ),
+		];
+
+		echo $this->generate( 'partials/rocket-insights/dashboard-global-score-disabled', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return string
+	 */
+	public function get_dashboard_global_score( array $data ): string {
+		return $this->generate(
+			'partials/rocket-insights/dashboard-global-score',
+			array_merge(
+				$this->prepare_global_score_widget_data( $data ),
+				[ 'metric_definitions' => Calculator::get_metric_definitions() ]
+			)
+		);
 	}
 
 	/**
@@ -211,7 +246,7 @@ class Render extends Abstract_Render {
 		return array_merge(
 			$data,
 			[
-				'has_credit'    => $this->plan->has_credit(),
+				'has_credit'    => true,
 				'can_add_url'   => $is_adding_page_allowed,
 				'reach_max_url' => ! $is_adding_page_allowed,
 				'status_text'   => $this->get_monitoring_status_text(),
@@ -238,8 +273,9 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML for the performance monitoring row.
 	 */
 	public function get_performance_monitoring_list_row( object $data, bool $is_ajax = true ): string {
-		$data->has_credit                          = $this->plan->has_credit();
+		$data->has_credit                          = true;
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->metric_definitions                  = Calculator::get_metric_definitions();
 		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
 		if ( $data->rocket_can_show_advanced_indicators ) {
 			++$this->rows_counter;
@@ -375,17 +411,13 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return string The generated HTML for the "Add Page" button.
 	 */
 	public function get_add_page_btn( string $type, array $data ) {
 		switch ( $type ) {
-			case 'global-score-widget':
-				$button = $this->generate( 'partials/rocket-insights/buttons/global-score-widget', $data );
-				break;
-
 			case 'rocket-insights':
 			default:
 				$button = $this->generate( 'partials/rocket-insights/buttons/rocket-insights-panel', $data );
@@ -400,7 +432,7 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return void
@@ -478,7 +510,7 @@ class Render extends Abstract_Render {
 		$normalized_url = $url_no_slash;
 
 		// Get credit availability.
-		$has_credit = $this->plan->has_credit();
+		$has_credit = true;
 
 		$can_add_pages = $this->context->is_adding_page_allowed();
 
@@ -488,7 +520,7 @@ class Render extends Abstract_Render {
 			'wpr_rocket_row'            => $row,
 			'wpr_has_credit'            => $has_credit,
 			'wpr_can_add_pages'         => $can_add_pages,
-			'wpr_is_free_user'          => $this->context->is_free_user(),
+			'wpr_is_free_user'          => false,
 			'wpr_limit_reached_message' => $this->get_page_limit_error_message(),
 			'is_draft'                  => get_post_status( $post_id ) === 'draft',
 			'wpr_post_id'               => $post_id,
@@ -497,8 +529,8 @@ class Render extends Abstract_Render {
 		if ( null !== $row ) {
 			$template_data['wpr_is_running']        = $row->is_running();
 			$template_data['wpr_has_results']       = 'completed' === $row->status || 'blurred' === $row->status;
-			$template_data['wpr_is_blurred']        = isset( $row->is_blurred ) && $row->is_blurred;
-			$template_data['wpr_can_access_report'] = $row->can_access_report();
+			$template_data['wpr_is_blurred']        = false;
+			$template_data['wpr_can_access_report'] = true;
 			$template_data['wpr_view_details_url']  = $this->get_view_details_url( (int) $row->id );
 
 			// Prepare score data for template rendering.
@@ -534,19 +566,6 @@ class Render extends Abstract_Render {
 	 * @return string The formatted error message.
 	 */
 	public function get_page_limit_error_message(): string {
-		if ( $this->context->is_free_user() ) {
-			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=wp_posts_list#rocket_insights' );
-
-			return sprintf(
-				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
-				__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
-				'<strong>',
-				'</strong>',
-				'<a href="' . esc_url( $upgrade_url ) . '">',
-				'</a>'
-			);
-		}
-
 		return sprintf(
 			/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
 			__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),

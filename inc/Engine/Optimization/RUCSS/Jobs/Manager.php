@@ -86,8 +86,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $num_rows ): array {
-		$this->logger::debug( "RUCSS: Start getting number of {$num_rows} pending jobs." );
-
 		$pending_jobs = $this->query->get_pending_jobs( $num_rows );
 
 		if ( ! $pending_jobs ) {
@@ -169,8 +167,6 @@ class Manager implements ManagerInterface, LoggerAwareInterface {
 			return;
 		}
 
-		// Everything is fine, save the usedcss into DB, change status to completed and reset queue_name and job_id.
-		$this->logger::debug( 'RUCSS: Save used CSS for url: ' . $row_details->url );
 		$this->query->make_status_completed( $row_details->url, $row_details->is_mobile, $hash );
 	}
 

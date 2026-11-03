@@ -59,6 +59,13 @@ class Controller implements ControllerInterface {
 			return $this->remove_hashes( $html );
 		}
 
+		$hashes = array_map(
+			static function ( $hash ) {
+				return preg_quote( (string) $hash, '/' );
+			},
+			$hashes
+		);
+
 		$result = preg_replace( '/data-rocket-location-hash="(?:' . implode( '|', $hashes ) . ')"/i', 'data-wpr-lazyrender="1"', $html, -1, $count );
 
 		if (

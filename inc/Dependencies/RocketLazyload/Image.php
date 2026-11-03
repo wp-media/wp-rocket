@@ -67,12 +67,34 @@ class Image {
 	 * @return string
 	 */
 	public function lazyloadBackgroundImages( $html, $buffer ) {
-		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\s+(?<before>[^>]+[\'"\s])?style\s*=\s*([\'"])(?<styles>.*?)\3(?<after>[^>]*)>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
+		// Candidate opening tags for the allowed tag names. The quoted-value
+		// alternatives let a `>` character inside an attribute's value (e.g. raw
+		// markup stored in an attribute) be skipped over instead of
+		// prematurely ending the tag match. As in browsers, a quote only opens
+		// a value right after `=`: a stray quote anywhere else is a plain
+		// character, so it can't pair with a quote in a later tag and swallow
+		// everything in between. Quantifiers are possessive (`*+`) so a long,
+		// quote-free value can't be re-walked by backtracking once matched.
+		if ( ! preg_match_all( '#<(?<tag>div|figure|section|aside|span|li|a)\b(?:[^>=]++|=\s*+"[^"]*+"|=\s*+\'[^\']*+\'|=)*+>#is', $buffer, $elements, PREG_SET_ORDER ) ) {
 			return $html;
 		}
 
 		foreach ( $elements as $element ) {
-			if ( $this->isExcluded( $element['before'] . $element['after'], $this->getExcludedAttributes() ) ) {
+			$style = $this->findRealAttribute( $element[0], 'style' );
+
+			if ( ! $style ) {
+				continue;
+			}
+
+			// Only strip the outer quote characters themselves here, without
+			// trimming whitespace: the value must stay byte-for-byte identical
+			// to what is inside the original tag, so the background-image match
+			// found against it can still be located and removed from that tag.
+			$element['styles'] = $this->stripOuterQuoteChars( $style['value'] );
+
+			$attrs_no_style = str_replace( $style['attribute'], '', $element[0] );
+
+			if ( $this->isExcluded( $attrs_no_style, $this->getExcludedAttributes() ) ) {
 				continue;
 			}
 
@@ -111,7 +133,7 @@ class Image {
 				continue;
 			}
 
-			$lazy_bg = $this->addLazyCLass( $element[0] );
+			$lazy_bg = $this->addLazyClass( $element[0] );
 			$lazy_bg = str_replace( $url[0], '', $lazy_bg );
 			$lazy_bg = str_replace( '<' . $element['tag'], '<' . $element['tag'] . ' data-bg="' . esc_attr( $url['url'] ) . '"', $lazy_bg );
 
@@ -180,6 +202,36 @@ class Image {
 	}
 
 	/**
+	 * Removes a matching pair of leading/trailing quote characters from an
+	 * attribute value, without trimming any whitespace.
+	 *
+	 * Unlike trimOuterQuotes(), this preserves the value byte-for-byte
+	 * (aside from the two quote characters themselves), which matters when the
+	 * result must still be located as a substring of the original, untouched
+	 * tag text.
+	 *
+	 * @param string $value Attribute value, as returned by findRealAttribute().
+	 *
+	 * @return string
+	 */
+	private function stripOuterQuoteChars( $value ) {
+		$length = strlen( $value );
+
+		if ( $length < 2 ) {
+			return $value;
+		}
+
+		$first = $value[0];
+		$last  = $value[ $length - 1 ];
+
+		if ( ( '"' === $first || "'" === $first ) && $first === $last ) {
+			return substr( $value, 1, -1 );
+		}
+
+		return $value;
+	}
+
+	/**
 	 * Gets the class attribute and values from the given element, if it exists.
 	 *
 	 * @param string $element Given HTML element to extract classes from.
@@ -190,18 +242,96 @@ class Image {
 	 * }; else, false when no class attribute exists.
 	 */
 	private function getClasses( $element ) {
-		if ( ! preg_match( '#class\s*=\s*(?<classes>["\'].*?["\']|[^\s]+)#is', $element, $class ) ) {
-			return false;
-		}
+		$found = $this->findRealAttribute( $element, 'class' );
 
-		if ( empty( $class['classes'] ) ) {
+		if ( ! $found ) {
 			return false;
 		}
 
 		return [
-			'attribute' => $class[0],
-			'classes'   => $class['classes'],
+			'attribute' => $found['attribute'],
+			'classes'   => $found['value'],
 		];
+	}
+
+	/**
+	 * Finds the first genuine, non-nested occurrence of the given attribute on an HTML tag string.
+	 *
+	 * Unlike a plain `name\s*=` search, this ignores any occurrence of that literal text found
+	 * inside the still-open value of another attribute (e.g. a `class=` token nested inside a
+	 * `title="..."` value), so only a real attribute on the tag itself is ever returned.
+	 *
+	 * The quote-state walk is carried across candidates via $pos/$open_quote instead of
+	 * re-scanning the tag from byte 0 for every candidate: preg_match_all() returns matches
+	 * in ascending offset order, so each byte of the tag only needs to be visited once in
+	 * total, keeping this O(tag length) instead of O(candidates x tag length).
+	 *
+	 * @param string $tag  HTML tag string to search in, e.g. `<div class="a">`.
+	 * @param string $name Attribute name to look for, e.g. `class` or `style`.
+	 *
+	 * @return false|array{attribute: string, value: string} The matched attribute text and its
+	 *         (still-quoted, if applicable) value; false when no genuine attribute is found.
+	 */
+	private function findRealAttribute( $tag, $name ) {
+		$pattern = '#(?<=\s)' . preg_quote( $name, '#' ) . '\s*=\s*(?<value>"[^"]*+"|\'[^\']*+\'|[^\s>]++)#is';
+
+		if ( ! preg_match_all( $pattern, $tag, $matches, PREG_OFFSET_CAPTURE ) ) {
+			return false;
+		}
+
+		$pos        = 0;
+		$open_quote = null;
+
+		foreach ( $matches[0] as $index => $match ) {
+			$offset = $match[1];
+
+			$this->advanceQuoteState( $tag, $pos, $offset, $open_quote );
+			$pos = $offset;
+
+			if ( null !== $open_quote ) {
+				continue;
+			}
+
+			return [
+				'attribute' => $match[0],
+				'value'     => $matches['value'][ $index ][0],
+			];
+		}
+
+		return false;
+	}
+
+	/**
+	 * Advances a quote-state walk over $tag[$from..$end), updating $open_quote by reference.
+	 *
+	 * Tracks whichever of `"`/`'` is currently open (if any), the same way
+	 * isOffsetInsideQuotedValue() used to from byte 0 on every call. Callers resume from
+	 * their own cursor instead of restarting at 0, so a tag is only walked once in total.
+	 *
+	 * @param string      $tag        HTML tag string being walked.
+	 * @param int         $from       Start offset to resume scanning from (inclusive).
+	 * @param int         $end        End offset to scan up to (exclusive).
+	 * @param string|null $open_quote Currently open quote character, if any; passed by
+	 *                                reference and updated in place.
+	 *
+	 * @return void
+	 */
+	private function advanceQuoteState( $tag, $from, $end, &$open_quote ) {
+		for ( $i = $from; $i < $end; $i++ ) {
+			$char = $tag[ $i ];
+
+			if ( null === $open_quote ) {
+				if ( '"' === $char || "'" === $char ) {
+					$open_quote = $char;
+				}
+
+				continue;
+			}
+
+			if ( $char === $open_quote ) {
+				$open_quote = null;
+			}
+		}
 	}
 
 	/**

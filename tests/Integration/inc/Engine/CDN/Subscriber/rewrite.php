@@ -13,6 +13,7 @@ class Test_Rewrite extends TestCase {
 		parent::set_up();
 
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ] );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'rewrite', 2 );
 	}
@@ -21,6 +22,7 @@ class Test_Rewrite extends TestCase {
 		remove_filter( 'content_url', [ $this, 'setContentURL' ] );
 		remove_filter( 'includes_url', [ $this, 'setIncludesURL' ] );
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+		delete_transient( 'rocketcdn_status' );
 
 		$this->restoreWpHook( 'rocket_buffer' );
 

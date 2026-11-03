@@ -18,8 +18,8 @@ class Test_Rewrite extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options   = Mockery::mock( Options_Data::class );
+		$this->cdn       = new CDN( $this->options );
 	}
 
 	/**
@@ -67,6 +67,10 @@ class Test_Rewrite extends TestCase {
 			'cdn_reject_files' => [
 				'default' => [],
 				'value' => [],
+			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
 			],
 		];
 

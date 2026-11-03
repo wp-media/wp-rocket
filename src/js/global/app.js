@@ -6,11 +6,15 @@ import '../lib/greensock/plugins/CSSPlugin.min.js';
 import '../lib/greensock/plugins/ScrollToPlugin.min.js';
 
 // Add scripts
+import '../global/cdn-driver.js';
 import '../global/pageManager.js';
 import '../global/main.js';
 import '../global/fields.js';
 import '../global/beacon.js';
 import '../global/ajax.js';
+import '../global/recommendations-widget.js';
 import '../global/rocketcdn.js';
+import '../global/rocketcdn-subscription-polling.js';
 import '../global/countdown.js';
 import '../global/mixpanel.js'
+import '../global/sidebar.js'

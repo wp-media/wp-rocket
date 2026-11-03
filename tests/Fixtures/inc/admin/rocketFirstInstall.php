@@ -46,6 +46,7 @@ $default = [
 	'cdn_cnames'                  => [],
 	'cdn_zone'                    => [],
 	'cdn_reject_files'            => [],
+	'cdn_state'                   => 'nothing',
 	'do_cloudflare'               => 0,
 	'cloudflare_email'            => '',
 	'cloudflare_api_key'          => '',
@@ -62,11 +63,13 @@ $default = [
 	'analytics_enabled'           => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
+	'wpr-js-tips'                 => 1,
 ];
 
 $integration                                 					 = $default;
 $integration[ 'async_css_mobile' ]           					 = 1;
 $integration[ 'exclude_defer_js' ]           					 = [];
+$integration['cdn_type']                                         = 'rocketcdn';
 $integration[ 'delay_js' ]                   					 = 0;
 $integration[ 'delay_js_exclusions' ]        					 = [];
 $integration[ 'delay_js_execution_safe_mode' ]                   = 0;
@@ -79,7 +82,6 @@ $integration[ 'image_dimensions' ]           	 				 = 0;
 $integration[ 'exclude_lazyload' ]           					 = [];
 $integration['host_fonts_locally']           					 = 0;
 $integration['auto_preload_fonts']  	   					     = 0;
-
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [

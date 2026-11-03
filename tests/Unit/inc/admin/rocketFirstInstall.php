@@ -13,6 +13,9 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group AdminOnly
  */
 class Test_RocketFirstInstall extends TestCase {
+
+	protected $mock_rocket_get_constant = false;
+
 	public function setUp() : void {
 		parent::setUp();
 

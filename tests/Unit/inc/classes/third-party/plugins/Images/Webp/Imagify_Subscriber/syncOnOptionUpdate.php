@@ -31,7 +31,6 @@ class Test_SyncOnOptionUpdate extends TestCase {
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );
 
-		$old_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'a' ];
 		$new_value = [ 'display_nextgen' => 0, 'display_nextgen_method' => 'b' ];
 
 		$subscriber->sync_on_option_update( $old_value, $new_value );

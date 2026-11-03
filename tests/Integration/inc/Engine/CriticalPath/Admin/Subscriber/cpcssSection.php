@@ -36,6 +36,9 @@ class Test_CpcssSection extends TestCase {
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'edit-post' );
 	}
 
@@ -45,6 +48,8 @@ class Test_CpcssSection extends TestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
