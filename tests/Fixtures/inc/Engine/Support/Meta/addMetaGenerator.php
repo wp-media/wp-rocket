@@ -96,7 +96,7 @@ return [
 		'html' => '<html><head></head><body></body></html>',
 		'expected' => '<html><head><meta name="generator" content="WP Rocket 3.17" data-wpr-features="wpr_desktop" /></head><body></body></html>',
 	],
-	'testShouldEmitEmptyFeaturesWhenLicenseExpiredWithNoOtherFeature' => [
+	'testShouldSkipTagWhenLicenseExpiredWithNoOtherFeature' => [
 		'config' => [
 			'disable_meta' => false,
 			'cdn' => 0,
@@ -106,7 +106,19 @@ return [
 			'license_expired' => true,
 		],
 		'html' => '<html><head></head><body></body></html>',
-		'expected' => '<html><head><meta name="generator" content="WP Rocket 3.17" data-wpr-features="" /></head><body></body></html>',
+		'expected' => '<html><head></head><body></body></html>',
+	],
+	'testShouldKeepTagWithoutInsightsWhenLicenseExpiredWithCommentFeature' => [
+		'config' => [
+			'disable_meta' => false,
+			'cdn' => 0,
+			'do_caching_mobile_files' => 0,
+			'preload_links' => 0,
+			'host_fonts_locally' => 0,
+			'license_expired' => true,
+		],
+		'html' => '<html><head></head><body></body></html><!-- wpr_remove_unused_css -->',
+		'expected' => '<html><head><meta name="generator" content="WP Rocket 3.17" data-wpr-features="wpr_remove_unused_css" /></head><body></body></html>',
 	],
 	'testShouldKeepInsightsWhenLicenseDataUnavailable' => [
 		'config' => [

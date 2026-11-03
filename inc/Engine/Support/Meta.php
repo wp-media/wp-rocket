@@ -100,7 +100,7 @@ class Meta {
 	 *
 	 * @param array $features Features to add to the meta tag.
 	 *
-	 * @return string
+	 * @return string The meta tag, or an empty string when there is no feature to report.
 	 */
 	private function get_meta_tag( array $features = [] ): string {
 		$options = $this->options;
@@ -130,6 +130,11 @@ class Meta {
 
 		if ( ! $this->is_license_expired() ) {
 			$features[] = 'wpr_insights';
+		}
+
+		// Nothing to report (expired licence and no other feature): do not output the tag.
+		if ( empty( $features ) ) {
+			return '';
 		}
 
 		// Check if WP Rocket version should be included.
