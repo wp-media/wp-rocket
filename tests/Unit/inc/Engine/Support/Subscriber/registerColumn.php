@@ -33,87 +33,46 @@ class TestRegisterColumn extends TestCase {
 		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] )->byDefault();
 	}
 
-	private function set_licence( $key, $email ) {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $key );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $email );
-	}
-
 	/**
-	 * The WAP client library is not loaded in this process, so there is nothing to register with.
-	 */
-	public function testShouldDoNothingWhenTheWapClientIsMissing() {
-		$this->options->shouldNotReceive( 'get' );
-
-		$this->subscriber->register_column();
-
-		$this->assertFalse( class_exists( 'WapClient', false ) );
-	}
-
-	/**
+	 * @dataProvider configTestData
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function testShouldNotRegisterWithoutLicenceData() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldNotReceive( 'register_chat_column' );
+	public function testShouldDoExpected( $config, $expected ): void {
+		if ( $config['wap_client_exists'] ) {
+			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+			$wap_client = Mockery::mock( 'alias:WapClient' );
 
-		$this->set_licence( '', '' );
+			if ( $expected['registered'] ) {
+				$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
 
-		$this->subscriber->register_column();
-	}
+				if ( ! empty( $expected['config_check'] ) ) {
+					$check = $expected['config_check'];
+					$expectation->with(
+						Mockery::on(
+							function ( $cfg ) use ( $check ) {
+								return ( ! isset( $check['product'] ) || $check['product'] === $cfg['product'] )
+									&& ( ! isset( $check['page_context'] ) || $check['page_context'] === $cfg['page_context'] )
+									&& ( ! isset( $check['grnd_license_key'] ) || $check['grnd_license_key'] === $cfg['grnd']['license_key'] )
+									&& ( ! isset( $check['screens'] ) || $check['screens'] === $cfg['screens'] );
+							}
+						)
+					);
+				}
+			} else {
+				$wap_client->shouldNotReceive( 'register_chat_column' );
+			}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldRegisterTheChatColumnWithTheConfiguration() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldReceive( 'register_chat_column' )
-			->once()
-			->with(
-				Mockery::on(
-					function ( $config ) {
-						return 'wprocket' === $config['product']
-							&& 'support' === $config['page_context']
-							&& 'test-consumer-key|user@example.org' === $config['grnd']['license_key']
-							&& [ 'settings_page_wprocket' ] === $config['screens'];
-					}
-				)
-			);
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] ?? '' );
 
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		$this->subscriber->register_column();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldNotRegisterWhenTheUserCannotUseTheAssistant() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldNotReceive( 'register_chat_column' );
-
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => false ] );
-
-		$this->subscriber->register_column();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldRegisterWhenTheFlagIsMissing() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldReceive( 'register_chat_column' )->once();
-
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [] );
+			if ( array_key_exists( 'user_data', $config ) ) {
+				$this->user_client->shouldReceive( 'get_user_data' )
+				                  ->andReturn( (object) $config['user_data'] );
+			}
+		} else {
+			$this->options->shouldNotReceive( 'get' );
+		}
 
 		$this->subscriber->register_column();
 	}

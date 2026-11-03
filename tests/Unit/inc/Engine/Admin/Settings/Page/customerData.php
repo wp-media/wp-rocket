@@ -50,32 +50,31 @@ class Test_CustomerData extends TestCase {
 		Functions\when( 'rocket_get_license_type' )->justReturn( 'Unknown' );
 	}
 
-	public function testShouldReturnTheAssistantStateWhenTheUserDataIsReadable() {
-		$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( (object) [ 'can_use_ai' => false ] );
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		if ( false === $config['user_data'] ) {
+			$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( false );
+			Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
+		} else {
+			$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( (object) $config['user_data'] );
 
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( false );
-
-		$data = $this->page->customer_data();
-
-		$this->assertArrayHasKey( 'assistant_available', $data );
-		$this->assertFalse( $data['assistant_available'] );
-	}
-
-	public function testShouldReturnTrueWhenTheAssistantIsAvailable() {
-		$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( (object) [ 'can_use_ai' => true ] );
-
-		$data = $this->page->customer_data();
-
-		$this->assertTrue( $data['assistant_available'] );
-	}
-
-	public function testShouldNotReturnTheAssistantStateWhenTheUserDataCannotBeRead() {
-		$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( false );
-
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
+			if ( isset( $config['filter_returns'] ) ) {
+				Filters\expectApplied( 'rocket_ai_assistant_available' )
+					->once()
+					->with( true )
+					->andReturn( $config['filter_returns'] );
+			}
+		}
 
 		$data = $this->page->customer_data();
 
-		$this->assertArrayNotHasKey( 'assistant_available', $data );
+		if ( $expected['has_assistant_available'] ) {
+			$this->assertArrayHasKey( 'assistant_available', $data );
+			$this->assertSame( $expected['assistant_available'], $data['assistant_available'] );
+		} else {
+			$this->assertArrayNotHasKey( 'assistant_available', $data );
+		}
 	}
 }

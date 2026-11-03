@@ -42,41 +42,6 @@ class TestFilterAssistantAvailable extends TestCase {
 		$this->assertSame( 'add_localize_script_data', $events['rocket_localize_admin_script'] );
 	}
 
-	public function testShouldReturnTrueWhenTheKeyIsValidAndTheUserCanUseTheAssistant() {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] );
-
-		$this->assertTrue( $this->subscriber->filter_assistant_available( true ) );
-	}
-
-	public function testShouldReturnTrueWhenTheFlagIsMissing() {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [] );
-
-		$this->assertTrue( $this->subscriber->filter_assistant_available( true ) );
-	}
-
-	public function testShouldReturnFalseWhenTheFlagIsNotTrue() {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => false ] );
-
-		$this->assertFalse( $this->subscriber->filter_assistant_available( true ) );
-	}
-
-	public function testShouldReturnFalseWithoutReadingTheUserDataWhenTheKeyIsNotValid() {
-		Functions\when( 'rocket_valid_key' )->justReturn( false );
-		$this->user_client->shouldNotReceive( 'get_user_data' );
-
-		$this->assertFalse( $this->subscriber->filter_assistant_available( true ) );
-	}
-
-	public function testShouldKeepAnEarlierFalse() {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] );
-
-		$this->assertFalse( $this->subscriber->filter_assistant_available( false ) );
-	}
-
 	public function testShouldAddTheCurrentValueToTheScriptData() {
 		Filters\expectApplied( 'rocket_ai_assistant_available' )
 			->once()
@@ -90,5 +55,21 @@ class TestFilterAssistantAvailable extends TestCase {
 			],
 			$this->subscriber->add_localize_script_data( [ 'nonce' => 'abc' ] )
 		);
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+
+		if ( $config['call_get_user_data'] ) {
+			$this->user_client->shouldReceive( 'get_user_data' )
+			                  ->andReturn( (object) $config['user_data'] );
+		} else {
+			$this->user_client->shouldNotReceive( 'get_user_data' );
+		}
+
+		$this->assertSame( $expected['result'], $this->subscriber->filter_assistant_available( $config['input'] ) );
 	}
 }

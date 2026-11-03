@@ -36,13 +36,10 @@ class Test_RenderRocketInsightsUrlsTable extends TestCase {
 	}
 
 	/**
-	 * Renders the table with the Beacon returning help data.
-	 *
-	 * @param bool $available Value returned by the assistant availability filter.
-	 * @return string
+	 * @dataProvider configTestData
 	 */
-	private function render_table( bool $available ): string {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $available );
+	public function testShouldDoExpected( $config, $expected ): void {
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
 
 		$context = Mockery::mock( Context::class );
 		$beacon  = Mockery::mock( Beacon::class );
@@ -71,21 +68,14 @@ class Test_RenderRocketInsightsUrlsTable extends TestCase {
 			]
 		);
 
-		return (string) ob_get_clean();
-	}
+		$html = (string) ob_get_clean();
 
-	public function testShouldRenderNeedHelpWhenTheAssistantIsAvailable() {
-		$html = $this->render_table( true );
+		foreach ( $expected['contains'] as $string ) {
+			$this->assertStringContainsString( $string, $html );
+		}
 
-		$this->assertStringContainsString( 'data-wap-prompt', $html );
-		$this->assertStringContainsString( 'wpr-infoAction--help', $html );
-	}
-
-	public function testShouldNotRenderNeedHelpWhenTheAssistantIsNotAvailable() {
-		$html = $this->render_table( false );
-
-		$this->assertStringContainsString( 'Performance Summary', $html );
-		$this->assertStringNotContainsString( 'data-wap-prompt', $html );
-		$this->assertStringNotContainsString( 'wpr-infoAction--help', $html );
+		foreach ( $expected['not_contains'] as $string ) {
+			$this->assertStringNotContainsString( $string, $html );
+		}
 	}
 }

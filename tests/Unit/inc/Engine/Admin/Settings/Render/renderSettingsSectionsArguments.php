@@ -36,20 +36,16 @@ class Test_RenderSettingsSectionsArguments extends TestCase {
 	}
 
 	/**
-	 * Renders one section and returns the arguments the section renderer received.
-	 *
-	 * @param string $type      Section type.
-	 * @param bool   $available Value returned by the assistant availability filter.
-	 * @return array
+	 * @dataProvider configTestData
 	 */
-	private function get_section_arguments( string $type, bool $available ): array {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $available );
+	public function testShouldDoExpected( $config, $expected ): void {
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
 
 		$received = [];
 
 		/** @var \Mockery\MockInterface&Render $render The section templates are not part of this test. */
 		$render = Mockery::mock( Render::class, [ 'vfs://views', Mockery::mock( PluginFamily::class ) ] )->makePartial();
-		$render->shouldReceive( $type )->once()->andReturnUsing(
+		$render->shouldReceive( $config['type'] )->once()->andReturnUsing(
 			function ( $args ) use ( &$received ) {
 				$received = $args;
 			}
@@ -62,7 +58,7 @@ class Test_RenderSettingsSectionsArguments extends TestCase {
 					'sections' => [
 						[
 							'id'    => 'section_id',
-							'type'  => $type,
+							'type'  => $config['type'],
 							'title' => 'Section title',
 							'class' => [ 'one', 'two' ],
 							'help'  => self::HELP,
@@ -74,35 +70,16 @@ class Test_RenderSettingsSectionsArguments extends TestCase {
 
 		$render->render_settings_sections( 'page_slug' );
 
-		return $received;
-	}
+		$this->assertSame( $expected['help'], $received['help'] );
 
-	public function testShouldPassTheHelpDataWhenTheAssistantIsAvailable() {
-		$args = $this->get_section_arguments( 'fields_container', true );
+		if ( $expected['has_hide_need_help'] ) {
+			$this->assertTrue( $received['hide_need_help'] );
+		} else {
+			$this->assertArrayNotHasKey( 'hide_need_help', $received );
+		}
 
-		$this->assertSame( self::HELP, $args['help'] );
-		$this->assertArrayNotHasKey( 'hide_need_help', $args );
-		$this->assertSame( 'one two', $args['class'] );
-	}
-
-	public function testShouldBlankTheHelpDataWhenTheAssistantIsNotAvailable() {
-		$args = $this->get_section_arguments( 'fields_container', false );
-
-		$this->assertSame( '', $args['help'] );
-		$this->assertArrayNotHasKey( 'hide_need_help', $args );
-	}
-
-	public function testShouldKeepTheHelpDataOfThePurgeSectionAndFlagIt() {
-		$args = $this->get_section_arguments( 'purge_cdn_cache_section', false );
-
-		$this->assertSame( self::HELP, $args['help'] );
-		$this->assertTrue( $args['hide_need_help'] );
-	}
-
-	public function testShouldNotFlagThePurgeSectionWhenTheAssistantIsAvailable() {
-		$args = $this->get_section_arguments( 'purge_cdn_cache_section', true );
-
-		$this->assertSame( self::HELP, $args['help'] );
-		$this->assertArrayNotHasKey( 'hide_need_help', $args );
+		if ( isset( $expected['class'] ) ) {
+			$this->assertSame( $expected['class'], $received['class'] );
+		}
 	}
 }

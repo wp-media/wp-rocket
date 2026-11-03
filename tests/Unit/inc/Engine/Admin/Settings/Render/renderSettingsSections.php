@@ -45,14 +45,10 @@ class Test_RenderSettingsSections extends TestCase {
 	}
 
 	/**
-	 * Renders one section of the given type with Need Help data.
-	 *
-	 * @param string $type      Section type.
-	 * @param bool   $available Value returned by the assistant availability filter.
-	 * @return string
+	 * @dataProvider configTestData
 	 */
-	private function render_section( string $type, bool $available ): string {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $available );
+	public function testShouldDoExpected( $config, $expected ): void {
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
 
 		$render = new Render( dirname( __DIR__, 7 ) . '/views/settings', Mockery::mock( PluginFamily::class ) );
 
@@ -62,13 +58,12 @@ class Test_RenderSettingsSections extends TestCase {
 					'title'    => 'Page title',
 					'sections' => [
 						'section_id' => [
-							'id'          => 'section_id',
-							'type'        => $type,
-							'title'       => 'Section title',
-							'description' => 'Section description',
-							'page'        => 'page_slug',
-							'purge_url'   => 'https://example.org/purge',
-							// Data read by the CDN section templates.
+							'id'               => 'section_id',
+							'type'             => $config['type'],
+							'title'            => 'Section title',
+							'description'      => 'Section description',
+							'page'             => 'page_slug',
+							'purge_url'        => 'https://example.org/purge',
 							'is_active'        => false,
 							'is_forced_off'    => false,
 							'toggle_tooltip'   => '',
@@ -79,7 +74,7 @@ class Test_RenderSettingsSections extends TestCase {
 								'no_status_indicator' => true,
 								'pages_count'         => 0,
 							],
-							'help'        => [
+							'help'             => [
 								'id'  => 'abc',
 								'url' => 'https://docs.example.org/help',
 							],
@@ -91,56 +86,14 @@ class Test_RenderSettingsSections extends TestCase {
 
 		ob_start();
 		$render->render_settings_sections( 'page_slug' );
+		$html = (string) ob_get_clean();
 
-		return (string) ob_get_clean();
-	}
+		foreach ( $expected['contains'] as $string ) {
+			$this->assertStringContainsString( $string, $html );
+		}
 
-	public function provideNeedHelpTypes() {
-		return [
-			'fields container'       => [ 'fields_container' ],
-			'add-ons container'      => [ 'addons_container' ],
-			'no container and title' => [ 'nocontainer_with_title' ],
-			'purge section'          => [ 'purge_cdn_cache_section' ],
-			'other CDN'              => [ 'your_own_cdn' ],
-			'RocketCDN free'         => [ 'rocketcdn_free' ],
-			'RocketCDN paid'         => [ 'rocketcdn_paid' ],
-		];
-	}
-
-	/**
-	 * @dataProvider provideNeedHelpTypes
-	 */
-	public function testShouldRenderNeedHelpWhenTheAssistantIsAvailable( $type ) {
-		$html = $this->render_section( $type, true );
-
-		$this->assertStringContainsString( 'data-wap-prompt', $html );
-		$this->assertStringContainsString( 'wpr-infoAction--help', $html );
-	}
-
-	/**
-	 * @dataProvider provideNeedHelpTypes
-	 */
-	public function testShouldNotRenderNeedHelpWhenTheAssistantIsNotAvailable( $type ) {
-		$html = $this->render_section( $type, false );
-
-		$this->assertStringContainsString( 'Section title', $html );
-		$this->assertStringNotContainsString( 'data-wap-prompt', $html );
-		$this->assertStringNotContainsString( 'wpr-infoAction--help', $html );
-		$this->assertStringNotContainsString( 'Need Help?', $html );
-	}
-
-	public function testShouldKeepTheLearnMoreLinkOfThePurgeSectionWhenTheAssistantIsNotAvailable() {
-		$html = $this->render_section( 'purge_cdn_cache_section', false );
-
-		$this->assertStringContainsString( 'wpr-cdn-purge__learn-more', $html );
-		$this->assertStringContainsString( 'Learn more about Purge', $html );
-		$this->assertStringContainsString( 'href="https://docs.example.org/help"', $html );
-	}
-
-	public function testShouldKeepTheLearnMoreLinkOfThePurgeSectionWhenTheAssistantIsAvailable() {
-		$html = $this->render_section( 'purge_cdn_cache_section', true );
-
-		$this->assertStringContainsString( 'Learn more about Purge', $html );
-		$this->assertStringContainsString( 'Need Help?', $html );
+		foreach ( $expected['not_contains'] as $string ) {
+			$this->assertStringNotContainsString( $string, $html );
+		}
 	}
 }

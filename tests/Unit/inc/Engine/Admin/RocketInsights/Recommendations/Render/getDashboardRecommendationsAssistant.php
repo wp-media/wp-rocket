@@ -34,13 +34,10 @@ class Test_GetDashboardRecommendationsAssistant extends TestCase {
 	}
 
 	/**
-	 * Renders the dashboard recommendations with the Beacon returning help data.
-	 *
-	 * @param bool $available Value returned by the assistant availability filter.
-	 * @return string
+	 * @dataProvider configTestData
 	 */
-	private function render_dashboard( bool $available ): string {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $available );
+	public function testShouldDoExpected( $config, $expected ): void {
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
 
 		$data_manager = Mockery::mock( DataManager::class );
 		$beacon       = Mockery::mock( Beacon::class );
@@ -55,23 +52,14 @@ class Test_GetDashboardRecommendationsAssistant extends TestCase {
 
 		$render = new Render( dirname( __DIR__, 8 ) . '/views/settings', $data_manager, new Overrides(), $beacon );
 
-		return $render->get_dashboard_recommendations( false );
-	}
+		$html = $render->get_dashboard_recommendations( false );
 
-	public function testShouldRenderNeedHelpWhenTheAssistantIsAvailable() {
-		$html = $this->render_dashboard( true );
+		foreach ( $expected['contains'] as $string ) {
+			$this->assertStringContainsString( $string, $html );
+		}
 
-		$this->assertStringContainsString( 'wpr-dash-section-header__actions', $html );
-		$this->assertStringContainsString( 'data-wap-prompt', $html );
-		$this->assertStringContainsString( 'wpr-infoAction--help', $html );
-	}
-
-	public function testShouldNotRenderNeedHelpNorItsContainerWhenTheAssistantIsNotAvailable() {
-		$html = $this->render_dashboard( false );
-
-		$this->assertStringContainsString( 'wpr-dash-section-header__title', $html );
-		$this->assertStringNotContainsString( 'wpr-dash-section-header__actions', $html );
-		$this->assertStringNotContainsString( 'data-wap-prompt', $html );
-		$this->assertStringNotContainsString( 'wpr-infoAction--help', $html );
+		foreach ( $expected['not_contains'] as $string ) {
+			$this->assertStringNotContainsString( $string, $html );
+		}
 	}
 }
