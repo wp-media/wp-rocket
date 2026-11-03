@@ -4,14 +4,13 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscr
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Admin\Subscriber::maybe_add_error_notice
  * @group AdminOnly
  */
 class Test_maybeAddErrorNotice extends FilesystemTestCase {
-	use CapTrait, HttpRequestTrait;
+	use CapTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Admin/Subscriber/maybeAddErrorNoticeIntegration.php';
 
@@ -37,8 +36,6 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 		// Keep only the notice under test: other notices, like ModPagespeed's, request the home page.
@@ -47,8 +44,6 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

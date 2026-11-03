@@ -118,9 +118,8 @@ class Meta {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
-		if ( ! $features ) {
-			return '';
-		}
+		// Always report Rocket Insights, so the tag exists on every page.
+		$features[] = 'wpr_insights';
 
 		// Check if WP Rocket version should be included.
 		$version = wpm_apply_filters_typed( 'boolean', 'rocket_display_meta_generator_content_version', true )
