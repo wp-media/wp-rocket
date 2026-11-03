@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\CDN\Cloudflare;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
@@ -14,8 +13,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group CloudflarePlugin
  */
 class Test_DisplayServerPushingModeNotice extends TestCase{
-	use HttpRequestTrait;
-
 	protected $rucss;
     protected $combine_css;
     private static $admin_user_id = 0;
@@ -35,8 +32,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 	{
 		parent::set_up();
 
-		$this->setup_http();
-
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_server_pushing_mode_notice' );
@@ -50,8 +45,6 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
 		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
 		$this->restoreWpHook( 'admin_notices' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
