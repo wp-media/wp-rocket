@@ -113,20 +113,23 @@ $(document).ready(function(){
 
     function wprFillWapPrompt( columnEl, prompt ) {
         var textarea = columnEl.querySelector( 'textarea' );
-        if ( ! textarea || textarea.disabled ) {
+        if ( ! textarea ) {
             return;
         }
 
         textarea.value = prompt;
-        // Dispatch 'input' so WAP's autoGrow listener resizes the composer.
-        textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
-        textarea.focus();
 
-        var sendBtn = columnEl.querySelector( '.gv-input-ai .gv-button-primary' );
-        if ( sendBtn ) {
-            setTimeout( function() {
-                sendBtn.click();
-            }, 50 );
+        if ( ! textarea.disabled ) {
+            // Dispatch 'input' so WAP's autoGrow listener resizes the composer.
+            textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+            textarea.focus();
+
+            var sendBtn = columnEl.querySelector( '.gv-input-ai .gv-button-primary' );
+            if ( sendBtn ) {
+                setTimeout( function() {
+                    sendBtn.click();
+                }, 50 );
+            }
         }
     }
 });
