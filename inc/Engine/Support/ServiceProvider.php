@@ -60,6 +60,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'support_rest',
 					'support_meta',
+					'options',
 				]
 			);
 	}

@@ -24,7 +24,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-optionHeader <?php echo esc_attr( $data['class'] ); ?>">
 	<h3 class="wpr-title2"><?php echo $data['title']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?></h3>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
-	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
+	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-wap-prompt="<?php echo esc_attr( sprintf( /* translators: 1: settings tab name, 2: settings section name */ __( "I need help with '%1\$s' > '%2\$s'", 'rocket' ), $data['page_title'], $data['title'] ) ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Settings" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
 </div>
 

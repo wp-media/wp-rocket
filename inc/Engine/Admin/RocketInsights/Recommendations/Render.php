@@ -107,8 +107,10 @@ class Render extends Abstract_Render {
 		// The dashboard shows the first 5 recommendations; the legacy widget shows 3.
 		$data['show_load_more'] = count( $data['recommendations'] ) > 5;
 
-		$data['rows'] = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
-		$data['help'] = $this->beacon->get_suggest( 'rocket_insights' );
+		$data['rows']          = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
+		$data['help']          = $this->beacon->get_suggest( 'rocket_insights' );
+		$data['page_title']    = __( 'Dashboard', 'rocket' );
+		$data['section_title'] = __( 'Recommendations', 'rocket' );
 
 		return $this->generate( 'partials/rocket-insights/dashboard-recommendations', $data );
 	}

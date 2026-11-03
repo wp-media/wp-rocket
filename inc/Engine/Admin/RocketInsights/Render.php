@@ -136,6 +136,8 @@ class Render extends Abstract_Render {
 		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 		$data['help']          = $rocket_insights_beacon;
+		$data['page_title']    = __( 'Add-ons', 'rocket' );
+		$data['section_title'] = __( 'Performance Summary', 'rocket' );
 
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
