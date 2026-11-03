@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || exit;
 		data-other-cdn-id="<?php echo esc_attr( $data['help']['other_cdn_id'] ); ?>"
 		<?php endif; ?>
 		data-wpr_track_button="Need Help"
-		data-wpr_track_context="Settings"
+		data-wpr_track_context="<?php echo esc_attr( 'page_cdn' === $data['page'] ? 'Content Delivery' : 'Settings' ); ?>"
 		class="wpr-infoAction wpr-infoAction--help wpr-icon-help<?php echo ! empty( $data['help']['rocketcdn_url'] ) ? ' exclude-cdn-help-js' : ''; ?>"
 		target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>
