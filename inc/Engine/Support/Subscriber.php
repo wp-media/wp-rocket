@@ -217,6 +217,7 @@ class Subscriber implements Subscriber_Interface {
 		return 'rocket_manage_options';
 	}
 
+
 	/**
 	 * Callback of the `rocket_ai_assistant_available` filter.
 	 *
