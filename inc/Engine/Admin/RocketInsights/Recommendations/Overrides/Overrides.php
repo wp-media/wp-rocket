@@ -26,20 +26,29 @@ class Overrides {
 	}
 
 	/**
-	 * Applies the registered overrides to the formatted recommendations.
+	 * Applies the registered overrides to the formatted recommendations, dropping the ones an override removes.
 	 *
 	 * @param array $recommendations Formatted recommendations.
 	 * @return array
 	 */
 	public function apply_all( array $recommendations ): array {
 		foreach ( $recommendations as $index => $recommendation ) {
-			foreach ( $this->overrides[ $recommendation['option_slug'] ?? '' ] ?? [] as $override ) {
+			$overrides = $this->overrides[ $recommendation['option_slug'] ?? '' ] ?? [];
+
+			foreach ( $overrides as $override ) {
+				if ( $override->should_remove( $recommendation ) ) {
+					unset( $recommendations[ $index ] );
+					continue 2;
+				}
+			}
+
+			foreach ( $overrides as $override ) {
 				$recommendation = $override->apply( $recommendation );
 			}
 
 			$recommendations[ $index ] = $recommendation;
 		}
 
-		return $recommendations;
+		return array_values( $recommendations );
 	}
 }

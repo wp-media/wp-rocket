@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Override_Interface;
 use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
- * Points the Rocket Insights RocketCDN recommendation to the Pro upgrade when RocketCDN Free is active.
+ * Adapts the Rocket Insights RocketCDN recommendation to the site.
  *
+ * It points to the Pro upgrade when RocketCDN Free is active and is removed when another CDN is in use or on one.com.
  * Other states keep the copy returned by the API.
  */
 class RecommendationOverride implements Override_Interface {
@@ -28,14 +31,23 @@ class RecommendationOverride implements Override_Interface {
 	private $subscription_controller;
 
 	/**
+	 * Options instance.
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param Context                $context                 CDN context.
 	 * @param SubscriptionController $subscription_controller Subscription controller.
+	 * @param Options_Data           $options                 Options instance.
 	 */
-	public function __construct( Context $context, SubscriptionController $subscription_controller ) {
+	public function __construct( Context $context, SubscriptionController $subscription_controller, Options_Data $options ) {
 		$this->context                 = $context;
 		$this->subscription_controller = $subscription_controller;
+		$this->options                 = $options;
 	}
 
 	/**
@@ -45,6 +57,21 @@ class RecommendationOverride implements Override_Interface {
 	 */
 	public function get_option_slug(): string {
 		return 'plugin_rocketcdn';
+	}
+
+	/**
+	 * Removes the recommendation on one.com hosting or when another CDN is configured with CNAMEs.
+	 *
+	 * @param array $recommendation Formatted recommendation.
+	 * @return bool
+	 */
+	public function should_remove( array $recommendation ): bool {
+		if ( 'onecom' === HostResolver::get_host_service() ) {
+			return true;
+		}
+
+		return Context::BYOCDN_TYPE === $this->context->get_cdn_state()
+			&& ! empty( $this->options->get( 'cdn_cnames', [] ) );
 	}
 
 	/**
