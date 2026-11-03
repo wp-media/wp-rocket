@@ -31,7 +31,8 @@ class ClearUrlCache implements AbilitiesInterface {
 					'type'       => 'object',
 					'properties' => [
 						'url' => [
-							// No "format: uri": core sanitizes it with sanitize_url() before execute(), which alters the raw value and hides invalid URLs.
+							// No "format: uri": core sanitizes it with sanitize_url() before execute(),
+							// which alters the raw value and hides invalid URLs.
 							'anyOf'       => [
 								[
 									'type' => 'string',
