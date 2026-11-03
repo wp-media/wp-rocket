@@ -31,21 +31,20 @@ class ClearUrlCache implements AbilitiesInterface {
 					'type'       => 'object',
 					'properties' => [
 						'url' => [
+							// No "format: uri": core sanitizes it with sanitize_url() before execute(), which alters the raw value and hides invalid URLs.
 							'anyOf'       => [
 								[
-									'type'   => 'string',
-									'format' => 'uri',
+									'type' => 'string',
 								],
 								[
 									'type'     => 'array',
 									'items'    => [
-										'type'   => 'string',
-										'format' => 'uri',
+										'type' => 'string',
 									],
 									'minItems' => 1,
 								],
 							],
-							'description' => __( 'A single URL or an array of URLs whose cache should be purged.', 'rocket' ),
+							'description' => __( 'A single absolute URL, including the scheme (http:// or https://), or an array of such URLs whose cache should be purged.', 'rocket' ),
 						],
 					],
 					'required'   => [ 'url' ],
