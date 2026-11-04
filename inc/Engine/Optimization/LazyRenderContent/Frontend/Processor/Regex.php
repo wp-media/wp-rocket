@@ -103,9 +103,9 @@ class Regex implements ProcessorInterface {
 			++$this->count;
 
 			// Add the data-rocket-location-hash attribute.
-			$replace = preg_replace( '/' . $child[1] . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $child[0], 1 );
+			$replace = preg_replace( '/' . preg_quote( $child[1], '/' ) . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $child[0], 1 );
 
-			$html = preg_replace( '/' . preg_quote( $child[0], '/' ) . '/', $replace, $html, 1 );
+			$html = preg_replace( '/' . preg_quote( $child[0], '/' ) . '/', addcslashes( $replace, '\\$' ), $html, 1 );
 		}
 
 		return $html;
