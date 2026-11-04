@@ -37,6 +37,9 @@ class Test_RenderAddonCard extends TestCase {
 			}
 		);
 		Functions\when( 'sanitize_html_class' )->returnArg();
+		Functions\when( 'sanitize_key' )->returnArg();
+		Functions\when( 'get_current_user_id' )->justReturn( 1 );
+		Functions\when( 'get_user_meta' )->justReturn( '' );
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'wp_kses' )->returnArg();
 
@@ -90,6 +93,23 @@ class Test_RenderAddonCard extends TestCase {
 					'button_class' => 'wpr-rocketcdn-open',
 					'is_external'  => false,
 				],
+				[
+					'id'           => str_repeat( 'a', 41 ),
+					'title'        => 'Long id',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => 'https://example.org/long',
+					'is_external'  => false,
+				],
+				[
+					'title'        => 'No id',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => 'https://example.org/go',
+					'is_external'  => false,
+				],
 			]
 		);
 
@@ -100,7 +120,15 @@ class Test_RenderAddonCard extends TestCase {
 
 	public function testShouldRenderTheCategoryTitleOnce() {
 		$this->assertSame( 1, substr_count( $this->html, 'Add-ons' ) );
-		$this->assertSame( 3, substr_count( $this->html, 'class="wpr-addonCard wpr-addonCard--' ) );
+		$this->assertSame( 5, substr_count( $this->html, 'class="wpr-addonCard wpr-addonCard--' ) );
+	}
+
+	public function testShouldRenderOneAccessibleCloseButtonPerCardWithAnIdOfAtMost40Characters() {
+		$this->assertSame( 3, substr_count( $this->html, 'class="wpr-notice-close wpr-icon-close wpr-addonCard-close"' ) );
+		$this->assertStringContainsString( '<button type="button" class="wpr-notice-close wpr-icon-close wpr-addonCard-close" data-card-id="imagify"><span class="screen-reader-text">Dismiss this notice</span></button>', $this->html );
+		$this->assertStringContainsString( 'data-card-id="rocketcdn"', $this->html );
+		$this->assertStringContainsString( 'data-card-id="rocketcdn-stripe"', $this->html );
+		$this->assertStringNotContainsString( 'data-card-id="' . str_repeat( 'a', 41 ), $this->html );
 	}
 
 	public function testShouldRenderAccessibleToggleButtons() {

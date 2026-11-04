@@ -46,6 +46,11 @@ class TestAddMetaGenerator extends TestCase {
 				->andReturn( $config['disable_meta'] );
 		}
 
+		if ( isset( $config['display_version'] ) ) {
+			Filters\expectApplied( 'rocket_display_meta_generator_content_version' )
+				->andReturn( $config['display_version'] );
+		}
+
 		Functions\when( 'is_user_logged_in' )->justReturn( $config['is_user_logged_in'] ?? false );
 
 		if ( isset( $config['do_caching_mobile_files'] ) ) {

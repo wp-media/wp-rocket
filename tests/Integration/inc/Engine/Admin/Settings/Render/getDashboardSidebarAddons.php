@@ -94,7 +94,71 @@ class Test_GetDashboardSidebarAddons extends TestCase {
 		$this->assertSame( 1, substr_count( $html, 'wpr-Dashboard-sidebar-category' ) );
 		$this->assertSame( 2, substr_count( $html, 'class="wpr-addonCard wpr-addonCard--' ) );
 		$this->assertSame( 2, substr_count( $html, '<button type="button" class="wpr-addonCard-toggle" aria-expanded="false"' ) );
+		$this->assertSame( 2, substr_count( $html, 'class="wpr-notice-close wpr-icon-close wpr-addonCard-close"' ) );
+		$this->assertStringContainsString( 'data-card-id="first"', $html );
+		$this->assertStringContainsString( 'data-card-id="second"', $html );
 		$this->assertStringContainsString( 'href="#page_cdn"', $html );
 		$this->assertStringContainsString( 'target="_blank" rel="noopener noreferrer"', $html );
+	}
+
+	public function testShouldSkipTheCardsDismissedByTheCurrentUser() {
+		$user_id = self::factory()->user->create();
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'rocket_boxes', [ 'rocket_addon_card_first' ] );
+
+		add_filter(
+			'rocket_dashboard_sidebar_addons',
+			function ( $cards ) {
+				$cards[] = [
+					'id'           => 'first',
+					'title'        => 'First card',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => '#page_cdn',
+				];
+				$cards[] = [
+					'id'           => 'second',
+					'title'        => 'Second card',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => 'https://example.org',
+				];
+
+				return $cards;
+			}
+		);
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertSame( 1, substr_count( $html, 'class="wpr-addonCard wpr-addonCard--' ) );
+		$this->assertStringNotContainsString( 'data-card-id="first"', $html );
+		$this->assertStringContainsString( 'data-card-id="second"', $html );
+
+		delete_user_meta( $user_id, 'rocket_boxes' );
+	}
+
+	public function testShouldRenderNoCloseButtonWithoutCardId() {
+		add_filter(
+			'rocket_dashboard_sidebar_addons',
+			function ( $cards ) {
+				$cards[] = [
+					'title'        => 'No id',
+					'lead'         => 'Lead',
+					'text'         => 'Text',
+					'button_label' => 'Go',
+					'button_url'   => '#page_cdn',
+				];
+
+				return $cards;
+			}
+		);
+
+		$html = self::$render->get_dashboard_sidebar();
+
+		$this->assertSame( 1, substr_count( $html, 'class="wpr-addonCard wpr-addonCard--' ) );
+		$this->assertStringNotContainsString( 'wpr-addonCard-close', $html );
 	}
 }

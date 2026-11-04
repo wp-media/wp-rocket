@@ -10,7 +10,7 @@ return [
 		'config' => 'external',
 		'excluded' => [],
 		'expected' => [
-			'/wp-content/uploads/elementor/css/(.*).css'
+			'{{uploads}}/elementor/css/(.*).css'
 		],
 	],
 ];

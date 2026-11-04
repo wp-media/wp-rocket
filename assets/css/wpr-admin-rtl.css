@@ -47,6 +47,10 @@ Method : SUITCSS (modified)
   right: 0;
   left: auto;
 }
+.wpr-Dashboard-sidebar .wpr-addonCard-title {
+  padding-right: 0;
+  padding-left: 24px;
+}
 .wpr-Dashboard-sidebar .rocket-renew-cta::after {
   margin-right: 8px;
   margin-left: 0;
@@ -364,7 +368,7 @@ Method : SUITCSS (modified)
   background-position: 10% bottom;
 }
 .wpr-notice-container {
-  padding: 24px 40px 24px 10%;
+  padding: 24px 40px 24px 25%;
 }
 .wpr-notice-close {
   right: inherit;

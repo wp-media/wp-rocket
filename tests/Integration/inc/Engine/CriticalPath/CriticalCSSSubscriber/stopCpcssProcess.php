@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::stop_critical_css_generation
@@ -14,7 +13,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  vfs
  */
 class Test_stopCpcssProcess extends FilesystemTestCase {
-	use ContentTrait, CriticalCssLoopbackTrait, HttpRequestTrait;
+	use ContentTrait, CriticalCssLoopbackTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php';
 
@@ -28,7 +27,6 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 
 	public function set_up() {
 		parent::set_up();
-		$this->setup_http();
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'stop_critical_css_generation', 9 );
 		$this->unregisterAllCallbacksExcept( 'rocket_before_rollback', 'stop_critical_css_generation', 9 );
 		$this->subscriber   = self::$container->get( 'critical_css_subscriber' );
@@ -37,7 +35,6 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 	}
 
 	public function tear_down() {
-		$this->tear_down_http();
 		parent::tear_down();
 		if($this->filesystem->exists( $this->cancel_file_path )){
 			$this->filesystem->delete( $this->cancel_file_path );

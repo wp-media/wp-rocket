@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 use WP_Error;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\ASTrait;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
@@ -13,7 +12,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group Preload
  */
 class Test_PreloadUrl extends AdminTestCase {
-	use ASTrait, HttpRequestTrait;
+	use ASTrait;
 
 	protected $mobile_cache;
 
@@ -21,8 +20,6 @@ class Test_PreloadUrl extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		self::installPreloadCacheTable();
 
@@ -33,8 +30,6 @@ class Test_PreloadUrl extends AdminTestCase {
 		self::uninstallPreloadCacheTable();
 
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

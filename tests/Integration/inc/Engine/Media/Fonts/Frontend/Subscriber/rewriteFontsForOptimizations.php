@@ -4,15 +4,12 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Fonts\Frontend\Subscriber;
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Fonts\Frontend\Subscriber::rewrite_fonts
  * @group HostFontsLocally
  */
 class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Media/Fonts/Frontend/Subscriber/rewriteFontsForOptimizations.php';
 
 	protected $config;
@@ -25,8 +22,6 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 		add_filter( 'rocket_host_fonts_locally_inline_css', [ $this, 'locally_inline_css' ] );
 		add_filter('rocket_exclude_locally_host_fonts', [ $this, 'exclude_locally_host_fonts' ] );
 		add_filter('rocket_disable_meta_generator', '__return_true');
-		$this->setup_http();
-
 	}
 
 	public function tear_down() {
@@ -36,8 +31,6 @@ class Test_RewriteFontsForOptimizations extends FilesystemTestCase {
 		remove_filter('rocket_disable_meta_generator', '__return_true');
 
 		$this->restoreWpHook('rocket_buffer');
-		$this->tear_down_http();
-
 
 		parent::tear_down();
 	}

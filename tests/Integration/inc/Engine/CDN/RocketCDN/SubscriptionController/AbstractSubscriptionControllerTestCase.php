@@ -7,15 +7,12 @@ use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Shared scaffolding for the RocketCDN SubscriptionController integration tests.
  *
  */
 abstract class AbstractSubscriptionControllerTestCase extends TestCase {
-	use HttpRequestTrait;
-
 	protected static $use_settings_trait = true;
 
 	protected static $transients = [
@@ -31,8 +28,6 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$container = $this->getRocketContainer();
 
@@ -60,8 +55,6 @@ abstract class AbstractSubscriptionControllerTestCase extends TestCase {
 		set_current_screen( 'front' );
 
 		$this->restoreWpHook( 'current_screen' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

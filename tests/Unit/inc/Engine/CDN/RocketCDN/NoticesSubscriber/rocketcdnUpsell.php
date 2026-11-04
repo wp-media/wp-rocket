@@ -150,12 +150,12 @@ class Test_RocketcdnUpsell extends TestCase {
 		$this->assertSame( '', $card['image']['alt'] );
 		$this->assertSame( 266, $card['image']['width'] );
 		$this->assertSame( 137, $card['image']['height'] );
-		$this->assertSame( 'Propel Your Content at the Speed of Light', $card['lead'] );
-		$this->assertSame( 'from 100+ edge locations with unlimited bandwidth.', $card['text'] );
+		$this->assertSame( 'Speed up your content from 100+ locations worldwide,', $card['lead'] );
+		$this->assertSame( 'with unlimited bandwidth.', $card['text'] );
 		$this->assertSame(
 			[
 				'Faster content delivery across <strong>your entire website</strong>',
-				'<strong>No bandwidth limits</strong>, no hidden costs',
+				'<strong>No traffic limits</strong>, no hidden costs',
 				'<strong>100+ edge locations</strong> for wider global coverage',
 			],
 			$card['list']
