@@ -575,8 +575,6 @@ class Render extends Abstract_Render {
 		 * or the licence key fails the local check. The same value is passed to the admin script. The chat column
 		 * itself is decided by the same check in the support subscriber and does not apply this filter.
 		 *
-		 * @since 3.24
-		 *
 		 * @param bool $available True when the "Need Help?" controls should be shown.
 		 *
 		 * @return bool

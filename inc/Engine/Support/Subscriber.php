@@ -225,8 +225,6 @@ class Subscriber implements Subscriber_Interface {
 	 * and false when the licence key fails the local check or the user data does not allow the assistant. The chat
 	 * column is decided by the same check in get_column_config() and does not apply this filter.
 	 *
-	 * @since 3.24
-	 *
 	 * @param bool $available True when the assistant entries should be shown.
 	 *
 	 * @return bool
@@ -239,8 +237,6 @@ class Subscriber implements Subscriber_Interface {
 	 * Passes whether the assistant is available to the admin script.
 	 *
 	 * The script receives the value as a string, '1' or ''.
-	 *
-	 * @since 3.24
 	 *
 	 * @param array $data Localize script data.
 	 *
