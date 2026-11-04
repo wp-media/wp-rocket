@@ -98,7 +98,10 @@ class Test_DismissAddonCard extends AjaxTestCase {
 		);
 	}
 
-	public function testShouldFireDismissedHookOnlyOnFirstDismissal() {
+	/**
+	 * @dataProvider provideDismissalStates
+	 */
+	public function testShouldFireDismissedHookOnlyWhenTheCardWasNotDismissed( $was_dismissed, $expected ) {
 		wp_set_current_user( self::$admin_id );
 
 		$banners = [];
@@ -112,10 +115,22 @@ class Test_DismissAddonCard extends AjaxTestCase {
 		$_POST['nonce']   = wp_create_nonce( 'rocket-ajax' );
 		$_POST['card_id'] = 'imagify';
 
-		$this->assertTrue( $this->callAjaxAction()->success );
-		$this->assertTrue( $this->callAjaxAction()->success );
+		if ( $was_dismissed ) {
+			rocket_dismiss_box( 'rocket_addon_card_imagify' );
+		}
 
-		$this->assertSame( [ 'imagify' ], $banners );
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( $expected, $banners );
+		$this->assertContains( 'rocket_addon_card_imagify', (array) get_user_meta( self::$admin_id, 'rocket_boxes', true ) );
+	}
+
+	public function provideDismissalStates() {
+		return [
+			'first dismissal'   => [ false, [ 'imagify' ] ],
+			'already dismissed' => [ true, [] ],
+		];
 	}
 
 	public function testShouldFailWhenUserCannotManageOptions() {
