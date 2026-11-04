@@ -16,7 +16,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
  *
  * Public method :
      detectID - Detect ID with hash
-     getBodyTop - Get body top position
 	 change - Displays the corresponding page
  *
  */
@@ -35,7 +34,6 @@ function PageManager(aElem) {
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
-    this.bodyTop = 0;
     this.isReady = false;
     this.buttonText = this.$submitButton.value;
 
@@ -49,12 +47,10 @@ function PageManager(aElem) {
 
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
-        this.bodyTop = 0;
         this.detectID();
     }
     else{
         var session = localStorage.getItem('wpr-hash');
-        this.bodyTop = 0;
 
         if(session){
             window.location.hash = session;
@@ -143,21 +139,6 @@ PageManager.prototype.detectID = function() {
 
 
 /*
-* Get body top position
-*/
-PageManager.prototype.getBodyTop = function() {
-    var adminBar = document.getElementById('wpadminbar');
-    var adminBarHeight = adminBar ? adminBar.offsetHeight : 0;
-    var wrapPadding = parseFloat(window.getComputedStyle(this.$body.parentElement).paddingTop) || 0;
-    var bodyPos = this.$body.getBoundingClientRect();
-
-    // Scroll distance that leaves the body start right under the admin bar and the wrapper padding
-    this.bodyTop = Math.max(0, bodyPos.top + window.pageYOffset - adminBarHeight - wrapPadding);
-}
-
-
-
-/*
 * Page change
 */
 PageManager.prototype.change = function() {
@@ -209,11 +190,10 @@ PageManager.prototype.change = function() {
 
     this.updateSubmitDisabledState();
 
-    // Scroll once the new page is displayed, measured on the final layout. Measuring before the swap
-    // used the previous page's height and pending admin notices, so the result changed between tabs.
+    // Go back to the top of the window once the new page is displayed. The top is always reachable, so
+    // the result doesn't depend on the height of the page or of the admin notices above it.
     if (this.isReady) {
-        this.getBodyTop();
-        document.documentElement.scrollTop = this.bodyTop;
+        window.scrollTo(0, 0);
     }
 
 	// Dispatch custom event after page navigation for other scripts to hook into.
