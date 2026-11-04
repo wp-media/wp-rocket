@@ -2,6 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\Pricing;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
@@ -64,7 +69,25 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 		$this->assertTrue( (bool) get_transient( 'rocket_renewal_banner_' . self::$user_id ) );
 	}
 
-	public function testShouldFireDismissedHookOnce() {
+	/**
+	 * @dataProvider provideCustomerTypes
+	 */
+	public function testShouldFireDismissedHookWithTheBannerType( $is_trial, $expected ) {
+		$user = Mockery::mock( User::class );
+		$user->shouldReceive( 'is_trial_customer' )->andReturn( $is_trial );
+
+		$renewal = new Renewal(
+			Mockery::mock( Pricing::class ),
+			$user,
+			Mockery::mock( Options_Data::class ),
+			'views'
+		);
+
+		global $wp_filter;
+		$original_hook = $wp_filter['wp_ajax_rocket_dismiss_renewal'];
+		remove_all_actions( 'wp_ajax_rocket_dismiss_renewal' );
+		add_action( 'wp_ajax_rocket_dismiss_renewal', [ $renewal, 'dismiss_renewal_expired_banner' ] );
+
 		$banners = [];
 		add_action(
 			'rocket_dashboard_banner_dismissed',
@@ -78,7 +101,17 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 
 		$response = $this->callAjaxAction();
 
+		$wp_filter['wp_ajax_rocket_dismiss_renewal'] = $original_hook;
+
 		$this->assertTrue( $response->success );
-		$this->assertSame( [ 'license_expired' ], $banners );
+		$this->assertSame( [ $expected ], $banners );
+		$this->assertTrue( (bool) get_transient( 'rocket_renewal_banner_' . self::$user_id ) );
+	}
+
+	public function provideCustomerTypes() {
+		return [
+			'trial customer'     => [ true, 'trial_expired' ],
+			'non-trial customer' => [ false, 'license_expired' ],
+		];
 	}
 }
