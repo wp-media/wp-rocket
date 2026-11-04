@@ -82,7 +82,7 @@ class Test_unregisterCloudflareCleanOnPost extends TestCase {
 		if ( $expected['should_unregister'] ) {
 			$cloudflare->shouldReceive( 'unregister_callback' )
 				->once()
-				->with( 'deleted_post', 'purgeCacheByRelevantURLs' );
+				->with( 'deleted_post', 'purgeCacheByRelevantURLs', PHP_INT_MAX );
 
 			$cloudflare->shouldReceive( 'unregister_callback' )
 				->once()

@@ -68,6 +68,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
+			'wp_ajax_rocket_dismiss_addon_card'    => 'dismiss_addon_card',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
 			'rocket_dashboard_sidebar_addons'      => 'add_imagify_addon_card',
@@ -130,6 +131,17 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 */
 	public function add_imagify_addon_card( $cards ): array {
 		return $this->page->add_imagify_addon_card( (array) $cards );
+	}
+
+	/**
+	 * Dismisses an add-on card of the Dashboard sidebar for the current user.
+	 *
+	 * @since 3.24
+	 *
+	 * @return void
+	 */
+	public function dismiss_addon_card(): void {
+		$this->page->dismiss_addon_card();
 	}
 
 	/**

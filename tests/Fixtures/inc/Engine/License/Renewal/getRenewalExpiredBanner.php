@@ -45,6 +45,10 @@ $pricing = [
 	] ) ),
 ];
 
+// Pricing endpoint unreachable: no renewal price available for the license.
+$pricing_unavailable           = $pricing;
+$pricing_unavailable['single'] = json_decode( json_encode( [ 'websites' => 1 ] ) );
+
 return [
 	'shouldReturnNullWhenLicenseIsNotExpired' => [
 		'config'   => [
@@ -248,7 +252,7 @@ return [
 				'template' => 'renewal-expired-banner-ocd-disabled',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -271,7 +275,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -294,7 +298,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$39.2 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -317,7 +321,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -340,7 +344,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -363,7 +367,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -403,7 +407,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$39.2 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -426,7 +430,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -449,7 +453,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -472,7 +476,7 @@ return [
 				'template' => 'renewal-expired-banner',
 				'data' => [
 					'renewal_url'   => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
-					'message' => null,
+					'message' => 'Renew your license now at <strong>$59 <span class="renewal-tax__info">(excl. taxes)</span></strong>.',
 				],
 			],
 		],
@@ -542,6 +546,52 @@ return [
 				'template' => 'trial-expired-banner',
 				'data' => [
 					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+				],
+			],
+		],
+		'testShouldReturnNoPriceMessageWhenPricingUnavailableAndStandardBanner' => [
+			'config'   => [
+				'user'      => [
+					'licence_account'    => 1,
+					'licence_expired'    => true,
+					'licence_expiration' => strtotime( 'now - 20 days' ),
+					'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'creation_date'      => strtotime( '2021-01-10' ),
+					'auto_renew' => false,
+				],
+				'ocd' => false,
+				'transient' => false,
+				'pricing' => $pricing_unavailable,
+				'disabled_date' => '',
+			],
+			'expected' => [
+				'template' => 'renewal-expired-banner',
+				'data' => [
+					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'message' => null,
+				],
+			],
+		],
+		'testShouldReturnNoPriceMessageWhenPricingUnavailableAndOCDDisabledBanner' => [
+			'config'   => [
+				'user'      => [
+					'licence_account'    => 1,
+					'licence_expired'    => true,
+					'licence_expiration' => strtotime( 'now - 20 days' ),
+					'renewal_url'        => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'creation_date'      => strtotime( '2021-01-10' ),
+					'auto_renew' => true,
+				],
+				'ocd' => true,
+				'transient' => false,
+				'pricing' => $pricing_unavailable,
+				'disabled_date' => '',
+			],
+			'expected' => [
+				'template' => 'renewal-expired-banner-ocd-disabled',
+				'data' => [
+					'renewal_url' => 'https://wp-rocket.me/checkout/renew/roger@wp-rocket.me/da5891162a3bc2d8a9670267fd07c9eb/',
+					'message' => null,
 				],
 			],
 		],

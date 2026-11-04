@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="wpr-dash-recs__loading" role="status">
 				<?php $this->render_part( 'rocket-insights/loading-dots' ); ?>
-				<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Recommendations loading...', 'rocket' ); ?></p>
+				<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Analyzing your page (~1 min)', 'rocket' ); ?></p>
 			</div>
 			<?php
 			break;

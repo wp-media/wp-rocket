@@ -210,6 +210,29 @@ $(document).ready(function(){
 			}
         );
     } );
+
+    // jQuery on purpose: reuses wprHideEmptiedSidebarCategory() like the Promo and Renewal handlers above.
+    $( document ).on( 'click', '.wpr-addonCard-close', function( e ) {
+        e.preventDefault();
+
+        var $card = $( this ).closest( '.wpr-addonCard' );
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_dismiss_addon_card',
+                nonce: rocket_ajax_data.nonce,
+                card_id: $( this ).data( 'card-id' )
+            },
+            function( response ) {
+                if ( response.success ) {
+                    $card.hide( 'slow' );
+                    wprHideEmptiedSidebarCategory( $card );
+                }
+            }
+        );
+    } );
+
 	$( '#wpr-update-exclusion-list' ).on( 'click', function( e ) {
 		e.preventDefault();
 		$('#wpr-update-exclusion-msg').html('');

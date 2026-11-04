@@ -51,9 +51,9 @@ class Test_GetImagifyAddonCardData extends TestCase {
 		$card = $this->getRender( [] )->get_imagify_addon_card_data();
 
 		$this->assertSame( 'imagify', $card['id'] );
-		$this->assertSame( 'Reduce image size by 20%', $card['title'] );
-		$this->assertSame( 'Give your website an extra speed boost', $card['lead'] );
-		$this->assertSame( 'Images can account for 50% of your loading time.', $card['text'] );
+		$this->assertSame( 'Make images up to 80% lighter', $card['title'] );
+		$this->assertSame( 'Give your website an extra speed boost.', $card['lead'] );
+		$this->assertSame( 'Optimize your images in one click with Imagify.', $card['text'] );
 		$this->assertSame( 'Install Imagify', $card['button_label'] );
 		$this->assertSame( 'https://example.org/install', $card['button_url'] );
 		$this->assertFalse( $card['is_external'] );

@@ -14,16 +14,9 @@ use WP_Rocket\Tests\Unit\inc\Engine\Optimization\TestCase;
  */
 class Test_IsExcludedFile extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/CacheDynamicResource/isExcludedFile.php';
-	private $cache_resource;
 
 	public function setUp() : void {
 		parent::setUp();
-
-		$this->cache_resource = new CacheDynamicResource(
-			$this->options,
-			$this->filesystem->getUrl( 'wordpress/wp-content/cache/busting/' ),
-			'http://example.org/wp-content/cache/busting/'
-		);
 
 		Filters\expectApplied( 'rocket_cdn_hosts' )
 			->atMost()
@@ -43,10 +36,21 @@ class Test_IsExcludedFile extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnTrueWhenURLIsExcluded( $url, $expected ) {
+	public function testShouldReturnTrueWhenURLIsExcluded( $url, $expected, $excluded_files = [] ) {
+		Filters\expectApplied( 'rocket_exclude_static_dynamic_resources' )
+			->once()
+			->with( [] )
+			->andReturn( $excluded_files );
+
+		$cache_resource = new CacheDynamicResource(
+			$this->options,
+			$this->filesystem->getUrl( 'wordpress/wp-content/cache/busting/' ),
+			'http://example.org/wp-content/cache/busting/'
+		);
+
 		$this->assertSame(
 			$expected,
-			$this->cache_resource->is_excluded_file( $url )
+			$cache_resource->is_excluded_file( $url )
 		);
 	}
 }

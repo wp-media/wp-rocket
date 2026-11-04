@@ -146,6 +146,9 @@ class GetRenewalExpiredBanner extends TestCase {
 
 			Functions\when( 'number_format_i18n' )->returnArg();
 
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['user']['currency'] ?? 'USD' );
+
 			$this->pricing->shouldReceive( 'get_renewals_data' )
 				->andReturn( $config['pricing']['renewals'] );
 
@@ -173,6 +176,13 @@ class GetRenewalExpiredBanner extends TestCase {
 				->atMost()
 				->once()
 				->andReturn( $config['pricing']['infinite'] );
+
+			$this->user->shouldReceive( 'get_license_type_slug' )
+				->andReturn( '' );
+
+			$this->pricing->shouldReceive( 'get_pricing_by_type' )
+				->with( '' )
+				->andReturn( null );
 
 			Functions\when( 'date_i18n' )->justReturn( $config['disabled_date'] );
 

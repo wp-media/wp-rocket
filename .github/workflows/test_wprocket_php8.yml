@@ -21,7 +21,7 @@ jobs:
       fail-fast: false
       matrix:
         operating-system: [ubuntu-latest]
-        php-versions: ['8.0', '8.1', '8.2', '8.3', '8.4', '8.5']
+        php-versions: ['8.0', '8.1', '8.2', '8.3', '8.4']
         wp-versions: ['latest']
 
     name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }}
@@ -38,19 +38,6 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
-    env:
-      ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
-      ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
-      ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
-      ROCKETCDN_URL: ${{ secrets.ROCKETCDN_URL }}
-      ROCKETCDN_WEBSITE_ID: ${{ secrets.ROCKETCDN_WEBSITE_ID }}
-      ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
-      ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
-      ROCKET_CLOUDFLARE_API_KEY: ${{ secrets.ROCKET_CLOUDFLARE_API_KEY }}
-      ROCKET_CLOUDFLARE_EMAIL: ${{ secrets.ROCKET_CLOUDFLARE_EMAIL }}
-      ROCKET_CLOUDFLARE_SITE_URL: ${{ secrets.ROCKET_CLOUDFLARE_SITE_URL }}
-      ROCKET_CLOUDFLARE_ZONE_ID: ${{ secrets.ROCKET_CLOUDFLARE_ZONE_ID }}
 
     steps:
     - name: Checkout
