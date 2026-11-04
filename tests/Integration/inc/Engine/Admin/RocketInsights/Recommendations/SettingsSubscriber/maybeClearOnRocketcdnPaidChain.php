@@ -36,6 +36,13 @@ class Test_MaybeClearOnRocketcdnPaidChain extends RocketCDNTestCase {
 	private $original_settings_hook;
 
 	/**
+	 * Options API instance.
+	 *
+	 * @var \WP_Rocket\Admin\Options
+	 */
+	private $options_api;
+
+	/**
 	 * Event manager instance.
 	 *
 	 * @var \WP_Rocket\Event_Management\Event_Manager
@@ -59,6 +66,7 @@ class Test_MaybeClearOnRocketcdnPaidChain extends RocketCDNTestCase {
 
 		$container           = apply_filters( 'rocket_container', null );
 		$this->event_manager = $container->get( 'event_manager' );
+		$this->options_api   = $container->get( 'options_api' );
 		$this->subscribers   = [
 			$container->get( 'rocketcdn_data_manager_subscriber' ),
 			$container->get( 'ri_recommendations_settings_subscriber' ),
@@ -102,9 +110,9 @@ class Test_MaybeClearOnRocketcdnPaidChain extends RocketCDNTestCase {
 		wp_set_current_user( self::factory()->user->create( [ 'role' => $config['role'] ] ) );
 		set_current_screen( 'settings_page_wprocket' );
 
-		$settings              = get_option( 'wp_rocket_settings', [] );
+		$settings              = $this->options_api->get( 'settings', [] );
 		$settings['cdn_state'] = $config['initial_cdn_state'];
-		update_option( 'wp_rocket_settings', $settings );
+		$this->options_api->set( 'settings', $settings );
 
 		set_transient(
 			self::TRANSIENT,
@@ -119,7 +127,7 @@ class Test_MaybeClearOnRocketcdnPaidChain extends RocketCDNTestCase {
 		// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- Core transient hook.
 		do_action( 'set_transient_rocketcdn_status', $config['transient_value'] );
 
-		$this->assertSame( $expected['cdn_state'], get_option( 'wp_rocket_settings' )['cdn_state'] );
+		$this->assertSame( $expected['cdn_state'], $this->options_api->get( 'settings', [] )['cdn_state'] );
 
 		if ( $expected['transient_cleared'] ) {
 			$this->assertFalse( get_transient( self::TRANSIENT ) );
