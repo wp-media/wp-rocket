@@ -74,4 +74,5 @@ $(document).ready(function(){
 
     // Make function globally available
     window.wprTrackHelpButton = wprTrackHelpButton;
+
 });

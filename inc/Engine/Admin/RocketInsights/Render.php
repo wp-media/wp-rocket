@@ -136,6 +136,13 @@ class Render extends Abstract_Render {
 		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 		$data['help']          = $rocket_insights_beacon;
+		$data['page_title']    = __( 'Add-ons', 'rocket' );
+		$data['section_title'] = __( 'Performance Summary', 'rocket' );
+
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true ) ) {
+			$data['help'] = [];
+		}
 
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
