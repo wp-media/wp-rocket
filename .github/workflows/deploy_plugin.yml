@@ -49,6 +49,35 @@ jobs:
           zip -r __wp-rocket_${VERSION#v}.zip wp-rocket
         working-directory: /tmp
 
+      # The zip is published under the tag's version, and licence-data.php is
+      # personalised for each customer at download time. Fail the release
+      # before anything is uploaded when the zip is not what its tag says: a
+      # Version: header that differs from the tag (3.23.2 shipped with
+      # 3.23.2-alpha), or no licence-data.php (3.17.3).
+      - name: Check Zip
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION=${TAG#v}
+          ZIP=__wp-rocket_${VERSION}.zip
+          fail() { echo "::error title=Release zip::$ZIP: $1"; exit 1; }
+
+          roots=$(unzip -Z1 "$ZIP" | cut -d/ -f1 | sort -u | paste -s -d , -)
+          [ "$roots" = "wp-rocket" ] || fail "expected a single wp-rocket/ folder, found: $roots"
+
+          files=$(mktemp -d)
+          unzip -q "$ZIP" wp-rocket/wp-rocket.php -d "$files" || fail "wp-rocket/wp-rocket.php is missing"
+          header=$(grep -m 1 -i -E '^[[:space:]/*#@]*Version:' "$files/wp-rocket/wp-rocket.php" | sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]].*$//' || true)
+          [ "$header" = "$VERSION" ] || fail "wp-rocket.php says Version: ${header:-nothing}, the release is $VERSION"
+
+          unzip -q "$ZIP" wp-rocket/licence-data.php -d "$files" || fail "wp-rocket/licence-data.php is missing"
+          for constant in WP_ROCKET_KEY WP_ROCKET_EMAIL; do
+            grep -q -E "^[[:space:]]*(//[[:space:]]*)?define\([[:space:]]*'$constant'[[:space:]]*,.*\);[[:space:]]*$" "$files/wp-rocket/licence-data.php" \
+              || fail "wp-rocket/licence-data.php has no define( '$constant', ... ); line"
+          done
+          echo "$ZIP: wp-rocket/ at version $VERSION, with licence-data.php"
+        working-directory: /tmp
+
       - name: Upload Zip
         run: |
           VERSION=${{ github.event.release.tag_name }}
