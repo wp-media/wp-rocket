@@ -6,7 +6,6 @@ namespace WP_Rocket\Engine\Support;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -43,11 +42,11 @@ class Subscriber implements Subscriber_Interface {
 	private Options_Data $options;
 
 	/**
-	 * User client instance.
+	 * User instance.
 	 *
-	 * @var UserClient
+	 * @var User
 	 */
-	private $user_client;
+	private $user;
 
 	/**
 	 * Instantiate the class
@@ -55,13 +54,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @param Rest         $rest Rest instance.
 	 * @param Meta         $meta Meta instance.
 	 * @param Options_Data $options Plugin options.
-	 * @param UserClient   $user_client User client instance.
+	 * @param User         $user User instance.
 	 */
-	public function __construct( Rest $rest, Meta $meta, Options_Data $options, UserClient $user_client ) {
-		$this->rest        = $rest;
-		$this->meta        = $meta;
-		$this->options     = $options;
-		$this->user_client = $user_client;
+	public function __construct( Rest $rest, Meta $meta, Options_Data $options, User $user ) {
+		$this->rest    = $rest;
+		$this->meta    = $meta;
+		$this->options = $options;
+		$this->user    = $user;
 	}
 
 	/**
@@ -254,7 +253,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Checks the licence key locally, then the assistant access of the user.
 	 *
-	 * Not memoized: the key check is local and the user data is one cached read, so a refresh is seen at once.
+	 * Not memoized: the key check is local and the shared user is kept current by the refresh of the customer data.
 	 *
 	 * @return bool
 	 */
@@ -263,6 +262,6 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
-		return ( new User( $this->user_client->get_user_data() ) )->can_use_ai();
+		return $this->user->can_use_ai();
 	}
 }

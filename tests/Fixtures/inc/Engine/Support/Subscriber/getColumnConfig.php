@@ -103,42 +103,16 @@ return [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
 			'consumer_email' => 'user@example.org',
-			'user_data'      => [ 'can_use_ai' => false ],
+			'can_use_ai'     => false,
 		],
 		'expected' => [ 'is_empty' => true ],
-	],
-	'flag_missing_returns_config'    => [
-		'config'   => [
-			'consumer_key'   => 'test-consumer-key',
-			'consumer_email' => 'user@example.org',
-			'user_data'      => [ 'licence_account' => 3 ],
-		],
-		'expected' => [
-			'is_empty' => false,
-			'fields'   => [
-				'product' => 'wprocket',
-			],
-		],
-	],
-	'user_data_unreadable'           => [
-		'config'   => [
-			'consumer_key'   => 'test-consumer-key',
-			'consumer_email' => 'user@example.org',
-			'user_data'      => false,
-		],
-		'expected' => [
-			'is_empty' => false,
-			'fields'   => [
-				'product' => 'wprocket',
-			],
-		],
 	],
 	'invalid_key_skips_user_data'    => [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
 			'consumer_email' => 'user@example.org',
 			'valid_key'      => false,
-			'user_data'      => null,
+			'can_use_ai'     => null,
 		],
 		'expected' => [ 'is_empty' => true ],
 	],

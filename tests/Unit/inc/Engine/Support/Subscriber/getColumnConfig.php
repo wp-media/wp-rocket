@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -20,18 +20,18 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestGetColumnConfig extends TestCase {
 	private $options;
-	private $user_client;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
 		$this->options     = Mockery::mock( Options_Data::class );
-		$this->user_client = Mockery::mock( UserClient::class );
-		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user_client );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] )->byDefault();
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
 
 	public function testShouldMapTheWapCapabilityToWpRocketCapability() {
@@ -45,13 +45,12 @@ class TestGetColumnConfig extends TestCase {
 		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
 		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
 
-		if ( ! array_key_exists( 'user_data', $config ) ) {
+		if ( ! array_key_exists( 'can_use_ai', $config ) ) {
 			// byDefault from set_up applies.
-		} elseif ( null === $config['user_data'] ) {
-			$this->user_client->shouldNotReceive( 'get_user_data' );
+		} elseif ( null === $config['can_use_ai'] ) {
+			$this->user->shouldNotReceive( 'can_use_ai' );
 		} else {
-			$this->user_client->shouldReceive( 'get_user_data' )
-			                  ->andReturn( false === $config['user_data'] ? false : (object) $config['user_data'] );
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
 		}
 
 		if ( isset( $config['valid_key'] ) ) {

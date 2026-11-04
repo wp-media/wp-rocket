@@ -6,7 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -19,7 +19,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestMaybeDisplayUnavailableNotice extends TestCase {
 	private $options;
-	private $user_client;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
@@ -30,11 +30,11 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		}
 
 		$this->options     = Mockery::mock( Options_Data::class );
-		$this->user_client = Mockery::mock( UserClient::class );
-		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user_client );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( (object) [ 'can_use_ai' => true ] )->byDefault();
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
 	}
@@ -73,8 +73,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		}
 
 		if ( isset( $config['can_use_ai'] ) ) {
-			$this->user_client->shouldReceive( 'get_user_data' )
-							  ->andReturn( (object) [ 'can_use_ai' => $config['can_use_ai'] ] );
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
 		}
 
 		Functions\when( 'get_current_screen' )->justReturn(

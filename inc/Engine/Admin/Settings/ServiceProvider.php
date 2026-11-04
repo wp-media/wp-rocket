@@ -74,6 +74,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'template_path',
 					'options',
 					'ri_context',
+					'user',
 				]
 			);
 		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )

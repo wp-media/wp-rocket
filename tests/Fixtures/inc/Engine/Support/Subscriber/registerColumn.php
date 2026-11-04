@@ -40,21 +40,10 @@ return [
 			'wap_client_exists' => true,
 			'consumer_key'      => 'test-consumer-key',
 			'consumer_email'    => 'user@example.org',
-			'user_data'         => [ 'can_use_ai' => false ],
+			'can_use_ai'        => false,
 		],
 		'expected' => [
 			'registered' => false,
-		],
-	],
-	'flag_missing_registers'       => [
-		'config'   => [
-			'wap_client_exists' => true,
-			'consumer_key'      => 'test-consumer-key',
-			'consumer_email'    => 'user@example.org',
-			'user_data'         => [],
-		],
-		'expected' => [
-			'registered' => true,
 		],
 	],
 ];

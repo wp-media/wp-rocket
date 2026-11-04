@@ -11,6 +11,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -22,12 +23,14 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class Test_CustomerData extends TestCase {
 	private $user_client;
+	private $shared_user;
 	private $page;
 
 	protected function setUp(): void {
 		parent::setUp();
 
 		$this->user_client = Mockery::mock( UserClient::class );
+		$this->shared_user = Mockery::mock( User::class );
 
 		$this->page = new Page(
 			[
@@ -43,7 +46,8 @@ class Test_CustomerData extends TestCase {
 			Mockery::mock( SiteList::class ),
 			'vfs://public/wp-content/plugins/wp-rocket/views',
 			Mockery::mock( Options_Data::class ),
-			Mockery::mock( Context::class )
+			Mockery::mock( Context::class ),
+			$this->shared_user
 		);
 
 		Functions\when( '__' )->returnArg();
@@ -57,8 +61,11 @@ class Test_CustomerData extends TestCase {
 		if ( false === $config['user_data'] ) {
 			$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( false );
 			Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
+			$this->shared_user->shouldNotReceive( 'set_user' );
 		} else {
-			$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( (object) $config['user_data'] );
+			$user_data = (object) $config['user_data'];
+			$this->user_client->shouldReceive( 'get_user_data' )->once()->andReturn( $user_data );
+			$this->shared_user->shouldReceive( 'set_user' )->once()->with( $user_data );
 
 			if ( isset( $config['filter_returns'] ) ) {
 				Filters\expectApplied( 'rocket_ai_assistant_available' )

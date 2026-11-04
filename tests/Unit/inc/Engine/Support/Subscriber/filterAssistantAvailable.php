@@ -7,7 +7,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -20,18 +20,18 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Support
  */
 class TestFilterAssistantAvailable extends TestCase {
-	private $user_client;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->user_client = Mockery::mock( UserClient::class );
+		$this->user       = Mockery::mock( User::class );
 		$this->subscriber  = new Subscriber(
 			Mockery::mock( Rest::class ),
 			Mockery::mock( Meta::class ),
 			Mockery::mock( Options_Data::class ),
-			$this->user_client
+			$this->user
 		);
 	}
 
@@ -63,11 +63,10 @@ class TestFilterAssistantAvailable extends TestCase {
 	public function testShouldDoExpected( $config, $expected ): void {
 		Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
 
-		if ( $config['call_get_user_data'] ) {
-			$this->user_client->shouldReceive( 'get_user_data' )
-			                  ->andReturn( (object) $config['user_data'] );
+		if ( $config['call_can_use_ai'] ) {
+			$this->user->shouldReceive( 'can_use_ai' )->once()->andReturn( $config['can_use_ai'] );
 		} else {
-			$this->user_client->shouldNotReceive( 'get_user_data' );
+			$this->user->shouldNotReceive( 'can_use_ai' );
 		}
 
 		$this->assertSame( $expected['result'], $this->subscriber->filter_assistant_available( $config['input'] ) );
