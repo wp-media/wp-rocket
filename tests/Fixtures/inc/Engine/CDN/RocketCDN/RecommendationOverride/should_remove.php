@@ -28,17 +28,17 @@ return [
 			],
 			'expected' => true,
 		],
-		'shouldRemoveOnOneCom'                 => [
+		'shouldRemoveWhenDisplayFilterReturnsFalse' => [
 			'config'   => [
 				'cdn_state' => 'nothing',
-				'brand'     => 'one.com',
+				'display'   => false,
 			],
 			'expected' => true,
 		],
-		'shouldKeepOnOtherGroupOneBrand'       => [
+		'shouldKeepWhenDisplayFilterReturnsTrue' => [
 			'config'   => [
 				'cdn_state' => 'nothing',
-				'brand'     => 'proisp.no',
+				'display'   => true,
 			],
 			'expected' => false,
 		],

@@ -6,12 +6,11 @@ namespace WP_Rocket\Engine\CDN\RocketCDN;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Override_Interface;
 use WP_Rocket\Engine\CDN\Context;
-use WP_Rocket\ThirdParty\Hostings\HostResolver;
 
 /**
  * Adapts the Rocket Insights RocketCDN recommendation to the site.
  *
- * It points to the Pro upgrade when RocketCDN Free is active and is removed when another CDN is in use or on one.com.
+ * It points to the Pro upgrade when RocketCDN Free is active and is removed when another CDN is in use or when a filter hides it.
  * Other states keep the copy returned by the API.
  */
 class RecommendationOverride implements Override_Interface {
@@ -60,13 +59,20 @@ class RecommendationOverride implements Override_Interface {
 	}
 
 	/**
-	 * Removes the recommendation on one.com hosting or when another CDN is configured with CNAMEs.
+	 * Removes the recommendation when the display filter is off or when another CDN is configured with CNAMEs.
 	 *
 	 * @param array $recommendation Formatted recommendation.
 	 * @return bool
 	 */
 	public function should_remove( array $recommendation ): bool {
-		if ( 'onecom' === HostResolver::get_host_service() ) {
+		/**
+		 * Filters whether the RocketCDN recommendation is displayed in Rocket Insights.
+		 *
+		 * @since 3.24
+		 *
+		 * @param bool $display True to display the recommendation, false to remove it.
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_display_rocketcdn_recommendation', true ) ) {
 			return true;
 		}
 
