@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -18,6 +19,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestMaybeDisplayUnavailableNotice extends TestCase {
 	private $options;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
@@ -27,166 +29,71 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 			define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
 		}
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
 	}
 
-	private function set_screen( $id ) {
-		Functions\when( 'get_current_screen' )->justReturn( (object) [ 'id' => $id ] );
-	}
-
 	/**
-	 * Mocks the WAP client class, which is only loaded by the library's own bootstrap.
-	 *
-	 * @param bool $available     Whether Application Passwords are available.
-	 * @param bool $https_missing Whether HTTPS is missing.
-	 */
-	private function mock_app_password_manager( $available, $https_missing = false ) {
-		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
-		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
-		$manager->shouldReceive( 'are_app_passwords_available' )->andReturn( $available );
-		$manager->shouldReceive( 'is_https_missing' )->andReturn( $https_missing );
-	}
-
-	private function set_licence( $key, $email ) {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $key );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $email );
-	}
-
-	/**
-	 * The library is not loaded in this process, so its availability cannot even be checked.
-	 */
-	public function testShouldNotDisplayWhenTheWapClientIsMissing() {
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->options->shouldNotReceive( 'get' );
-
-		Functions\expect( 'rocket_notice_html' )->never();
-
-		$this->subscriber->maybe_display_unavailable_notice();
-
-		$this->assertFalse( class_exists( 'GroupOne\WapClient\AppPasswordManager', false ) );
-	}
-
-	/**
+	 * @dataProvider configTestData
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function testShouldNotDisplayWithoutTheCapability() {
-		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
-		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
-		$manager->shouldNotReceive( 'are_app_passwords_available' );
+	public function testShouldDoExpected( $config, $expected ): void {
+		if ( $config['wap_class_exists'] ) {
+			/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
+			$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
 
-		Functions\when( 'current_user_can' )->justReturn( false );
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+			if ( $config['wap_check_called'] ) {
+				$manager->shouldReceive( 'are_app_passwords_available' )
+						->andReturn( $config['app_passwords_available'] );
+				$manager->shouldReceive( 'is_https_missing' )
+						->andReturn( $config['https_missing'] ?? false );
+			} else {
+				$manager->shouldNotReceive( 'are_app_passwords_available' );
+			}
 
-		Functions\expect( 'rocket_notice_html' )->never();
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_key', '' )
+						  ->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_email', '' )
+						  ->andReturn( $config['consumer_email'] ?? '' );
+		} else {
+			$this->options->shouldNotReceive( 'get' );
+		}
 
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
+		if ( isset( $config['current_user_can'] ) ) {
+			Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
+		}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldNotDisplayWithoutAScreen() {
-		/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
-		$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
-		$manager->shouldNotReceive( 'are_app_passwords_available' );
+		if ( isset( $config['can_use_ai'] ) ) {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
 
-		Functions\when( 'get_current_screen' )->justReturn( null );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+		Functions\when( 'get_current_screen' )->justReturn(
+			null !== $config['screen_id'] ? (object) [ 'id' => $config['screen_id'] ] : null
+		);
 
-		Functions\expect( 'rocket_notice_html' )->never();
-
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldNotDisplayOnAnotherScreen() {
-		$this->mock_app_password_manager( false );
-		$this->set_screen( 'dashboard' );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		Functions\expect( 'rocket_notice_html' )->never();
-
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldNotDisplayWithoutLicenceData() {
-		$this->mock_app_password_manager( false );
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->set_licence( '', '' );
-
-		Functions\expect( 'rocket_notice_html' )->never();
-
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldNotDisplayWhenApplicationPasswordsAreAvailable() {
-		$this->mock_app_password_manager( true );
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		Functions\expect( 'rocket_notice_html' )->never();
-
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldDisplayHttpsReasonWhenHttpsIsMissing() {
-		$this->mock_app_password_manager( false, true );
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		Functions\expect( 'rocket_notice_html' )
-			->once()
-			->with(
-				Mockery::on(
-					function ( $args ) {
-						return 'warning' === $args['status'] && false !== strpos( $args['message'], 'requires HTTPS' );
-					}
-				)
-			);
-
-		$this->subscriber->maybe_display_unavailable_notice();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldDisplayDisabledReasonWhenHttpsIsAvailable() {
-		$this->mock_app_password_manager( false, false );
-		$this->set_screen( 'settings_page_wprocket' );
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		Functions\expect( 'rocket_notice_html' )
-			->once()
-			->with(
-				Mockery::on(
-					function ( $args ) {
-						return 'warning' === $args['status'] && false !== strpos( $args['message'], 'have been disabled' );
-					}
-				)
-			);
+		if ( $expected['notice_called'] ) {
+			Functions\expect( 'rocket_notice_html' )
+				->once()
+				->with(
+					Mockery::on(
+						function ( $args ) use ( $expected ) {
+							return $expected['status'] === $args['status']
+								&& false !== strpos( $args['message'], $expected['message_contains'] );
+						}
+					)
+				);
+		} else {
+			Functions\expect( 'rocket_notice_html' )->never();
+		}
 
 		$this->subscriber->maybe_display_unavailable_notice();
 	}

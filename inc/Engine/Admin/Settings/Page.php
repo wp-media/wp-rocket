@@ -110,6 +110,13 @@ class Page extends Abstract_Render {
 	private $ri_context;
 
 	/**
+	 * Shared user instance
+	 *
+	 * @var User
+	 */
+	private $shared_user;
+
+	/**
 	 * Creates an instance of the Page object.
 	 *
 	 * @param array        $args        Array of required arguments to add the admin page.
@@ -122,6 +129,7 @@ class Page extends Abstract_Render {
 	 * @param string       $template_path Path to views.
 	 * @param Options_Data $options       WP Rocket options instance.
 	 * @param Context      $ri_context   Rocket Insights context instance.
+	 * @param User         $shared_user  Shared user instance.
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -134,7 +142,8 @@ class Page extends Abstract_Render {
 		SiteList $delayjs_sitelist,
 		$template_path,
 		Options_Data $options,
-		Context $ri_context
+		Context $ri_context,
+		User $shared_user
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -157,6 +166,7 @@ class Page extends Abstract_Render {
 		$this->delayjs_sitelist = $delayjs_sitelist;
 		$this->options          = $options;
 		$this->ri_context       = $ri_context;
+		$this->shared_user      = $shared_user;
 	}
 
 	/**
@@ -325,6 +335,12 @@ class Page extends Abstract_Render {
 		if ( ! is_object( $user_data ) ) {
 			return $data;
 		}
+
+		// The refresh of the customer data runs in this request: keep the shared user current for the assistant check.
+		$this->shared_user->set_user( $user_data );
+
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		if ( ! empty( $user_data->licence_expiration ) ) {
 			$data['license_class'] = ( time() < $user_data->licence_expiration && ! $user->is_revoked() ) ? 'wpr-isValid' : 'wpr-isInvalid';

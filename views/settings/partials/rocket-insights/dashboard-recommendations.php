@@ -20,9 +20,11 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-dash-section-header__heading">
 			<h3 class="wpr-dash-section-header__title"><?php esc_html_e( 'Recommendations', 'rocket' ); ?></h3>
 		</div>
+		<?php if ( ! empty( $data['help'] ) ) : ?>
 		<div class="wpr-dash-section-header__actions">
 			<a href="<?php echo esc_url( $data['help']['url'] ?? '' ); ?>" data-wap-prompt="<?php echo esc_attr( sprintf( /* translators: 1: settings tab name, 2: settings section name */ __( "I need help with '%1\$s' > '%2\$s'", 'rocket' ), $data['page_title'] ?? '', $data['section_title'] ?? '' ) ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Dashboard" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 		</div>
+		<?php endif; ?>
 	</div>
 
 	<?php

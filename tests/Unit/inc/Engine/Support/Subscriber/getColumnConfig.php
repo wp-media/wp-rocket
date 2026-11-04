@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -19,112 +20,73 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestGetColumnConfig extends TestCase {
 	private $options;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
-	}
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
-	private function set_licence( $key, $email ) {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $key );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $email );
-	}
-
-	public function testShouldReturnEmptyWhenKeyIsMissing() {
-		$this->set_licence( '', 'user@example.org' );
-
-		$this->assertSame( [], $this->subscriber->get_column_config() );
-	}
-
-	public function testShouldReturnEmptyWhenEmailIsMissing() {
-		$this->set_licence( 'test-consumer-key', '' );
-
-		$this->assertSame( [], $this->subscriber->get_column_config() );
-	}
-
-	public function testShouldReturnTheSupportChatConfiguration() {
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		$config = $this->subscriber->get_column_config();
-
-		$this->assertSame( 'wprocket', $config['product'] );
-		$this->assertSame( 'group-one', $config['brand'] );
-		$this->assertSame( 'support', $config['page_context'] );
-		$this->assertSame( 'test-consumer-key|user@example.org', $config['grnd']['license_key'] );
-		$this->assertSame( 'https://wp-rocket.me/terms/', $config['terms_url'] );
-		$this->assertSame( 'https://wp-rocket.me/privacy-policy/', $config['privacy_url'] );
-		$this->assertSame( 'https://wp-rocket.me/privacy-policy/', $config['site_access_url'] );
-		$this->assertSame( [ 'settings_page_wprocket' ], $config['screens'] );
-		$this->assertSame( [ 'side' => 'right' ], $config['column'] );
-		$this->assertFalse( $config['layout']['showAgentSelector'] );
-	}
-
-	public function testShouldUseTheLiveUrlsByDefault() {
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $name, $default = null ) {
-				return $default;
-			}
-		);
-
-		$config = $this->subscriber->get_column_config();
-
-		$this->assertSame( 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one', $config['server_url'] );
-		$this->assertSame( 'https://wp-rocket.me/wp-json/grnd/v1/token', $config['grnd']['issuer_url'] );
-	}
-
-	public function testShouldFallBackToTheLiveUrlsWhenTheConstantsAreEmpty() {
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		$constants = [
-			'WP_ROCKET_WAP_SERVER_URL' => '',
-			'WP_ROCKET_WAP_ISSUER_URL' => '',
-		];
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $name, $default = null ) use ( $constants ) {
-				return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
-			}
-		);
-
-		$config = $this->subscriber->get_column_config();
-
-		$this->assertSame( 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one', $config['server_url'] );
-		$this->assertSame( 'https://wp-rocket.me/wp-json/grnd/v1/token', $config['grnd']['issuer_url'] );
-	}
-
-	public function testShouldUseTheUrlsFromTheConstants() {
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		$constants = [
-			'WP_ROCKET_WAP_SERVER_URL' => 'https://wap.example.org',
-			'WP_ROCKET_WAP_ISSUER_URL' => 'https://issuer.example.org/token',
-		];
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $name, $default = null ) use ( $constants ) {
-				return $constants[ $name ] ?? $default;
-			}
-		);
-
-		$config = $this->subscriber->get_column_config();
-
-		$this->assertSame( 'https://wap.example.org', $config['server_url'] );
-		$this->assertSame( 'https://issuer.example.org/token', $config['grnd']['issuer_url'] );
-	}
-
-	public function testShouldAlwaysAskForTheSupportAgent() {
-		// An expired license is kept off this agent by the token, not by the page context.
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
-
-		$this->assertSame( 'support', $this->subscriber->get_column_config()['page_context'] );
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
 
 	public function testShouldMapTheWapCapabilityToWpRocketCapability() {
 		$this->assertSame( 'rocket_manage_options', $this->subscriber->get_rocket_capability() );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
+		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+
+		if ( ! array_key_exists( 'can_use_ai', $config ) ) {
+			// byDefault from set_up applies.
+		} elseif ( null === $config['can_use_ai'] ) {
+			$this->user->shouldNotReceive( 'can_use_ai' );
+		} else {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		if ( isset( $config['valid_key'] ) ) {
+			Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		}
+
+		if ( isset( $config['constants'] ) ) {
+			$constants = $config['constants'];
+			Functions\when( 'rocket_get_constant' )->alias(
+				function ( $name, $default = null ) use ( $constants ) {
+					return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
+				}
+			);
+		}
+
+		$result = $this->subscriber->get_column_config();
+
+		if ( $expected['is_empty'] ) {
+			$this->assertSame( [], $result );
+			return;
+		}
+
+		foreach ( $expected['fields'] as $key => $value ) {
+			switch ( $key ) {
+				case 'grnd_license_key':
+					$this->assertSame( $value, $result['grnd']['license_key'], 'grnd.license_key' );
+					break;
+				case 'grnd_issuer_url':
+					$this->assertSame( $value, $result['grnd']['issuer_url'], 'grnd.issuer_url' );
+					break;
+				case 'show_agent_selector':
+					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
+					break;
+				default:
+					$this->assertSame( $value, $result[ $key ], $key );
+			}
+		}
 	}
 }

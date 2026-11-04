@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 
 class Subscriber implements Subscriber_Interface {
 
@@ -41,16 +42,25 @@ class Subscriber implements Subscriber_Interface {
 	private Options_Data $options;
 
 	/**
+	 * User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Rest         $rest Rest instance.
 	 * @param Meta         $meta Meta instance.
 	 * @param Options_Data $options Plugin options.
+	 * @param User         $user User instance.
 	 */
-	public function __construct( Rest $rest, Meta $meta, Options_Data $options ) {
+	public function __construct( Rest $rest, Meta $meta, Options_Data $options, User $user ) {
 		$this->rest    = $rest;
 		$this->meta    = $meta;
 		$this->options = $options;
+		$this->user    = $user;
 	}
 
 	/**
@@ -60,11 +70,13 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init'         => 'register_support_route',
-			'rocket_buffer'         => [ 'add_meta_generator', PHP_INT_MAX ],
-			'admin_init'            => 'register_column',
-			'admin_notices'         => 'maybe_display_unavailable_notice',
-			'wap_client_capability' => 'get_rocket_capability',
+			'rest_api_init'                 => 'register_support_route',
+			'rocket_buffer'                 => [ 'add_meta_generator', PHP_INT_MAX ],
+			'admin_init'                    => 'register_column',
+			'admin_notices'                 => 'maybe_display_unavailable_notice',
+			'wap_client_capability'         => 'get_rocket_capability',
+			'rocket_ai_assistant_available' => 'filter_assistant_available',
+			'rocket_localize_admin_script'  => 'add_localize_script_data',
 		];
 	}
 
@@ -111,13 +123,17 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
-	 * @return array<string, mixed> The column configuration, or an empty array when the licence data is missing.
+	 * @return array<string, mixed> The column configuration, or an empty array when the licence data is missing or the assistant is not available.
 	 */
 	public function get_column_config(): array {
 		$license_key = $this->options->get( 'consumer_key', '' );
 		$email       = $this->options->get( 'consumer_email', '' );
 
 		if ( empty( $license_key ) || empty( $email ) ) {
+			return [];
+		}
+
+		if ( ! $this->can_use_assistant() ) {
 			return [];
 		}
 
@@ -198,5 +214,54 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function get_rocket_capability(): string {
 		return 'rocket_manage_options';
+	}
+
+
+	/**
+	 * Callback of the `rocket_ai_assistant_available` filter.
+	 *
+	 * The filter controls the "Need Help?" controls and the value passed to the admin script. It is true by default
+	 * and false when the licence key fails the local check or the user data does not allow the assistant. The chat
+	 * column is decided by the same check in get_column_config() and does not apply this filter.
+	 *
+	 * @param bool $available True when the assistant entries should be shown.
+	 *
+	 * @return bool
+	 */
+	public function filter_assistant_available( $available ): bool {
+		return (bool) $available && $this->can_use_assistant();
+	}
+
+	/**
+	 * Passes whether the assistant is available to the admin script.
+	 *
+	 * The script receives the value as a string, '1' or ''.
+	 *
+	 * @param array $data Localize script data.
+	 *
+	 * @return array
+	 */
+	public function add_localize_script_data( $data ): array {
+		$data = (array) $data;
+
+		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
+
+		return $data;
+	}
+
+	/**
+	 * Checks the licence key locally, then the assistant access of the user.
+	 *
+	 * Not memoized: the key check is local and the shared user is kept current by the refresh of the customer data.
+	 *
+	 * @return bool
+	 */
+	private function can_use_assistant(): bool {
+		if ( ! rocket_valid_key() ) {
+			return false;
+		}
+
+		return $this->user->can_use_ai();
 	}
 }

@@ -3,8 +3,10 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\Support\Meta;
 use WP_Rocket\Engine\Support\Rest;
 use WP_Rocket\Engine\Support\Subscriber;
@@ -17,66 +19,59 @@ use WP_Rocket\Tests\Unit\TestCase;
  */
 class TestRegisterColumn extends TestCase {
 	private $options;
+	private $user;
 	private $subscriber;
 
 	public function set_up() {
 		parent::set_up();
 
-		$this->options    = Mockery::mock( Options_Data::class );
-		$this->subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options );
-	}
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
-	private function set_licence( $key, $email ) {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $key );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $email );
-	}
-
-	/**
-	 * The WAP client library is not loaded in this process, so there is nothing to register with.
-	 */
-	public function testShouldDoNothingWhenTheWapClientIsMissing() {
-		$this->options->shouldNotReceive( 'get' );
-
-		$this->subscriber->register_column();
-
-		$this->assertFalse( class_exists( 'WapClient', false ) );
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
 
 	/**
+	 * @dataProvider configTestData
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function testShouldNotRegisterWithoutLicenceData() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldNotReceive( 'register_chat_column' );
+	public function testShouldDoExpected( $config, $expected ): void {
+		if ( $config['wap_client_exists'] ) {
+			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+			$wap_client = Mockery::mock( 'alias:WapClient' );
 
-		$this->set_licence( '', '' );
+			if ( $expected['registered'] ) {
+				$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
 
-		$this->subscriber->register_column();
-	}
+				if ( ! empty( $expected['config_check'] ) ) {
+					$check = $expected['config_check'];
+					$expectation->with(
+						Mockery::on(
+							function ( $cfg ) use ( $check ) {
+								return ( ! isset( $check['product'] ) || $check['product'] === $cfg['product'] )
+									&& ( ! isset( $check['page_context'] ) || $check['page_context'] === $cfg['page_context'] )
+									&& ( ! isset( $check['grnd_license_key'] ) || $check['grnd_license_key'] === $cfg['grnd']['license_key'] )
+									&& ( ! isset( $check['screens'] ) || $check['screens'] === $cfg['screens'] );
+							}
+						)
+					);
+				}
+			} else {
+				$wap_client->shouldNotReceive( 'register_chat_column' );
+			}
 
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldRegisterTheChatColumnWithTheConfiguration() {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldReceive( 'register_chat_column' )
-			->once()
-			->with(
-				Mockery::on(
-					function ( $config ) {
-						return 'wprocket' === $config['product']
-							&& 'support' === $config['page_context']
-							&& 'test-consumer-key|user@example.org' === $config['grnd']['license_key']
-							&& [ 'settings_page_wprocket' ] === $config['screens'];
-					}
-				)
-			);
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] ?? '' );
 
-		$this->set_licence( 'test-consumer-key', 'user@example.org' );
+			if ( array_key_exists( 'can_use_ai', $config ) ) {
+				$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+			}
+		} else {
+			$this->options->shouldNotReceive( 'get' );
+		}
 
 		$this->subscriber->register_column();
 	}
