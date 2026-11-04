@@ -48,7 +48,7 @@ class DismissPromoBanner extends TestCase {
 			->andReturn( $config['transient'] );
 	
 		if ( $expected ) {
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->once()->with( 'promo' );
+			Actions\expectDone( 'rocket_mixpanel_track_event' )->once()->with( 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] );
 
 			Functions\expect( 'set_transient' )
 				->once()
@@ -56,7 +56,7 @@ class DismissPromoBanner extends TestCase {
 			
 			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+			Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 			Functions\expect( 'set_transient' )->never();
 			Functions\expect( 'wp_send_json_success' )->never();
 		}

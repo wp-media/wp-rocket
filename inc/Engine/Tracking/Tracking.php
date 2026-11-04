@@ -488,37 +488,4 @@ class Tracking extends Abstract_Render {
 
 		$this->track_event( 'RocketCDN Notice Viewed' );
 	}
-
-	/**
-	 * Track when a dashboard banner is dismissed.
-	 *
-	 * The explicit capability is needed because the default one is `manage_options`,
-	 * which users holding only `rocket_manage_options` do not have.
-	 *
-	 * @param string $banner Banner identifier.
-	 *
-	 * @return void
-	 */
-	public function track_dashboard_banner_dismissed( string $banner ): void {
-		$allowed_banners = [ 'promo', 'license_expired', 'trial_expired', 'imagify', 'rocketcdn' ];
-
-		if ( ! in_array( $banner, $allowed_banners, true ) ) {
-			return;
-		}
-
-		if ( ! $this->optin->can_track() ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'Dashboard Banner Dismissed',
-			[
-				'context'             => 'wp_plugin',
-				'banner'              => $banner,
-				'interaction_channel' => $this->channel_detector->detect(),
-				'path'                => esc_url_raw( (string) ( wp_get_referer() ?: '' ) ),
-			],
-			'rocket_manage_options'
-		);
-	}
 }

@@ -53,9 +53,9 @@ class DismissRenewalExpiredBanner extends TestCase {
 			$this->user->shouldReceive( 'is_trial_customer' )
 				->once()
 				->andReturn( $config['trial'] ?? false );
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )
+			Actions\expectDone( 'rocket_mixpanel_track_event' )
 				->once()
-				->with( ( $config['trial'] ?? false ) ? 'trial_expired' : 'license_expired' );
+				->with( 'Dashboard Banner Dismissed', [ 'banner' => ( $config['trial'] ?? false ) ? 'trial_expired' : 'license_expired' ] );
 
 			Functions\expect( 'set_transient' )
 				->once()
@@ -63,7 +63,7 @@ class DismissRenewalExpiredBanner extends TestCase {
 
 			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+			Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 			Functions\expect( 'set_transient' )->never();
 			Functions\expect( 'wp_send_json_success' )->never();
 		}

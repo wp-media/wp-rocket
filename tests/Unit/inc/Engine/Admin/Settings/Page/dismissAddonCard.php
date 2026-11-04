@@ -64,7 +64,7 @@ class TestDismissAddonCard extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->once();
 		Functions\expect( 'rocket_dismiss_box' )->never();
 		Functions\expect( 'wp_send_json_success' )->never();
-		Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+		Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 
 		$this->page->dismiss_addon_card();
 	}
@@ -81,7 +81,7 @@ class TestDismissAddonCard extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->once();
 		Functions\expect( 'rocket_dismiss_box' )->never();
 		Functions\expect( 'wp_send_json_success' )->never();
-		Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+		Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 
 		$this->page->dismiss_addon_card();
 	}
@@ -97,24 +97,24 @@ class TestDismissAddonCard extends TestCase {
 	/**
 	 * @dataProvider provideDismissalStates
 	 */
-	public function testShouldDismissTheCard( $was_dismissed ) {
-		$_POST['card_id'] = 'Imagify';
+	public function testShouldDismissTheCard( $card_id, $was_dismissed, $expected_banner ) {
+		$_POST['card_id'] = $card_id;
 
 		Functions\when( 'current_user_can' )->justReturn( true );
 		$this->render->shouldReceive( 'is_addon_card_dismissed' )
 			->once()
-			->with( 'imagify' )
+			->with( strtolower( $card_id ) )
 			->andReturn( $was_dismissed );
-		if ( $was_dismissed ) {
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+		if ( null === $expected_banner ) {
+			Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 		} else {
-			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->once()->with( 'imagify' );
+			Actions\expectDone( 'rocket_mixpanel_track_event' )->once()->with( 'Dashboard Banner Dismissed', [ 'banner' => $expected_banner ] );
 		}
 		$this->render->shouldReceive( 'get_addon_card_box_key' )
 			->once()
-			->with( 'imagify' )
-			->andReturn( 'rocket_addon_card_imagify' );
-		Functions\expect( 'rocket_dismiss_box' )->once()->with( 'rocket_addon_card_imagify' );
+			->with( strtolower( $card_id ) )
+			->andReturn( 'rocket_addon_card_x' );
+		Functions\expect( 'rocket_dismiss_box' )->once()->with( 'rocket_addon_card_x' );
 		Functions\expect( 'wp_send_json_success' )->once();
 		Functions\expect( 'wp_send_json_error' )->never();
 
@@ -123,8 +123,10 @@ class TestDismissAddonCard extends TestCase {
 
 	public function provideDismissalStates() {
 		return [
-			'first dismissal'     => [ false ],
-			'already dismissed'   => [ true ],
+			'first dismissal'          => [ 'Imagify', false, 'imagify' ],
+			'first dismissal cdn'      => [ 'rocketcdn', false, 'rocketcdn' ],
+			'already dismissed'        => [ 'imagify', true, null ],
+			'unknown card'             => [ 'other', false, null ],
 		];
 	}
 }

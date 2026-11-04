@@ -106,10 +106,12 @@ class Test_DismissAddonCard extends AjaxTestCase {
 
 		$banners = [];
 		add_action(
-			'rocket_dashboard_banner_dismissed',
-			function ( $banner ) use ( &$banners ) {
-				$banners[] = $banner;
-			}
+			'rocket_mixpanel_track_event',
+			function ( $event, $data ) use ( &$banners ) {
+				$banners[] = [ $event, $data ];
+			},
+			10,
+			2
 		);
 
 		$_POST['nonce']   = wp_create_nonce( 'rocket-ajax' );
@@ -128,7 +130,7 @@ class Test_DismissAddonCard extends AjaxTestCase {
 
 	public function provideDismissalStates() {
 		return [
-			'first dismissal'   => [ false, [ 'imagify' ] ],
+			'first dismissal'   => [ false, [ [ 'Dashboard Banner Dismissed', [ 'banner' => 'imagify' ] ] ] ],
 			'already dismissed' => [ true, [] ],
 		];
 	}
