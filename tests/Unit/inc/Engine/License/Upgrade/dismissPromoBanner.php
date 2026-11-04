@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Upgrade;
 
+use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\License\API\Pricing;
@@ -47,12 +48,15 @@ class DismissPromoBanner extends TestCase {
 			->andReturn( $config['transient'] );
 	
 		if ( $expected ) {
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->once()->with( 'promo' );
+
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'rocket_promo_banner_1', 1, 2 * WEEK_IN_SECONDS );
 			
 			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
 			Functions\expect( 'set_transient' )->never();
 			Functions\expect( 'wp_send_json_success' )->never();
 		}

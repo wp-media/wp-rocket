@@ -179,6 +179,15 @@ class Upgrade extends Abstract_Render {
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
 
+		/**
+		 * Fires when a dashboard banner has been dismissed.
+		 *
+		 * @since 3.24
+		 *
+		 * @param string $banner Banner identifier.
+		 */
+		do_action( 'rocket_dashboard_banner_dismissed', 'promo' );
+
 		wp_send_json_success();
 	}
 

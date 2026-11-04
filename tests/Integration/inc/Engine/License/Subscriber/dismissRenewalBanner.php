@@ -63,4 +63,22 @@ class Test_DismissRenewalBanner extends AjaxTestCase {
 
 		$this->assertTrue( (bool) get_transient( 'rocket_renewal_banner_' . self::$user_id ) );
 	}
+
+	public function testShouldFireDismissedHookOnce() {
+		$banners = [];
+		add_action(
+			'rocket_dashboard_banner_dismissed',
+			function ( $banner ) use ( &$banners ) {
+				$banners[] = $banner;
+			}
+		);
+
+		$_POST['nonce']  = wp_create_nonce( 'rocket-ajax' );
+		$_POST['action'] = 'rocket_dismiss_renewal';
+
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( [ 'license_expired' ], $banners );
+	}
 }

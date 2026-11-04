@@ -44,6 +44,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocketcdn_add_homepage'        => [ 'track_add_rocket_cdn_homepage', 10, 1 ],
 			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
 			'rocket_notice_displayed'              => [ 'track_rocketcdn_notice_viewed', 10, 1 ],
+			'rocket_dashboard_banner_dismissed'    => [ 'track_dashboard_banner_dismissed', 10, 1 ],
 		];
 	}
 
@@ -186,5 +187,16 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocketcdn_notice_viewed( string $box ): void {
 		$this->tracking->track_rocketcdn_notice_viewed( $box );
+	}
+
+	/**
+	 * Track when a dashboard banner is dismissed.
+	 *
+	 * @param string $banner Banner identifier.
+	 *
+	 * @return void
+	 */
+	public function track_dashboard_banner_dismissed( string $banner ): void {
+		$this->tracking->track_dashboard_banner_dismissed( $banner );
 	}
 }

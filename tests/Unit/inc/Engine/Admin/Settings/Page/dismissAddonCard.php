@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
+use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -63,6 +64,7 @@ class TestDismissAddonCard extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->once();
 		Functions\expect( 'rocket_dismiss_box' )->never();
 		Functions\expect( 'wp_send_json_success' )->never();
+		Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
 
 		$this->page->dismiss_addon_card();
 	}
@@ -79,6 +81,7 @@ class TestDismissAddonCard extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->once();
 		Functions\expect( 'rocket_dismiss_box' )->never();
 		Functions\expect( 'wp_send_json_success' )->never();
+		Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
 
 		$this->page->dismiss_addon_card();
 	}
@@ -91,10 +94,22 @@ class TestDismissAddonCard extends TestCase {
 		];
 	}
 
-	public function testShouldDismissTheCard() {
+	/**
+	 * @dataProvider provideDismissalStates
+	 */
+	public function testShouldDismissTheCard( $was_dismissed ) {
 		$_POST['card_id'] = 'Imagify';
 
 		Functions\when( 'current_user_can' )->justReturn( true );
+		$this->render->shouldReceive( 'is_addon_card_dismissed' )
+			->once()
+			->with( 'imagify' )
+			->andReturn( $was_dismissed );
+		if ( $was_dismissed ) {
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
+		} else {
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->once()->with( 'imagify' );
+		}
 		$this->render->shouldReceive( 'get_addon_card_box_key' )
 			->once()
 			->with( 'imagify' )
@@ -104,5 +119,12 @@ class TestDismissAddonCard extends TestCase {
 		Functions\expect( 'wp_send_json_error' )->never();
 
 		$this->page->dismiss_addon_card();
+	}
+
+	public function provideDismissalStates() {
+		return [
+			'first dismissal'     => [ false ],
+			'already dismissed'   => [ true ],
+		];
 	}
 }

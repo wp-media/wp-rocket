@@ -245,6 +245,15 @@ class Renewal extends Abstract_Render {
 
 		set_transient( $transient, 1, MONTH_IN_SECONDS );
 
+		/**
+		 * Fires when a dashboard banner has been dismissed.
+		 *
+		 * @since 3.24
+		 *
+		 * @param string $banner Banner identifier.
+		 */
+		do_action( 'rocket_dashboard_banner_dismissed', $this->user->is_trial_customer() ? 'trial_expired' : 'license_expired' );
+
 		wp_send_json_success();
 	}
 

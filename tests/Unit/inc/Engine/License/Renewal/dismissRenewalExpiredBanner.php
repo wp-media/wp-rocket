@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
+use Brain\Monkey\Actions;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -49,12 +50,20 @@ class DismissRenewalExpiredBanner extends TestCase {
 			->andReturn( $config['transient'] );
 
 		if ( $expected ) {
+			$this->user->shouldReceive( 'is_trial_customer' )
+				->once()
+				->andReturn( $config['trial'] ?? false );
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )
+				->once()
+				->with( ( $config['trial'] ?? false ) ? 'trial_expired' : 'license_expired' );
+
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'rocket_renewal_banner_1', 1, MONTH_IN_SECONDS );
 
 			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
+			Actions\expectDone( 'rocket_dashboard_banner_dismissed' )->never();
 			Functions\expect( 'set_transient' )->never();
 			Functions\expect( 'wp_send_json_success' )->never();
 		}

@@ -2377,7 +2377,20 @@ class Page extends Abstract_Render {
 			return; // @phpstan-ignore-line
 		}
 
+		$was_dismissed = $this->render->is_addon_card_dismissed( $id );
+
 		rocket_dismiss_box( $this->render->get_addon_card_box_key( $id ) );
+
+		if ( ! $was_dismissed ) {
+			/**
+			 * Fires when a dashboard banner has been dismissed.
+			 *
+			 * @since 3.24
+			 *
+			 * @param string $banner Banner identifier.
+			 */
+			do_action( 'rocket_dashboard_banner_dismissed', $id );
+		}
 
 		wp_send_json_success();
 	}
