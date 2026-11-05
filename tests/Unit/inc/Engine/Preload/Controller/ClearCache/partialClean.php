@@ -41,6 +41,6 @@ class Test_PartialClean extends TestCase
 			}
 		}
 
-		$this->controller->partial_clean($config['urls']);
+		$this->controller->partial_clean($config['urls'], $config['release_lock'] ?? false);
 	}
 }
