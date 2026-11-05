@@ -30,6 +30,7 @@ class TestGetColumnConfig extends TestCase {
 		$this->user    = Mockery::mock( User::class );
 		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
+		Functions\when( '__' )->returnArg();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}

@@ -7804,11 +7804,18 @@ div.wpr-tutorial-item {
   background-color: rgb(64, 186, 203) !important;
   border-color: rgb(64, 186, 203) !important;
   color: #fff !important;
-  transition: transform 200ms ease;
-  height: 60px;
+  transition: transform 125ms ease-in-out, box-shadow 250ms ease;
+  height: 60px !important;
+  border-radius: 24px !important;
+  inset-block-end: 40px !important;
+  inset-inline-end: 40px !important;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+}
+.wap-chat-column__launcher:active {
+  box-shadow: none;
 }
 .wap-chat-column__launcher::after {
-  content: "Ask support";
+  content: attr(title);
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
@@ -7816,6 +7823,18 @@ div.wpr-tutorial-item {
   line-height: 14px;
 }
 .wap-chat-column__launcher:hover, .wap-chat-column__launcher:focus {
-  transform: scale(1.15);
+  transform: scale(1.125);
   opacity: 1 !important;
+}
+@media (max-height: 740px) {
+  .wap-chat-column__launcher {
+    inset-block-end: 10px !important;
+    inset-inline-end: 20px !important;
+  }
+}
+@supports (corner-shape: squircle) {
+  .wap-chat-column__launcher {
+    border-radius: 30px !important;
+    corner-shape: superellipse(1.4);
+  }
 }
