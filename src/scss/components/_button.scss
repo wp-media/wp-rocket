@@ -162,7 +162,7 @@
     color: $cWhite !important;
     transition: transform 125ms ease-in-out, box-shadow 250ms ease;
     height: 60px !important;
-    border-radius: 22px !important;
+    border-radius: 24px !important;
     inset-block-end: 40px !important;
     inset-inline-end: 40px !important;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
@@ -189,5 +189,11 @@
     @media (max-height: 740px) {
         inset-block-end: 10px !important;
         inset-inline-end: 20px !important;
+    }
+
+    // The previous button had squircle corners. Browsers without corner-shape keep the rounded corners above.
+    @supports (corner-shape: squircle) {
+        border-radius: 30px !important;
+        corner-shape: superellipse(1.4);
     }
 }

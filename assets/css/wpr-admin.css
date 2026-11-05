@@ -7806,7 +7806,7 @@ div.wpr-tutorial-item {
   color: #fff !important;
   transition: transform 125ms ease-in-out, box-shadow 250ms ease;
   height: 60px !important;
-  border-radius: 22px !important;
+  border-radius: 24px !important;
   inset-block-end: 40px !important;
   inset-inline-end: 40px !important;
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
@@ -7830,5 +7830,11 @@ div.wpr-tutorial-item {
   .wap-chat-column__launcher {
     inset-block-end: 10px !important;
     inset-inline-end: 20px !important;
+  }
+}
+@supports (corner-shape: squircle) {
+  .wap-chat-column__launcher {
+    border-radius: 30px !important;
+    corner-shape: superellipse(1.4);
   }
 }
