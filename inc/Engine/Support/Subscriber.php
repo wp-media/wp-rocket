@@ -140,8 +140,8 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'id'              => 'wp-rocket-support',
 			'product'         => 'wprocket',
-			// The design system only publishes stylesheets for some brands. An unknown brand loads an empty one and the launcher disappears.
-			'brand'           => 'group-one',
+			// The wp-rocket stylesheet exists from wap-client 2.5.3 (Gravity 5.52.4). Older clients load an empty one and the launcher disappears.
+			'brand'           => 'wp-rocket',
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
 			'page_context'    => 'support',

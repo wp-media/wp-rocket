@@ -27,7 +27,7 @@ return [
 			'is_empty' => false,
 			'fields'   => [
 				'product'          => 'wprocket',
-				'brand'            => 'group-one',
+				'brand'            => 'wp-rocket',
 				'page_context'     => 'support',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
