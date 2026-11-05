@@ -14,6 +14,18 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_EnqueueAdminBarStyle extends TestCase {
 	private $user_id;
 
+	/**
+	 * Grants the administrator role the WP Rocket capability.
+	 *
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		// Grant on the role so users created afterwards inherit it, whatever the DB state.
+		self::setAdminCap();
+	}
+
 	public function tear_down() {
 		wp_dequeue_style( 'wpr-admin-bar' );
 		wp_deregister_style( 'wpr-admin-bar' );
@@ -24,6 +36,8 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 		if ( $this->user_id ) {
 			wp_delete_user( $this->user_id );
 		}
+
+		self::resetAdminCap();
 
 		parent::tear_down();
 	}
@@ -84,7 +98,6 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 	public function testShouldEnqueueOnFrontEndForPrivilegedUser() {
 		$this->user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );
-		get_userdata( $this->user_id )->add_cap( 'rocket_manage_options' );
 		add_filter( 'show_admin_bar', '__return_true' );
 
 		do_action( 'wp_enqueue_scripts' );
@@ -96,7 +109,6 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 	public function testShouldEnqueueInAdminForPrivilegedUser() {
 		$this->user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );
-		get_userdata( $this->user_id )->add_cap( 'rocket_manage_options' );
 		set_current_screen( 'dashboard' );
 
 		do_action( 'admin_enqueue_scripts', 'index.php' );
@@ -125,7 +137,6 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 	public function testShouldNotEnqueueWhenAdminBarDisabled() {
 		$this->user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );
-		get_userdata( $this->user_id )->add_cap( 'rocket_manage_options' );
 		add_filter( 'show_admin_bar', '__return_false' );
 
 		do_action( 'wp_enqueue_scripts' );
