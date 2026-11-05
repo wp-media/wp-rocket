@@ -60,6 +60,19 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 		return false;
 	}
 
+	/**
+	 * Makes a reflection member accessible; needed on PHP < 8.1 and deprecated since 8.5.
+	 *
+	 * @param \ReflectionProperty|\ReflectionMethod $member Reflection member.
+	 *
+	 * @return void
+	 */
+	private function make_accessible( $member ): void {
+		if ( PHP_VERSION_ID < 80100 ) {
+			$member->setAccessible( true );
+		}
+	}
+
 	public function testShouldBeRegisteredOnTheCommonPath() {
 		$this->assertTrue( $this->find_registered_callback( 'wp_enqueue_scripts' ) );
 		$this->assertTrue( $this->find_registered_callback( 'admin_enqueue_scripts' ) );
@@ -71,19 +84,19 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 		$plugin = ( new \ReflectionClass( Plugin::class ) )->newInstanceWithoutConstructor();
 
 		$container = new \ReflectionProperty( Plugin::class, 'container' );
-		$container->setAccessible( true );
+		$this->make_accessible( $container );
 		$container->setValue( $plugin, apply_filters( 'rocket_container', null ) );
 
 		$options = new \ReflectionProperty( Plugin::class, 'options' );
-		$options->setAccessible( true );
+		$this->make_accessible( $options );
 		$options->setValue( $plugin, apply_filters( 'rocket_container', null )->get( 'options' ) );
 
 		$is_valid_key = new \ReflectionProperty( Plugin::class, 'is_valid_key' );
-		$is_valid_key->setAccessible( true );
+		$this->make_accessible( $is_valid_key );
 		$is_valid_key->setValue( $plugin, false );
 
 		$get_subscribers = new \ReflectionMethod( Plugin::class, 'get_subscribers' );
-		$get_subscribers->setAccessible( true );
+		$this->make_accessible( $get_subscribers );
 		$subscribers = $get_subscribers->invoke( $plugin );
 
 		$this->assertContains( 'admin_bar_subscriber', $subscribers );
@@ -111,7 +124,8 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 		wp_set_current_user( $this->user_id );
 		set_current_screen( 'dashboard' );
 
-		do_action( 'admin_enqueue_scripts', 'index.php' );
+		// Call our callback directly: the global hook would run unrelated subscribers' callbacks.
+		apply_filters( 'rocket_container', null )->get( 'admin_bar_subscriber' )->enqueue_admin_bar_style();
 
 		$this->assertTrue( wp_style_is( 'wpr-admin-bar', 'enqueued' ) );
 	}
