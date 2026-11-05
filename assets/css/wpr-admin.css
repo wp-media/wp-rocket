@@ -7804,11 +7804,15 @@ div.wpr-tutorial-item {
   background-color: rgb(64, 186, 203) !important;
   border-color: rgb(64, 186, 203) !important;
   color: #fff !important;
-  transition: transform 200ms ease;
-  height: 60px;
+  transition: transform 200ms ease, box-shadow 250ms ease;
+  height: 60px !important;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+}
+.wap-chat-column__launcher:active {
+  box-shadow: none;
 }
 .wap-chat-column__launcher::after {
-  content: "Ask support";
+  content: attr(title);
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;

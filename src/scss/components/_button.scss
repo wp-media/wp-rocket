@@ -160,11 +160,16 @@
     background-color: rgb(64, 186, 203) !important;
     border-color: rgb(64, 186, 203) !important;
     color: $cWhite !important;
-    transition: transform 200ms ease;
+    transition: transform 200ms ease, box-shadow 250ms ease;
     height: 60px !important;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+
+    &:active {
+        box-shadow: none;
+    }
 
     &::after {
-        content: "Ask support";
+        content: attr(title);
         font-size: 14px;
         font-weight: 600;
         white-space: nowrap;
