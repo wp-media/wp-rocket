@@ -291,6 +291,13 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 				'context' => 'wp_plugin_mcp',
 			]
 		);
+		if ( null === $input || ! isset( $input['option_name'], $input['option_value'] ) ) {
+			return [
+				'success' => false,
+				'error'   => __( 'Missing required option_name or option_value.', 'rocket' ),
+			];
+		}
+
 		$option_name  = $input['option_name'];
 		$option_value = $input['option_value'];
 		$update_mode  = $input['update_mode'] ?? 'update';

@@ -104,4 +104,36 @@ class ExecuteTest extends TestCase {
 			$this->assertArrayNotHasKey( 'new_value', $result );
 		}
 	}
+
+	/**
+	 * Test execute() returns a structured error, with no PHP warnings, when input is null.
+	 *
+	 * @return void
+	 */
+	public function testShouldReturnErrorForNullInput(): void {
+		$this->stubTranslationFunctions();
+
+		$result = $this->set_option->execute( null );
+
+		$this->assertFalse( $result['success'] );
+		$this->assertSame( 'Missing required option_name or option_value.', $result['error'] );
+		$this->assertArrayNotHasKey( 'previous_value', $result );
+		$this->assertArrayNotHasKey( 'new_value', $result );
+	}
+
+	/**
+	 * Test execute() returns a structured error, with no PHP warnings, when option_value is missing.
+	 *
+	 * @return void
+	 */
+	public function testShouldReturnErrorForMissingOptionValue(): void {
+		$this->stubTranslationFunctions();
+
+		$result = $this->set_option->execute( [ 'option_name' => 'cache_webp' ] );
+
+		$this->assertFalse( $result['success'] );
+		$this->assertSame( 'Missing required option_name or option_value.', $result['error'] );
+		$this->assertArrayNotHasKey( 'previous_value', $result );
+		$this->assertArrayNotHasKey( 'new_value', $result );
+	}
 }
