@@ -23,4 +23,23 @@
 		height: 46px;
 		background: url(../img/picto-wprocket-dark.svg) center / auto 26px no-repeat;
 	}
+
+	/*
+	 * Anchor the dropdown to the admin bar edge instead of the icon, which sits mid-bar:
+	 * a left-aligned submenu would run past the right edge of the screen.
+	 */
+	#wpadminbar li#wp-admin-bar-wp-rocket {
+		position: static;
+	}
+
+	#wpadminbar #wp-admin-bar-wp-rocket > .ab-sub-wrapper {
+		left: auto;
+		right: 0;
+		max-width: 100%;
+	}
+
+	.rtl #wpadminbar #wp-admin-bar-wp-rocket > .ab-sub-wrapper {
+		left: 0;
+		right: auto;
+	}
 }
