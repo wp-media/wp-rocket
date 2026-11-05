@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\AdminBar\Subscriber;
 
 use WP_Rocket\Engine\Admin\AdminBar\Subscriber;
+use WP_Rocket\Plugin;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -50,11 +51,34 @@ class Test_EnqueueAdminBarStyle extends TestCase {
 		$this->assertTrue( $this->find_registered_callback( 'admin_enqueue_scripts' ) );
 	}
 
-	public function testShouldBeRegisteredInAdminRequest() {
-		set_current_screen( 'dashboard' );
+	public function testShouldBeRegisteredWithAnInvalidKey() {
+		set_current_screen( 'front' );
 
-		$this->assertTrue( is_admin() );
-		$this->assertTrue( $this->find_registered_callback( 'admin_enqueue_scripts' ) );
+		$plugin = ( new \ReflectionClass( Plugin::class ) )->newInstanceWithoutConstructor();
+
+		$container = new \ReflectionProperty( Plugin::class, 'container' );
+		$container->setAccessible( true );
+		$container->setValue( $plugin, apply_filters( 'rocket_container', null ) );
+
+		$options = new \ReflectionProperty( Plugin::class, 'options' );
+		$options->setAccessible( true );
+		$options->setValue( $plugin, apply_filters( 'rocket_container', null )->get( 'options' ) );
+
+		$is_valid_key = new \ReflectionProperty( Plugin::class, 'is_valid_key' );
+		$is_valid_key->setAccessible( true );
+		$is_valid_key->setValue( $plugin, false );
+
+		$get_subscribers = new \ReflectionMethod( Plugin::class, 'get_subscribers' );
+		$get_subscribers->setAccessible( true );
+		$subscribers = $get_subscribers->invoke( $plugin );
+
+		$this->assertContains( 'admin_bar_subscriber', $subscribers );
+
+		$subscriber = apply_filters( 'rocket_container', null )->get( 'admin_bar_subscriber' );
+		$events     = $subscriber::get_subscribed_events();
+
+		$this->assertInstanceOf( Subscriber::class, $subscriber );
+		$this->assertSame( 'enqueue_admin_bar_style', $events['wp_enqueue_scripts'] );
 	}
 
 	public function testShouldEnqueueOnFrontEndForPrivilegedUser() {
