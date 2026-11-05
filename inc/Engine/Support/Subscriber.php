@@ -144,7 +144,7 @@ class Subscriber implements Subscriber_Interface {
 			'brand'           => 'wp-rocket',
 			// Names the launcher (its title, shown as its text by the stylesheet) and the panel for screen readers.
 			'i18n'            => [
-				'columnLabel' => __( 'Ask support', 'rocket' ),
+				'columnLabel' => __( 'Ask Support', 'rocket' ),
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
