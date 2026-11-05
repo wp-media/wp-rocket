@@ -258,6 +258,7 @@
             color: $cOrange;
             @include font-size(16,24);
             font-weight: 700;
+            text-wrap: balance;
         }
 
         &-image{
