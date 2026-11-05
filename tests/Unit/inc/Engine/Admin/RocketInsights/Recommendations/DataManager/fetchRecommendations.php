@@ -118,7 +118,8 @@ class Test_FetchRecommendations extends TestCase {
 			->with(
 				Mockery::on(
 					function ( $params ) use ( $config ) {
-						return $params['email'] === $config['expected_params']['email'];
+						return $params['email'] === $config['expected_params']['email']
+							&& $params['language'] === $config['expected_params']['language'];
 					}
 				)
 			)
@@ -129,8 +130,12 @@ class Test_FetchRecommendations extends TestCase {
 			->with(
 				'wpr_ri_recommendations',
 				Mockery::on(
-					function ( $data ) use ( $expected ) {
+					function ( $data ) use ( $config, $expected ) {
 						if ( ! isset( $data['status'] ) ) {
+							return false;
+						}
+						// Verify the payload is tagged with the user's language.
+						if ( $data['language'] !== $config['expected_params']['language'] ) {
 							return false;
 						}
 						// Verify status matches expected final status.

@@ -145,6 +145,8 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Get cached recommendations.
 	 *
+	 * Data cached for another language than the current user's is treated as not cached.
+	 *
 	 * @return array|false Recommendations data or false if not cached.
 	 */
 	public function get_recommendations() {
@@ -159,6 +161,11 @@ class DataManager implements LoggerAwareInterface {
 		if ( ! isset( $data['status'] ) || ! isset( $data['timestamp'] ) ) {
 			$this->logger::warning( 'Recommendations: Invalid cached data structure, clearing cache' );
 			$this->clear_recommendations();
+			return false;
+		}
+
+		if ( isset( $data['language'] ) && $this->get_language() !== $data['language'] ) {
+			$this->logger::debug( 'Recommendations: Cached data is in another language' );
 			return false;
 		}
 
@@ -479,6 +486,7 @@ class DataManager implements LoggerAwareInterface {
 			'recommendations' => [],
 			'metadata'        => [],
 			'timestamp'       => time(),
+			'language'        => $this->get_language(),
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
@@ -493,6 +501,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function save_recommendations( array $data ): void {
+		$data['language'] = $this->get_language();
+
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		$this->logger::debug(
