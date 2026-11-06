@@ -32,7 +32,7 @@ updates:
       default-days: 7
     groups:
       # Majors are left out of both groups so a breaking major (e.g. a new
-      # webpack-cli or React) gets its own PR instead of blocking the safe bumps.
+      # @babel/core) gets its own PR instead of blocking the safe bumps.
       npm-security:
         applies-to: security-updates
         patterns:
