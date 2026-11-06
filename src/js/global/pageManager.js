@@ -16,7 +16,6 @@ document.addEventListener( 'DOMContentLoaded', function () {
  *
  * Public method :
      detectID - Detect ID with hash
-     getBodyTop - Get body top position
 	 change - Displays the corresponding page
  *
  */
@@ -35,13 +34,16 @@ function PageManager(aElem) {
     this.$menuItem = null;
     this.$page = null;
     this.pageId = null;
-    this.bodyTop = 0;
+    this.isReady = false;
     this.buttonText = this.$submitButton.value;
 
     // Clean the preference stored by the former sidebar toggle, once.
     localStorage.removeItem( 'wpr-show-sidebar' );
 
-    refThis.getBodyTop();
+    // Without a valid license only the license form is rendered: no page to manage, keep the saved hash untouched.
+    if ( 0 === this.$pages.length ) {
+        return;
+    }
 
     // If url page change
     window.onhashchange = function() {
@@ -50,12 +52,10 @@ function PageManager(aElem) {
 
     // If hash already exist (after refresh page for example)
     if(window.location.hash){
-        this.bodyTop = 0;
         this.detectID();
     }
     else{
         var session = localStorage.getItem('wpr-hash');
-        this.bodyTop = 0;
 
         if(session){
             window.location.hash = session;
@@ -67,6 +67,10 @@ function PageManager(aElem) {
             window.location.hash = '#dashboard';
         }
     }
+
+    // Page changes after the first one scroll to the start of the body. Restoring the page from the
+    // hash or the saved session is not a navigation, so the hashchange it triggers must not scroll.
+    setTimeout(function() { refThis.isReady = true; }, 0);
 
     // Expand / collapse the navigation groups
     for (var j = 0; j < this.$menuGroups.length; j++) {
@@ -90,7 +94,6 @@ function PageManager(aElem) {
     // Click link same hash
     for (var i = 0; i < this.$links.length; i++) {
         this.$links[i].onclick = function() {
-            refThis.getBodyTop();
             var hrefSplit = this.href.split('#')[1];
             if(hrefSplit == refThis.pageId && hrefSplit != undefined){
                 refThis.detectID();
@@ -118,34 +121,47 @@ function PageManager(aElem) {
 * Page detect ID
 */
 PageManager.prototype.detectID = function() {
-    this.pageId = window.location.hash.split('#')[1];
-    this.pageId = this.pageId.includes('=') ? this.pageId.split('=')[0] : this.pageId;
+    var pageId = window.location.hash.slice(1).split('=')[0];
 
     // Pages that were merged into another one keep working from old links and saved hashes.
     // Keep in sync with hashAliases in mixpanel.js and the first-paint script in views/settings/page.php.
     var movedPages = { imagify: 'media' };
-    if (movedPages.hasOwnProperty(this.pageId)) {
-        this.pageId = movedPages[this.pageId];
-        history.replaceState(null, '', '#' + this.pageId);
+    if (movedPages.hasOwnProperty(pageId)) {
+        pageId = movedPages[pageId];
+        history.replaceState(null, '', '#' + pageId);
     }
 
+    if (!this.resolvePage(pageId)) {
+        pageId = 'dashboard';
+        history.replaceState(null, '', '#dashboard');
+
+        if (!this.resolvePage(pageId)) {
+            return;
+        }
+    }
+
+    this.pageId = pageId;
     localStorage.setItem('wpr-hash', this.pageId);
-
-    this.$page = document.querySelector('.wpr-Page#' + this.pageId);
-
-    this.$menuItem = document.getElementById('wpr-nav-' + this.pageId);
 
     this.change();
 }
 
 
-
 /*
-* Get body top position
+* Resolve the page section and its navigation item, both must exist
 */
-PageManager.prototype.getBodyTop = function() {
-    var bodyPos = this.$body.getBoundingClientRect();
-    this.bodyTop = bodyPos.top + window.pageYOffset - 47; // #wpadminbar + padding-top .wpr-wrap - 1 - 47
+PageManager.prototype.resolvePage = function(pageId) {
+    var $page = document.getElementById(pageId);
+    var $menuItem = document.getElementById('wpr-nav-' + pageId);
+
+    if (!$page || !$page.classList.contains('wpr-Page') || !$menuItem) {
+        return false;
+    }
+
+    this.$page = $page;
+    this.$menuItem = $menuItem;
+
+    return true;
 }
 
 
@@ -156,7 +172,6 @@ PageManager.prototype.getBodyTop = function() {
 PageManager.prototype.change = function() {
 
     var refThis = this;
-    document.documentElement.scrollTop = refThis.bodyTop;
 
     // The inline style of the page template only covers the first paint. The inline display styles set
     // below take over in the same task, so nothing is painted in between, even if this method throws.
@@ -202,6 +217,12 @@ PageManager.prototype.change = function() {
     }
 
     this.updateSubmitDisabledState();
+
+    // Go back to the top of the window once the new page is displayed. The top is always reachable, so
+    // the result doesn't depend on the height of the page or of the admin notices above it.
+    if (this.isReady) {
+        window.scrollTo(0, 0);
+    }
 
 	// Dispatch custom event after page navigation for other scripts to hook into.
 	document.dispatchEvent(new CustomEvent('rocketJsAfterPageNavigation', {
