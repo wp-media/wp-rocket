@@ -319,7 +319,12 @@ document.addEventListener('DOMContentLoaded', function() {
 		analyticsCheckbox.addEventListener('change', function() {
 			const isChecked = this.checked;
 
+			// Only undo when no newer toggle happened meanwhile.
 			const revert = () => {
+				if (this.checked !== isChecked) {
+					return;
+				}
+
 				if (typeof rocket_mixpanel_data !== 'undefined') {
 					rocket_mixpanel_data.optin_enabled = isChecked ? '0' : '1';
 				}
@@ -346,15 +351,23 @@ document.addEventListener('DOMContentLoaded', function() {
 				.then((response) => {
 					if (!response || !response.success) {
 						revert();
+						return null;
+					}
+
+					return response;
+				}, revert)
+				.then((response) => {
+					if (!response || !isChecked) {
 						return;
 					}
 
-					if (isChecked) {
+					try {
 						loadMixpanelSdk(response.data && response.data.sdk);
 						document.dispatchEvent(new CustomEvent('wpr:analytics-enabled'));
+					} catch (error) {
+						// The opt-in is saved server-side: a tracking load failure must not undo it.
 					}
-				})
-				.catch(revert);
+				});
 		});
 	}
 });

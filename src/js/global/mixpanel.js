@@ -60,11 +60,6 @@ class RocketMixpanel {
 		mixpanel.identify( this.config.user_id );
 		this._initListeners( this );
 		this.initialized = true;
-
-		// The load event already fired when tracking is enabled after the page loaded.
-		if ( document.readyState === 'complete' ) {
-			this._onPageLoad();
-		}
 	}
 
 	/**
