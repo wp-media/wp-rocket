@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::display_cpcss_mobile_section
  *
  * @group  AdminOnly
  * @group  CriticalPath
@@ -24,7 +24,7 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::setAdminCap();
+		self::setAdminCap();
 
 		//create an editor user that has the capability
 		self::$admin_user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
@@ -37,11 +37,15 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_cpcss_mobile_section', 10 );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'current_screen' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setAsyncCssOption' ] );
 		remove_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'setCacheMobileOption' ] );
@@ -56,9 +60,9 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 	 */
 	public function testShouldDisplayCpcssMobileSection( $config, $expected ) {
 		if ( $config['current_user_can'] ) {
-			$user_id = static::$admin_user_id;
+			$user_id = self::$admin_user_id;
 		} else {
-			$user_id = static::$editor_user_id;
+			$user_id = self::$editor_user_id;
 		}
 		wp_set_current_user( $user_id );
 

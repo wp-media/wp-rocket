@@ -64,7 +64,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Processes the cache busting on the HTML content
 	 *
-	 * Google Analytics replacement is performed first, and if no replacement occured, Google Tag Manager replacement is performed.
+	 * Google Analytics replacement is performed first, and if no replacement occurred, Google Tag Manager replacement is performed.
 	 *
 	 * @since 3.1
 	 *

@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::delete_old_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::delete_old_used_css
  *
  * @group  RUCSS
  */
@@ -34,7 +34,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 	 */
 	public function testShouldDoExpected( $input ){
 		if ( $this->isPHP8() ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return;
 		}
 
@@ -44,7 +44,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 
 		if ( true === $input['usedCSS']['exists'] ) {
 			$this->usedCSS->expects( $this->once() )
-				->method('delete_old_used_css');
+				->method('delete_old_rows');
 		}
 
 		$this->database->delete_old_used_css();
@@ -58,7 +58,7 @@ class Test_DeleteOldUsedCss extends TestCase{
 	public function isPHP8() {
 		$version = explode('.', PHP_VERSION);
 		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return true;
 		}
 

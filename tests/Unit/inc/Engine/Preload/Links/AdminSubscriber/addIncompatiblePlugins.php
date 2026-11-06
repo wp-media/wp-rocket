@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Preload\Links\AdminSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_incompatible_plugins
+ * Test class covering \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_incompatible_plugins
  *
  * @group  PreloadLinks
  */

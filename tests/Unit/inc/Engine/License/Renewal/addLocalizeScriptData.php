@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::add_localize_script_data
+ * Test class covering \WP_Rocket\Engine\License\Renewal::add_localize_script_data
  *
  * @group License
  */

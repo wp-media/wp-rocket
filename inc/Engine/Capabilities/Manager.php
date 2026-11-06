@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Capabilities;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+use WP_Role;
 
 class Manager implements ActivationInterface, DeactivationInterface {
 	/**
@@ -138,6 +139,31 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		];
 
 		return $groups;
+	}
+
+	/**
+	 * Add WP Rocket as a cap group in Members
+	 */
+	public function add_cap_group_to_members() {
+		// @phpstan-ignore-next-line
+		\members_register_cap_group(
+			'wp_rocket',
+			[
+				'label'    => esc_html( 'WP Rocket' ),
+				'priority' => 42,
+				'caps'     => $this->get_capabilities(),
+			]
+		);
+	}
+
+	/**
+	 * Add WP Rocket capabilities to Members
+	 */
+	public function add_caps_to_members() {
+		foreach ( $this->get_capabilities() as $cap ) {
+			// @phpstan-ignore-next-line
+			\members_register_cap( $cap, [ 'label' => $cap ] );
+		}
 	}
 
 	/**

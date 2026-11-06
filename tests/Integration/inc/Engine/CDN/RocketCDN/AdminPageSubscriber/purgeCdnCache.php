@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -21,14 +21,14 @@ class Test_PurgeCdnCache extends TestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
-		CapTrait::setAdminCap();
+		self::hasAdminCapBeforeClass();
+		self::setAdminCap();
 	}
 
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 	}
 
 	public function set_up() {

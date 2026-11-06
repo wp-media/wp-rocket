@@ -27,7 +27,7 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() : array {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_buffer'                      => [
 				[ 'defer_js', 24 ],
@@ -46,7 +46,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_js( string $html ) : string {
+	public function defer_js( string $html ): string {
 		return $this->defer_js->defer_js( $html );
 	}
 
@@ -58,7 +58,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_inline_js( string $html ) : string {
+	public function defer_inline_js( string $html ): string {
 		return $this->defer_js->defer_inline_js( $html );
 	}
 
@@ -70,7 +70,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @param array $excluded_files Array of excluded files from combine JS.
 	 * @return array
 	 */
-	public function exclude_jquery_combine( array $excluded_files ) : array {
+	public function exclude_jquery_combine( array $excluded_files ): array {
 		return $this->defer_js->exclude_jquery_combine( $excluded_files );
 	}
 }

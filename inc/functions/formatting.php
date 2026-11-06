@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  *
  * @param string $file URL we want to parse.
- * @return bool\string false if $file is empty or false, relative path otherwise
+ * @return bool|string false if $file is empty or false, relative path otherwise
  */
 function rocket_clean_exclude_file( $file ) {
 	if ( ! $file ) {
@@ -180,6 +180,7 @@ function rocket_sanitize_textarea_field( $field, $value ) {
 		'cache_reject_uri'           => [ 'esc_url', 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],   // Pattern.
 		'cache_query_strings'        => [ 'rocket_sanitize_key' ],
 		'cdn_reject_files'           => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],              // Pattern.
+		'cdn_reject_pages'           => [ 'rocket_clean_exclude_file', 'rocket_clean_wildcards' ],              // Pattern.
 		'exclude_css'                => [ 'rocket_validate_css', 'rocket_clean_wildcards' ],                    // Pattern.
 		'exclude_inline_js'          => [ 'sanitize_text_field' ],
 		'exclude_defer_js'           => [ 'sanitize_text_field' ],
@@ -229,6 +230,7 @@ function rocket_sanitize_xml( $file ) {
 	$ext  = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 	return ( 'xml' === $ext ) ? trim( $file ) : false;
 }
+
 
 /**
  * Sanitizes a string key like the sanitize_key() WordPress function without forcing lowercase.
@@ -470,10 +472,17 @@ function rocket_realpath( $file ) {
  * @return string|bool
  */
 function rocket_url_to_path( $url, array $zones = [ 'all' ] ) {
-	$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
-	$root_dir       = trailingslashit( dirname( $wp_content_dir ) );
-	$root_url       = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
-	$url_host       = wp_parse_url( $url, PHP_URL_HOST );
+	$wp_content_dir   = rocket_get_constant( 'WP_CONTENT_DIR' );
+	$root_dir         = trailingslashit( dirname( $wp_content_dir ) );
+	$content_url_host = wp_parse_url( content_url(), PHP_URL_HOST );
+
+	if ( null !== $content_url_host ) {
+		$root_url = str_replace( wp_basename( $wp_content_dir ), '', content_url() );
+	} else {
+		$root_url = site_url( '/' );
+	}
+
+	$url_host = wp_parse_url( $url, PHP_URL_HOST );
 
 	// relative path.
 	if ( null === $url_host ) {

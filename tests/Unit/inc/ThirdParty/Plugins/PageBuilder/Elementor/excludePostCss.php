@@ -9,7 +9,7 @@ use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_post_css
+ * Test class covering WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::exclude_post_css
  * @group Elementor
  * @group ThirdParty
  */
@@ -37,6 +37,14 @@ class Test_ExcludePostCss extends TestCase {
 			[
 				'baseurl' => 'http://example.org/wp-content/uploads',
 			]
+		);
+
+		$uploads_path = wp_parse_url( wp_get_upload_dir()['baseurl'], PHP_URL_PATH );
+		$expected     = array_map(
+			function ( $pattern ) use ( $uploads_path ) {
+				return str_replace( '{{uploads}}', $uploads_path, $pattern );
+			},
+			$expected
 		);
 
 		$this->assertSame(

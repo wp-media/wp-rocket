@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\API;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_bypass
+ * Test class covering ::rocket_bypass
  * @group API
  */
 class Bypass extends TestCase {
@@ -16,16 +16,14 @@ class Bypass extends TestCase {
 	}
 
 	public function tear_down() {
-		unset( $GLOBALS['wp'] );
-
 		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $wp, $url, $expected ) {
-		$GLOBALS['wp'] = $wp;
+	public function testShouldReturnExpected( $query_vars, $expected ) {
+		$_GET = $query_vars;
 
 		if ( $expected ) {
 			$this->assertTrue( rocket_bypass() );

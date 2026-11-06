@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\common;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_clean_post_cache_on_slug_change
+ * Test class covering ::rocket_clean_post_cache_on_slug_change
  * @uses   ::rocket_clean_files
  *
  * @group  Common

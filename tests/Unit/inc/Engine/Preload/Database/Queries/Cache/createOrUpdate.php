@@ -3,14 +3,13 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
 use Mockery;
-use ReflectionClass;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_update
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::create_or_update
  *
  * @group Database
  * @group Preload
@@ -32,9 +31,9 @@ class Test_CreateOrUpdate extends TestCase {
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
 		Functions\when('current_time')->justReturn($config['time']);
+		Functions\when('get_transient')->justReturn($config['is_updating']);
 
-
-		if(! $config['rejected']) {
+		if(! $config['rejected'] && !$config['is_updating']) {
 			$this->query->expects(self::once())->method('query')->with([
 				'url' => $config['resource']['url'],
 			])->willReturn($config['rows']);
@@ -76,9 +75,6 @@ class Test_CreateOrUpdate extends TestCase {
 	 */
 	public function setProtectedProperty($object, $property, $value)
 	{
-		$reflection = new ReflectionClass($object);
-		$reflection_property = $reflection->getProperty($property);
-		$reflection_property->setAccessible(true);
-		$reflection_property->setValue($object, $value);
+		$this->set_reflective_property($value, $property, $object);
 	}
 }

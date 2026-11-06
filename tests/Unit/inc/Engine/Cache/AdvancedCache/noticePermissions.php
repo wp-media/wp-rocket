@@ -8,13 +8,13 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
+ * Test class covering \WP_Rocket\Engine\Cache\AdvancedCache::notice_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
  *
  * @group  AdvancedCache
  */
-class Test_NoticePermissions extends FileSystemTestCase {
+class Test_NoticePermissions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/AdvancedCache/noticePermissions.php';
 
 	public function setUp() : void {

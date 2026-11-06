@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AbstractOptimization;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 
 /**
  * Abstract class for JS optimization
@@ -24,18 +25,27 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	protected $local_cache;
 
 	/**
+	 * DynamicLists instance
+	 *
+	 * @var DynamicLists
+	 */
+	private $dynamic_lists;
+
+	/**
 	 * Creates an instance of inheriting class.
 	 *
 	 * @since  3.1
 	 *
 	 * @param Options_Data     $options            Options instance.
 	 * @param AssetsLocalCache $local_cache Assets local cache instance.
+	 * @param DynamicLists     $dynamic_lists DynamicLists instance.
 	 */
-	public function __construct( Options_Data $options, AssetsLocalCache $local_cache ) {
+	public function __construct( Options_Data $options, AssetsLocalCache $local_cache, DynamicLists $dynamic_lists ) {
 		$this->options        = $options;
 		$this->local_cache    = $local_cache;
 		$this->minify_key     = $this->options->get( 'minify_js_key', create_rocket_uniqid() );
 		$this->excluded_files = $this->get_excluded_files();
+		$this->dynamic_lists  = $dynamic_lists;
 		$this->init_base_path_and_url();
 	}
 
@@ -47,14 +57,7 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 	 * @return string A list of files to exclude, ready to be used in a regex pattern.
 	 */
 	protected function get_excluded_files() {
-		$excluded_files   = $this->options->get( 'exclude_js', [] );
-		$excluded_files[] = '/wp-includes/js/dist/i18n.min.js';
-		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/html2canvas.min.js';
-		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/pdf.min.js';
-		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/three.min.js';
-		$excluded_files[] = '/interactive-3d-flipbook-powered-physics-engine/assets/js/3d-flip-book.min.js';
-		$excluded_files[] = '/google-site-kit/dist/assets/js/(.*)\.js';
-		$excluded_files[] = '/wp-live-chat-support/public/js/callus(.*)\.js';
+		$excluded_files = $this->options->get( 'exclude_js', [] );
 
 		/**
 		 * Filter JS files to exclude from minification/concatenation.
@@ -102,12 +105,22 @@ abstract class AbstractJSOptimization extends AbstractOptimization {
 			return true;
 		}
 
+		// Type casting to array, cause json can be bummer sometimes.
+		$exclude_js_templates = array_filter( (array) $this->dynamic_lists->get_exclude_js_templates() );
+		if ( empty( $exclude_js_templates ) ) {
+			return false;
+		}
+
+		$escaped_js_template_array = array_map(
+			function ( $item ) {
+				return preg_quote( $item, '/' );
+			},
+			$exclude_js_templates
+		);
+		$js_template_pattern       = '/' . implode( '|', $escaped_js_template_array ) . '/';
+
 		// File should not be minified.
-		if (
-			false !== strpos( $tag[0], 'data-minify=' )
-			||
-			false !== strpos( $tag[0], 'data-no-minify=' )
-		) {
+		if ( preg_match( $js_template_pattern, $tag[0] ) ) {
 			return true;
 		}
 

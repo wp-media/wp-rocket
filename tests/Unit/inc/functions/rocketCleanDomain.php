@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_domain
+ * Test class covering ::rocket_clean_domain
  * @uses  ::get_rocket_i18n_home_url
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri
@@ -105,6 +105,9 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 		Actions\expectDone( 'after_rocket_clean_domain' )
 			->once()
 			->with( $config['root'], $lang, $url );
+		Actions\expectDone( 'rocket_after_clean_domain' )
+			->once()
+			->with( $lang, $expected['rocket_clean_domain_urls'] );
 
 		// Run it.
 		rocket_clean_domain( $lang );

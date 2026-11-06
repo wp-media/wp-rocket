@@ -29,5 +29,3 @@ function rocket_deactivate_lazyload_on_envira_gallery_indexable_images( $images 
 	return $images;
 }
 add_filter( 'envira_gallery_indexable_images', 'rocket_deactivate_lazyload_on_envira_gallery_indexable_images', PHP_INT_MAX );
-
-

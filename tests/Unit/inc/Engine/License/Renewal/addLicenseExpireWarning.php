@@ -11,7 +11,7 @@ use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::add_license_expire_warning
+ * Test class covering \WP_Rocket\Engine\License\Renewal::add_license_expire_warning
  *
  * @group License
  */

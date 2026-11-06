@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_domain'      => 'maybe_clean_firewall_cache',
+			'rocket_after_clean_domain'      => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_post'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_term'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_user'        => 'maybe_clean_firewall_cache',
@@ -48,6 +48,7 @@ class Subscriber implements Subscriber_Interface {
 			'after_rocket_clean_files'       => 'maybe_clean_firewall_cache',
 			'admin_post_rocket_purge_sucuri' => 'do_admin_post_rocket_purge_sucuri',
 			'admin_notices'                  => 'maybe_print_notice',
+			'rocket_cdn_helper_addons'       => 'add_cdn_helper_message',
 		];
 	}
 
@@ -337,6 +338,22 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Add the helper message on the CDN settings.
+	 *
+	 * @param string[] $addons Name from the addon that requires the helper message.
+	 * @return string[]
+	 */
+	public function add_cdn_helper_message( array $addons ): array {
+
+		if ( ! $this->options->get( 'sucury_waf_cache_sync', false ) ) {
+			return $addons;
+		}
+
+		$addons[] = 'Sucuri';
+		return $addons;
 	}
 
 	/**

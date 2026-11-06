@@ -3,11 +3,10 @@
 namespace WP_Rocket\Tests\Integration\Inc\Common;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::do_admin_post_rocket_purge_cache
+ * Test class covering ::do_admin_post_rocket_purge_cache
  * @uses ::get_rocket_i18n_home_url
  * @uses ::get_rocket_option
  * @uses ::get_rocket_parse_url
@@ -27,10 +26,10 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AdminOnly
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
-	use DBTrait;
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 	protected static $original_transients = [];
 	protected static $user_id;
+	protected $before_rocket_clean_home;
 
 	public static function wpSetUpBeforeClass( $factory ) {
 		self::$original_transients = [
@@ -46,42 +45,37 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
 		foreach ( self::$original_transients as $transient => $value ) {
 			set_transient( $transient, $value, HOUR_IN_SECONDS );
 		}
-
-		self::uninstallAll();
 	}
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->set_permalink_structure( '/%postname%/' );
+		add_filter( 'rocket_clean_home_after_clean_post', [ $this, 'rocket_clean_home_after_clean_post'] );
+		add_action( 'before_rocket_clean_home', [ $this, 'before_rocket_clean_home'] );
 	}
 
 	public function tear_down() {
 		parent::tear_down();
 
-		unset( $GLOBALS['tonya'] );
-
 		foreach ( array_keys( self::$original_transients ) as $transient ) {
 			delete_transient( $transient );
 		}
+
+		remove_filter( 'rocket_clean_home_after_clean_post', [ $this, 'rocket_clean_home_after_clean_post'] );
+		remove_action( 'before_rocket_clean_home', [ $this, 'before_rocket_clean_home'] );
 	}
 
 	/**
 	 * @dataProvider purgeTestData
 	 */
 	public function testShouldPurge( $_get, array $config ) {
+		$this->config = $config;
+		$this->before_rocket_clean_home = false;
 		wp_set_current_user( self::$user_id );
 
 		if ( 'post' === $config['type'] ) {
@@ -93,8 +87,6 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		foreach ( $_get as $key => $value ) {
 			$_GET[ $key ] = $value;
 		}
-
-		$GLOBALS['tonya'] = true;
 
 		$_GET['_wpnonce'] = wp_create_nonce( 'purge_cache_' . $_get['_wpnonce'] );
 		Functions\expect( 'wp_nonce_ays' )->never();
@@ -108,12 +100,19 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		$this->assertSame( 1, did_action( 'rocket_purge_cache' ) );
 		$this->assertGreaterThan( 0, did_action( 'before_rocket_clean_post' ) );
 		$this->assertSame( $config['type'], get_transient( 'rocket_clear_cache' ) );
+
+		if ( $this->config['rocket_clean_home_after_clean_post'] && 'post' === $config['type'] ) {
+			$this->assertTrue(  $this->before_rocket_clean_home );
+		} else {
+			$this->assertFalse( $this->before_rocket_clean_home );
+		}
 	}
 
 	/**
 	 * @dataProvider wontPurgeTestData
 	 */
-	public function testShouldWontPurge( $_get, array $config ) {
+	public function testShouldNotPurge( $_get, array $config ) {
+		$this->config = $config;
 		foreach ( $_get as $key => $value ) {
 			$_GET[ $key ] = $value;
 		}
@@ -146,5 +145,13 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		$this->loadConfig();
 
 		return $this->config['test_data']['wontpurge'];
+	}
+
+	public function rocket_clean_home_after_clean_post() {
+		return $this->config['rocket_clean_home_after_clean_post'] ?? true;
+	}
+
+	public function before_rocket_clean_home() {
+		$this->before_rocket_clean_home = true;
 	}
 }

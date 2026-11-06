@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subs
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::maybe_disable_combine_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::maybe_disable_combine_js
  *
  * @group DelayJS
  * @group AdminOnly
@@ -20,7 +20,7 @@ class Test_MaybeDisableCombineJs extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'pre_update_option_wp_rocket_settings' );
+		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 	}
 
 	/**

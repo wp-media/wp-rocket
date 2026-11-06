@@ -2,12 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
-class Cache extends Query {
+class Cache extends AbstractQuery {
 
 	/**
 	 * Logger instance.
@@ -119,12 +119,21 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function create_or_update( array $resource ) {
-		$url = untrailingslashit( strtok( $resource['url'], '?' ) );
+	public function create_or_update( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
-		if ( $this->is_rejected( $resource['url'] ) ) {
+		/**
+		 * Format the url.
+		 *
+		 * @param string $url url to format.
+		 * @return string
+		 */
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = untrailingslashit( strtok( $url, '?' ) );
+
+		if ( $this->is_rejected( $resource['url'] ) || get_transient( 'wp_rocket_updating' ) ) {
 			return false;
 		}
 
@@ -147,7 +156,7 @@ class Cache extends Query {
 				]
 			);
 
-			if ( $resource_id ) {
+			if ( ! empty( $resource_id ) ) {
 				return $resource_id;
 			}
 
@@ -185,15 +194,23 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function create_or_nothing( array $resource ) {
+	public function create_or_nothing( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
 		if ( $this->is_rejected( $resource['url'] ) ) {
 			return false;
 		}
 
-		$url = strtok( $resource['url'], '?' );
+		/**
+			* Format the url.
+			*
+			* @param string $url url to format.
+			* @return string
+			*/
+		$url = apply_filters( 'rocket_preload_format_url', $resource['url'] );
+
+		$url = strtok( $url, '?' );
 
 		// check the database if those resources added before.
 		$rows = $this->query(
@@ -217,7 +234,7 @@ class Cache extends Query {
 			]
 		);
 
-		if ( $resource_id ) {
+		if ( ! empty( $resource_id ) ) {
 			return $resource_id;
 		}
 
@@ -277,19 +294,21 @@ class Cache extends Query {
 	/**
 	 * Get all preload caches which were not accessed in the last month.
 	 *
+	 * @param float  $delay delay before the not accessed row is deleted.
+	 * @param string $unit unit from the delay.
 	 * @return array
 	 */
-	public function get_old_cache() : array {
+	public function get_old_cache( float $delay = 1, string $unit = 'month' ): array {
 		// Get the database interface.
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return [];
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval 1 month)";
+		$query               = "SELECT id FROM `$prefixed_table_name` WHERE `last_accessed` <= date_sub(now(), interval $delay $unit)";
 		$rows_affected       = $db->get_results( $query );
 
 		return $rows_affected;
@@ -298,10 +317,12 @@ class Cache extends Query {
 	/**
 	 * Remove all completed rows one by one.
 	 *
+	 * @param float  $delay delay before the not accessed row is deleted.
+	 * @param string $unit unit from the delay.
 	 * @return void
 	 */
-	public function remove_all_not_accessed_rows() {
-		$rows = $this->get_old_cache();
+	public function remove_all_not_accessed_rows( float $delay = 1, string $unit = 'month' ) {
+		$rows = $this->get_old_cache( $delay, $unit );
 
 		foreach ( $rows as $row ) {
 			if ( ! is_bool( $row ) ) {
@@ -326,7 +347,7 @@ class Cache extends Query {
 			false
 		);
 
-		if ( $inprogress_count >= $total ) {
+		if ( $total <= 0 || (int) $inprogress_count >= $total ) {
 			return [];
 		}
 
@@ -367,11 +388,12 @@ class Cache extends Query {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_inprogress( int $id ) {
+	public function make_status_inprogress_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[
-				'status' => 'in-progress',
+				'status'   => 'in-progress',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
 	}
@@ -398,9 +420,41 @@ class Cache extends Query {
 		return $this->update_item(
 			$task->id,
 			[
-				'status' => 'completed',
+				'status'   => 'completed',
+				'modified' => current_time( 'mysql', true ),
 			]
 		);
+	}
+
+	/**
+	 * Get the number of rows for each tracked status.
+	 *
+	 * Uses the indexed `status` column with a `count` query per status to avoid
+	 * ever loading full rows or running an unbounded `SELECT *`, matching the
+	 * approach already used by `has_pending_jobs()`.
+	 *
+	 * @return array<string,int> Associative array keyed by status (pending, in-progress, completed, failed).
+	 */
+	public function get_status_counts(): array {
+		$statuses = [
+			'pending',
+			'in-progress',
+			'completed',
+			'failed',
+		];
+
+		$counts = [];
+
+		foreach ( $statuses as $status ) {
+			$counts[ $status ] = (int) $this->query(
+				[
+					'count'  => true,
+					'status' => $status,
+				]
+			);
+		}
+
+		return $counts;
 	}
 
 	/**
@@ -433,7 +487,8 @@ class Cache extends Query {
 			$this->update_item(
 				$in_progress->id,
 				[
-					'status' => 'pending',
+					'status'   => 'pending',
+					'modified' => current_time( 'mysql', true ),
 				]
 				);
 		}
@@ -441,18 +496,36 @@ class Cache extends Query {
 
 	/**
 	 * Revert old in-progress rows
+	 *
+	 * @deprecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
 		$prefixed_table_name = $db->prefix . $this->table_name;
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'in-progress' AND `modified` <= date_sub(now(), interval 12 hour)" );
+	}
+
+	/**
+	 * Revert old failed rows.
+	 */
+	public function revert_old_failed() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( ! $db ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+		return $db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "' WHERE status = 'failed' AND `modified` <= date_sub(now(), interval 12 hour)" );
 	}
 
 	/**
@@ -463,7 +536,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -477,7 +550,7 @@ class Cache extends Query {
 		 */
 		$condition = apply_filters( 'rocket_preload_all_to_pending_condition', ' WHERE 1 = 1' );
 
-		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending'$condition" );
+		$db->query( "UPDATE `$prefixed_table_name` SET status = 'pending', modified = '" . current_time( 'mysql', true ) . "'$condition" );
 	}
 
 	/**
@@ -526,7 +599,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -549,6 +622,25 @@ class Cache extends Query {
 				'is_locked' => true,
 			]
 			);
+	}
+
+	/**
+	 * Unlock all URLs.
+	 *
+	 * @return false|void
+	 */
+	public function unlock_all() {
+		// Get the database interface.
+		$db = $this->get_db();
+
+		// Bail if no database interface is available.
+		if ( ! $db ) {
+			return false;
+		}
+
+		$prefixed_table_name = $db->prefix . $this->table_name;
+
+		$db->query( "UPDATE `$prefixed_table_name` SET is_locked = false;" );
 	}
 
 	/**
@@ -584,5 +676,59 @@ class Cache extends Query {
 		$extension = pathinfo( $url, PATHINFO_EXTENSION );
 
 		return $extension && isset( $extensions[ $extension ] );
+	}
+
+	/**
+	 * Make the status from the task to failed.
+	 *
+	 * @param int $id id from the task.
+	 * @return bool
+	 */
+	public function make_status_failed_by_id( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'status'   => 'failed',
+				'modified' => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
+	 * Update last accessed from the row.
+	 *
+	 * @param int $id id from the row.
+	 * @return bool
+	 */
+	public function update_last_access( int $id ) {
+		return $this->update_item(
+			$id,
+			[
+				'last_accessed' => current_time( 'mysql', true ),
+			]
+		);
+	}
+
+	/**
+	 * Return outdated in-progress jobs.
+	 *
+	 * @param int $delay delay to delete.
+	 * @return array|int
+	 */
+	public function get_outdated_in_progress_jobs( int $delay = 3 ) {
+
+		return $this->query(
+			[
+				'status'     => 'in-progress',
+				'is_locked'  => false,
+				'date_query' => [
+					[
+						'column' => 'modified',
+						'before' => "$delay minute ago",
+					],
+				],
+			],
+			false
+		);
 	}
 }

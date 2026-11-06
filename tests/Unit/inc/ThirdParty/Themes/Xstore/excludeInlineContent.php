@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Xstore;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Xstore::exclude_inline_content
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Xstore::exclude_inline_content
  * @group ThirdParty
  */
 class Test_ExcludeInlineContent extends TestCase {

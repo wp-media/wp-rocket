@@ -43,7 +43,7 @@ class Ezoic implements Subscriber_Interface {
 		$plugins_explanations['ezoic'] = sprintf(
 			// translators: %1$s = opening <a> tag, %2$s = closing </a> tag.
 			__( 'This plugin blocks WP Rocket\'s caching and optimizations. Deactivate it and use %1$sEzoic\'s nameserver integration%2$s instead.', 'rocket' ),
-			'<a href="https://support.ezoic.com/support/solutions/articles/48000453926-name-server-integration" target="_blank" rel="noopener noreferrer">',
+			'<a href="https://support.ezoic.com/kb/article/how-can-i-integrate-my-site-with-ezoic" target="_blank" rel="noopener noreferrer">',
 			'</a>'
 		);
 

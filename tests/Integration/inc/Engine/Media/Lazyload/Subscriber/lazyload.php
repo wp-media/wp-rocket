@@ -5,10 +5,11 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload
- * @uses   ::rocket_get_constant
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::lazyload
  *
- * @group  Lazyload
+ * @uses ::rocket_get_constant
+ *
+ * @group Lazyload
  */
 class Test_Lazyload extends TestCase {
 	private $lazyload;
@@ -17,13 +18,17 @@ class Test_Lazyload extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->lazyload  = null;
-		$this->iframes   = null;
+		$this->lazyload = null;
+		$this->iframes  = null;
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'lazyload', 18 );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
@@ -34,7 +39,7 @@ class Test_Lazyload extends TestCase {
 		$wp_query->is_preview = false;
 		$wp_query->is_search  = false;
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}
@@ -54,7 +59,7 @@ class Test_Lazyload extends TestCase {
 		$wp_query->is_search  = $config['is_search'];
 
 		//Constants.
-		$this->constants['REST_REQUEST']  = $config['is_rest_request'];
+		$this->rest_request  = $config['is_rest_request'];
 		$this->constants['DONOTLAZYLOAD'] = $config['is_not_lazy_load'];
 		$this->donotrocketoptimize        = $config['is_rocket_optimize'];
 

@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Support\Data;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::get_suggest
+ * Test class covering \WP_Rocket\Engine\Admin\Beacon\Beacon::get_suggest
  * @group  Beacon
  */
 class Test_GetSuggest extends TestCase {

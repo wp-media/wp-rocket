@@ -47,6 +47,14 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Godaddy();
 			case 'kinsta':
 				return new Kinsta();
+			case 'onecom':
+				return new OneCom();
+			case 'proisp':
+				return new ProIsp();
+			case 'pressidium':
+				return new Pressidium();
+			case 'siteground':
+				return new SiteGround();
 			default:
 				return new NullSubscriber();
 		}

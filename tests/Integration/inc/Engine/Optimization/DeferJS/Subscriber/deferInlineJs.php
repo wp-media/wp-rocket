@@ -6,9 +6,9 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\Subscriber::defer_inline_js
  *
- * @group  DeferJSInline
+ * @group DeferJSInline
  */
 class Test_DeferInlineJs extends TestCase {
 	use ContentTrait;
@@ -20,15 +20,42 @@ class Test_DeferInlineJs extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
+		// Prevent remote HTTP calls from the RocketCDN subscription check.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled', 'cdn_url' => '' ], MINUTE_IN_SECONDS );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
+
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+
 		remove_filter( 'rocket_defer_inline_exclusions', [ $this, 'add_defer_inline_exclusion' ] );
 		remove_filter( 'pre_get_rocket_option_defer_all_js', [ $this, 'set_defer_js' ] );
 		remove_filter( 'pre_get_rocket_option_exclude_defer_js', [ $this, 'set_exclude_defer_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 		delete_transient( 'wpr_dynamic_lists' );
+		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

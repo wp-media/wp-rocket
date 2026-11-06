@@ -6,9 +6,10 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor::add_fix_animation_script
  * @group Elementor
  * @group ThirdParty
  */
@@ -32,6 +33,7 @@ class Test_AddFixAnimationsScript extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldAddFixScript( $config , $html, $expected ) {
+		Filters\expectApplied('rocket_delay_js_version_js_script')->with('')->andReturn($config['js_version']);
 		$this->delay_js_html->shouldReceive( 'is_allowed' )
 		              ->once()
 		              ->andReturn( $config[ 'delay_js' ] );

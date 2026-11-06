@@ -3,36 +3,44 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::delete_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
-	use DBTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/RUCSS/Admin/Subscriber/deleteUsedCssOnUpdateOrDelete.php';
 
 	private $posts;
 	private $input;
 
-	public static function set_up_before_class() {
-		self::installFresh();
+	public function set_up() {
+		parent::set_up();
 
-		parent::set_up_before_class();
+		self::installPreloadCacheTable();
+		self::installUsedCssTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+		self::uninstallUsedCssTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
-		self::uninstallAll();
-	}
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
-	public function tear_down() : void {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 
 		parent::tear_down();
@@ -44,6 +52,10 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends FilesystemTestCase{
 	public function testShouldTruncateTableWhenOptionIsEnabled( $input ){
 		$container           = apply_filters( 'rocket_container', null );
 		$rucss_usedcss_query = $container->get( 'rucss_used_css_query' );
+		$subscriber          = $container->get( 'rucss_admin_subscriber' );
+		$event_manager       = $container->get( 'event_manager' );
+
+		$event_manager->remove_callback( 'permalink_structure_changed', [ $subscriber, 'truncate_used_css' ] );
 
 		$this->input = $input;
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

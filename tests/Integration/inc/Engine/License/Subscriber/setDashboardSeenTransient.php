@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::set_dashboard_seen_transient
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::set_dashboard_seen_transient
  *
  * @group License
  * @group AdminOnly
@@ -31,6 +31,10 @@ class Test_SetDashboardSeenTransient extends TestCase {
 		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 
 		$this->unregisterAllCallbacksExcept( 'admin_footer-settings_page_wprocket', 'set_dashboard_seen_transient' );
@@ -41,7 +45,8 @@ class Test_SetDashboardSeenTransient extends TestCase {
 	public function tear_down() {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
-		$this->restoreWpFilter( 'admin_footer-settings_page_wprocket' );
+		$this->restoreWpHook( 'admin_footer-settings_page_wprocket' );
+		$this->restoreWpHook( 'current_screen' );
 
 		remove_filter( 'pre_get_rocket_option_optimize_css_delivery', [ $this, 'set_ocd'] );
 		delete_transient( 'wpr_dashboard_seen_' . self::$user_id );

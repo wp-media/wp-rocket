@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::add_modal_assets
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::add_modal_assets
  * @group  DeactivationIntent
  */
 class Test_AddModalAssets extends TestCase {

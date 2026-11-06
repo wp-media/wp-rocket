@@ -144,7 +144,7 @@ class Facebook_SDK extends Abstract_Busting {
 	}
 
 	/**
-	 * Tell if the replacement was sucessful or not.
+	 * Tell if the replacement was successful or not.
 	 *
 	 * @since  3.2
 	 * @access public

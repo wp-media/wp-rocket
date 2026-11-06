@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Links\AdminSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_option
+ * Test class covering \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_option
  *
  * @group  AdminOnly
  * @group  PreloadLinks

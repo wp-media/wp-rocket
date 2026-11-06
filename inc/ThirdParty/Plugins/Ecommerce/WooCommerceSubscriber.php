@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\ThirdParty\Plugins\Ecommerce;
 
+use WP_Post;
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\Event_Management\Event_Manager_Aware_Subscriber_Interface;
@@ -17,7 +18,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	/**
 	 * The WordPress Event Manager
 	 *
-	 * @var Event_Manager;
+	 * @var Event_Manager
 	 */
 	protected $event_manager;
 
@@ -67,16 +68,21 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 			$events['rocket_cache_reject_uri']            = [
 				[ 'exclude_pages' ],
 			];
+			$events['rocket_preload_exclude_urls']        = [
+				[ 'exclude_pages' ],
+			];
 			$events['rocket_cache_query_strings']         = 'cache_geolocation_query_string';
 			$events['rocket_cpcss_excluded_taxonomies']   = 'exclude_product_attributes_cpcss';
-			$events['rocket_exclude_post_taxonomy']       = 'exclude_product_shipping_taxonomy';
+			$events['after_rocket_clean_post_urls']       = [ 'reformat_shop_url_for_preload', 10, 2 ];
+
+			$events['rocket_exclude_post_taxonomy'] = 'exclude_product_shipping_taxonomy';
 
 			/**
 			 * Filters activation of WooCommerce empty cart caching
 			 *
 			 * @since 3.1
 			 *
-			 * @param bool true to activate, false to deactivate.
+			 * @param bool $cache_cart true to activate, false to deactivate.
 			 */
 			if ( apply_filters( 'rocket_cache_wc_empty_cart', true ) ) {
 				$events['init']              = [ 'serve_cache_empty_cart', 11 ];
@@ -86,6 +92,9 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 			$events['wp_head']                    = 'show_empty_product_gallery_with_delayJS';
 			$events['rocket_delay_js_exclusions'] = 'show_notempty_product_gallery_with_delayJS';
+
+			$events['wp_ajax_woocommerce_product_ordering'] = [ 'disallow_rocket_clean_post', 9 ];
+			$events['woocommerce_after_product_ordering']   = [ 'allow_rocket_clean_post' ];
 		}
 
 		if ( class_exists( 'WC_API' ) ) {
@@ -93,6 +102,43 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Reformat Shop URL to prevent error on preload.
+	 *
+	 * @param array   $urls urls cleared.
+	 * @param WP_Post $object post object.
+	 * @return array
+	 */
+	public function reformat_shop_url_for_preload( array $urls, $object ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.objectFound
+		$post_type = $object->post_type;
+		if ( 'product' !== $post_type ) {
+			return $urls;
+		}
+		$post_type_archive = get_post_type_archive_link( $post_type );
+		if ( ! $post_type_archive ) {
+			return $urls;
+		}
+
+		// Rename the caching filename for SSL URLs.
+		$filename = 'index';
+		if ( is_ssl() ) {
+			$filename .= '-https';
+		}
+
+		$post_type_archive = trailingslashit( $post_type_archive );
+		$index_url         = $post_type_archive . $filename . '.html';
+		$index_url_gzip    = $post_type_archive . $filename . '.html_gzip';
+		$pagination_url    = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
+
+		foreach ( $urls as $index => $url ) {
+			if ( in_array( $url, [ $index_url, $index_url_gzip, $pagination_url ], true ) ) {
+				$urls[ $index ] = $post_type_archive;
+			}
+		}
+
+		return array_unique( $urls );
 	}
 
 	/**
@@ -199,10 +245,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		if ( ! function_exists( 'wc_get_page_id' ) ) {
 			return $urls;
 		}
-		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '(.*)' );
-		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
-		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '(.*)' );
 
+		$checkout_urls = $this->exclude_page( wc_get_page_id( 'checkout' ), 'page', '?(.*)' );
+		$cart_urls     = $this->exclude_page( wc_get_page_id( 'cart' ) );
+		$account_urls  = $this->exclude_page( wc_get_page_id( 'myaccount' ), 'page', '?(.*)' );
 		return array_merge( $urls, $checkout_urls, $cart_urls, $account_urls );
 	}
 
@@ -218,6 +264,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @return array
 	 */
 	private function exclude_page( $page_id, $post_type = 'page', $pattern = '' ) {
+		global $wp_rewrite;
 		$urls = [];
 
 		if ( $page_id <= 0 || (int) get_option( 'page_on_front' ) === $page_id ) {
@@ -226,6 +273,10 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 
 		if ( 'publish' !== get_post_status( $page_id ) ) {
 			return $urls;
+		}
+
+		if ( $wp_rewrite->use_trailing_slashes ) {
+			$pattern = "?$pattern";
 		}
 
 		$urls = get_rocket_i18n_translated_post_urls( $page_id, $post_type, $pattern );
@@ -278,7 +329,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		 *
 		 * @since 2.6.5
 		 *
-		 * @param bool false will force to cache the WooCommerce REST API
+		 * @param bool $cache_wc_rest_api false will force to cache the WooCommerce REST API
 		 */
 		if ( apply_filters( 'rocket_cache_reject_wc_rest_api', true ) ) {
 			$urls[] = rocket_clean_exclude_file( $this->get_wc_api_endpoint() );
@@ -337,7 +388,7 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 * @since 3.1
 	 * @author Remy Perona
 	 *
-	 * @return string
+	 * @return mixed
 	 */
 	private function get_cache_empty_cart() {
 		$lang = rocket_get_current_language();
@@ -498,12 +549,8 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 	 *
 	 * @return array
 	 */
-	public function show_notempty_product_gallery_with_delayJS( $exclusions = [] ): array {
+	public function show_notempty_product_gallery_with_delayJS( array $exclusions = [] ): array {
 		global $wp_version;
-
-		if ( ! is_array( $exclusions ) ) {
-			$exclusions = (array) $exclusions;
-		}
 
 		if ( ! $this->delayjs_html->is_allowed() ) {
 			return $exclusions;
@@ -543,5 +590,41 @@ class WooCommerceSubscriber implements Event_Manager_Aware_Subscriber_Interface 
 		$exclusions_gallery = apply_filters( 'rocket_wc_product_gallery_delay_js_exclusions', $exclusions_gallery );
 
 		return array_merge( $exclusions, $exclusions_gallery );
+	}
+
+	/**
+	 * Disable post cache clearing during product sorting.
+	 *
+	 * @return void
+	 */
+	public function disallow_rocket_clean_post(): void {
+		$this->event_manager->remove_callback( 'clean_post_cache', 'rocket_clean_post' );
+	}
+
+	/**
+	 * Re-enable post cache clearing after product sorting.
+	 *
+	 * @param integer $product_id ID of sorted product.
+	 * @return void
+	 */
+	public function allow_rocket_clean_post( int $product_id ): void {
+		$urls = [];
+
+		$category_list = wc_get_product_category_list( $product_id );
+
+		if ( preg_match_all( '/<a\s+(?:[^>]*?\s+)?href=(["\'])(?<urls>.*?)\1/i', $category_list, $matches ) ) {
+			$urls = $matches['urls'];
+		}
+
+		$shop_page = get_permalink( wc_get_page_id( 'shop' ) );
+
+		if ( empty( $shop_page ) ) {
+			$shop_page = home_url( 'shop' );
+		}
+
+		$urls[] = $shop_page;
+
+		rocket_clean_files( $urls );
+		$this->event_manager->add_callback( 'clean_post_cache', 'rocket_clean_post' );
 	}
 }

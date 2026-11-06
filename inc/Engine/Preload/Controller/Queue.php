@@ -6,7 +6,6 @@ use ActionScheduler_Store;
 use WP_Rocket\Engine\Common\Queue\AbstractASQueue;
 
 class Queue extends AbstractASQueue {
-
 	/**
 	 * Group from the queue.
 	 *
@@ -18,7 +17,7 @@ class Queue extends AbstractASQueue {
 	/**
 	 * Add Async load initial sitemap job.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function add_job_preload_job_load_initial_sitemap_async() {
 		return $this->add_async( 'rocket_preload_job_load_initial_sitemap' );
@@ -29,7 +28,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @param string $sitemap_url sitemap url.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function add_job_preload_job_parse_sitemap_async( string $sitemap_url ) {
 		return $this->add_async(
@@ -45,7 +44,7 @@ class Queue extends AbstractASQueue {
 	 *
 	 * @param string $url url to preload.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function add_job_preload_job_preload_url_async( string $url ) {
 		return $this->add_async(
@@ -56,16 +55,15 @@ class Queue extends AbstractASQueue {
 		);
 	}
 
-
 	/**
 	 * Add a job that check if the preload is finished.
 	 *
-	 * @return string
+	 * @return int
 	 */
 	public function add_job_preload_job_check_finished_async() {
 
 		if ( $this->job_preload_job_check_finished_async_exists() ) {
-			return '';
+			return 0;
 		}
 
 		return $this->schedule_single( time() + MINUTE_IN_SECONDS, 'rocket_preload_job_check_finished', [ time() ] );
@@ -77,6 +75,10 @@ class Queue extends AbstractASQueue {
 	 * @return bool
 	 */
 	public function job_preload_job_check_finished_async_exists() {
+		if ( ! did_action( 'init' ) || doing_action( 'init' ) ) {
+			return true;
+		}
+
 		$row_found = $this->search(
 			[
 				'hook'   => 'rocket_preload_job_check_finished',
@@ -121,4 +123,18 @@ class Queue extends AbstractASQueue {
 		$this->cancel_all( '' );
 	}
 
+	/**
+	 * Return pending actions inside AS scheduler queue.
+	 *
+	 * @return array
+	 */
+	public function get_pending_preload_actions(): array {
+		return $this->search(
+			[
+				'hook'     => 'rocket_preload_job_preload_url',
+				'status'   => ActionScheduler_Store::STATUS_PENDING,
+				'per_page' => -1,
+			]
+		);
+	}
 }

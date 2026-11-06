@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::update_cache_file
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SimpleCustomCss::update_cache_file
  *
  * @group  ThirdParty
  * @group  WithSCCSS

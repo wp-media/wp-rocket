@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::schedule_lists_update
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::schedule_lists_update
  *
  * @group  DynamicLists
  */

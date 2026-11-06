@@ -4,8 +4,9 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class SEOPress implements Subscriber_Interface {
+class SEOPress implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Option instance.
@@ -24,12 +25,26 @@ class SEOPress implements Subscriber_Interface {
 	}
 
 	/**
+	 * Whether SEOPress is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return function_exists( 'seopress_get_toggle_option' );
+	}
+
+	/**
 	 * Subscribed events.
 	 */
 	public static function get_subscribed_events() {
-		if ( ! function_exists( 'seopress_get_toggle_xml_sitemap_option' ) || 1 !== (int) seopress_get_toggle_xml_sitemap_option() ) {
+		if ( ! function_exists( 'seopress_get_toggle_option' ) || 1 !== (int) seopress_get_toggle_option( 'xml-sitemap' ) ) {
 			return [];
 		}
+
+		if ( ! method_exists( seopress_get_service( 'SitemapOption' ), 'isEnabled' ) || 1 !== (int) seopress_get_service( 'SitemapOption' )->isEnabled() ) {
+			return [];
+		}
+
 		return [
 			'rocket_sitemap_preload_list' => [ 'add_seopress_sitemap', 15 ],
 		];

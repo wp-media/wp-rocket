@@ -1,43 +1,67 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Support\Data;
-use WP_Rocket\Engine\Support\Rest;
-use WP_Rocket\Engine\Support\Subscriber;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [
 		'support_data',
-		'rest_support',
+		'support_rest',
+		'support_meta',
 		'support_subscriber',
+		'mobile_detect',
 	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
 
 	/**
 	 * Registers the services in the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function register(): void {
+		$this->getContainer()->add( 'mobile_detect', MobileDetect::class );
 
 		$this->getContainer()->add( 'support_data', Data::class )
-			->addArgument( $options );
-		$this->getContainer()->add( 'rest_support', Rest::class )
-			->addArgument( $this->getContainer()->get( 'support_data' ) )
-			->addArgument( $options );
-		$this->getContainer()->share( 'support_subscriber', Subscriber::class )
-			->addArgument( $this->getContainer()->get( 'rest_support' ) )
-			->addTag( 'common_subscriber' );
+			->addArgument( 'options' );
+		$this->getContainer()->add( 'support_rest', Rest::class )
+			->addArguments(
+				[
+					'support_data',
+					'options',
+				]
+			);
+		$this->getContainer()->add( 'support_meta', Meta::class )
+			->addArguments(
+				[
+					'mobile_detect',
+					'options',
+					'user',
+				]
+			);
+		$this->getContainer()->addShared( 'support_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'support_rest',
+					'support_meta',
+				]
+			);
 	}
 }

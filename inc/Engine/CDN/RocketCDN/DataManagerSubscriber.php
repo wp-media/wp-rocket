@@ -1,7 +1,14 @@
 <?php
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
+use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
+use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Subscriber for the RocketCDN integration in WP Rocket settings page
@@ -9,7 +16,17 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since  3.5
  */
 class DataManagerSubscriber implements Subscriber_Interface {
+	use RegexTrait;
+	use TrackingTrait;
+
 	const CRON_EVENT = 'rocketcdn_check_subscription_status_event';
+
+	/**
+	 * Transient name used to guard against tracking the same Pro purchase twice.
+	 *
+	 * @var string
+	 */
+	private const PURCHASE_TRACKED_LOCK = 'rocketcdn_purchase_tracked';
 
 	/**
 	 * RocketCDN API Client instance.
@@ -26,21 +43,70 @@ class DataManagerSubscriber implements Subscriber_Interface {
 	private $cdn_options;
 
 	/**
+	 * WP Options API instance
+	 *
+	 * @var Options
+	 */
+	private $options_api;
+
+	/**
+	 * WP Rocket Options instance
+	 *
+	 * @var Options_Data
+	 */
+	private $options;
+
+	/**
+	 * UserClient instance
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
+	 * RocketCDNQuery instance.
+	 *
+	 * @var RocketCDNQuery
+	 */
+	private $query;
+
+	/**
 	 * Constructor
 	 *
-	 * @param APIClient         $api_client  RocketCDN API Client instance.
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
+	 * @param APIClient              $api_client  RocketCDN API Client instance.
+	 * @param CDNOptionsManager      $cdn_options CDNOptionsManager instance.
+	 * @param Options_Data           $options Options instance.
+	 * @param Options                $options_api Options API instance.
+	 * @param UserClient             $user_client UserClient instance.
+	 * @param SubscriptionController $subscription_controller SubscriptionController instance.
+	 * @param RocketCDNQuery         $query RocketCDNQuery instance.
 	 */
-	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options ) {
-		$this->api_client  = $api_client;
-		$this->cdn_options = $cdn_options;
+	public function __construct( APIClient $api_client, CDNOptionsManager $cdn_options, Options_Data $options, Options $options_api, UserClient $user_client, SubscriptionController $subscription_controller, RocketCDNQuery $query ) {
+		$this->api_client              = $api_client;
+		$this->cdn_options             = $cdn_options;
+		$this->options                 = $options;
+		$this->options_api             = $options_api;
+		$this->user_client             = $user_client;
+		$this->subscription_controller = $subscription_controller;
+		$this->query                   = $query;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'admin_init'                             => 'handle_rocketcdn_checkout_parameter',
+			'current_screen'                         => 'maybe_retry_activation',
 			'wp_ajax_save_rocketcdn_token'           => 'update_user_token',
 			'wp_ajax_rocketcdn_enable'               => 'enable',
 			'wp_ajax_rocketcdn_disable'              => 'disable',
@@ -48,6 +114,18 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			'wp_ajax_rocketcdn_process_status'       => 'get_process_status',
 			'wp_ajax_rocketcdn_validate_token_cname' => 'validate_token_cname',
 			self::CRON_EVENT                         => 'maybe_disable_cdn',
+			'wp_rocket_upgrade'                      => [
+				[ 'refresh_cdn_cname', 10, 2 ],
+				[ 'refresh_subscription_details_with_update', 10, 2 ],
+				[ 'maybe_set_rocketcdn_as_cdn_type_on_upgrade', 12, 2 ],
+			],
+			'set_transient_wp_rocket_customer_data'  => 'maybe_refresh_rocketcdn_details',
+			'wp_rocket_first_install'                => [
+				[ 'auto_detect_pro_subscription', 12 ],
+			],
+			'admin_post_rocket_retry_pro_detection'  => 'handle_manual_retry_pro_detection',
+			'set_transient_rocketcdn_status'         => [ 'maybe_sync_cdn_state' ],
+			'rocket_license_expired_or_revoked'      => 'disable_rocketcdn_free_with_rocket_license_expired',
 		];
 	}
 
@@ -63,35 +141,103 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error( 'unauthorized_user' );
-
-			return;
 		}
 
 		if ( empty( $_POST['value'] ) ) {
 			delete_option( 'rocketcdn_user_token' );
 
 			wp_send_json_success( 'user_token_deleted' );
-
-			return;
 		}
 
 		if ( ! is_string( $_POST['value'] ) ) {
 			wp_send_json_error( 'invalid_token' );
-
-			return;
 		}
 
 		$token = sanitize_key( $_POST['value'] );
 
 		if ( 40 !== strlen( $token ) ) {
 			wp_send_json_error( 'invalid_token_length' );
-
-			return;
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
 
 		wp_send_json_success( 'user_token_saved' );
+	}
+
+	/**
+	 * Handles the rocketcdn_checkout URL parameter after express checkout.
+	 *
+	 * Detects the URL parameter, refreshes user data to get new RocketCDN credentials,
+	 * enables RocketCDN, and redirects to clean URL.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @return void
+	 */
+	public function handle_rocketcdn_checkout_parameter(): void {
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Checking URL parameter for redirect, not processing form data.
+		if ( ! isset( $_GET['rocketcdn_checkout'] ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		// Refresh user data to get fresh RocketCDN credentials.
+		$this->user_client->flush_cache();
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) || empty( $user_data->rocketcdn->cdn_url ) || empty( $user_data->rocketcdn->rocketcdn_website_id ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Sanitize and store values to avoid multiple sanitization.
+		$token      = sanitize_key( $user_data->rocketcdn->cdn_token );
+		$website_id = (int) $user_data->rocketcdn->rocketcdn_website_id;
+
+		// Validate token length (must be 40 characters).
+		if ( 40 !== strlen( $token ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Activate the subscription via RocketCDN API.
+		$activation_result = $this->api_client->activate_subscription( $token, $website_id );
+
+		if ( is_wp_error( $activation_result ) ) {
+			$this->remove_query_parameter_and_redirect();
+			return;
+		}
+
+		// Save token and enable CDN.
+		$this->cdn_options->save_token( $token );
+
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Reading a checkout-flow URL parameter for tracking, not processing form data.
+		$source_raw = isset( $_GET['rocketcdn_source'] ) ? sanitize_key( wp_unslash( $_GET['rocketcdn_source'] ) ) : '';
+		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
+
+		$this->activate_pro_and_track( $source );
+
+		// Schedule subscription check.
+		$subscription = $this->api_client->get_subscription_data();
+		$this->schedule_subscription_check( $subscription );
+
+		$this->remove_query_parameter_and_redirect();
+	}
+
+	/**
+	 * Removes the query parameter and redirects to clean URL.
+	 *
+	 * @since 3.20.5
+	 *
+	 * @return void
+	 */
+	private function remove_query_parameter_and_redirect(): void {
+		$redirect_url = remove_query_arg( 'rocketcdn_checkout' ) . '#page_cdn';
+		wp_safe_redirect( $redirect_url );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 	}
 
 	/**
@@ -112,16 +258,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		if ( empty( $_POST['cdn_url'] ) ) {
 			$data['message'] = 'cdn_url_empty';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		$cdn_url = filter_var( wp_unslash( $_POST['cdn_url'] ), FILTER_VALIDATE_URL );
@@ -130,11 +272,12 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'cdn_url_invalid_format';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$source_raw = isset( $_POST['source'] ) ? sanitize_key( wp_unslash( $_POST['source'] ) ) : '';
+		$source     = '' !== $source_raw ? $source_raw : 'dashboard_upgrade';
+
+		$this->activate_pro_and_track( $source );
 
 		$subscription = $this->api_client->get_subscription_data();
 
@@ -144,6 +287,42 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		$data['message'] = 'rocketcdn_enabled';
 
 		wp_send_json_success( $data );
+	}
+
+	/**
+	 * Enables RocketCDN Pro and tracks the activation exactly once per purchase.
+	 *
+	 * The checkout-redirect and iframe AJAX flows can both run for one purchase; the
+	 * short-lived lock below ensures only the first to arrive tracks it, the rest are no-ops.
+	 *
+	 * @param string $source Attribution source for the purchase (e.g. 'banner_cta', 'dashboard_upgrade').
+	 *
+	 * @return void
+	 */
+	private function activate_pro_and_track( string $source ): void {
+		if ( get_transient( self::PURCHASE_TRACKED_LOCK ) ) {
+			return;
+		}
+		set_transient( self::PURCHASE_TRACKED_LOCK, true, MINUTE_IN_SECONDS );
+
+		$this->cdn_options->enable();
+
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => Context::ROCKETCDN_PAID_TYPE,
+				'cdn_status' => 'active',
+				'trigger'    => 'pro_purchase',
+			]
+		);
+
+		$this->track_event(
+			'RocketCDN Pro Activated',
+			[
+				'source'                     => $source,
+				'preserved_free_pages_count' => $this->query->get_total_count(),
+			]
+		);
 	}
 
 	/**
@@ -164,8 +343,6 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			$data['message'] = 'unauthorized_user';
 
 			wp_send_json_error( $data );
-
-			return;
 		}
 
 		$this->cdn_options->disable();
@@ -234,14 +411,10 @@ class DataManagerSubscriber implements Subscriber_Interface {
 
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			wp_send_json_error();
-
-			return;
 		}
 
 		if ( get_option( 'rocketcdn_process' ) ) {
 			wp_send_json_success();
-
-			return;
 		}
 
 		wp_send_json_error();
@@ -269,7 +442,77 @@ class DataManagerSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		// If subscription is not running and plan type is not free, clear cache.
+		if ( $this->subscription_controller->is_free() ) {
+			/**
+			 * Fires when the rocketcdn subscription is not running.
+			 */
+			do_action( 'rocketcdn_free_plan_subscription_expired' );
+		}
+
 		$this->cdn_options->disable();
+	}
+
+	/**
+	 * Syncs cdn_state's RocketCDN tier when the cached subscription plan_type changes.
+	 *
+	 * Hooked to set_transient_rocketcdn_status, which WordPress fires whenever the
+	 * rocketcdn_status transient is (re)written (i.e. every time fresh subscription
+	 * data is fetched and cached, via SubscriptionController/APIClient). This catches
+	 * a plan_type change (e.g. a Pro subscription downgraded to Free) that happens
+	 * outside the checkout flow, without needing a dedicated cron re-check.
+	 *
+	 * Also activates the tier from "nothing" - a genuine, API-confirmed plan_type here
+	 * (status_code 200, checked below) can only come from a live successful API call,
+	 * which APIClient only fetches when a rocketcdn_user_token already exists for this
+	 * site (see APIClient::get_remote_subscription_data()), so a confirmed result always
+	 * means this site already went through a genuine per-site activation flow, never an
+	 * account-wide/incidental signal. Never touches "byocdn" though - that's an explicit
+	 * user choice this callback must not override, especially since a BYOCDN site can
+	 * still carry a leftover RocketCDN token from a past trial.
+	 *
+	 * The status_code and success checks matter: APIClient::get_remote_subscription_data()'s
+	 * own error/fallback default (network failure, non-200, empty body, decode failure, or
+	 * an explicit success:false from the API) also carries a non-empty plan_type ('free').
+	 * Some of those fallbacks - empty body, undecodable JSON, success:false - still carry a
+	 * genuine status_code of 200 because they're detected after the transport-level status
+	 * check already passed, so status_code === 200 alone can't tell a confirmed free-tier
+	 * response apart from a malformed-but-200 one; success must be checked too.
+	 *
+	 * Restricted to admin requests: a fresh fetch (and therefore this transient being
+	 * set) can also be triggered from front-end requests (e.g. FrontendSubscriber's CDN
+	 * cname/zone resolution), and this callback writes an option + can trigger a cache
+	 * clear as a side effect - not something a front-end page view should ever do.
+	 *
+	 * @param mixed $value Transient value.
+	 * @return mixed
+	 */
+	public function maybe_sync_cdn_state( $value ) {
+		if ( ! is_admin() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return $value;
+		}
+
+		if ( ! is_array( $value ) || empty( $value['plan_type'] ) || 200 !== ( $value['status_code'] ?? null ) || empty( $value['success'] ) ) {
+			return $value;
+		}
+
+		// Read the option directly rather than through $this->options: Options_Data is a
+		// per-request snapshot taken when the container built it, so it won't reflect a
+		// write CDNOptionsManager::set_cdn_state() made through its own separate instance.
+		$settings      = $this->options_api->get( 'settings', [] );
+		$current_state = (string) ( $settings['cdn_state'] ?? Context::CDN_STATE_NOTHING );
+
+		if ( Context::BYOCDN_TYPE === $current_state ) {
+			return $value;
+		}
+
+		$new_state = 'paid' === $value['plan_type'] ? Context::ROCKETCDN_PAID_TYPE : Context::ROCKETCDN_FREE_TYPE;
+
+		if ( $new_state !== $current_state ) {
+			$this->cdn_options->set_cdn_state( $new_state );
+		}
+
+		return $value;
 	}
 
 	/**
@@ -285,13 +528,11 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			$data['message'] = 'unauthorized_user';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		if ( empty( $_POST['cdn_url'] ) || empty( $_POST['cdn_token'] ) ) {
 			$data['message'] = 'cdn_values_empty';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		$token   = sanitize_key( $_POST['cdn_token'] );
@@ -300,26 +541,22 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! $cdn_url ) {
 			$data['message'] = 'cdn_url_invalid_format';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		if ( 40 !== strlen( $token ) ) {
 			$data['message'] = 'invalid_token_length';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		$current_token = get_option( 'rocketcdn_user_token' );
-		$current_cname = $this->cdn_options->get_cdn_cnames();
 
 		if ( ! empty( $current_token ) ) {
 			$data['message'] = 'token_already_set';
 			wp_send_json_error( $data );
-			return;
 		}
 
 		update_option( 'rocketcdn_user_token', $token );
-		$this->cdn_options->enable( esc_url_raw( $cdn_url ) );
+		$this->cdn_options->enable();
 
 		$data['message'] = 'token_updated_successfully';
 		wp_send_json_success( $data );
@@ -339,5 +576,219 @@ class DataManagerSubscriber implements Subscriber_Interface {
 		if ( ! wp_next_scheduled( self::CRON_EVENT ) ) {
 			wp_schedule_single_event( $timestamp, self::CRON_EVENT );
 		}
+	}
+
+	/**
+	 * Retries RocketCDN activation when subscription is inactive but has a cdn_url.
+	 *
+	 * This handles the case where site activation failed after checkout.
+	 * When is_active is false but cdn_url is not empty, it means the subscription
+	 * exists but this website isn't activated. We retry the activation automatically.
+	 *
+	 * @return void
+	 */
+	public function maybe_retry_activation(): void {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$screen = get_current_screen();
+		if ( ! $screen || 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		if ( $this->subscription_controller->is_subscription_creation_loading() ) {
+			return;
+		}
+
+		$token = get_option( 'rocketcdn_user_token' );
+
+		// If token is not saved locally, try to get it from user endpoint.
+		if ( empty( $token ) ) {
+			$user_data = $this->user_client->get_user_data();
+
+			if ( false === $user_data || empty( $user_data->rocketcdn->cdn_token ) ) {
+				return;
+			}
+
+			$token = sanitize_key( $user_data->rocketcdn->cdn_token );
+		}
+
+		// Validate token length (should be exactly 40 chars).
+		if ( 40 !== strlen( (string) $token ) ) {
+			return;
+		}
+
+		// Check cached subscription data first to avoid unnecessary API calls.
+		$subscription_data = $this->api_client->get_subscription_data();
+
+		// Only retry when: is_active is false AND cdn_url is not empty.
+		if ( $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		if ( empty( $subscription_data['website_id'] ) ) {
+			return;
+		}
+
+		// Retry the activation.
+		$activation_result = $this->api_client->activate_subscription( $token, $subscription_data['website_id'] );
+
+		if ( is_wp_error( $activation_result ) ) {
+			return;
+		}
+
+		// Refresh subscription data after successful activation.
+		delete_transient( 'rocketcdn_status' );
+		$subscription = $this->api_client->get_subscription_data();
+
+		// Guard: only enable CDN and schedule check when subscription is active with a valid CDN URL.
+		if ( empty( $subscription['is_active'] ) || empty( $subscription['cdn_url'] ) ) {
+			return;
+		}
+
+		// Save token if not already saved (handles case where token came from user endpoint).
+		$saved_token = get_option( 'rocketcdn_user_token' );
+		if ( empty( $saved_token ) ) {
+			$this->cdn_options->save_token( $token );
+		}
+
+		// Enable CDN and schedule check.
+		$this->cdn_options->enable();
+		$this->schedule_subscription_check( $subscription );
+	}
+
+	/**
+	 * Upgrade callback.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function refresh_cdn_cname( $new_version, $old_version ): void {
+		if ( version_compare( $old_version, '3.17.3', '>=' ) ) {
+			return;
+		}
+
+		$cdn_cnames = $this->options->get( 'cdn_cnames', [] );
+		if ( empty( $cdn_cnames ) ) {
+			return;
+		}
+
+		$subscription_data = $this->api_client->get_subscription_data();
+		if ( ! $subscription_data['is_active'] || empty( $subscription_data['cdn_url'] ) ) {
+			return;
+		}
+
+		$cdn_matches = $this->find( 'https:\/\/(?<cdn_id>[a-zA-Z0-9]{8})\.rocketcdn\.me', $cdn_cnames[0] );
+		if ( empty( $cdn_matches ) || empty( $cdn_matches[0]['cdn_id'] ) ) {
+			return;
+		}
+
+		$this->options_api->set( 'rocketcdn_old_url', $cdn_cnames[0] );
+		$cdn_cnames[0] = str_replace( $cdn_matches[0]['cdn_id'], $cdn_matches[0]['cdn_id'] . '.delivery', $cdn_cnames[0] );
+		$this->options->set( 'cdn_cnames', $cdn_cnames );
+
+		$this->options_api->set( 'settings', $this->options->get_options() );
+	}
+
+	/**
+	 * Refresh subscription details with update to v3.22.0.2.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function refresh_subscription_details_with_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.22.0.2', '>=' ) ) {
+			return;
+		}
+
+		$this->user_client->flush_cache();// Flush customer details cache to set the transient and then refresh rocketcdn subscription details.
+		$this->cdn_options->flush_subscription_cache();
+	}
+
+	/**
+	 * Save the token with any change in rocket customer details in case it's not saved.
+	 *
+	 * @param object $user_data Rocket customer data.
+	 * @return void
+	 */
+	public function maybe_refresh_rocketcdn_details( $user_data ) {
+		if ( empty( $user_data->rocketcdn->cdn_token ) ) {
+			return;
+		}
+
+		if ( ! $this->cdn_options->has_token() ) {
+			$token = sanitize_key( (string) $user_data->rocketcdn->cdn_token );
+			if ( 40 !== strlen( $token ) ) {
+				return;
+			}
+			$this->cdn_options->save_token( $token );
+		}
+
+		$this->cdn_options->flush_subscription_cache();
+	}
+
+	/**
+	 * Sets cdn_type to rocketcdn when upgrading from a version affected by the grace period bug.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function maybe_set_rocketcdn_as_cdn_type_on_upgrade( string $new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.22.0.2', '>=' ) ) {
+			return;
+		}
+
+		if ( ! $this->subscription_controller->is_in_grace_period() ) {
+			return;
+		}
+
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = Context::ROCKETCDN_TYPE;
+		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Run the fresh-install Pro subscription detection.
+	 *
+	 * @return void
+	 */
+	public function auto_detect_pro_subscription() {
+		$this->subscription_controller->auto_detect_pro_subscription();
+	}
+
+	/**
+	 * Handles the manual retry of the fresh-install Pro subscription detection from admin notice.
+	 *
+	 * @return void
+	 */
+	public function handle_manual_retry_pro_detection(): void {
+		$this->subscription_controller->handle_manual_retry_pro_detection();
+	}
+
+	/**
+	 * Disables RocketCDN Free when the WP Rocket licence expires or is revoked.
+	 *
+	 * Only resets the state when RocketCDN Free is the state actually applied - is_free()
+	 * alone reflects the RocketCDN subscription's plan type, not which CDN driver is
+	 * currently active, so relying on it alone would also reset an unrelated BYOCDN (or
+	 * paid) configuration for an account that happens to have a dormant free subscription.
+	 *
+	 * @return void
+	 */
+	public function disable_rocketcdn_free_with_rocket_license_expired(): void {
+		$settings = $this->options_api->get( 'settings', [] );
+
+		if ( Context::ROCKETCDN_FREE_TYPE !== ( $settings['cdn_state'] ?? '' ) ) {
+			return;
+		}
+
+		$this->cdn_options->disable();
 	}
 }

@@ -3,8 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::enable
- * @uses   \WP_Rocket\Admin\Options_Data::set
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::enable
  * @uses   \WP_Rocket\Admin\Options::set
  * @uses   \WP_Rocket\Admin\Options::get_option_name
  * @uses   ::rocket_clean_domain

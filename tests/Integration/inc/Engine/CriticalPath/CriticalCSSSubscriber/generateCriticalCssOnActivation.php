@@ -2,10 +2,11 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
 use WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber;
+use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::generate_critical_css_on_activation
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_path
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
@@ -17,6 +18,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group  vfs
  */
 class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
+	use CriticalCssLoopbackTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/generateCriticalCssOnActivation.php';
 	protected static $transients = [
 		'rocket_critical_css_generation_process_running' => null,
@@ -74,6 +77,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 			$this->filesystem->delete( 'wp-content/cache/critical-css/1/critical.css' );
 		}
 
+		$this->config['http'] = $this->critical_css_loopback_fixture();
+
 		// Run it.
 		do_action( 'update_option_wp_rocket_settings', $values['old'], $values['new'] );
 
@@ -106,6 +111,8 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 
 		$this->assertFalse( get_transient( 'rocket_critical_css_generation_process_running' ) );
 
+		$this->config['http'] = $this->critical_css_loopback_fixture();
+
 		// Run it.
 		$this->subscriber->generate_critical_css_on_activation( $values['old'], $values['new'] );
 
@@ -114,7 +121,7 @@ class Test_GenerateCriticalCssOnActivation extends FilesystemTestCase {
 		if ( $should_generate ) {
 			$this->assertEquals( 1, $this->did_filter['do_rocket_critical_css_generation'] );
 			$value = get_transient( 'rocket_critical_css_generation_process_running' );
-			$this->assertSame( [ 'total', 'items' ], array_keys( $value ) );
+			$this->assertSame( [ 'total', 'items' ], array_keys( $value ) ); // @phpstan-ignore-line
 		} else {
 			$this->assertEquals( 0, $this->did_filter['do_rocket_critical_css_generation'] );
 			$this->assertFalse( get_transient( 'rocket_critical_css_generation_process_running' ) );

@@ -86,7 +86,7 @@ class Subscriber implements Subscriber_Interface {
 				'rocket-browser-checker',
 				'',
 				[],
-				'',
+				rocket_get_constant( WP_ROCKET_VERSION, '' ),
 				true
 			);
 			wp_enqueue_script( 'rocket-browser-checker' );
@@ -106,7 +106,7 @@ class Subscriber implements Subscriber_Interface {
 			[
 				'rocket-browser-checker',
 			],
-			'',
+			rocket_get_constant( WP_ROCKET_VERSION, '' ),
 			true
 		);
 		wp_enqueue_script( 'rocket-preload-links' );
@@ -128,14 +128,14 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
-	 * @return string[] Preload Links script configuration parameters.
+	 * @return array Preload Links script configuration parameters.
 	 */
 	private function get_preload_links_config() {
 		$use_trailing_slash = $this->use_trailing_slash();
 		$images_ext         = 'jpg|jpeg|gif|png|tiff|bmp|webp|avif|pdf|doc|docx|xls|xlsx|php';
 
 		$config = [
-			'excludeUris'       => $this->get_uris_to_exclude( $use_trailing_slash ),
+			'excludeUris'       => $this->get_uris_to_exclude(),
 			'usesTrailingSlash' => $use_trailing_slash,
 			'imageExt'          => $images_ext,
 			'fileExt'           => $images_ext . '|html|htm',
@@ -152,13 +152,9 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @since 3.7
 		 *
-		 * @param string[] $config Preload Links script configuration parameters.
+		 * @param array $config Preload Links script configuration parameters.
 		 */
-		$filtered_config = apply_filters( 'rocket_preload_links_config', $config );
-
-		if ( ! is_array( $filtered_config ) ) {
-			return $config;
-		}
+		$filtered_config = wpm_apply_filters_typed( 'array', 'rocket_preload_links_config', $config );
 
 		return array_merge( $config, $filtered_config );
 	}
@@ -168,14 +164,11 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * @since 3.7
 	 *
-	 * @param bool $use_trailing_slash When true, uses trailing slash.
-	 *
 	 * @return string
 	 */
-	private function get_uris_to_exclude( $use_trailing_slash ) {
-		$site_url = site_url();
-		$uris     = get_rocket_cache_reject_uri( false, false );
-		$uris     = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
+	private function get_uris_to_exclude() {
+		$uris = get_rocket_cache_reject_uri( false, false );
+		$uris = str_replace( [ '/(.*)|', '/(.*)/|' ], '/|', $uris );
 
 		$default = [
 			'/refer/',
@@ -194,11 +187,7 @@ class Subscriber implements Subscriber_Interface {
 		 * @param string[] $excluded Array of excluded patterns.
 		 * @param string[] $default  Array of default excluded patterns.
 		 */
-		$excluded = apply_filters( 'rocket_preload_links_exclusions', $excluded, $default );
-
-		if ( ! is_array( $excluded ) ) {
-			$excluded = (array) $excluded;
-		}
+		$excluded = wpm_apply_filters_typed( 'array', 'rocket_preload_links_exclusions', $excluded, $default );
 
 		$excluded = array_filter( $excluded );
 

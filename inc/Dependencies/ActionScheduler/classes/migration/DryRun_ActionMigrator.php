@@ -21,7 +21,7 @@ class DryRun_ActionMigrator extends ActionMigrator {
 	 * @return int
 	 */
 	public function migrate( $source_action_id ) {
-		do_action( 'action_scheduler/migrate_action_dry_run', $source_action_id );
+		do_action( 'action_scheduler/migrate_action_dry_run', $source_action_id ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 
 		return 0;
 	}

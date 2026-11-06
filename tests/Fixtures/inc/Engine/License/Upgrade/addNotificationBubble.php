@@ -61,6 +61,24 @@ return [
 		'title'    => 'WP Rocket',
 		'expected' => 'WP Rocket',
 	],
+	'testShouldReturnDefaultWhenUserIsTrialCustomer' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'       => strtotime( 'last year' ),
+			'is_trial_customer'  => true,
+			'upgrades' => [
+				(object) [
+					'name' => 'Growth',
+				],
+			],
+		],
+		'title'    => 'WP Rocket',
+		'expected' => 'WP Rocket',
+	],
 	'testShouldReturnBubbleWhenPromoNotSeen' => [
 		'config'   => [
 			'licence_account'    => 1,
@@ -69,9 +87,45 @@ return [
 			'promo_active'       => true,
 			'transient'          => false,
 			'date_created'      => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'title'    => 'WP Rocket',
 		'expected' => 'WP Rocket <span class="rocket-promo-bubble">!</span>',
+	],
+	'testShouldReturnDefaultWhenUserIsRevoked' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'is_revoked' => true,
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'      => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
+		],
+		'title'    => 'WP Rocket',
+		'expected' => 'WP Rocket',
+	],
+	'testShouldReturnBubbleWhenNoUpgrades' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'transient'          => false,
+			'date_created'      => strtotime( 'last year' ),
+			'upgrades' => [],
+		],
+		'title'    => 'WP Rocket',
+		'expected' => 'WP Rocket',
 	],
 	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
 		'config'   => [

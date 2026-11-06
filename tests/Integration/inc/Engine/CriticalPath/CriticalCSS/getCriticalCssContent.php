@@ -3,19 +3,19 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 
 use WP_Rocket\Tests\Integration\ContentTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
- * @uses   ::rocket_get_constant
- * @uses   \WP_Rocket\Admin\Options_Data::get
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses ::rocket_get_constant
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group CriticalCSS
  */
 class Test_GetCriticalCssContent extends FilesystemTestCase {
-	use ContentTrait, DBTrait;
+	use ContentTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
@@ -30,7 +30,6 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
-		self::installFresh();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
@@ -43,12 +42,6 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		);
 	}
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
 
@@ -58,14 +51,32 @@ class Test_GetCriticalCssContent extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
+
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
 	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

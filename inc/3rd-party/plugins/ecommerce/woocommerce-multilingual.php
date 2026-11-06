@@ -8,9 +8,7 @@ defined( 'ABSPATH' ) || exit;
  * @return bool
  */
 function rocket_wcml_has_requirements() {
-	return defined( 'ICL_SITEPRESS_VERSION' )
-		&& version_compare( ICL_SITEPRESS_VERSION, '4.4.11', '>=' )
-		&& defined( 'WCML_VERSION' )
+	return defined( 'WCML_VERSION' )
 		&& version_compare( WCML_VERSION, '4.12.6', '>=' );
 }
 
@@ -91,9 +89,9 @@ function rocket_wcml_reset_settings( $option, $old_data, $data ) {
 		'default_currencies',
 	];
 
-	$check_key = function( $result, $key ) use ( $old_data, $data ) {
-		$has_value_changed = function( $key ) use ( $old_data, $data ) {
-			$get_value = function( $key, $data ) {
+	$check_key = function ( $result, $key ) use ( $old_data, $data ) {
+		$has_value_changed = function ( $key ) use ( $old_data, $data ) {
+			$get_value = function ( $key, $data ) {
 				return isset( $data[ $key ] ) ? $data[ $key ] : null;
 			};
 

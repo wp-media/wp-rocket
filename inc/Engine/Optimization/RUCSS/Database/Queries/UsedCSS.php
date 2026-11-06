@@ -2,12 +2,14 @@
 
 namespace WP_Rocket\Engine\Optimization\RUCSS\Database\Queries;
 
-use WP_Rocket\Dependencies\Database\Query;
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSSRow;
+use WP_Rocket\Engine\Optimization\RUCSS\Database\Schemas\UsedCSS as UsedCSSSchema;
 
 /**
  * RUCSS UsedCSS Query.
  */
-class UsedCSS extends Query {
+class UsedCSS extends AbstractQuery {
 
 	/**
 	 * Name of the database table to query.
@@ -32,7 +34,7 @@ class UsedCSS extends Query {
 	 *
 	 * @var   string
 	 */
-	protected $table_schema = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Schemas\\UsedCSS';
+	protected $table_schema = UsedCSSSchema::class;
 
 	/** Item ******************************************************************/
 
@@ -65,212 +67,47 @@ class UsedCSS extends Query {
 	 *
 	 * @var   mixed
 	 */
-	protected $item_shape = '\\WP_Rocket\\Engine\\Optimization\\RUCSS\\Database\\Row\\UsedCSS';
+	protected $item_shape = UsedCSSRow::class;
+
+	/** Cache *****************************************************************/
 
 	/**
-	 * Get pending jobs.
+	 * Group to cache queries and queried items in.
 	 *
-	 * @param int $count Number of rows.
-	 *
-	 * @return array
+	 * @var   string
 	 */
-	public function get_pending_jobs( int $count = 100 ) {
-		$inprogress_count = $this->query(
-			[
-				'count'  => true,
-				'status' => 'in-progress',
-			]
-		);
-
-		if ( $inprogress_count >= $count ) {
-			return [];
-		}
-
-		return $this->query(
-			[
-				'number'         => ( $count - $inprogress_count ),
-				'status'         => 'pending',
-				'fields'         => [
-					'id',
-					'url',
-				],
-				'job_id__not_in' => [
-					'not_in' => '',
-				],
-				'orderby'        => 'modified',
-				'order'          => 'asc',
-			]
-		);
-	}
-
-	/**
-	 * Increment retries number and change status back to pending.
-	 *
-	 * @param int $id DB row ID.
-	 * @param int $retries Current number of retries.
-	 *
-	 * @return bool
-	 */
-	public function increment_retries( $id, $retries = 0 ) {
-		$update_data = [
-			'retries' => $retries + 1,
-			'status'  => 'pending',
-		];
-		return $this->update_item( $id, $update_data );
-	}
-
-	/**
-	 * Update Job ID.
-	 *
-	 * @param int $id DB row ID.
-	 * @param int $new_job_id new job id.
-	 *
-	 * @return bool
-	 */
-	public function update_job_id( $id, $new_job_id ) {
-		$update_data['job_id'] = $new_job_id;
-		return $this->update_item( $id, $update_data );
-	}
-
-	/**
-	 * Create new DB row for specific url.
-	 *
-	 * @param string $url Current page url.
-	 * @param string $job_id API job_id.
-	 * @param string $queue_name API Queue name.
-	 * @param bool   $is_mobile if the request is for mobile page.
-	 *
-	 * @return bool
-	 */
-	public function create_new_job( string $url, string $job_id, string $queue_name, bool $is_mobile = false ) {
-		$item = [
-			'url'           => untrailingslashit( $url ),
-			'is_mobile'     => $is_mobile,
-			'job_id'        => $job_id,
-			'queue_name'    => $queue_name,
-			'status'        => 'pending',
-			'retries'       => 0,
-			'last_accessed' => current_time( 'mysql', true ),
-		];
-		return $this->add_item( $item );
-	}
-
-	/**
-	 * Change the status to be in-progress.
-	 *
-	 * @param int $id DB row ID.
-	 *
-	 * @return bool
-	 */
-	public function make_status_inprogress( int $id ) {
-		return $this->update_item(
-			$id,
-			[
-				'status' => 'in-progress',
-			]
-		);
-	}
-
-	/**
-	 * Change the status to be pending.
-	 *
-	 * @param int    $id DB row ID.
-	 * @param string $job_id API job_id.
-	 * @param string $queue_name API Queue name.
-	 *
-	 * @return bool
-	 */
-	public function make_status_pending( int $id, string $job_id, string $queue_name ) {
-		return $this->update_item(
-			$id,
-			[
-				'job_id'     => $job_id,
-				'queue_name' => $queue_name,
-				'status'     => 'pending',
-			]
-		);
-	}
-
-	/**
-	 * Change the status to be failed.
-	 *
-	 * @param int    $id DB row ID.
-	 * @param string $error_code error code.
-	 * @param string $error_message error message.
-	 *
-	 * @return bool
-	 */
-	public function make_status_failed( int $id, string $error_code, string $error_message ) {
-		return $this->update_item(
-			$id,
-			[
-				'status'        => 'failed',
-				'error_code'    => $error_code,
-				'error_message' => $error_message,
-			]
-		);
-	}
+	protected $cache_group = 'wpr_used_css';
 
 	/**
 	 * Complete a job.
 	 *
-	 * @param int    $id DB row ID.
-	 * @param string $hash Hash.
+	 * @param string  $url Url from DB row.
+	 * @param boolean $is_mobile Is mobile from DB row.
+	 * @param string  $hash Hash.
 	 *
 	 * @return bool
 	 */
-	public function make_status_completed( int $id, string $hash = '' ) {
-		return $this->update_item(
-			$id,
-			[
-				'hash'   => $hash,
-				'status' => 'completed',
-			]
-		);
-	}
+	public function make_status_completed( string $url, bool $is_mobile, string $hash = '' ) {
+		// Get the database interface.
+		$db = $this->get_db();
 
-	/**
-	 * Get Used CSS for specific url.
-	 *
-	 * @param string $url Page Url.
-	 * @param bool   $is_mobile if the request is for mobile page.
-	 *
-	 * @return false|mixed
-	 */
-	public function get_row( string $url, bool $is_mobile = false ) {
-		$query = $this->query(
-			[
-				'url'       => untrailingslashit( $url ),
-				'is_mobile' => $is_mobile,
-			]
-		);
-
-		if ( empty( $query[0] ) ) {
+		// Bail if no database interface is available.
+		if ( ! $db ) {
 			return false;
 		}
 
-		return $query[0];
-	}
+		$old = $this->get_row( $url, $is_mobile );
 
-	/**
-	 * Get all rows with the same url (desktop and mobile versions).
-	 *
-	 * @param string $url Page url.
-	 *
-	 * @return array|false
-	 */
-	public function get_rows_by_url( string $url ) {
-		$query = $this->query(
-			[
-				'url' => untrailingslashit( $url ),
-			]
-		);
-
-		if ( empty( $query ) ) {
+		if ( ! $old ) {
 			return false;
 		}
 
-		return $query;
+		$data = [
+			'hash'   => $hash,
+			'status' => 'completed',
+		];
+
+		return $this->update_item( $old->id, $data );
 	}
 
 	/**
@@ -288,57 +125,4 @@ class UsedCSS extends Query {
 			]
 		);
 	}
-
-	/**
-	 * Update UsedCSS Row last_accessed date to current date.
-	 *
-	 * @param int $id Used CSS id.
-	 *
-	 * @return bool
-	 */
-	public function update_last_accessed( int $id ): bool {
-		return (bool) $this->update_item(
-			$id,
-			[
-				'last_accessed' => current_time( 'mysql', true ),
-			]
-		);
-	}
-
-	/**
-	 * Delete DB row by url.
-	 *
-	 * @param string $url Page url to be deleted.
-	 *
-	 * @return bool
-	 */
-	public function delete_by_url( string $url ) {
-		$items = $this->get_rows_by_url( $url );
-
-		if ( ! $items ) {
-			return false;
-		}
-
-		$deleted = true;
-		foreach ( $items as $item ) {
-			$deleted = $deleted && $this->delete_item( $item->id );
-		}
-
-		return $deleted;
-	}
-
-	/**
-	 * Get the count of not completed rows.
-	 *
-	 * @return int
-	 */
-	public function get_not_completed_count() {
-		return $this->query(
-			[
-				'count'      => true,
-				'status__in' => [ 'pending', 'in-progress' ],
-			]
-		);
-	}
-
 }

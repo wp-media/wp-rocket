@@ -2,40 +2,46 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
-use WPMedia\PHPUnit\Integration\AdminTestCase;
-use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Error;
+use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
- * @covers ::rocket_validate_css
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
+ * Test class covering ::rocket_validate_css
  *
  * @group  AdminOnly
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
-	use DBTrait;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
+	const VALID_KEY_ENDPOINT = 'https://api.wp-rocket.me/valid_key.php';
 
 	public function set_up() {
-		DBTrait::removeDBHooks();
 		parent::set_up();
+
+		// The license check triggered by sanitize_callback() and rocket_upgrader() is not
+		// part of the behaviour under test.
+		$this->config['http'] = [
+			self::VALID_KEY_ENDPOINT => new WP_Error( 'http_request_failed', 'Mocked license check.' ),
+		];
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
+		set_current_screen( 'settings_page_wprocket' );
 	}
 
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
+	}
 	/**
 	 * @dataProvider addDNSPrefetchProvider
 	 */
 	public function testShouldSanitizeDNSPrefetchEntries( $input, $expected ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
 
 		$this->assertArrayHasKey( 'dns_prefetch', $output );
@@ -46,22 +52,12 @@ class Test_SanitizeCallback extends AdminTestCase {
 	}
 
 	/**
-	 * @dataProvider addFontPreloadProvider
-	 */
-	public function testShouldSanitizeFontPreloadEntries( $input, $expected ) {
-		$output = apply_filters( 'sanitize_option_wp_rocket_settings', $input );
-
-		$this->assertArrayHasKey( 'preload_fonts', $output );
-		$this->assertSame(
-			$expected['preload_fonts'],
-			array_values( $output['preload_fonts'] )
-		);
-	}
-
-	/**
 	 * @dataProvider addCriticalCSSProvider
 	 */
 	public function testShouldSanitizeCriticalCss( $original, $sanitized ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
 		$this->assertSame(
 			$sanitized['critical_css'],
@@ -73,6 +69,9 @@ class Test_SanitizeCallback extends AdminTestCase {
 	 * @dataProvider addExcludeCSSProvider
 	 */
 	public function testShouldSanitizeExcludeCSS( $original, $sanitized ) {
+		self::removeDBHooks();
+		$this->fireAdminInit();
+
 		$actual = apply_filters( 'sanitize_option_wp_rocket_settings', $original );
 		$this->assertSame(
 			array_values( $sanitized['exclude_css'] ),

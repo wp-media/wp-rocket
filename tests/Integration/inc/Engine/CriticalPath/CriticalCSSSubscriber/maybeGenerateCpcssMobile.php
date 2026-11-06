@@ -2,12 +2,13 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscriber;
 
+use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::maybe_generate_cpcss_mobile
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
  * @uses   ::rocket_get_constant
@@ -16,6 +17,8 @@ use Brain\Monkey\Filters;
  * @group  CriticalPath
  */
 class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
+	use CriticalCssLoopbackTrait;
+
 	protected      $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/maybeGenerateCpcssMobile.php';
 	private        $subscriber;
 	private static $container;
@@ -48,6 +51,8 @@ class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )->withAnyArgs()->once();
 		}
 		$this->assertTrue( $this->filesystem->is_dir( $this->config['vfs_dir'] . '1/' ) );
+
+		$this->config['http'] = $this->critical_css_loopback_fixture();
 
 		$this->subscriber->maybe_generate_cpcss_mobile( $config['old_value'], $config['value'] );
 

@@ -6,13 +6,17 @@ use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class TestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
-	use FilterTrait;
+	use IsolateHookTrait;
 	use DBTrait;
+
+	private $request_time_float;
 
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
@@ -22,12 +26,10 @@ abstract class TestCase extends BaseTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -35,17 +37,15 @@ abstract class TestCase extends BaseTestCase {
 				self::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		self::uninstallAll();
 	}
 
 	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
-
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {
@@ -55,10 +55,15 @@ abstract class TestCase extends BaseTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
 	public function set_up() {
 		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
 
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
@@ -69,9 +74,13 @@ abstract class TestCase extends BaseTestCase {
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
+
+		$this->request_time_float = $_SERVER['REQUEST_TIME_FLOAT'];
 	}
 
 	public function tear_down() {
+		$_SERVER['REQUEST_TIME_FLOAT'] = $this->request_time_float;
+
 		$this->resetStubProperties();
 
 		if ( static::$use_settings_trait ) {
@@ -79,6 +88,9 @@ abstract class TestCase extends BaseTestCase {
 		}
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function configTestData() {

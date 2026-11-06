@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Admin\ActionSchedulerSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\ActionSchedulerSubscriber::hide_pastdue_status_filter
+ * Test class covering \WP_Rocket\Engine\Admin\ActionSchedulerSubscriber::hide_pastdue_status_filter
  * @group  Beacon
  */
 class Test_HidePastdueStatusFilter extends TestCase {

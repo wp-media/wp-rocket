@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::truncate_used_css_table
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::truncate_used_css_table
  *
  * @group  RUCSS
  */
@@ -34,7 +34,7 @@ class Test_TruncateUsedCssTable extends TestCase{
 	 */
 	public function testShouldDoExpected( $input ){
 		if ( $this->isPHP8() ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return;
 		}
 
@@ -59,7 +59,7 @@ class Test_TruncateUsedCssTable extends TestCase{
 	public function isPHP8() {
 		$version = explode('.', PHP_VERSION);
 		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return true;
 		}
 

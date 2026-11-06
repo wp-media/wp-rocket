@@ -1,48 +1,62 @@
 <?php
 
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Common\Queue\QueueInterface;
+use WP_Rocket\Engine\Common\Clock\WPRClock;
+use WP_Rocket\Engine\Common\Context\ContextInterface;
+use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\Filesystem;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Query;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
-use WP_Rocket\Engine\Optimization\RUCSS\Frontend\APIClient;
-use WP_Rocket\Logger\Logger;
+use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
-use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\DynamicLists\DataManager;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_Treeshake extends TestCase {
 	protected $options;
 	protected $usedCssQuery;
-	protected $api;
 	protected $queue;
-	protected $usedCss;
 	protected $data_manager;
 	protected $filesystem;
+	protected $context;
+	protected $usedCss;
+	protected $manager;
+
+	/**
+	 * @var StrategyFactory
+	 */
+	protected $strategy_factory;
+
+	/**
+	 * @var WPRClock
+	 */
+	protected $wpr_clock;
 
 	protected function setUp(): void
 	{
 		parent::setUp();
 		$this->options = Mockery::mock(Options_Data::class);
 		$this->usedCssQuery = $this->createMock(UsedCSS_Query::class);
-		$this->api = Mockery::mock(APIClient::class);
-		$this->queue = Mockery::mock(QueueInterface::class);
 		$this->data_manager = Mockery::mock( DataManager::class );
 		$this->filesystem = Mockery::mock( Filesystem::class );
+		$this->context = Mockery::mock(ContextInterface::class);
+		$this->manager = Mockery::mock(Manager::class);
+
 		$this->usedCss = Mockery::mock(
 			UsedCSS::class . '[is_allowed,update_last_accessed]',
 			[
-				$this->options, $this->usedCssQuery,
-				$this->api,
-				$this->queue,
+				$this->options,
+				$this->usedCssQuery,
 				$this->data_manager,
-				$this->filesystem
+				$this->filesystem,
+				$this->context,
+				$this->manager
 			]
 		);
 	}
@@ -56,8 +70,12 @@ class Test_Treeshake extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnAsExpected($config, $expected) {
-		Logger::disable_debug();
+	public function testShouldReturnAsExpected( $config, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		$wp = new WP();
 		$GLOBALS['wp'] = $wp;
 
@@ -66,7 +84,7 @@ class Test_Treeshake extends TestCase {
 			->zeroOrMoreTimes()
 			->andReturn( $config['home_url'] );
 
-		$this->usedCss->expects()->is_allowed()->andReturn($config['is_allowed']);
+		$this->context->shouldReceive( 'is_allowed' )->andReturn($config['is_allowed']);
 
 		$this->configureIsMobile($config);
 
@@ -89,7 +107,16 @@ class Test_Treeshake extends TestCase {
 			->once()
 			->andReturn( $dynamic_lists );
 
-		$this->assertEquals($this->format_the_html($expected), $this->format_the_html($this->usedCss->treeshake($config['html'])));
+		$optimized_html = $this->usedCss->treeshake($config['html']);
+		if ( is_string( $expected ) ) {
+			$this->assertEquals(
+				$this->format_the_html($expected),
+				$this->format_the_html( $optimized_html )
+			);
+		} else if ( is_array( $expected ) ) {
+			$this->assertSame( $expected['used_css'], $this->usedCss->get_used_css_content() );
+		}
+
 	}
 
 	protected function configureIsMobile($config) {
@@ -132,13 +159,15 @@ class Test_Treeshake extends TestCase {
 			$usedCssRow = null;
 		}
 
-		$this->usedCssQuery->expects(self::once())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
+		$this->usedCssQuery->expects(self::atLeastOnce())->method('get_row')->with($config['home_url'], $config['is_mobile']['is_mobile'])->willReturn($usedCssRow);
 
 		if ( ! empty( $config['get_existing_used_css']['used_css']->hash ) ) {
+
 			$this->filesystem->shouldReceive( 'get_used_css' )
 				->atMost()
 				->once()
 				->with( $config['get_existing_used_css']['used_css']->hash )
+				/* @phpstan-ignore-next-line */
 				->andReturn( $config['get_existing_used_css']['used_css']->css );
 		}
 	}
@@ -148,17 +177,8 @@ class Test_Treeshake extends TestCase {
 			return;
 		}
 
-		$this->options->expects()->get('remove_unused_css_safelist', [])->andReturn($config['create_new_job']['safelist']);
-
-		Brain\Monkey\Filters\expectApplied('rocket_rucss_safelist')->with($config['create_new_job']['safelist'])->andReturn($config['create_new_job']['safelist']);
-
-		$this->api->expects()->add_to_queue($config['home_url'], $config['create_new_job']['config'])->andReturn
-		($config['create_new_job']['response']);
-		if(! key_exists('is_success_response', $config['create_new_job']) || ! $config['create_new_job']['is_success_response']){
-			return;
-		}
-
-		$this->usedCssQuery->expects(self::once())->method('create_new_job')->with($config['home_url'], $config['create_new_job']['response']['contents']['jobId'], $config['create_new_job']['response']['contents']['queueName'], $config['is_mobile']['is_mobile'] );
+		$this->manager->shouldReceive( 'add_url_to_the_queue' )
+                    ->withArgs([$config['home_url'], $config['is_mobile']['is_mobile']]);
 	}
 
 	protected function configValidUsedCss($config) {

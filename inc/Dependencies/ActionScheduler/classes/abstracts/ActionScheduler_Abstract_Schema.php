@@ -13,19 +13,25 @@
 abstract class ActionScheduler_Abstract_Schema {
 
 	/**
-	 * @var int Increment this value in derived class to trigger a schema update.
+	 * Increment this value in derived class to trigger a schema update.
+	 *
+	 * @var int
 	 */
 	protected $schema_version = 1;
 
 	/**
-	 * @var string Schema version stored in database.
+	 * Schema version stored in database.
+	 *
+	 * @var string
 	 */
 	protected $db_version;
 
 	/**
-	 * @var array Names of tables that will be registered by this class.
+	 * Names of tables that will be registered by this class.
+	 *
+	 * @var array
 	 */
-	protected $tables = [];
+	protected $tables = array();
 
 	/**
 	 * Can optionally be used by concrete classes to carry out additional initialization work
@@ -43,14 +49,14 @@ abstract class ActionScheduler_Abstract_Schema {
 	public function register_tables( $force_update = false ) {
 		global $wpdb;
 
-		// make WP aware of our tables
+		// make WP aware of our tables.
 		foreach ( $this->tables as $table ) {
 			$wpdb->tables[] = $table;
 			$name           = $this->get_full_table_name( $table );
 			$wpdb->$table   = $name;
 		}
 
-		// create the tables
+		// create the tables.
 		if ( $this->schema_update_required() || $force_update ) {
 			foreach ( $this->tables as $table ) {
 				/**
@@ -67,7 +73,9 @@ abstract class ActionScheduler_Abstract_Schema {
 	}
 
 	/**
-	 * @param string $table The name of the table
+	 * Get table definition.
+	 *
+	 * @param string $table The name of the table.
 	 *
 	 * @return string The CREATE TABLE statement, suitable for passing to dbDelta
 	 */
@@ -84,16 +92,16 @@ abstract class ActionScheduler_Abstract_Schema {
 		$option_name      = 'schema-' . static::class;
 		$this->db_version = get_option( $option_name, 0 );
 
-		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema
+		// Check for schema option stored by the Action Scheduler Custom Tables plugin in case site has migrated from that plugin with an older schema.
 		if ( 0 === $this->db_version ) {
 
 			$plugin_option_name = 'schema-';
 
 			switch ( static::class ) {
-				case 'ActionScheduler_StoreSchema' :
+				case 'ActionScheduler_StoreSchema':
 					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Store_Table_Maker';
 					break;
-				case 'ActionScheduler_LoggerSchema' :
+				case 'ActionScheduler_LoggerSchema':
 					$plugin_option_name .= 'Action_Scheduler\Custom_Tables\DB_Logger_Table_Maker';
 					break;
 			}
@@ -115,7 +123,7 @@ abstract class ActionScheduler_Abstract_Schema {
 	private function mark_schema_update_complete() {
 		$option_name = 'schema-' . static::class;
 
-		// work around race conditions and ensure that our option updates
+		// work around race conditions and ensure that our option updates.
 		$value_to_save = (string) $this->schema_version . '.0.' . time();
 
 		update_option( $option_name, $value_to_save );
@@ -124,31 +132,33 @@ abstract class ActionScheduler_Abstract_Schema {
 	/**
 	 * Update the schema for the given table
 	 *
-	 * @param string $table The name of the table to update
+	 * @param string $table The name of the table to update.
 	 *
 	 * @return void
 	 */
 	private function update_table( $table ) {
-		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 		$definition = $this->get_table_definition( $table );
 		if ( $definition ) {
 			$updated = dbDelta( $definition );
 			foreach ( $updated as $updated_table => $update_description ) {
 				if ( strpos( $update_description, 'Created table' ) === 0 ) {
-					do_action( 'action_scheduler/created_table', $updated_table, $table );
+					do_action( 'action_scheduler/created_table', $updated_table, $table ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 				}
 			}
 		}
 	}
 
 	/**
-	 * @param string $table
+	 * Get full table name.
+	 *
+	 * @param string $table Table name.
 	 *
 	 * @return string The full name of the table, including the
 	 *                table prefix for the current blog
 	 */
 	protected function get_full_table_name( $table ) {
-		return $GLOBALS[ 'wpdb' ]->prefix . $table;
+		return $GLOBALS['wpdb']->prefix . $table;
 	}
 
 	/**
@@ -159,14 +169,19 @@ abstract class ActionScheduler_Abstract_Schema {
 	public function tables_exist() {
 		global $wpdb;
 
-		$existing_tables = $wpdb->get_col( 'SHOW TABLES' );
-		$expected_tables = array_map(
-			function ( $table_name ) use ( $wpdb ) {
-				return $wpdb->prefix . $table_name;
-			},
-			$this->tables
-		);
+		$tables_exist = true;
 
-		return count( array_intersect( $existing_tables, $expected_tables ) ) === count( $expected_tables );
+		foreach ( $this->tables as $table_name ) {
+			$table_name     = $wpdb->prefix . $table_name;
+			$pattern        = str_replace( '_', '\\_', $table_name );
+			$existing_table = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $pattern ) );
+
+			if ( $existing_table !== $table_name ) {
+				$tables_exist = false;
+				break;
+			}
+		}
+
+		return $tables_exist;
 	}
 }

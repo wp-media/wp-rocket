@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Optimization\Minify\AdminSubscriber;
 use WP_Rocket\Admin\Options_Data;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\AdminSubscriber::clean_minify_all
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\AdminSubscriber::clean_minify_all
  * @uses   ::rocket_clean_minify
  * @uses   ::rocket_direct_filesystem
  *

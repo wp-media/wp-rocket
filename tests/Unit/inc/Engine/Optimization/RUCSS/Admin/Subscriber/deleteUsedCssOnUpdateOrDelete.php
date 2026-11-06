@@ -6,12 +6,12 @@ use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_used_css_on_update_or_delete
  *
  * @group  RUCSS
  */
@@ -39,8 +39,11 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends \WP_Rocket\Tests\Unit\TestCase 
 			->once()
 			->andReturn( $config['remove_unused_css'] );
 
-		Functions\when( 'get_permalink' )
-			->justReturn( $config['url'] );
+		Functions\when( 'wp_is_post_revision' )
+			->justReturn( $config['is_revision'] ?? false );
+
+		Functions\when( 'get_post_type' )
+			->justReturn( $config['post_type'] );
 
 		$this->configureDeletion($config);
 
@@ -50,6 +53,17 @@ class Test_DeleteUsedCssOnUpdateOrDelete extends \WP_Rocket\Tests\Unit\TestCase 
 	protected function configureDeletion($config) {
 		Functions\expect( 'is_wp_error' )
 			->andReturn( $config['wp_error'] );
+
+		if ( ! empty( $config['is_revision'] ) ) {
+			Functions\expect( 'get_permalink' )->never();
+			$this->usedCSS->shouldReceive( 'delete_used_css' )->never();
+
+			return;
+		}
+
+		Functions\when( 'get_permalink' )
+			->justReturn( $config['url'] );
+
 		$this->usedCSS->shouldReceive( 'delete_used_css' )
 			->atMost()
 			->once()

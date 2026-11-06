@@ -23,7 +23,7 @@ if ( class_exists( 'VarnishPurger' ) ) :
 	}
 endif;
 
-add_action( 'after_rocket_clean_domain', 'rocket_clean_varnish_http_purge' );
+add_action( 'rocket_after_clean_domain', 'rocket_clean_varnish_http_purge' );
 /**
  * Call the cache server to purge the cache with Varnish HTTP Purge.
  *

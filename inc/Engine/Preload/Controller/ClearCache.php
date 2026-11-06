@@ -6,6 +6,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class ClearCache {
 	use CheckExcludedTrait;
+
 	/**
 	 * DB query.
 	 *
@@ -30,7 +31,11 @@ class ClearCache {
 	 */
 	public function partial_clean( array $urls ) {
 		foreach ( $urls as $url ) {
-
+			// if it has a regex, remove the regex part completely.
+			if ( str_contains( $url, '*' ) ) {
+				$regex_part = basename( $url );
+				$url        = str_replace( $regex_part, '', $url );
+			}
 			if ( ! $this->is_excluded_by_filter( $url ) ) {
 				$this->query->create_or_update(
 					[

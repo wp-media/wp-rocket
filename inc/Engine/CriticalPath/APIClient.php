@@ -20,7 +20,7 @@ class APIClient {
 	 * @param string $url    The URL to send a CPCSS generation request for.
 	 * @param array  $params Optional. Parameters needed to be sent in the body. Default: [].
 	 * @param string $item_type Optional. Type for this item if it's custom or specific type. Default: custom.
-	 * @return array
+	 * @return object|array|WP_Error
 	 */
 	public function send_generation_request( $url, $params = [], $item_type = 'custom' ) {
 		$params['url'] = $url;
@@ -58,7 +58,7 @@ class APIClient {
 
 		if ( is_wp_error( $response ) ) {
 			return new WP_Error(
-				$this->get_response_code( $response ),
+				$this->get_response_code(),
 				sprintf(
 					// translators: %1$s = type of content, %2$s = error message.
 					__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
@@ -86,7 +86,7 @@ class APIClient {
 		}
 
 		return new WP_Error(
-			$this->get_response_code( $response ),
+			$this->get_response_code(),
 			$response_message,
 			[
 				'status' => $response_status_code,
@@ -104,11 +104,13 @@ class APIClient {
 	 *
 	 * @return bool success or failed.
 	 */
-	private function get_response_success( $response_code, $response_data ) {
+	private function get_response_success( int $response_code, $response_data ) {
 		return (
 			200 === $response_code
 			&&
-			! empty( $response_data )
+			(
+				! empty( (array) $response_data )
+			)
 			&&
 			(
 				(
@@ -226,11 +228,9 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 *
 	 * @return string response code.
 	 */
-	private function get_response_code( $response ) {
+	private function get_response_code() {
 		// Todo: we can return code based on the response status number, for example 404 not_found.
 		return 'cpcss_generation_failed';
 	}

@@ -1,5 +1,4 @@
 <?php
-use WP_Rocket\Logger\Logger;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -8,7 +7,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.0
  *
- * When the settins menu is hidden, redirect on the main settings page to avoid the same thing
+ * When the settings menu is hidden, redirect on the main settings page to avoid the same thing
  * (Only when a form is sent from our options page )
  *
  * @since 2.1
@@ -20,41 +19,6 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( ! is_array( $oldvalue ) || ! is_array( $value ) ) {
 		return;
 	}
-
-	// These values do not need to clean the cache domain.
-	$removed = [
-		'cache_mobile'                => true,
-		'purge_cron_interval'         => true,
-		'purge_cron_unit'             => true,
-		'database_revisions'          => true,
-		'database_auto_drafts'        => true,
-		'database_trashed_posts'      => true,
-		'database_spam_comments'      => true,
-		'database_trashed_comments'   => true,
-		'database_all_transients'     => true,
-		'database_optimize_tables'    => true,
-		'schedule_automatic_cleanup'  => true,
-		'automatic_cleanup_frequency' => true,
-		'do_cloudflare'               => true,
-		'cloudflare_email'            => true,
-		'cloudflare_api_key'          => true,
-		'cloudflare_zone_id'          => true,
-		'cloudflare_devmode'          => true,
-		'cloudflare_auto_settings'    => true,
-		'cloudflare_old_settings'     => true,
-		'heartbeat_admin_behavior'    => true,
-		'heartbeat_editor_behavior'   => true,
-		'varnish_auto_purge'          => true,
-		'analytics_enabled'           => true,
-		'sucury_waf_cache_sync'       => true,
-		'sucury_waf_api_key'          => true,
-		'manual_preload'              => true,
-		'preload_excluded_uri'        => true,
-	];
-
-	// Create 2 arrays to compare.
-	$oldvalue_diff = array_diff_key( $oldvalue, $removed );
-	$value_diff    = array_diff_key( $value, $removed );
 
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( ( array_key_exists( 'minify_js', $oldvalue ) && array_key_exists( 'minify_js', $value ) && $oldvalue['minify_js'] !== $value['minify_js'] )
@@ -69,8 +33,30 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	}
 
 	// Regenerate advanced-cache.php file.
-	// phpcs:ignore WordPress.Security.NonceVerification.Missing
-	if ( ! empty( $_POST ) && ( ( isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] ) ) || ( ! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] ) ) || ( isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] ) ) && $oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files'] ) ) {
+	if (
+		! empty( $_POST ) // phpcs:ignore WordPress.Security.NonceVerification.Missing
+		&&
+		(
+			(
+				isset( $oldvalue['do_caching_mobile_files'] ) && ! isset( $value['do_caching_mobile_files'] )
+			)
+			||
+			(
+				! isset( $oldvalue['do_caching_mobile_files'] ) && isset( $value['do_caching_mobile_files'] )
+			)
+			||
+			(
+				isset( $oldvalue['do_caching_mobile_files'], $value['do_caching_mobile_files'] )
+				&&
+				$oldvalue['do_caching_mobile_files'] !== $value['do_caching_mobile_files']
+			)
+			||
+			(
+				isset( $oldvalue['cache_mobile'], $value['cache_mobile'] )
+				&&
+				$oldvalue['cache_mobile'] !== $value['cache_mobile']
+			)
+		) ) {
 		rocket_generate_advanced_cache_file();
 	}
 
@@ -83,11 +69,8 @@ function rocket_after_save_options( $oldvalue, $value ) {
 	if ( isset( $oldvalue['analytics_enabled'], $value['analytics_enabled'] ) && $oldvalue['analytics_enabled'] !== $value['analytics_enabled'] && 1 === (int) $value['analytics_enabled'] ) {
 		set_transient( 'rocket_analytics_optin', 1 );
 	}
-	ksort( $oldvalue_diff );
-	ksort( $value_diff );
-
 	// If it's different, clean the domain.
-	if ( md5( wp_json_encode( $oldvalue_diff ) ) !== md5( wp_json_encode( $value_diff ) ) ) {
+	if ( rocket_create_options_hash( $value ) !== rocket_create_options_hash( $oldvalue ) ) {
 		// Purge all cache files.
 		rocket_clean_domain();
 
@@ -131,6 +114,9 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		'cdn_reject_files'    => __( 'Exclude files from CDN', 'rocket' ),
 	];
 
+	// unset the *_mask value as we don't need to save them.
+	unset( $newvalue['cloudflare_api_key_mask'], $newvalue['cloudflare_zone_id_mask'] );
+
 	foreach ( $pattern_labels as $pattern_field => $label ) {
 		if ( empty( $newvalue[ $pattern_field ] ) ) {
 			// The field is empty.
@@ -143,7 +129,7 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 		// Validate.
 		$newvalue[ $pattern_field ] = array_filter(
 			$newvalue[ $pattern_field ],
-			function( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
+			function ( $excluded ) use ( $pattern_field, $label, $is_form_submit, &$errors ) {
 				if ( false === @preg_match( '#' . str_replace( '#', '\#', $excluded ) . '#', 'dummy-sample' ) && $is_form_submit ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
 					/* translators: 1 and 2 can be anything. */
 					$errors[ $pattern_field ][] = sprintf( __( '%1$s: <em>%2$s</em>', 'rocket' ), $label, esc_html( $excluded ) );
@@ -186,17 +172,27 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 	}
 
 	// Clear WP Rocket database optimize cron if the setting has been modified.
-	if ( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) || ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) ) ) {
+	if (
+		( ( isset( $newvalue['schedule_automatic_cleanup'], $oldvalue['schedule_automatic_cleanup'] ) && $newvalue['schedule_automatic_cleanup'] !== $oldvalue['schedule_automatic_cleanup'] ) )
+		|| ( ( isset( $newvalue['automatic_cleanup_frequency'], $oldvalue['automatic_cleanup_frequency'] ) && $newvalue['automatic_cleanup_frequency'] !== $oldvalue['automatic_cleanup_frequency'] ) )
+	) {
 		if ( wp_next_scheduled( 'rocket_database_optimization_time_event' ) ) {
 			wp_clear_scheduled_hook( 'rocket_database_optimization_time_event' );
 		}
 	}
 
 	// Regenerate the minify key if JS files have been modified.
-	// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison
-	if ( ( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] )
-		|| ( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
-		|| ( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) || ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+	// phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+	if (
+		( isset( $newvalue['minify_js'], $oldvalue['minify_js'] ) && $newvalue['minify_js'] != $oldvalue['minify_js'] ) // phpcs:ignore Universal.Operators.StrictComparisons.LooseNotEqual
+		||
+		( isset( $newvalue['exclude_js'], $oldvalue['exclude_js'] ) && $newvalue['exclude_js'] !== $oldvalue['exclude_js'] )
+		||
+		(
+			( isset( $oldvalue['cdn'] ) && ! isset( $newvalue['cdn'] ) )
+			||
+			( ! isset( $oldvalue['cdn'] ) && isset( $newvalue['cdn'] ) )
+		)
 	) {
 		$newvalue['minify_js_key'] = create_rocket_uniqid();
 	}
@@ -220,10 +216,16 @@ function rocket_pre_main_option( $newvalue, $oldvalue ) {
 
 	if ( $keys ) {
 		delete_transient( WP_ROCKET_SLUG );
-		$newvalue = array_merge( $newvalue, $keys );
+
+		// Only carry forward the license fields this transient exists for (see rocket_check_key()) -
+		// merging the whole payload let any other, unrelated key it happened to still be holding
+		// (e.g. a stale 'cdn' snapshot from whenever it was set) silently overwrite the value this
+		// save is actively trying to persist.
+		$newvalue = array_merge( $newvalue, array_intersect_key( $keys, array_flip( [ 'consumer_key', 'consumer_email', 'secret_key', 'license' ] ) ) );
 	}
 
-	if ( ! $rocket_settings_errors ) {
+	// Added this as an additional check to ensure there's none regression for the update in inc/main.php.
+	if ( ! $is_form_submit || ! $rocket_settings_errors ) {
 		return $newvalue;
 	}
 

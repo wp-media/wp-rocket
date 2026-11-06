@@ -3,6 +3,7 @@
 if ( ! class_exists( 'wpdb' ) ) {
 	class wpdb {
 		public $posts         = 'posts';
+		public $postmeta      = 'postmeta';
 		public $term_taxonomy = 'terms';
 		public $posts_results = [];
 		public $terms_results = [];

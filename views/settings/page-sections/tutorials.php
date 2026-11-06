@@ -15,7 +15,6 @@ $rocket_tutorials = [
 			'7seqacq2ol' => __( 'Getting Started with WP Rocket', 'rocket' ),
 			'fj42vucf99' => __( 'Finding the Best Settings for Your Site', 'rocket' ),
 			'z1qxl7s2zn' => __( 'How to Check if WP Rocket is Caching Your Site', 'rocket' ),
-			'j042jylrre' => __( 'How to Measure the Speed of Your Site', 'rocket' ),
 			'803tlui8oi' => __( 'How Preloading Works', 'rocket' ),
 		],
 	],
@@ -23,7 +22,7 @@ $rocket_tutorials = [
 		'title'     => __( 'Passing the Core Web vitals', 'rocket' ),
 		'tutorials' => [
 			'fj7gs031q6' => __( 'How to improve LCP with WP Rocket', 'rocket' ),
-			'krqb7ckugp' => __( 'How to improve FID with WP Rocket', 'rocket' ),
+			's599wdduu1' => __( 'How to improve INP with WP Rocket', 'rocket' ),
 			'5wrdzcmj90' => __( 'How to improve CLS with WP Rocket', 'rocket' ),
 		],
 	],
@@ -45,7 +44,7 @@ $rocket_tutorials = [
 ?>
 <div id="tutorials" class="wpr-Page">
 	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-tutorial-hover"><?php esc_html_e( 'Tutorials', 'rocket' ); ?></h2>
+		<h2 class="wpr-title1 wpr-icon-book-open"><?php esc_html_e( 'Tutorials', 'rocket' ); ?></h2>
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">

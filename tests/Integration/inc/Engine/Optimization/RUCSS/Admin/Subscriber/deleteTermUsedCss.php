@@ -3,33 +3,41 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
  *
- * @group  RUCSS
+ * @group RUCSS
  */
 class Test_DeleteTermUsedCss extends TestCase {
-	use DBTrait;
-
 	private $rucss_option;
 	protected $rucss_enabled;
 
-	public static function set_up_before_class() {
-		self::installFresh();
+	public function set_up() {
+		parent::set_up();
 
-		parent::set_up_before_class();
-	}
+		self::installPreloadCacheTable();
+		self::installUsedCssTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
-	public static function tear_down_after_class() {
-		parent::tear_down_after_class();
-
-		self::uninstallAll();
+		// Disable ATF optimization to prevent DB request (unrelated to the test).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 	}
 
 	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+		self::uninstallUsedCssTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		// Re-enable ATF optimization.
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
 		remove_filter( 'rocket_rucss_deletion_activated', [ $this, 'set_rucss_enabled' ] );
 
@@ -63,7 +71,7 @@ class Test_DeleteTermUsedCss extends TestCase {
 		$this->assertCount( 1, $result );
 
 		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );
-		add_filter( 'rocket_rucss_deletion_enabled', [ $this, 'set_rucss_enabled' ] );
+		add_filter( 'rocket_saas_deletion_enabled', [ $this, 'set_rucss_enabled' ] );
 
 		if ( $config['wp_error'] ) {
 			do_action( 'edit_term', 0, 0, 'category' );

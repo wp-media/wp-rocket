@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_bypass
+ * Test class covering ::rocket_bypass
  * @group API
  */
 class Bypass extends TestCase {
@@ -18,24 +18,17 @@ class Bypass extends TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->stubWpParseUrl();
 	}
 
 	protected function tearDown(): void {
-		unset( $GLOBALS['wp'] );
-
 		parent::tearDown();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $wp, $url, $expected ) {
-		$GLOBALS['wp'] = $wp;
-
-		Functions\when( 'add_query_arg' )->justReturn( $url );
-		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+	public function testShouldReturnExpected( $query_vars, $expected ) {
+		$_GET = $query_vars;
 
 		if ( $expected ) {
 			$this->assertTrue( rocket_bypass() );

@@ -1,0 +1,133 @@
+// main: ../../main.scss
+
+/*-----------------------------------------------*\
+
+    Type = User Exclusion Textarea
+
+\*-----------------------------------------------*/
+
+.wpr-field--categorizedmultiselect {
+
+  .wpr-list{
+	padding-right: 15px;
+	padding-left: 15px;
+
+	&.open{
+	  .wpr-list-header{
+		padding-bottom: 9px;
+		margin-bottom: 10px;
+	  }
+	  .wpr-list-header{
+		max-height:32px;
+		cursor:pointer;
+	  }
+	}
+	.wpr-list-header{
+	  max-height:32px;
+	  cursor:pointer;
+
+	  .wpr-badge-counter{
+		display: inline-block;
+		vertical-align: top;
+		box-sizing: border-box;
+		margin: 2px 0 0px 2px;
+		padding: 0 7px;
+		min-width: 18px;
+		height: 18px;
+		border-radius: 9px;
+		background-color: #eb714a;
+		color: #fff;
+		font-size: 11px;
+		font-weight: bold;
+		line-height: 1.6;
+		text-align: center;
+	  }
+
+	  .wpr-list-header-data{
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+
+		img{
+			width: 16px;
+			height: 16px;
+		}
+	  }
+	}
+
+	[type=checkbox]{
+	  & + label{
+		&:before{
+		  top: 4px;
+		}
+	  }
+	  &:checked{
+		& + label{
+		  &:after{
+			top: 4px;
+		  }
+		}
+	  }
+	}
+
+	&-header{
+	  .wpr-checkbox{
+		padding-left: 29px;
+
+	  }
+	}
+  }
+
+  .wpr-list-body {
+	display: block;
+	max-height: 250px;
+	overflow-y: auto;
+
+	ul{
+	  margin: 0;
+	  li{
+		margin-bottom: 10px;
+
+		.wpr-checkbox{
+		  padding-left: 25px;
+
+		  label{
+			color: #121116 !important;
+			font-weight: normal;
+		  }
+		}
+	  }
+	}
+  }
+
+  .dashicons{
+	color: #72777c;
+  }
+
+  .wpr-multiple-select-title{
+	cursor: pointer;
+	font-weight: bold
+  }
+
+  .wpr-subsection{
+	padding-left: 30px;
+  }
+
+  .wpr-select-all{
+	border-bottom: 2px solid #e9e9e9;
+    width: 150px;
+    padding-bottom: 10px;
+  }
+}
+
+[data-parent="delay_js"].wpr-field--children {
+	margin-left: 32px;
+	padding-left: 0;
+}
+
+@media only screen and (min-width: 782px) {
+  .wpr-field--categorizedmultiselect {
+	padding-right: 80px;
+  }
+}

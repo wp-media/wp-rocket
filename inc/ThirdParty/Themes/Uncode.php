@@ -3,23 +3,15 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Uncode extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'uncode';
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
+class Uncode implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
 		return [
 			'rocket_exclude_js'                 => 'exclude_js',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
@@ -98,7 +90,7 @@ class Uncode extends ThirdpartyTheme {
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/min/ai-uncode.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.min.js' );
 		$exclude_delay_js[] = rocket_clean_exclude_file( get_template_directory_uri() . '/library/js/ai-uncode.js' );
-		$exclude_delay_js[] = 'UNCODE\.';
+		$exclude_delay_js[] = 'UNCODE\.(.*)\)\;';
 
 		return $exclude_delay_js;
 	}

@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::maybe_add_delay_js_exclusion
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::maybe_add_delay_js_exclusion
  *
  * @group Adthrive
  * @group ThirdParty

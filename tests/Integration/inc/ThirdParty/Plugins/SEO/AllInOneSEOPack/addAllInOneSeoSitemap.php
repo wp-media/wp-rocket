@@ -3,18 +3,19 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers  \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
+ * Test class covering  \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
  * @group   AllInOneSeoPack
  */
 class Test_AddAllInOneSeoSitemap extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected $aioseop_options;
+	private $aioseo;
 
 	public function setUp(): void
 	{
@@ -25,7 +26,7 @@ class Test_AddAllInOneSeoSitemap extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_sitemap_preload_list');
+		$this->restoreWpHook('rocket_sitemap_preload_list');
 		remove_filter('pre_option_aioseop_options', [$this, 'aioseop_options']);
 		parent::tearDown();
 	}

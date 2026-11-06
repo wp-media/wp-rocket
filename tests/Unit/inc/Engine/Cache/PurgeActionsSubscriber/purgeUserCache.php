@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Cache\Purge;
 use WP_Rocket\Engine\Cache\PurgeActionsSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber::purge_user_cache
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber::purge_user_cache
  * @group  purge_actions
  */
 class Test_PurgeUserCache extends TestCase {

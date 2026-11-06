@@ -45,26 +45,18 @@ return [
 						'id'             => '1',
 						'url'            => 'http://example.org/page1.html',
 						'css'            => '.example{color:red;}',
-						'unprocessedcss' => json_encode( [] ),
 						'retries'        => '1',
 					],
 					[
 						'id'             => '2',
 						'url'            => 'http://example.org/page2.html',
 						'css'            => '.example{color:green;}',
-						'unprocessedcss' => json_encode( [
-							'styles/mystyle.css'
-						] ),
 						'retries'        => '3',
 					],
 					[
 						'id'             => '3',
 						'url'            => 'http://example.org/page3.html',
 						'css'            => '.example{color:blue;}',
-						'unprocessedcss' => json_encode( [
-							'styles/yourstyle.css',
-							'js/myslides.js',
-						] ),
 						'retries'        => '3',
 					],
 				],
@@ -96,7 +88,6 @@ return [
 						'id'             => '1',
 						'url'            => 'http://example.org/page1.css',
 						'css'            => '.example{color:red;}',
-						'unprocessedcss' => json_encode( [] ),
 						'retries'        => '3',
 					],
 				],
@@ -120,19 +111,12 @@ return [
 						'id'             => '2',
 						'url'            => 'http://example.org/page2/',
 						'css'            => '.example{color:green;}',
-						'unprocessedcss' => json_encode( [
-							'styles/mystyle.css'
-						] ),
 						'retries'        => '3',
 					],
 					[
 						'id'             => '3',
 						'url'            => 'http://example.org/page3/',
 						'css'            => '.example{color:blue;}',
-						'unprocessedcss' => json_encode( [
-							'styles/yourstyle.css',
-							'js/myslides.js',
-						] ),
 						'retries'        => '3',
 					],
 				],

@@ -3,6 +3,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\JS;
 
 use WP_Rocket\Dependencies\Minify as Minifier;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -11,6 +12,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Minify extends AbstractJSOptimization implements ProcessorInterface {
+	use CommentTrait;
+
 	/**
 	 * Minifies JS files
 	 *
@@ -20,8 +23,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'JS MINIFICATION PROCESS STARTED.', [ 'js minification process' ] );
-
 		$scripts = $this->get_scripts( $html );
 
 		if ( empty( $scripts ) ) {
@@ -111,7 +112,7 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			$html = $this->replace_script( $script, $minify_url, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'minify_js', $html );
 	}
 
 	/**
@@ -128,14 +129,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			Logger::debug( 'No `<script>` tags found.', [ 'js minification process' ] );
 			return [];
 		}
-
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' <link> tags.',
-			[
-				'js minification process',
-				'tags' => $scripts,
-			]
-		);
 
 		return $scripts;
 	}
@@ -273,14 +266,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
 		$html           = str_replace( $script[0], $replace_script, $html );
 
-		Logger::info(
-			'Script minification succeeded.',
-			[
-				'js minification process',
-				'url' => $minify_url,
-			]
-		);
-
 		return $html;
 	}
 
@@ -308,14 +293,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			return false;
 		}
 
-		Logger::debug(
-			'Minified JS file successfully created.',
-			[
-				'js minification process',
-				'path' => $minified_file,
-			]
-		);
-
 		return true;
 	}
 
@@ -332,10 +309,10 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$minified_content = $minifier->minify();
 
 		if ( empty( $minified_content ) ) {
-			return '';
+			return ''; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
-		return $minified_content;
+		return $minified_content; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

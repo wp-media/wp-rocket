@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Tests\Unit\TestCase;
 /**
- * @covers \WP_Rocket\Engine\Preload\Frontend\SitemapParser::parse_sitemap
+ * Test class covering \WP_Rocket\Engine\Preload\Frontend\SitemapParser::parse_sitemap
  * @group  Preload
  */
 class Test_GetLinks extends TestCase {

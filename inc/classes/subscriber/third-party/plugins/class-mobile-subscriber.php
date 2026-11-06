@@ -331,7 +331,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 	public static function get_mobile_plugins() {
 		return [
 			'jetpack/jetpack.php'                      => [
-				'is_active_callback' => function() {
+				'is_active_callback' => function () {
 					if ( ! class_exists( 'Jetpack' ) ) {
 						return false;
 					}
@@ -349,6 +349,7 @@ class Mobile_Subscriber implements Subscriber_Interface {
 			'wp-mobile-detect/wp-mobile-detect.php'    => [],
 			'easy-social-share-buttons3/easy-social-share-buttons3.php' => [],
 			'jet-menu/jet-menu.php'                    => [],
+			'wpdiscuz/class.WpdiscuzCore.php'          => [],
 		];
 	}
 

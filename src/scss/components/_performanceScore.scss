@@ -1,0 +1,358 @@
+// Rocket Insights score card of the inner pages sidebar (the Dashboard main column has its own, unscoped markup).
+.wpr-Sidebar {
+	.wpr-global-score-widget-wrapper {
+		margin: 0;
+		padding: $space * 2;
+		background: $cWhite;
+		border-radius: 4px;
+
+		// Orange title, no separator line.
+		.wpr-optionHeader {
+			margin: 0 0 $space;
+			padding: 0;
+			border-bottom: 0;
+
+			.wpr-title2 {
+				margin: 0;
+				padding: 0;
+				font-family: "Roboto", sans-serif;
+				font-size: 16px;
+				font-weight: 600;
+				line-height: 1.3;
+				color: $cOrange;
+			}
+		}
+
+		.wpr-fieldsContainer {
+			margin-top: 0;
+		}
+
+		.wpr-fieldsContainer-fieldset {
+			margin-top: 0;
+			border: none;
+			padding: 0;
+			background: $cWhite;
+		}
+
+		.wpr-field {
+			padding: 0;
+		}
+
+		.wpr-percentage-score-widget {
+			margin-top: 0;
+		}
+
+		// Metrics: light grey panel at the bottom of the card.
+		.wpr-ri-score-widget__metrics {
+			background: $cGreyLight3;
+		}
+	}
+}
+
+// Rocket Insights Score Widget
+.wpr-ri-score-widget {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 100%;
+	border-radius: 8px;
+
+	// Score section with circle and tracked pages
+	&__score-section {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		align-items: center;
+		width: 100%;
+	}
+
+	// Metrics panel
+	&__metrics {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 100%;
+		padding: 8px;
+		background: #F6F7F8;
+		border-radius: 4px;
+		align-self: stretch;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__metrics-row {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__metric-column {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		justify-content: center;
+		gap: 4px;
+
+		// Every column but the first one opens its tooltip to the left: the card is narrow and sits at the page edge.
+		&:not(:first-child) {
+			.wpr-ri-score-widget__metric-info {
+				.wpr-tooltip {
+					left: auto;
+					right: 16px;
+
+					&:before {
+						left: auto;
+						right: -8px;
+						border-right: none;
+						border-left: 8px solid #0e1428;
+					}
+				}
+			}
+		}
+	}
+
+	&__metric-label-row {
+		display: flex;
+		gap: 2px;
+		align-items: center;
+	}
+
+	&__metric-label {
+		font-family: "Roboto", sans-serif;
+		font-size: 11px;
+		font-weight: 600;
+		color: #464F59;
+	}
+
+	&__metric-info {
+		position: relative;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 10px;
+		height: 11px;
+		cursor: pointer;
+		margin-top: -2px;
+
+		&-icon {
+			width: 10px;
+			height: 10px;
+			display: block;
+			background-image: url(../img/ri-info.svg);
+			background-size: 10px 10px;
+			background-repeat: no-repeat;
+			background-position: center;
+		}
+
+		.wpr-tooltip {
+			// Not rendered until hovered: a hidden box (visibility only) still extends the scrollable area of the page.
+			display: none;
+			top: -16px;
+			left: 18px;
+			min-width: 180px;
+			max-width: 200px;
+			z-index: 1000;
+
+			&:before {
+				top: 5px;
+				left: -14px;
+				border-top: 8px solid transparent;
+				border-bottom: 8px solid transparent;
+				border-right: 8px solid #0e1428;
+			}
+		}
+
+		&:hover {
+			.wpr-tooltip {
+				display: block;
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+	}
+
+	&__metric-value {
+		font-family: "Roboto", sans-serif;
+		font-size: 11px;
+		font-weight: 600;
+		line-height: 1.3;
+
+		&--error {
+			color: $errorDark;
+		}
+
+		&--warning {
+			color: $warningDark;
+		}
+
+		&--success {
+			color: $successDark;
+		}
+	}
+
+}
+
+// Legacy styles - keeping for backward compatibility
+	.wpr-percentage-score-widget{
+		text-align: center;
+		margin-top: 10px;
+		.wpr-percentage-indicator {
+			.wpr-percentage-circle{
+				border-width: 3.83px;
+				font-size: 42.17px;
+				font-weight: 600;
+				.wpr-failed-score{
+					width: 50px;
+					height: 50px;
+					&:before{
+						width: 50px;
+						height: 50px;
+						background-size: contain;
+						display: inline-block;
+					}
+				}
+			}
+			.wpr-percentage-circle.wpr-centralize-100-score {
+				text-indent: -1px;
+			}
+			.wpr-tooltip{
+				display: none;
+			}
+		}
+		.wpr-page-num-txt{
+			margin: 4px 0 0 0;
+			font-size: 11px;
+			font-weight: 400;
+			line-height: 1.3;
+			color: #738191;
+
+			span {
+				font-weight: 600;
+			}
+		}
+		.wpr-score-no-urls{
+			background-image: url(../img/pma-light-pulp.svg);
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: contain;
+			width: 92px;
+			height: 92px;
+			margin: 0 auto;
+			display: block;
+			margin-bottom: 10px;
+		}
+	}
+	// Percentage indicator component
+	.wpr-percentage-indicator {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: relative;
+
+		.wpr-percentage-circle {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 92px;
+			height: 92px;
+			font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+			border-radius: 50%;
+			border: 3.83px solid;
+			line-height: 0;
+			&-sm{
+				width: 32px;
+				height: 32px;
+				font-size: 14px;
+			}
+
+			// Default styles
+			&.status-red {
+				border-color: $errorDark;
+				color: $errorDark;
+				background-color: $errorLighter;
+			}
+
+			&.status-yellow {
+				border-color: $warningDark;
+				color: $warningDark;
+				background-color: $warningLighter;
+			}
+
+			&.status-green {
+				border-color: $successDark;
+				color: $successDark;
+				background-color:$successLighter;
+			}
+			&.blurred {
+				filter: blur(10px);
+				user-select: none;
+				-webkit-user-select: none;
+				-moz-user-select: none;
+				pointer-events: none;
+			}
+			.wpr-failed-score{
+				width: 21.333px;
+				height: 21.333px;
+				&:before{
+					width: 21.333px;
+					height: 21.333px;
+					background-size: contain;
+					display: inline-block;
+
+				}
+			}
+		}
+		a {
+			text-decoration: none;
+		}
+		.wpr-loading-img,
+		.wpr-loading-dots {
+			width: 78px;
+			height: 82px;
+			&-sm{
+				width: 32px;
+				height: 32px;
+			}
+		}
+		.wpr-tooltip{
+			left: 6px;
+			top: 30px;
+			min-width: max-content;
+			&:before {
+				top: -6px;
+				left: 17.6px;
+			}
+		}
+		&:hover {
+			.wpr-tooltip {
+				visibility: visible;
+				opacity: 1;
+			}
+		}
+	}
+
+// Same loader as orange-loading.svg, animated with CSS (browsers stop SMIL animations inside an <img> after a few seconds).
+// 12 dots pulsing in size and colour over 2s, offset by 1/6s each.
+.wpr-loading-dots circle {
+	fill: rgba(243, 112, 77, 0.5);
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: wpr-loading-dot 2s linear infinite;
+	animation-delay: calc((var(--wpr-dot) - 11) / 6 * 1s);
+}
+
+@keyframes wpr-loading-dot {
+	0%,
+	25%,
+	75%,
+	100% {
+		fill: rgba(243, 112, 77, 0.5);
+		transform: scale(1);
+	}
+
+	50% {
+		fill: #F3704D;
+		transform: scale(1.6667);
+	}
+}

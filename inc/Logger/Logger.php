@@ -1,0 +1,730 @@
+<?php
+namespace WP_Rocket\Logger;
+
+use WP_Rocket\Dependencies\Monolog\Logger as Monologger;
+use WP_Rocket\Dependencies\Monolog\Registry;
+use WP_Rocket\Dependencies\Monolog\Processor\IntrospectionProcessor;
+use WP_Rocket\Dependencies\Monolog\Handler\StreamHandler as MonoStreamHandler;
+use WP_Rocket\Dependencies\Monolog\Formatter\LineFormatter;
+use WP_Rocket\Logger\{HTMLFormatter, StreamHandler};
+
+/**
+ * Class used to log events.
+ *
+ * @since  3.1.4
+ * @since  3.2 Changed namespace from \WP_Rocket to \WP_Rocket\Logger.
+ * @author Grégory Viguier
+ */
+class Logger {
+	/**
+	 * Logger name.
+	 *
+	 * @var string
+	 */
+	const LOGGER_NAME = 'wp_rocket';
+
+	/**
+	 * Name of the logs file.
+	 *
+	 * @var string
+	 */
+	const LOG_FILE_NAME = 'wp-rocket-debug.log.html';
+
+	/**
+	 * A unique ID given to the current thread.
+	 *
+	 * @var string
+	 */
+	private static $thread_id;
+
+	/**
+	 * Cached debug enabled status for the current request.
+	 *
+	 * @var bool|null
+	 */
+	private static $debug_enabled_cache = null;
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** LOG ===================================================================================== */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Adds a log record at the DEBUG level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function debug( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->debug( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the INFO level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function info( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->info( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the NOTICE level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function notice( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->notice( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the WARNING level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function warning( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->warning( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the ERROR level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function error( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->error( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the CRITICAL level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function critical( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->critical( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the ALERT level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function alert( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->alert( $message, $context ) : null;
+	}
+
+	/**
+	 * Adds a log record at the EMERGENCY level.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  string $message The log message.
+	 * @param  array  $context The log context.
+	 * @return bool|null       Whether the record has been processed.
+	 */
+	public static function emergency( $message, array $context = [] ) {
+		return static::debug_enabled() ? static::get_logger()->emergency( $message, $context ) : null;
+	}
+
+	/**
+	 * Get the logger instance.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return Logger A Logger instance.
+	 */
+	public static function get_logger() {
+		$logger_name = static::LOGGER_NAME;
+		$log_level   = Monologger::DEBUG;
+
+		if ( Registry::hasLogger( $logger_name ) ) {
+			return Registry::$logger_name();
+		}
+
+		/**
+		 * File handler.
+		 * HTML formatter is used.
+		 */
+		$handler   = new StreamHandler( static::get_log_file_path(), $log_level );
+		$formatter = new HtmlFormatter();
+
+		$handler->setFormatter( $formatter );
+
+		/**
+		 * Thanks to the processors, add data to each log:
+		 * - `debug_backtrace()` (exclude this class and Abstract_Buffer).
+		 */
+		$trace_processor = new IntrospectionProcessor( $log_level, [ get_called_class(), 'Abstract_Buffer' ] );
+
+		// Create the logger.
+		$logger = new Monologger( $logger_name, [ $handler ], [ $trace_processor ] );
+
+		// Store the logger.
+		Registry::addLogger( $logger );
+
+		return $logger;
+	}
+
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** LOG FILE ================================================================================ */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Get the path to the log file.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return string
+	 */
+	public static function get_log_file_path() {
+		if ( defined( 'WP_ROCKET_DEBUG_LOG_FILE' ) && WP_ROCKET_DEBUG_LOG_FILE && is_string( WP_ROCKET_DEBUG_LOG_FILE ) ) {
+			// Make sure the file uses a ".log" extension.
+			return preg_replace( '/\.[^.]*$/', '', WP_ROCKET_DEBUG_LOG_FILE ) . '.log';
+		}
+
+		if ( defined( 'WP_ROCKET_DEBUG_INTERVAL' ) ) {
+			// Adds an optional logs rotator depending on a constant value - WP_ROCKET_DEBUG_INTERVAL (interval by minutes).
+			$rotator = str_pad( round( ( strtotime( 'now' ) - strtotime( 'today midnight' ) ) / 60 / WP_ROCKET_DEBUG_INTERVAL ), 4, '0', STR_PAD_LEFT );
+			return WP_CONTENT_DIR . '/wp-rocket-config/' . $rotator . '-' . static::LOG_FILE_NAME;
+		} else {
+			return WP_CONTENT_DIR . '/wp-rocket-config/' . static::LOG_FILE_NAME;
+		}
+	}
+
+	/**
+	 * Get the log file contents.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return string|object The file contents on success. A WP_Error object on failure.
+	 */
+	public static function get_log_file_contents() {
+		$filesystem = \rocket_direct_filesystem();
+		$file_path  = static::get_log_file_path();
+
+		if ( ! $filesystem->exists( $file_path ) ) {
+			return new \WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
+		}
+
+		$contents = $filesystem->get_contents( $file_path );
+
+		if ( false === $contents ) {
+			return new \WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
+		}
+
+		return $contents;
+	}
+
+	/**
+	 * Get the log file size and number of entries.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return array|object An array of statistics on success. A WP_Error object on failure.
+	 */
+	public static function get_log_file_stats() {
+		$formatter = static::get_stream_formatter();
+
+		if ( ! $formatter ) {
+			return new \WP_Error( 'no_stream_formatter', __( 'The logs are not saved into a file.', 'rocket' ) );
+		}
+
+		$filesystem = \rocket_direct_filesystem();
+		$file_path  = static::get_log_file_path();
+
+		if ( ! $filesystem->exists( $file_path ) ) {
+			return new \WP_Error( 'no_file', __( 'The log file does not exist.', 'rocket' ) );
+		}
+
+		$contents = $filesystem->get_contents( $file_path );
+
+		if ( false === $contents ) {
+			return new \WP_Error( 'file_not_read', __( 'The log file could not be read.', 'rocket' ) );
+		}
+
+		if ( $formatter instanceof HtmlFormatter ) {
+			$entries = preg_split( '@<h1 @', $contents );
+		} elseif ( $formatter instanceof LineFormatter ) {
+			$entries = preg_split( '@^\[\d{4,}-\d{2,}-\d{2,} \d{2,}:\d{2,}:\d{2,}] @m', $contents );
+		} else {
+			$entries = 0;
+		}
+
+		$entries  = $entries ? number_format_i18n( count( $entries ) ) : '0';
+		$bytes    = $filesystem->size( $file_path );
+		$raw_size = $bytes;
+		$decimals = $bytes > pow( 1024, 3 ) ? 1 : 0;
+		$bytes    = @size_format( $bytes, $decimals ); // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		$bytes    = str_replace( ' ', ' ', $bytes ); // Non-breaking space character.
+
+		return compact( 'entries', 'bytes', 'raw_size' );
+	}
+
+	/**
+	 * Get the log file extension related to the formatter in use. This can be used when the file is downloaded.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return string The corresponding file extension with the heading dot.
+	 */
+	public static function get_log_file_extension() {
+		$formatter = static::get_stream_formatter();
+
+		if ( ! $formatter ) {
+			return '.log';
+		}
+
+		if ( $formatter instanceof HtmlFormatter ) {
+			return '.html';
+		}
+
+		if ( $formatter instanceof LineFormatter ) {
+			return '.txt';
+		}
+
+		return '.log';
+	}
+
+	/**
+	 * Delete the log file.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return bool True on success. False on failure.
+	 */
+	public static function delete_log_file() {
+		$filesystem = \rocket_direct_filesystem();
+		$file_path  = static::get_log_file_path();
+
+		if ( ! $filesystem->exists( $file_path ) ) {
+			return true;
+		}
+
+		$filesystem->put_contents( $file_path, '' );
+		$filesystem->delete( $file_path, false, 'f' );
+
+		return ! $filesystem->exists( $file_path );
+	}
+
+	/**
+	 * Get the handler used for the log file.
+	 *
+	 * @since 3.2
+	 *
+	 * @return object|bool The formatter object on success. False on failure.
+	 */
+	public static function get_stream_handler() {
+		$handlers = static::get_logger()->getHandlers();
+
+		if ( ! $handlers ) {
+			return false;
+		}
+
+		foreach ( $handlers as $_handler ) {
+			if ( $_handler instanceof MonoStreamHandler ) {
+				$handler = $_handler;
+				break;
+			}
+		}
+
+		if ( empty( $handler ) ) {
+			return false;
+		}
+
+		return $handler;
+	}
+
+	/**
+	 * Get the formatter used for the log file.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return object|bool The formatter object on success. False on failure.
+	 */
+	public static function get_stream_formatter() {
+		$handler = static::get_stream_handler();
+
+		if ( empty( $handler ) ) {
+			return false;
+		}
+
+		return $handler->getFormatter();
+	}
+
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** CONSTANT ================================================================================ */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Tell if debug is enabled.
+	 *
+	 * Supports multiple formats for WP_ROCKET_DEBUG:
+	 * - Boolean: true enables logging for all URLs (backward compatible)
+	 *   Example: define( 'WP_ROCKET_DEBUG', true );
+	 *
+	 * - String: Logs only the specified URL
+	 *   Example: define( 'WP_ROCKET_DEBUG', 'https://example.com/page' );
+	 *   Example: define( 'WP_ROCKET_DEBUG', '/page' ); // Relative path
+	 *
+	 * - Array: Logs URLs matching any pattern in the array
+	 *   Example: define( 'WP_ROCKET_DEBUG', [ '/page-1/', '/page-2/', '/page-3/' ] );
+	 *
+	 * URL matching behavior:
+	 * - Trailing slashes are ignored: '/page' matches '/page/'
+	 * - Query strings are ignored: '/page' matches '/page?param=value'
+	 * - Case-insensitive: '/Page' matches '/page'
+	 * - Homepage can be matched with '/' or full site URL
+	 * - Works with both relative and absolute URLs
+	 *
+	 * @since 3.1.4
+	 *
+	 * @return bool
+	 */
+	public static function debug_enabled() {
+		if ( null !== self::$debug_enabled_cache ) {
+			return self::$debug_enabled_cache;
+		}
+
+		$debug_enabled = false;
+
+		$debug_config = defined( 'WP_ROCKET_DEBUG' ) ? constant( 'WP_ROCKET_DEBUG' ) : false;
+
+		if ( true === $debug_config ) {
+			$debug_enabled = true;
+		} elseif ( is_string( $debug_config ) || is_array( $debug_config ) ) {
+			// URL-based filtering.
+			$current_url   = self::get_current_request_url();
+			$debug_enabled = self::url_matches_debug_patterns( $current_url, $debug_config );
+		}
+
+		// Cache the result.
+		self::$debug_enabled_cache = $debug_enabled;
+
+		/**
+		 * Fires before checking if debug is enabled for the logger.
+		 *
+		 * @param boolean $debug_status Returns if debug is enabled.
+		 *
+		 * @since 3.20.4
+		 */
+		do_action( 'rocket_before_debug_status_check', $debug_enabled );
+
+		return $debug_enabled;
+	}
+
+	/**
+	 * Normalize a URL for comparison.
+	 *
+	 * Strips trailing slashes, query strings, fragments, and converts to lowercase.
+	 * Handles both relative and absolute URLs.
+	 *
+	 * @param string $url URL to normalize.
+	 * @return array Array with 'path' and 'host' keys.
+	 */
+	private static function normalize_url( $url ) {
+		if ( empty( $url ) || ! is_string( $url ) ) {
+			return [
+				'path' => '',
+				'host' => '',
+			];
+		}
+
+		$parsed = parse_url( $url ); // phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url
+
+		if ( ! $parsed ) {
+			return [
+				'path' => '',
+				'host' => '',
+			];
+		}
+
+		// Extract path, defaulting to '/' for homepage.
+		$path = isset( $parsed['path'] ) ? $parsed['path'] : '/';
+
+		// Remove trailing slash (except for root).
+		$path = '/' === $path ? $path : rtrim( $path, '/' );
+
+		$path = strtolower( $path );
+
+		// Extract and normalize host.
+		$host = isset( $parsed['host'] ) ? strtolower( $parsed['host'] ) : '';
+
+		return [
+			'path' => $path,
+			'host' => $host,
+		];
+	}
+
+	/**
+	 * Get the current request URL.
+	 *
+	 * Builds URL from REQUEST_URI and home_url(), normalizes it.
+	 *
+	 * @return array Normalized current request URL with 'path' and 'host'.
+	 */
+	private static function get_current_request_url() {
+		// Sanitize REQUEST_URI without WordPress functions.
+		$request_uri = isset( $_SERVER['REQUEST_URI'] )
+			? strip_tags( stripslashes( $_SERVER['REQUEST_URI'] ) ) // phpcs:ignore WordPress.WP.AlternativeFunctions.strip_tags_strip_tags, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+			: '/';
+
+		// Get host from server variables (portable, no WordPress dependency).
+		$host = '';
+		if ( isset( $_SERVER['HTTP_HOST'] ) ) {
+			$host = strtolower( stripslashes( $_SERVER['HTTP_HOST'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		} elseif ( isset( $_SERVER['SERVER_NAME'] ) ) {
+			$host = strtolower( stripslashes( $_SERVER['SERVER_NAME'] ) ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		}
+
+		// Normalize the request URI.
+		$normalized = self::normalize_url( $request_uri );
+
+		return [
+			'path' => $normalized['path'],
+			'host' => $host,
+		];
+	}
+
+	/**
+	 * Check if current URL matches debug patterns.
+	 *
+	 * @param array        $current_url Current request URL with 'path' and 'host'.
+	 * @param string|array $patterns    Debug pattern(s) to match against.
+	 * @return bool True if URL matches any pattern, false otherwise.
+	 */
+	private static function url_matches_debug_patterns( $current_url, $patterns ) {
+		// Handle empty patterns.
+		if ( empty( $patterns ) ) {
+			return false;
+		}
+
+		// Convert single string to array for uniform processing.
+		if ( ! is_array( $patterns ) ) {
+			$patterns = [ $patterns ];
+		}
+
+		// Check each pattern.
+		foreach ( $patterns as $pattern ) {
+			if ( ! is_string( $pattern ) || '' === $pattern ) {
+				continue;
+			}
+
+			$normalized_pattern = self::normalize_url( $pattern );
+
+			// If pattern has a host (absolute URL), validate domain matches.
+			if ( ! empty( $normalized_pattern['host'] ) ) {
+				// Domain must match current site's domain.
+				if ( $normalized_pattern['host'] !== $current_url['host'] ) {
+					continue;
+				}
+			}
+
+			// Compare paths.
+			if ( $current_url['path'] === $normalized_pattern['path'] ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Enable debug mode by adding a constant in the `wp-config.php` file.
+	 *
+	 * @since 3.1.4
+	 */
+	public static function enable_debug() {
+		static::define_debug( true );
+	}
+
+	/**
+	 * Disable debug mode by removing the constant in the `wp-config.php` file.
+	 *
+	 * @since 3.1.4
+	 */
+	public static function disable_debug() {
+		static::define_debug( false );
+	}
+
+	/**
+	 * Enable or disable debug mode by adding or removing a constant in the `wp-config.php` file.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param bool $enable True to enable debug, false to disable.
+	 */
+	public static function define_debug( $enable ) {
+		if ( $enable && static::debug_enabled() ) {
+			// Debug is already enabled.
+			return;
+		}
+
+		if ( ! $enable && ! static::debug_enabled() ) {
+			// Debug is already disabled.
+			return;
+		}
+
+		// Get the path to the file.
+		$file_path = \rocket_find_wpconfig_path();
+
+		if ( ! $file_path ) {
+			// Couldn't get the path to the file.
+			return;
+		}
+
+		// Get the content of the file.
+		$filesystem = \rocket_direct_filesystem();
+		$content    = $filesystem->get_contents( $file_path );
+
+		if ( false === $content ) {
+			// Couldn't get the content of the file.
+			return;
+		}
+
+		// Remove previous value.
+		$placeholder = '## WP_ROCKET_DEBUG placeholder ##';
+		$content     = preg_replace( '@^[\t ]*define\s*\(\s*["\']WP_ROCKET_DEBUG["\'].*$@miU', $placeholder, $content );
+		$content     = preg_replace( "@\n$placeholder@", '', $content );
+
+		if ( $enable ) {
+			// Add the constant.
+			$define  = "define( 'WP_ROCKET_DEBUG', true ); // Added by WP Rocket.\r\n";
+			$content = preg_replace( '@<\?php\s*@i', "<?php\n$define", $content, 1 );
+		}
+
+		// Save the file.
+		$chmod = rocket_get_filesystem_perms( 'file' );
+		$filesystem->put_contents( $file_path, $content, $chmod );
+	}
+
+
+	/** ----------------------------------------------------------------------------------------- */
+	/** TOOLS =================================================================================== */
+	/** ----------------------------------------------------------------------------------------- */
+
+	/**
+	 * Get the thread identifier.
+	 *
+	 * @since 3.3
+	 *
+	 * @return string
+	 */
+	public static function get_thread_id() {
+		if ( ! isset( self::$thread_id ) ) {
+			self::$thread_id = uniqid( '', true );
+		}
+
+		return self::$thread_id;
+	}
+
+	/**
+	 * Remove cookies related to WP auth.
+	 *
+	 * @since 3.1.4
+	 *
+	 * @param  array $cookies An array of cookies.
+	 * @return array
+	 */
+	public static function remove_auth_cookies( $cookies = [] ) {
+		if ( ! $cookies || ! is_array( $cookies ) ) {
+			$cookies = $_COOKIE;
+		}
+
+		unset( $cookies['wordpress_test_cookie'] );
+
+		if ( ! $cookies ) {
+			return [];
+		}
+
+		$pattern = strtolower( '@^WordPress(?:user|pass|_sec|_logged_in)?_@' ); // Trolling PHPCS.
+
+		foreach ( $cookies as $cookie_name => $value ) {
+			if ( preg_match( $pattern, $cookie_name ) ) {
+				$cookies[ $cookie_name ] = 'Value removed by WP Rocket.';
+			}
+		}
+
+		return $cookies;
+	}
+
+	/**
+	 * Automatically deletes the log file if it exceeds a maximum file size.
+	 *
+	 * The maximum file size before deletion is controlled by the 'rocket_debug_log_auto_delete_max_file_size' filter,
+	 * with a default of 30,000,000 bytes (approximately 30MB).
+	 *
+	 * @param bool $debug_enabled Whether debug is enabled and log file auto-delete should proceed.
+	 * @return void
+	 */
+	public static function maybe_delete_log_file( $debug_enabled ): void {
+		// Bail out if debug is not enabled.
+		if ( ! $debug_enabled ) {
+			return;
+		}
+
+		// Bail out if debug.log file does not exist.
+		if ( ! rocket_direct_filesystem()->exists( self::get_log_file_path() ) ) {
+			return;
+		}
+
+		// Bail out if transient cache is still valid.
+		if ( get_transient( 'wp_rocket_log_file_size_check' ) ) {
+			return;
+		}
+
+		// Do transient cache for one hour.
+		set_transient( 'wp_rocket_log_file_size_check', true, HOUR_IN_SECONDS );
+
+		/**
+		 * Filters the maximum file size (in bytes) before the log file is automatically deleted.
+		 *
+		 * @param int $max_file_size The maximum file size in bytes. Default is 30,000,000 (30MB).
+		 *
+		 * @since 3.20.4
+		 */
+		$max_file_size = wpm_apply_filters_typed( 'integer', 'rocket_debug_log_auto_delete_max_file_size', 30000000 );
+
+		$log_file_stats = self::get_log_file_stats();
+
+		// Bail out if there is an error getting the log file stats.
+		if ( is_wp_error( $log_file_stats ) ) {
+			return;
+		}
+
+		$log_file_size = $log_file_stats['raw_size'];
+
+		if ( $log_file_size < $max_file_size ) {
+			return;
+		}
+
+		self::delete_log_file();
+	}
+}

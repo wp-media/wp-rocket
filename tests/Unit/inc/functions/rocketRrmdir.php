@@ -6,7 +6,7 @@ use Brain\Monkey\Actions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_rrmdir
+ * Test class covering ::rocket_rrmdir
  * @uses  ::rocket_direct_filesystem
  *
  * @group Functions
@@ -31,7 +31,7 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 		rocket_rrmdir( $to_delete, $to_preserve );
 
 		$dump_results = isset( $expected['dump_results'] );
-		$this->checkEntriesDeleted( $expected['removed'], $dump_results );
+		$this->checkEntriesDeleted( $expected['removed'] );
 		$this->checkShouldNotDeleteEntries( $dump_results );
 	}
 }

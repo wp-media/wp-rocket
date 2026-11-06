@@ -54,5 +54,4 @@ interface RESTWPInterface {
 	 * @return WP_REST_Response
 	 */
 	public function delete( WP_REST_Request $request );
-
 }

@@ -13,23 +13,23 @@ class WPXCloud extends AbstractNoCacheHost {
 	 *
 	 * @return array
 	 */
-	public static function get_subscribed_events() {
+	public static function get_subscribed_events(): array {
 		return [
 			'rocket_varnish_ip'                       => 'varnish_ip',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'do_rocket_varnish_http_purge'            => 'return_true',
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
-			'rocket_htaccess_mod_expires'             => [ 'remove_htaccess_html_expire', 5 ],
+			'after_rocket_htaccess_rules'             => 'append_cache_control_header',
 		];
 	}
 
 	/**
 	 * Adds WPX Cloud Varnish IP to varnish IPs array
 	 *
-	 * @param array $varnish_ip Varnish IP.
+	 * @param mixed $varnish_ip Varnish IP.
 	 * @return array
 	 */
-	public function varnish_ip( $varnish_ip ) {
+	public function varnish_ip( $varnish_ip ): array {
 		if ( ! is_array( $varnish_ip ) ) {
 			$varnish_ip = (array) $varnish_ip;
 		}
@@ -40,25 +40,12 @@ class WPXCloud extends AbstractNoCacheHost {
 	}
 
 	/**
-	 * Remove expiration on HTML to prevent issue with Varnish cache.
-	 *
-	 * @param  string $rules htaccess rules.
-	 * @return string Updated htaccess rules.
-	 */
-	public function remove_htaccess_html_expire( $rules ) {
-		$rules = preg_replace( '@\s*#\s*Your document html@', '', $rules );
-		$rules = preg_replace( '@\s*ExpiresByType text/html\s*"access plus \d+ (seconds|minutes|hour|week|month|year)"@', '', $rules );
-
-		return $rules;
-	}
-
-	/**
 	 * Displays custom title for the Varnish add-on
 	 *
 	 * @param array $settings Array of settings for Varnish.
 	 * @return array
 	 */
-	public function varnish_addon_title( array $settings ) {
+	public function varnish_addon_title( array $settings ): array {
 		$settings['varnish_auto_purge']['title'] = sprintf(
 			// Translators: %s = Hosting name.
 			__( 'Your site is hosted on %s, we have enabled Varnish auto-purge for compatibility.', 'rocket' ),
@@ -66,5 +53,38 @@ class WPXCloud extends AbstractNoCacheHost {
 		);
 
 		return $settings;
+	}
+
+	/**
+	 * Append cache control header.
+	 *
+	 * @return string
+	 */
+	public function append_cache_control_header(): string {
+		$header  = '<IfModule mod_headers.c>' . PHP_EOL;
+		$header .= 'Header append Cache-Control " s-maxage=3600, stale-while-revalidate=21600" "expr=%{CONTENT_TYPE} =~ m#text/html#"' . PHP_EOL;
+		$header .= '</IfModule>' . PHP_EOL;
+
+		return $header;
+	}
+
+	/**
+	 * Performs these actions during the plugin activation.
+	 *
+	 * @return void
+	 */
+	public function activate(): void {
+		parent::activate();
+
+		add_action( 'rocket_activation', [ $this, 'append_cache_control_header_on_activation' ] );
+	}
+
+	/**
+	 * Append cache control header.
+	 *
+	 * @return void
+	 */
+	public function append_cache_control_header_on_activation(): void {
+		add_filter( 'after_rocket_htaccess_rules', [ $this, 'append_cache_control_header' ] );
 	}
 }

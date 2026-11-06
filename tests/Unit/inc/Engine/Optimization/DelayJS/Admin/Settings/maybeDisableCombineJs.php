@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\DelayJS\Admin\Settings;
 
 use Mockery;
-use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::maybe_disable_combine_js
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings::maybe_disable_combine_js
  *
  * @group  DelayJS
  */
@@ -17,7 +17,7 @@ class Test_MaybeDisableCombineJs extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$settings = new Settings( Mockery::mock( Options_Data::class) );
+		$settings = new Settings( Mockery::mock(Options::class));
 
 		$this->assertSame(
 			$expected,

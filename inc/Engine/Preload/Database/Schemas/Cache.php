@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Schemas;
 
-use WP_Rocket\Dependencies\Database\Schema;
+use WP_Rocket\Dependencies\BerlinDB\Database\Schema;
 
 class Cache extends Schema {
 

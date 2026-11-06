@@ -8,7 +8,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\CDN::rewrite_url
+ * Test class covering \WP_Rocket\Engine\CDN\CDN::rewrite_url
  * @group  CDN
  */
 class Test_RewriteURL extends TestCase {
@@ -20,8 +20,9 @@ class Test_RewriteURL extends TestCase {
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options  = Mockery::mock( Options_Data::class );
+
+		$this->cdn = new CDN( $this->options );
 	}
 	/**
 	 * @dataProvider providerTestData
@@ -64,6 +65,10 @@ class Test_RewriteURL extends TestCase {
 				'value' => [
 					'/wp-content/uploads/post.css',
 				],
+			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
 			],
 		];
 

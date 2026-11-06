@@ -1,14 +1,25 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket;
 
 use Imagify_Partner;
 use WP_Rocket\Dependencies\League\Container\Container;
-use WP_Rocket\Admin\Options;
+use WP_Rocket\Admin\{Options, Options_Data};
+use WP_Rocket\Engine\Admin\API\ServiceProvider as APIServiceProvider;
+use WP_Rocket\Engine\Common\ExtractCSS\ServiceProvider as CommonExtractCSSServiceProvider;
+use WP_Rocket\Engine\Common\Head\ServiceProvider as CommonHeadServiceProvider;
+use WP_Rocket\Engine\Common\JobManager\ServiceProvider as JobManagerServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\ServiceProvider as LazyloadCSSServiceProvider;
+use WP_Rocket\Engine\Media\Lazyload\CSS\Admin\ServiceProvider as AdminLazyloadCSSServiceProvider;
 use WP_Rocket\Event_Management\Event_Manager;
+use WP_Rocket\Logger\ServiceProvider as LoggerServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
+use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
+use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
@@ -22,6 +33,7 @@ use WP_Rocket\Engine\HealthCheck\ServiceProvider as HealthCheckServiceProvider;
 use WP_Rocket\Engine\Heartbeat\ServiceProvider as HeartbeatServiceProvider;
 use WP_Rocket\Engine\License\ServiceProvider as LicenseServiceProvider;
 use WP_Rocket\Engine\Media\ServiceProvider as MediaServiceProvider;
+use WP_Rocket\Engine\Media\AboveTheFold\ServiceProvider as ATFServiceProvider;
 use WP_Rocket\Engine\Optimization\AdminServiceProvider as OptimizationAdminServiceProvider;
 use WP_Rocket\Engine\Optimization\DeferJS\ServiceProvider as DeferJSServiceProvider;
 use WP_Rocket\Engine\Optimization\DelayJS\ServiceProvider as DelayJSServiceProvider;
@@ -31,12 +43,25 @@ use WP_Rocket\Engine\Optimization\ServiceProvider as OptimizationServiceProvider
 use WP_Rocket\Engine\Plugin\ServiceProvider as PluginServiceProvider;
 use WP_Rocket\Engine\Preload\Links\ServiceProvider as PreloadLinksServiceProvider;
 use WP_Rocket\Engine\Preload\ServiceProvider as PreloadServiceProvider;
+use WP_Rocket\Engine\Saas\ServiceProvider as SaasAdminServiceProvider;
 use WP_Rocket\Engine\Support\ServiceProvider as SupportServiceProvider;
 use WP_Rocket\ServiceProvider\Common_Subscribers;
 use WP_Rocket\ServiceProvider\Options as OptionsServiceProvider;
 use WP_Rocket\ThirdParty\Hostings\ServiceProvider as HostingsServiceProvider;
 use WP_Rocket\ThirdParty\ServiceProvider as ThirdPartyServiceProvider;
 use WP_Rocket\ThirdParty\Themes\ServiceProvider as ThemesServiceProvider;
+use WP_Rocket\Engine\Admin\DomainChange\ServiceProvider as DomainChangeServiceProvider;
+use WP_Rocket\ThirdParty\Themes\ThemeResolver;
+use WP_Rocket\Engine\Debug\Resolver as DebugResolver;
+use WP_Rocket\Engine\Debug\ServiceProvider as DebugServiceProvider;
+use WP_Rocket\Engine\Common\PerformanceHints\ServiceProvider as PerformanceHintsServiceProvider;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\ServiceProvider as LRCServiceProvider;
+use WP_Rocket\Engine\Media\Fonts\ServiceProvider as MediaFontsServiceProvider;
+use WP_Rocket\Engine\Media\PreloadFonts\ServiceProvider as PreloadFontsServiceProvider;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\ServiceProvider as PreconnectExternalDomainsServiceProvider;
+use WP_Rocket\Engine\Tracking\ServiceProvider as TrackingServiceProvider;
+use WP_Rocket\Engine\Admin\RocketInsights\ServiceProvider as RocketInsightsServiceProvider;
+use WP_Rocket\Engine\Abilities\ServiceProvider as AbilitiesServiceProvider;
 
 /**
  * Plugin Manager.
@@ -71,15 +96,6 @@ class Plugin {
 	private $is_valid_key;
 
 	/**
-	 * Instance of the Options.
-	 *
-	 * @since 3.6
-	 *
-	 * @var Options
-	 */
-	private $options_api;
-
-	/**
 	 * Instance of the Options_Data.
 	 *
 	 * @since 3.6
@@ -101,7 +117,7 @@ class Plugin {
 
 		add_filter( 'rocket_container', [ $this, 'get_container' ] );
 
-		$this->container->add( 'template_path', $template_path );
+		$this->container->add( 'template_path', new StringArgument( $template_path ) );
 	}
 
 	/**
@@ -122,22 +138,29 @@ class Plugin {
 	 */
 	public function load() {
 		$this->event_manager = new Event_Manager();
-		$this->container->share( 'event_manager', $this->event_manager );
+		$this->container->addShared( 'event_manager', $this->event_manager );
 
-		$this->options_api = new Options( 'wp_rocket_' );
-		$this->container->add( 'options_api', $this->options_api );
-		$this->container->addServiceProvider( OptionsServiceProvider::class );
+		$this->container->add( 'options_api', Options::class )
+			->addArgument( new StringArgument( 'wp_rocket_' ) );
+		$this->container->addServiceProvider( new OptionsServiceProvider() );
 		$this->options = $this->container->get( 'options' );
 
-		$this->container->addServiceProvider( AdminDatabaseServiceProvider::class );
-		$this->container->addServiceProvider( SupportServiceProvider::class );
-		$this->container->addServiceProvider( BeaconServiceProvider::class );
-		$this->container->addServiceProvider( RocketCDNServiceProvider::class );
-		$this->container->addServiceProvider( CacheServiceProvider::class );
-		$this->container->addServiceProvider( CriticalPathServiceProvider::class );
-		$this->container->addServiceProvider( HealthCheckServiceProvider::class );
-		$this->container->addServiceProvider( MediaServiceProvider::class );
-		$this->container->addServiceProvider( DeferJSServiceProvider::class );
+		$this->container->add( 'debug_resolver', DebugResolver::class )
+			->addArgument( $this->options );
+
+		$this->container->addServiceProvider( new LoggerServiceProvider() );
+
+		$this->container->get( 'logger' );
+
+		$this->container->addServiceProvider( new AdminDatabaseServiceProvider() );
+		$this->container->addServiceProvider( new SupportServiceProvider() );
+		$this->container->addServiceProvider( new BeaconServiceProvider() );
+		$this->container->addServiceProvider( new RocketCDNServiceProvider() );
+		$this->container->addServiceProvider( new CacheServiceProvider() );
+		$this->container->addServiceProvider( new CriticalPathServiceProvider() );
+		$this->container->addServiceProvider( new HealthCheckServiceProvider() );
+		$this->container->addServiceProvider( new MediaServiceProvider() );
+		$this->container->addServiceProvider( new DeferJSServiceProvider() );
 
 		$this->is_valid_key = rocket_valid_key();
 
@@ -154,12 +177,12 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function get_subscribers() {
+		$subscribers = [];
+
 		if ( is_admin() ) {
 			$subscribers = $this->init_admin_subscribers();
 		} elseif ( $this->is_valid_key ) {
 			$subscribers = $this->init_valid_key_subscribers();
-		} else {
-			$subscribers = [];
 		}
 
 		return array_merge( $subscribers, $this->init_common_subscribers() );
@@ -179,20 +202,14 @@ class Plugin {
 			remove_action( 'imagify_assets_enqueued', 'imagify_dequeue_sweetalert_wprocket' );
 		}
 
-		$this->container->add(
-			'settings_page_config',
-			[
-				'slug'       => WP_ROCKET_PLUGIN_SLUG,
-				'title'      => WP_ROCKET_PLUGIN_NAME,
-				'capability' => 'rocket_manage_options',
-			]
-		);
+		$this->container->addServiceProvider( new SettingsServiceProvider() );
+		$this->container->addServiceProvider( new EngineAdminServiceProvider() );
+		$this->container->addServiceProvider( new OptimizationAdminServiceProvider() );
+		$this->container->addServiceProvider( new DomainChangeServiceProvider() );
+		$this->container->addServiceProvider( new AdminLazyloadCSSServiceProvider() );
+		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 
-		$this->container->addServiceProvider( SettingsServiceProvider::class );
-		$this->container->addServiceProvider( EngineAdminServiceProvider::class );
-		$this->container->addServiceProvider( OptimizationAdminServiceProvider::class );
-
-		return [
+		$subscribers = [
 			'beacon',
 			'settings_page_subscriber',
 			'deactivation_intent_subscriber',
@@ -212,7 +229,17 @@ class Plugin {
 			'minify_admin_subscriber',
 			'action_scheduler_check',
 			'actionscheduler_admin_subscriber',
+			'domain_change_subscriber',
+			'lazyload_css_admin_subscriber',
+			'post_edit_options_subscriber',
+			'preconnect_external_domains_admin_subscriber',
+			'media_fonts_admin_subscriber',
+			'preload_fonts_admin_subscriber',
+			'ri_subscriber',
+			'ri_settings_subscriber',
 		];
+
+		return $subscribers;
 	}
 
 	/**
@@ -223,7 +250,7 @@ class Plugin {
 	 * @return array array of subscribers.
 	 */
 	private function init_valid_key_subscribers() {
-		$this->container->addServiceProvider( OptimizationServiceProvider::class );
+		$this->container->addServiceProvider( new OptimizationServiceProvider() );
 
 		$subscribers = [
 			'buffer_subscriber',
@@ -254,110 +281,159 @@ class Plugin {
 	 * @return array array of common subscribers.
 	 */
 	private function init_common_subscribers() {
-		$this->container->addServiceProvider( CapabilitiesServiceProvider::class );
-		$this->container->addServiceProvider( AddonServiceProvider::class );
-		$this->container->addServiceProvider( VarnishServiceProvider::class );
-		$this->container->addServiceProvider( PreloadServiceProvider::class );
-		$this->container->addServiceProvider( PreloadLinksServiceProvider::class );
-		$this->container->addServiceProvider( CDNServiceProvider::class );
-		$this->container->addServiceProvider( Common_Subscribers::class );
-		$this->container->addServiceProvider( ThirdPartyServiceProvider::class );
-		$this->container->addServiceProvider( HostingsServiceProvider::class );
-		$this->container->addServiceProvider( PluginServiceProvider::class );
-		$this->container->addServiceProvider( DelayJSServiceProvider::class );
-		$this->container->addServiceProvider( RUCSSServiceProvider::class );
-		$this->container->addServiceProvider( HeartbeatServiceProvider::class );
-		$this->container->addServiceProvider( DynamicListsServiceProvider::class );
-		$this->container->addServiceProvider( LicenseServiceProvider::class );
-		$this->container->addServiceProvider( ThemesServiceProvider::class );
+		$this->container->addServiceProvider( new CapabilitiesServiceProvider() );
+		$this->container->addServiceProvider( new AddonServiceProvider() );
+		$this->container->addServiceProvider( new VarnishServiceProvider() );
+		$this->container->addServiceProvider( new PreloadServiceProvider() );
+		$this->container->addServiceProvider( new PreloadLinksServiceProvider() );
+		$this->container->addServiceProvider( new CDNServiceProvider() );
+		$this->container->addServiceProvider( new Common_Subscribers() );
+		$this->container->addServiceProvider( new HostingsServiceProvider() );
+		$this->container->addServiceProvider( new PluginServiceProvider() );
+		$this->container->addServiceProvider( new DynamicListsServiceProvider() );
+		$this->container->addServiceProvider( new DelayJSServiceProvider() );
+		$this->container->addServiceProvider( new RUCSSServiceProvider() );
+		$this->container->addServiceProvider( new HeartbeatServiceProvider() );
+		$this->container->addServiceProvider( new LicenseServiceProvider() );
+		$this->container->addServiceProvider( new ThemesServiceProvider() );
+		$this->container->addServiceProvider( new APIServiceProvider() );
+		$this->container->addServiceProvider( new CommonExtractCSSServiceProvider() );
+		$this->container->addServiceProvider( new CommonHeadServiceProvider() );
+		$this->container->addServiceProvider( new LazyloadCSSServiceProvider() );
+		$this->container->addServiceProvider( new DebugServiceProvider() );
+		$this->container->addServiceProvider( new ATFServiceProvider() );
+		$this->container->addServiceProvider( new JobManagerServiceProvider() );
+		$this->container->addServiceProvider( new SaasAdminServiceProvider() );
+		$this->container->addServiceProvider( new PerformanceHintsServiceProvider() );
+		$this->container->addServiceProvider( new LRCServiceProvider() );
+		$this->container->addServiceProvider( new MediaFontsServiceProvider() );
+		$this->container->addServiceProvider( new PreloadFontsServiceProvider() );
+		$this->container->addServiceProvider( new ThirdPartyServiceProvider() );
+		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
+		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
+		$this->container->addServiceProvider( new TrackingServiceProvider() );
 
 		$common_subscribers = [
 			'license_subscriber',
 			'cdn_subscriber',
+			'cdn_admin_subscriber',
+			'cdn_state_bridge',
+			'cdn_render_subscriber',
+			'rocketcdn_frontend_subscriber',
 			'critical_css_subscriber',
 			'sucuri_subscriber',
+			'common_extractcss_subscriber',
+			'common_head_subscriber',
 			'expired_cache_purge_subscriber',
-			'fonts_preload_subscriber',
 			'heartbeat_subscriber',
 			'db_optimization_subscriber',
-			'mobile_subscriber',
-			'woocommerce_subscriber',
-			'bigcommerce_subscriber',
-			'syntaxhighlighter_subscriber',
-			'elementor_subscriber',
-			'bridge_subscriber',
-			'avada_subscriber',
-			'ngg_subscriber',
-			'smush_subscriber',
 			'plugin_updater_common_subscriber',
 			'plugin_information_subscriber',
 			'plugin_updater_subscriber',
+			'plugin_notice_subscriber',
+			'options_backup_subscriber',
 			'capabilities_subscriber',
 			'varnish_subscriber',
 			'rocketcdn_rest_subscriber',
 			'detect_missing_tags_subscriber',
 			'purge_actions_subscriber',
-			'beaverbuilder_subscriber',
-			'amp_subscriber',
+			'user_cache_key_subscriber',
 			'rest_cpcss_subscriber',
-			'simple_custom_css',
-			'pdfembedder',
 			'delay_js_admin_subscriber',
 			'rucss_admin_subscriber',
+			'rucss_option_subscriber',
 			'rucss_frontend_subscriber',
-			'rucss_cron_subscriber',
-			'divi',
 			'preload_subscriber',
 			'preload_front_subscriber',
-			'polygon',
 			'preload_links_admin_subscriber',
 			'preload_links_subscriber',
 			'preload_cron_subscriber',
 			'support_subscriber',
 			'mod_pagespeed',
 			'webp_subscriber',
-			'imagify_webp_subscriber',
-			'shortpixel_webp_subscriber',
-			'ewww_webp_subscriber',
-			'optimus_webp_subscriber',
-			'adthrive',
-			'autoptimize',
-			'wp-meteor',
-			'revolution_slider_subscriber',
-			'wordfence_subscriber',
+			'webp_admin_subscriber',
 			'ezoic',
-			'thirstyaffiliates',
-			'pwa',
-			'yoast_seo',
-			'flatsome',
-			'minimalist_blogger',
-			'convertplug',
 			'dynamic_lists_subscriber',
-			'jevelin',
-			'unlimited_elements',
-			'inline_related_posts',
-			'jetpack',
-			'rank_math_seo',
-			'all_in_one_seo_pack',
-			'seopress',
-			'the_seo_framework',
-			'wpml',
-			'xstore',
-			'cloudflare_plugin_subscriber',
-			'uncode',
-			'rocket_lazy_load',
+			'cache_config',
+			'admin_api_subscriber',
+			'lazyload_css_subscriber',
+			'cron_subscriber',
+			'debug_subscriber',
+			'rucss_cron_subscriber',
+			'saas_admin_subscriber',
+			'atf_subscriber',
+			'performance_hints_ajax_subscriber',
+			'performance_hints_frontend_subscriber',
+			'performance_hints_cron_subscriber',
+			'performance_hints_warmup_subscriber',
+			'performance_hints_admin_subscriber',
+			'lrc_frontend_subscriber',
+			'taxonomy_subscriber',
+			'media_fonts_frontend_subscriber',
+			'media_fonts_admin_subscriber',
+			'media_fonts_clean_subscriber',
+			'preload_fonts_frontend_subscriber',
+			'preload_fonts_admin_subscriber',
+			'preconnect_frontend_subscriber',
+			'ri_subscriber',
+			'ri_url_limit_subscriber',
+			'ri_post_listing_subscriber',
+			'ri_global_metrics_subscriber',
+			'ri_recommendations_subscriber',
+			'ri_recommendations_settings_subscriber',
+			'post_subscriber',
+			'tracking_subscriber',
+			'logger_subscriber',
 		];
 
 		$host_type = HostResolver::get_host_service();
+		$theme     = ThemeResolver::get_current_theme();
 
 		if ( ! empty( $host_type ) ) {
 			$common_subscribers[] = $host_type;
 		}
 
+		if ( ! empty( $theme ) ) {
+			$common_subscribers[] = $theme;
+		}
+
+		$common_subscribers = array_merge( $common_subscribers, PluginResolver::get_active_plugins() );
+
 		if ( $this->options->get( 'do_cloudflare', false ) ) {
+			$this->container->addServiceProvider( new CloudflareServiceProvider() );
+
+			$common_subscribers[] = 'cloudflare_admin_subscriber';
 			$common_subscribers[] = 'cloudflare_subscriber';
 		}
 
-		return $common_subscribers;
+		$services = $this->container->get( 'debug_resolver' )->get_services();
+
+		if ( ! empty( $services ) ) {
+			foreach ( $services as $service ) {
+				$common_subscribers[] = $service['service'];
+			}
+		}
+
+		return array_merge( $common_subscribers, $this->init_abilities_subscribers() );
+	}
+
+	/**
+	 * Registers ability service providers and returns the list of ability subscriber service IDs.
+	 *
+	 * @return string[]
+	 */
+	private function init_abilities_subscribers(): array {
+		$this->container->addServiceProvider( new AbilitiesServiceProvider() );
+
+		$subscribers = [
+			'abilities_subscriber',
+			'ri_abilities_subscriber',
+			'cache_abilities_subscriber',
+			'preload_abilities_subscriber',
+			'abilities_cli_subscriber',
+			'abilities_admin_subscriber',
+		];
+
+		return $subscribers;
 	}
 }

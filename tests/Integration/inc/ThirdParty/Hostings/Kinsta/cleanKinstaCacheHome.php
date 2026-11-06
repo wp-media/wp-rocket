@@ -6,10 +6,9 @@ use Mockery;
 use WP_Rocket\Tests\Fixtures\Kinsta\Cache_Purge;
 use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache_home
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Kinsta::clean_kinsta_cache_home
  *
  * @group  Kinsta
  * @group  ThirdParty
@@ -38,7 +37,26 @@ class Test_CleanKinstaCacheHome extends TestCase
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\expect('wp_safe_remote_get')->with($expected['url'], $expected['config']);
+		$this->config['http'] = [
+			$expected['url'] => [
+				'body'     => '',
+				'response' => [ 'code' => 200, 'message' => 'OK' ],
+			],
+		];
+
 		do_action('after_rocket_clean_home', $config['root'], $config['lang']);
+
+		$requests = array_map(
+			static function ( $request ) {
+				return [
+					'url'      => $request['url'],
+					'blocking' => $request['args']['blocking'],
+					'timeout'  => $request['args']['timeout'],
+				];
+			},
+			$this->get_http_requests()
+		);
+
+		$this->assertSame( [ [ 'url' => $expected['url'] ] + $expected['config'] ], $requests );
 	}
 }

@@ -1,5 +1,7 @@
 <?php
 
+use WP_Rocket\Addon\Cloudflare\Cloudflare;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
@@ -12,16 +14,7 @@ if ( file_exists( WP_ROCKET_PATH . 'vendor/autoload.php' ) ) {
 
 require_once WP_ROCKET_FUNCTIONS_PATH . 'files.php';
 
-/**
- * Fix Cloudflare Flexible SSL redirect first
- *
- * @since  3.4.1
- * @author Soponar Cristina
- */
-require WP_ROCKET_VENDORS_PATH . 'ip_in_range.php';
-require WP_ROCKET_COMMON_PATH . 'cloudflare-flexible-ssl.php';
-
-rocket_fix_cf_flexible_ssl();
+Cloudflare::fix_cf_flexible_ssl();
 
 require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'ActionScheduler' . DIRECTORY_SEPARATOR . 'action-scheduler.php';
 
@@ -31,21 +24,45 @@ require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'Action
  * @since 1.0
  */
 function rocket_init() {
+	// Boot MCP OAuth once all plugins are loaded, so the standalone MCP Adapter plugin is detected whatever the load order.
+	if (
+		class_exists( 'WP\MCP\Core\McpAdapter' )
+		&& class_exists( \WPMedia\MCP\OAuth\Bootstrap::class )
+		&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+		&& function_exists( 'wp_register_ability' )
+		&& function_exists( 'wp_get_ability' )
+		&& function_exists( 'wp_get_abilities' )
+		&& function_exists( 'wp_register_ability_category' )
+	) {
+		\WPMedia\MCP\OAuth\Bootstrap::instance();
+	}
+
 	// Nothing to do if autosave.
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
 	}
 
+	/**
+	 * Fires when WP Rocket starts to load.
+	 */
+	do_action( 'wp_rocket_before_load' );
+
 	// Call defines and functions.
 	require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
 
 	// Last constants.
-	define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
-	define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+	if ( ! defined( 'WP_ROCKET_PLUGIN_NAME' ) ) {
+		define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+	}
+	if ( ! defined( 'WP_ROCKET_PLUGIN_SLUG' ) ) {
+		define( 'WP_ROCKET_PLUGIN_SLUG', sanitize_key( WP_ROCKET_PLUGIN_NAME ) );
+	}
+
+	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 
 	$wp_rocket = new Plugin(
 		WP_ROCKET_PATH . 'views',
-		new Container()
+		new Container( new IndexedDefinitionAggregate() )
 	);
 	$wp_rocket->load();
 
@@ -53,7 +70,6 @@ function rocket_init() {
 	require_once WP_ROCKET_FUNCTIONS_PATH . 'api.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'posts.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'admin.php';
-	require WP_ROCKET_INC_PATH . '/API/bypass.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -69,6 +85,11 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.10.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.11.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.12.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.13.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.14.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.15.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.20.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.24.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 
@@ -79,10 +100,10 @@ function rocket_init() {
 			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
 		}
 	}
+	require WP_ROCKET_ADMIN_PATH . 'options.php';
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
-		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';
@@ -90,7 +111,6 @@ function rocket_init() {
 	} elseif ( rocket_valid_key() ) {
 		require WP_ROCKET_FRONT_PATH . 'cookie.php';
 		require WP_ROCKET_FRONT_PATH . 'dns-prefetch.php';
-		require WP_ROCKET_FRONT_PATH . 'protocol.php';
 	}
 
 	// You can hook this to trigger any action when WP Rocket is correctly loaded, so, not in AUTOSAVE mode.
@@ -107,4 +127,3 @@ add_action( 'plugins_loaded', 'rocket_init' );
 
 register_deactivation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Deactivation\Deactivation', 'deactivate_plugin' ] );
 register_activation_hook( WP_ROCKET_FILE, [ 'WP_Rocket\Engine\Activation\Activation', 'activate_plugin' ] );
-

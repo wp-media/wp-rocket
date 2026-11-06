@@ -29,7 +29,7 @@ use WP_Rocket\Dependencies\PathConverter\Converter;
 class CSS extends Minify
 {
 	/**
-	 * @var int maximum inport size in kB
+	 * @var int maximum import size in kB
 	 */
 	protected $maxImportSize = 5;
 
@@ -740,7 +740,7 @@ class CSS extends Minify
 		// PHP only supports $this inside anonymous functions since 5.4
 		$minifier = $this;
 		$this->registerPattern(
-			'/(?<=^|[;}])\s*(--[^:;{}"\'\s]+)\s*:([^;{}]+)/m',
+			'/(?<=^|[;}{])\s*(--[^:;{}"\'\s]+)\s*:([^;{}]+)/m',
 			function ($match) use ($minifier) {
 				$placeholder = '--custom-'. count($minifier->extracted) . ':0';
 				$minifier->extracted[$placeholder] = $match[1] .':'. trim($match[2]);

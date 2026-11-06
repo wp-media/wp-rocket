@@ -3,7 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @group  CDN
@@ -11,6 +11,9 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 class Test_RewriteCssProperties extends TestCase {
 	public function set_up() {
 		parent::set_up();
+
+		// An active subscription keeps the CDN from being forced off by the licence check.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ] );
 
 		$this->cnames = [
 			'cdn.example.org',
@@ -26,6 +29,7 @@ class Test_RewriteCssProperties extends TestCase {
 
 	public function tear_down() {
 		remove_filter( 'do_rocket_cdn_css_properties', [ $this, 'return_false' ] );
+		delete_transient( 'rocketcdn_status' );
 
 		parent::tear_down();
 	}

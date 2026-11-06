@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Godaddy;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::clean_file
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Godaddy::clean_file
  *
  * @group  Godaddy
  * @group  ThirdParty

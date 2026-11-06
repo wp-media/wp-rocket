@@ -1,0 +1,10 @@
+.external-css-background-image-gradient{
+	width: 100%;
+	height: 400px;
+	background-image: linear-gradient(rgba(0, 0, 255, 0.5), rgba(255, 255, 0, 0.5)), url(/wp-content/rocket-test-data/images/paper.jpeg);
+}
+
+.header-bg-image
+{
+	background-image:url('http://localhost/app/themes/avadanta-trade/assets/images/header-bg.jpg') !important;
+}

@@ -1,6 +1,6 @@
 # Welcome to the WP Rocket GitHub Repository
 
-[![Build Status](https://travis-ci.com/wp-media/wp-rocket.svg?branch=master)](https://travis-ci.com/wp-media/wp-rocket)
+[![Unit/Integration tests](https://github.com/wp-media/wp-rocket/actions/workflows/test_wprocket_php8.yml/badge.svg)](https://github.com/wp-media/wp-rocket/actions/workflows/test_wprocket_php8.yml)
 
 Feel free to browse the source and keep track of our plugin's progress. You can stay informed of our latest versions via our [blog](https://wp-rocket.me/blog/?utm_source=github&utm_medium=wp_rocket_profile) or via Twitter [@wp_rocket](https://twitter.com/wp_rocket).
 
@@ -25,10 +25,41 @@ You can use composer to install the plugin as a dependency:
 composer require wp-media/wp-rocket
 ```
 
+Then, in the plugin's folder, install the dependencies:
+```
+cd wp-content/plugins/wp-rocket/
+composer install --no-dev --no-scripts
+```
+
 To be able to validate your license and use the plugin, you will also have to manually define 2 constants in your wp-config.php file:
 
 - `WP_ROCKET_EMAIL` which is the email for your WP Rocket account
 - `WP_ROCKET_KEY` which is your API Key
+
+## Building assets
+
+Building the admin JS/CSS requires Node.js `^22.18.0 || >=24.11.0` (`.nvmrc` pins 24).
+
+- Install the dependencies with `npm ci`.
+- Build with `npm run build:js && npm run build:css`.
+
+## Gulp Tasks
+
+| Command                         |                                               Description                                               |
+|---------------------------------|:-------------------------------------------------------------------------------------------------------:|
+| **CSS Tasks**                   |                                                                                                         |
+| `gulp build:saas:unmin`         |                      Builds Full admin CSS, the unminified version (wpr-admin.css)                      |
+| `gulp build:saas:min`           |                     Builds Full admin CSS, the minified version (wpr-admin.min.css)                     |
+| `gulp build:sass:all`           | Builds all admin CSS files (wpr-admin.css, wpr-admin.min.css, wpr-admin-rtl.css, wpr-admin-rtl.min.css) |
+| `gulp sass:watch`               |           Watches all admin CSS files mentioned above and builds them again with any change.            |
+| **JS Tasks**                    |                                                                                                         |
+| `gulp build:js:app:unmin`       |                     Builds admin app js file, the unminified version (wpr-admin.js)                     |
+| `gulp build:js:app:min`         |                    Builds admin app js file, the minified version (wpr-admin.min.js)                    |
+| `gulp build:js:lazyloadcss:min` |                 Builds lazyload CSS js file, the minified version (lazyload-css.min.js)                 |
+| `gulp build:js:all`             |  Builds all js files mentioned above (wpr-admin.js, wpr-admin.min.js, lazyload-css.min.js, wpr-beacon)  |
+| `gulp build:js:beacon`          |                   Builds beacon script (wpr-beacon.min.js, source file, and map file)                   |
+| `gulp js:watch`                 |                   Watches all js files changes and build them again with any change.                    |
+
 
 ## Support
 
@@ -40,11 +71,15 @@ If you find an issue in WP Rocket, please let us know [here](https://github.com/
 Be advised, this point of contact is to be used to report bugs and not to receive support. 
 Check out our [support page](https://wp-rocket.me/support/?utm_source=github&utm_medium=wp_rocket_profile) if you need to submit a ticket. 
 
-To disclose a security issue to our team, please reach out to contact@wp-media.me
+## Security Policy  
+  
+### Reporting Security Bugs  
+  
+You can report any security bugs found in the source code of the site-reviews plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/wp-rocket). The Patchstack team will assist you with verification, CVE assignment and take care of notifying the developers of this plugin.
 
 ## Contributions
 
-Feel free to check out our [public roadmap](https://trello.com/b/CrUcz6Jy/wp-rocket-roadmap) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
+Feel free to check out our [GitHub issues](https://github.com/wp-media/wp-rocket/issues) if you would like to request a feature. We always look forward to feedback and suggestions from the community to help us improve our plugins!
 
 ## Want to know more about our WordPress plugins? 
 

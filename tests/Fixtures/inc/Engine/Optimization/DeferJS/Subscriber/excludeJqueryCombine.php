@@ -1,4 +1,5 @@
 <?php
+$default_list = [];
 
 return [
 	'testShouldReturnOriginalWhenConstantSet' => [
@@ -11,7 +12,7 @@ return [
 			],
 		],
 		'excluded' => [],
-		'expected' => [],
+		'expected' => $default_list,
 	],
 	'testShouldReturnOriginalWhenDisabledByPostMeta' => [
 		'config' => [
@@ -23,7 +24,7 @@ return [
 			],
 		],
 		'excluded' => [],
-		'expected' => [],
+		'expected' => $default_list,
 	],
 	'testShouldReturnOriginalWhenDeferJSDisabled' => [
 		'config' => [
@@ -35,7 +36,7 @@ return [
 			],
 		],
 		'excluded' => [],
-		'expected' => [],
+		'expected' => $default_list,
 	],
 	'testShouldReturnOriginalWhenCombineJSDisabled' => [
 		'config' => [
@@ -47,7 +48,7 @@ return [
 			],
 		],
 		'excluded' => [],
-		'expected' => [],
+		'expected' => $default_list,
 	],
 	'testShouldReturnUpdatedExcludedArray' => [
 		'config' => [
@@ -59,8 +60,6 @@ return [
 			],
 		],
 		'excluded' => [],
-		'expected' => [
-			'/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js',
-		],
+		'expected' => array_merge( [ '/jquery-?[0-9.]*(.min|.slim|.slim.min)?.js', ], $default_list ),
 	],
 ];

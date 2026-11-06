@@ -7,13 +7,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * Manages common hooks for the plugin updater.
  */
 class UpdaterApiCommonSubscriber implements Subscriber_Interface {
-
-	/**
-	 * API’s URL domain.
-	 *
-	 * @var string
-	 */
-	private $api_host;
+	const API_HOST = 'api.wp-rocket.me';
 
 	/**
 	 * URL to the site’s home.
@@ -56,7 +50,6 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * @param array $args {
 	 *     Required arguments to populate the class properties.
 	 *
-	 *     @type string  $api_host           API’s URL domain.
 	 *     @type string  $site_url           URL to the site’s home.
 	 *     @type string  $plugin_version     Current version of the plugin.
 	 *     @type string  $settings_slug      Key slug used when submitting new settings (POST).
@@ -65,7 +58,7 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * }
 	 */
 	public function __construct( $args ) {
-		foreach ( [ 'api_host', 'site_url', 'plugin_version', 'settings_slug', 'settings_nonce_key', 'plugin_options' ] as $setting ) {
+		foreach ( [ 'site_url', 'plugin_version', 'settings_slug', 'settings_nonce_key', 'plugin_options' ] as $setting ) {
 			if ( isset( $args[ $setting ] ) ) {
 				$this->$setting = $args[ $setting ];
 			}
@@ -89,11 +82,11 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 	 * @return array           An array of requested arguments
 	 */
 	public function maybe_set_rocket_user_agent( $request, $url ) {
-		if ( ! is_string( $url ) ) {
+		if ( ! is_string( $url ) ) { // @phpstan-ignore-line GH #7042 - $url variable may be change by other plugins to something else than string.
 			return $request;
 		}
 
-		if ( $this->api_host && strpos( $url, $this->api_host ) !== false ) {
+		if ( strpos( $url, self::API_HOST ) !== false ) {
 			$request['user-agent'] = sprintf( '%s;%s', $request['user-agent'], $this->get_rocket_user_agent() );
 		}
 
@@ -123,14 +116,10 @@ class UpdaterApiCommonSubscriber implements Subscriber_Interface {
 		if ( current_user_can( 'rocket_manage_options' ) && wp_verify_nonce( filter_input( INPUT_POST, '_wpnonce' ), $this->settings_nonce_key . '-options' ) ) {
 			$posted = filter_input( INPUT_POST, $this->settings_slug, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
-			if ( ! empty( $posted[ $field_name ] ) && is_string( $posted[ $field_name ] ) ) {
+			if ( ! empty( $posted[ $field_name ] ) ) {
 				// The value has been posted through the settings page.
 				return sanitize_text_field( $posted[ $field_name ] );
 			}
-		}
-
-		if ( ! $this->plugin_options ) {
-			return '';
 		}
 
 		$option_value = $this->plugin_options->get( $field_name );

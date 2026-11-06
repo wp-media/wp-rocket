@@ -6,7 +6,7 @@ use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\User::is_license_expired
+ * Test class covering \WP_Rocket\Engine\License\API\User::is_license_expired
  *
  * @group License
  */

@@ -33,7 +33,7 @@ function rocket_clear_cache_after_studiopress_accelerator() {
 	}
 }
 
-add_action( 'after_rocket_clean_domain', 'rocket_clean_studiopress_accelerator' );
+add_action( 'rocket_after_clean_domain', 'rocket_clean_studiopress_accelerator' );
 /**
  * Call the cache server to purge the cache with StudioPress Accelerator.
  *

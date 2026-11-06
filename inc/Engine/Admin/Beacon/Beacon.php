@@ -111,7 +111,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 * @return string
 	 */
 	private function get_user_locale() {
-		if ( ! isset( $this->locale ) ) {
+		if ( empty( $this->locale ) ) {
 			$this->locale = current( array_slice( explode( '_', get_user_locale() ), 0, 1 ) );
 		}
 
@@ -122,7 +122,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 		 *
 		 * @param string $locale The locale ID.
 		 */
-		return apply_filters( 'rocket_beacon_locale', $this->locale );
+		return wpm_apply_filters_typed( 'string', 'rocket_beacon_locale', $this->locale );
 	}
 
 	/**
@@ -190,7 +190,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	private function config_data() : array {
+	private function config_data(): array {
 		return [
 			'display' => [
 				'position' => is_rtl() ? 'left' : 'right',
@@ -469,8 +469,8 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://docs.wp-rocket.me/article/1721-exclude-urls-from-being-preloaded?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 				'fr' => [
-					'id'  => '63496d5b8a552811521e52d2',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1722-exclure-url-du-prechargement?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '640b30058ca4460845b4a1c4',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1739-comment-exclure-urls-prechargement?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'bot'                        => [
@@ -481,16 +481,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5693d582c69791436155d645',
 					'url' => 'https://fr.docs.wp-rocket.me/article/188-comment-est-pre-charge-le-cache/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-			],
-			'dns_prefetch'               => [
-				'en' => [
-					'id'  => '5e055a602c7d3a7e9ae5881c',
-					'url' => 'https://docs.wp-rocket.me/article/1302-prefetch-dns-requests/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				],
-				'fr' => [
-					'id'  => '5e1891892c7d3a7e9ae60983',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1303-prechargement-requetes-dns/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'fonts_preload'              => [
@@ -585,14 +575,44 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
-			'rocketcdn'                  => [
+			'own_cdn'                    => [
+				'en' => [
+					'id'  => '54c7fa3de4b0512429885b5c',
+					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '5696830b9033603f7da308ac',
+					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'purge_cdn'                  => [
 				'en' => [
 					'id'  => '5e4c84bd04286364bc958833',
-					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#when-should-i-purge-the-rocketcdn-cache',
 				],
 				'fr' => [
 					'id'  => '5f351e42042863444aa04652',
-					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#when-should-i-purge-the-rocketcdn-cache',
+				],
+			],
+			'rocketcdn'                  => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-pro-plan',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-pro-plan',
+				],
+			],
+			'rocketcdn_free'             => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-free-plan',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#rocketcdn-free-plan',
 				],
 			],
 			'rocketcdn_error'            => [
@@ -607,12 +627,22 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			],
 			'exclude_cdn'                => [
 				'en' => [
-					'id'  => '5434667fe4b0310ce5ee867a',
-					'url' => 'https://docs.wp-rocket.me/article/24-resolving-issues-with-cdn-and-fonts-icons/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '54c7fa3de4b0512429885b5c',
+					'url' => 'https://docs.wp-rocket.me/article/42-using-wp-rocket-with-a-cdn#exclude-files-from-your-cdn',
 				],
 				'fr' => [
-					'id'  => '569684d29033603f7da308b9',
-					'url' => 'https://fr.docs.wp-rocket.me/article/248-resoudre-des-problemes-avec-cdn-et-les-polices-icones/?utm_source=wp_plugin&utm_medium=wp_rocket',
+					'id'  => '5696830b9033603f7da308ac',
+					'url' => 'https://fr.docs.wp-rocket.me/article/246-utiliser-wp-rocket-avec-un-cdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclure-des-fichiers-du-cdn',
+				],
+			],
+			'exclude_cdn_rocketcdn'      => [
+				'en' => [
+					'id'  => '5e4c84bd04286364bc958833',
+					'url' => 'https://docs.wp-rocket.me/article/1307-rocketcd/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
+				],
+				'fr' => [
+					'id'  => '5f351e42042863444aa04652',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1343-comment-utiliser-rocketcdn/?utm_source=wp_plugin&utm_medium=wp_rocket#exclude-files-from-rocketcdn',
 				],
 			],
 			'cloudflare_credentials'     => [
@@ -643,6 +673,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5696837e9033603f7da308ae',
 					'url' => 'https://fr.docs.wp-rocket.me/article/247-utiliser-wp-rocket-avec-cloudflare/?utm_source=wp_plugin&utm_medium=wp_rocket#add-on',
+				],
+			],
+			'cloudflare_apo'             => [
+				'en' => [
+					'id'  => '602593e90a2dae5b58faee1e',
+					'url' => 'https://docs.wp-rocket.me/article/1444-using-cloudflare-apo-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6486cb4147772865db893c7c',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1757-utiliser-cloudflare-apo-avec-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 			'sucuri_credentials'         => [
@@ -759,6 +799,96 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '5edf8a5504286306f804e1dc',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1327-problemes-critical-css-fouc#critical-path-css-de-secours',
+				],
+			],
+			'domain_change'              => [
+				'en' => [
+					'id'  => '577578b1903360258a10d8ba',
+					'url' => 'https://docs.wp-rocket.me/article/705-changing-domains-migrating-sites-with-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '57868414c697912dee72a98a',
+					'url' => 'https://fr.docs.wp-rocket.me/article/837-changer-de-domaine-migrer-un-site-avec-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'rucss_firewall_ips'         => [
+				'en' => [
+					'id'  => '60ed8bde00fd0d7c253ff547',
+					'url' => 'https://docs.wp-rocket.me/article/1628-which-ip-do-i-need-to-allow-for-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6246fe1a2ce7ed0fb091c543',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1690-quelles-adresses-ip-url-autoriser-pour-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'optimize_critical_images'   => [
+				'en' => [
+					'id'  => '662c1a144c3ddc1d4e7a1d25',
+					'url' => 'https://docs.wp-rocket.me/article/1816-optimize-critical-images?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6634e9fe0cfcb4508af6b290',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1819-optimiser-images-essentielle?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'remove_cache_tab'           => [
+				'en' => [
+					'id'  => '6633b5df1009cb439ac6a432',
+					'url' => 'https://docs.wp-rocket.me/article/1817-removal-of-the-cache-tab?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6634e9b21009cb439ac6a6fb',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1818-suppression-onglet-cache?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'rucss_database'             => [
+				'en' => [
+					'id'  => '668f1284f0fdf93e4cf10825',
+					'url' => 'https://docs.wp-rocket.me/article/1828-could-not-create-the-rucss-usedcss-table/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '66a32d970d7d86166241eff1',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1833-impossible-creer-table-rucssusedcss/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'host_fonts_locally'         => [
+				'en' => [
+					'id'  => '673358b02ddbd952f6241b38',
+					'url' => 'https://docs.wp-rocket.me/article/1847-self-host-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '675ab51d46b8d26833b2af82',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1852-auto-heberger-google-fonts?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'preconnect_domains'         => [
+				'en' => [
+					'id'  => '681b61d889bd957cd04bd2d9',
+					'url' => 'https://docs.wp-rocket.me/article/1869-preconnect-to-external-domains',
+				],
+				'fr' => [
+					'id'  => '681da5ae11561a04f5de356e',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1870-preconnexion-aux-domaines-externes',
+				],
+			],
+			'rocket_insights'            => [
+				'en' => [
+					'id'  => '68beeaab7f1dbe419d37a71c',
+					'url' => 'https://docs.wp-rocket.me/article/1876-rocket-insights?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '68dfaa989cf81238fa93c753',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1878-rocket-insights?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'mcp_server'                 => [
+				'en' => [
+					'id'  => '6a5a7a2d8609704abe640d81',
+					'url' => 'https://docs.wp-rocket.me/article/1922-wp-rocket-mcp?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6a635ff8a20e9375e2188b72',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1923-mcp-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

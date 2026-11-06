@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
+ * Test class covering \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  *
  * @group  Beacon
  * @group  AdminOnly
@@ -29,6 +29,9 @@ class Test_InsertScript extends TestCase {
 		Functions\when( 'get_bloginfo' )->justReturn( '5.4' );
 
 		$this->text_direction = $wp_locale->text_direction;
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
@@ -40,6 +43,8 @@ class Test_InsertScript extends TestCase {
 
 		remove_filter( 'rocket_beacon_locale', [ $this, 'locale_cb' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'consumer_email' ] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

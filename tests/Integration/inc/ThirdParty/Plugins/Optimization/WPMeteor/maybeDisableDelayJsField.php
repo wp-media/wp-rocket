@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Optimization\WPMete
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::maybe_disable_delay_js_field
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::maybe_disable_delay_js_field
  *
  * @group WPMeteor
  * @group ThirdParty
@@ -37,6 +37,8 @@ class Test_MaybeDisableDelayJsField extends TestCase {
 		if ( ! $this->plugin_active ) {
 			return $plugins;
 		}
+
+		$plugins = [];
 
 		$plugins[] = 'wp-meteor/wp-meteor.php';
 

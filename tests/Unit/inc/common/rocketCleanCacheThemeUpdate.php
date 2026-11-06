@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Theme;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * Test class covering ::rocket_clean_cache_theme_update
  * @uses   ::rocket_clean_domain
  *
  * @group  Common
@@ -27,11 +27,10 @@ class Test_RocketCleanCacheThemeUpdate extends TestCase {
 	public function testShouldDoExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
-		} else {
-			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
 		}
 
 		if ( $expected['wp_get_theme'] ) {
+			Functions\expect( 'rocket_clean_domain' )->once()->andReturnNull();
 			Functions\expect( 'wp_get_theme' )->once()->andReturnUsing(
 				function () {
 					return new WP_Theme( 'default', '/themes' );

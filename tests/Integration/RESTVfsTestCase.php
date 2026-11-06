@@ -6,12 +6,15 @@ use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\RESTVfsTestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class RESTVfsTestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait       = false;
 	protected static $skip_setting_up_settings = false;
@@ -20,10 +23,10 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -39,10 +42,10 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 	public static function tear_down_after_class() {
 		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( static::$transients as $transient => $value ) {
@@ -59,6 +62,9 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
 
 		$this->initDefaultStructure();
 		$this->init();
@@ -81,6 +87,9 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 		unset( $GLOBALS['debug_fs'] );
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function dataProvider() {

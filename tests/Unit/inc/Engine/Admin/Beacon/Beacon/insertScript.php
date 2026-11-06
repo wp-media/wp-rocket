@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
+ * Test class covering \WP_Rocket\Engine\Admin\Beacon\Beacon::insert_script
  * @group  Beacon
  */
 class Test_InsertScript extends TestCase {

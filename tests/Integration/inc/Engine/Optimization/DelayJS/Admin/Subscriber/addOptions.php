@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DelayJS\Admin\Subs
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::add_options
+ * Test class covering \WP_Rocket\Engine\Optimization\DelayJS\Admin\Subscriber::add_options
  *
  * @group DelayJS
  * @group AdminOnly
@@ -20,7 +20,7 @@ class Test_AddOptions extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'rocket_first_install_options' );
+		$this->restoreWpHook( 'rocket_first_install_options' );
 	}
 
 	/**

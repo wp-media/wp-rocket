@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::_rocket_get_wp_rocket_cache_path
  * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
@@ -47,7 +47,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $config, $expected ) {
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {
 			$GLOBALS['debug_fs'] = true;
 		}

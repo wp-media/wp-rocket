@@ -1,8 +1,12 @@
 <?php
 
+use WP_Rocket\Dependencies\BerlinDB\Database\Table;
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
-
 use WP_Rocket\Engine\Preload\Database\Tables\Cache;
+use WP_Rocket\Engine\Media\AboveTheFold\Database\Tables\AboveTheFold;
+use WP_Rocket\Engine\Optimization\LazyRenderContent\Database\Table\LazyRenderContent;
+use WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains;
 
 /**
  * Manages the deletion of WP Rocket data and files on uninstall.
@@ -33,7 +37,18 @@ class WPRocketUninstall {
 		'rocket_analytics_notice_displayed',
 		'rocketcdn_user_token',
 		'rocketcdn_process',
+		'rocket_rocketcdn_forced_pause_state',
 		'wp_rocket_hide_deactivation_form',
+		'wp_rocket_last_base_url',
+		'wp_rocket_no_licence',
+		'wp_rocket_last_option_hash',
+		'wp_rocket_debug',
+		'wp_rocket_rocketcdn_old_url',
+		'plugin_family_dismiss_promote_imagify',
+		'rocket_mixpanel_optin',
+		'rocketcdn_status_fetch_lock',
+		'rocket_cdn_website_search_fetch_lock',
+		'rocket_cdn_retry_pro_detection_attempts',
 	];
 
 	/**
@@ -53,6 +68,7 @@ class WPRocketUninstall {
 		'rocketcdn_status',
 		'rocketcdn_pricing',
 		'rocketcdn_purge_cache_response',
+		'rocketcdn_purchase_tracked',
 		'rocket_cloudflare_ips',
 		'rocket_cloudflare_is_api_keys_valid',
 		'rocket_preload_triggered',
@@ -61,11 +77,43 @@ class WPRocketUninstall {
 		'rocket_preload_errors',
 		'rocket_database_optimization_process',
 		'rocket_database_optimization_process_complete',
-		'wp_rocket_no_licence',
 		'rocket_hide_deactivation_form',
 		'wpr_preload_running',
 		'rocket_preload_as_tables_count',
 		'wpr_dynamic_lists',
+		'wpr_dynamic_lists_delayjs',
+		'rocket_domain_changed',
+		'wp_rocket_rucss_errors_count',
+		'wpr_dynamic_lists_incompatible_plugins',
+		'rocket_divi_notice',
+		'rocket_saas_processing',
+		'rocket_mod_pagespeed_enabled',
+		'wp_rocket_pricing',
+		'wp_rocket_pricing_timeout',
+		'wp_rocket_pricing_timeout_active',
+		'rocket_get_refreshed_fragments_cache',
+		'rocket_preload_previous_requests_durations',
+		'rocket_preload_check_duration',
+		'wpr_user_information_timeout_active',
+		'wpr_user_information_timeout',
+		'rocket_fonts_data_collection',
+		'wpr_global_score_data',
+		'wp_rocket_log_file_size_check',
+		'wpr_ri_recommendations',
+		'rocket_cdn_website_search',
+		'rocket_mixpanel_reseller_synced',
+		'rocket_cdn_pro_detection_failed',
+		'rocket_cdn_check_status_request_timeout',
+		'rocket_cdn_check_status_request_timeout_active',
+	];
+
+	/**
+	 * Prefixes of WP Rocket transients with dynamic suffixes.
+	 *
+	 * @var array
+	 */
+	private $transient_prefixes = [
+		'rocket_cname_valid_',
 	];
 
 	/**
@@ -79,6 +127,19 @@ class WPRocketUninstall {
 		'rocket_cache_dir_size_check',
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
+		'rocket_saas_clean_rows_time_event',
+		'rocket_saas_on_submit_jobs',
+		'rocket_saas_pending_jobs',
+		'rocket_remove_saas_failed_jobs',
+		'rocket_performance_hints_cleanup',
+		'action_scheduler_run_queue_rucss',
+		'rocket_update_dynamic_lists',
+		'rocket_preload_clean_rows_time_event',
+		'rocket_preload_process_pending',
+		'rocket_preload_revert_old_failed_rows',
+		'rocket_cdn_create_request_timeout',
+		'rocket_cdn_create_request_timeout_active',
+		'rocket_cron_refresh_trial_customer_data',
 	];
 
 	/**
@@ -92,6 +153,8 @@ class WPRocketUninstall {
 		'busting',
 		'critical-css',
 		'used-css',
+		'fonts',
+		'background-css',
 	];
 
 	/**
@@ -109,42 +172,37 @@ class WPRocketUninstall {
 		'defer_all_js',
 		'delay_js',
 		'remove_unused_css',
+		'lazyload_css_bg_img',
 	];
 
 	/**
-	 * Instance of RUCSS used_css table.
+	 * Tables instances
 	 *
-	 * @var WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS
+	 * @var array
 	 */
-	private $rucss_usedcss_table;
-
-	/**
-	 * Instance of Preload rocket_cache table.
-	 *
-	 * @var Cache
-	 */
-	private $rocket_cache;
+	private $tables;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string  $cache_path            Path to the cache folder.
-	 * @param string  $config_path           Path to the config folder.
-	 * @param UsedCSS $rucss_usedcss_table   RUCSS used_css table.
-	 * @param Cache   $rocket_cache   Preload rocket_cache table.
+	 * @param string $cache_path            Path to the cache folder.
+	 * @param string $config_path           Path to the config folder.
+	 * @param array  $tables Array of tables to be dropped.
 	 */
-	public function __construct( $cache_path, $config_path, $rucss_usedcss_table, $rocket_cache ) {
-		$this->cache_path          = trailingslashit( $cache_path );
-		$this->config_path         = $config_path;
-		$this->rucss_usedcss_table = $rucss_usedcss_table;
-		$this->rocket_cache        = $rocket_cache;
+	public function __construct(
+		$cache_path,
+		$config_path,
+		$tables
+	) {
+		$this->cache_path  = trailingslashit( $cache_path );
+		$this->config_path = $config_path;
+		$this->tables      = $tables;
 	}
 
 	/**
 	 * Deletes all plugin data and files on uninstall.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -152,18 +210,23 @@ class WPRocketUninstall {
 		$this->delete_plugin_data();
 		$this->delete_cache_files();
 		$this->delete_config_files();
-		$this->drop_rucss_database_tables();
-		$this->delete_preload_table();
+
+		foreach ( $this->tables as $table ) {
+			$this->delete_table( $table );
+		}
 	}
 
 	/**
-	 * Drop RUCSS database tables.
+	 * Deletes a table
+	 *
+	 * @param Table $table Table instance.
 	 *
 	 * @return void
 	 */
-	private function drop_rucss_database_tables() {
-		// If the table exist, then drop the table.
-		$this->drop_rucss_current_site_tables();
+	private function delete_table( $table ) {
+		if ( $table->exists() ) {
+			$table->uninstall();
+		}
 
 		if ( ! is_multisite() ) {
 			return;
@@ -172,19 +235,11 @@ class WPRocketUninstall {
 		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
 			switch_to_blog( $site_id );
 
-			$this->drop_rucss_current_site_tables();
+			if ( $table->exists() ) {
+				$table->uninstall();
+			}
 
 			restore_current_blog();
-		}
-
-	}
-
-	/**
-	 * Drop RUCSS tables for current active site.
-	 */
-	private function drop_rucss_current_site_tables() {
-		if ( $this->rucss_usedcss_table->exists() ) {
-			$this->rucss_usedcss_table->uninstall();
 		}
 	}
 
@@ -192,7 +247,6 @@ class WPRocketUninstall {
 	 * Deletes WP Rocket options, transients and events.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -208,18 +262,42 @@ class WPRocketUninstall {
 		}
 
 		array_walk( $this->transients, 'delete_transient' );
+		array_walk( $this->transient_prefixes, [ $this, 'delete_transients_by_prefix' ] );
 		array_walk( $this->options, 'delete_option' );
 
 		foreach ( $this->events as $event ) {
+			if ( ! wp_next_scheduled( $event ) ) {
+				continue;
+			}
 			wp_clear_scheduled_hook( $event );
 		}
+	}
+
+	/**
+	 * Deletes all transients whose names start with the given prefix.
+	 *
+	 * Used for transients with a dynamic suffix (e.g. rocket_cname_valid_<md5>).
+	 *
+	 * @param string $prefix Transient name prefix (without the _transient_ storage prefix).
+	 * @return void
+	 */
+	private function delete_transients_by_prefix( string $prefix ): void {
+		global $wpdb;
+
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+				$wpdb->esc_like( '_transient_' . $prefix ) . '%',
+				$wpdb->esc_like( '_transient_timeout_' . $prefix ) . '%'
+			)
+		);
 	}
 
 	/**
 	 * Deletes all WP Rocket cache files.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -233,7 +311,6 @@ class WPRocketUninstall {
 	 * Deletes all WP Rocket config files.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @return void
 	 */
@@ -242,42 +319,15 @@ class WPRocketUninstall {
 	}
 
 	/**
-	 * Drop preload tables.
-	 */
-	private function delete_preload_table() {
-		// If the table exist, then drop the table.
-
-		if ( $this->rocket_cache->exists() ) {
-			$this->rocket_cache->uninstall();
-		}
-
-		if ( ! is_multisite() ) {
-			return;
-		}
-
-		foreach ( get_sites( [ 'fields' => 'ids' ] ) as $site_id ) {
-			switch_to_blog( $site_id );
-
-			if ( $this->rocket_cache->exists() ) {
-				$this->rocket_cache->uninstall();
-			}
-
-			restore_current_blog();
-		}
-
-	}
-
-	/**
 	 * Recursively deletes files and directories.
 	 *
 	 * @since 3.5.2
-	 * @author Remy Perona
 	 *
 	 * @param string $file Path to file or directory.
 	 */
 	private function delete( $file ) {
 		if ( ! is_dir( $file ) ) {
-			@unlink( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_delete_file( $file );
 			return;
 		}
 
@@ -292,14 +342,14 @@ class WPRocketUninstall {
 
 		foreach ( $iterator as $item ) {
 			if ( $item->isDir() ) {
-				@rmdir( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+				@rmdir( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_rmdir
 
 				continue;
 			}
 
-			@unlink( $item ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			wp_delete_file( $item );
 		}
 
-		@rmdir( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+		@rmdir( $file ); //phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_system_operations_rmdir
 	}
 }

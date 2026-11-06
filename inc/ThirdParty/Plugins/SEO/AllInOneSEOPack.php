@@ -57,7 +57,9 @@ class AllInOneSEOPack implements Subscriber_Interface {
 		}
 
 		if (
-			( ! $aioseo_v4 && ! $sitemap_enabled ) ||
+			( ! $aioseo_v4 && ! $sitemap_enabled )
+			||
+			// @phpstan-ignore-next-line
 			( $aioseo_v4 && ! aioseo()->options->sitemap->general->enable )
 		) {
 			return $sitemaps;

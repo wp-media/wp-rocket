@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::rocket_activation
+ * Test class covering ::rocket_activation
  *
  * @group Admin_Only
  * @group Activation

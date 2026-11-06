@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Dreampress;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::remove_htaccess_html_expire
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Dreampress::remove_htaccess_html_expire
  *
  * @group  Dreampress
  * @group  ThirdParty

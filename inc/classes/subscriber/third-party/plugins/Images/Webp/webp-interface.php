@@ -4,17 +4,14 @@ namespace WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp;
 /**
  * Interface to use for webp subscribers.
  *
- * @since  3.4
- * @author Grégory Viguier
+ * @since 3.4
  */
 interface Webp_Interface {
 
 	/**
 	 * Get the plugin name.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -23,9 +20,7 @@ interface Webp_Interface {
 	/**
 	 * Get the plugin identifier.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return string
 	 */
@@ -34,9 +29,7 @@ interface Webp_Interface {
 	/**
 	 * Tell if the plugin converts images to webp.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -45,9 +38,7 @@ interface Webp_Interface {
 	/**
 	 * Tell if the plugin serves webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -56,9 +47,7 @@ interface Webp_Interface {
 	/**
 	 * Tell if the plugin uses a CDN-compatible technique to serve webp images on frontend.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
 	 * @return bool
 	 */
@@ -67,11 +56,9 @@ interface Webp_Interface {
 	/**
 	 * Get the plugin basename.
 	 *
-	 * @since  3.4
-	 * @access public
-	 * @author Grégory Viguier
+	 * @since 3.4
 	 *
-	 * @return bool
+	 * @return string
 	 */
 	public function get_basename();
 }

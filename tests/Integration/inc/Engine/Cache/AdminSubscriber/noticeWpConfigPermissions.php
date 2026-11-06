@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::notice_wp_config_permissions
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::notice_wp_config_permissions
  *
  * @group  AdminOnly
  * @group  WPCache

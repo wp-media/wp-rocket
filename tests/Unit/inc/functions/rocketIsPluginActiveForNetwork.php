@@ -7,12 +7,12 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_is_plugin_active_for_network
+ * Test class covering ::rocket_is_plugin_active_for_network
  * @group  Options
  * @group  Functions
  */
 class Test_RocketIsPluginActiveForNetwork extends TestCase {
-	private $config;
+	protected $config;
 
 	protected function setUp() : void {
 		parent::setUp();

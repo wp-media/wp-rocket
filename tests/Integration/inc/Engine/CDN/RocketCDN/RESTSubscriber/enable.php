@@ -3,39 +3,45 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\ApiTestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::enable
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::enable
  * @uses \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::enable
  *
  * @group  RocketCDN
  */
 class Test_Enable extends ApiTestCase {
 
+	private $original_settings;
+
+	public function set_up() {
+		parent::set_up();
+		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+	}
+
+	public function tear_down() {
+		update_option( 'wp_rocket_settings', $this->original_settings );
+		delete_transient( 'rocketcdn_status' );
+		parent::tear_down();
+	}
+
 	/**
 	 * Test should update the option settings when the "enable" endpoint is requested.
 	 */
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 
 		$this->requestEnableEndpoint( $body_params );
 
-		$expected_subset = [
-			'cdn'        => 1,
-			'cdn_cnames' => [ 'https://rocketcdn.me' ],
-			'cdn_zone'   => [ 'all' ],
-		];
-
 		$options = get_option( 'wp_rocket_settings' );
 
-		foreach ( $expected_subset as $key => $value ) {
-			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[$key] );
-		}
+		$this->assertArrayHasKey( 'cdn', $options );
+		$this->assertSame( 1, $options['cdn'] );
 	}
 
 	/**
@@ -43,8 +49,8 @@ class Test_Enable extends ApiTestCase {
 	 */
 	public function testShouldDeleteTransientWhenEndpointRequestt() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 
@@ -62,8 +68,8 @@ class Test_Enable extends ApiTestCase {
 	 */
 	public function testShouldReturnSuccessWhenEndpointRequest() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 

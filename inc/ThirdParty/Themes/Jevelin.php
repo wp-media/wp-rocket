@@ -1,23 +1,15 @@
 <?php
 namespace WP_Rocket\ThirdParty\Themes;
 
-class Jevelin extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'jevelin';
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
+class Jevelin implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
 		return [
 			'rocket_rucss_inline_content_exclusions' => 'preserve_patterns',
 		];

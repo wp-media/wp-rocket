@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
+ * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
  * @group  Optimize
  * @group  AssetsLocalCache
  */
@@ -23,22 +23,41 @@ class Test_GetContent extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldSaveLocalContent( $url, $file, $content ) {
-		Functions\expect( 'wp_remote_get' )
-			->once()
-			->with( $url );
+	public function testShouldSaveLocalContent( $config, $expected ) {
+		if ( ! $config['found'] ) {
+			Functions\expect( 'wp_remote_get' )
+				->once()
+				->with( $config['url'] )
+				->andReturn( $config['response'] );
 
-		Functions\expect( 'wp_remote_retrieve_body' )
-			->once()
-			->andReturn( $content );
+			Functions\when( 'wp_remote_retrieve_response_code' )->alias(
+				function ( $response ) {
+					return $response['code'];
+				}
+			);
+			Functions\when( 'wp_remote_retrieve_header' )->alias(
+				function ( $response, $header ) {
+					return $response['headers'][ $header ] ?? '';
+				}
+			);
+			Functions\when( 'wp_remote_retrieve_body' )->alias(
+				function ( $response ) {
+					return $response['body'];
+				}
+			);
+		}
 
-		$local_cache = new AssetsLocalCache( $this->filesystem->getUrl( 'wp-content/cache/min/' ), $this->filesystem );
-
-		$this->assertSame(
-			$content,
-			$local_cache->get_content( $url )
+		$local_cache = new AssetsLocalCache(
+			$this->filesystem->getUrl( 'wp-content/cache/min/' ),
+			$this->filesystem,
+			$config['reject_html']
 		);
 
-		$this->assertTrue( $this->filesystem->exists( $file ) );
+		$this->assertSame(
+			$expected,
+			$local_cache->get_content( $config['url'] )
+		);
+
+		$this->assertSame( $config['file_written'], $this->filesystem->exists( $config['file'] ) );
 	}
 }
