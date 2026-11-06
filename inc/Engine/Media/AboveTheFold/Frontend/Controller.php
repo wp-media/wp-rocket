@@ -17,6 +17,13 @@ class Controller implements ControllerInterface {
 	use CommentTrait;
 
 	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'atf_lcp';
+
+	/**
 	 * Options instance
 	 *
 	 * @var Options_Data
