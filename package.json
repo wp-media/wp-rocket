@@ -15,11 +15,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.16.0",
-    "@babel/plugin-proposal-class-properties": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
-    "@babel/preset-react": "^7.16.0",
-    "babelify": "^10.0.0",
+    "@babel/core": "^8.1.0",
+    "@babel/preset-env": "^8.0.7",
     "browserify": "^17.0.0",
     "gulp": "^5.0.0",
     "gulp-rename": "^2.0.0",
@@ -32,5 +29,8 @@
     "vinyl-source-stream": "^2.0.0",
     "watchify": "^4.0.0",
     "wp-rocket-scripts": "^1.2.2"
+  },
+  "engines": {
+    "node": "^22.18.0 || >=24.11.0"
   }
 }
