@@ -19,8 +19,8 @@ updates:
     labels:
       - "type: enhancement"
 
-  # Build tooling for the admin JS/CSS. package-lock.json is gitignored, so only
-  # the direct dependencies declared in package.json are tracked.
+  # Build tooling for the admin JS/CSS. package-lock.json is committed, so security
+  # updates can also bump transitive dependencies.
   - package-ecosystem: "npm"
     directory: "/"
     target-branch: "develop"
