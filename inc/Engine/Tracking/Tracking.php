@@ -213,10 +213,21 @@ class Tracking extends Abstract_Render {
 			update_option( 'rocket_analytics_notice_displayed', 1 );
 			// Set the thank-you transient to display the thank-you notice after the opt-in is enabled.
 			set_transient( 'rocket_analytics_optin', 1 );
-			wp_send_json_success( 'Opt-in enabled.' );
+
+			// Hand the SDK bootstrap markup to the browser, as the page was rendered without it.
+			ob_start();
+			$this->mixpanel->add_script();
+			$sdk = (string) ob_get_clean();
+
+			wp_send_json_success(
+				[
+					'message' => 'Opt-in enabled.',
+					'sdk'     => $sdk,
+				]
+			);
 		} elseif ( '0' === $value ) {
 			$this->optin->disable();
-			wp_send_json_success( 'Opt-in disabled.' );
+			wp_send_json_success( [ 'message' => 'Opt-in disabled.' ] );
 		}
 
 		wp_send_json_error( 'Invalid value parameter.' );

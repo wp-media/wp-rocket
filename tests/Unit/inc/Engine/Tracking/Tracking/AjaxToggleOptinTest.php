@@ -100,7 +100,17 @@ class AjaxToggleOptinTest extends TestCase {
 			$this->optin->shouldReceive( 'disable' )
 				->atMost()
 				->once();
+			$this->mixpanel->shouldReceive( 'add_script' )
+				->times( '1' === $config['value'] ? 1 : 0 )
+				->andReturnUsing(
+					function () use ( $config ) {
+						echo $config['sdk'] ?? '';
+					}
+				);
+
 			Functions\expect( 'wp_send_json_success' )
+				->once()
+				->with( $expected['data'] )
 				->andThrow( new \Exception( $expected['message'] ) );
 		}
 
