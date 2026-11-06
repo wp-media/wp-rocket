@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers Subscriber::update_lifespan_option_on_update
+ * Test class covering Subscriber::update_lifespan_option_on_update
  * @group  Cache
  */
 class Test_UpdateLifespanOptionOnUpdate extends TestCase {
@@ -14,19 +14,19 @@ class Test_UpdateLifespanOptionOnUpdate extends TestCase {
 
 	private $options = [];
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'update_lifespan_option_on_update', 13 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_purge_cron_interval', [$this, 'set_purge_cron_interval'] );
 		remove_filter( 'pre_get_rocket_option_purge_cron_unit', [$this, 'set_purge_cron_unit'] );
 
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}
 
 	/**

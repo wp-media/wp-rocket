@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Media\Lazyload\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::add_exclusions
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::add_exclusions
  *
  * @group Media
  * @group Lazyload
@@ -21,7 +21,7 @@ class Test_AddExclusions extends TestCase {
 	private $options;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->options = Mockery::mock( Options_Data::class );

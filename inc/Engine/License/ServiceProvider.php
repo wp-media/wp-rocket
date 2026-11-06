@@ -1,24 +1,26 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\License;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\License\API\PricingClient;
-use WP_Rocket\Engine\License\API\Pricing;
-use WP_Rocket\Engine\License\API\UserClient;
-use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\Renewal;
-use WP_Rocket\Engine\License\Subscriber;
-use WP_Rocket\Engine\License\Upgrade;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\License\API\{
+	PricingClient,
+	Pricing,
+	UserClient,
+	User,
+	RemoteSettingsClient,
+	RemoteSettings,
+};
+use WP_Rocket\Engine\License\{Renewal, Upgrade, Subscriber, Revoked};
 
 /**
  * Service Provider for the License module
- *
- * @since 3.7.3
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * Aliases the service provider provides
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -30,33 +32,74 @@ class ServiceProvider extends AbstractServiceProvider {
 		'upgrade',
 		'renewal',
 		'license_subscriber',
+		'remote_settings_client',
+		'remote_settings',
+		'revoked',
 	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
 
 	/**
 	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$views = __DIR__ . '/views';
+	public function register(): void {
+		$views = new StringArgument( __DIR__ . '/views' );
 
 		$this->getContainer()->add( 'pricing_client', PricingClient::class );
 		$this->getContainer()->add( 'user_client', UserClient::class )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->share( 'pricing', Pricing::class )
-			->withArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
-		$this->getContainer()->share( 'user', User::class )
-			->withArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
+			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'pricing', Pricing::class )
+			->addArgument( $this->getContainer()->get( 'pricing_client' )->get_pricing_data() );
+		$this->getContainer()->addShared( 'user', User::class )
+			->addArgument( $this->getContainer()->get( 'user_client' )->get_user_data() );
+		$this->getContainer()->add( 'remote_settings_client', RemoteSettingsClient::class )
+			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'remote_settings', RemoteSettings::class )
+			->addArgument( 'remote_settings_client' );
 		$this->getContainer()->add( 'upgrade', Upgrade::class )
-			->withArgument( $this->getContainer()->get( 'pricing' ) )
-			->withArgument( $this->getContainer()->get( 'user' ) )
-			->withArgument( $views );
+			->addArguments(
+				[
+					'pricing',
+					'user',
+					$views,
+				]
+			);
 		$this->getContainer()->add( 'renewal', Renewal::class )
-			->withArgument( $this->getContainer()->get( 'pricing' ) )
-			->withArgument( $this->getContainer()->get( 'user' ) )
-			->withArgument( $views );
-		$this->getContainer()->share( 'license_subscriber', Subscriber::class )
-			->withArgument( $this->getContainer()->get( 'upgrade' ) )
-			->withArgument( $this->getContainer()->get( 'renewal' ) );
+			->addArguments(
+				[
+					'pricing',
+					'user',
+					'options',
+					$views,
+				]
+			);
+		$this->getContainer()->add( 'revoked', Revoked::class )
+			->addArguments(
+				[
+					'user',
+					$views,
+				]
+			);
+		$this->getContainer()->addShared( 'license_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'upgrade',
+					'renewal',
+					'revoked',
+					'user',
+					'user_client',
+				]
+			);
 	}
 }

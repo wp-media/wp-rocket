@@ -5,19 +5,19 @@ namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\WPEngine;
 use WpeCommon;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPEngine::clean_wpengine
  *
  * @group  WPEngine
  * @group  ThirdParty
  */
 class Test_CleanWPEngine extends WPEngineTestCase {
-	public static function tearDownAfterClass() {
+	public static function tearDownAfterClass(): void {
 		parent::tearDownAfterClass();
 
 		WpeCommon::resetCounters();
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		WpeCommon::resetCounters();

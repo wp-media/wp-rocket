@@ -6,16 +6,17 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\ModPagespeed::show_admin_notice
  * @group mod_pagespeed
  * @group ThirdParty
  */
 class Test_ShowAdminNotice extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
 	private $subscriber;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->subscriber = new ModPagespeed();
 	}
@@ -72,7 +73,7 @@ class Test_ShowAdminNotice extends TestCase {
 		if ( $expected['show_notice'] ) {
 			Functions\when( 'rocket_notice_html' )->alias(
 				function ( $args ) {
-					echo '<div class="notice notice-' . $args['status'] . ' "><p>' . $args['message'] . '</p><p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce=123456">Dismiss this notice.</a></p></div>';
+					echo '<div class="notice notice-' . $args['status'] . ' "><p>' . $args['message'] . '</p><p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_error_mod_pagespeed&amp;_wpnonce=123456">Dismiss this notice</a></p></div>';
 				}
 			);
 		}

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Support;
 
+use WP_REST_Response;
 use WP_Rocket\Admin\Options_Data;
 
 class Rest {
@@ -91,7 +92,7 @@ class Rest {
 	 * @return bool
 	 */
 	public function validate_email( $param ) {
-		return $param === $this->options->get( 'consumer_email', '' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_email', '' );
 	}
 
 	/**
@@ -104,6 +105,6 @@ class Rest {
 	 * @return bool
 	 */
 	public function validate_key( $param ) {
-		return $param === $this->options->get( 'consumer_key', '' );
+		return ! empty( $param ) && $param === $this->options->get( 'consumer_key', '' );
 	}
 }

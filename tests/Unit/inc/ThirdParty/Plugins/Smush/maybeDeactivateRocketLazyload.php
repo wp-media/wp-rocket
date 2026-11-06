@@ -6,7 +6,7 @@ use Mockery;
 use WP_Rocket\ThirdParty\Plugins\Smush;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Smush::maybe_deactivate_rocket_lazyload
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Smush::maybe_deactivate_rocket_lazyload
  * @group ThirdParty
  * @group Smush
  */

@@ -2,19 +2,35 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
-use Brain\Monkey\Functions;
+use Mockery;
+use Brain\Monkey\{Filters, Functions};
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\CDN::rewrite
+ * Test class covering \WP_Rocket\Engine\CDN\CDN::rewrite
  * @group  CDN
  */
 class Test_Rewrite extends TestCase {
+	private $cdn;
+	private $options;
+
+	public function setUp() : void {
+		parent::setUp();
+
+		$this->options   = Mockery::mock( Options_Data::class );
+		$this->cdn       = new CDN( $this->options );
+	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURLToCDN( $home_url, $original, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Functions\when( 'content_url' )->justReturn( "{$home_url}/wp-content/" );
 		Functions\when( 'includes_url' )->justReturn( "{$home_url}/wp-includes/" );
 		Functions\when( 'wp_upload_dir' )->justReturn( "{$home_url}/wp-content/uploads/" );
@@ -31,11 +47,42 @@ class Test_Rewrite extends TestCase {
 			return 'http://' . $url;
 		} );
 
-		$cdn = new CDN( $this->getOptionsMock() );
+		$options = [
+			'cdn' => [
+				'default' => 0,
+				'value'   => 1,
+			],
+			'cdn_cnames' => [
+				'default' => [],
+				'value' => [
+					'http://cdn.example.org',
+				],
+			],
+			'cdn_zone' => [
+				'default' => [],
+				'value' => [
+					'all',
+				],
+			],
+			'cdn_reject_files' => [
+				'default' => [],
+				'value' => [],
+			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
+			],
+		];
+
+		foreach ( $options as $key => $option ) {
+			$this->options->shouldReceive( 'get' )
+				->with( $key, $option['default'] )
+				->andReturn( $option['value'] );
+		}
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
-			$this->format_the_html( $cdn->rewrite( $original ) )
+			$this->format_the_html( $this->cdn->rewrite( $original ) )
 		);
 	}
 

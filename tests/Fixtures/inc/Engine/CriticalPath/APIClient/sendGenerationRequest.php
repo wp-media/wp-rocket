@@ -6,10 +6,7 @@ return [
 			'config'   => [
 				'block_external' => true,
 				'item_url'     => 'http://www.example.com/?p=1',
-				'response_data' => [
-					'code' => 400,
-					'body' => '{}',
-				]
+				'response' => new WP_Error('code', 'User has blocked requests through HTTP.'),
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -20,10 +17,15 @@ return [
 		'testShouldBailoutIfResponse400'     => [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=1',
-				'response_data' => [
-					'code' => 400,
+				'response' => [
+					'headers' => [],
 					'body' => '{}',
-				]
+					'response' => [
+						'code' => 400,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -34,10 +36,15 @@ return [
 		'testShouldBailoutIfResponseCodeNotExpected'     => [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=2',
-				'response_data' => [
-					'code' => 403,
+				'response' => [
+					'headers' => [],
 					'body' => '{}',
-				]
+					'response' => [
+						'code' => 403,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -48,10 +55,15 @@ return [
 		'testShouldBailoutIfResponseBodyEmpty'     => [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=3',
-				'response_data' => [
-					'code' => 200,
-					'body' => '{}',
-				]
+				'response' => [
+					'headers' => [],
+					'body' => '',
+					'response' => [
+						'code' => 200,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -62,10 +74,15 @@ return [
 		'testShouldSucceed'     => [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=4',
-				'response_data' => [
-					'code' => 200,
+				'response' => [
+					'headers' => [],
 					'body' => '{"success":true,"data":{"id":1}}',
-				]
+					'response' => [
+						'code' => 200,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'success'    => true,
@@ -79,10 +96,15 @@ return [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=1',
 				'is_mobile' => true,
-				'response_data' => [
-					'code' => 400,
+				'response' => [
+					'headers' => [],
 					'body' => '{}',
-				]
+					'response' => [
+						'code' => 400,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -94,10 +116,15 @@ return [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=2',
 				'is_mobile' => true,
-				'response_data' => [
-					'code' => 403,
+				'response' => [
+					'headers' => [],
 					'body' => '{}',
-				]
+					'response' => [
+						'code' => 403,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -109,10 +136,15 @@ return [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=3',
 				'is_mobile' => true,
-				'response_data' => [
-					'code' => 200,
-					'body' => '{}',
-				]
+				'response' => [
+					'headers' => [],
+					'body' => '',
+					'response' => [
+						'code' => 200,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'code'    => 'cpcss_generation_failed',
@@ -124,10 +156,15 @@ return [
 			'config'   => [
 				'item_url'     => 'http://www.example.com/?p=4',
 				'is_mobile' => true,
-				'response_data' => [
-					'code' => 200,
+				'response' => [
+					'headers' => [],
 					'body' => '{"success":true,"data":{"id":1}}',
-				]
+					'response' => [
+						'code' => 200,
+					],
+					'cookies' => [],
+					'filename' => '',
+				],
 			],
 			'expected' => [
 				'success'    => true,

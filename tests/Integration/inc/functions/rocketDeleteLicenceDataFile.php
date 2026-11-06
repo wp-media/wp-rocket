@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_delete_licence_data_file
+ * Test class covering ::rocket_delete_licence_data_file
  * @group Functions
  * @group Options
  * @group vfs

@@ -5,13 +5,14 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_post_terms_urls
- * @uses   ::get_rocket_parse_url
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_post_terms_urls
  *
- * @group  purge_actions
- * @group  vfs
+ * @uses ::get_rocket_parse_url
+ *
+ * @group PurgeActions
+ * @group vfs
  */
-class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
+class Test_PurgePostTermsUrls extends FilesystemTestCase {
 	private static $user_id      = 0;
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
@@ -24,11 +25,29 @@ class Test_GetRocketPostTermsUrls extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+
+		// Install the preload cache table to prevent DB error caused by permalink changed.
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );
+	}
+
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down();
 	}
 
 	/**

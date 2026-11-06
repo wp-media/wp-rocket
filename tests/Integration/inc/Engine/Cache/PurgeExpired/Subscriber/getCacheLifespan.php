@@ -9,7 +9,7 @@ use WP_Rocket\Engine\Cache\PurgeExpired\PurgeExpiredCache;
 use WP_Rocket\Engine\Cache\PurgeExpired\Subscriber;
 
 /**
- * @covers Subscriber::get_cache_lifespan
+ * Test class covering Subscriber::get_cache_lifespan
  * @uses   \WP_Rocket\Admin\Options
  * @uses   \WP_Rocket\Admin\Options_Data
  * @group  Subscriber

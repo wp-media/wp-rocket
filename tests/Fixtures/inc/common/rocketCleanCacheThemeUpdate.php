@@ -36,6 +36,18 @@ return [
 				'wp_get_theme' => null,
 			],
 		],
+		'shouldBailOutWhenImporting'  => [
+			'hook_extra' => [
+				'action' => 'update',
+				'type'   => 'plugin',
+				'themes' => [ 'default' ],
+				'importing' => true,
+			],
+			'expected'   => [
+				'cleaned'      => [],
+				'wp_get_theme' => null,
+			],
+		],
 		'shouldCleanDomain'                => [
 			'hook_extra' => [
 				'action' => 'update',

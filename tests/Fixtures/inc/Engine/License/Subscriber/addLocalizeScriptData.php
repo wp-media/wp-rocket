@@ -6,6 +6,7 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => -1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -16,18 +17,16 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnDefaultWhenLicenseIsExpired' => [
 		'config'   => [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'last week' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -38,18 +37,16 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
 	'testShouldReturnDefaultWhenPromoNotActive' => [
 		'config'   => [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -60,18 +57,16 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
-		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
-		],
+		'expected' => [],
 	],
-	'testShouldReturnUpdatedArrayWhenLicenseIsSoonExpired' => [
+	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
 		'config'   => [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
-				'licence_expiration' => strtotime( 'next week' ),
+				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last week' ),
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -82,11 +77,29 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [],
+	],
+	'testShouldReturnUpdatedArrayWhenLicenseIsSoonExpired' => [
+		'config'   => [
+			'user'   => json_decode( json_encode( [
+				'licence_account'    => 1,
+				'licence_expiration' => strtotime( 'next week' ),
+				'date_created'      => strtotime( 'last year' ),
+			] ) ),
+			'pricing' => json_decode( json_encode( [
+				'promo' => [
+					'start_date' => strtotime( 'last week' ),
+					'end_date'   => strtotime( 'next week' ),
+				],
+			] ) ),
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
-			'nonce'              => 12345,
-			'origin_url'         => 'https://wp-rocket.me',
 			'license_expiration' => strtotime( 'next week' ),
 		],
 	],
@@ -95,6 +108,16 @@ return [
 			'user'   => json_decode( json_encode( [
 				'licence_account'    => 1,
 				'licence_expiration' => strtotime( 'next year' ),
+				'date_created'      => strtotime( 'last year' ),
+				'licence' => [
+					'prices' => [
+						'upgrades' => [
+							(object) [
+								"name"=> "Growth",
+							]
+						],
+					],
+				],
 			] ) ),
 			'pricing' => json_decode( json_encode( [
 				'promo' => [
@@ -105,11 +128,9 @@ return [
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
-			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
 			'promo_end'  => strtotime( 'next week' ),
 		],
 	],

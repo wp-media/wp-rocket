@@ -136,19 +136,28 @@
         @include font-size(14,24);
     }
 
-    // Disabled field
-    &.wpr-isDisabled{
-        opacity: 0.55;
+    &.wpr-isDisabled {
+        label {
+            color: #8a8b8d;
+        }
     }
-
     // Parent field
     &.wpr-isParent{
         padding-bottom: 0;
+        margin-bottom: $space*2;
     }
 
-    &.wpr-Delayjs {
-        margin-top: 16px;
+    &.wpr-Delayjs{
+        margin-top: $space*2;
     }
+
+    &.wpr-RemoveUnUsedCss{
+	  margin-bottom: 0;
+    }
+
+    &.wpr-NoPaddingBottom{
+	  padding-bottom: 0;
+	}
 
     &.wpr-isLastElem{
         margin-top: $space*2;
@@ -170,7 +179,6 @@
 
         &.wpr-isOpen{
             display: block;
-            margin-top: $space*2;
         }
 
         &.wpr-field--textarea{
@@ -184,12 +192,20 @@
                 padding-right: 0;
             }
         }
+	  &.no-space{
+		padding-left:0;
+	  }
     }
-
     // Checkbox
     &--checkbox{
         .wpr-field-description{
             margin-left: $space*4;
+        }
+    }
+
+    &--checkbox.wpr-isDisabled {
+        .wpr-field-description {
+            color: #b0b0b1;
         }
     }
 
@@ -270,5 +286,64 @@
         .wpr-field-description-label{
             color: $cBlack;
         }
+    }
+
+  	&--textarea {
+	  .wpr-field-description {
+		pre {
+		  background: rgba(0, 0, 0, .07);
+		  padding: 1em;
+		  margin: 1em 0 0;
+		  white-space: normal;
+		  code {
+			background: transparent;
+			-webkit-touch-callout: all;
+			-webkit-user-select: all;
+			-khtml-user-select: all;
+			-moz-user-select: all;
+			-ms-user-select: all;
+			user-select: all;
+			color: $cBlack;
+		  }
+		}
+	  }
+	}
+
+    // Highlight applied after a recommendation scrolls the field into view.
+    // Drawn behind the field so the field's own spacing never changes, it extends into the spacing around it.
+    &--highlighted{
+        position: relative;
+        isolation: isolate;
+
+        &::before{
+            content: "";
+            position: absolute;
+            inset-block: var(--wpr-highlight-top, 0px) calc(-1 * var(--wpr-highlight-end, 0px) + var(--wpr-highlight-bottom, 0px));
+            inset-inline: var(--wpr-highlight-inset, -#{$space*2});
+            z-index: -1;
+            border-radius: 4px;
+            background-color: $cPrimarySubtle;
+            pointer-events: none;
+            animation: wpr-field-highlight 2s ease-out;
+
+            @media (prefers-reduced-motion: reduce){
+                animation: none;
+            }
+        }
+
+        &:first-child::before{
+            inset-block-start: var(--wpr-highlight-top, -#{$space*2});
+        }
+    }
+}
+
+@keyframes wpr-field-highlight{
+    0%,
+    75%{
+        background-color: $cPrimarySubtle;
+    }
+
+    100%{
+        background-color: transparent;
     }
 }

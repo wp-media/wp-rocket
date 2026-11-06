@@ -1,40 +1,155 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\CDN;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\CDN\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\CDN\Drivers\{
+	Custom,
+	DriverFactory,
+	RocketCDNFree,
+	RocketCDNPaid
+};
+use WP_Rocket\Engine\CDN\Render\{
+	Controller as RenderController,
+	Subscriber as RenderSubscriber
+};
 
 /**
  * Service provider for WP Rocket CDN
- *
- * @since 3.5.5
  */
 class ServiceProvider extends AbstractServiceProvider {
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [
 		'cdn',
+		'cdn_cname_validator',
+		'cdn_context',
 		'cdn_subscriber',
+		'cdn_admin_subscriber',
+		'cdn_render_controller',
+		'cdn_render_subscriber',
+		'cdn_driver_factory',
+		'cdn_driver_free',
+		'cdn_driver_paid',
+		'cdn_driver_byocdn',
+		'cdn_driver',
+		'cache_controller',
+		'cdn_state_bridge',
 	];
 
 	/**
-	 * Registers the services in the container
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function register(): void {
+		$this->getContainer()->add( 'cache_controller', Cache::class )
+			->addArgument( 'rocketcdn_query' );
+		$this->getContainer()->addShared( 'cdn_cname_validator', CNAMEValidator::class );
+		$this->getContainer()->addShared( 'cdn', CDN::class )
+			->addArgument( 'options' );
+		$this->getContainer()->addShared( 'cdn_context', Context::class )
+			->addArguments(
+				[
+					'options',
+					'rocketcdn_subscription_controller',
+					'user',
+				]
+			);
 
-		$this->getContainer()->share( 'cdn', 'WP_Rocket\Engine\CDN\CDN' )
-			->withArgument( $options );
-		$this->getContainer()->share( 'cdn_subscriber', 'WP_Rocket\Engine\CDN\Subscriber' )
-			->withArgument( $options )
-			->withArgument( $this->getContainer()->get( 'cdn' ) );
+		// Register individual drivers.
+		$this->getContainer()->add(
+			'cdn_driver_free',
+			RocketCDNFree::class
+		)->addArgument( 'rocketcdn_query' );
+
+		$this->getContainer()->add(
+			'cdn_driver_paid',
+			RocketCDNPaid::class
+		)->addArgument( 'options' );
+
+		$this->getContainer()->add(
+			'cdn_driver_byocdn',
+			Custom::class
+		);
+
+		// Register Driver Factory.
+		$this->getContainer()->addShared(
+			'cdn_driver_factory',
+			DriverFactory::class
+		)
+			->addArgument( $this->getContainer() )
+			->addArgument( 'cdn_context' );
+
+		// Register current active driver (resolved at runtime).
+		$this->getContainer()->add(
+			'cdn_driver',
+			function () {
+				$factory = $this->getContainer()->get( 'cdn_driver_factory' );
+				return $factory->create();
+			}
+		);
+
+		$this->getContainer()->addShared( 'cdn_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'options',
+					'cdn',
+					'options_api',
+					'rocketcdn_subscription_controller',
+					'cache_controller',
+					'rocketcdn_query',
+					'cdn_state_bridge',
+					'cdn_driver',
+					'cdn_cname_validator',
+				]
+			);
+		$this->getContainer()->addShared( 'cdn_admin_subscriber', AdminSubscriber::class );
+
+		// CDN state compatibility bridge (RocketCDN refactor epic #8693 - temporary, removed in Story 10).
+		$this->getContainer()->addShared( 'cdn_state_bridge', CdnStateBridge::class )
+			->addArguments(
+				[
+					'rocketcdn_subscription_controller',
+					'options_api',
+				]
+			);
+
+		// CDN Render controller.
+		$this->getContainer()->addShared( 'cdn_render_controller', RenderController::class )
+			->addArguments(
+				[
+					'beacon',
+					new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views/settings/' ),
+					'cdn_context',
+					'options',
+					'options_api',
+					'rocketcdn_query',
+					'rocketcdn_subscription_controller',
+					'user',
+					'cache_controller',
+				]
+			);
+
+		// CDN Render subscriber.
+		$this->getContainer()->addShared( 'cdn_render_subscriber', RenderSubscriber::class )
+			->addArgument( 'cdn_render_controller' );
 	}
 }

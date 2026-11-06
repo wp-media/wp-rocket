@@ -4,8 +4,12 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Optimization\DeferJS;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 class DeferJS {
+	use CommentTrait;
+
 	/**
 	 * Options instance
 	 *
@@ -13,28 +17,22 @@ class DeferJS {
 	 */
 	private $options;
 
-
 	/**
-	 * Array of inline exclusions list.
+	 * DataManager instance
 	 *
-	 * @var string[]
+	 * @var DataManager
 	 */
-	private $inline_exclusions = [
-		'DOMContentLoaded',
-		'document.write',
-		'window.lazyLoadOptions',
-		'N.N2_',
-		'rev_slider_wrapper',
-		'FB3D_CLIENT_LOCALE',
-	];
+	private $data_manager;
 
 	/**
 	 * Instantiate the class
 	 *
 	 * @param Options_Data $options Options instance.
+	 * @param DataManager  $data_manager DataManager instance.
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public function __construct( Options_Data $options, DataManager $data_manager ) {
+		$this->options      = $options;
+		$this->data_manager = $data_manager;
 	}
 
 	/**
@@ -45,7 +43,7 @@ class DeferJS {
 	 * @param array $options WP Rocket options array.
 	 * @return array
 	 */
-	public function add_option( array $options ) : array {
+	public function add_option( array $options ): array {
 		$options['exclude_defer_js'] = [];
 
 		return $options;
@@ -59,7 +57,7 @@ class DeferJS {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_js( string $html ) : string {
+	public function defer_js( string $html ): string {
 		if ( ! $this->can_defer_js() ) {
 			return $html;
 		}
@@ -74,6 +72,10 @@ class DeferJS {
 
 		$exclude_defer_js = implode( '|', $this->get_excluded() );
 
+		if ( ! @preg_replace( '#(' . $exclude_defer_js . ')#i', '', 'dummy-string' ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+			return $html;
+		}
+
 		foreach ( $matches as $tag ) {
 			if ( preg_match( '#(' . $exclude_defer_js . ')#i', $tag['url'] ) ) {
 				continue;
@@ -83,11 +85,11 @@ class DeferJS {
 				continue;
 			}
 
-			$deferred_tag = str_replace( '>', ' defer>', $tag[0] );
+			$deferred_tag = str_replace( '>', ' data-rocket-defer defer>', $tag[0] );
 			$html         = str_replace( $tag[0], $deferred_tag, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'defer_js', $html );
 	}
 
 	/**
@@ -98,7 +100,7 @@ class DeferJS {
 	 * @param string $html HTML content.
 	 * @return string
 	 */
-	public function defer_inline_js( string $html ) : string {
+	public function defer_inline_js( string $html ): string {
 		if ( ! $this->can_defer_js() ) {
 			return $html;
 		}
@@ -160,7 +162,7 @@ class DeferJS {
 	 * @param string $content Inline JS content.
 	 * @return string
 	 */
-	private function inline_js_wrapper( string $content ) : string {
+	private function inline_js_wrapper( string $content ): string {
 		return "window.addEventListener('DOMContentLoaded', function() {" . $content . '});';
 	}
 
@@ -171,7 +173,7 @@ class DeferJS {
 	 *
 	 * @return boolean
 	 */
-	private function can_defer_js() : bool {
+	private function can_defer_js(): bool {
 		if ( rocket_get_constant( 'DONOTROCKETOPTIMIZE' ) ) {
 			return false;
 		}
@@ -190,36 +192,12 @@ class DeferJS {
 	 *
 	 * @return array
 	 */
-	public function get_excluded() : array {
-		$exclude_defer_js = [
-			'gist.github.com',
-			'content.jwplatform.com',
-			'js.hsforms.net',
-			'www.uplaunch.com',
-			'google.com/recaptcha',
-			'widget.reviews.co.uk',
-			'verify.authorize.net/anetseal',
-			'lib/admin/assets/lib/webfont/webfont.min.js',
-			'app.mailerlite.com',
-			'widget.reviews.io',
-			'simplybook.(.*)/v2/widget/widget.js',
-			'/wp-includes/js/dist/i18n.min.js',
-			'/wp-content/plugins/wpfront-notification-bar/js/wpfront-notification-bar(.*).js',
-			'/wp-content/plugins/oxygen/component-framework/vendor/aos/aos.js',
-			'static.mailerlite.com/data/(.*).js',
-			'cdn.voxpow.com/static/libs/v1/(.*).js',
-			'cdn.voxpow.com/media/trackers/js/(.*).js',
-			'use.typekit.net',
-			'www.idxhome.com',
-			'/wp-includes/js/dist/vendor/lodash(.min)?.js',
-			'/wp-includes/js/dist/api-fetch(.min)?.js',
-			'/wp-includes/js/dist/i18n(.min)?.js',
-			'/wp-includes/js/dist/vendor/wp-polyfill(.min)?.js',
-			'/wp-includes/js/dist/url(.min)?.js',
-			'/wp-includes/js/dist/hooks(.min)?.js',
-		];
+	public function get_excluded(): array {
+		if ( ! $this->can_defer_js() ) {
+			return [];
+		}
 
-		$exclude_defer_js = array_unique( array_merge( $exclude_defer_js, $this->options->get( 'exclude_defer_js', [] ) ) );
+		$exclude_defer_js = array_unique( array_merge( $this->get_external_exclusions(), $this->options->get( 'exclude_defer_js', [] ) ) );
 
 		/**
 		 * Filter list of Deferred JavaScript files
@@ -245,7 +223,7 @@ class DeferJS {
 	 * @param array $excluded_files Array of excluded files from combine JS.
 	 * @return array
 	 */
-	public function exclude_jquery_combine( array $excluded_files ) : array {
+	public function exclude_jquery_combine( array $excluded_files ): array {
 		if ( ! $this->can_defer_js() ) {
 			return $excluded_files;
 		}
@@ -288,7 +266,7 @@ class DeferJS {
 	 * @return string
 	 */
 	private function get_inline_exclusions_list_pattern() {
-		$inline_exclusions_list = $this->inline_exclusions;
+		$inline_exclusions_list = $this->get_inline_exclusions();
 
 		/**
 		 * Filters the patterns used to find inline JS that should not be deferred
@@ -297,11 +275,12 @@ class DeferJS {
 		 *
 		 * @param array $inline_exclusions_list Array of inline JS that should not be deferred.
 		 */
-		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', null );
+		$additional_inline_exclusions_list = apply_filters( 'rocket_defer_inline_exclusions', [] );
 
 		$inline_exclusions = '';
 
 		// Check if filter return is string so convert it to array for backward compatibility.
+		// @phpstan-ignore-next-line - Ignoring the safeguard as the result could be mixed.
 		if ( is_string( $additional_inline_exclusions_list ) ) {
 			$additional_inline_exclusions_list = explode( '|', $additional_inline_exclusions_list );
 		}
@@ -310,9 +289,32 @@ class DeferJS {
 		$inline_exclusions_list = array_merge( $inline_exclusions_list, (array) $additional_inline_exclusions_list );
 
 		foreach ( $inline_exclusions_list as $inline_exclusions_item ) {
-			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '#' ) . '|';
+			// Escape for '/', the delimiter the pattern below is actually matched with.
+			$inline_exclusions .= preg_quote( (string) $inline_exclusions_item, '/' ) . '|';
 		}
 
 		return rtrim( $inline_exclusions, '|' );
+	}
+
+	/**
+	 * Get inline exclusions list
+	 *
+	 * @return array
+	 */
+	private function get_inline_exclusions(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->defer_js_inline_exclusions ) ? $lists->defer_js_inline_exclusions : [];
+	}
+
+	/**
+	 * Get external exclusions list
+	 *
+	 * @return array
+	 */
+	private function get_external_exclusions(): array {
+		$lists = $this->data_manager->get_lists();
+
+		return isset( $lists->defer_js_external_exclusions ) ? $lists->defer_js_external_exclusions : [];
 	}
 }

@@ -2,28 +2,43 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostResolver;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
  * @uses   ::rocket_get_constant
  *
  * @group  Hostings
  * @group  ThirdParty
  */
 class Test_GetHostResolver extends TestCase {
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_SERVER['cw_allowed_ip'] );
+		unset( $_SERVER['GROUPONE_BRAND_NAME'] );
 		putenv( 'SPINUPWP_CACHE_PATH=' );
+
+		parent::tearDown();
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
+		Functions\when( 'wp_unslash' )
+			->returnArg();
+
+		Functions\when( 'sanitize_text_field' )
+			->returnArg();
+
+		// The siteground branch (rocket_is_plugin_active()) is reached, and evaluated, for every case
+		// that doesn't match an earlier branch; default it to "not active" unless overridden below.
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'is_multisite' )->justReturn( false );
+
 		switch ( $expected ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -34,13 +49,15 @@ class Test_GetHostResolver extends TestCase {
 			case 'spinupwp':
 				putenv( 'SPINUPWP_CACHE_PATH=/wp-content/spinupwp-cache/' );
 				break;
-			case 'wpengine':
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/wpe_param.php';
-				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
-				break;
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'onecom':
+				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
+				break;
+			case 'siteground':
+				Functions\when( 'rocket_is_plugin_active' )->justReturn( true );
 				break;
 			default:
 				break;

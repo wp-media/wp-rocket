@@ -5,33 +5,47 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\WPCache;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::add_wp_cache_status_test
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::add_wp_cache_status_test
  *
  * @group WPCache
  */
 class Test_AddWpCacheStatusTest extends TestCase {
-    protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
-    /**
+	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldAddWpCacheTest( $tests, $expected ) {
-        $wp_cache = new WPCache( null );
+	public function testShouldAddWpCacheTest( $config, $tests, $expected ) {
+		$wp_cache = new WPCache( null );
 
-        $result = $wp_cache->add_wp_cache_status_test( $tests );
+		if ( isset( $config['filter_constant_value'] ) ) {
+			Filters\expectApplied( 'rocket_set_wp_cache_constant' )->andReturn( false );
+		}
 
-        $this->assertArrayHasKey(
-            'wp_cache_status',
-            $result['direct']
-        );
+		$result = $wp_cache->add_wp_cache_status_test( $tests );
 
-        $this->assertSame(
-            $expected['direct']['wp_cache_status']['label'],
-            $result['direct']['wp_cache_status']['label']
-        );
+		if ( isset( $expected['direct'] ) ){
+			$this->assertArrayHasKey(
+				'wp_cache_status',
+				$result['direct']
+			);
 
-        $this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
-    }
+			$this->assertSame(
+				$expected['direct']['wp_cache_status']['label'],
+				$result['direct']['wp_cache_status']['label']
+			);
+
+			$this->assertTrue( is_callable( $result['direct']['wp_cache_status']['test'] ) );
+		}
+		else{
+			$this->assertArrayNotHasKey( 'wp_cache_status', $result['direct'] );
+		}
+		
+	}
 }

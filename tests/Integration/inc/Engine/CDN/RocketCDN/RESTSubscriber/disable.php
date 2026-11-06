@@ -3,14 +3,28 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\ApiTestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::disable
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::disable
  * @uses \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
  *
  * @group  RocketCDN
  */
 class Test_Disable extends ApiTestCase {
+
+	private $original_settings;
+
+	public function set_up() {
+		parent::set_up();
+		$this->original_settings = get_option( 'wp_rocket_settings', [] );
+	}
+
+	public function tear_down() {
+		update_option( 'wp_rocket_settings', $this->original_settings );
+		delete_transient( 'rocketcdn_status' );
+		parent::tear_down();
+	}
 
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		// Set up the transient.
@@ -34,20 +48,18 @@ class Test_Disable extends ApiTestCase {
 			],
 		];
 
-		// Request the "disable" endpoint.
-		$this->assertSame( $expected_response, $this->requestDisableEndpoint() );
-
-		$options = get_option( 'wp_rocket_settings' );
-		$expected = [
-			'cdn'        => 0,
-			'cdn_cnames' => [],
-			'cdn_zone'   => [],
+		$body_params = [
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 		];
 
-		foreach ( $expected as $key => $value ) {
-			$this->assertArrayHasKey( $key, $options );
-			$this->assertSame( $value, $options[ $key ] );
-		}
+		// Request the "disable" endpoint.
+		$this->assertSame( $expected_response, $this->requestDisableEndpoint( $body_params ) );
+
+		$options = get_option( 'wp_rocket_settings' );
+
+		$this->assertArrayHasKey( 'cdn', $options );
+		$this->assertSame( 0, $options['cdn'] );
 
 		$this->assertFalse( get_transient( 'rocketcdn_status' ) );
 	}

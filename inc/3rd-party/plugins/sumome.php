@@ -21,7 +21,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_css() {
 
-		// Retun on all pages but WP Rocket settings page.
+		// Return on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;
@@ -40,7 +40,7 @@ if ( class_exists( 'WP_Plugin_SumoMe' ) ) {
 	 */
 	function rocket_dequeue_sumo_me_js() {
 
-		// Retun on all pages but WP Rocket settings page.
+		// Return on all pages but WP Rocket settings page.
 		$screen = get_current_screen();
 		if ( 'settings_page_wprocket' !== $screen->id ) {
 			return;

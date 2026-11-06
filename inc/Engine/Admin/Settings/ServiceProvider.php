@@ -1,26 +1,25 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\{ArrayArgument, StringArgument};
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Model\PluginFamily as PluginFamilyModel;
+use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\PluginFamily as PluginFamilyController;
 
 /**
  * Service provider for the WP Rocket settings.
- *
- * @since 3.5.5 Moves into the new architecture.
- * @since 3.3
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [
+		'plugin_family_model',
+		'plugin_family_controller',
 		'settings',
 		'settings_render',
 		'settings_page',
@@ -28,23 +27,61 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the option array in the container.
+	 * Check if the service provider provides a specific service.
 	 *
-	 * @since 3.3
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
 	 */
-	public function register() {
-		$this->getContainer()->add( 'settings', 'WP_Rocket\Engine\Admin\Settings\Settings' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()->add( 'settings_render', 'WP_Rocket\Engine\Admin\Settings\Render' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/settings' );
-		$this->getContainer()->add( 'settings_page', 'WP_Rocket\Engine\Admin\Settings\Page' )
-			->withArgument( $this->getContainer()->get( 'settings_page_config' ) )
-			->withArgument( $this->getContainer()->get( 'settings' ) )
-			->withArgument( $this->getContainer()->get( 'settings_render' ) )
-			->withArgument( $this->getContainer()->get( 'beacon' ) )
-			->withArgument( $this->getContainer()->get( 'db_optimization' ) )
-			->withArgument( $this->getContainer()->get( 'user_client' ) );
-		$this->getContainer()->share( 'settings_page_subscriber', 'WP_Rocket\Engine\Admin\Settings\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'settings_page' ) );
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Registers items with the container
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->getContainer()->add( 'plugin_family_model', PluginFamilyModel::class );
+		$this->getContainer()->add( 'plugin_family_controller', PluginFamilyController::class );
+
+		$this->getContainer()->add( 'settings', Settings::class )
+			->addArgument( 'options' );
+		$this->getContainer()->add( 'settings_render', Render::class )
+			->addArguments(
+				[
+					new StringArgument( $this->getContainer()->get( 'template_path' ) . '/settings' ),
+					'plugin_family_model',
+				]
+			);
+		$this->getContainer()->add( 'settings_page', Page::class )
+			->addArguments(
+				[
+					new ArrayArgument(
+						[
+							'slug'       => WP_ROCKET_PLUGIN_SLUG,
+							'title'      => WP_ROCKET_PLUGIN_NAME,
+							'capability' => 'rocket_manage_options',
+						]
+					),
+					'settings',
+					'settings_render',
+					'beacon',
+					'db_optimization',
+					'user_client',
+					'delay_js_sitelist',
+					'template_path',
+					'options',
+					'ri_context',
+				]
+			);
+		$this->getContainer()->addShared( 'settings_page_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'settings_page',
+					'plugin_family_controller',
+				]
+			);
 	}
 }

@@ -22,20 +22,11 @@ class AMP implements Subscriber_Interface {
 	private $cdn_subscriber;
 
 	/**
-	 * WP Rocket Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
-
-	/**
 	 * Constructor
 	 *
-	 * @param Options_Data         $options        WP Rocket Options instance.
 	 * @param Subscriber_Interface $cdn_subscriber WP Rocket CDN Subscriber.
 	 */
-	public function __construct( Options_Data $options, Subscriber_Interface $cdn_subscriber ) {
-		$this->options        = $options;
+	public function __construct( Subscriber_Interface $cdn_subscriber ) {
 		$this->cdn_subscriber = $cdn_subscriber;
 	}
 
@@ -48,12 +39,13 @@ class AMP implements Subscriber_Interface {
 		$events = [
 			'activate_amp/amp.php'       => 'generate_config_file',
 			'deactivate_amp/amp.php'     => 'generate_config_file',
-			'wp'                         => 'disable_options_on_amp',
+			'wp'                         => [ 'disable_options_on_amp', 20 ],
 			'rocket_cache_query_strings' => 'is_amp_compatible_callback',
 		];
 
 		if ( function_exists( 'is_amp_endpoint' ) ) {
-			$events['update_option_amp-options'] = 'generate_config_file';
+			$events['update_option_amp-options']  = 'generate_config_file';
+			$events['rocket_delay_js_exclusions'] = 'exclude_script_from_delay_js';
 		}
 
 		return $events;
@@ -109,18 +101,33 @@ class AMP implements Subscriber_Interface {
 	 * @since  3.5.2
 	 */
 	public function disable_options_on_amp() {
-		if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint() ) {
+		// No endpoint function means we're not running amp here.
+		if ( ! function_exists( 'is_amp_endpoint' ) ) {
+			return;
+		}
+
+		// We can get a false negative from is_amp_endpoint when web stories is active, so we have to make sure neither is in play.
+		if (
+			! is_amp_endpoint()
+			&&
+			! ( is_singular( 'web-story' ) && ! is_embed() && ! post_password_required() )
+		) {
 			return;
 		}
 
 		global $wp_filter;
 
-		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
+		remove_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10 );
 		add_filter( 'do_rocket_lazyload', '__return_false' );
 		add_filter( 'do_rocket_lazyload_iframes', '__return_false' );
 		add_filter( 'pre_get_rocket_option_async_css', '__return_false' );
 		add_filter( 'pre_get_rocket_option_delay_js', '__return_false' );
 		add_filter( 'pre_get_rocket_option_preload_links', '__return_false' );
+		add_filter( 'pre_get_rocket_option_minify_js', '__return_false' );
+		add_filter( 'pre_get_rocket_option_minify_google_fonts', '__return_false' );
+		add_filter( 'pre_get_rocket_option_lazyload_css_bg_img', '__return_false' );
+		add_filter( 'pre_get_cloudflare_protocol_rewrite', '__return_false' );
+		add_filter( 'do_rocket_protocol_rewrite', '__return_false' );
 
 		unset( $wp_filter['rocket_buffer'] );
 
@@ -132,19 +139,6 @@ class AMP implements Subscriber_Interface {
 			add_filter( 'rocket_cdn_reject_files', [ $this, 'reject_files' ], PHP_INT_MAX );
 			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] );
 			add_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] );
-		}
-
-		if (
-			(bool) $this->options->get( 'do_cloudflare', 0 )
-			&&
-			(
-				(bool) $this->options->get( 'cloudflare_protocol_rewrite', 0 )
-				||
-				// this filter is documented in inc/front/protocol.php.
-				(bool) apply_filters( 'do_rocket_protocol_rewrite', false ) // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-			)
-		) {
-			remove_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX );
 		}
 	}
 
@@ -164,5 +158,18 @@ class AMP implements Subscriber_Interface {
 				'(.*).js',
 			]
 		);
+	}
+
+	/**
+	 * Adds the switching script from AMP to delay JS excluded files
+	 *
+	 * @since 3.11.1
+	 *
+	 * @param  array $excluded List of excluded files.
+	 * @return array        List of excluded files.
+	 */
+	public function exclude_script_from_delay_js( $excluded ) {
+		$excluded[] = 'amp-mobile-version-switcher';
+		return $excluded;
 	}
 }

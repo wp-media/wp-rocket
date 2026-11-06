@@ -10,7 +10,7 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::dismiss_promo_banner
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::dismiss_promo_banner
  *
  * @group License
  */
@@ -19,7 +19,7 @@ class DismissPromoBanner extends TestCase {
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );

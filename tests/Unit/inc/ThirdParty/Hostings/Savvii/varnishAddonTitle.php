@@ -1,16 +1,20 @@
 <?php
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Savvii;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Hostings\Savvii;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Savvii::varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Savvii::varnish_addon_title
  * @group Savvii
  * @group ThirdParty
  */
 class Test_VarnishAddonTitle extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider providerTestData

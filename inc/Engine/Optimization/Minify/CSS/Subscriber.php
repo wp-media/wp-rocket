@@ -42,11 +42,9 @@ class Subscriber extends AbstractMinifySubscriber {
 			return $html;
 		}
 
-		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem );
+		$assets_local_cache = new AssetsLocalCache( rocket_get_constant( 'WP_ROCKET_MINIFY_CACHE_PATH' ), $this->filesystem, true );
 
-		if ( $this->options->get( 'minify_css' ) && $this->options->get( 'minify_concatenate_css' ) ) {
-			$this->set_processor_type( new Combine( $this->options, $assets_local_cache ) );
-		} elseif ( $this->options->get( 'minify_css' ) && ! $this->options->get( 'minify_concatenate_css' ) ) {
+		if ( $this->options->get( 'minify_css' ) ) {
 			$this->set_processor_type( new Minify( $this->options, $assets_local_cache ) );
 		}
 

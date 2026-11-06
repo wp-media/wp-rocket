@@ -7,7 +7,7 @@ use WPDieException;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::init_critical_css_generation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::init_critical_css_generation
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::process_handler
  * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::cancel_process
  * @uses   ::rocket_get_constant
@@ -18,21 +18,22 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_InitCriticalCssGeneration extends TestCase {
 	use SubscriberTrait;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WPDieException.php';
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
+		$this->stubEscapeFunctions();
 		unset( $_GET['_wpnonce'] );
 
 		$this->setUpTests();
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		unset( $_GET['_wpnonce'] );
 
 		parent::tearDown();
@@ -77,7 +78,6 @@ class Test_InitCriticalCssGeneration extends TestCase {
 			}
 
 			Functions\expect( 'wp_safe_redirect' )->once();
-			Functions\when( 'esc_url_raw' )->returnArg();
 			Functions\expect( 'wp_die' )->once();
 		}
 

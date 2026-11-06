@@ -12,7 +12,7 @@ trait TransientTrait {
 	 * @param string      $item_path Path for processed item.
 	 * @param bool        $mobile    If this request is for mobile cpcss.
 	 * @param string      $message   CPCSS reply message.
-	 * @param bool/string $success   CPCSS success or failure.
+	 * @param bool|string $success   CPCSS success or failure.
 	 * @return void
 	 */
 	private function update_running_transient( $transient, $item_path, $mobile, $message, $success ) {

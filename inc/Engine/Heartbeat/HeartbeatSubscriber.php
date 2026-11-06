@@ -61,6 +61,12 @@ class HeartbeatSubscriber implements Subscriber_Interface {
 		}
 
 		wp_deregister_script( 'heartbeat' );
+
+		/**
+		 * Enqueue an empty heartbeat script to prevent query monitor error
+		 * Added to the footer
+		 */
+		wp_enqueue_script( 'heartbeat', WP_ROCKET_ASSETS_JS_URL . 'heartbeat.js', null, WP_ROCKET_VERSION, true );
 	}
 
 	/**
@@ -125,7 +131,7 @@ class HeartbeatSubscriber implements Subscriber_Interface {
 		 *
 		 * @since  3.2
 		 *
-		 * @param $context string Either 'site' (frontend), 'admin' (backend), or 'editor'.
+		 * @param string $context string Either 'site' (frontend), 'admin' (backend), or 'editor'.
 		 */
 		$filtered_context = apply_filters( 'rocket_heartbeat_context', $context );
 

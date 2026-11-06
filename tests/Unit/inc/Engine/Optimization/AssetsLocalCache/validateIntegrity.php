@@ -7,14 +7,14 @@ use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\AssetsLocalCache::validate_integrity
+ * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::validate_integrity
  * @group  Optimize
  * @group  AssetsLocalCache
  */
 class Test_ValidateIntegrity extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/validateIntegrity.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->stubWpParseUrl();
@@ -32,7 +32,12 @@ class Test_ValidateIntegrity extends FilesystemTestCase {
 				->once()
 				->with( $asset['url'] );
 
+			Functions\expect( 'wp_remote_retrieve_response_code' )
+				->once()
+				->andReturn( $config['response_code'] ?? 200 );
+
 			Functions\expect( 'wp_remote_retrieve_body' )
+				->atMost()
 				->once()
 				->andReturn( $file_contents );
 		}

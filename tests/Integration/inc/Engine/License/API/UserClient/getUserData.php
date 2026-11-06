@@ -2,46 +2,45 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\UserClient;
 
-use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\UserClient::get_user_data
+ * Test class covering \WP_Rocket\Engine\License\API\UserClient::get_user_data
  *
  * @group License
  * @group AdminOnly
  */
-class GetUserData extends TestCase {
-	use ApiTrait;
-
-	protected static $api_credentials_config_file = 'license.php';
+class Test_GetUserData extends TestCase {
 	private static $client;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container = apply_filters( 'rocket_container', null );
 
 		self::$client = $container->get( 'user_client' );
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
+		delete_transient( 'wp_rocket_customer_data' );
+		delete_transient( 'wpr_user_information_timeout_active' );
+		delete_transient( 'wpr_user_information_timeout' );
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		delete_transient( 'wp_rocket_customer_data' );
+		delete_transient( 'wpr_user_information_timeout_active' );
+		delete_transient( 'wpr_user_information_timeout' );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -52,38 +51,19 @@ class GetUserData extends TestCase {
 			set_transient( 'wp_rocket_customer_data', $expected );
 		}
 
-		if ( false === $expected ) {
-			Functions\expect( 'wp_safe_remote_post' )
-			->once()
-			->with(
-				UserClient::USER_ENDPOINT,
-				[
-					'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
-				]
-			)
-			->andReturn( $config['response'] );
+		$this->config['http'] = [ UserClient::USER_ENDPOINT => $config['response'] ];
 
-			$this->assertFalse( self::$client->get_user_data() );
-		} else {
-			$this->assertEquals(
-				array_keys( (array) $expected ),
-				array_keys( (array) self::$client->get_user_data() )
-			);
-
-			if ( false === $config['transient'] ) {
-				$this->assertEquals(
-					array_keys( (array) $expected ),
-					array_keys( (array) get_transient( 'wp_rocket_customer_data' ) )
-				);
-			}
-		}
+		$this->assertEquals(
+			$expected,
+			self::$client->get_user_data()
+		);
 	}
 
 	public function set_consumer_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+		return TestCredentials::EMAIL;
 	}
 
 	public function set_consumer_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+		return TestCredentials::KEY;
 	}
 }

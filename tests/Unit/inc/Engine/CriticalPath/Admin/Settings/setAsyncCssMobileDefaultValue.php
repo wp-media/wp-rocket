@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::set_async_css_mobile_default_value
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Settings::set_async_css_mobile_default_value
  *
  * @group  CriticalPath
  * @group  CriticalPathSettings
@@ -18,7 +18,7 @@ class Test_SetAsyncCssMobileDefaultValue extends TestCase {
 
     private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
         parent::setUp();
 
         $this->setUpMocks();

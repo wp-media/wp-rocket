@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::rocket_rrmdir
  * @uses  ::_rocket_get_cache_dirs
  *
@@ -20,7 +20,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanExpectedFiles( $urls, $expected ) {
+	public function testShouldCleanExpectedFiles( $urls, $config,  $expected ) {
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 

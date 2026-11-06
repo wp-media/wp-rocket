@@ -7,7 +7,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_minify
+ * Test class covering ::rocket_clean_minify
  * @uses  ::rocket_direct_filesystem
  *
  * @group Functions
@@ -18,7 +18,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/rocketCleanMinify.php';
 	private   $valid_extensions  = [ 'css', 'css.gz', 'js', 'js.gz' ];
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

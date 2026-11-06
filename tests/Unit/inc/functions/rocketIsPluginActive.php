@@ -7,20 +7,20 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_is_plugin_active
+ * Test class covering ::rocket_is_plugin_active
  * @group  Options
  * @group  Functions
  */
 class Test_RocketIsPluginActive extends TestCase {
-	private $config;
+	protected $config;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/options.php';
 	}
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		if ( empty( $this->config ) ) {

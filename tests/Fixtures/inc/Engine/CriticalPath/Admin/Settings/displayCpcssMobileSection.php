@@ -81,7 +81,7 @@ return [
 <div id="wpr-mobile_cpcss_view" class="wpr-tools">
 <div class="wpr-tools-col">
 <div class="wpr-title3 wpr-tools-label wpr-icon-stack">
-Optimize CSS delivery for mobile</div>
+Load CSS asynchronously for mobile</div>
 <div class="wpr-field-description wpr-hide-on-click">
 Your website currently uses the same Critical Path CSS for both desktop and mobile.</div>
 <div class="wpr-field-description wpr-hide-on-click">

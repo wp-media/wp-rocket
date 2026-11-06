@@ -4,13 +4,14 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
 use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::dismiss_renewal_expired_banner
+ * Test class covering \WP_Rocket\Engine\License\Renewal::dismiss_renewal_expired_banner
  *
  * @group License
  */
@@ -19,7 +20,7 @@ class DismissRenewalExpiredBanner extends TestCase {
 	private $user;
 	private $renewal;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
@@ -27,6 +28,7 @@ class DismissRenewalExpiredBanner extends TestCase {
 		$this->renewal =  new Renewal(
 			$this->pricing,
 			$this->user,
+			Mockery::mock( Options_Data::class ),
 			'views'
 		);
 	}
@@ -45,12 +47,12 @@ class DismissRenewalExpiredBanner extends TestCase {
 			->once()
 			->with( 'rocket_renewal_banner_1' )
 			->andReturn( $config['transient'] );
-	
+
 		if ( $expected ) {
 			Functions\expect( 'set_transient' )
 				->once()
 				->with( 'rocket_renewal_banner_1', 1, MONTH_IN_SECONDS );
-			
+
 			Functions\expect( 'wp_send_json_success' )->once();
 		} else {
 			Functions\expect( 'set_transient' )->never();

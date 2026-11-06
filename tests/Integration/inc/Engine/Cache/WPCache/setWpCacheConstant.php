@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\CapTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::set_wp_cache_constant
  * @uses   ::rocket_valid_key
  *
  * @group WPCache
@@ -22,7 +22,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 	protected $user_id = 0;
 	private $filter_set;
 
-	public static function setUpBeforeClass() {
+	public static function set_up_before_class() {
 		self::hasAdminCapBeforeClass();
 
 		$container = apply_filters( 'rocket_container', null );
@@ -30,8 +30,8 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 		self::$wp_cache = $container->get( 'wp_cache' );
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		self::setAdminCap();
 
@@ -39,7 +39,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 		wp_set_current_user( $this->user_id );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'rocket_wp_config_name', [ $this, 'setWpCacheFilePath' ] );
 
 		self::resetAdminCap();
@@ -50,7 +50,7 @@ class Test_SetWpCacheConstant extends FilesystemTestCase {
 
 		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'filterSetWpCacheConstant' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

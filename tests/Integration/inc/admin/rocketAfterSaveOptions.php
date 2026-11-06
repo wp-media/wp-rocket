@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_after_save_options
+ * Test class covering ::rocket_after_save_options
+ *
  * @uses  ::rocket_clean_domain
  * @uses  ::rocket_clean_minify
  * @uses  ::rocket_generate_advanced_cache_file
@@ -31,19 +31,33 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	];
 
 	private $is_apache;
-	private $hooks = [];
 	private $expected;
 	private $rocketCleanDomainEntriesBefore;
 	private $rocketCleanMinifyEntriesBefore;
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
+	private $shouldForceCdnOption;
 
-	public function setUp() {
+
+	public function set_up() {
+		self::installPreconnectExternalDomainsTable();
+
+		parent::set_up();
+
+		// RocketCDN state left by earlier tests makes the settings save check the subscription; answer it like the
+		// wp_remote_get() stub this test used to have, so the check is a no-op.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => '', 'message' => '' ],
+				'cookies'  => [],
+			],
+		];
+
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
-
-		parent::setUp();
 
 		// Save the original global state.
 		$this->is_apache = isset( $GLOBALS['is_apache'] ) ? $GLOBALS['is_apache'] : null;
@@ -53,20 +67,24 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->rocketCleanMinifyEntriesBefore  = [];
 		$this->rocketCleanDomainShouldNotClean = [];
 		$this->rocketCleanMinifyShouldNotClean = [];
+		$this->shouldForceCdnOption            = false;
 		$GLOBALS['is_apache'] = true;
 
 		// Set up the container.
 		$this->dicontainer = new DIContainer();
 		$this->dicontainer->setUp();
 
-		Functions\when( 'wp_remote_get' )->justReturn();
-
 		// Hook it back up as we're ready to test.
 		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
+		if ( $this->shouldForceCdnOption ) {
+			remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
+
+		self::uninstallPreconnectDomainsTable();
 
 		$this->dicontainer->tearDown();
 
@@ -81,16 +99,21 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
+	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected, array $config = [] ) {
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
-			$this->assertTrue( true );
+			$this->assertTrue( true ); // @phpstan-ignore-line
 
 			return;
 		}
 
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->shouldForceCdnOption = ! empty( $config['force_pre_get_cdn'] );
+
+		if ( $this->shouldForceCdnOption ) {
+			add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
 
 		$this->rocket_clean_domain( true );
 		$this->rocket_clean_minify( true );
@@ -106,6 +129,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
 		$this->set_transient();
+	}
+
+	public function return_true() {
+		return true;
 	}
 
 	private function rocket_clean_domain( $before_updating = false ) {
@@ -178,7 +205,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$actual = $this->filesystem->get_contents( 'vfs://public/.htaccess' );
 		foreach ( (array) $this->expected['flush_rocket_htaccess'] as $content ) {
-			$this->assertContains( $content, $actual );
+			$this->assertStringContainsString( $content, $actual );
 		}
 	}
 
@@ -225,32 +252,6 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 			$this->assertEquals( '1', get_transient( 'rocket_analytics_optin' ) );
 		} else {
 			Functions\expect( 'set_transient' )->with( 'rocket_analytics_optin', 1 )->never();
-		}
-	}
-
-	private function silently_update_option( $new_value ) {
-		global $wp_filter;
-
-		$hooks = [
-			'pre_update_option_wp_rocket_settings',
-			'pre_update_option',
-			'default_option_wp_rocket_settings',
-			'update_option',
-			'update_option_wp_rocket_settings',
-			'updated_option',
-		];
-
-		foreach ( $hooks as $hook ) {
-			if ( ! empty( $wp_filter[ $hook ] ) ) {
-				$this->hooks[ $hook ] = $wp_filter[ $hook ];
-				unset( $wp_filter[ $hook ] );
-			}
-		}
-
-		update_option( $this->option_name, $new_value );
-
-		if ( $this->hooks ) {
-			$wp_filter = array_merge( $wp_filter, $this->hooks );
 		}
 	}
 }

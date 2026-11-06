@@ -8,8 +8,9 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.0
  * @since 1.1.0 Remove empty spacings when .htaccess is generated.
  *
- * @param  bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
- * @return bool               True on success, false otherwise.
+ * @param bool $remove_rules True to remove WPR rules, false to renew them. Default is false.
+ *
+ * @return bool
  */
 function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	global $is_apache;
@@ -29,39 +30,135 @@ function flush_rocket_htaccess( $remove_rules = false ) { // phpcs:ignore WordPr
 		require_once ABSPATH . 'wp-admin/includes/file.php';
 	}
 
-	$htaccess_file = get_home_path() . '.htaccess';
-
-	if ( ! rocket_direct_filesystem()->is_writable( $htaccess_file ) ) {
-		// The file is not writable or does not exist.
-		return false;
-	}
-
-	// Get content of .htaccess file.
-	$ftmp = rocket_direct_filesystem()->get_contents( $htaccess_file );
-
-	if ( false === $ftmp ) {
-		// Could not get the file contents.
-		return false;
-	}
-
-	// Check if the file contains the WP rules, before modifying anything.
-	$has_wp_rules = rocket_has_wp_htaccess_rules( $ftmp );
-
-	// Remove the WP Rocket marker.
-	$ftmp = preg_replace( '/\s*# BEGIN WP Rocket.*# END WP Rocket\s*?/isU', PHP_EOL . PHP_EOL, $ftmp );
-	$ftmp = ltrim( $ftmp );
+	$filename  = get_home_path() . '.htaccess';
+	$insertion = '';
 
 	if ( ! $remove_rules ) {
-		$ftmp = get_rocket_htaccess_marker() . PHP_EOL . $ftmp;
+		$insertion = get_rocket_htaccess_marker();
 	}
 
-	// Make sure the WP rules are still there.
-	if ( $has_wp_rules && ! rocket_has_wp_htaccess_rules( $ftmp ) ) {
+	if ( ! file_exists( $filename ) ) {
+		if ( ! is_writable( dirname( $filename ) ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
+			return false;
+		}
+
+		if ( ! touch( $filename ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_touch
+			return false;
+		}
+
+		// Make sure the file is created with a minimum set of permissions.
+		$perms = fileperms( $filename );
+
+		if ( $perms ) {
+			chmod( $filename, $perms | 0644 ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod
+		}
+	} elseif ( ! is_writable( $filename ) ) {  // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_is_writable
 		return false;
 	}
 
-	// Update the .htacces file.
-	return rocket_put_content( $htaccess_file, $ftmp );
+	if ( ! is_array( $insertion ) ) {
+		$insertion = explode( "\n", $insertion );
+	}
+
+	$start_marker = '# BEGIN WP Rocket';
+	$end_marker   = '# END WP Rocket';
+
+	$pointer = fopen( $filename, 'r+' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fopen
+
+	if ( ! $pointer ) {
+		return false;
+	}
+
+	// Attempt to get a lock. If the filesystem supports locking, this will block until the lock is acquired.
+	flock( $pointer, LOCK_EX );
+
+	$lines = [];
+
+	while ( ! feof( $pointer ) ) {
+		$lines[] = rtrim( fgets( $pointer ), "\r\n" );
+	}
+
+	// Split out the existing file into the preceding lines, and those that appear after the marker.
+	$pre_lines        = [];
+	$post_lines       = [];
+	$existing_lines   = [];
+	$found_marker     = false;
+	$found_end_marker = false;
+
+	foreach ( $lines as $line ) {
+		if ( ! $found_marker && str_contains( $line, $start_marker ) ) {
+			$found_marker = true;
+			continue;
+		} elseif ( ! $found_end_marker && str_contains( $line, $end_marker ) ) {
+			$found_end_marker = true;
+			continue;
+		}
+
+		if ( ! $found_marker ) {
+			$pre_lines[] = $line;
+		} elseif ( $found_marker && $found_end_marker ) {
+			$post_lines[] = $line;
+		} else {
+			$existing_lines[] = $line;
+		}
+	}
+
+	// Check to see if there was a change.
+	if ( $existing_lines === $insertion ) {
+		flock( $pointer, LOCK_UN );
+		fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+		return true;
+	}
+
+	if ( ! $found_marker ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$pre_lines,
+				$post_lines
+			)
+		);
+	} elseif ( $remove_rules ) {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				$post_lines
+			)
+		);
+	} else {
+		// Generate the new file data.
+		$new_file_data = implode(
+			"\n",
+			array_merge(
+				$pre_lines,
+				[ $start_marker ],
+				$insertion,
+				[ $end_marker ],
+				$post_lines
+			)
+		);
+	}
+
+	// Write to the start of the file, and truncate it to that length.
+	fseek( $pointer, 0 );
+	$bytes = fwrite( $pointer, $new_file_data ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fwrite
+
+	if ( false !== $bytes ) {
+		ftruncate( $pointer, ftell( $pointer ) );
+	}
+
+	fflush( $pointer );
+	flock( $pointer, LOCK_UN );
+	fclose( $pointer ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_fclose
+
+	return (bool) $bytes;
 }
 
 /**
@@ -105,16 +202,13 @@ function rocket_htaccess_rules_test( $rules_name ) {
 }
 
 /**
- * Return the markers for htacces rules
+ * Return the markers for htaccess rules
  *
  * @since 1.0
  *
  * @return string $marker Rules that will be printed
  */
 function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-	// Recreate WP Rocket marker.
-	$marker = '# BEGIN WP Rocket v' . WP_ROCKET_VERSION . PHP_EOL;
-
 	/**
 	 * Add custom rules before rules added by WP Rocket
 	 *
@@ -122,7 +216,7 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 *
 	 * @param string $before_marker The content of all rules.
 	*/
-	$marker .= apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+	$marker = apply_filters( 'before_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 
 	$marker .= get_rocket_htaccess_charset();
 	$marker .= get_rocket_htaccess_etag();
@@ -143,8 +237,6 @@ function get_rocket_htaccess_marker() { // phpcs:ignore WordPress.NamingConventi
 	 * @param string $after_marker The content of all rules.
 	*/
 	$marker .= apply_filters( 'after_rocket_htaccess_rules', '' ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
-
-	$marker .= '# END WP Rocket' . PHP_EOL;
 
 	/**
 	 * Filter rules added by WP Rocket in .htaccess
@@ -172,7 +264,11 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	}
 
 	// No rewrite rules for Korean.
-	if ( defined( 'WPLANG' ) && 'ko_KR' === WPLANG || 'ko_KR' === get_locale() ) {
+	if (
+		( defined( 'WPLANG' ) && 'ko_KR' === WPLANG )
+		||
+		'ko_KR' === get_locale()
+		) {
 		return;
 	}
 
@@ -404,6 +500,7 @@ function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingCon
 		                          image/svg+xml \
 		                          image/x-icon \
 		                          text/css \
+		                          text/javascript \
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \
@@ -435,6 +532,10 @@ function get_rocket_htaccess_mod_deflate() { // phpcs:ignore WordPress.NamingCon
  */
 function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	$rules = <<<HTACCESS
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
+</IfModule>
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
 	ExpiresActive on
@@ -461,6 +562,8 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType audio/ogg                     "access plus 4 months"
 	ExpiresByType video/mp4                     "access plus 4 months"
 	ExpiresByType video/webm                    "access plus 4 months"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
@@ -468,10 +571,11 @@ function get_rocket_htaccess_mod_expires() { // phpcs:ignore WordPress.NamingCon
 	ExpiresByType font/otf                      "access plus 4 months"
 	ExpiresByType font/woff                     "access plus 4 months"
 	ExpiresByType font/woff2                    "access plus 4 months"
-	ExpiresByType image/svg+xml                 "access plus 1 month"
+	ExpiresByType image/svg+xml                 "access plus 4 months"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType text/javascript               "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
 </IfModule>
 
@@ -499,6 +603,10 @@ HTACCESS;
 function get_rocket_htaccess_charset() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	// Get charset of the blog.
 	$charset = preg_replace( '/[^a-zA-Z0-9_\-\.:]+/', '', get_bloginfo( 'charset', 'display' ) );
+
+	if ( empty( $charset ) ) {
+		return '';
+	}
 
 	$rules = "# Use $charset encoding for anything served text/plain or text/html" . PHP_EOL;
 	$rules .= "AddDefaultCharset $charset" . PHP_EOL;
@@ -600,7 +708,7 @@ function get_rocket_htaccess_web_fonts_access() { // phpcs:ignore WordPress.Nami
 	$rules  .= '<IfModule mod_setenvif.c>' . PHP_EOL;
 	  $rules  .= '<IfModule mod_headers.c>' . PHP_EOL;
 		$rules  .= '# mod_headers, y u no match by Content-Type?!' . PHP_EOL;
-		$rules  .= '<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
+		$rules  .= '<FilesMatch "\.(avifs?|cur|gif|png|jpe?g|svgz?|ico|webp)$">' . PHP_EOL;
 		  $rules  .= 'SetEnvIf Origin ":" IS_CORS' . PHP_EOL;
 		  $rules  .= 'Header set Access-Control-Allow-Origin "*" env=IS_CORS' . PHP_EOL;
 		$rules  .= '</FilesMatch>' . PHP_EOL;

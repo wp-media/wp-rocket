@@ -3,11 +3,13 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\third_party\plugins\Images\Webp\Imagify_Subscriber;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::is_serving_webp_compatible_with_cdn
+ * Test class covering \WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber::is_serving_webp_compatible_with_cdn
  * @group  ThirdParty
  * @group  Webp
  */
@@ -15,21 +17,21 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 
 	public function testShouldReturnFalseWhenImagifyNotEnabled() {
 		Functions\expect( 'get_imagify_option' )
-			->once()
+			->twice()
 			->andReturn( false );
 
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		$this->assertFalse( $subscriber->is_serving_webp_compatible_with_cdn() );
 	}
 
 	public function testShouldReturnFalseWhenDisplayOptionIsDisabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->once()
+			->twice()
 			->andReturnUsing(
 				function( $option_name ) {
 					if ( 'display_webp' === $option_name ) {
@@ -47,17 +49,17 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 	}
 
 	public function testShouldReturnTrueWhenRewriteIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )
-			->twice()
+			->times(3)
 			->andReturnUsing(
 				function( $option_name ) {
-					if ( 'display_webp' === $option_name ) {
+					if ( 'display_webp' === $option_name || 'display_nextgen' === $option_name ) {
 						return 1;
 					}
-					if ( 'display_webp_method' === $option_name ) {
+					if ( 'display_webp_method' === $option_name || 'display_nextgen_method' === $option_name ) {
 						return 'rewrite';
 					}
 
@@ -69,7 +71,7 @@ class Test_IsServingWebpCompatibleWithCdn extends TestCase {
 	}
 
 	public function testShouldReturnTrueWhenPictureIsEnabled() {
-		$optionsData = $this->createMock( 'WP_Rocket\Admin\Options_Data' );
+		$optionsData = Mockery::mock( Options_Data::class );
 		$subscriber  = new Imagify_Subscriber( $optionsData );
 
 		Functions\expect( 'get_imagify_option' )

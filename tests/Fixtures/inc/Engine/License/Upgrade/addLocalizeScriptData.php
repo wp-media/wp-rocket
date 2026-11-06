@@ -8,14 +8,15 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
 			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenLicenseIsExpired' => [
@@ -25,14 +26,15 @@ return [
 			'licence_expiration' => strtotime( 'last week' ),
 			'promo_active'       => true,
 			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenLicenseIsSoonExpired' => [
@@ -42,14 +44,34 @@ return [
 			'licence_expiration' => strtotime( 'next week' ),
 			'promo_active'       => true,
 			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+	],
+	'testShouldReturnDefaultWhenNoUpgrades' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [],
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnDefaultWhenPromoNotActive' => [
@@ -59,14 +81,15 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => false,
 			'promo_end'          => strtotime( 'last week' ),
+			'date_created'          => strtotime( 'last year' ),
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 	'testShouldReturnUpdatedArrayWhenPromoActive' => [
@@ -76,15 +99,63 @@ return [
 			'licence_expiration' => strtotime( 'next year' ),
 			'promo_active'       => true,
 			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
 		],
 		'data'    => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 		'expected' => [
 			'nonce'      => 12345,
-			'origin_url' => 'https://wp-rocket.me',
+			'origin_url' => 'https://api.wp-rocket.me',
 			'promo_end'  => strtotime( 'next week' ),
+		],
+	],
+	'testShouldReturnDefaultWhenUserIsRevoked' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'is_revoked' => true,
+			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
+			'date_created'          => strtotime( 'last year' ),
+			'upgrades' => [
+				(object) [
+					"name"=> "Growth",
+				]
+			],
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+	],
+	'testShouldReturnDefaultWhenLicenceBoughtLessThan14daysAgo' => [
+		'config'   => [
+			'licence_account'    => 1,
+			'licence_expired'    => false,
+			'licence_expiration' => strtotime( 'next year' ),
+			'promo_active'       => true,
+			'promo_end'          => strtotime( 'next week' ),
+			'date_created'      => strtotime( '7 days ago' ),
+		],
+		'data'    => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
+		],
+		'expected' => [
+			'nonce'      => 12345,
+			'origin_url' => 'https://api.wp-rocket.me',
 		],
 	],
 ];

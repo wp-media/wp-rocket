@@ -7,15 +7,16 @@
 
 	<!-- ** WHAT TO SCAN ** -->
 
-	<file>.</file>
+	<file>inc</file>
+	<file>views</file>
+	<file>uninstall.php</file>
+	<file>wp-rocket.php</file>
 	<!-- Ignoring Files and Folders: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage#ignoring-files-and-folders -->
 	<exclude-pattern>/inc/deprecated/*</exclude-pattern>
 	<exclude-pattern>/inc/Engine/Container/*</exclude-pattern>
 	<exclude-pattern>/inc/Dependencies/*</exclude-pattern>
 	<exclude-pattern>/inc/classes/dependencies/*</exclude-pattern>
 	<exclude-pattern>/inc/vendors/*</exclude-pattern>
-	<exclude-pattern>/tests/*</exclude-pattern>
-	<exclude-pattern>/vendor/*</exclude-pattern>
 
 	<!-- ** HOW TO SCAN ** -->
 
@@ -26,10 +27,13 @@
 
 	<!-- Rules: Check PHP version compatibility - see https://github.com/PHPCompatibility/PHPCompatibilityWP -->
 	<rule ref="PHPCompatibility"/>
-	<config name="testVersion" value="7.0-"/>
-	<config name="minimum_supported_wp_version" value="5.2"/>
+	<config name="testVersion" value="7.4-"/>
+	<config name="minimum_supported_wp_version" value="5.8"/>
 
 	<rule ref="WordPress">
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax.Found"/>
+		<exclude name="Universal.Operators.DisallowShortTernary.Found"/>
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.defaultFound"/>
         <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
 		<exclude name="Generic.PHP.NoSilencedErrors.Discouraged"/>
         <exclude name="PEAR.Functions.FunctionCallSignature.Indent"/>
@@ -50,12 +54,35 @@
 	</rule>
     <rule ref="WordPress.WP.I18n">
         <properties>
-            <property name="text_domain" type="array" value="rocket" />
+            <property name="text_domain" type="array">
+				<element value="rocket" />
+			</property>
         </properties>
     </rule>
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
-            <property name="prefixes" type="array" value="rocket,wp_rocket,WPMedia,WPRocket" />
+            <property name="prefixes" type="array">
+				<element value="rocket" />
+				<element value="wp_rocket" />
+				<element value="WPMedia" />
+				<element value="WPRocket" />
+			</property>
+        </properties>
+    </rule>
+	<rule ref="WordPress.WP.Capabilities">
+        <properties>
+            <property name="custom_capabilities" type="array">
+				<element value="rocket_manage_options" />
+				<element value="rocket_remove_unused_css" />
+				<element value="rocket_purge_sucuri_cache" />
+				<element value="rocket_preload_cache" />
+				<element value="rocket_purge_cache" />
+				<element value="rocket_purge_cloudflare_cache" />
+				<element value="rocket_purge_posts" />
+				<element value="rocket_regenerate_critical_css" />
+				<element value="rocket_purge_terms" />
+				<element value="rocket_purge_users" />
+			</property>
         </properties>
     </rule>
     <rule ref="WordPress.Files.FileName">
@@ -63,6 +90,9 @@
             <property name="strict_class_file_names" value="false" />
         </properties>
     </rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound">
+		<exclude-pattern>inc/compat.php</exclude-pattern>
+	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_read_readfile">
 		<exclude-pattern>inc/classes/buffer/class-cache.php</exclude-pattern>
 	</rule>
@@ -79,40 +109,34 @@
 	</rule>
 
 	<rule ref="WordPress.DB.DirectDatabaseQuery.DirectQuery">
-		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
-		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
-		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/OptimizationProcess.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/Optimization.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/ContentTrait.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.DirectDatabaseQuery.NoCaching">
-		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
-		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
-		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/OptimizationProcess.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/Optimization.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/ContentTrait.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL.NotPrepared">
-		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
-		<exclude-pattern>inc/classes/admin/Database/class-optimization.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/OptimizationProcess.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/Optimization.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/RUCSS/Database/Query/UsedCSS.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress.DB.PreparedSQL.InterpolatedNotPrepared">
-		<exclude-pattern>inc/classes/admin/Database/class-optimization-process.php</exclude-pattern>
-		<exclude-pattern>inc/Engine/CriticalPath/CriticalCSS.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Admin/Database/OptimizationProcess.php</exclude-pattern>
+		<exclude-pattern>inc/Engine/Optimization/ContentTrait.php</exclude-pattern>
 	</rule>
 
 	<rule ref="WordPress-Docs">
 		<exclude name="Squiz.Commenting.FileComment.Missing"/>
 		<exclude name="Squiz.Commenting.ClassComment.Missing"/>
 	</rule>
-
-	<!-- Rules: WordPress Coding Standards - see
-		https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
-		WordPress-Extra includes WordPress-Core -->
-	<rule ref="WordPress-Extra">
-		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
-		<exclude name="WordPress.PHP.DisallowShortTernary.Found"/>
-	</rule>
-
 	<!-- Enforce short array syntax: `[]` in place of `array()`. -->
 	<rule ref="Generic.Arrays.DisallowLongArraySyntax" />
 </ruleset>

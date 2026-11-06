@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::dismiss_notification_bubble
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::dismiss_notification_bubble
  *
  * @group License
  * @group AdminOnly
@@ -21,32 +21,38 @@ class DismissNotificationBubble extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container     = apply_filters( 'rocket_container', null );
 		self::$user    = $container->get( 'user' );
 		self::$pricing = $container->get( 'pricing' );
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 		$this->original_pricing = $this->getNonPublicPropertyValue( 'pricing', self::$pricing, self::$pricing );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 
 		delete_transient( 'rocket_promo_seen_' . self::$user_id );
 		set_current_screen( 'front' );
 
-		parent::tearDown();
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	/**

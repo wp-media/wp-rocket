@@ -3,7 +3,7 @@
 $rocket_version = rocket_get_constant( 'WP_ROCKET_VERSION' );
 
 $start = <<<HTACCESS
-# BEGIN WP Rocket v{$rocket_version}
+# BEGIN WP Rocket
 # Use UTF-8 encoding for anything served text/plain or text/html
 AddDefaultCharset UTF-8
 # Force UTF-8 for a number of file formats
@@ -31,7 +31,7 @@ $cors = <<<HTACCESS
 <IfModule mod_setenvif.c>
 <IfModule mod_headers.c>
 # mod_headers, y u no match by Content-Type?!
-<FilesMatch "\.(cur|gif|png|jpe?g|svgz?|ico|webp)$">
+<FilesMatch "\.(avifs?|cur|gif|png|jpe?g|svgz?|ico|webp)$">
 SetEnvIf Origin ":" IS_CORS
 Header set Access-Control-Allow-Origin "*" env=IS_CORS
 </FilesMatch>
@@ -69,6 +69,10 @@ Header append Cache-Control "public"
 </IfModule>
 </FilesMatch>
 </IfModule>
+<IfModule mod_mime.c>
+	AddType image/avif                                  avif
+    AddType image/avif-sequence                         avifs
+</IfModule>
 # Expires headers (for better cache control)
 <IfModule mod_expires.c>
 	ExpiresActive on
@@ -95,6 +99,8 @@ Header append Cache-Control "public"
 	ExpiresByType audio/ogg                     "access plus 1 month"
 	ExpiresByType video/mp4                     "access plus 1 month"
 	ExpiresByType video/webm                    "access plus 1 month"
+	ExpiresByType image/avif                    "access plus 4 months"
+	ExpiresByType image/avif-sequence           "access plus 4 months"
 	# HTC files  (css3pie)
 	ExpiresByType text/x-component              "access plus 1 month"
 	# Webfonts
@@ -106,6 +112,7 @@ Header append Cache-Control "public"
 	ExpiresByType application/vnd.ms-fontobject "access plus 1 month"
 	# CSS and JavaScript
 	ExpiresByType text/css                      "access plus 1 year"
+	ExpiresByType text/javascript               "access plus 1 year"
 	ExpiresByType application/javascript        "access plus 1 year"
 </IfModule>
 # Gzip compression
@@ -136,6 +143,7 @@ AddOutputFilterByType DEFLATE application/atom+xml \
 		                          image/svg+xml \
 		                          image/x-icon \
 		                          text/css \
+								  text/javascript \
 		                          text/html \
 		                          text/plain \
 		                          text/x-component \
@@ -183,10 +191,10 @@ HTACCESS;
 
 $end = <<<HTACCESS
 # END WP Rocket
-
 # Random
-# add a trailing slash to /wp-admin# BEGIN WordPress
-
+# add a trailing slash to /wp-admin
+# BEGIN WordPress
+# END WordPress
 HTACCESS;
 
 return [

@@ -5,17 +5,23 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
- * @uses   ::rocket_clean_domain
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:maybe_purge_cache_on_term_change
  *
- * @group  purge_actions
- * @group  vfs
+ * @uses ::rocket_clean_domain
+ *
+ * @group PurgeActions
+ * @group vfs
  */
 class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/maybePurgeCacheOnTermChange.php';
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		register_taxonomy(
 			'not_public',
@@ -27,12 +33,17 @@ class Test_MaybePurgeCacheOnTermChange extends FilesystemTestCase {
 		);
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		unregister_taxonomy( 'not_public' );
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 		unset( $GLOBALS['debug_fs'] );
+
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		parent::tear_down();
 	}
 
 	/**

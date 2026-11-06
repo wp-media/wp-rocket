@@ -15,4 +15,4 @@ function rocket_clean_pagely() {
 			$purger->purgeAll();
 	}
 }
-add_action( 'after_rocket_clean_domain', 'rocket_clean_pagely' );
+add_action( 'rocket_after_clean_domain', 'rocket_clean_pagely' );

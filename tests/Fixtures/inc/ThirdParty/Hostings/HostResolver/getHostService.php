@@ -16,6 +16,12 @@ return [
 		],
 		'testShouldReturnSavvii' => [
 			'expected' => 'savvii',
-		]
+		],
+		'testShouldReturnOnecom' => [
+			'expected' => 'onecom',
+		],
+		'testShouldReturnSiteground' => [
+			'expected' => 'siteground',
+		],
 	],
 ];

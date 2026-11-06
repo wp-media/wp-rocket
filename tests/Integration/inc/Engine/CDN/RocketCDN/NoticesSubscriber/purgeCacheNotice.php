@@ -4,18 +4,52 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber
 
 use WPMedia\PHPUnit\Integration\TestCase;
 use Brain\Monkey\Functions;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::purge_cache_notice
  * @uses ::rocket_notice_html
  *
  * @group  AdminOnly
  * @group  RocketCDN
  */
 class Test_PurgeCacheNotice extends TestCase {
-	public static function SetUpBeforeClass() {
+	use IsolateHookTrait;
+	use HttpRequestTrait;
+
+	/**
+	 * HttpRequestTrait fixture config; no fixture file for this class.
+	 *
+	 * @var array
+	 */
+	protected $config = [];
+
+	public static function set_up_before_class() {
 		$role = get_role( 'administrator' );
 		$role->add_cap( 'rocket_manage_options' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->setup_http();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
+		// Prevents ModPagespeed::has_pagespeed()'s unrelated admin_notices callback from hitting the network.
+		set_transient( 'rocket_mod_pagespeed_enabled', 0 );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
+
+		// No explicit delete_transient() here: it would break a strict once() Brain\Monkey
+		// expectation some tests set on it; the DB transaction rollback clears it instead.
+		$this->tear_down_http();
+
+		parent::tear_down();
 	}
 
 	private function get_notice( $status = 'success', $message = '' ) {
@@ -38,8 +72,9 @@ class Test_PurgeCacheNotice extends TestCase {
 		$user_id = self::factory()->user->create( [ 'role' => 'editor' ] );
 
 		wp_set_current_user( $user_id );
+		set_current_screen( 'edit.php' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -51,7 +86,7 @@ class Test_PurgeCacheNotice extends TestCase {
 		wp_set_current_user( $user_id );
 		set_current_screen( 'edit.php' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -64,7 +99,7 @@ class Test_PurgeCacheNotice extends TestCase {
 
 		set_current_screen( 'settings_page_wprocket' );
 
-		$this->assertNotContains( $this->get_notice(), $this->getActualHtml() );
+		$this->assertStringNotContainsString( $this->get_notice(), $this->getActualHtml() );
 	}
 
 	/**
@@ -82,6 +117,6 @@ class Test_PurgeCacheNotice extends TestCase {
 		->once()
 		->with( 'rocketcdn_purge_cache_response' );
 
-		$this->assertContains( $this->get_notice( 'success', 'RocketCDN cache purge successful.' ), $this->getActualHtml() );
+		$this->assertStringContainsString( $this->get_notice( 'success', 'RocketCDN cache purge successful.' ), $this->getActualHtml() );
 	}
 }

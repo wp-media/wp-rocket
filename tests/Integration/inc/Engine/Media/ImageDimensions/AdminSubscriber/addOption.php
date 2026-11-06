@@ -5,22 +5,22 @@ namespace WP_Rocket\Tests\Integration\inc\Media\ImageDimensions\AdminSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber::add_option
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\AdminSubscriber::add_option
  *
  * @group  AdminOnly
  * @group  ImageDimensions
  */
 class Test_AddOption extends TestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_first_install_options', 'add_option', 14 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		$this->restoreWpHook( 'rocket_first_install_options' );
 
-		$this->restoreWpFilter( 'rocket_first_install_options' );
+		parent::tear_down();
 	}
 
 	/**

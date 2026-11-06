@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::add_regenerate_menu_item
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::add_regenerate_menu_item
  *
  * @group  CriticalPath
  * @group  CriticalPathAdmin
@@ -20,20 +20,19 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_AddRegenerateMenuItem extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $admin;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Admin_Bar.php';
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setUpMocks();
+		$this->stubTranslationFunctions();
 
 		$this->admin = new Admin(
 			$this->options,
@@ -41,10 +40,10 @@ class Test_AddRegenerateMenuItem extends TestCase {
 		);
 	}
 
-	protected function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		unset( $_SERVER['REQUEST_URI'] );
+
+		parent::tearDown();
 	}
 
 	/**
@@ -53,6 +52,8 @@ class Test_AddRegenerateMenuItem extends TestCase {
 	public function testShouldDoExpected( $cap, $admin, $option, $filter, $request, $expected ) {
 		$_SERVER['REQUEST_URI'] = $request;
 		$wp_admin_bar           = new WP_Admin_Bar();
+
+		Functions\when( 'wp_get_environment_type' )->justReturn( 'production' );
 
 		Functions\expect( 'current_user_can' )
 			->once()

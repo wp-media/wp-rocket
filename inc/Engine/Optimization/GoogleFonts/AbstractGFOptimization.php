@@ -1,17 +1,26 @@
 <?php
-
-declare( strict_types=1 );
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Optimization\GoogleFonts;
 
-use WP_Rocket\Engine\Optimization\AbstractOptimization;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
+use WP_Rocket\Engine\Media\Fonts\FontsTrait;
 
 /**
  * Abstract Optimization Parent Class for Google Fonts Optimizers.
  *
  * @since 3.8
  */
-abstract class AbstractGFOptimization extends AbstractOptimization {
+abstract class AbstractGFOptimization {
+	use FontsTrait;
+	use ElementTrait;
+
+	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'google_fonts_combine';
 
 	/**
 	 * Allowed display values.
@@ -27,6 +36,35 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 		'fallback' => 1,
 		'optional' => 1,
 	];
+
+	/**
+	 * Flag for whether google fonts have been detected (Default: true)
+	 *
+	 * @since 3.8.8
+	 *
+	 * @var bool
+	 */
+	protected $has_google_fonts = true;
+
+	/**
+	 * Optimize Google Fonts
+	 *
+	 * @param string $html HTML content.
+	 *
+	 * @return string
+	 */
+	abstract public function optimize( $html ): string;
+
+	/**
+	 * Check whether the optimizer has found google fonts on the page.
+	 *
+	 * @since 3.8.8
+	 *
+	 * @return bool Will default to true when extending classes have not set via the optimize() method.
+	 */
+	public function has_google_fonts() {
+		return $this->has_google_fonts;
+	}
 
 	/**
 	 * Returns font with display value.
@@ -71,12 +109,94 @@ abstract class AbstractGFOptimization extends AbstractOptimization {
 		 *
 		 * @param string $display Display value. Can be either auto, block, swap, fallback or optional.
 		 */
-		$display = apply_filters( 'rocket_combined_google_fonts_display', 'swap' );
-
-		if ( ! is_string( $display ) ) {
-			return 'swap';
-		}
+		$display = wpm_apply_filters_typed( 'string', 'rocket_combined_google_fonts_display', 'swap' );
 
 		return isset( $this->display_values[ $display ] ) ? $display : 'swap';
+	}
+
+	/**
+	 * Check if preload google fonts is enabled or not using filter.
+	 *
+	 * @return bool
+	 */
+	protected function is_preload_enabled() {
+		return ! wpm_apply_filters_typed( 'boolean', 'rocket_disable_google_fonts_preload', false );
+	}
+
+	/**
+	 * Prepare preload fonts to the head items.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
+	protected function prepare_preload_fonts_to_head( array $fonts, array $items ): array {
+		foreach ( $fonts as $font_url ) {
+			$items[] = $this->preload_link(
+				[
+					'href' => $font_url,
+					'as'   => 'style',
+				]
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Prepare stylesheets to the head.
+	 *
+	 * @param array $fonts Fonts list.
+	 * @param array $items Head items.
+	 * @return array
+	 */
+	protected function prepare_stylesheet_fonts_to_head( array $fonts, array $items ): array {
+		$preload_enabled = $this->is_preload_enabled();
+
+		foreach ( $fonts as $font_url ) {
+			$item = $this->stylesheet_link(
+				[
+					'href' => $font_url,
+				]
+			);
+
+			if ( ! $preload_enabled ) {
+				$items[] = $item;
+				continue;
+			}
+
+			$item['media']  = 'print';
+			$item['onload'] = "this.media='all'";
+			$items[]        = $item;
+
+			$items[] = $this->noscript_tag(
+				sprintf( '<link rel="stylesheet" href="%1$s">', $font_url ), // phpcs:ignore WordPress.WP.EnqueuedResources.NonEnqueuedStylesheet
+				[
+					'data-wpr-hosted-gf-parameters' => '',
+				]
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Insert font stylesheets into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_stylesheet_into_head( $items ) {
+		return $items;
+	}
+
+	/**
+	 * Insert font preloads into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_font_preload_into_head( $items ) {
+		return $items;
 	}
 }

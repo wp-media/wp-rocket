@@ -3,8 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
- * @uses   \WP_Rocket\Admin\Options_Data::set
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager::disable
  * @uses   \WP_Rocket\Admin\Options::set
  * @uses   \WP_Rocket\Admin\Options::get_option_name
  * @uses   ::rocket_clean_domain
@@ -22,8 +21,8 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager
 class Test_Disable extends TestCase {
 	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/CDNOptionsManager/disable.php';
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_option( 'rocketcdn_user_token', '123456' );
 	}

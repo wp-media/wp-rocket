@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
  *
  * @group AdminOnly
  * @group Cache
@@ -13,10 +13,34 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_RegisterTermsRowAction extends AdminTestCase {
 	private static $container;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		self::$container = apply_filters( 'rocket_container', '' );
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		// The test only checks that the row action is registered, not the license/upgrade
+		// flow rocket_upgrader() runs on admin_init when the 'version' option is missing.
+		add_filter( 'pre_get_rocket_option_version', [ $this, 'mock_version' ] );
+	}
+
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_version', [ $this, 'mock_version' ] );
+
+		parent::tear_down();
+	}
+
+	/**
+	 * Reports the running version as the installed one, so rocket_upgrader() takes
+	 * neither the first-install nor the upgrade branch.
+	 *
+	 * @return string
+	 */
+	public function mock_version() {
+		return WP_ROCKET_VERSION;
 	}
 
 	public function testShouldAddCallbackForEachTerm() {

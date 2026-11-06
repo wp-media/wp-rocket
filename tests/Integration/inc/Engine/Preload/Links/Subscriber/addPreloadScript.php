@@ -5,17 +5,17 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Links\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Links\Subscriber::add_preload_script
+ * Test class covering \WP_Rocket\Engine\Preload\Links\Subscriber::add_preload_script
  *
  * @group  PreloadLinks
  */
 class Test_AddPreloadScript extends TestCase {
 	private $preload_links;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
-		unset( $GLOBALS['wp'] );
+		unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_links' ] );
 
 		wp_dequeue_script('rocket-browser-checker');
@@ -26,16 +26,8 @@ class Test_AddPreloadScript extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
-		$GLOBALS['wp'] = (object) [
-			'query_vars' => [],
-			'request'    => 'http://example.org',
-			'public_query_vars' => [
-				'embed',
-			],
-		];
-
 		if ( $config['bypass'] ) {
-			$GLOBALS['wp']->query_vars['nowprocket'] = 1;
+			$_GET['nowprocket'] = 1;
 		}
 
 		$this->preload_links = $config['options']['preload_links'];

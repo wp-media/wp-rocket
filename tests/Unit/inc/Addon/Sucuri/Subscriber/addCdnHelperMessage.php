@@ -1,0 +1,31 @@
+<?php
+
+namespace WP_Rocket\Tests\Unit\inc\Addon\Sucuri\Subscriber;
+
+use Mockery;
+use WP_Rocket\Addon\Sucuri\Subscriber;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Tests\Unit\TestCase;
+
+/**
+ * Test class covering \WP_Rocket\Addon\Sucuri\Subscriber::add_cdn_helper_message
+ */
+class TestAddCdnHelperMessage extends TestCase {
+	protected $options;
+	protected $subscriber;
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->options    = Mockery::mock( Options_Data::class );
+		$this->subscriber = new Subscriber( $this->options );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnAsExpected( $config, $expected ) {
+		$this->options->shouldReceive('get')->with('sucury_waf_cache_sync', false)->andReturn($config['is_enabled']);
+		$this->assertSame($expected, $this->subscriber->add_cdn_helper_message($config['addons']));
+	}
+}

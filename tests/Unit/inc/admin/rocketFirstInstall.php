@@ -4,23 +4,26 @@ namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
  * @group admin
  * @group upgrade
  * @group AdminOnly
  */
 class Test_RocketFirstInstall extends TestCase {
-	public function setUp() {
+
+	protected $mock_rocket_get_constant = false;
+
+	public function setUp() : void {
 		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/upgrader.php';
 	}
 
 	/**
-	 * @dataProvider addProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [
@@ -31,7 +34,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		Functions\expect( 'create_rocket_uniqid' )
 			->times( 3 )
-			->andReturnValues( $uniqids );
+			->andReturnValues( array_values( $uniqids ) );
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
@@ -45,9 +48,5 @@ class Test_RocketFirstInstall extends TestCase {
 		rocket_first_install();
 
 		$this->assertSame( 1, Filters\applied( 'rocket_first_install_options' ) );
-	}
-
-	public function addProvider() {
-		return $this->getTestData( __DIR__, 'rocketFirstInstall' );
 	}
 }

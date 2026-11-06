@@ -2,17 +2,21 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Dreampress;
 
+use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Hostings\Dreampress;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Dreampress::set_varnish_addon_title
  *
  * @group  Dreampress
  * @group  ThirdParty
  */
 class Test_SetVarnishAddonTitle extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider configTestData

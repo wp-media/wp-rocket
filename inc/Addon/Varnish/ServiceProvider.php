@@ -1,19 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Addon\Varnish;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
  * Service provider for Varnish Addon.
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -23,14 +20,29 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the subscribers in the container.
+	 * Check if the service provider provides a specific service.
 	 *
-	 * @since 3.3
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
 	 */
-	public function register() {
-		$this->getContainer()->add( 'varnish', 'WP_Rocket\Addon\Varnish\Varnish' );
-		$this->getContainer()->share( 'varnish_subscriber', 'WP_Rocket\Addon\Varnish\Subscriber' )
-			->withArgument( $this->getContainer()->get( 'varnish' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Registers items with the container
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		$this->getContainer()->add( 'varnish', Varnish::class );
+		$this->getContainer()->addShared( 'varnish_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'varnish',
+					'options',
+				]
+			);
 	}
 }

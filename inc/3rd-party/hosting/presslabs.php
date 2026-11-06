@@ -11,14 +11,14 @@ add_filter( 'rocket_cache_mandatory_cookies', '__return_empty_array', PHP_INT_MA
 add_action( 'after_rocket_clean_home', 'rocket_pl_clean_home', 10, 2 );
 add_action( 'after_rocket_clean_file', 'rocket_pl_clean_post', 2 );
 add_action( 'pl_pre_url_button_cache_refresh', 'rocket_clean_files' );
-add_action( 'wp_rocket_loaded', 'rocket_remove_partial_purge_hooks' );
+add_action( 'wp_rocket_loaded', 'rocket_pl_remove_partial_purge_hooks' );
 
 /**
  * We clear the cache only on the post, homepage and listings when creating/updating/deleting posts.
  *
  * @since 3.3
  *
- * @param object $post The Post object itself for which the action occured.
+ * @param object $post The Post object itself for which the action occurred.
  * @param array  $permalink A list of permalinks to be flushed from cache.
  *
  * @return void
@@ -45,7 +45,7 @@ function rocket_pl_clean_post( $post = false, $permalink = false ) {
  *
  * @return void
  */
-function rocket_pl_clean_home( $root = false, $lang = false ) {
+function rocket_pl_clean_home( $root = false, $lang = false ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	if ( ! $post || ! $permalink ) {
 		return;
 	}
@@ -61,7 +61,7 @@ function rocket_pl_clean_home( $root = false, $lang = false ) {
  *
  * @return void
  */
-function rocket_remove_partial_purge_hooks() {
+function rocket_pl_remove_partial_purge_hooks() {
 	// WP core action hooks rocket_clean_post() gets hooked into.
 	$clean_post_hooks = [
 		// Disables the refreshing of partial cache when content is edited.
@@ -72,7 +72,7 @@ function rocket_remove_partial_purge_hooks() {
 	];
 	// Remove rocket_clean_post() from core action hooks.
 	array_map(
-		function( $hook ) {
+		function ( $hook ) {
 			remove_action( $hook, 'rocket_clean_post' );
 		},
 		$clean_post_hooks

@@ -2,25 +2,31 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\VirtualFilesystemTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
+	use HttpRequestTrait;
+	use DBTrait;
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
+	use IsolateHookTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $skip_setting_up_settings = false;
 	protected static $transients         = [];
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -29,15 +35,15 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 			}
 		}
 
+		self::uninstallAll();
+
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
+	public static function tear_down_after_class() {
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( static::$transients as $transient => $value ) {
@@ -50,21 +56,27 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		// Clean out the cached dirs before we leave this test class.
 		_rocket_get_cache_dirs( '', '', true );
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		$this->initDefaultStructure();
+		$this->init();
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
-
-		parent::setUp();
 
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
@@ -73,6 +85,9 @@ abstract class FilesystemTestCase extends VirtualFilesystemTestCase {
 
 		unset( $GLOBALS['debug_fs'] );
 
-		parent::tearDown();
+		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 }

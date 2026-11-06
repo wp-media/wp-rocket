@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 use WPDieException;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::purge_cdn_cache
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -18,32 +18,32 @@ use WPDieException;
 class Test_PurgeCdnCache extends TestCase {
 	use CapTrait;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
-		CapTrait::setAdminCap();
+		self::hasAdminCapBeforeClass();
+		self::setAdminCap();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		unset( $_GET['_wpnonce'] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		unset( $_GET['_wpnonce'] );
-
-		parent::tearDown();
 
 		// Clean up.
 		remove_filter( 'wp_redirect', [ $this, 'return_empty_string' ] );
+
+		parent::tear_down();
 	}
 
 	public function testShouldWPNonceAysWhenNonceIsMissing() {

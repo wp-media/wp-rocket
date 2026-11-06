@@ -7,14 +7,14 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::delete_cache_job_id
  *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_DeleteCacheJobId extends TestCase {
 
-	protected function setUp() {
+	protected function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );

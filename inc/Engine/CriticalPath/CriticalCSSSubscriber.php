@@ -2,9 +2,14 @@
 
 namespace WP_Rocket\Engine\CriticalPath;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Head\ElementTrait;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Optimization\RegexTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Filesystem_Direct;
+use WP_Rocket\Engine\Support\CommentTrait;
 
 /**
  * Critical CSS Subscriber.
@@ -12,11 +17,21 @@ use WP_Filesystem_Direct;
  * @since 3.3
  */
 class CriticalCSSSubscriber implements Subscriber_Interface {
+	use RegexTrait;
+	use CommentTrait;
+	use ElementTrait;
+
+	/**
+	 * Used for debugging head elements.
+	 *
+	 * @var string
+	 */
+	private $feature = 'cpcss';
 
 	/**
 	 * Instance of Critical CSS.
 	 *
-	 * @var Critical_CSS
+	 * @var CriticalCSS
 	 */
 	protected $critical_css;
 
@@ -26,6 +41,13 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	 * @var Options_Data
 	 */
 	protected $options;
+
+	/**
+	 * WordPress options.
+	 *
+	 * @var Options
+	 */
+	protected $options_api;
 
 	/**
 	 * Instance of the filesystem handler.
@@ -42,17 +64,35 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 	private $cpcss_service;
 
 	/**
+	 * User instance.
+	 *
+	 * @var User
+	 */
+	protected $user;
+
+	/**
+	 * Critical CSS contents.
+	 *
+	 * @var string
+	 */
+	private $critical_css_content = '';
+
+	/**
 	 * Creates an instance of the Critical CSS Subscriber.
 	 *
-	 * @param CriticalCSS          $critical_css  Critical CSS instance.
+	 * @param CriticalCSS          $critical_css Critical CSS instance.
 	 * @param ProcessorService     $cpcss_service Has the logic for cpcss generation and deletion.
-	 * @param Options_Data         $options       WP Rocket options.
-	 * @param WP_Filesystem_Direct $filesystem    Instance of the filesystem handler.
+	 * @param Options_Data         $options WP Rocket options.
+	 * @param Options              $options_api WordPress options.
+	 * @param User                 $user User instance.
+	 * @param WP_Filesystem_Direct $filesystem Instance of the filesystem handler.
 	 */
-	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, $filesystem ) {
+	public function __construct( CriticalCSS $critical_css, ProcessorService $cpcss_service, Options_Data $options, Options $options_api, User $user, $filesystem ) {
 		$this->critical_css  = $critical_css;
 		$this->cpcss_service = $cpcss_service;
 		$this->options       = $options;
+		$this->options_api   = $options_api;
+		$this->user          = $user;
 		$this->filesystem    = $filesystem;
 	}
 
@@ -88,9 +128,12 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				[ 'async_css', 32 ],
 			],
 
+			'rocket_head_items'                 => [ 'insert_css_in_head', 50 ],
 			'switch_theme'                      => 'maybe_regenerate_cpcss',
 			'rocket_excluded_inline_js_content' => 'exclude_inline_js',
 			'before_delete_post'                => 'delete_cpcss',
+			'rocket_before_rollback'            => [ 'stop_critical_css_generation', 9 ],
+			'wp_rocket_upgrade'                 => [ 'stop_critical_css_generation', 9 ],
 		];
 		// phpcs:enable WordPress.Arrays.MultipleStatementAlignment.DoubleArrowNotAligned
 	}
@@ -135,6 +178,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' === $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -300,10 +347,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			&&
 			0 === (int) $value['async_css']
 		) {
-			$this->critical_css->stop_generation();
-
-			delete_transient( 'rocket_critical_css_generation_process_running' );
-			delete_transient( 'rocket_critical_css_generation_process_complete' );
+			$this->stop_critical_css_generation();
 		}
 	}
 
@@ -320,6 +364,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 		$screen = get_current_screen();
 
 		if ( 'settings_page_wprocket' !== $screen->id ) {
+			return;
+		}
+
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
 			return;
 		}
 
@@ -341,7 +389,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				if ( $status_nonmobile && $status_mobile ) {
 					$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 					if ( $item['status']['nonmobile']['success'] ) {
-						$success_counter ++;
+						++$success_counter;
 					}
 				}
 			}
@@ -392,6 +440,10 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
+		if ( ! $this->options->get( 'async_css', 0 ) ) {
+			return;
+		}
+
 		$transient = get_transient( 'rocket_critical_css_generation_process_complete' );
 		if ( ! $transient ) {
 			return;
@@ -416,7 +468,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 				}
 				$items_message .= '<li>' . $item['status']['nonmobile']['message'] . '</li>';
 				if ( $item['status']['nonmobile']['success'] ) {
-					$success_counter ++;
+					++$success_counter;
 				}
 			}
 
@@ -523,7 +575,7 @@ class CriticalCSSSubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */ <<<JS
+		echo /* phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. */ <<<'JS'
 <script>
 /*! loadCSS rel=preload polyfill. [c]2017 Filament Group, Inc. MIT License */
 (function(w){"use strict";if(!w.loadCSS){w.loadCSS=function(){}}
@@ -558,16 +610,41 @@ JS;
 			return $buffer;
 		}
 
-		$critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
+		$this->critical_css_content = str_replace( '\\', '\\\\', $critical_css_content );
 
-		$buffer = preg_replace(
-			'#</title>#iU',
-			'</title><style id="rocket-critical-css">' . wp_strip_all_tags( $critical_css_content ) . '</style>',
-			$buffer,
-			1
+		$buffer = preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+
+		return $this->add_meta_comment( 'async_css', $buffer );
+	}
+
+	/**
+	 * Insert critical CSS into head.
+	 *
+	 * @param array $items Head elements.
+	 * @return mixed
+	 */
+	public function insert_css_in_head( $items ) {
+		$css = $this->get_critical_css_content();
+		if ( empty( $css ) ) {
+			return $items;
+		}
+
+		$items[] = $this->style_tag(
+			$css,
+			[
+				'id' => 'rocket-critical-css',
+			]
 		);
+		return $items;
+	}
 
-		return preg_replace( '#</body>#iU', $this->return_remove_cpcss_script() . '</body>', $buffer, 1 );
+	/**
+	 * Get critical CSS content, getter method for critical_css_content property.
+	 *
+	 * @return string
+	 */
+	public function get_critical_css_content() {
+		return $this->should_async_css() ? $this->critical_css_content : '';
 	}
 
 	/**
@@ -642,8 +719,12 @@ JS;
 			'/(?=<link[^>]*\s(rel\s*=\s*[\'"]stylesheet["\']))<link[^>]*\shref\s*=\s*[\'"]([^\'"]+)[\'"](.*)>/iU'
 		);
 
+		// Remove comments from the buffer.
+		$clean_buffer = $this->hide_comments( $buffer );
+		$clean_buffer = $this->hide_noscripts( $clean_buffer );
+
 		// Get all css files with this regex.
-		preg_match_all( $css_pattern, $buffer, $tags_match );
+		preg_match_all( $css_pattern, $clean_buffer, $tags_match );
 		if ( ! isset( $tags_match[0] ) ) {
 			return $buffer;
 		}
@@ -659,8 +740,12 @@ JS;
 				continue;
 			}
 
+			if ( preg_match( '/media\s*=\s*[\'"]print[\'"]/i', $tags_match[0][ $i ] ) ) {
+				continue;
+			}
+
 			$preload = str_replace( 'stylesheet', 'preload', $tags_match[1][ $i ] );
-			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload=""' . $tags_match[3][ $i ] . '>', $tags_match[3][ $i ] );
+			$onload  = preg_replace( '~' . preg_quote( $tags_match[3][ $i ], '~' ) . '~iU', ' data-rocket-async="style" as="style" onload="" onerror="this.removeAttribute(\'data-rocket-async\')" ' . addcslashes( $tags_match[3][ $i ], '\\$' ) . '>', $tags_match[3][ $i ] );
 			$tag     = str_replace( $tags_match[3][ $i ] . '>', $onload, $tag );
 			$tag     = str_replace( $tags_match[1][ $i ], $preload, $tag );
 			$tag     = str_replace( 'onload=""', 'onload="this.onload=null;this.rel=\'stylesheet\'"', $tag );
@@ -678,14 +763,19 @@ JS;
 	/**
 	 * Regenerates the CPCSS when switching theme if the option is active.
 	 *
-	 * @since  3.3
+	 * @since 3.3
 	 */
 	public function maybe_regenerate_cpcss() {
 		if ( ! $this->options->get( 'async_css' ) ) {
 			return;
 		}
 
-		$this->critical_css->process_handler();
+		if ( ! $this->is_mobile_cpcss_active() ) {
+			$this->critical_css->process_handler( 'default', 'all' );
+			return;
+		}
+
+		$this->critical_css->process_handler( 'all' );
 	}
 
 	/**
@@ -724,5 +814,19 @@ JS;
 		}
 
 		return ! is_rocket_post_excluded_option( 'async_css' );
+	}
+
+	/**
+	 * Stops the critical CSS generation.
+	 *
+	 * @since 3.10
+	 *
+	 * @return void
+	 */
+	public function stop_critical_css_generation() {
+
+		$this->critical_css->stop_generation();
+		delete_transient( 'rocket_critical_css_generation_process_running' );
+		delete_transient( 'rocket_critical_css_generation_process_complete' );
 	}
 }

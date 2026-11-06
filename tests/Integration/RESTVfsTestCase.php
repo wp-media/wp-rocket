@@ -6,24 +6,27 @@ use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WP_Rocket\Tests\VirtualFilesystemTrait;
 use WPMedia\PHPUnit\Integration\RESTVfsTestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class RESTVfsTestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
 	use VirtualFilesystemTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait       = false;
 	protected static $skip_setting_up_settings = false;
 	protected static $transients               = [];
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -36,13 +39,13 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public static function tear_down_after_class() {
+		parent::tear_down_after_class();
 
-		CapTrait::resetAdminCap();
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( static::$transients as $transient => $value ) {
@@ -57,20 +60,24 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		$this->initDefaultStructure();
+		$this->init();
 
 		if ( static::$use_settings_trait && ! static::$skip_setting_up_settings ) {
 			$this->setUpSettings();
 		}
 
-		parent::setUp();
-
 		$this->stubRocketGetConstant();
 		$this->redefineRocketDirectFilesystem();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
@@ -79,7 +86,10 @@ abstract class RESTVfsTestCase extends BaseTestCase {
 
 		unset( $GLOBALS['debug_fs'] );
 
-		parent::tearDown();
+		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function dataProvider() {

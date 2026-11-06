@@ -10,12 +10,12 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration::task
  *
  * @group  CriticalPath
  */
 class test_Task extends TestCase {
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';

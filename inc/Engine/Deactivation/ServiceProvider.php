@@ -1,22 +1,18 @@
 <?php
 namespace WP_Rocket\Engine\Deactivation;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Engine\Container\ServiceProvider\BootableServiceProviderInterface;
+use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
+use WP_Rocket\Engine\Cache\{AdvancedCache, WPCache};
+use WP_Rocket\Engine\Capabilities\Manager;
+use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare, CloudflareFacade};
 
 /**
  * Service Provider for the activation process.
- *
- * @since 3.6.3
  */
 class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -24,30 +20,51 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		'advanced_cache',
 		'capabilities_manager',
 		'wp_cache',
+		'cloudflare_plugin_facade',
+		'cloudflare_plugin_subscriber',
 	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
 
 	/**
 	 * Executes this method when the service provider is registered
 	 *
 	 * @return void
 	 */
-	public function boot() {
+	public function boot(): void {
 		$this->getContainer()
-			->inflector( 'WP_Rocket\Engine\Deactivation\DeactivationInterface' )
+			->inflector( DeactivationInterface::class )
 			->invokeMethod( 'deactivate', [] );
 	}
 
 	/**
 	 * Registers the option array in the container.
 	 */
-	public function register() {
+	public function register(): void {
 		$filesystem = rocket_direct_filesystem();
 
-		$this->getContainer()->add( 'advanced_cache', 'WP_Rocket\Engine\Cache\AdvancedCache' )
-			->withArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' )
-			->withArgument( $filesystem );
-		$this->getContainer()->add( 'capabilities_manager', 'WP_Rocket\Engine\Capabilities\Manager' );
-		$this->getContainer()->add( 'wp_cache', 'WP_Rocket\Engine\Cache\WPCache' )
-			->withArgument( $filesystem );
+		$this->getContainer()->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
+		$this->getContainer()
+			->addShared( 'cloudflare_plugin_subscriber', Cloudflare::class )
+			->addArgument( 'options' )
+			->addArgument( 'options_api' )
+			->addArgument( 'beacon' )
+			->addArgument( 'cloudflare_plugin_facade' );
+
+		$this->getContainer()->add( 'advanced_cache', AdvancedCache::class )
+			->addArgument( new StringArgument( $this->getContainer()->get( 'template_path' ) . '/cache/' ) )
+			->addArgument( $filesystem );
+		$this->getContainer()->add( 'capabilities_manager', Manager::class );
+		$this->getContainer()->add( 'wp_cache', WPCache::class )
+			->addArgument( $filesystem );
 	}
 }

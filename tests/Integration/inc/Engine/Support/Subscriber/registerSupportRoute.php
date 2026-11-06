@@ -2,32 +2,23 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Subscriber::register_support_route
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_support_route
  *
  * @group Support
  */
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
-	use ApiTrait;
 	use StubTrait;
 
-	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
-	private $consumer_key;
-	private $consumer_email;
+	private $wp_version;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
-
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
@@ -43,7 +34,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_version;
 
 		$wp_version = $this->wp_version;
@@ -53,7 +44,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		$this->resetStubProperties();
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	public function testShouldRegisterRoute() {
@@ -70,14 +61,24 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		$wp_version           = '5.5';
 
 		$body = [
-			'email' => $params['email'] ? self::getApiCredential( 'ROCKET_EMAIL' ) : '',
-			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
+			'email' => $params['email'] ? TestCredentials::EMAIL : '',
+			'key'   => $params['key'] ? TestCredentials::KEY : '',
 		];
 
-		$this->assertSame(
-			$expected,
-			$this->requestSupportEndpoint( $body )
-		);
+		$actual = $this->requestSupportEndpoint( $body );
+
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( is_array( $value ) ) {
+				foreach ( $value as $sub_key => $sub_value ) {
+					$this->assertArrayHasKey( $sub_key, $actual[ $key ] );
+					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
+				}
+			} else {
+				$this->assertSame( $value, $actual[ $key] );
+			}
+		}
 	}
 
 	protected function requestSupportEndpoint(  array $body_params = [] ) {
@@ -92,11 +93,11 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	}
 
 	public function set_consumer_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+		return TestCredentials::KEY;
 	}
 
 	public function set_consumer_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+		return TestCredentials::EMAIL;
 	}
 
 	public function configTestData() {

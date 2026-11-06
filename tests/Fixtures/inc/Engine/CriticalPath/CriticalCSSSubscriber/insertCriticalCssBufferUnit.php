@@ -1,7 +1,7 @@
 <?php
 
 $script_min = <<<JS
-<script>"use strict";var wprRemoveCPCSS=function wprRemoveCPCSS(){var elem;document.querySelector('link[data-rocket-async="style"][rel="preload"]')?setTimeout(wprRemoveCPCSS,200):(elem=document.getElementById("rocket-critical-css"))&&"remove"in elem&&elem.remove()};window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script>
+<script>"use strict";function wprRemoveCPCSS(){var preload_stylesheets=document.querySelectorAll('link[data-rocket-async="style"][rel="preload"]');if(preload_stylesheets&&0<preload_stylesheets.length)for(var stylesheet_index=0;stylesheet_index<preload_stylesheets.length;stylesheet_index++){var media=preload_stylesheets[stylesheet_index].getAttribute("media")||"all";if(window.matchMedia(media).matches)return void setTimeout(wprRemoveCPCSS,200)}var elem=document.getElementById("rocket-critical-css");elem&&"remove"in elem&&elem.remove()}window.addEventListener?window.addEventListener("load",wprRemoveCPCSS):window.attachEvent&&window.attachEvent("onload",wprRemoveCPCSS);</script>
 JS;
 
 return [
@@ -184,16 +184,23 @@ return [
 			],
 			'expected' => true,
 			'html'     => <<<HTML
-<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body><script>const wprRemoveCPCSS = () => {
-	if ( document.querySelector( 'link[data-rocket-async="style"][rel="preload"]' ) ) {
-		setTimeout( wprRemoveCPCSS, 200 );
-	} else {
-		const elem = document.getElementById( 'rocket-critical-css' );
-		if ( elem && 'remove' in elem ) {
-			elem.remove();
+<html><head><title></title><style id="rocket-critical-css">.page { color: red; }</style></head><body><script>function wprRemoveCPCSS() {
+	let preload_stylesheets = document.querySelectorAll( 'link[data-rocket-async="style"][rel="preload"]' );
+	if ( preload_stylesheets && preload_stylesheets.length > 0 ) {
+		for ( let stylesheet_index = 0;stylesheet_index < preload_stylesheets.length;stylesheet_index++ ){
+			let media = preload_stylesheets[stylesheet_index].getAttribute('media') || 'all';
+			if( window.matchMedia(media).matches ){
+				setTimeout( wprRemoveCPCSS, 200 );
+				return;
+			}
 		}
 	}
-};
+
+	const elem = document.getElementById( 'rocket-critical-css' );
+	if ( elem && 'remove' in elem ) {
+		elem.remove();
+	}
+}
 
 if ( window.addEventListener ) {
 	window.addEventListener( 'load', wprRemoveCPCSS );

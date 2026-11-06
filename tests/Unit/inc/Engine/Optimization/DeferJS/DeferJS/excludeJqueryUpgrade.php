@@ -6,10 +6,11 @@ use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DefaultLists\DataManager;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::exclude_jquery_upgrade
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\DeferJS::exclude_jquery_upgrade
  *
  * @group  DeferJS
  */
@@ -19,7 +20,7 @@ class Test_ExcludeJqueryUpgrade extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ) {
 		$options  = Mockery::mock( Options_Data::class );
-		$defer_js = new DeferJS( $options );
+		$defer_js = new DeferJS( $options, Mockery::mock( DataManager::class ) );
 
         Functions\expect( 'get_option' )
             ->once()

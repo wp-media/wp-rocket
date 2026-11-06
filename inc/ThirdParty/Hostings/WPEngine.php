@@ -22,10 +22,9 @@ class WPEngine extends AbstractNoCacheHost {
 			'rocket_varnish_field_settings'           => 'varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'return_false',
 			'rocket_cache_mandatory_cookies'          => [ 'return_empty_array', PHP_INT_MAX ],
-			'admin_init'                              => 'run_rocket_bot_after_wpengine',
 			'rocket_set_wp_cache_constant'            => 'return_false',
 			'do_rocket_generate_caching_files'        => 'return_false',
-			'after_rocket_clean_domain'               => 'clean_wpengine',
+			'rocket_after_clean_domain'               => 'clean_wpengine',
 			'rocket_buffer'                           => [ 'add_footprint', 50 ],
 			'rocket_disable_htaccess'                 => 'return_true',
 			'rocket_generate_advanced_cache_file'     => 'return_false',
@@ -52,39 +51,16 @@ class WPEngine extends AbstractNoCacheHost {
 	}
 
 	/**
-	 * Run WP Rocket preload bot after purged the Varnish cache via WP Engine Hosting.
-	 *
-	 * @since 3.6.1
-	 */
-	public function run_rocket_bot_after_wpengine() {
-		if ( ! wpe_param( 'purge-all' ) ) {
-			return;
-		}
-
-		if ( ! rocket_has_constant( 'PWP_NAME' ) ) {
-			return;
-		}
-
-		if ( ! check_admin_referer( rocket_get_constant( 'PWP_NAME' ) . '-config' ) ) {
-			return;
-		}
-
-		// Preload cache.
-		run_rocket_bot();
-		run_rocket_sitemap_preload();
-	}
-
-	/**
 	 * Call the cache server to purge the cache with WP Engine hosting.
 	 *
 	 * @since 3.6.1
 	 */
 	public function clean_wpengine() {
-		if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) {
+		if ( method_exists( 'WpeCommon', 'purge_memcached' ) ) { // @phpstan-ignore-line
 			WpeCommon::purge_memcached();
 		}
 
-		if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) {
+		if ( method_exists( 'WpeCommon', 'purge_varnish_cache' ) ) { // @phpstan-ignore-line
 			WpeCommon::purge_varnish_cache();
 		}
 	}

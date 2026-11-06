@@ -2,7 +2,20 @@
 
 return [
     'test_data' => [
+        'testShouldBailOutWhenSetCacheConstFilterFalse' => [
+            'config' => [
+				'filter_constant_value'   => true,
+			],
+			'tests'   => [
+                'direct' => [
+                    'api' => [],
+                ],
+            ],
+			'expected' => [],
+		],
+
         'testShouldAddTestToEmptyArray' => [
+            'config' => [],
             'tests' => [],
             'expected' => [
                 'direct' => [
@@ -13,6 +26,7 @@ return [
             ],
         ],
         'testShouldAddTestToExistingArray' => [
+            'config' => [],
             'tests' => [
                 'direct' => [
                     'api' => [],

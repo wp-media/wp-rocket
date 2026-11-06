@@ -5,7 +5,9 @@ use WP_Rocket\Dependencies\Minify\JS as MinifyJS;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Engine\Optimization\DeferJS\DeferJS;
+use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -14,6 +16,8 @@ use WP_Rocket\Logger\Logger;
  * @since 3.1
  */
 class Combine extends AbstractJSOptimization implements ProcessorInterface {
+	use CommentTrait;
+
 	/**
 	 * Minifier instance
 	 *
@@ -51,17 +55,31 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	private $move_after = [];
 
 	/**
+	 * External script tags kept in the page because their content could not be fetched
+	 *
+	 * @var array
+	 */
+	private $failed_scripts = [];
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 *
-	 * @param Options_Data     $options     Plugin options instance.
-	 * @param MinifyJS         $minifier    Minifier instance.
-	 * @param AssetsLocalCache $local_cache Assets local cache instance.
-	 * @param DeferJS          $defer_js    Defer JS instance.
+	 * @param Options_Data     $options       Plugin options instance.
+	 * @param MinifyJS         $minifier      Minifier instance.
+	 * @param AssetsLocalCache $local_cache   Assets local cache instance.
+	 * @param DeferJS          $defer_js      Defer JS instance.
+	 * @param DynamicLists     $dynamic_lists  Dynamic list instance.
 	 */
-	public function __construct( Options_Data $options, MinifyJS $minifier, AssetsLocalCache $local_cache, DeferJS $defer_js ) {
-		parent::__construct( $options, $local_cache );
+	public function __construct(
+		Options_Data $options,
+		MinifyJS $minifier,
+		AssetsLocalCache $local_cache,
+		DeferJS $defer_js,
+		DynamicLists $dynamic_lists
+	) {
+		parent::__construct( $options, $local_cache, $dynamic_lists );
 
 		$this->minifier          = $minifier;
 		$this->excluded_defer_js = implode( '|', $defer_js->get_excluded() );
@@ -76,7 +94,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'JS COMBINE PROCESS STARTED.', [ 'js combine process' ] );
 
 		$html_nocomments = $this->hide_comments( $html );
 		$scripts         = $this->find( '<script.*<\/script>', $html_nocomments );
@@ -86,28 +103,12 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			return $html;
 		}
 
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' `<script>` tag(s).',
-			[
-				'js combine process',
-				'tags' => $scripts,
-			]
-		);
-
 		$combine_scripts = $this->parse( $scripts );
 
 		if ( empty( $combine_scripts ) ) {
 			Logger::debug( 'No `<script>` tags to optimize.', [ 'js combine process' ] );
 			return $html;
 		}
-
-		Logger::debug(
-			count( $combine_scripts ) . ' `<script>` tag(s) remaining.',
-			[
-				'js combine process',
-				'tags' => $combine_scripts,
-			]
-		);
 
 		$content = $this->get_content();
 
@@ -136,18 +137,14 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		$html = str_replace( '</body>', '<script src="' . esc_url( $minify_url ) . '" data-minify="1"></script>' . $move_after . '</body>', $html );
 
 		foreach ( $combine_scripts as $script ) {
+			if ( in_array( $script[0], $this->failed_scripts, true ) ) {
+				continue;
+			}
+
 			$html = str_replace( $script[0], '', $html );
 		}
 
-		Logger::info(
-			'Combined JS file successfully added.',
-			[
-				'js combine process',
-				'url' => $minify_url,
-			]
-		);
-
-		return $html;
+		return $this->add_meta_comment( 'minify_concatenate_js', $html );
 	}
 
 	/**
@@ -161,7 +158,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	protected function parse( $scripts ) {
 		$excluded_externals = implode( '|', $this->get_excluded_external_file_path() );
 		$scripts            = array_map(
-			function( $script ) use ( $excluded_externals ) {
+			function ( $script ) use ( $excluded_externals ) {
 				preg_match( '/<script\s+([^>]+[\s\'"])?src\s*=\s*[\'"]\s*?(?<url>[^\'"]+\.js(?:\?[^\'"]*)?)\s*?[\'"]([^>]+)?\/?>/Umsi', $script[0], $matches );
 
 				if ( isset( $matches['url'] ) ) {
@@ -184,6 +181,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 						$this->scripts[] = [
 							'type'    => 'url',
 							'content' => $matches['url'],
+							'tag'     => $script[0],
 						];
 
 						return $script;
@@ -325,7 +323,20 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 				$this->add_to_minify( $file_content );
 			} elseif ( 'url' === $script['type'] ) {
 				$file_content = $this->local_cache->get_content( rocket_add_url_protocol( $script['content'] ) );
-				$content     .= $file_content;
+
+				if ( '' === $file_content ) {
+					Logger::debug(
+						'External script could not be fetched.',
+						[
+							'js combine process',
+							'url' => $script['content'],
+						]
+					);
+					$this->failed_scripts[] = $script['tag'];
+					continue;
+				}
+
+				$content .= $file_content;
 
 				$this->add_to_minify( $file_content );
 			} elseif ( 'inline' === $script['type'] ) {
@@ -350,7 +361,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 */
 	protected function combine( $content ) {
 		if ( empty( $content ) ) {
-			return false;
+			return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
 		$filename      = md5( $content . $this->minify_key ) . '.js';
@@ -359,17 +370,17 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 			$minified_content = $this->minify();
 
 			if ( ! $minified_content ) {
-				return false;
+				return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 			}
 
 			$minify_filepath = $this->write_file( $minified_content, $minified_file );
 
 			if ( ! $minify_filepath ) {
-				return false;
+				return false; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 			}
 		}
 
-		return $this->get_minify_url( $filename );
+		return $this->get_minify_url( $filename ); // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**
@@ -409,292 +420,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return array
 	 */
 	protected function get_excluded_inline_content() {
-		$defaults = [
-			'document.write',
-			'google_ad',
-			'edToolbar',
-			'gtag',
-			'_gaq.push',
-			'_gaLt',
-			'GoogleAnalyticsObject',
-			'syntaxhighlighter',
-			'adsbygoogle',
-			'ci_cap_',
-			'_stq',
-			'nonce',
-			'post_id',
-			'LogHuman',
-			'idcomments_acct',
-			'ch_client',
-			'sc_online_t',
-			'_stq',
-			'bannersnack_embed',
-			'vtn_player_type',
-			'ven_video_key',
-			'ANS_customer_id',
-			'tdBlock',
-			'tdLocalCache',
-			'wpRestNonce',
-			'"url":',
-			'lazyLoadOptions',
-			'adthrive',
-			'loadCSS',
-			'google_tag_params',
-			'clicky_custom',
-			'clicky_site_ids',
-			'NSLPopupCenter',
-			'_paq',
-			'gtm',
-			'dataLayer',
-			'RecaptchaLoad',
-			'WPCOM_sharing_counts',
-			'jetpack_remote_comment',
-			'subscribe-field',
-			'contextly',
-			'_mmunch',
-			'gt_request_uri',
-			'doGTranslate',
-			'docTitle',
-			'bs_ajax_paginate_',
-			'bs_deferred_loading_',
-			'theChampRedirectionUrl',
-			'theChampFBCommentUrl',
-			'theChampTwitterRedirect',
-			'theChampRegRedirectionUrl',
-			'ESSB_CACHE_URL',
-			'oneall_social_login_providers_',
-			'betterads_screen_width',
-			'woocommerce_wishlist_add_to_wishlist_url',
-			'arf_conditional_logic',
-			'heateorSsHorSharingShortUrl',
-			'TL_Const',
-			'bimber_front_microshare',
-			'setAttribute("id"',
-			'setAttribute( "id"',
-			'TribeEventsPro',
-			'peepsotimedata',
-			'wphc_data',
-			'hc_rand_id',
-			'RBL_ADD',
-			'AfsAnalyticsObject',
-			'_thriveCurrentPost',
-			'esc_login_url',
-			'fwduvpMainPlaylist',
-			'Bibblio.initRelatedContent',
-			'showUFC()',
-			'#iphorm-',
-			'#fancy-',
-			'ult-carousel-',
-			'theChampLJAuthUrl',
-			'f._fbq',
-			'Insticator',
-			'w2dc_js_objects',
-			'cherry_ajax',
-			'ad_block_',
-			'elementorFrontendConfig',
-			'zeen_',
-			'disqusIdentifier',
-			'currentAjaxUrl',
-			'geodir_event_call_calendar_',
-			'atatags-',
-			'hbspt.forms.create',
-			'function(c,h,i,m,p)',
-			'dataTable({',
-			'rankMath = {',
-			'_atrk_opts',
-			'quicklinkOptions',
-			'ct_checkjs_',
-			'WP_Statistics_http',
-			'penci_block_',
-			'omapi_localized',
-			'omapi_data',
-			'OptinMonsterApp',
-			'tminusnow',
-			'nfForms',
-			'galleries.gallery_',
-			'wcj_evt.prodID',
-			'advads_tracking_ads',
-			'advadsGATracking.postContext',
-			'woopack_config',
-			'ulp_content_id',
-			'wp-cumulus/tagcloud.swf?r=',
-			'ctSetCookie(\'ct_checkjs\'',
-			'woof_really_curr_tax',
-			'uLogin.customInit',
-			'i18n_no_matching_variations_text',
-			'alsp_map_markers_attrs',
-			'var inc_opt =',
-			'iworks_upprev',
-			'yith_wcevti_tickets',
-			'window.metrilo.ensure_cbuid',
-			'metrilo.event',
-			'wordpress_page_root',
-			'wcct_info',
-			'Springbot.product_id',
-			'pysWooProductData',
-			'dfd-heading',
-			'owl=$("#',
-			'penci_megamenu',
-			'fts_security',
-			'algoliaAutocomplete',
-			'avia_framework_globals',
-			'tabs.easyResponsiveTabs',
-			'searchlocationHeader',
-			'yithautocomplete',
-			'data-parallax-speed',
-			'currency_data=',
-			'cedexisData',
-			'function reenableButton',
-			'#wpnbio-show',
-			'e.Newsletter2GoTrackingObject',
-			'var categories_',
-			'"+nRemaining+"',
-			'cartsguru_cart_token',
-			'after_share_easyoptin',
-			'location_data.push',
-			'thirstyFunctions.isThirstyLink',
-			'styles: \' #custom-menu-',
-			'function svc_center_',
-			'#svc_carousel2_container_',
-			'advads.move',
-			'elementid',
-			'advads_has_ads',
-			'wpseo_map_init',
-			'mdf_current_page_url',
-			'tptn_tracker',
-			'dpsp_pin_button_data',
-			'searchwp_live_search_params',
-			'wpp_params',
-			'top.location,thispage',
-			'selection+pagelink',
-			'ic_window_resolution',
-			'PHP.wp_p_id',
-			'ShopifyBuy.UI.onReady(client)',
-			'orig_request_uri',
-			'gie.widgets.load',
-			'Adman.Flash',
-			'PHP.wp_p_id',
-			'window.broadstreetKeywords',
-			'var productId =',
-			'var flatsomeVars',
-			'wc_product_block_data',
-			'static.mailerlite.com',
-			'amzn_assoc',
-			'_bs_getParameterByName',
-			'_stq.push',
-			'h._remove',
-			'var FlowFlowOpts',
-			'var WCPFData =',
-			'var _beeketing',
-			'var _statcounter',
-			'var actions =',
-			'var current_url',
-			'var object_name',
-			'var the_ajax_script',
-			'var wc_cart_fragments_params',
-			'var woocommerce_params',
-			'var wpml_cookies',
-			'wc_add_to_cart_params',
-			'window.broadstreetKeywords',
-			'window.wc_ga_pro.available_gateways',
-			'xa.prototype',
-			'HOUZEZ_ajaxcalls_vars',
-			'w2dc_maps_objects',
-			'w2dc_controller_args_array',
-			'w2dc_map_markers_attrs',
-			'YT.Player',
-			'WPFC.data',
-			'function current_video_',
-			'var videodiv',
-			'var slider_wppasrotate',
-			'wppas_ga',
-			'var blockClass',
-			'tarteaucitron',
-			'pw_brand_product_list',
-			'tminusCountDown',
-			'pysWooSelectContentData',
-			'wpvq_ans89733',
-			'_isp_version',
-			'price_range_data',
-			'window.FeedbackCompanyWidgets',
-			'woocs_current_currency',
-			'woo_variation_swatches_options',
-			'woocommerce_price_slider_params',
-			'scriptParams',
-			'form-adv-pagination',
-			'borlabsCookiePrioritize',
-			'urls_wpwidgetpolylang',
-			'quickViewNonce',
-			'frontendscripts_params',
-			'nj-facebook-messenger',
-			'var fb_mess_position',
-			'init_particles_row_background_script',
-			'setREVStartSize',
-			'fl-node',
-			'PPAccordion',
-			'soliloquy_',
-			'wprevpublicjs_script_vars',
-			'DTGS_NONCE_FRONTEND',
-			'et_animation_data',
-			'archives-dropdown',
-			'loftloaderCache',
-			'SmartSliderSimple',
-			'var nectarLove',
-			'var incOpt',
-			'RocketBrowserCompatibilityChecker',
-			'RocketPreloadLinksConfig',
-			'placementVersionId',
-			'var useEdit',
-			'var DTGS_NONCE_FRONTEND',
-			'n2jQuery',
-			'et_core_api_spam_recaptcha',
-			'cnArgs',
-			'__CF$cv$params',
-			'trustbox_settings',
-			'aepro',
-			'cdn.jst.ai',
-			'w2dc_fields_in_categories',
-			'aepc_pixel',
-			'avadaWooCommerceVars',
-			'var isb',
-			'fcaPcPost',
-			'csrf_token',
-			'icwp_wpsf_vars_lpantibot',
-			'wpvViewHead',
-			'ed_school_plugin',
-			'aps_comp_',
-			'guaven_woos',
-			'__lm_redirect_to',
-			'__wpdm_view_count',
-			'bookacti.booking_system',
-			'nfFrontEnd',
-			'view_quote_cart_link',
-			'__eae_decode_emails',
-			'divioverlays_ajaxurl',
-			'var _EPYT_',
-			'#ins-heading-',
-			'#ins-button-',
-			'tve_frontend_options',
-			'lb24.src',
-			'amazon_Login_accessToken',
-			'porto_infinite_scroll',
-			'.adace-loader-',
-			'adace_load_',
-			'tagGroupsAccordiontaggroupscloudaccordion',
-			'tagGroupsTabstaggroupscloudtabs',
-			'jrRelatedWidgets',
-			'UNCODE.initRow',
-			'amp_mobile_redirect_disabled',
-			'wpgdprcData',
-			'wpml_browser_redirect_params',
-			'swPreRegister',
-			'kboard_settings',
-			'ct_ultimate_gdpr_cookie',
-			'wcpv_registration_local',
-			'www.idxhome.com',
-		];
-
-		$excluded_inline = array_merge( $defaults, $this->options->get( 'exclude_inline_js', [] ) );
+		$excluded_inline = $this->options->get( 'exclude_inline_js', [] );
 
 		/**
 		 * Filters inline JS excluded from being combined
@@ -714,115 +440,6 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return array
 	 */
 	protected function get_move_after_inline_scripts() {
-		$move_after_scripts = [
-			'map_fusion_map_',
-			'ec:addProduct',
-			'ec:addImpression',
-			'clear_better_facebook_comments',
-			'vc-row-destroy-equal-heights-',
-			'dfd-icon-list-',
-			'SFM_template',
-			'WLTChangeState',
-			'wlt_star_',
-			'wlt_pop_distance_',
-			'smart_list_tip',
-			'gd-wgt-pagi-',
-			'data-rf-id=',
-			'tvc_po=',
-			'scrapeazon',
-			'startclock',
-			'it_logo_field_owl-box_',
-			'td_live_css_uid',
-			'wpvl_paramReplace',
-			'tdAjaxCount',
-			'mec_skin_',
-			'_wca',
-			'_taboola',
-			'fbq(\'trackCustom\'',
-			'fbq(\'track\'',
-			'data.token',
-			'sharrre',
-			'dfads_ajax_load_ads',
-			'tie_postviews',
-			'wmp_update',
-			'h5ab-print-article',
-			'gform_ajax_frame_',
-			'gform_post_render',
-			'mts_view_count',
-			'act_css_tooltip',
-			'window.SLB',
-			'wpt_view_count',
-			'var dateNow',
-			'gallery_product_',
-			'.flo-block-slideshow-',
-			'data=\'api-key=ct-',
-			'ip_common_function()',
-			'("style#gsf-custom-css").append',
-			'a3revWCDynamicGallery_',
-			'#owl-carousel-instagram-',
-			'window.FlowFlowOpts',
-			'jQuery(\'.td_uid_',
-			'jQuery(".slider-',
-			'#dfd-vcard-widget-',
-			'#sf-instagram-widget-',
-			'.woocommerce-tabs-',
-			'penci_megamenu__',
-			'vc_prepareHoverBox',
-			'wp-temp-form-div',
-			'_wswebinarsystem_already_',
-			'#views-extra-css").text',
-			'fusetag.setTargeting',
-			'hit.uptrendsdata.com',
-			'callback:window.renderBadge',
-			'test_run_nf_conditional_logic',
-			'cb_nombre',
-			'$(\'.fl-node-',
-			'function($){google_maps_',
-			'$("#myCarousel',
-			'et_animation_data=',
-			'current_url="',
-			'CustomEvent.prototype=window.Event.prototype',
-			'electro-wc-product-gallery',
-			'woof_is_mobile',
-			'jQuery(\'.videonextup',
-			'wpp_params',
-			'us.templateDirectoryUri=',
-			'.fat-gallery-item',
-			'.ratingbox',
-			'user_rating.prototype.eraseCookie',
-			'test_run_nf_conditional',
-			'dpsp-networks-btns-wrapper',
-			'pa_woo_product_info',
-			'sharing_enabled_on_post_via_metabox',
-			'#product-search-field-',
-			'GOTMLS_login_offset',
-			'berocket_aapf_time_to_fix_products_style',
-			'window.vc_googleMapsPointer',
-			'sinceID_',
-			'#ut-background-video-ut-section',
-			'+window.comment_tab_width+',
-			'dfd-button-hover-in',
-			'wpseo-address-wrapper',
-			'platform.stumbleupon.com',
-			'#woo_pp_ec_button_mini_cart',
-			'#supercarousel',
-			'blockClass',
-			'tdbMenuItem',
-			'tdbSearchItem',
-			'best_seller_badge',
-			'jQuery(\'#product-top-bar',
-			'fb_desc-',
-			'FC_regenerate_captcha',
-			'wp_post_blocks_vars.listed_posts=[',
-			'captcha-hash',
-			'mapdata={',
-			'.ywpc-char-',
-			').countdowntimer(',
-			'jQuery("#td_uid_',
-			'find(\'#td_uid_',
-			'variation_estimate_msg',
-		];
-
 		/**
 		 * Filters inline JS to move after the combined JS file
 		 *
@@ -830,7 +447,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 		 *
 		 * @param array $move_after_scripts Patterns to match.
 		 */
-		return apply_filters( 'rocket_move_after_combine_js', $move_after_scripts );
+		return apply_filters( 'rocket_move_after_combine_js', [] );
 	}
 
 	/**
@@ -883,7 +500,7 @@ class Combine extends AbstractJSOptimization implements ProcessorInterface {
 	 * @param string $url URL to check.
 	 * @return boolean
 	 */
-	private function is_defer_excluded( string $url ) : bool {
+	private function is_defer_excluded( string $url ): bool {
 		if (
 			! empty( $this->excluded_defer_js )
 			&&

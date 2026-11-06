@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_is_stream
+ * Test class covering ::rocket_is_stream
  * @group Functions
  * @group Files
  * @group vfs

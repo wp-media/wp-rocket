@@ -6,15 +6,15 @@ use Brain\Monkey\Functions;
 use AMP_Options_Manager;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
  * @group  ThirdParty
  * @group  WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
 	protected $path_to_test_data = 'isAmpCompatibleCallback.php';
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Updating the AMP settings will trigger this to run.
 		Functions\when( 'rocket_generate_config_file' )->justReturn();

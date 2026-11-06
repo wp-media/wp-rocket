@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_exclude_async_css
  *
  * @group  CriticalPath
  */
@@ -20,10 +20,10 @@ class Test_GetExcludeAsyncCss extends FilesystemTestCase {
 
 	private $config_data = [];
 
-	public function tearDown()
+	public function tear_down()
 	{
 		remove_filter( 'rocket_exclude_async_css', [$this, 'setExcludeFiles'] );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

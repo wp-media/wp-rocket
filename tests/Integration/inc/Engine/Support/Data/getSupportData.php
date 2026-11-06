@@ -7,27 +7,37 @@ use WP_Rocket\Engine\Support\Data;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Data::get_support_data
+ * Test class covering \WP_Rocket\Engine\Support\Data::get_support_data
  *
  * @group Support
  */
 class Test_GetSupportData extends TestCase {
 	private $wp_version;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		global $wp_version;
+
+		add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+		add_filter( 'rocket_lrc_optimization', '__return_true' );
+		add_filter( 'rocket_preload_fonts_optimization', '__return_true' );
+		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
 
 		$this->wp_version = $wp_version;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		global $wp_version;
+
+		remove_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+		remove_filter( 'rocket_lrc_optimization', '__return_true' );
+		remove_filter( 'rocket_preload_fonts_optimization', '__return_true' );
+		remove_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
 
 		$wp_version = $this->wp_version;
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

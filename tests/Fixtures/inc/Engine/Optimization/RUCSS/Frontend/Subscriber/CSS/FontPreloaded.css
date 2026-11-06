@@ -1,0 +1,8 @@
+@font-face {
+	font-family: 'MyFont';
+	src: url('https://domain.com/fonts/MyFont.woff') format('woff');
+}
+
+body {
+	font-family: 'MyFont';
+}

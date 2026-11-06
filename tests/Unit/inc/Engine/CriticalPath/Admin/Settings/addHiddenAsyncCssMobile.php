@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Settings::add_hidden_async_css_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Settings::add_hidden_async_css_mobile
  *
  * @group  CriticalPath
  * @group  CriticalPathSettings
@@ -17,7 +17,7 @@ class Test_AddHiddenAsyncCssMobile extends TestCase {
 
 	private $settings;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();

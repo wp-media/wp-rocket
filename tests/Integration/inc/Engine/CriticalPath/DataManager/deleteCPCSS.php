@@ -7,7 +7,7 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
  * @uses   ::rocket_direct_filesystem
  *
  * @group  CriticalPath
@@ -15,8 +15,6 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  */
 class Test_DeleteCPCSS extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/DataManager/deleteCPCSS.php';
-
-	protected static $mockCommonWpFunctionsInSetUp = true;
 
 	/**
 	 * @dataProvider providerTestData

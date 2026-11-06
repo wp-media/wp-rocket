@@ -2,7 +2,10 @@
 
 namespace WP_Rocket\Tests\Integration;
 
+use org\bovigo\vfs\vfsStream;
 use WC_Install;
+use WP_Error;
+use WP_Rocket\Tests\Fixtures\Kinsta\Kinsta_Cache;
 use WPMedia\PHPUnit\BootstrapManager;
 use function Patchwork\redefine;
 
@@ -11,10 +14,58 @@ define( 'WP_ROCKET_TESTS_FIXTURES_DIR', dirname( __DIR__ ) . '/Fixtures' );
 define( 'WP_ROCKET_TESTS_DIR', __DIR__ );
 define( 'WP_ROCKET_IS_TESTING', true );
 
+/**
+ * Blocks outbound HTTP requests while the WordPress test bootstrap is still running.
+ *
+ * @param mixed  $preempt A preemptive return value, or false to let the request proceed.
+ * @param array  $args    HTTP request arguments.
+ * @param string $url     The request URL.
+ * @return mixed
+ */
+function block_bootstrap_http_request( $preempt, $args, $url ) { // @phpstan-ignore function.unusedParameter ($args precedes $url in the pre_http_request signature.)
+	if ( false !== $preempt || class_exists( 'WP_UnitTestCase_Base', false ) ) {
+		return $preempt;
+	}
+
+	return new WP_Error( 'wp_rocket_tests_bootstrap_http', 'HTTP request blocked during the test bootstrap: ' . $url );
+}
+
 // Manually load the plugin being tested.
 tests_add_filter(
 	'muplugins_loaded',
-	function() {
+	function () {
+		// Under the PHPUnit CLI there is no HTTP request, so $_SERVER['REQUEST_URI'] is unset. Since
+		// WordPress 6.9 core's _wp_cron() (wp-includes/cron.php) runs on the shutdown hook and reads
+		// $_SERVER['REQUEST_URI'] without a guard when spawning due cron events, emitting an
+		// "Undefined array key REQUEST_URI" warning. Seeding it earlier does not survive the WP test
+		// suite's own $_SERVER setup, so ensure the key exists on shutdown just before _wp_cron
+		// (default priority 10) reads it.
+		add_action(
+			'shutdown',
+			function () {
+				if ( ! isset( $_SERVER['REQUEST_URI'] ) ) {
+					$_SERVER['REQUEST_URI'] = '/';
+				}
+			},
+			0
+		);
+
+		// Disable ATF, LRC, Preload fonts, and Preconnect external domains optimizations to prevent DB requests (unrelated to other tests).
+		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
+		add_filter( 'rocket_lrc_optimization', '__return_false' );
+		add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_false' );
+		add_filter( 'rocket_preconnect_external_domains_optimization', '__return_false' );
+		add_filter( 'mcp_adapter_create_default_server', '__return_false' );
+		add_filter( 'rocket_enable_abilities', '__return_true' );
+
+		if ( BootstrapManager::isGroup( 'TranslatePress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Translate_Press.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Url_Converter.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Settings.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Languages.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/TRP_Language_Switcher.php';
+		}
+
 		if ( BootstrapManager::isGroup( 'WithSCCSS' ) ) {
 			// Load Simple Custom CSS plugin.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/simple-custom-css/simple-custom-css.php';
@@ -39,6 +90,8 @@ tests_add_filter(
 				[
 					'do_cloudflare'               => 1,
 					'cloudflare_protocol_rewrite' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
 				]
 			);
 		}
@@ -47,16 +100,32 @@ tests_add_filter(
 		define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
 		define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 
+		// The cache path constants above (and everything wp-rocket.php derives from them) live under the
+		// vfs:// scheme, so register its stream wrapper for the whole suite. Without it, tests that run
+		// without a FilesystemTestCase having registered it first (e.g. the standalone AdminOnly run) let
+		// cache writes — advanced-cache/cache-dir generation on admin_init, notices, etc. — collapse
+		// "vfs://" to "vfs:/" and create a real "vfs:" directory on disk. FilesystemTestCase/RESTVfsTestCase
+		// call vfsStream::setup() again with their own structure, replacing this empty root.
+		if ( ! in_array( 'vfs', stream_get_wrappers(), true ) ) {
+			vfsStream::setup( 'public' );
+		}
+
 		if ( BootstrapManager::isGroup( 'WithSmush' ) ) {
 			// Load WP Smush.
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/wp-smushit/wp-smush.php';
+		}
+
+		if ( BootstrapManager::isGroup('Kinsta') ) {
+			$_SERVER['KINSTA_CACHE_ZONE'] = true ;
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/Kinsta_Cache.php';
+			$GLOBALS['kinsta_cache'] = new Kinsta_Cache();
 		}
 
 		if ( BootstrapManager::isGroup( 'WithWoo' ) ) {
 			// Load WooCommerce.
 			define( 'WC_TAX_ROUNDING_MODE', 'auto' );
 			define( 'WC_USE_TRANSACTIONS', false );
-			require WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/woocommerce.php';
+			require WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/woocommerce.php';
 		}
 
 		if ( BootstrapManager::isGroup( 'BeaverBuilder' ) ) {
@@ -65,6 +134,18 @@ tests_add_filter(
 
 		if ( BootstrapManager::isGroup( 'Elementor' ) ) {
 			define( 'ELEMENTOR_VERSION', '2.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'ConvertPlug' ) ) {
+			define( 'CP_VERSION', '1.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'Termly' ) ) {
+			define( 'TERMLY_VERSION', '1.0' );
+		}
+
+		if ( BootstrapManager::isGroup( 'TheEventsCalendar' ) ) {
+			define( 'TRIBE_EVENTS_FILE', true );
 		}
 
 		if ( BootstrapManager::isGroup( 'Hummingbird' ) ) {
@@ -93,6 +174,10 @@ tests_add_filter(
 			$_SERVER[ 'DH_USER'] = 'wp_74cgrq';
 		}
 
+		if ( BootstrapManager::isGroup( 'Pressidium' ) ) {
+			define('WP_NINUKIS_WP_NAME', 'WP_NINUKIS_WP_NAME');
+		}
+
 		if ( BootstrapManager::isGroup( 'PDFEmbedder' ) ) {
 			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/pdf-embedder/pdf_embedder.php';
 		}
@@ -110,8 +195,30 @@ tests_add_filter(
 		// Overload the license key for testing.
 		redefine( 'rocket_valid_key', '__return_true' );
 
-		if ( BootstrapManager::isGroup( 'DoCloudflare' ) ) {
-			update_option( 'wp_rocket_settings', [ 'do_cloudflare' => 1 ] );
+		if ( BootstrapManager::isGroup( 'Cloudflare' ) ) {
+			set_transient( 'rocket_cloudflare_is_api_keys_valid', true );
+
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+					'cloudflare_zone_id' => '12234',
+				]
+			);
+		}
+
+		if ( BootstrapManager::isGroup( 'CloudflareAdmin' ) ) {
+			define( 'WP_ADMIN', true );
+			update_option(
+				'wp_rocket_settings',
+				[
+					'do_cloudflare' => 1,
+					'cloudflare_email' => 'roger@wp-rocket.me',
+					'cloudflare_api_key' => '12345',
+				]
+			);
 		}
 
 		if ( BootstrapManager::isGroup( 'WPEngine' ) ) {
@@ -122,23 +229,180 @@ tests_add_filter(
 			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/WPEngine/WpeCommon.php';
 		}
 
+		if ( BootstrapManager::isGroup( 'WPXCloud' ) ) {
+			$_SERVER[ 'HTTP_WPXCLOUD'] = true;
+		}
+
+		if ( BootstrapManager::isGroup( 'LiteSpeed' ) ) {
+			$_SERVER[ 'X-LSCACHE'] = 'on';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/HeaderCollector.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/LiteSpeed/override_header_functions.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'Godaddy' ) ) {
+			// Load GoDaddy mocked files.
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Hostings/Godaddy/Plugin.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RevolutionSlider' ) ) {
+			define( 'RS_REVISION', '6.5.5' );
+		}
+		if ( BootstrapManager::isGroup( 'WordFence' ) ) {
+			define( 'WORDFENCE_VERSION', '1' );
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wordfence.php';
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Security/WordFence/wfConfig.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RankMathSEO' ) ) {
+			define('RANK_MATH_FILE', '1');
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'SEOPress' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/SEOPress/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'TheSEOFramework' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'WPGeotargeting' ) ) {
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/WPGeotargeting/fixtures.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'AllInOneSeoPack' ) ) {
+			if(! defined('AIOSEOP_VERSION')) {
+				define('AIOSEOP_VERSION', true);
+			}
+			if(! defined('AIOSEO_VERSION')) {
+				define('AIOSEO_VERSION', true);
+			}
+		}
+
+		if ( BootstrapManager::isGroup( 'Jetpack' ) ) {
+			// Load AMP plugin.
+			require WP_ROCKET_PLUGIN_ROOT . '/vendor/wpackagist-plugin/jetpack/jetpack.php';
+			update_option(
+				'jetpack_active_modules',
+				[
+					'sitemaps',
+					'widgets',
+				]
+			);
+			require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Plugins/Jetpack/functions.php';
+		}
+
+		if ( BootstrapManager::isGroup( 'RocketLazyLoad' ) ) {
+			define( 'ROCKET_LL_VERSION', '2.3.6' );
+		}
+
+		if ( BootstrapManager::isGroup( 'OneCom' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'one.com';
+			$_SERVER[ 'ONECOM_DOMAIN_NAME'] = 'example.com';
+			$_SERVER[ 'HTTP_HOST'] = 'example.com';
+		}
+
+		if ( BootstrapManager::isGroup( 'Perfmatters' ) ) {
+			define( 'PERFMATTERS_VERSION', '2.0.2' );
+		}
+
+		if ( BootstrapManager::isGroup( 'RapidLoad' ) ) {
+			define( 'UUCSS_VERSION', '1.6.34' );
+		}
+
+		if ( BootstrapManager::isGroup( 'ProIsp' ) ) {
+			$_SERVER[ 'GROUPONE_BRAND_NAME'] = 'proisp.no';
+		}
+
+		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			// Disable Rocket Insights for Performance Hints tests group to prevent the test from failing.
+			add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+			// Enable all optimizations for Performance Hints tests group.
+			add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
+			add_filter( 'rocket_lrc_optimization', '__return_true' );
+			add_filter( 'rocket_preconnect_external_domains_optimization', '__return_true' );
+			add_filter( 'pre_get_rocket_option_auto_preload_fonts', '__return_true' );
+		}
+
+		// Load theme definitions for test groups.
+		$themes = require WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/ThirdParty/Themes/themes.php';
+
+		foreach ( $themes as $theme_group => $theme_slug ) {
+			if ( BootstrapManager::isGroup( $theme_group ) ) {
+				switch_theme( $theme_slug );
+			}
+		}
+
+		// Mock CDN CNAME validation HEAD requests so they return 200 without real HTTP calls in CI.
+		add_filter( 'pre_http_request', function ( $preempt, $args, $url ) {
+			if ( isset( $args['method'] ) && 'HEAD' === $args['method'] && false !== strpos( $url, '/style.css' ) ) {
+				return [
+					'headers'  => [],
+					'body'     => '',
+					'response' => [ 'code' => 200, 'message' => 'OK' ],
+					'cookies'  => [],
+					'filename' => '',
+				];
+			}
+			return $preempt;
+		}, 10, 3 );
+
+		// Nothing may reach the network while WordPress bootstraps: WP Rocket calls its pricing and user APIs
+		// while its container is built, and _delete_all_posts() fires the hosting purges. Tests mock their own
+		// requests, so the guard steps aside once the test case classes are loaded.
+		add_filter( 'pre_http_request', __NAMESPACE__ . '\block_bootstrap_http_request', PHP_INT_MAX, 3 );
+
+		// Serve PricingClient a fixture instead of the live API. The License tests delete it to exercise the fetch.
+		set_transient( 'wp_rocket_pricing', json_decode( file_get_contents( WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/License/API/pricing.json' ) ), 12 * HOUR_IN_SECONDS );
+
+		// Core update checks call api.wordpress.org on admin_init. No test needs them.
+		remove_action( 'admin_init', '_maybe_update_core' );
+		remove_action( 'admin_init', '_maybe_update_plugins' );
+		remove_action( 'admin_init', '_maybe_update_themes' );
+
+		// Action Scheduler's async runner posts a loopback to admin-ajax.php at shutdown. No test needs it.
+		add_filter( 'action_scheduler_allow_async_request_runner', '__return_false' );
+
 		// Load the plugin.
 		require WP_ROCKET_PLUGIN_ROOT . '/wp-rocket.php';
 	}
 );
 
+tests_add_filter(
+	'wp_loaded',
+	function() {
+
+		if ( BootstrapManager::isGroup( 'PerformanceHints' ) ) {
+			return;
+		}
+		$container = apply_filters( 'rocket_container', null );
+		$atf_table = $container->get( 'atf_table' );
+		$atf_table->uninstall();
+
+		$lrc_table = $container->get( 'lrc_table' );
+		$lrc_table->uninstall();
+
+		$preload_fonts_table = $container->get( 'preload_fonts_table' );
+		$preload_fonts_table->uninstall();
+
+		$preconnect_external_domains_table = $container->get( 'preconnect_external_domains_table' );
+		$preconnect_external_domains_table->uninstall();
+	}
+);
 
 // install WC.
 tests_add_filter(
 	'setup_theme',
 	function() {
+
 		if ( ! BootstrapManager::isGroup( 'WithWoo' ) ) {
 			return;
 		}
 		// Clean existing install first.
 		define( 'WP_UNINSTALL_PLUGIN', true );
 		define( 'WC_REMOVE_ALL_DATA', true );
-		include WP_ROCKET_PLUGIN_ROOT . '/vendor/woocommerce/woocommerce/uninstall.php';
+		include WP_ROCKET_PLUGIN_ROOT . 'vendor/wpackagist-plugin/woocommerce/uninstall.php';
 
 		WC_Install::install();
 

@@ -1,0 +1,14 @@
+name: 'PR Template Checker'
+on: 
+  pull_request:
+    types: [edited, opened, synchronize, reopened]
+
+jobs:
+  task-check:
+    # Dependabot does not fill the PR template, and its runs get no PR_TEMPLATE_TOKEN.
+    if: github.actor != 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: wp-media/pr-checklist-action@master
+        with:
+          repo-token: "${{ secrets.PR_TEMPLATE_TOKEN }}"

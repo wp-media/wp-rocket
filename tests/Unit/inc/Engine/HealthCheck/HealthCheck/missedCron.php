@@ -9,26 +9,21 @@ use WP_Rocket\Engine\HealthCheck\HealthCheck;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
+ * Test class covering \WP_Rocket\Engine\HealthCheck\HealthCheck::missed_cron
  *
  * @group  HealthCheck
  */
 class Test_MissedCron extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
 	protected        $options;
 	private          $health;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->health  = new HealthCheck( $this->options );
-
-		Functions\when( '_n' )->alias(
-			function ( $singular, $plural, $count ) {
-				return ( $count > 1 ) ? $plural : $singular;
-			}
-		);
 	}
 
 	/**
@@ -49,11 +44,11 @@ class Test_MissedCron extends TestCase {
 		Functions\expect( 'wp_next_scheduled' )
 			->atMost()
 			->times( 5 )
-			->andReturnValues( $config['events'] );
+			->andReturnValues( array_values( $config['events'] ) );
 
 		Functions\when( 'rocket_notice_html' )->alias(
 			function ( $args ) {
-				echo '<div class="notice notice-warning ">' . $args['message'] . '<p><a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice.</a></p></div>';
+				echo '<div class="notice notice-warning ">' . $args['message'] . '<p><a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_cron&amp;_wpnonce=123456">Dismiss this notice</a></p></div>';
 			}
 		);
 
@@ -79,7 +74,7 @@ class Test_MissedCron extends TestCase {
 		$this->options->shouldReceive( 'get' )
 		        ->atMost()
 		        ->times( 4 )
-		        ->andReturnValues( $config['options'] );
+		        ->andReturnValues( array_values( $config['options'] ));
 	}
 
 	private function getActualHtml() {

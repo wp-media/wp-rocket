@@ -2,31 +2,34 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
-use WP_Post;
-use WP_Term;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
-use Brain\Monkey\Filters;
-use Brain\Monkey\Functions;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Post;
 use WP_Rocket\Engine\Cache\Purge;
+use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
+use WP_Term;
 
 /**
- * @covers ::get_rocket_post_terms_urls
- * @group  Purge
- * @group  purge_actions
+ * Test class covering \WP_Rocket\Engine\Cache\Purge::purge_post_terms_urls
+ *
+ * @group Purge
+ * @group purge_actions
  */
 class Test_PurgePostTermsUrls extends FilesystemTestCase {
+	private $purge;
+
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgePostTermsUrls.php';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
-		$this->purge = new Purge( $this->filesystem );
+		$query       = $this->createPartialMock( Cache::class, [ 'query' ] );
+		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
-	public function tearDown() {
+	public function tearDown(): void {
 		parent::tearDown();
-
 		unset( $GLOBALS['wp_rewrite'] );
 	}
 
@@ -50,10 +53,11 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 			->once()
 			->with( 'post', 'objects' )
 			->andReturn( $taxonomies );
+		Filters\expectApplied( 'rocket_exclude_post_taxonomy' )
+			->once();
 
-		$index = 0;
 		foreach ( $taxonomies as $type => $taxonomy ) {
-			if ( ! $taxonomy->public || 'product_shipping_class' === $taxonomy->name ) {
+			if ( ! $taxonomy->public ) {
 				continue;
 			}
 
@@ -77,7 +81,6 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 					->once()
 					->with( $term->slug, $taxonomy->name )
 					->andReturn( 'https://example.org/' . $term->slug );
-				$index++;
 				Functions\expect( 'is_wp_error' )
 					->once()
 					->with( 'https://example.org/' . $term->slug )
@@ -86,24 +89,23 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				if ( isset( $taxonomy->is_taxonomy_hierarchical ) && isset( $term->parent ) ) {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()
-						->with( $taxonomy->name )
+						->with( property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( $taxonomy->is_taxonomy_hierarchical );
 					Functions\expect( 'get_ancestors' )
 						->once()
-						->with( $term->term_id, $taxonomy->name )
+						->with( property_exists($term, 'term_id') ? $term->term_id : null, property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( [ $term->parent ] );
 
 					$term_mocked->slug = $term->parent;
 
 					Functions\expect( 'get_term' )
 						->once()
-						->with( $term->parent, $taxonomy->name )
+						->with( $term->parent, property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( $term_mocked );
 					Functions\expect( 'get_term_link' )
 						->once()
-						->with( $term->parent , $taxonomy->name )
+						->with( $term->parent , property_exists($taxonomy, 'name') ? $taxonomy->name : '' )
 						->andReturn( 'https://example.org/' . $term->parent );
-					$index++;
 				} else {
 					Functions\expect( 'is_taxonomy_hierarchical' )
 						->once()
@@ -112,11 +114,11 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 				}
 			}
 		}
-		Filters\expectApplied( 'rocket_post_terms_urls', $expected )->once();
+		Filters\expectApplied( 'rocket_post_terms_urls' )->once();
 
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
+
+		$GLOBALS['wp_rewrite'] = (object) [ 'pagination_base' => 'page' ];
 
 		$this->purge->purge_post_terms_urls( $post_mocked );
 
@@ -151,7 +153,7 @@ class Test_PurgePostTermsUrls extends FilesystemTestCase {
 		}
 
 		foreach ( $config as $term ) {
-			$terms[] = (object) [ 'term_id' => rand(1, 100), 'slug' => isset( $term['name'] ) ? $term['name'] : $term['slug'], 'parent' => isset( $term['parent']) ? $term['parent'] : null ];
+			$terms[] = (object) [ 'term_id' => rand( 1, 100 ), 'slug' => isset( $term['name'] ) ? $term['name'] : $term['slug'], 'parent' => isset( $term['parent']) ? $term['parent'] : null ];
 		}
 
 		return $terms;

@@ -7,7 +7,7 @@ $(document).ready(function(){
 	***/
 
 	var $notice = $('.wpr-notice');
-	var $noticeClose = $('.wpr-notice-close');
+	var $noticeClose = $('#wpr-congratulations-notice');
 
 	$noticeClose.on('click', function() {
 		wprCloseDashboardNotice();
@@ -17,7 +17,7 @@ $(document).ready(function(){
 	function wprCloseDashboardNotice(){
 		var vTL = new TimelineLite()
 		  .to($notice, 1, {autoAlpha:0, x:40, ease:Power4.easeOut})
-		  .to($notice, 0.6, {height: 0, marginTop:0, ease:Power4.easeOut}, '=-.4')
+		  .to($notice, 0.6, {height: 0, marginTop:0, marginBottom:0, ease:Power4.easeOut}, '=-.4')
 		  .set($notice, {'display':'none'})
 		;
 	}
@@ -52,8 +52,57 @@ $(document).ready(function(){
 		} ).trigger( 'change' );
 	} );
 
+	/***
+	* Help Button Tracking
+	***/
 
+	// Track clicks on various help elements with data attributes
+	$(document).on('click', '[data-wpr_track_help]', function(e) {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var $el = $(this);
+			var button = $el.data('wpr_track_help');
+			var context = $el.data('wpr_track_context') || '';
 
+			window.wprTrackHelpButton(button, context);
+		}
+	});
+
+	// Track specific help resource clicks with explicit selectors
+	$(document).on('click', '.wistia_embed', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var title = $(this).text() || 'Getting Started Video';
+			window.wprTrackHelpButton(title, 'Getting Started');
+		}
+	});
+
+	// Track FAQ links
+	$(document).on('click', 'a[data-beacon-article]', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			var href = $(this).attr('href');
+			var text = $(this).text();
+
+			// Check if it's in sidebar documentation
+			if ($(this).closest('.wpr-documentation').length > 0) {
+				window.wprTrackHelpButton('Documentation', 'Sidebar');
+			} else {
+				window.wprTrackHelpButton('Documentation Link', 'General');
+			}
+		}
+	});
+
+	// Track "How to measure loading time" link
+	$(document).on('click', 'a[href*="how-to-test-wordpress-site-performance"]', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('Loading Time Guide', 'Sidebar');
+		}
+	});
+
+	// Track "Need help?" links (existing help buttons)
+	$(document).on('click', '.wpr-infoAction--help:not([data-beacon-id])', function() {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('Need Help', 'General');
+		}
+	});
 
 
 	/***
@@ -106,8 +155,19 @@ $(document).ready(function(){
 	function wprActivateAnalytics(){
 		wprCloseAnalytics();
 		$('#analytics_enabled').prop('checked', true);
-		$('#analytics_enabled').trigger('change');
+
+		var analyticsEnabled = document.getElementById('analytics_enabled');
+
+		if ( analyticsEnabled ) {
+			var changeEvent = new Event('change', { bubbles: true });
+			analyticsEnabled.dispatchEvent(changeEvent);
+		}
 	}
+
+	// Display CTA within the popin `What info will we collect?`
+	$('#analytics_enabled').on('change', function () {
+		$('.wpr-rocket-analytics-cta').toggleClass('wpr-isHidden');
+	});
 
 	/***
 	* Show popin upgrade
@@ -149,29 +209,6 @@ $(document).ready(function(){
 	}
 
 	/***
-	* Sidebar on/off
-	***/
-	var $wprSidebar    = $( '.wpr-Sidebar' );
-	var $wprButtonTips = $('.wpr-js-tips');
-
-	$wprButtonTips.on('change', function() {
-		wprDetectTips($(this));
-	});
-
-	function wprDetectTips(aElem){
-		if(aElem.is(':checked')){
-			$wprSidebar.css('display','block');
-			localStorage.setItem( 'wpr-show-sidebar', 'on' );
-		}
-		else{
-			$wprSidebar.css('display','none');
-			localStorage.setItem( 'wpr-show-sidebar', 'off' );
-		}
-	}
-
-
-
-	/***
 	* Detect Adblock
 	***/
 
@@ -197,4 +234,208 @@ $(document).ready(function(){
 		;
 	}
 
+	// Handle expand/collapse of recommendations list.
+	$(document).on('click', '#wpr-recommendations-load-more', function() {
+		let $list = $('.wpr-recommendations__list');
+		let $hiddenItems = $list.find('.wpr-recommendation-item:gt(2)');
+
+		// Track Load More button click
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('rocket insights recommendations load more', 'load_more');
+		}
+
+		if ($list.hasClass('is-expanded')) {
+			$hiddenItems.slideUp(300, function() {
+				$list.removeClass('is-expanded');
+			});
+			$(this).removeClass('is-expanded');
+			return;
+		}
+
+		$list.addClass('is-expanded');
+		$hiddenItems.slideDown(300);
+		$(this).addClass('is-expanded');
+	});
+
+	// Handle expand/collapse of the dashboard recommendations list.
+	$(document).on('click', '.wpr-dash-recs__more', function() {
+		const $button = $(this);
+		const isExpanded = $button.hasClass('is-expanded');
+
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('rocket insights recommendations load more', 'load_more');
+		}
+
+		$button.toggleClass('is-expanded', !isExpanded).attr('aria-expanded', String(!isExpanded));
+		$button.siblings('.wpr-dash-recs__list').toggleClass('is-expanded', !isExpanded);
+	});
+
+
+	// Setting targeted by a recommendation Activate link, waiting for its page to be displayed.
+	var pendingRecommendation = null;
+	var highlightTimer = null;
+
+	/**
+	 * Scrolls to the setting of a recommendation and highlights it.
+	 * Falls back to the closest visible parent field when the setting is hidden, does nothing when it is not found.
+	 *
+	 * @param {string} slug Option slug of the recommendation.
+	 */
+	function scrollAndHighlight(slug) {
+		var escaped = CSS.escape(slug);
+		var target = document.querySelector('[name="wp_rocket_settings[' + escaped + ']"]') || document.getElementById(slug);
+
+		// A hidden input only stores the value (e.g. Remove Unused CSS), the option is displayed by a radio button.
+		if (!target || target.type === 'hidden') {
+			target = document.getElementById('wpr-radio-' + slug) || target;
+		}
+
+		if (!target) {
+			return;
+		}
+
+		var field = target.closest('.wpr-field') || target;
+
+		// Walk up through the parent fields until a visible one is found.
+		while (field && field.offsetParent === null) {
+			var parentId = field.dataset.parent;
+
+			if (!parentId) {
+				return;
+			}
+
+			var parent = document.getElementById(parentId);
+			field = parent ? (parent.closest('.wpr-field') || parent) : null;
+		}
+
+		if (!field) {
+			return;
+		}
+
+		var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+
+		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted').css({'--wpr-highlight-end': '', '--wpr-highlight-inset': '', '--wpr-highlight-top': '', '--wpr-highlight-bottom': ''});
+		clearTimeout(highlightTimer);
+
+		// Extend the highlight down to the next visible element, or to the bottom of the container, covering the spacing left by hidden child fields.
+		var next = field.nextElementSibling;
+
+		while (next && next.offsetParent === null) {
+			next = next.nextElementSibling;
+		}
+
+		var prev = field.previousElementSibling;
+
+		while (prev && prev.offsetParent === null) {
+			prev = prev.previousElementSibling;
+		}
+
+		// Fields grouped with others are divided by separators: the highlight only spans slightly past their length and stays clear of them and of the container edges.
+		var groupSelector = '.wpr-field, .wpr-warningContainer';
+		var hasPrev = !!prev && prev.matches(groupSelector);
+		var hasNext = !!next && next.matches(groupSelector);
+		var isGrouped = hasPrev || hasNext;
+
+		var fieldBottom = field.getBoundingClientRect().bottom;
+		var containerBottom = field.parentElement.getBoundingClientRect().bottom - parseFloat(getComputedStyle(field.parentElement).borderBottomWidth);
+		var end = next ? next.getBoundingClientRect().top : containerBottom;
+
+		field.style.setProperty('--wpr-highlight-end', Math.max(0, end - fieldBottom) + 'px');
+		field.style.setProperty('--wpr-highlight-inset', isGrouped ? '-8px' : '');
+		field.style.setProperty('--wpr-highlight-top', isGrouped ? (field.matches(':first-child') ? '-8px' : '8px') : '');
+		field.style.setProperty('--wpr-highlight-bottom', isGrouped ? '8px' : '');
+		field.classList.add('wpr-field--highlighted');
+		highlightTimer = setTimeout(function() {
+			field.classList.remove('wpr-field--highlighted');
+			field.style.removeProperty('--wpr-highlight-end');
+			field.style.removeProperty('--wpr-highlight-inset');
+			field.style.removeProperty('--wpr-highlight-top');
+			field.style.removeProperty('--wpr-highlight-bottom');
+		}, 2000);
+	}
+
+	// Once the target page of a recommendation is displayed, scroll to its setting.
+	document.addEventListener('rocketJsAfterPageNavigation', function(e) {
+		if (!pendingRecommendation) {
+			return;
+		}
+
+		var pending = pendingRecommendation;
+		pendingRecommendation = null;
+
+		if (e.detail && e.detail.pageId === pending.pageId) {
+			scrollAndHighlight(pending.slug);
+		}
+	});
+
+	// Track Rocket Insights Recommendation Activate button clicks
+	$(document).on('click', '.wpr-recommendation-item__activate', function(e) {
+		var recommendation = $(this).data('recommendation') || 'unknown';
+		var pageId = (this.hash || '').slice(1);
+
+		if (pageId && pageId === window.location.hash.slice(1)) {
+			// Already on the target page: no navigation will happen, scroll right away.
+			// Prevent the native jump to the current hash, it would cancel the smooth scroll.
+			e.preventDefault();
+			pendingRecommendation = null;
+			scrollAndHighlight(recommendation);
+		} else if (pageId) {
+			pendingRecommendation = { slug: recommendation, pageId: pageId };
+		}
+
+		// Track directly with Mixpanel
+		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+			// Check if user has opted in
+			if (typeof rocket_mixpanel_data !== 'undefined' && rocket_mixpanel_data.optin_enabled && rocket_mixpanel_data.optin_enabled !== '0') {
+				// Identify user if available
+				if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+					mixpanel.identify(rocket_mixpanel_data.user_id);
+				}
+				
+				// Track the Button Clicked event
+				mixpanel.track('Button Clicked', {
+					'button': 'rocket insights recommendation',
+					'recommendation': recommendation,
+					'plugin': rocket_mixpanel_data.plugin,
+					'brand': rocket_mixpanel_data.brand,
+					'application': rocket_mixpanel_data.app,
+					'context': rocket_mixpanel_data.context,
+					'path': rocket_mixpanel_data.path,
+					'interaction_channel': 'UI'
+				});
+			}
+		}
+	});
+
+	// Track CTA clicks for Rocket Insights in the settings saved notice.
+	$(document).on('click', '#rocket_ri_new_test_save_settings_link', function() {
+		// Track directly with Mixpanel
+		if (typeof mixpanel === 'undefined' || !mixpanel.track) {
+			return;
+		}
+
+		// Check if user has opted in
+		if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+			return;
+		}
+
+		// Identify user if available
+		if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+			mixpanel.identify(rocket_mixpanel_data.user_id);
+		}
+
+		// Track the Button Clicked event
+		mixpanel.track('Rocket Insights CTA click from settings notice', {
+			'button': 'CTA on save settings notice',
+			'source': 'Settings Saved Notice',
+			'plugin': rocket_mixpanel_data.plugin,
+			'brand': rocket_mixpanel_data.brand,
+			'application': rocket_mixpanel_data.app,
+			'context': rocket_mixpanel_data.context,
+			'path': rocket_mixpanel_data.path,
+			'interaction_channel': 'UI'
+		});
+	});
 });

@@ -1,0 +1,54 @@
+version: 2
+updates:
+  # Keep GitHub Actions used in workflows up to date (security + version bumps).
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    ignore:
+      # First-party shared workflows and composite actions are intentionally tracked on @main.
+      - dependency-name: "wp-media/workflows"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "type: enhancement"
+
+  # Build tooling for the admin JS/CSS. package-lock.json is gitignored, so only
+  # the direct dependencies declared in package.json are tracked.
+  - package-ecosystem: "npm"
+    directory: "/"
+    target-branch: "develop"
+    schedule:
+      interval: "monthly"
+    # Caps version-update PRs only; security updates have their own fixed limit.
+    open-pull-requests-limit: 5
+    cooldown:
+      default-days: 7
+    groups:
+      # Majors are left out of both groups so a breaking major (e.g. a new
+      # webpack-cli or React) gets its own PR instead of blocking the safe bumps.
+      npm-security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+      npm-dev-tooling:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    labels:
+      - "type: enhancement"

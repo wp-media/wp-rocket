@@ -80,6 +80,10 @@ return [
 						'all',
 					],
 				],
+				'cdn_type' => [
+					'default' => 'rocketcdn',
+					'value' => 'rocketcdn',
+				],
 			],
 		],
 		'testShouldRewriteSrcsetWithCDNWhenZoneIsImages' => [
@@ -103,6 +107,10 @@ return [
 					'value' => [
 						'images',
 					],
+				],
+				'cdn_type' => [
+					'default' => 'rocketcdn',
+					'value' => 'rocketcdn',
 				],
 			],
 		],

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\common;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_widget_update_callback
+ * Test class covering ::rocket_widget_update_callback
  * @uses   ::rocket_clean_domain
  *
  * @group  Common

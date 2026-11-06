@@ -95,7 +95,7 @@ HTML
 		<br>Troubleshoot:<a href="https://docs.wp-rocket.me/article/626-how-to-make-system-files-htaccess-wp-config-writeable/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">How to make system files writeable</a>
 	</p>
 	<p>
-		<a class="rocket-dismiss" href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_advanced_cache_permissions&amp;_wpnonce=123456">Dismiss this notice.</a>
+		<a class="rocket-dismiss " href="http://example.org/wp-admin/admin-post.php?action=rocket_ignore&amp;box=rocket_warning_advanced_cache_permissions&amp;_wpnonce=123456">Dismiss this notice</a>
 	</p>
 </div>
 HTML

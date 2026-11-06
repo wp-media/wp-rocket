@@ -7,19 +7,23 @@ const rocketGenerateCPCSSbtn      = document.getElementById( 'rocket-generate-po
 const rocketCPCSSGenerate         = document.querySelectorAll( '.cpcss_generate' );
 const rocketCPCSSReGenerate       = document.querySelectorAll( '.cpcss_regenerate' );
 
-rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
-	e.preventDefault();
-	deleteCPCSS();
-} );
+if ( null !== rocketDeleteCPCSSbtn ) {
+	rocketDeleteCPCSSbtn.addEventListener( 'click', e => {
+		e.preventDefault();
+		deleteCPCSS();
+	} );
+}
 
-rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
-	e.preventDefault();
-	rocketGenerateCPCSSbtn.disabled = true;
-	checkCPCSSGeneration( null, false );
-	if ( rocket_cpcss.wprMobileCpcssEnabled ) {
-		checkCPCSSGeneration( null, true );
-	}
-} );
+if ( null !== rocketGenerateCPCSSbtn ) {
+	rocketGenerateCPCSSbtn.addEventListener( 'click', e => {
+		e.preventDefault();
+		rocketGenerateCPCSSbtn.disabled = true;
+		checkCPCSSGeneration( null, false );
+		if ( rocket_cpcss.wprMobileCpcssEnabled ) {
+			checkCPCSSGeneration( null, true );
+		}
+	} );
+}
 
 const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 	const spinner                   = rocketGenerateCPCSSbtn.querySelector( '.spinner' );
@@ -85,7 +89,7 @@ const checkCPCSSGeneration = ( timeout = null, is_mobile = false ) => {
 	};
 
 	xhttp.open( 'POST', rocket_cpcss.rest_url, true );
-	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json' );
 	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send( JSON.stringify( { timeout: timeout, is_mobile: is_mobile } ) );
 }
@@ -125,7 +129,7 @@ const deleteCPCSS = () => {
 	};
 
 	xhttp.open( 'DELETE', rocket_cpcss.rest_url, true );
-	xhttp.setRequestHeader( 'Content-Type', 'application/json;charset=UTF-8' );
+	xhttp.setRequestHeader( 'Content-Type', 'application/json' );
 	xhttp.setRequestHeader( 'X-WP-Nonce', rocket_cpcss.rest_nonce );
 	xhttp.send();
 }

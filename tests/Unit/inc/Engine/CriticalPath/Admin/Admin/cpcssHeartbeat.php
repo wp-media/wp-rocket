@@ -12,7 +12,7 @@ use WP_Rocket\Engine\CriticalPath\ProcessorService;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Admin::cpcss_heartbeat
  *
  * @group  CriticalPath
  * @group  CriticalPathAdmin
@@ -20,21 +20,20 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_CpcssHeartbeat extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $admin;
 	private $processor;
 	private $wp_error;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/WP_Error.php';
 	}
 
-	protected function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
+		Functions\stubTranslationFunctions();
 		Functions\expect( 'check_ajax_referer' )
 			->once()
 			->with( 'cpcss_heartbeat_nonce', '_nonce', true )
@@ -69,6 +68,8 @@ class Test_CpcssHeartbeat extends TestCase {
 			$this->expectBailoutConditions( $expected );
 		}
 
+		$this->expectException( \Exception::class );
+
 		$this->admin->cpcss_heartbeat();
 	}
 
@@ -98,7 +99,8 @@ class Test_CpcssHeartbeat extends TestCase {
 			->with( 'rocket_cpcss_generation_pending' )
 			->never();
 		Functions\expect( $expected['json'] )
-			->once();
+			->once()
+			->andThrow( new \Exception( 'Bailout' ) );
 	}
 
 	private function expectTransientPending( $config, $expected ) {
@@ -154,14 +156,16 @@ class Test_CpcssHeartbeat extends TestCase {
 		if ( isset( $expected['generation_complete'] ) && ! $expected['generation_complete'] ) {
 			Functions\expect( $expected['json'] )
 				->once()
-				->with( $expected['data'] );
+				->with( $expected['data'] )
+				->andThrow( new \Exception( 'not complete' ) );
 		}
 	}
 
 	private function assertGenerationCompleteWhenNotSet( $config, $expected ) {
 		Functions\expect( $expected['json'] )
 			->once()
-			->with( $expected['data'] );
+			->with( $expected['data'] )
+			->andThrow( new \Exception( 'complete' ) );
 
 		if ( ! $config['rocket_critical_css_generation_process_running'] ) {
 			Functions\expect( 'get_transient' )

@@ -7,25 +7,28 @@ use WP_Rocket\Tests\CallbackTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\AjaxTestCase as WPMediaAjaxTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class AjaxTestCase extends WPMediaAjaxTestCase {
+	use HttpRequestTrait;
 	use CallbackTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
+	use DBTrait;
 
 	protected static $use_settings_trait = false;
 	protected static $transients         = [];
 
 	protected $config;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -35,13 +38,11 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		}
 	}
 
-	public static function tearDownAfterClass() {
-		parent::setUpBeforeClass();
-
-		CapTrait::resetAdminCap();
+	public static function tear_down_after_class() {
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {
@@ -51,32 +52,42 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
-		$this->stubRocketGetConstant();
+		self::removeDBHooks();
 
-		parent::setUp();
+		$this->stubRocketGetConstant();
 
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
 	}
 
-	public function tearDown() {
-		unset( $_POST['action'], $_POST['nonce'] );
-		$this->action = null;
-		CapTrait::resetAdminCap();
-
-		parent::tearDown();
+	public function tear_down() {
+		unset( $_POST );
+		$this->action = '';
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function configTestData() {

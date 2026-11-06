@@ -6,14 +6,15 @@ use WP_Rocket\Tests\Integration\ContentTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
- * @uses   ::rocket_get_constant
- * @uses   ::is_rocket_post_excluded_option
- * @uses   \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
- * @uses   \WP_Rocket\Admin\Options_Data::get
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::insert_critical_css_buffer
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses ::rocket_get_constant
+ * @uses ::is_rocket_post_excluded_option
+ * @uses \WP_Rocket\Engine\CriticalPath\CriticalCss::get_critical_css_content
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group vfs
  */
 class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 	use ContentTrait;
@@ -34,16 +35,30 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
+
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+		self::uninstallPreloadCacheTable();
 
 		$this->reset_post_types();
 		$this->reset_taxonomies();
@@ -51,6 +66,10 @@ class Test_InsertCriticalCssBuffer extends FilesystemTestCase {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_1' ] );
 		remove_filter( 'pre_get_rocket_option_critical_css', [ $this, 'getFallbackCss' ] );
 		update_option( 'show_on_front', 'posts' );
+
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	/**

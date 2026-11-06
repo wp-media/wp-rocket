@@ -1,9 +1,11 @@
 // directories
+.claude export-ignore
 bin export-ignore
 src export-ignore
 tests export-ignore
 
 // files
+AGENTS.md export-ignore
 .babelrc export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
@@ -15,10 +17,12 @@ tests export-ignore
 composer.lock export-ignore
 CONTRIBUTING.md export-ignore
 gulpfile.js export-ignore
-LICENSE.md export-ignore
+LICENSE export-ignore
 package.json export-ignore
 package-lock.json export-ignore
 phpcs.xml export-ignore
 phpstan.neon.dist export-ignore
 phpunit.xml.dist export-ignore
 README.md export-ignore
+
+.github/workflows/*.lock.yml linguist-generated=true merge=ours

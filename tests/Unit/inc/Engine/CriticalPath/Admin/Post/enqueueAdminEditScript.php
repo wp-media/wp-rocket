@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Post::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  CriticalPath
@@ -17,14 +17,13 @@ use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 class Test_EnqueueAdminEditScript extends TestCase {
 	use AdminTrait;
 
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $post;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->setUpMocks();
+		Functions\stubTranslationFunctions();
 
 		$this->post = new Post(
 			$this->options,
@@ -34,10 +33,20 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		);
 	}
 
-	protected function tearDown() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['post'] );
 		unset( $GLOBALS['pagenow'] );
 		parent::tearDown();
+	}
+
+	public function testShouldReturnNullWhenCurrentUserCannot() {
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( false );
+
+		$this->assertNull(
+			$this->post->enqueue_admin_edit_script( 'edit.php' )
+		);
 	}
 
 	/**
@@ -55,6 +64,16 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		} else {
 			$this->assertNotExpected();
 		}
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( true );
+
+		Functions\expect( 'get_post_type' )->andReturn( $config['post']->post_type );
+
+		Functions\expect( 'is_post_type_viewable' )
+			->with( $config['post']->post_type )
+			->andReturn( true );
 
 		$this->post->enqueue_admin_edit_script( $config['page'] );
 	}

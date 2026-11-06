@@ -6,8 +6,9 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_regenerate_menu_item
- * @uses   \WP_Rocket\Tests\CriticalPath\Admin\Admin::add_regenerate_menu_item
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_regenerate_menu_item
+ *
+ * @uses   \WP_Rocket\Engine\CriticalPath\Admin\Admin::add_regenerate_menu_item
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @uses   ::rocket_has_constant
  *
@@ -23,19 +24,20 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 	private   $filter;
 	private   $option;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->setRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		add_filter( 'show_admin_bar', [ $this, 'return_true' ] );
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'async_css' ] );
 		add_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		$this->removeRoleCap( 'administrator', 'rocket_regenerate_critical_css' );
 
 		remove_filter( 'show_admin_bar', [ $this, 'return_true' ] );
@@ -43,6 +45,10 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		remove_filter( 'do_rocket_critical_css_generation', [ $this, 'filter_generation' ] );
 
 		unset( $_SERVER['REQUEST_URI'] );
+
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -74,7 +80,8 @@ class Test_AddRegenerateMenuItem extends AdminTestCase {
 		if ( false === $expected ) {
 			$this->assertNull( $actual );
 		} else {
-			$this->assertEquals( $expected, $actual );
+			// Compare only the fixture's keys: core adds node defaults over time (e.g. `icon` in WP 7.2).
+			$this->assertEquals( $expected, (object) array_intersect_key( get_object_vars( $actual ), get_object_vars( $expected ) ) );
 		}
 	}
 

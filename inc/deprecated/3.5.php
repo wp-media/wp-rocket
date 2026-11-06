@@ -11,16 +11,6 @@ class_alias( '\WP_Rocket\Engine\Admin\Settings\Render', '\WP_Rocket\Admin\Settin
 class_alias( '\WP_Rocket\Engine\Admin\Settings\Settings', '\WP_Rocket\Admin\Settings\Settings' );
 class_alias( '\WP_Rocket\Engine\Admin\Settings\ServiceProvider', '\WP_Rocket\ServiceProvider\Settings' );
 class_alias( '\WP_Rocket\Engine\Admin\Settings\Subscriber', '\WP_Rocket\Subscriber\Admin\Settings\Page_Subscriber' );
-class_alias( '\WP_Rocket\Engine\Preload\AbstractPreload', '\WP_Rocket\Preload\Abstract_Preload' );
-class_alias( '\WP_Rocket\Engine\Preload\AbstractProcess', '\WP_Rocket\Preload\Process' );
-class_alias( '\WP_Rocket\Engine\Preload\FullProcess', '\WP_Rocket\Preload\Full_Process' );
-class_alias( '\WP_Rocket\Engine\Preload\Homepage', '\WP_Rocket\Preload\Homepage' );
-class_alias( '\WP_Rocket\Engine\Preload\PartialPreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Partial_Preload_Subscriber' );
-class_alias( '\WP_Rocket\Engine\Preload\PartialProcess', '\WP_Rocket\Preload\Partial_Process' );
-class_alias( '\WP_Rocket\Engine\Preload\PreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Preload_Subscriber' );
-class_alias( '\WP_Rocket\Engine\Preload\ServiceProvider', '\WP_Rocket\ServiceProvider\Preload_Subscribers' );
-class_alias( '\WP_Rocket\Engine\Preload\Sitemap', '\WP_Rocket\Preload\Sitemap' );
-class_alias( '\WP_Rocket\Engine\Preload\SitemapPreloadSubscriber', '\WP_Rocket\Subscriber\Preload\Sitemap_Preload_Subscriber' );
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Combine', '\WP_Rocket\Optimization\CSS\Combine_Google_Fonts' );
 class_alias( '\WP_Rocket\Engine\Optimization\GoogleFonts\Subscriber', '\WP_Rocket\Subscriber\Optimization\Combine_Google_Fonts_Subscriber' );
 

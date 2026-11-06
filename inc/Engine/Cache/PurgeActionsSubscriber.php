@@ -1,8 +1,10 @@
 <?php
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Logger\Logger;
 
 /**
  * Subscriber for the cache purge actions
@@ -39,16 +41,25 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * {@inheritdoc}
 	 */
 	public static function get_subscribed_events() {
+		$slug = rocket_get_constant( 'WP_ROCKET_SLUG' );
+
 		return [
-			'profile_update'          => 'purge_user_cache',
-			'delete_user'             => 'purge_user_cache',
-			'create_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'edit_term'               => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'delete_term'             => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
-			'after_rocket_clean_post' => [
+			'profile_update'                               => 'purge_user_cache',
+			'delete_user'                                  => 'purge_user_cache',
+			'create_term'                                  => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'edit_term'                                    => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'delete_term'                                  => [ 'maybe_purge_cache_on_term_change', 10, 3 ],
+			'after_rocket_clean_post'                      => [
 				[ 'purge_dates_archives' ],
 				[ 'purge_post_terms_urls' ],
 			],
+			'rocket_saas_complete_job_status'              => [ 'purge_url_cache', 100 ],
+			'rocket_rucss_after_clearing_usedcss'          => 'purge_url_cache',
+			'rocket_performance_hints_data_after_clearing' => 'purge_url_cache',
+			'rocket_after_save_dynamic_lists'              => 'purge_cache_after_saving_dynamic_lists',
+			'update_option_' . $slug                       => [ 'purge_cache_reject_uri_partially', 10, 2 ],
+			'update_option_blog_public'                    => 'purge_cache',
+			'wp_rocket_upgrade'                            => [ 'on_update', 10, 2 ],
 		];
 	}
 
@@ -79,6 +90,10 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_purge_cache_on_term_change( $term_id, $tt_id, $taxonomy ) {
+		if ( rocket_is_importing() ) {
+			return;
+		}
+
 		if ( ! $this->is_taxonomy_public( $taxonomy ) ) {
 			return;
 		}
@@ -136,5 +151,68 @@ class PurgeActionsSubscriber implements Subscriber_Interface {
 
 		// This filter is documented in /inc/functions/files.php.
 		return ! (bool) apply_filters( 'rocket_common_cache_logged_users', false );
+	}
+
+	/**
+	 * Purge cache after RUCSS
+	 *
+	 * @param string $url URL to be purged.
+	 *
+	 * @return void
+	 */
+	public function purge_url_cache( string $url ) {
+		// Flush cache for this url.
+		Logger::debug( 'RUCSS: Purge the cache for url: ' . $url );
+
+		$this->purge->purge_url( $url );
+	}
+
+	/**
+	 * Clean the whole cache
+	 *
+	 * @return void
+	 */
+	public function purge_cache() {
+		rocket_clean_domain();
+	}
+
+	/**
+	 * Purge single cache file(s) added in the Never Cache URL(s).
+	 *
+	 * @param array $old_value An array of previous values for the settings.
+	 * @param array $value An array of submitted values for the settings.
+	 * @return void
+	 */
+	public function purge_cache_reject_uri_partially( array $old_value, array $value ): void {
+		$this->purge->purge_cache_reject_uri_partially( $old_value, $value );
+	}
+
+	/**
+	 * Purge cache after saving dynamic lists.
+	 *
+	 * @param bool $should_purge Should purge or not.
+	 *
+	 * @return void
+	 */
+	public function purge_cache_after_saving_dynamic_lists( $should_purge = true ) {
+		if ( ! $should_purge ) {
+			return;
+		}
+		$this->purge_cache();
+	}
+
+	/**
+	 * Regenerate the advanced cache file on update
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previous plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update( $new_version, $old_version ) {
+		if ( version_compare( $old_version, '3.23.3', '>=' ) ) {
+			return;
+		}
+		rocket_generate_advanced_cache_file();
 	}
 }

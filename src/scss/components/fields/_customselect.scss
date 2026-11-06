@@ -1,0 +1,118 @@
+.custom-select {
+	position: relative;
+	width: 60%;
+	max-width: 100%;
+	color: #000;
+	margin: 0 auto !important;
+}
+
+.select-button {
+	width: 100%;
+	background-color: #fff;
+	padding: .65rem;
+	border: 1px solid #caced1;
+	border-radius: 1rem;
+	cursor: pointer;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.selected-value {
+	text-align: center;
+	flex: 1;
+}
+
+.custom-select-arrow {
+	border-left: 5px solid transparent;
+	border-right: 5px solid transparent;
+	border-top: 6px solid #000;
+	transition: transform ease-in-out 0.3s;
+}
+
+.select-dropdown {
+	position: absolute;
+	z-index: 1;
+	list-style: none;
+	width: 100%;
+	border: 1px solid #caced1;
+	padding: 10px 0;
+	margin-top: 10px;
+	max-height: 200px;
+	overflow-y: auto;
+	opacity: 0;
+	visibility: hidden;
+	border-radius: 16px;
+	background-color: #fff;
+	transition: all .5s ease;
+	transform: translateY(-20px);
+	box-shadow: 0px 24px 40px rgba(0, 0, 0, 0.15);
+	font-weight: normal;
+}
+
+.select-dropdown:focus-within {
+	box-shadow: 0 10px 25px rgba(94, 108, 233, 0.6);
+}
+
+.select-dropdown li {
+	position: relative;
+	cursor: pointer;
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	justify-content: center;
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.select-dropdown li label {
+	width: 100%;
+	padding: 8px 10px;
+	cursor: pointer;
+	display: flex;
+	gap: 1rem;
+	align-items: center;
+	text-align: center;
+	flex: 1;
+	justify-content: center;
+}
+
+.select-dropdown::-webkit-scrollbar {
+	width: 7px;
+}
+.select-dropdown::-webkit-scrollbar-track {
+	background: #f1f1f1;
+	border-radius: 25px;
+}
+
+.select-dropdown::-webkit-scrollbar-thumb {
+	background: #ccc;
+	border-radius: 25px;
+}
+
+.select-dropdown li:hover,
+.select-dropdown li.active,
+.select-dropdown input:checked ~ label {
+	background-color: #f2f2f2;
+}
+
+.select-dropdown input:focus ~ label {
+	background-color: #dfdfdf;
+}
+
+.select-dropdown input[type="radio"] {
+	position: absolute;
+	left: 0;
+	opacity: 0;
+}
+
+.custom-select.active .custom-select-arrow {
+	transform: rotate(180deg);
+}
+
+.custom-select.active .select-dropdown {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}

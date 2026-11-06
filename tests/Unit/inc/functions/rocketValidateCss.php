@@ -6,12 +6,18 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_validate_css
+ * Test class covering ::rocket_validate_css
  *
  * @group Functions
  * @group Formatting
  */
 class Test_RocketValidateCss extends TestCase {
+	public function setUp() : void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+	}
+
 	/**
 	 * @dataProvider addProvider
 	 */
@@ -25,7 +31,7 @@ class Test_RocketValidateCss extends TestCase {
 			}
 			return parse_url( $url, PHP_URL_PATH );
 		} );
-		Functions\when( 'esc_url_raw' )->returnArg();
+
 		Functions\when( 'rocket_remove_url_protocol' )->alias( function( $url ) {
 			return str_replace( [ 'http://', 'https://' ], '', $url );
 		} );

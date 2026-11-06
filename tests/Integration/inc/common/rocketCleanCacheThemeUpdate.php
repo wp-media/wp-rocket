@@ -6,42 +6,36 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
- * @uses   ::rocket_clean_domain
+ * Test class covering ::rocket_clean_cache_theme_update
  *
- * @group  Common
- * @group  Purge
- * @group  vfs
+ * @uses ::rocket_clean_domain
+ *
+ * @group Common
+ * @group Purge
+ * @group vfs
  */
-class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
-	protected        $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
-	protected static $hooks;
+class RocketCleanCacheThemeUpdateTest extends FilesystemTestCase {
+	protected $path_to_test_data = '/inc/common/rocketCleanCacheThemeUpdate.php';
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public function set_up() {
+		parent::set_up();
 
-		self::$hooks = $GLOBALS['wp_filter']['upgrader_process_complete']->callbacks;
+		$this->unregisterAllCallbacksExcept( 'upgrader_process_complete', 'rocket_clean_cache_theme_update' );
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+	public function tear_down() {
+		remove_filter( 'stylesheet', [ $this, 'set_current_theme_stylesheet' ] );
+		remove_filter( 'template', [ $this, 'set_current_theme_stylesheet' ] );
 
-		$GLOBALS['wp_filter']['upgrader_process_complete']->callbacks = self::$hooks;
+		$this->restoreWpHook( 'upgrader_process_complete' );
+
+		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'], $GLOBALS['debug_fs'] );
+
+		parent::tear_down();
 	}
 
-	public function setUp() {
-		parent::setUp();
-
-		// Unregister all of the callbacks registered to the action event for these tests.
-		$GLOBALS['wp_filter']['upgrader_process_complete']->callbacks = [];
-		add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 2 );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
-		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
-		unset( $GLOBALS['debug_fs'] );
+	public function set_current_theme_stylesheet() {
+		return 'default';
 	}
 
 	/**
@@ -50,6 +44,12 @@ class Test_RocketCleanCacheThemeUpdate extends FilesystemTestCase {
 	public function testShouldCleanExpected( $hook_extra, $expected ) {
 		if ( empty( $expected['cleaned'] ) ) {
 			Functions\expect( 'rocket_clean_domain' )->never();
+		}
+
+		// Point the current theme at the updated one via filters (no DB writes, unlike switch_theme()).
+		if ( ! empty( $expected['wp_get_theme'] ) ) {
+			add_filter( 'stylesheet', [ $this, 'set_current_theme_stylesheet' ] );
+			add_filter( 'template', [ $this, 'set_current_theme_stylesheet' ] );
 		}
 
 		if ( isset( $expected['debug'] ) && $expected['debug'] ) {

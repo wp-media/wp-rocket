@@ -3,10 +3,9 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\Subscriber::insert_lazyload_script
  * @uses   ::rocket_get_constant
  * @uses   \RocketLazyload\Assets::insertLazyloadScript
  *
@@ -17,40 +16,40 @@ class Test_InsertLazyloadScript extends TestCase {
 	private $iframes;
 	private $threshold;
 
-	public function setUp() {
-		$this->script_debug = false;
-
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->lazyload  = null;
 		$this->iframes   = null;
 		$this->threshold = null;
+
+		$this->unregisterAllCallbacksExcept( 'wp_footer', 'insert_lazyload_script', PHP_INT_MAX );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
 		remove_filter( 'rocket_lazyload_script_tag', [ $this, 'set_js_to_min' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );
 		remove_filter( 'rocket_lazyload_threshold', [ $this, 'setThreshold' ] );
-		remove_filter( 'rocket_lazyload_threshold', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
 		remove_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
+		remove_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
 
 		global $wp_query;
 		$wp_query->is_feed    = false;
 		$wp_query->is_preview = false;
 		$wp_query->is_search  = false;
 
-		set_current_screen('front');
 		unset( $GLOBALS['wp'] );
 
-		parent::tearDown();
-	}
+		$this->restoreWpHook( 'wp_footer' );
 
-	private function getActualHtml() {
-		ob_start();
-		do_action( 'wp_footer' );
-
-		return $this->format_the_html( ob_get_clean() );
+		parent::tear_down();
 	}
 
 	/**
@@ -58,11 +57,11 @@ class Test_InsertLazyloadScript extends TestCase {
 	 */
 	public function testShouldInsertLazyloadScript( $config, $expected ) {
 		$GLOBALS['wp'] = (object) [
-            'query_vars' => [],
-            'request'    => 'http://example.org',
+			'query_vars' => [],
+			'request'    => 'http://example.org',
 		];
 
-		$options = $config['options'];
+		$options        = $config['options'];
 		$this->lazyload = $options['lazyload'];
 		$this->iframes  = $options['lazyload_iframes'];
 
@@ -72,19 +71,21 @@ class Test_InsertLazyloadScript extends TestCase {
 		$is_search          = isset( $config['is_search'] )          ? $config['is_search']          : false;
 		$is_rest_request    = isset( $config['is_rest_request'] )    ? $config['is_rest_request']    : false;
 		$is_lazy_load       = isset( $config['is_lazy_load'] )       ? $config['is_lazy_load']       : true;
-		$is_rocket_optimize = isset( $config['is_rocket_optimize'] ) ? $config['is_rocket_optimize'] : true;
+		$is_not_rocket_optimize = isset( $config['is_not_rocket_optimize'] ) ? $config['is_not_rocket_optimize'] : false;
+		$donotcachepage     = isset( $config['donotcachepage'] ) ? $config['donotcachepage'] : false;
 
 		set_current_screen( $is_admin ? 'settings_page_wprocket' : 'front' );
 
 		global $wp_query;
-		$wp_query->is_feed = $is_feed;
+		$wp_query->is_feed    = $is_feed;
 		$wp_query->is_preview = $is_preview;
-		$wp_query->is_search = $is_search;
+		$wp_query->is_search  = $is_search;
 
 		//Constants.
-		$this->constants['REST_REQUEST'] = $is_rest_request;
-		$this->constants['DONOTLAZYLOAD'] = !$is_lazy_load;
-		$this->donotrocketoptimize = !$is_rocket_optimize;
+		$this->rest_request  = $is_rest_request;
+		$this->constants['DONOTLAZYLOAD'] = ! $is_lazy_load;
+		$this->donotrocketoptimize        = $is_not_rocket_optimize;
+		$this->constants['DONOTCACHEPAGE'] = $donotcachepage;
 		$this->constants['WP_ROCKET_ASSETS_JS_URL'] = 'http://example.org/wp-content/plugins/wp-rocket/assets/';
 
 		// wp-media/rocket-lazyload-common uses the constant for determining whether to set as .min.js.
@@ -101,16 +102,24 @@ class Test_InsertLazyloadScript extends TestCase {
 			add_filter( 'rocket_lazyload_threshold', [ $this, 'setThreshold' ] );
 		}
 
-		if ( isset( $options['polyfill'] ) ) {
-			add_filter( 'rocket_lazyload_polyfill', [ $this, 'return_true' ] );
+		if ( isset( $options['use_native'] ) ) {
+			if ( $options['use_native'] ) {
+				add_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+			} else {
+				add_filter( 'rocket_use_native_lazyload', [ $this, 'return_false' ] );
+			}
 		}
 
-		if ( isset( $options['use_native'] ) ) {
-			add_filter( 'rocket_use_native_lazyload', [ $this, 'return_true' ] );
+		if ( isset( $options['use_native_images'] ) ) {
+			if ( $options['use_native_images'] ) {
+				add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_true' ] );
+			} else {
+				add_filter( 'rocket_use_native_lazyload_images', [ $this, 'return_false' ] );
+			}
 		}
 
 		if ( empty( $expected['integration'] ) ) {
-			$this->assertNotContains(
+			$this->assertStringNotContainsString(
 				'http://example.org/wp-content/plugins/wp-rocket/assets/js/lazyload',
 				$this->getActualHtml()
 			);
@@ -120,6 +129,13 @@ class Test_InsertLazyloadScript extends TestCase {
 				$this->getActualHtml()
 			);
 		}
+	}
+
+	private function getActualHtml() {
+		ob_start();
+		do_action( 'wp_footer' );
+
+		return $this->format_the_html( ob_get_clean() );
 	}
 
 	public function setLazyload() {

@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_home_url
+ * Test class covering ::get_rocket_i18n_home_url
  * @uses  ::rocket_has_i18n
  *
  * @group Functions
@@ -15,14 +15,14 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_GetRocketI18nHomeUrl extends TestCase {
 	use i18nTrait;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->always_qtranxf_convertURL = true;
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

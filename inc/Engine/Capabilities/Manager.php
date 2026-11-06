@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Capabilities;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
+use WP_Role;
 
 class Manager implements ActivationInterface, DeactivationInterface {
 	/**
@@ -17,11 +18,11 @@ class Manager implements ActivationInterface, DeactivationInterface {
 		'rocket_purge_posts',
 		'rocket_purge_terms',
 		'rocket_purge_users',
-		'rocket_purge_opcache',
 		'rocket_purge_cloudflare_cache',
 		'rocket_purge_sucuri_cache',
 		'rocket_preload_cache',
 		'rocket_regenerate_critical_css',
+		'rocket_remove_unused_css',
 	];
 
 	/**
@@ -141,6 +142,31 @@ class Manager implements ActivationInterface, DeactivationInterface {
 	}
 
 	/**
+	 * Add WP Rocket as a cap group in Members
+	 */
+	public function add_cap_group_to_members() {
+		// @phpstan-ignore-next-line
+		\members_register_cap_group(
+			'wp_rocket',
+			[
+				'label'    => esc_html( 'WP Rocket' ),
+				'priority' => 42,
+				'caps'     => $this->get_capabilities(),
+			]
+		);
+	}
+
+	/**
+	 * Add WP Rocket capabilities to Members
+	 */
+	public function add_caps_to_members() {
+		foreach ( $this->get_capabilities() as $cap ) {
+			// @phpstan-ignore-next-line
+			\members_register_cap( $cap, [ 'label' => $cap ] );
+		}
+	}
+
+	/**
 	 * Adds WP Rocket capabilities on plugin upgrade
 	 *
 	 * @since 3.6.3
@@ -150,7 +176,7 @@ class Manager implements ActivationInterface, DeactivationInterface {
 	 * @return void
 	 */
 	public function add_capabilities_on_upgrade( $wp_rocket_version, $actual_version ) {
-		if ( version_compare( $actual_version, '3.4.0.1', '<' ) ) {
+		if ( version_compare( $actual_version, '3.9', '<' ) ) {
 			$this->add_rocket_capabilities();
 		}
 	}

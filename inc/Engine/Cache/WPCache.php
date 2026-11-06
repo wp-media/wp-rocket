@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Engine\Cache;
 
+use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 
@@ -317,6 +318,7 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 		return "define( 'WP_CACHE', {$value} ); // Added by {$plugin_name}";
 	}
 
+
 	/**
 	 * Adds a Site Health check for the WP_CACHE constant value
 	 *
@@ -326,6 +328,12 @@ class WPCache implements ActivationInterface, DeactivationInterface {
 	 * @return array
 	 */
 	public function add_wp_cache_status_test( $tests ) {
+
+		// This filter is documented in inc/Engine/Cache/WPCache.php.
+		if ( ! (bool) apply_filters( 'rocket_set_wp_cache_constant', true ) ) {
+			return $tests;
+		}
+
 		$tests['direct']['wp_cache_status'] = [
 			'label' => __( 'WP_CACHE value', 'rocket' ),
 			'test'  => [ $this, 'check_wp_cache_value' ],

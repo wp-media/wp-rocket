@@ -6,11 +6,12 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_dates_archives
- * @uses   ::get_rocket_parse_url
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_dates_archives
  *
- * @group  purge_actions
- * @group  vfs
+ * @uses ::get_rocket_parse_url
+ *
+ * @group PurgeActions
+ * @group vfs
  */
 class Test_PurgeDatesArchives extends FilesystemTestCase {
 	private static $user_id = 0;
@@ -25,18 +26,38 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 		);
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+
+		// Install the preload cache table to prevent DB error caused by permalink changed.
+		self::installPreloadCacheTable();
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 
 		wp_set_current_user( self::$user_id );
 		$this->set_permalink_structure( "/%postname%/" );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'edit.php' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		// Uninstall the preload cache table.
+		self::uninstallPreloadCacheTable();
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
 
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
 	}
 
 	/**

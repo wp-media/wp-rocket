@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -23,12 +23,12 @@ jobs:
 
       - name: Add a file
         if: ${{ steps.find.outcome == 'failure' }}
-        run: git checkout origin/master licence-data.php
+        run: git checkout origin/trunk licence-data.php
         id: add
 
       - name: Commit the missing file
         if: ${{ steps.add.outcome == 'success' }}
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: Adds missing licence-data.php file
           commit_user_name: WP-media GitHub Actions Bot

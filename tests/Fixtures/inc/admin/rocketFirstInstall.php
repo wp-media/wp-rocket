@@ -3,12 +3,11 @@
 $default = [
 	'secret_cache_key'            => 'secret_cache_key_uniqid',
 	'cache_mobile'                => 1,
-	'do_caching_mobile_files'     => 0,
+	'do_caching_mobile_files'     => 1,
 	'cache_webp'                  => 0,
 	'cache_logged_user'           => 0,
 	'cache_ssl'                   => 1,
 	'emoji'                       => 1,
-	'embeds'                      => 0,
 	'cache_reject_uri'            => [],
 	'cache_reject_cookies'        => [],
 	'cache_reject_ua'             => [],
@@ -25,17 +24,13 @@ $default = [
 	'lazyload'                    => 0,
 	'lazyload_iframes'            => 0,
 	'lazyload_youtube'            => 0,
-	'minify_css'                  => 0,
+	'minify_css'                  => 1,
 	'minify_css_key'              => 'minify_css_key_uniqid',
-	'minify_concatenate_css'      => 0,
-	'minify_js'                   => 0,
+	'minify_js'                   => 1,
 	'minify_js_key'               => 'minify_js_key_uniqid',
 	'minify_concatenate_js'       => 0,
 	'minify_google_fonts'         => 1,
 	'manual_preload'              => 1,
-	'sitemap_preload'             => 0,
-	'sitemap_preload_url_crawl'   => '500000',
-	'sitemaps'                    => [],
 	'dns_prefetch'                => 0,
 	'preload_fonts'               => [],
 	'database_revisions'          => 0,
@@ -43,7 +38,6 @@ $default = [
 	'database_trashed_posts'      => 0,
 	'database_spam_comments'      => 0,
 	'database_trashed_comments'   => 0,
-	'database_expired_transients' => 0,
 	'database_all_transients'     => 0,
 	'database_optimize_tables'    => 0,
 	'schedule_automatic_cleanup'  => 0,
@@ -52,6 +46,7 @@ $default = [
 	'cdn_cnames'                  => [],
 	'cdn_zone'                    => [],
 	'cdn_reject_files'            => [],
+	'cdn_state'                   => 'nothing',
 	'do_cloudflare'               => 0,
 	'cloudflare_email'            => '',
 	'cloudflare_api_key'          => '',
@@ -66,70 +61,34 @@ $default = [
 	'heartbeat_editor_behavior'   => 'reduce_periodicity',
 	'varnish_auto_purge'          => 0,
 	'analytics_enabled'           => 0,
-	'google_analytics_cache'      => 0,
-	'facebook_pixel_cache'        => 0,
 	'sucury_waf_cache_sync'       => 0,
 	'sucury_waf_api_key'          => '',
+	'wpr-js-tips'                 => 1,
 ];
 
-$integration = $default;
-$integration[ 'async_css_mobile' ] = 1;
-$integration[ 'exclude_defer_js' ] = [];
-$integration[ 'delay_js' ]         = 1;
-$integration[ 'delay_js_scripts' ] = [
-	'getbutton.io',
-	'//a.omappapi.com/app/js/api.min.js',
-	'feedbackcompany.com/includes/widgets/feedback-company-widget.min.js',
-	'snap.licdn.com/li.lms-analytics/insight.min.js',
-	'static.ads-twitter.com/uwt.js',
-	'platform.twitter.com/widgets.js',
-	'twq(',
-	'/sdk.js#xfbml',
-	'static.leadpages.net/leadbars/current/embed.js',
-	'translate.google.com/translate_a/element.js',
-	'widget.manychat.com',
-	'xfbml.customerchat.js',
-	'static.hotjar.com/c/hotjar-',
-	'smartsuppchat.com/loader.js',
-	'grecaptcha.execute',
-	'Tawk_API',
-	'shareaholic',
-	'sharethis',
-	'simple-share-buttons-adder',
-	'addtoany',
-	'font-awesome',
-	'wpdiscuz',
-	'cookie-law-info',
-	'pinit.js',
-	'/gtag/js',
-	'gtag(',
-	'/gtm.js',
-	'/gtm-',
-	'fbevents.js',
-	'fbq(',
-	'google-analytics.com/analytics.js',
-	'ga( \'',
-	'ga(\'',
-	'adsbygoogle.js',
-	'ShopifyBuy',
-	'widget.trustpilot.com/bootstrap',
-	'ft.sdk.min.js',
-	'apps.elfsight.com/p/platform.js',
-	'livechatinc.com/tracking.js',
-	'LiveChatWidget',
-	'/busting/facebook-tracking/',
-	'olark',
-	'pixel-caffeine/build/frontend.js',
-];
-$integration[ 'preload_links' ]     = 1;
-$integration[ 'image_dimensions' ] = 0;
-$integration[ 'exclude_lazyload' ] = [];
-
+$integration                                 					 = $default;
+$integration[ 'async_css_mobile' ]           					 = 1;
+$integration[ 'exclude_defer_js' ]           					 = [];
+$integration['cdn_type']                                         = 'rocketcdn';
+$integration[ 'delay_js' ]                   					 = 0;
+$integration[ 'delay_js_exclusions' ]        					 = [];
+$integration[ 'delay_js_execution_safe_mode' ]                   = 0;
+$integration[ 'delay_js_exclusions_selected' ]        			 = [];
+$integration[ 'delay_js_exclusions_selected_exclusions' ]        = [];
+$integration[ 'remove_unused_css' ]          					 = 0;
+$integration[ 'remove_unused_css_safelist' ] 					 = [];
+$integration[ 'preload_links' ]              					 = 1;
+$integration[ 'image_dimensions' ]           	 				 = 0;
+$integration[ 'exclude_lazyload' ]           					 = [];
+$integration['host_fonts_locally']           					 = 0;
+$integration['auto_preload_fonts']  	   					     = 0;
 return [
 	'test_data' => [
 		'defaultOptionsArray' => [
-			'unit'        => $default,
-			'integration' => $integration,
+			[
+				'unit'        => $default,
+				'integration' => $integration,
+			],
 		],
 	],
 ];

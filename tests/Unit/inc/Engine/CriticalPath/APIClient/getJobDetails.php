@@ -8,12 +8,15 @@ use Brain\Monkey\Functions;
 use WP_Error;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\APIClient::get_job_details
+ * Test class covering \WP_Rocket\Engine\CriticalPath\APIClient::get_job_details
  *
  * @group  CriticalPath
  */
 class Test_GetJobDetails extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
+	public function setUp() : void {
+		parent::setUp();
+		Functions\stubTranslationFunctions();
+	}
 
 	/**
 	 * @dataProvider configTestData

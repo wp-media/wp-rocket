@@ -7,7 +7,7 @@ use WP_Rocket\Tests\GlobTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
+ * Test class covering \WP_Rocket\Engine\Cache\PurgeActionsSubscriber:purge_user_cache
  * @uses   ::rocket_clean_user
  * @uses   ::get_rocket_parse_url
  * @uses   ::get_rocket_i18n_uri
@@ -23,15 +23,15 @@ class Test_PurgeUserCache extends FilesystemTestCase {
 	protected        $path_to_test_data  = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeUserCache.php';
 	protected static $use_settings_trait = true;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Unhook WooCommerce, as it throws wpdb::prepare errors.
 		remove_action( 'delete_user', 'wc_delete_user_data' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		// Rewire WooCommerce.
 		add_action( 'delete_user', 'wc_delete_user_data' );

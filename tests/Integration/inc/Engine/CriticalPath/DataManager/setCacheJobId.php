@@ -6,15 +6,15 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::set_cache_job_id
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::set_cache_job_id
  *
  * @group  CriticalPath
  */
 class Test_SetCacheJobId extends TestCase {
 	private $transient;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		delete_transient( $this->transient );
 	}

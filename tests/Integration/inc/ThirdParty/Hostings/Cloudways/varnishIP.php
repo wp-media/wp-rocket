@@ -5,13 +5,13 @@ use WP_Rocket\ThirdParty\Hostings\Cloudways;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_ip
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Cloudways::varnish_ip
  * @group Cloudways
  * @group ThirdParty
  */
 class Test_VarnishIP extends TestCase {
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		// Reset after each test.
 		unset( $_SERVER['HTTP_X_VARNISH'] );

@@ -20,7 +20,7 @@ class Settings {
 	}
 
 	public function get_setting( $option ) {
-		return 'wp-smush-lazy_load' === $option ? [ 'format' => $this->lazyload_formats ] : false;
+		return 'wp-smush-lazy_load' === $option ? [ 'format' => $this->lazyload_formats ] : [];
 	}
 
 	public function set_settings( $lazyload_enabled, array $lazyload_formats ) {

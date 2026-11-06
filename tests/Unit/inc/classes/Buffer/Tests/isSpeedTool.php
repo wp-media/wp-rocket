@@ -2,19 +2,21 @@
 
 namespace WP_Rocket\Tests\Unit\inc\classes\Buffer\Tests;
 
+use Mockery;
+use WP_Rocket\Buffer\Config;
 use WP_Rocket\Buffer\Tests;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Buffer\Tests::is_speed_tool
+ * Test class covering \WP_Rocket\Buffer\Tests::is_speed_tool
  * @uses   \WP_Rocket\Buffer\Tests::get_ip
  * @group  Buffer
  */
 class Test_IsSpeedTool extends TestCase {
 
 	private function getConfigMock( $return_value ) {
-		$config = $this->createMock( 'WP_Rocket\Buffer\Config' );
-		$config->method( 'get_server_input' )->willReturn( $return_value );
+		$config = Mockery::mock( Config::class );
+		$config->shouldReceive( 'get_server_input' )->andReturn( $return_value );
 
 		return $config;
 	}

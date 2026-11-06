@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_domain
+ * Test class covering ::rocket_clean_domain
  * @uses  ::get_rocket_i18n_home_url
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri
@@ -25,8 +25,8 @@ class Test_RocketCleanDomain extends FilesystemTestCase {
 
 	protected $path_to_test_data = '/inc/functions/rocketCleanDomain.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

@@ -2,10 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\admin;
 
-use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
+ *
  * @group admin
  * @group upgrade
  * @group AdminOnly
@@ -26,14 +27,14 @@ class Test_RocketFirstInstall extends TestCase {
 		self::$user_id = $factory->user->create( [ 'role' => 'administrator' ] );
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->previous_user_id = get_current_user_id();
 
 		wp_set_current_user( self::$user_id );
 
-		$this->pagenow         = $GLOBALS['pagenow'];
+		$this->pagenow         = $GLOBALS['pagenow'] ?? null;
 		$this->option_name     = rocket_get_constant( 'WP_ROCKET_SLUG' );
 		$this->options         = get_option( $this->option_name );
 		$this->user_boxes      = get_user_meta( self::$user_id, 'rocket_boxes', true );
@@ -47,10 +48,12 @@ class Test_RocketFirstInstall extends TestCase {
 		delete_option( $this->option_name );
 		delete_user_meta( self::$user_id, 'rocket_boxes' );
 		set_transient( $this->box_name, 'foobar' );
+
+		add_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		wp_set_current_user( $this->previous_user_id );
 
@@ -77,10 +80,12 @@ class Test_RocketFirstInstall extends TestCase {
 		} else {
 			delete_transient( $this->box_name );
 		}
+
+		remove_filter( 'rocket_delay_js_default_exclusions', '__return_empty_array' );
 	}
 
 	/**
-	 * @dataProvider addProvider
+	 * @dataProvider configTestData
 	 */
 	public function testShouldAddOption( $expected ) {
 		$uniqids = [
@@ -106,9 +111,5 @@ class Test_RocketFirstInstall extends TestCase {
 		$this->assertTrue( is_array( $user_boxes ) );
 		$this->assertContains( $this->box_name, $user_boxes );
 		$this->assertNotSame( 'foobar', get_transient( $this->box_name ) );
-	}
-
-	public function addProvider() {
-		return $this->getTestData( __DIR__, 'rocketFirstInstall' );
 	}
 }

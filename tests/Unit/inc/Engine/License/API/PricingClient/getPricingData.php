@@ -8,7 +8,7 @@ use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
+ * Test class covering \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
  *
  * @group  License
  */
@@ -17,6 +17,7 @@ class GetPricingData extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
+		$this->stubTranslationFunctions();
 		$client = new PricingClient();
 
 		Functions\expect( 'get_transient' )
@@ -26,14 +27,14 @@ class GetPricingData extends TestCase {
 
 		Functions\when( 'wp_remote_retrieve_response_code' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['code'] )
-					? $config['response']['code']
+				is_array( $config['response'] )
+					? $config['response']['response']['code']
 					: ''
 			);
 
 		Functions\when( 'wp_remote_retrieve_body' )
 			->justReturn(
-				is_array( $config['response'] ) && isset( $config['response']['body'] )
+				is_array( $config['response'] )
 					? $config['response']['body']
 					: ''
 			);
@@ -48,13 +49,13 @@ class GetPricingData extends TestCase {
 		if ( false !== $config['response'] ) {
 			Functions\expect( 'wp_safe_remote_get' )
 				->once()
-				->with( PricingClient::PRICING_ENDPOINT )
+				->with( PricingClient::PRICING_ENDPOINT, [] )
 				->andReturn( $config['response'] );
 
 			if (
 				! is_array( $config['response'] ) ||
-				200 !== $config['response']['code'] ||
-				! isset( $config['response']['body'] )
+				200 !== $config['response']['response']['code'] ||
+				empty( $config['response']['body'] )
 			) {
 				Functions\expect( 'get_transient' )
 					->once()

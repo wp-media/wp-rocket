@@ -6,28 +6,34 @@ use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase {
 	protected $cdn_names;
-	protected $home_url = 'http://myexample.org';
+	protected $home_url = 'http://example.org';
 
 	protected static $transients = [
 		'rocketcdn_status' => null,
 	];
 
-	public static function setUpBeforeClass() {
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
 		static::$use_settings_trait = true;
-		parent::setUpBeforeClass();
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		set_current_screen( 'settings_page_wprocket' );
+
+		// User is a singleton wired at container boot; reset its data so stale
+		// transient state from prior tests doesn't bleed into is_reseller_account().
+		$container = apply_filters( 'rocket_container', null );
+		$container->get( 'user' )->set_user( new \stdClass() );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
 		set_current_screen( 'front' );
+
+		parent::tear_down();
 	}
 
 	public function home_url_cb() {

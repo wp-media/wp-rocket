@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Upgrade;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
@@ -9,18 +10,18 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::display_upgrade_section
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::display_upgrade_section
  *
  * @group License
  */
 class DisplayUpgradeSection extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->user    = Mockery::mock( User::class );
 		$this->upgrade = Mockery::mock(
@@ -37,14 +38,25 @@ class DisplayUpgradeSection extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->user->shouldReceive( 'get_license_type' )
-			->once()
-			->andReturn( $config['license_account'] );
+		$this->user->shouldReceive( 'is_revoked' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_revoked'] ?? false );
+
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_trial_customer'] ?? false );
 
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->times( 1 )
 			->andReturn( $config['licence_expiration'] );
+
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->once()
+			->andReturn( $config['upgrades'] ?? [] );
 
 		if ( ! is_null( $expected ) ) {
 			$this->upgrade->shouldReceive( 'generate' )

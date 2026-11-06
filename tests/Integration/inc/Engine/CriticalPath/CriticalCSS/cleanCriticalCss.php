@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::clean_critical_css
  *
  * @group  AdminOnly
  * @group  CriticalPath
@@ -14,21 +14,21 @@ class Test_CleanCriticalCSS extends FilesystemTestCase {
 	protected      $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/cleanCriticalCss.php';
 	private static $critical_css;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
 	}
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'return_true' ] );
 	}

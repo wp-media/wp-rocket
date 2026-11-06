@@ -2,7 +2,7 @@
 namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Security\Sucuri_Subscriber;
+use WP_Rocket\Addon\Sucuri\Subscriber as SucuriSubscriber;
 
 /**
  * Settings class.
@@ -36,32 +36,6 @@ class Settings {
 	 * @var array
 	 */
 	private $hidden_settings;
-
-	/**
-	 * Font formats allowed to be preloaded.
-	 *
-	 * @since 3.6
-	 * @see   $this->sanitize_font()
-	 *
-	 * @var string|bool
-	 */
-	private $font_formats = [
-		'otf',
-		'ttf',
-		'svg',
-		'woff',
-		'woff2',
-	];
-
-	/**
-	 * Array of valid hosts.
-	 *
-	 * @since 3.6
-	 * @see   $this->get_hosts()
-	 *
-	 * @var array
-	 */
-	private $hosts;
 
 	/**
 	 * Constructor
@@ -142,7 +116,14 @@ class Settings {
 			$page          = $args['page'];
 			$section       = $args['section'];
 			unset( $args['page'], $args['section'] );
-
+			/**
+			 * Filters the field  before add to the settings
+			 *
+			 * @since 3.10
+			 *
+			 * @param array    $input    Array of sanitized values after being submitted by the form.
+			 */
+			$args = apply_filters( 'rocket_before_add_field_to_settings', $args );
 			$this->settings[ $page ]['sections'][ $section ]['fields'][ $id ] = $args;
 		}
 	}
@@ -216,16 +197,12 @@ class Settings {
 		$input['minify_css'] = ! empty( $input['minify_css'] ) ? 1 : 0;
 		$input['minify_js']  = ! empty( $input['minify_js'] ) ? 1 : 0;
 
-		$input['minify_concatenate_css'] = ! empty( $input['minify_concatenate_css'] ) ? 1 : 0;
-		$input['minify_concatenate_js']  = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
+		$input['minify_concatenate_js'] = ! empty( $input['minify_concatenate_js'] ) ? 1 : 0;
 
 		$input['defer_all_js']     = ! empty( $input['defer_all_js'] ) ? 1 : 0;
 		$input['exclude_defer_js'] = ! empty( $input['exclude_defer_js'] ) ? rocket_sanitize_textarea_field( 'exclude_defer_js', $input['exclude_defer_js'] ) : [];
-		$input['delay_js']         = $this->sanitize_checkbox( $input, 'delay_js' );
-		$input['delay_js_scripts'] = ! empty( $input['delay_js_scripts'] ) ? rocket_sanitize_textarea_field( 'delay_js_scripts', $input['delay_js_scripts'] ) : [];
 
-		$input['embeds'] = ! empty( $input['embeds'] ) ? 1 : 0;
-		$input['emoji']  = ! empty( $input['emoji'] ) ? 1 : 0;
+		$input['emoji'] = ! empty( $input['emoji'] ) ? 1 : 0;
 
 		$input['lazyload']         = ! empty( $input['lazyload'] ) ? 1 : 0;
 		$input['lazyload_iframes'] = ! empty( $input['lazyload_iframes'] ) ? 1 : 0;
@@ -259,6 +236,7 @@ class Settings {
 		// Option : Never cache the following pages.
 		if ( ! empty( $input['cache_reject_uri'] ) ) {
 			$input['cache_reject_uri'] = rocket_sanitize_textarea_field( 'cache_reject_uri', $input['cache_reject_uri'] );
+			$input['cache_reject_uri'] = $this->check_global_exclusion( $input['cache_reject_uri'] );
 		} else {
 			$input['cache_reject_uri'] = [];
 		}
@@ -312,15 +290,14 @@ class Settings {
 		$input['critical_css'] = ! empty( $input['critical_css'] ) ? wp_strip_all_tags( str_replace( [ '<style>', '</style>' ], '', $input['critical_css'] ), [ "\'", '\"' ] ) : '';
 
 		// Database options.
-		$input['database_revisions']          = ! empty( $input['database_revisions'] ) ? 1 : 0;
-		$input['database_auto_drafts']        = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
-		$input['database_trashed_posts']      = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
-		$input['database_spam_comments']      = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
-		$input['database_trashed_comments']   = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
-		$input['database_expired_transients'] = ! empty( $input['database_expired_transients'] ) ? 1 : 0;
-		$input['database_all_transients']     = ! empty( $input['database_all_transients'] ) ? 1 : 0;
-		$input['database_optimize_tables']    = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
-		$input['schedule_automatic_cleanup']  = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
+		$input['database_revisions']         = ! empty( $input['database_revisions'] ) ? 1 : 0;
+		$input['database_auto_drafts']       = ! empty( $input['database_auto_drafts'] ) ? 1 : 0;
+		$input['database_trashed_posts']     = ! empty( $input['database_trashed_posts'] ) ? 1 : 0;
+		$input['database_spam_comments']     = ! empty( $input['database_spam_comments'] ) ? 1 : 0;
+		$input['database_trashed_comments']  = ! empty( $input['database_trashed_comments'] ) ? 1 : 0;
+		$input['database_all_transients']    = ! empty( $input['database_all_transients'] ) ? 1 : 0;
+		$input['database_optimize_tables']   = ! empty( $input['database_optimize_tables'] ) ? 1 : 0;
+		$input['schedule_automatic_cleanup'] = ! empty( $input['schedule_automatic_cleanup'] ) ? 1 : 0;
 
 		$cleanup_frequencies = [
 			'daily'   => 1,
@@ -330,44 +307,14 @@ class Settings {
 
 		$input['automatic_cleanup_frequency'] = isset( $input['automatic_cleanup_frequency'], $cleanup_frequencies[ $input['automatic_cleanup_frequency'] ] ) ? $input['automatic_cleanup_frequency'] : $this->options->get( 'automatic_cleanup_frequency' );
 
-		if ( 1 !== $input['schedule_automatic_cleanup'] && ( 'daily' !== $input['automatic_cleanup_frequency'] || 'weekly' !== $input['automatic_cleanup_frequency'] || 'monthly' !== $input['automatic_cleanup_frequency'] ) ) {
+		$allowed_frequencies = [ 'daily', 'weekly', 'monthly' ];
+
+		if ( 1 !== $input['schedule_automatic_cleanup'] && ! in_array( $input['automatic_cleanup_frequency'], $allowed_frequencies, true ) ) {
 			$input['automatic_cleanup_frequency'] = $this->options->get( 'automatic_cleanup_frequency' );
 		}
 
 		// Options: Activate bot preload.
 		$input['manual_preload'] = ! empty( $input['manual_preload'] ) ? 1 : 0;
-
-		// Option: activate sitemap preload.
-		$input['sitemap_preload'] = ! empty( $input['sitemap_preload'] ) ? 1 : 0;
-
-		// Option : XML sitemaps URLs.
-		if ( ! empty( $input['sitemaps'] ) ) {
-			if ( ! is_array( $input['sitemaps'] ) ) {
-				$input['sitemaps'] = explode( "\n", $input['sitemaps'] );
-			}
-			$input['sitemaps'] = array_map( 'trim', $input['sitemaps'] );
-			$input['sitemaps'] = array_map( 'rocket_sanitize_xml', $input['sitemaps'] );
-			$input['sitemaps'] = array_filter( $input['sitemaps'] );
-			$input['sitemaps'] = array_unique( $input['sitemaps'] );
-		} else {
-			$input['sitemaps'] = [];
-		}
-
-		// Option : fonts to preload.
-		$input['preload_fonts'] = ! empty( $input['preload_fonts'] ) ? $this->sanitize_fonts( $input['preload_fonts'] ) : [];
-
-		// Options : CloudFlare.
-		$input['do_cloudflare']               = ! empty( $input['do_cloudflare'] ) ? 1 : 0;
-		$input['cloudflare_email']            = isset( $input['cloudflare_email'] ) ? sanitize_email( $input['cloudflare_email'] ) : '';
-		$input['cloudflare_api_key']          = isset( $input['cloudflare_api_key'] ) ? sanitize_text_field( $input['cloudflare_api_key'] ) : '';
-		$input['cloudflare_zone_id']          = isset( $input['cloudflare_zone_id'] ) ? sanitize_text_field( $input['cloudflare_zone_id'] ) : '';
-		$input['cloudflare_devmode']          = isset( $input['cloudflare_devmode'] ) && is_numeric( $input['cloudflare_devmode'] ) ? (int) $input['cloudflare_devmode'] : 0;
-		$input['cloudflare_auto_settings']    = ( isset( $input['cloudflare_auto_settings'] ) && is_numeric( $input['cloudflare_auto_settings'] ) ) ? (int) $input['cloudflare_auto_settings'] : 0;
-		$input['cloudflare_protocol_rewrite'] = ! empty( $input['cloudflare_protocol_rewrite'] ) ? 1 : 0;
-
-		if ( defined( 'WP_ROCKET_CF_API_KEY' ) ) {
-			$input['cloudflare_api_key'] = WP_ROCKET_CF_API_KEY;
-		}
 
 		// Options: Sucuri cache. And yeah, there's a typo, but now it's too late to fix ^^'.
 		$input['sucury_waf_cache_sync'] = ! empty( $input['sucury_waf_cache_sync'] ) ? 1 : 0;
@@ -380,7 +327,7 @@ class Settings {
 
 		$input['sucury_waf_api_key'] = trim( $input['sucury_waf_api_key'] );
 
-		if ( ! Sucuri_Subscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
+		if ( ! SucuriSubscriber::is_api_key_valid( $input['sucury_waf_api_key'] ) ) {
 			$input['sucury_waf_api_key'] = '';
 
 			if ( $input['sucury_waf_cache_sync'] && empty( $input['ignore'] ) ) {
@@ -400,13 +347,19 @@ class Settings {
 		$input['heartbeat_admin_behavior']  = isset( $input['heartbeat_admin_behavior'], $choices[ $input['heartbeat_admin_behavior'] ] ) ? $input['heartbeat_admin_behavior'] : '';
 		$input['heartbeat_editor_behavior'] = isset( $input['heartbeat_editor_behavior'], $choices[ $input['heartbeat_editor_behavior'] ] ) ? $input['heartbeat_editor_behavior'] : '';
 
-		// Option : CDN.
-		$input['cdn'] = ! empty( $input['cdn'] ) ? 1 : 0;
+		// 'cdn' isn't a field on this settings form - it's managed separately by the CDN
+		// tab's own save flow (CDNOptionsManager, Rest::apply_cdn_mode()). Preserve the
+		// current value when this save doesn't touch it, but respect it when it does:
+		// $this->options is a per-request Options_Data snapshot taken once, early in the
+		// request, so unconditionally overwriting from it would silently revert a 'cdn'
+		// change a caller had just made through a raw update_option() write earlier in
+		// the SAME request (e.g. CDNOptionsManager::disable(), whose write triggers this
+		// very sanitize_option_wp_rocket_settings callback via register_setting()).
+		$input['cdn'] = isset( $input['cdn'] ) ? (int) $input['cdn'] : (int) $this->options->get( 'cdn', 0 );
 
 		// Option : CDN Cnames.
 		if ( isset( $input['cdn_cnames'] ) ) {
-			$input['cdn_cnames'] = array_map( 'sanitize_text_field', $input['cdn_cnames'] );
-			$input['cdn_cnames'] = array_filter( $input['cdn_cnames'] );
+			$input['cdn_cnames'] = $this->sanitize_cdn_cnames( $input['cdn_cnames'] );
 		} else {
 			$input['cdn_cnames'] = [];
 		}
@@ -439,6 +392,12 @@ class Settings {
 			$input['cdn_zone'] = array_values( $input['cdn_zone'] );
 		}
 
+		if ( ! empty( $input['cdn_reject_pages'] ) ) {
+			$input['cdn_reject_pages'] = rocket_sanitize_textarea_field( 'cdn_reject_pages', $input['cdn_reject_pages'] );
+		} else {
+			$input['cdn_reject_pages'] = [];
+		}
+
 		// Option : Files to exclude from the CDN process.
 		if ( ! empty( $input['cdn_reject_files'] ) ) {
 			$input['cdn_reject_files'] = rocket_sanitize_textarea_field( 'cdn_reject_files', $input['cdn_reject_files'] );
@@ -459,23 +418,33 @@ class Settings {
 		}
 
 		if ( ! empty( $input['secret_key'] ) && empty( $input['ignore'] ) && rocket_valid_key() ) {
-			// Add a "Settings saved." admin notice only if not already added.
+			// Add a "Settings saved." admin notice only if not already added, by WP Rocket ('updated')
+			// or by core's options.php ('success').
 			$notices = array_merge( (array) $wp_settings_errors, (array) get_transient( 'settings_errors' ) );
 			$notices = array_filter(
 				$notices,
-				function( $error ) {
+				function ( $error ) {
 					if ( ! $error || ! is_array( $error ) ) {
 						return false;
 					}
 					if ( ! isset( $error['setting'], $error['code'], $error['type'] ) ) {
 						return false;
 					}
-					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && 'updated' === $error['type'];
+					return 'general' === $error['setting'] && 'settings_updated' === $error['code'] && in_array( $error['type'], [ 'updated', 'success' ], true );
 				}
 			);
 
 			if ( ! $notices ) {
-				add_settings_error( 'general', 'settings_updated', __( 'Settings saved.', 'rocket' ), 'updated' );
+				$message = __( 'Settings saved.', 'rocket' );
+
+				/**
+				 * Filters the appended message to the "Settings saved." admin notice.
+				 *
+				 * @param string   $appended_message    The appended message.
+				 */
+				$message .= wpm_apply_filters_typed( 'string', 'rocket_settings_saved_message', '' );
+
+				add_settings_error( 'general', 'settings_updated', $message, 'updated' );
 			}
 		}
 
@@ -499,7 +468,7 @@ class Settings {
 	 * @param string $key   Array key to check.
 	 * @return int
 	 */
-	public function sanitize_checkbox( $array, $key ) {
+	public function sanitize_checkbox( $array, $key ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.arrayFound
 		return isset( $array[ $key ] ) && ! empty( $array[ $key ] ) ? 1 : 0;
 	}
 
@@ -547,7 +516,7 @@ class Settings {
 
 		return array_unique(
 			array_map(
-				function( $url ) {
+				function ( $url ) {
 					return '//' . wp_parse_url( $url, PHP_URL_HOST );
 				},
 				$urls
@@ -556,105 +525,70 @@ class Settings {
 	}
 
 	/**
-	 * Sanitize a list of font file paths.
+	 * Sets radio buttons sub fields value from wp options.
 	 *
-	 * @since 3.6
+	 * @since 3.10
 	 *
-	 * @param  array|string $files List of filepaths to sanitize. Can be an array of strings or a string listing paths separated by "\n".
-	 * @return array               Sanitized filepaths.
+	 * @param array $sub_fields Array of fields to display..
+	 * @return array
 	 */
-	private function sanitize_fonts( $files ) {
-		if ( ! is_array( $files ) ) {
-			$files = explode( "\n", trim( $files ) );
+	public function set_radio_buttons_sub_fields_value( $sub_fields ) {
+
+		foreach ( $sub_fields as $id => &$args ) {
+			$args['id']    = $id;
+			$args['value'] = $this->options->get( $id, $args['default'] );
+			$args          = apply_filters( 'rocket_before_render_option_extra_field', $args );
 		}
 
-		$files = array_map( [ $this, 'sanitize_font' ], $files );
-
-		return array_unique( array_filter( $files ) );
+		return $sub_fields;
 	}
 
 	/**
-	 * Sanitize an entry for the preload fonts option.
+	 * Checks if the global exclusion pattern is used in the given field
 	 *
-	 * @since 3.6
+	 * @since 3.10.3
 	 *
-	 * @param string $file URL or path to a font file.
-	 * @return string|bool
-	 */
-	private function sanitize_font( $file ) {
-		if ( ! is_string( $file ) ) {
-			return false;
-		}
-
-		$file = trim( $file );
-
-		if ( empty( $file ) ) {
-			return false;
-		}
-
-		$parsed_url = wp_parse_url( $file );
-		$hosts      = $this->get_hosts();
-
-		if ( ! empty( $parsed_url['host'] ) ) {
-			$match = false;
-
-			foreach ( $hosts as $host ) {
-				if ( false !== strpos( $file, $host ) ) {
-					$match = true;
-					break;
-				}
-			}
-
-			if ( ! $match ) {
-				return false;
-			}
-		}
-
-		$file = str_replace( [ 'http:', 'https:' ], '', $file );
-		$file = str_replace( $hosts, '', $file );
-		$file = '/' . ltrim( $file, '/' );
-
-		$ext = strtolower( pathinfo( $parsed_url['path'], PATHINFO_EXTENSION ) );
-
-		if ( ! in_array( $ext, $this->font_formats, true ) ) {
-			return false;
-		}
-
-		return $file;
-	}
-
-	/**
-	 * Gets an array of valid hosts.
-	 *
-	 * @since 3.6
+	 * @param array $field A field array value.
 	 *
 	 * @return array
 	 */
-	private function get_hosts() {
-		if ( isset( $this->hosts ) ) {
-			return $this->hosts;
+	private function check_global_exclusion( $field ) {
+		if ( ! in_array( '/(.*)', $field, true ) ) {
+			return $field;
 		}
 
-		$urls   = (array) $this->options->get( 'cdn_cnames', [] );
-		$urls[] = home_url();
-		$urls   = array_map( 'rocket_add_url_protocol', $urls );
+		add_settings_error( 'general', 'reject_uri_global_exclusion', __( 'Sorry! Adding /(.*) in Cache Rules > Never Cache URL(s) was not saved because it disables caching and optimizations for every page on your site.', 'rocket' ) );
 
-		foreach ( $urls as $url ) {
-			$parsed_url = get_rocket_parse_url( $url );
+		return array_diff_key( $field, array_flip( array_keys( $field, '/(.*)', true ) ) );
+	}
 
-			if ( empty( $parsed_url['host'] ) ) {
-				continue;
-			}
+	/**
+	 * Sanitizes the CDN cnames values
+	 *
+	 * @param array $cnames Array of user submitted values for the cnames.
+	 *
+	 * @return array
+	 */
+	private function sanitize_cdn_cnames( array $cnames ) {
+		$cnames = array_map(
+			function ( $cname ) {
+				$cname = trim( $cname );
 
-			$parsed_url['path'] = ( '/' === $parsed_url['path'] ) ? '' : $parsed_url['path'];
+				if ( empty( $cname ) ) {
+					return false;
+				}
 
-			$this->hosts[] = "//{$parsed_url['host']}{$parsed_url['path']}";
-		}
+				$cname_parts = get_rocket_parse_url( rocket_add_url_protocol( $cname ) );
 
-		if ( empty( $this->hosts ) ) {
-			$this->hosts = [];
-		}
+				if ( false === filter_var( $cname_parts['host'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME ) ) {
+					return false;
+				}
 
-		return $this->hosts;
+				return $cname_parts['scheme'] . '://' . $cname_parts['host'] . $cname_parts['path'];
+			},
+			$cnames
+		);
+
+		return array_unique( array_filter( $cnames ) );
 	}
 }

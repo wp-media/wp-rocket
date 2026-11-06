@@ -5,23 +5,30 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enqueue_rocket_scripts
+ * Test class covering \WP_Rocket\Engine\Admin\Settings\Subscriber::enqueue_rocket_scripts
  * @group  AdminOnly
  * @group  SettingsPage
  */
 class Test_EnqueueRocketScripts extends AdminTestCase {
-    public function setUp() {
-        parent::setUp();
+    public function set_up() {
+        parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
     }
 
-    public function tearDown() {
-        parent::tearDown();
-
+    public function tear_down() {
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
         set_current_screen( 'front' );
 
         $this->removeRoleCap( 'administrator', 'rocket_manage_options' );
+
+		$this->restoreWpHook( 'current_screen' );
+
+		parent::tear_down();
     }
 
 	/**

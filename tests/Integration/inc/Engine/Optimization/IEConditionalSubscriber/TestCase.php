@@ -2,7 +2,6 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\IEConditionalSubscriber;
 
-use ReflectionClass;
 use WP_Rocket\Engine\Optimization\IEConditionalSubscriber;
 use WP_Rocket\Tests\Integration\TestCase as BaseTestCase;
 
@@ -10,27 +9,27 @@ abstract class TestCase extends BaseTestCase {
 	protected static $subscriber;
 	protected static $callbacks;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container        = apply_filters( 'rocket_container', null );
 		self::$subscriber = $container->get( 'ie_conditionals_subscriber' );
-		self::resetConditionalValue();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function set_up() {
+		parent::set_up();
 
-		self::resetConditionalValue();
+		$this->resetConditionalValue();
 	}
 
-	protected static function resetConditionalValue() {
-		$class    = new ReflectionClass( IEConditionalSubscriber::class );
-		$property = $class->getProperty( 'conditionals' );
-		$property->setAccessible( true );
+	public function tear_down() {
+		parent::tear_down();
 
-		$property->setValue( self::$subscriber, [] );
-		$property->setAccessible( false );
+		$this->resetConditionalValue();
+	}
+
+	protected function resetConditionalValue() {
+		$this->set_reflective_property( [], 'conditionals', self::$subscriber );
 	}
 
 	protected function setConditionalsValue( $value ) {

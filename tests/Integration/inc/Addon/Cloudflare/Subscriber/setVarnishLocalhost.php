@@ -1,49 +1,51 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
+
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WPMedia\Cloudflare\Subscriber::set_varnish_localhost
- * @group  DoCloudflare
- * @group  Addons
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_localhost
+ *
+ * @group Cloudflare
  */
-class Test_SetVarnishLocalhost extends TestCase {
+class TestSetVarnishLocalhost extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
 
-	public function testShouldReturnDefaultWhenCloudflareDisabled() {
-		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_false' );
+	private $option;
+	private $filter;
 
-		$this->assertSame( [], apply_filters( 'rocket_varnish_ip', [] ) );
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option'] );
+		remove_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter'] );
 
-		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_false' );
+		parent::tear_down();
 	}
 
-	public function testShouldReturnDefaultWhenVarnishDisabled() {
-		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		add_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_false' );
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldReturnExpected( $config, $expected ) {
+		$this->option = $config['option'];
+		$this->filter = $config['filter'];
 
-		$this->assertSame( [], apply_filters( 'rocket_varnish_ip', [] ) );
+		add_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option'] );
+		add_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter'] );
 
-		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_false' );
+
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_varnish_ip', $config['value'] )
+		);
 	}
 
-	public function testShouldReturnLocalhostWhenVarnishEnabled() {
-		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		add_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_true' );
-
-		$this->assertSame( [ 'localhost' ], apply_filters( 'rocket_varnish_ip', [] ) );
-
-		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		remove_filter( 'pre_get_rocket_option_varnish_auto_purge', '__return_true' );
+	public function set_option() {
+		return $this->option;
 	}
 
-	public function testShouldReturnLocalhostWhenFilterTrue() {
-		add_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		add_filter( 'do_rocket_varnish_http_purge', '__return_true' );
-
-		$this->assertSame( [ 'localhost' ], apply_filters( 'rocket_varnish_ip', [] ) );
-
-		remove_filter( 'pre_get_rocket_option_do_cloudflare', '__return_true' );
-		remove_filter( 'do_rocket_varnish_http_purge', '__return_true' );
+	public function set_filter() {
+		return $this->filter;
 	}
 }

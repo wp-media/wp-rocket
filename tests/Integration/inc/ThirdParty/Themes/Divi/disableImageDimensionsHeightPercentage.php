@@ -2,47 +2,67 @@
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Themes\Divi;
 
 use WP_Rocket\Tests\Integration\WPThemeTestcase;
+use WP_Rocket\ThirdParty\Themes\Divi;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Divi::disable_image_dimensions_height_percentage()
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::disable_image_dimensions_height_percentage
  *
- * @group  ThirdParty
+ * @group Themes
  */
 class Test_DisableImageDimensionsHeightPercentage extends WPThemeTestcase {
-	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/disableImageDimensionsHeightPercentage.php';
+	protected $path_to_test_data = '/inc/ThirdParty/Themes/Divi/Integration/disableImageDimensionsHeightPercentage.php';
 
-	private static $container;
+	private $container;
+	private $event;
+	private $subscriber;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public function set_up() {
+		parent::set_up();
 
-		self::$container = apply_filters( 'rocket_container', '' );
-	}
+		$this->container = apply_filters( 'rocket_container', '' );
+		$this->event = $this->container->get( 'event_manager' );
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
+		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'specify_image_dimensions', 17 );
 
-		self::$container->get( 'event_manager' )->remove_subscriber( self::$container->get( 'divi' ) );
-	}
-
-	public function setUp() {
-		parent::setUp();
-
-		self::$container->get( 'event_manager' )->add_subscriber( self::$container->get( 'divi' ) );
 		add_filter( 'rocket_specify_image_dimensions', '__return_true' );
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
 	}
 
-	public function tearDown() {
+	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
+		$this->event->remove_subscriber( $this->subscriber );
+
+		$this->restoreWpHook( 'rocket_buffer' );
+
 		remove_filter( 'rocket_specify_image_dimensions', '__return_true' );
 		unset( $GLOBALS['wp'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider ProviderTestData
 	 */
 	public function testRemovesCorrectImagesFromAddDimensionsArray( $config, $expected, $html ) {
+		$options     = $this->container->get( 'options' );
+		$options_api = $this->container->get( 'options_api' );
+		$delayjs_html = $this->container->get( 'delay_js_html' );
+		$used_css = $this->container->get( 'rucss_used_css_controller' );
+		$options_api->set( 'settings', [] );
+		$this->subscriber = new Divi( $options_api, $options, $delayjs_html, $used_css );
+
+		$this->event->add_subscriber( $this->subscriber );
+
 		$GLOBALS['wp'] = (object) [
 			'query_vars' => [],
 			'request'    => 'http://example.org'

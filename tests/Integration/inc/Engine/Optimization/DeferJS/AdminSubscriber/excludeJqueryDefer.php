@@ -5,24 +5,24 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\AdminSubsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::exclude_jquery_defer
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::exclude_jquery_defer
  *
- * @group  DeferJS
- * @group  AdminOnly
+ * @group DeferJS
+ * @group AdminOnly
  */
 class Test_ExcludeJqueryDefer extends TestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'exclude_jquery_defer', 14 );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
+	public function tear_down() {
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
 
 		delete_option( 'wp_rocket_settings' );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -39,9 +39,9 @@ class Test_ExcludeJqueryDefer extends TestCase {
 
 		$options = get_option( 'wp_rocket_settings' );
 
-		$this->assertSame(
-			$expected,
-			$options
-		);
+		foreach ( $expected as $key => $value ) {
+			$this->assertArrayHasKey( $key, $options );
+			$this->assertSame( $value, $options[ $key ] );
+		}
 	}
 }

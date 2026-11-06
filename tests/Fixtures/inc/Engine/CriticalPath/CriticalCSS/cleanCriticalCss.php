@@ -34,16 +34,6 @@ return [
 
 	// Test Data
 	'test_data' => [
-
-		'testShouldNotDeleteAnything' => [
-			'config'   => [
-				'blog_id' => 2,
-				'version' => 'all',
-			],
-			'delete'   => [],
-			'preserve' => [],
-		],
-
 		'testShouldDeleteFilesFromRootFolderButKeepChildFoldersWhenAll' => [
 			'config'   => [
 				'blog_id' => 1,

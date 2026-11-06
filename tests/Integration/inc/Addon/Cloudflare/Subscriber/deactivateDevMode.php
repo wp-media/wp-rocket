@@ -1,32 +1,41 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Addons\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
+
+use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WPMedia\Cloudflare\Subscriber::deactivate_devmode
- * @group  DoCloudflare
- * @group  Addons
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::deactivate_devmode
+ *
+ * @group Cloudflare
  */
-class Test_DeactivateDevMode extends TestCase {
+class TestDeactivateDevmode extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
 
-	public function testShouldNotDeactivateDevMode() {
-		$this->setApiCredentialsInOptions( [ 'cloudflare_devmode' => 'off' ] );
+	public function set_up() {
+		parent::set_up();
 
-		do_action( 'rocket_cron_deactivate_cloudflare_devmode' );
-
-		$settings = get_option( 'wp_rocket_settings' );
-		$this->assertSame( 'off', $settings['cloudflare_devmode'] );
+		// deactivate_devmode() itself saves the settings option, which would otherwise trigger
+		// display_settings_notice()'s real zone lookup as a side effect unrelated to this test.
+		$this->unregisterAllCallbacks( 'pre_update_option_wp_rocket_settings' );
 	}
 
-	public function testShouldDeactivateDevMode() {
-		$this->setApiCredentialsInOptions( [ 'cloudflare_devmode' => 'on' ] );
+	public function tear_down() {
+		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 
+		parent::tear_down();
+	}
+
+	public function testShouldDoExpected() {
 		do_action( 'rocket_cron_deactivate_cloudflare_devmode' );
 
-		$options = $this->get_reflective_property( 'options', self::$subscriber );
-		$options = $options->getValue( self::$subscriber );
-		$this->assertSame( 'off', $options->get( 'cloudflare_devmode' ) );
-		$settings = get_option( 'wp_rocket_settings' );
-		$this->assertSame( 'off', $settings['cloudflare_devmode'] );
+		$options = get_option( 'wp_rocket_settings', [] );
+
+		$this->assertSame(
+			0,
+			$options['cloudflare_devmode']
+		);
 	}
 }

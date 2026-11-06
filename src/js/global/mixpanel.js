@@ -1,0 +1,206 @@
+class RocketMixpanel {
+
+	trackedTabs = [
+		'dashboard',
+		'account',
+		'rocket_insights',
+		'page_cdn',
+		'file_optimization',
+		'media',
+		'preload',
+		'advanced_cache',
+		'database',
+		'heartbeat',
+		'addons',
+		'tutorials',
+		'plugins',
+		'tools',
+		'account'
+	];
+
+	pageNames = {
+		advanced_cache: 'cache rules',
+		file_optimization: 'javascript & css'
+	};
+
+	sourceNames = {
+		file_optimization: 'javascript_css'
+	};
+
+	/**
+	 * Pages that were merged into another one: old hashes are tracked as the new page.
+	 * Keep in sync with `movedPages` in pageManager.js and the first-paint script in views/settings/page.php.
+	 */
+	hashAliases = {
+		imagify: 'media'
+	};
+
+	constructor( config ) {
+		this.config = config;
+	}
+
+	/**
+	 * Initializes the handler.
+	 */
+	init() {
+		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
+			return;
+		}
+		if ( !this.config.optin_enabled || this.config.optin_enabled === '0') {
+			return;
+		}
+		mixpanel.identify(this.config.user_id);
+		this._initListeners( this );
+	}
+
+	/**
+	 * Initializes the event listeners.
+	 *
+	 * @param self instance of this object, used for binding "this" to the listeners.
+	 */
+	_initListeners( self ) {
+		window.addEventListener( 'hashchange', self._onHashChange.bind( self ) );
+		window.addEventListener( 'load', self._onPageLoad.bind( self ) );
+		self._initImagifyBannerListeners();
+	}
+
+	/**
+	 * Tracks clicks on the Imagify banner CTAs through a delegated listener.
+	 */
+	_initImagifyBannerListeners() {
+		document.addEventListener( 'click', ( event ) => {
+			const target = event.target.closest( '.wpr-imagifyBanner [data-mixpanel-button]' );
+
+			if ( !target ) {
+				return;
+			}
+
+			this._sendImagifyBannerClickedEvent( target.dataset.mixpanelButton );
+		} );
+	}
+
+	/**
+	 * Event listener when the hash changed in a page.
+	 *
+	 * @param Event event Event instance.
+	 */
+	_onHashChange( event ) {
+		const oldHash = this._cleanHash(new URL(event.oldURL).hash);
+		const newHash = this._cleanHash(new URL(event.newURL).hash);
+
+		if ( !this._canTrackTab(newHash) ) {
+			return;
+		}
+
+		this._sendPageViewedEvent(this._getSource( oldHash ), newHash);
+	}
+
+	_onPageLoad() {
+		const newHash = this._cleanHash(window.location.hash);
+		if ( !this._canTrackTab(newHash) ) {
+			return;
+		}
+
+		this._sendPageViewedEvent(this._getSource(), newHash);
+	}
+
+	_cleanHash( tabHash ) {
+		if (!tabHash || !tabHash.startsWith('#')) {
+			return tabHash;
+		}
+		const hash = tabHash.substring(1);
+		return Object.prototype.hasOwnProperty.call( this.hashAliases, hash ) ? this.hashAliases[hash] : hash;
+	}
+
+	_canTrackTab(tabHash) {
+		return this.trackedTabs.includes(tabHash);
+	}
+
+	_getSource( oldHash = '' ) {
+		if ( oldHash ) {
+			return `settings_${this.sourceNames[oldHash] || oldHash}`;
+		}
+
+		let source = this._getSourceFromQueryStringAndRemoveIt();
+		if ( source ) {
+			return source;
+		}
+
+		return this._getSourceFromReferrer();
+	}
+
+	_getSourceFromQueryStringAndRemoveIt() {
+		const url = new URL(window.location.href);
+		const urlParams = url.searchParams;
+
+		// 1. Check for explicit source param
+		if (!urlParams.has('rocket_source')) {
+			return '';
+		}
+
+		// 2. Get the value
+		const sourceValue = urlParams.get('rocket_source');
+
+		// 3. Delete the parameter from the URLSearchParams object
+		urlParams.delete('rocket_source');
+
+		// 4. Update the browser's URL using the History API
+		// This removes the parameter from the URL bar without reloading the page.
+		window.history.replaceState(null, '', url.search ? url.href : url.pathname);
+
+		// 5. Return the retrieved value
+		return sourceValue;
+	}
+
+	_getSourceFromReferrer() {
+		const referrer = document.referrer;
+		if (!referrer) {
+			return 'noreferrer';
+		}
+		if (!referrer.includes(window.location.hostname)) {
+			return 'external';
+		}
+		return 'internal';
+	}
+
+	_sendPageViewedEvent(source, newHash) {
+		mixpanel.track('Page Viewed', {
+			path: `/wp-admin/options-general.php?page=wprocket#${newHash}`,
+			page_name: this.pageNames[newHash] || newHash.replace('_', ' '),
+			source: source,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			context: rocket_mixpanel_data.context,
+			interaction_channel: 'UI'
+		});
+	}
+
+	_sendImagifyBannerClickedEvent( button ) {
+		mixpanel.track( 'Button Clicked', {
+			button: button,
+			source: 'image & media',
+			path: `/wp-admin/options-general.php?page=wprocket#media`,
+			plugin: rocket_mixpanel_data.plugin,
+			brand: rocket_mixpanel_data.brand,
+			application: rocket_mixpanel_data.app,
+			context: rocket_mixpanel_data.context,
+			interaction_channel: 'UI'
+		}, { transport: 'sendBeacon' } );
+	}
+
+	/**
+	 * Named static constructor to encapsulate how to create the object.
+	 */
+	static run() {
+		// Bail out if the configuration not passed from the server.
+		if ( typeof rocket_mixpanel_data === 'undefined' ) {
+			return;
+		}
+
+		const instance = new RocketMixpanel( rocket_mixpanel_data );
+		instance.init();
+	}
+}
+
+RocketMixpanel.run();

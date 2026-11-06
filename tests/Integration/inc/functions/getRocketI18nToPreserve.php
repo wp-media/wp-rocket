@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_to_preserve
+ * Test class covering ::get_rocket_i18n_to_preserve
  * @uses  ::rocket_has_i18n
  * @uses  ::get_rocket_i18n_code
  * @uses  ::get_rocket_i18n_home_url
@@ -18,8 +18,8 @@ use WPMedia\PHPUnit\Integration\TestCase;
 class Test_GetRocketI18nToPreserve extends TestCase {
 	use i18nTrait;
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}

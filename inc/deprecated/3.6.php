@@ -13,7 +13,6 @@ require_once __DIR__ . '/Engine/Optimization/QueryString/RemoveSubscriber.php';
  * Class aliases.
  */
 class_alias( '\WP_Rocket\Engine\Admin\Beacon\ServiceProvider', '\WP_Rocket\ServiceProvider\Beacon' );
-class_alias( '\WP_Rocket\Engine\HealthCheck\CacheDirSizeCheck', '\WP_Rocket\Subscriber\Tools\Cache_Dir_Size_Check_Subscriber' );
 class_alias( '\WP_Rocket\Engine\HealthCheck\HealthCheck', '\WP_Rocket\Engine\Admin\HealthCheck' );
 class_alias( '\WP_Rocket\Engine\Optimization\ServiceProvider', '\WP_Rocket\ServiceProvider\Optimization_Subscribers' );
 class_alias( '\WP_Rocket\Engine\Optimization\IEConditionalSubscriber', '\WP_Rocket\Subscriber\Optimization\IE_Conditionals_Subscriber' );
@@ -28,7 +27,7 @@ class_alias( '\WP_Rocket\Engine\Capabilities\Subscriber', '\WP_Rocket\Subscriber
  * @since 2.1   Add filter rocket_advanced_cache_file.
  * @since 2.0.3
  *
- * @return  string  $buffer The content of avanced-cache.php file
+ * @return  string  $buffer The content of advanced-cache.php file
  */
 function get_rocket_advanced_cache_file() { // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
     _deprecated_function( __FUNCTION__ . '()', '3.6', '\WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content()' );
@@ -917,13 +916,6 @@ function rocket_activation() {
 	require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 	require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
-
-	if ( class_exists( 'WPaaS\Plugin' ) ) {
-		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/godaddy.php';
-	}
-	if ( defined( 'O2SWITCH_VARNISH_PURGE_KEY' ) ) {
-		require WP_ROCKET_3RD_PARTY_PATH . 'hosting/o2switch.php';
-	}
 
 	if ( rocket_valid_key() ) {
 		// Add All WP Rocket rules of the .htaccess file.

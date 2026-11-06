@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
  *
  * @group  CriticalPath
  * @group  vfs
@@ -18,19 +18,19 @@ class Test_GetCurrentPageCriticalCSS extends FilesystemTestCase {
 	protected $is_mobile;
 	protected $cache_mobile;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		$container          = apply_filters( 'rocket_container', null );
 		self::$critical_css = $container->get( 'critical_css' );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'wp_is_mobile', [ $this, 'is_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_do_caching_mobile_files', [ $this, 'cache_mobile' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile' ] );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**

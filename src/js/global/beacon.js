@@ -4,9 +4,20 @@ $(document).ready(function(){
         /**
          * Show beacons on button "help" click
          */
-        var $help = $('.wpr-infoAction--help');
-        $help.on('click', function(e){
-            var ids = $(this).data('beacon-id');
+        $(document).on('click', '.wpr-infoAction--help[data-beacon-id]', function(e){
+            var ids = $(this).attr('data-beacon-id');
+
+            if ( ! ids ) {
+                return true;
+            }
+
+            var button = $(this).data('wpr_track_button') || 'Beacon Help';
+            var context = $(this).data('wpr_track_context') || 'Settings';
+
+            // Track with MixPanel JS SDK
+            wprTrackHelpButton(button, context);
+
+            // Continue with existing beacon functionality
             wprCallBeacon(ids);
             return false;
         });
@@ -21,6 +32,7 @@ $(document).ready(function(){
                     window.Beacon("suggest", aID);
 
                     setTimeout(function() {
+                        window.Beacon("navigate", "/answers/");
                         window.Beacon("open");
                     }, 200);
                 } else {
@@ -29,4 +41,37 @@ $(document).ready(function(){
 
         }
     }
+
+	$( '.wpr-ri-report' ).on( 'click', function() {
+		wprTrackHelpButton( 'rocket insights see gtmetrix report', 'performance summary' );
+	} );
+
+    // MixPanel tracking function
+    function wprTrackHelpButton(button, context) {
+        if (typeof mixpanel !== 'undefined' && mixpanel.track) {
+            // Check if user has opted in using localized data
+            if (typeof rocket_mixpanel_data === 'undefined' || !rocket_mixpanel_data.optin_enabled || rocket_mixpanel_data.optin_enabled === '0') {
+                return;
+            }
+
+            // Identify user with hashed license email if available
+            if (rocket_mixpanel_data.user_id && typeof mixpanel.identify === 'function') {
+                mixpanel.identify(rocket_mixpanel_data.user_id);
+            }
+
+            mixpanel.track('Button Clicked', {
+                'button': button,
+				'button_context': context,
+				'plugin': rocket_mixpanel_data.plugin,
+                'brand': rocket_mixpanel_data.brand,
+                'application': rocket_mixpanel_data.app,
+                'context': rocket_mixpanel_data.context,
+                'path': rocket_mixpanel_data.path,
+                'interaction_channel': 'UI'
+            });
+        }
+    }
+
+    // Make function globally available
+    window.wprTrackHelpButton = wprTrackHelpButton;
 });

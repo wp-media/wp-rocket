@@ -27,7 +27,7 @@ function rocket_has_constant( $constant_name ) {
  * @param string     $constant_name Name of the constant to check.
  * @param mixed|null $default Optional. Default value to return if constant is not defined.
  *
- * @return bool true when constant is defined; else, false.
+ * @return mixed
  */
 function rocket_get_constant( $constant_name, $default = null ) {
 	if ( ! rocket_has_constant( $constant_name ) ) {

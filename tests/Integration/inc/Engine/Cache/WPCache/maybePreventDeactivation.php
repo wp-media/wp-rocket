@@ -5,16 +5,15 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\WPCache;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
- * @uses   ::find_wp_config_path
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
  *
  * @group  WPCache
  */
 class Test_MaybePreventDeactivation extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/maybePreventDeactivation.php';
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		remove_filter( 'rocket_set_wp_cache_constant', [ $this, 'return_false' ] );
 	}

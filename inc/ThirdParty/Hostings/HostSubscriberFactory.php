@@ -39,6 +39,22 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new Savvii();
 			case 'dreampress':
 				return new Dreampress();
+			case 'wpxcloud':
+				return new WPXCloud();
+			case 'litespeed':
+				return new LiteSpeed();
+			case 'godaddy':
+				return new Godaddy();
+			case 'kinsta':
+				return new Kinsta();
+			case 'onecom':
+				return new OneCom();
+			case 'proisp':
+				return new ProIsp();
+			case 'pressidium':
+				return new Pressidium();
+			case 'siteground':
+				return new SiteGround();
 			default:
 				return new NullSubscriber();
 		}

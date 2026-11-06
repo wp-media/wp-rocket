@@ -3,15 +3,15 @@
 namespace WP_Rocket\Tests\Unit\inc\admin;
 
 use Brain\Monkey\Functions;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_new_upgrade
+ * Test class covering ::rocket_new_upgrade
  * @group admin
  * @group upgrade
  */
 class Test_RocketNewUpgrade extends TestCase {
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/admin/upgrader.php';
@@ -34,11 +34,102 @@ class Test_RocketNewUpgrade extends TestCase {
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );
 		Functions\expect( 'get_option' )
-			->once()
+			->times( 2 )
 			->andReturn( [] );
 		Functions\expect( 'update_option' )
 			->once();
-
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
+		Functions\expect( 'delete_transient' )
+			->once()->with( 'wp_rocket_pricing' );
+		Functions\expect( 'flush_rewrite_rules' )
+			->once();
+		Functions\when( 'get_users' )->justReturn( [] );
 		rocket_new_upgrade( '3.7', '3.4.4' );
+	}
+
+	public function testShouldFlushRewriteRulesWhenUpdatingFromBeforeMcpOauth() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_advanced_cache_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_cache_busting' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_minify' )->justReturn( null );
+		Functions\when( 'rocket_get_constant' )->justReturn( 'wp_rocket_settings' );
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'update_option' )->justReturn( true );
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
+		Functions\when( 'delete_transient' )->justReturn( true );
+
+		Functions\when( 'get_users' )->justReturn( [] );
+		Functions\expect( 'flush_rewrite_rules' )
+			->once();
+
+		rocket_new_upgrade( '3.23', '3.22.1' );
+	}
+
+	public function testShouldNotFlushRewriteRulesWhenAlreadyUpdatedPastMcpOauth() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_advanced_cache_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_cache_busting' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_minify' )->justReturn( null );
+		Functions\when( 'rocket_get_constant' )->justReturn( 'wp_rocket_settings' );
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'update_option' )->justReturn( true );
+		Functions\when( 'wp_clear_scheduled_hook' )->justReturn( 1 );
+		Functions\when( 'rocket_rrmdir' )->justReturn( 1 );
+		Functions\when( 'delete_transient' )->justReturn( true );
+
+		Functions\when( 'get_users' )->justReturn( [] );
+		Functions\expect( 'flush_rewrite_rules' )
+			->never();
+
+		rocket_new_upgrade( '3.24', '3.23' );
+	}
+
+	public function testShouldRewriteTheConfigFileAndCleanTheDomainWhenUpdatingFromBeforeThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->once();
+		Functions\expect( 'rocket_clean_domain' )
+			->once();
+		Functions\when( 'get_users' )->justReturn( [] );
+
+		rocket_new_upgrade( '3.24', '3.23.3.3' );
+	}
+
+	public function testShouldMarkTheActivationBannerAsSeenForAdministratorsWhenUpdatingFromBeforeThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+		Functions\when( 'rocket_generate_config_file' )->justReturn( null );
+		Functions\when( 'rocket_clean_domain' )->justReturn( null );
+		Functions\expect( 'get_users' )
+			->once()
+			->with( [ 'role' => 'administrator', 'fields' => 'ID' ] )
+			->andReturn( [ 1, 2 ] );
+		Functions\expect( 'get_user_meta' )
+			->with( 1, 'rocket_boxes', true )->once()->andReturn( [ 'rocket_activation_notice' ] );
+		Functions\expect( 'get_user_meta' )
+			->with( 2, 'rocket_boxes', true )->once()->andReturn( '' );
+		Functions\expect( 'update_user_meta' )
+			->with( 1, 'rocket_boxes', [ 'rocket_activation_notice' ] )->once();
+		Functions\expect( 'update_user_meta' )
+			->with( 2, 'rocket_boxes', [ 'rocket_activation_notice' ] )->once();
+
+		rocket_new_upgrade( '3.24', '3.23.3.3' );
+	}
+
+	public function testShouldNotTouchAnythingWhenAlreadyUpdatedPastThisRelease() {
+		Functions\when( 'rocket_is_ssl_website' )->justReturn( false );
+
+		Functions\expect( 'rocket_generate_config_file' )
+			->never();
+		Functions\expect( 'rocket_clean_domain' )
+			->never();
+
+		rocket_new_upgrade( '3.24.1', '3.24' );
 	}
 }

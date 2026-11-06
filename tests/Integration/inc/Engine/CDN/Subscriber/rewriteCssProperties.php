@@ -3,14 +3,17 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::rewrite_css_properties
  * @uses   \WP_Rocket\Engine\CDN\CDN::rewrite_css_properties
  * @uses   \WP_Rocket\Admin\Options_Data::get
  * @group  CDN
  */
 class Test_RewriteCssProperties extends TestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
+
+		// An active subscription keeps the CDN from being forced off by the licence check.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ] );
 
 		$this->cnames = [
 			'cdn.example.org',
@@ -24,10 +27,11 @@ class Test_RewriteCssProperties extends TestCase {
 		add_filter( 'pre_get_rocket_option_cdn_zone', [ $this, 'setCDNZone' ] );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'do_rocket_cdn_css_properties', [ $this, 'return_false' ] );
+		delete_transient( 'rocketcdn_status' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -37,6 +41,11 @@ class Test_RewriteCssProperties extends TestCase {
 		$this->assertSame(
 			$expected,
 			apply_filters( 'rocket_css_content', $original )
+		);
+
+		$this->assertSame(
+			$expected,
+			apply_filters( 'rocket_usedcss_content', $original )
 		);
 	}
 
@@ -49,6 +58,11 @@ class Test_RewriteCssProperties extends TestCase {
 		$this->assertSame(
 			$original,
 			apply_filters( 'rocket_css_content', $original )
+		);
+
+		$this->assertSame(
+			$original,
+			apply_filters( 'rocket_usedcss_content', $original )
 		);
 	}
 

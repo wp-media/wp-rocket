@@ -7,20 +7,23 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::do_admin_post_rocket_purge_cache
+ * Test class covering ::do_admin_post_rocket_purge_cache
+ *
  * @group Common
  * @group vfs
- * @runTestsInSeparateProcesses
  */
 class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/common/doAdminPostRocketPurgeCache.php';
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
+
+		Functions\expect( 'get_option' )
+			->with( 'stylesheet' )
+			->andReturn( 'twentytwelve' );
 
 		// Load the file once.
 		if ( ! function_exists( 'do_admin_post_rocket_purge_cache' ) ) {
-			Functions\expect( 'get_option' )->with( 'stylesheet' )->andReturn( 'twentytwelve' );
 			require_once WP_ROCKET_PLUGIN_ROOT . 'inc/common/purge.php';
 		}
 
@@ -60,13 +63,17 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 		}
 
 		Functions\when( 'wp_verify_nonce' )->justReturn( true );
-		Functions\expect( 'current_user_can' )->once()->with( 'rocket_purge_cache' )->andReturn( true );
+		Functions\expect( 'current_user_can' )
+			->once()
+			->with( 'rocket_purge_cache' )
+			->andReturn( true );
 
 		switch ( $config['type'] ) {
 			case 'all':
 				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'all', HOUR_IN_SECONDS )->andReturnNull();
 				Functions\expect( 'rocket_clean_domain' )->once()->with( $config['lang'] )->andReturnNull();
 				Functions\expect( 'rocket_dismiss_box' )->once()->with( 'rocket_warning_plugin_modification' )->andReturnNull();
+				Functions\expect( 'rocket_renew_box' )->once()->with( 'preload_notice' )->andReturnNull();
 				break;
 			case 'post':
 				Functions\expect( 'set_transient' )->once()->with( 'rocket_clear_cache', 'post', HOUR_IN_SECONDS )->andReturnNull();
@@ -74,7 +81,9 @@ class Test_DoAdminPostRocketPurgeCache extends FilesystemTestCase {
 				break;
 		}
 
-		Actions\expectDone( 'rocket_purge_cache' )->once()->withAnyArgs( $config['type'] );
+		Actions\expectDone( 'rocket_purge_cache' )
+			->once()
+			->withAnyArgs();
 
 		Functions\expect( 'wp_get_referer' )->once()->andReturn( 'http://example.org' );
 		Functions\expect( 'esc_url_raw' )->once()->with( 'http://example.org' )->andReturnFirstArg();

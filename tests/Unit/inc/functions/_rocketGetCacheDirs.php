@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::_rocket_get_cache_dirs
+ * Test class covering ::_rocket_get_cache_dirs
  *
  * @group Files
  * @group vfs
@@ -16,18 +16,18 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/_rocketGetCacheDirs.php';
 	protected $mock_rocket_get_constant = false;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// Clean out the cached dirs before we run these tests.
 		_rocket_get_cache_dirs( '', '', true );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		// Reset after each test.
 		_rocket_get_cache_dirs( '', '', true );
+
+		parent::tearDown();
 	}
 
 	/**

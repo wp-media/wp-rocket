@@ -6,13 +6,13 @@ use Brain\Monkey;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_has_constant
+ * Test class covering ::rocket_has_constant
  * @group Init
  * @group Constants
  */
 class Test_RocketHasConstant extends TestCase {
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/constants.php';

@@ -11,6 +11,7 @@ return [
 				'post_status' => 'draft',
 				'post_type'   => 'post',
 			],
+			'',
 		],
 		'expected' => false,
 	],

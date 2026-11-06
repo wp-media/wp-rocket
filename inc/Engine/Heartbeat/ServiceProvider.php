@@ -1,21 +1,16 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Heartbeat;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
 
 /**
- * Service provider for Media module
- *
- * @since 3.7
+ * Service provider for heartbeat module
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
@@ -24,16 +19,23 @@ class ServiceProvider extends AbstractServiceProvider {
 	];
 
 	/**
-	 * Registers the services in the container
+	 * Check if the service provider provides a specific service.
 	 *
-	 * @since 3.6
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Registers items with the container
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
-
-		$this->getContainer()->share( 'heartbeat_subscriber', 'WP_Rocket\Engine\Heartbeat\HeartbeatSubscriber' )
-			->withArgument( $this->getContainer()->get( 'options' ) );
+	public function register(): void {
+		$this->getContainer()->addShared( 'heartbeat_subscriber', HeartbeatSubscriber::class )
+			->addArgument( 'options' );
 	}
 }

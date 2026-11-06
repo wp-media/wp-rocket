@@ -1,46 +1,62 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ThirdParty;
 
-use WP_Rocket\Engine\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
+use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
+use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
+use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
+use WP_Rocket\ThirdParty\Plugins\PluginResolver;
+use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
 
 /**
  * Service provider for WP Rocket third party compatibility
- *
- * @since 3.3
  */
-class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
+	/**
+	 * Ids registered unconditionally, outside the plugin resolver.
+	 *
+	 * @var array<string>
+	 */
+	private const STATIC_PROVIDES = [ 'ezoic', 'mod_pagespeed', 'cloudflare_plugin_facade' ];
 
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Gated ids kept fetchable from the container for external code; their subscription stays resolver-gated.
+	 *
+	 * @var array<string>
+	 */
+	private const ALWAYS_REGISTERED = [ 'elementor_subscriber' ];
+
+	/**
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
-	protected $provides = [
-		'mobile_subscriber',
-		'woocommerce_subscriber',
-		'syntaxhighlighter_subscriber',
-		'elementor_subscriber',
-		'bridge_subscriber',
-		'avada_subscriber',
-		'ngg_subscriber',
-		'smush_subscriber',
-		'imagify_webp_subscriber',
-		'shortpixel_webp_subscriber',
-		'ewww_webp_subscriber',
-		'optimus_webp_subscriber',
-		'bigcommerce_subscriber',
-		'beaverbuilder_subscriber',
-		'amp_subscriber',
-		'litespeed_subscriber',
-		'simple_custom_css',
-		'pdfembedder',
-		'divi',
-		'mod_pagespeed',
-	];
+	protected $provides = [];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Builds the list of provided service ids from the static extras, the
+	 * always-registered ids and the resolver's active plugin ids.
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		$this->provides = array_values(
+			array_unique( array_merge( self::STATIC_PROVIDES, self::ALWAYS_REGISTERED, PluginResolver::get_active_plugins() ) )
+		);
+	}
 
 	/**
 	 * Registers the subscribers in the container
@@ -49,61 +65,30 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function register(): void {
+		$container = $this->getContainer();
 
-		$this->getContainer()
-			->share( 'mobile_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber' );
-		$this->getContainer()
-			->share( 'elementor_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'woocommerce_subscriber', 'WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber' );
-		$this->getContainer()
-			->share( 'syntaxhighlighter_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber' );
-		$this->getContainer()
-			->share( 'bridge_subscriber', 'WP_Rocket\ThirdParty\Themes\Bridge' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'divi', 'WP_Rocket\ThirdParty\Themes\Divi' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'avada_subscriber', 'WP_Rocket\ThirdParty\Themes\Avada' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'ngg_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber' );
-		$this->getContainer()
-			->share( 'smush_subscriber', 'WP_Rocket\ThirdParty\Plugins\Smush' )
-			->withArgument( $this->getContainer()->get( 'options_api' ) )
-			->withArgument( $this->getContainer()->get( 'options' ) );
-		$this->getContainer()
-			->share( 'imagify_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'shortpixel_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'ewww_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber' )
-			->withArgument( $options );
-		$this->getContainer()
-			->share( 'optimus_webp_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber' );
-		$this->getContainer()
-			->share( 'bigcommerce_subscriber', 'WP_Rocket\Subscriber\Third_Party\Plugins\Ecommerce\BigCommerce_Subscriber' );
-		$this->getContainer()
-			->share( 'beaverbuilder_subscriber', 'WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder' );
-		$this->getContainer()
-			->share( 'amp_subscriber', 'WP_Rocket\ThirdParty\Plugins\Optimization\AMP' )
-			->withArgument( $options )->withArgument( $this->getContainer()->get( 'cdn_subscriber' ) );
-		$this->getContainer()
-			->share( 'litespeed_subscriber', 'WP_Rocket\Subscriber\Third_Party\Hostings\Litespeed_Subscriber' );
-		$this->getContainer()
-			->share( 'simple_custom_css', 'WP_Rocket\ThirdParty\Plugins\SimpleCustomCss' )
-			->withArgument( WP_ROCKET_CACHE_BUSTING_PATH )->withArgument( WP_ROCKET_CACHE_BUSTING_URL );
-		$this->getContainer()
-			->share( 'pdfembedder', 'WP_Rocket\ThirdParty\Plugins\PDFEmbedder' );
+		// Non-resolver dependency + SPECIAL always-load ids.
+		$container->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
+		$container->addShared( 'ezoic', Ezoic::class );
+		$container->addShared( 'mod_pagespeed', ModPagespeed::class );
 
-		$this->getContainer()
-			->share( 'mod_pagespeed', 'WP_Rocket\ThirdParty\Plugins\ModPagespeed' );
+		$factory  = new SubscriberFactory();
+		$registry = $factory->get_registry();
+
+		$ids = array_unique( array_merge( PluginResolver::get_active_plugins(), self::ALWAYS_REGISTERED ) );
+
+		foreach ( $ids as $id ) {
+			if ( ! isset( $registry[ $id ] ) ) {
+				continue;
+			}
+
+			$definition = $container->addShared( $id, $registry[ $id ] );
+			$args       = $factory->get_arguments( $id );
+
+			if ( ! empty( $args ) ) {
+				$definition->addArguments( $args );
+			}
+		}
 	}
 }

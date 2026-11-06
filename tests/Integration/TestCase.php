@@ -6,25 +6,30 @@ use ReflectionObject;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\TestCase as BaseTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class TestCase extends BaseTestCase {
+	use HttpRequestTrait;
 	use CapTrait;
 	use SettingsTrait;
 	use StubTrait;
+	use IsolateHookTrait;
+	use DBTrait;
+
+	private $request_time_float;
 
 	protected static $use_settings_trait = true;
 	protected static $transients         = [];
 
 	protected $config;
-	protected $original_wp_filter;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
-		CapTrait::hasAdminCapBeforeClass();
+		self::hasAdminCapBeforeClass();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::getOriginalSettings();
+			self::getOriginalSettings();
 		}
 
 		if ( ! empty( self::$transients ) ) {
@@ -32,15 +37,15 @@ abstract class TestCase extends BaseTestCase {
 				self::$transients[ $transient ] = get_transient( $transient );
 			}
 		}
+
+		self::uninstallAll();
 	}
 
-	public static function tearDownAfterClass() {
-		parent::tearDownAfterClass();
-
-		CapTrait::resetAdminCap();
+	public static function tear_down_after_class() {
+		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
-			SettingsTrait::resetOriginalSettings();
+			self::resetOriginalSettings();
 		}
 
 		foreach ( self::$transients as $transient => $value ) {
@@ -50,30 +55,42 @@ abstract class TestCase extends BaseTestCase {
 				delete_transient( $transient );
 			}
 		}
+
+		parent::tear_down_after_class();
 	}
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
 
 		$this->stubRocketGetConstant();
 
-		parent::setUp();
-
 		if ( static::$use_settings_trait ) {
 			$this->setUpSettings();
 		}
+
+		$this->request_time_float = $_SERVER['REQUEST_TIME_FLOAT'];
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		$_SERVER['REQUEST_TIME_FLOAT'] = $this->request_time_float;
 
 		$this->resetStubProperties();
 
 		if ( static::$use_settings_trait ) {
 			$this->tearDownSettings();
 		}
+
+		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function configTestData() {
@@ -91,28 +108,5 @@ abstract class TestCase extends BaseTestCase {
 		$filename = $obj->getFileName();
 
 		$this->config = $this->getTestData( dirname( $filename ), basename( $filename, '.php' ) );
-	}
-
-	protected function unregisterAllCallbacksExcept( $event_name, $method_name, $priority = 10 ) {
-		global $wp_filter;
-		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
-
-		foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
-
-			// Skip if not this tests callback.
-			if ( substr( $key, - strlen( $method_name ) ) !== $method_name ) {
-				continue;
-			}
-
-			$wp_filter[ $event_name ]->callbacks = [
-				$priority => [ $key => $config ],
-			];
-		}
-	}
-
-	protected function restoreWpFilter( $event_name ) {
-		global $wp_filter;
-		$wp_filter[ $event_name ]->callbacks = $this->original_wp_filter;
-
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Upgrade;
 
+use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
@@ -9,19 +10,19 @@ use WP_Rocket\Engine\License\Upgrade;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Upgrade::display_upgrade_popin
+ * Test class covering \WP_Rocket\Engine\License\Upgrade::display_upgrade_popin
  *
  * @group License
  */
 class DisplayUpgradePopin extends TestCase {
-	protected static $mockCommonWpFunctionsInSetUp = true;
-
 	private $pricing;
 	private $user;
 	private $upgrade;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
+
+		Functions\stubTranslationFunctions();
 
 		$this->pricing = Mockery::mock( Pricing::class );
 		$this->user    = Mockery::mock( User::class );
@@ -44,69 +45,32 @@ class DisplayUpgradePopin extends TestCase {
 			->twice()
 			->andReturn( $config['license_account'] );
 
+		$this->user->shouldReceive( 'is_revoked' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_revoked'] ?? false );
+
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_trial_customer'] ?? false );
+
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->once()
 			->andReturn( $config['licence_expiration'] );
 
+		$this->user->shouldReceive( 'get_available_upgrades' )
+			->atMost()
+			->twice()
+			->andReturn( $config['upgrades'] ?? [] );
+
 		if ( ! is_null( $expected ) ) {
-			$this->pricing->shouldReceive( 'get_single_websites_count' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['single']['websites'] );
-
-			$this->pricing->shouldReceive( 'get_plus_websites_count' )
-				->atMost()
-				->twice()
-				->andReturn( $config['pricing']['plus']['websites'] );
-
-			$this->pricing->shouldReceive( 'get_single_to_plus_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['plus']['price'] );
-			
-			$this->pricing->shouldReceive( 'get_regular_single_to_plus_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['plus']['regular'] );
-
-			$this->user->shouldReceive( 'get_upgrade_plus_url' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['plus']['upgrade_url'] );
-
-			$this->pricing->shouldReceive( 'get_single_to_infinite_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['price'] );
-		
-			$this->pricing->shouldReceive( 'get_regular_single_to_infinite_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['regular'] );
-
-			$this->pricing->shouldReceive( 'get_infinite_websites_count' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['websites'] );
-
-			$this->user->shouldReceive( 'get_upgrade_infinite_url' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['upgrade_url'] );
-
-			$this->pricing->shouldReceive( 'get_plus_to_infinite_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['price'] );
-
-			$this->pricing->shouldReceive( 'get_regular_plus_to_infinite_price' )
-				->atMost()
-				->once()
-				->andReturn( $config['pricing']['infinite']['regular'] );
-
 			$this->pricing->shouldReceive( 'is_promo_active' )
 				->andReturn( $config['promo_active'] );
+
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['currency'] ?? 'USD' );
 
 			$this->upgrade->shouldReceive( 'generate' )
 				->once()
@@ -115,6 +79,7 @@ class DisplayUpgradePopin extends TestCase {
 					$expected
 				)
 				->andReturn( '' );
+
 			$this->expectOutputString( '' );
 		} else {
 			$this->upgrade->shouldReceive( 'generate' )

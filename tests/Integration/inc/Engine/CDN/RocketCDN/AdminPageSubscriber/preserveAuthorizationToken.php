@@ -2,45 +2,37 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\AdminPageSubscriber;
 
-use WPMedia\PHPUnit\Integration\ApiTrait;
-use  WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
- * @uses   \WP_Rocket\Engine\CDN\RocketCDN\APIClient::preserve_authorization_token
+ * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\AdminPageSubscriber::preserve_authorization_token
  *
- * @group  AdminOnly
- * @group  RocketCDN
- * @group  RocketCDNAdminPage
+ * @uses \WP_Rocket\Engine\CDN\RocketCDN\APIClient::preserve_authorization_token
+ *
+ * @group AdminOnly
+ * @group RocketCDN
+ * @group RocketCDNAdminPage
  */
 class Test_PreserveAuthorizationToken extends TestCase {
-	use ApiTrait;
+	public function set_up() {
+		parent::set_up();
 
-	private          $client;
-	protected static $api_credentials_config_file = 'rocketcdn.php';
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
+		add_option( 'rocketcdn_user_token', TestCredentials::ROCKETCDN_TOKEN );
 	}
 
-	public function setUp() {
-		add_option( 'rocketcdn_user_token', self::getApiCredential( 'ROCKETCDN_TOKEN' ) );
-	}
-
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		delete_option( 'rocketcdn_user_token' );
+
+		parent::tear_down();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldPreserveAuthorizationToken( $config, $expected, $sent = null ) {
-		if ( isset( $config['getApiCredential'] ) ) {
-			$expected['headers']['Authorization'] .= static::getApiCredential( 'ROCKETCDN_TOKEN' );
+		if ( isset( $config['append_token'] ) ) {
+			$expected['headers']['Authorization'] .= TestCredentials::ROCKETCDN_TOKEN;
 		}
 
 		if ( is_null( $sent ) ) {

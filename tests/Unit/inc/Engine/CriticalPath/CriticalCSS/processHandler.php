@@ -2,8 +2,7 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\CriticalCSS;
 
-use Brain\Monkey\Functions;
-use Brain\Monkey\Filters;
+use Brain\Monkey\{Filters, Functions};
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CriticalPath\CriticalCSS;
@@ -12,25 +11,25 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::process_handler
  *
- * @group  CriticalCss
- * @group  CriticalPath
+ * @group CriticalCss
+ * @group CriticalPath
  */
-class Test_ProcessHandler extends FilesystemTestCase {
+class TestProcessHandler extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
 
 	private $critical_css;
 	private $expected_items = [];
 	private $wpdb;
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/wpdb.php';
 	}
 
-	public function setUp() {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->expected_items = [
@@ -45,10 +44,12 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );
 		Functions\when( 'get_current_blog_id' )->justReturn( 1 );
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
+
+		$GLOBALS['wpdb'] = $this->wpdb;
 	}
 
-	public function tearDown() {
+	protected function tearDown(): void {
 		unset( $GLOBALS['wpdb'] );
 
 		parent::tearDown();
@@ -85,8 +86,10 @@ class Test_ProcessHandler extends FilesystemTestCase {
 			Functions\expect( 'set_transient' )->once()->andReturn( null );
 			$number_items = count( $this->expected_items );
 			$process
-				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null )
-				->shouldReceive( 'save' )->once()->andReturn( $process )
+				->shouldReceive( 'push_to_queue' )->times( $number_items )->andReturn( null );
+			$process
+				->shouldReceive( 'save' )->once()->andReturn( $process );
+			$process
 				->shouldReceive( 'dispatch' )->once()->andReturn( null );
 
 		}

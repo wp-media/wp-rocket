@@ -41,16 +41,28 @@
             margin-top: 5px;
             @include font-size(36,36);
             color: $cOrange;
+
+			@include respond-to('xs') {
+				display: block;
+				position: initial;
+			}
         }
     }
 
     &-col{
         flex: 1 1 auto;
+        align-self: center;
 
         &:first-child{
             padding-left: $space*9;
             padding-right: $space*3;
             min-width: 340px;
+
+			@include respond-to('xs') {
+				padding-left: 0;
+				padding-right: 0;
+				min-width: auto;
+            }
         }
 
         &:last-child{
@@ -63,7 +75,7 @@
     }
 
     .wpr-button{
-        margin-top: $space*3;
+        margin-top: 0;
         white-space: normal;
     }
 
@@ -71,5 +83,7 @@
         font-style: normal;
         color: $cGreyDark2;
     }
-
+  	#wpr-update-exclusion-msg{
+		min-height: 20px;
+    }
 }

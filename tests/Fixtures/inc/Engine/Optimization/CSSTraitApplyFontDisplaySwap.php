@@ -1,9 +1,6 @@
 <?php
 
 return [
-	'vfs_dir' => 'wp-content/',
-
-	'test_data' => [
 		'shouldTargetOnlyFontFaceRuleSets' => [
 			'css'      => <<<CSS
 @font-face {
@@ -131,5 +128,15 @@ font-family:'MyWebFont';src:url('myfont.woff2')format('woff2'),url('myfont.woff'
 url("core/admin/fonts/modules.eot");src: url("core/admin/fonts/modules.eot#iefix")format("woff"), url("core/admin/fonts/modules.svg#ETModules")font-weight: normal;font-style: normal;
 CSS
 		],
-	],
+		'shouldReplaceOnlyDisplayPropertyValue' => [
+			'css'      => <<< CSS
+@font-face{font-display:auto;font-family:'Barlow';src:url('https://www.autophaus-glienicke.de/wp-content/uploads/avia_fonts/type_fonts/barlow/barlow-regular.ttf')format('ttf')}
+@font-face{font-family:'fa';src:url('/wp-content/plugins/recipe-card-blocks-by-wpzoom-pro/dist/assets/webfonts/fa-solid-900.woff2')format('woff2');font-display:block;}
+CSS
+			,
+			'expected' => <<<CSS
+@font-face{font-display:swap;font-family:'Barlow';src:url('https://www.autophaus-glienicke.de/wp-content/uploads/avia_fonts/type_fonts/barlow/barlow-regular.ttf')format('ttf')}
+@font-face{font-family:'fa';src:url('/wp-content/plugins/recipe-card-blocks-by-wpzoom-pro/dist/assets/webfonts/fa-solid-900.woff2')format('woff2');font-display:swap;}
+CSS
+		],
 ];

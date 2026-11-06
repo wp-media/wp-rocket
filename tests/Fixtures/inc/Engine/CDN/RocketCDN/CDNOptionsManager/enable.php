@@ -15,8 +15,7 @@ return [
 				],
 				'settings'     => [
 					'cdn'        => 1,
-					'cdn_cnames' => [ 'https://rocketcdn.me' ],
-					'cdn_zone'   => [ 'all' ],
+					'cdn_type'   => 'rocketcdn',
 				],
 			],
 		],

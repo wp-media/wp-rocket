@@ -7,23 +7,23 @@ use SitePress;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_code
- * @uses  ::rocket_has_i18n
+ * Test class covering ::get_rocket_i18n_code
+ *
+ * @uses ::rocket_has_i18n
  * @group Functions
  * @group i18n
  */
 class Test_GetRocketI18nCode extends TestCase {
-
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -50,7 +50,9 @@ class Test_GetRocketI18nCode extends TestCase {
 				break;
 			case 'polylang':
 				$GLOBALS['polylang'] = 'polylang';
-				Functions\expect( 'pll_languages_list' )->atLeast( 1 )->andReturn( $codes );
+				Functions\expect( 'pll_languages_list' )
+					->atLeast()
+					->andReturn( $codes );
 		}
 	}
 

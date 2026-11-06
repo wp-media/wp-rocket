@@ -23,7 +23,7 @@ class PurgeExpiredCache {
 	 *
 	 * @since  3.4
 	 *
-	 * @var \WP_Filesystem_Direct
+	 * @var null|\WP_Filesystem_Direct
 	 */
 	private $filesystem;
 
@@ -60,7 +60,7 @@ class PurgeExpiredCache {
 		 * @param array $urls           URLs that will be searched for old cache files.
 		 * @param int   $file_age_limit Timestamp of the maximum age files must have.
 		 */
-		$urls = apply_filters( 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
+		$urls = wpm_apply_filters_typed( 'array', 'rocket_automatic_cache_purge_urls', $urls, $file_age_limit );
 
 		if ( ! is_array( $urls ) ) {
 			// I saw what you did ಠ_ಠ.
@@ -318,19 +318,19 @@ class PurgeExpiredCache {
 				$dir_deleted = $this->purge_dir( $item->getPathname(), $file_age_limit );
 				$deleted     = array_merge( $deleted, $dir_deleted );
 
-			} elseif ( $item->isFile() && $item->getCTime() < $file_age_limit ) {
+			} elseif ( $item->isFile() && $item->getMTime() < $file_age_limit ) {
 				$file_path = $item->getPathname();
 
 				/**
 				 * The file is older than our limit.
-				 * This will also delete the file if `$item->getCTime()` fails.
+				 * This will also delete the file if `$item->getMTime()` fails.
 				 */
 				if ( ! $this->filesystem->delete( $file_path ) ) {
 					continue;
 				}
 
 				/**
-				 * A page can have mutiple cache files:
+				 * A page can have multiple cache files:
 				 * index(-mobile)(-https)(-dynamic-cookie-key){0,*}.html(_gzip).
 				 */
 				$dir_path = dirname( $file_path );
@@ -362,7 +362,7 @@ class PurgeExpiredCache {
 			$iterator = new \DirectoryIterator( $dir_path );
 		}
 		catch ( \Exception $e ) {
-			return [];
+			return true;
 		}
 
 		foreach ( $iterator as $item ) {
@@ -380,8 +380,8 @@ class PurgeExpiredCache {
 	 *
 	 * @since 3.8
 	 *
-	 * @param int $old_lifespan      Old value in minutes.
-	 * @param int $old_lifespan_unit Old value of unit.
+	 * @param int    $old_lifespan      Old value in minutes.
+	 * @param string $old_lifespan_unit Old value of unit.
 	 *
 	 * @return void
 	 */
@@ -401,5 +401,4 @@ class PurgeExpiredCache {
 
 		update_option( 'wp_rocket_settings', $options );
 	}
-
 }

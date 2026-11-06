@@ -1,12 +1,1 @@
-<svg width="117" height="32" viewBox="0 0 117 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g clip-path="url(#clip0)">
-<path d="M15.6 2.59961L29.3915 26.4871H1.80859L15.6 2.59961Z" fill="#172153"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M58.4984 27.95C51.6777 27.95 46.1484 22.4207 46.1484 15.6C46.1484 8.77929 51.6777 3.25 58.4984 3.25C65.3191 3.25 70.8484 8.77929 70.8484 15.6C70.8484 22.4207 65.3191 27.95 58.4984 27.95Z" fill="#F56F46"/>
-<rect x="101.402" y="1.30078" width="20.2233" height="20.2233" rx="2.6" transform="rotate(45 101.402 1.30078)" fill="#FFD147"/>
-</g>
-<defs>
-<clipPath id="clip0">
-<rect width="117" height="31.2" fill="white"/>
-</clipPath>
-</defs>
-</svg>
+<svg fill="none" height="32" viewBox="0 0 117 32" width="117" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><clipPath id="a"><path d="m0 0h117v31.2h-117z"/></clipPath><g clip-path="url(#a)"><path d="m15.6 2.59961 13.7915 23.88749h-27.58291z" fill="#172153"/><path clip-rule="evenodd" d="m58.4984 27.95c-6.8207 0-12.35-5.5293-12.35-12.35 0-6.82071 5.5293-12.35 12.35-12.35s12.35 5.52929 12.35 12.35c0 6.8207-5.5293 12.35-12.35 12.35z" fill="#f56f46" fill-rule="evenodd"/><rect fill="#ffd147" height="20.2233" rx="2.6" transform="matrix(.70710678 .70710678 -.70710678 .70710678 30.619749 -71.321052)" width="20.2233" x="101.402" y="1.30078"/></g></svg>

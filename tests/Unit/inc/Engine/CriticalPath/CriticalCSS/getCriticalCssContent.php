@@ -10,7 +10,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_critical_css_content
  *
  * @group  CriticalPath
  * @group  vfs
@@ -19,7 +19,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test_GetCriticalCssContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/getCriticalCssContent.php';
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		Functions\when( 'home_url' )->justReturn( 'http://example.org/' );

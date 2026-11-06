@@ -5,13 +5,14 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
- * @uses   \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
- * @uses   \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
- * @uses   \WP_Rocket\Admin\Options_Data::get
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::delete
  *
- * @group  CriticalPath
- * @group  vfs
+ * @uses \WP_Rocket\Engine\CriticalPath\ProcessorService::process_delete
+ * @uses \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ * @uses \WP_Rocket\Admin\Options_Data::get
+ *
+ * @group CriticalPath
+ * @group CriticalRest
  */
 class Test_Delete extends RESTVfsTestCase {
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
@@ -25,26 +26,43 @@ class Test_Delete extends RESTVfsTestCase {
 	private $files;
 	private $options;
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
 		$admin                 = get_role( 'administrator' );
 		static::$had_admin_cap = $admin->has_cap( 'rocket_regenerate_critical_css' );
 	}
 
-	public static function tearDownAfterClass() {
+	public static function tear_down_after_class() {
 		$admin = get_role( 'administrator' );
 		if ( ! static::$had_cap ) {
 			$admin->remove_cap( 'rocket_regenerate_critical_css' );
 		}
-		parent::tearDownAfterClass();
+
+		parent::tear_down_after_class();
 	}
 
-	public function tearDown() {
+	public function set_up() {
+		parent::set_up();
+
+		self::installAtfTable();
+		self::installLrcTable();
+		self::installPreloadFontsTable();
+		self::installPreconnectExternalDomainsTable();
+	}
+
+	public function tear_down() {
+		self::uninstallAtfTable();
+		self::uninstallLrcTable();
+		self::uninstallPreloadFontsTable();
+		self::uninstallPreconnectDomainsTable();
+
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
-		parent::tearDown();
 		$admin = get_role( 'administrator' );
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
+
+		parent::tear_down();
 	}
 
 	/**

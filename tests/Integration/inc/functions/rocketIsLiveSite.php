@@ -4,13 +4,29 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 
 use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Integration\TestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers ::rocket_is_live_site
+ * Test class covering ::rocket_is_live_site
  * @group Functions
  * @group API
  */
 class Test_RocketIsLiveSite extends TestCase {
+	use IsolateHookTrait;
+
+	public function set_up()
+	{
+		parent::set_up();
+		add_filter( 'rocket_staging_list', [$this, 'getLocalStagingDomains']);
+		$this->unregisterAllCallbacksExcept('rocket_staging_list', 'getLocalStagingDomains', 10);
+	}
+
+	public function tear_down()
+	{
+		$this->restoreWpHook('rocket_staging_list');
+		remove_filter('rocket_staging_list', [$this, 'getLocalStagingDomains']);
+		parent::tear_down();
+	}
 
 	public function testShouldReturnTrueWhenWPROCKETDEBUG() {
 		Functions\when( 'rocket_get_constant' )->justReturn( true );
@@ -44,6 +60,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			$this->assertFalse( rocket_is_live_site() );
 			remove_filter( 'home_url', $callback );
 		}
+
 	}
 
 	public function testShouldReturnTrueWhenLiveSite() {
@@ -81,6 +98,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.docksal.site',
 			'example.lndo.site',
 			'example.wpengine.com',
+			'example.wpenginepowered.com',
 			'example.pantheonsite.io',
 			'example.flywheelsites.com',
 			'example.flywheelstaging.com',
@@ -91,6 +109,38 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.wpserveur.net',
 			'example-liquidwebsites.com',
 			'example.myftpupload.com',
+			'example.wpstage.net',
+			'example.wpsc.site',
+			'example.runcloud.link',
+			'example.onrocket.site',
+			'example.bigscoots-staging.com',
+			'example.singlestaging.com',
+		];
+	}
+	public function getLocalStagingDomains() {
+		return [
+			'.wpengine.com',
+			'.wpenginepowered.com',
+			'.pantheonsite.io',
+			'.flywheelsites.com',
+			'.flywheelstaging.com',
+			'.kinsta.com',
+			'.kinsta.cloud',
+			'.cloudwaysapps.com',
+			'.azurewebsites.net',
+			'.wpserveur.net',
+			'-liquidwebsites.com',
+			'.myftpupload.com',
+			'.dream.press',
+			'.sg-host.com',
+			'.platformsh.site',
+			'.wpstage.net',
+			'.bigscoots-staging.com',
+			'.wpsc.site',
+			'.runcloud.link',
+			'.onrocket.site',
+			'.singlestaging.com',
+			'.myraidbox.de',
 		];
 	}
 }

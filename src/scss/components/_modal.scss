@@ -22,6 +22,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 100000;
     }
 
     &__container {
@@ -29,6 +30,7 @@
         max-height: 100vh;
         overflow-y: auto;
         box-sizing: border-box;
+        z-index: 1;
     }
 
     iframe {

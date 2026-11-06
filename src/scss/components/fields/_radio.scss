@@ -36,7 +36,7 @@
     [type="checkbox"]:checked + label:before {
         left:0;
         width: 52px;
-        height: 22px;
+        height: $wpr-radio-track-height;
         background: #fff;
         border-radius: 12px;
         border: 1px solid $cGreyDark1;
@@ -54,6 +54,17 @@
         left: 3px;
         @include transition(all, 150ms);
     }
+
+  	// disabled radio
+	[type="checkbox"]:disabled + label:after,
+	[type="checkbox"]:disabled + label:after {
+		background: $cGrey;
+  	}
+
+	[type="checkbox"]:disabled + label:before,
+	[type="checkbox"]:disabled + label:before {
+	  border: 1px solid $cGrey;
+	}
 
     // Checked box
     [type="checkbox"]:checked + label:before {
@@ -140,30 +151,5 @@
 
     [type="checkbox"]:checked:focus + label:before {
         border: 1px dashed $cBlue;
-    }
-
-
-
-
-    // Change color for tips
-    &--tips{
-        // Checked box
-        [type="checkbox"]:checked + label:before {
-            border-color: $cGreen;
-        }
-
-        // Checked ball
-        [type="checkbox"]:checked + label:after {
-            background: $cGreen;
-        }
-
-        // ON text
-        [type="checkbox"]:checked + label .wpr-radio-ui:after {
-            color: $cGreenDark1;
-        }
-
-        [type="checkbox"]:checked:focus + label:before {
-            border: 1px dashed $cGreen;
-        }
     }
 }

@@ -5,16 +5,16 @@ namespace WP_Rocket\Tests\Integration\inc\functions;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::rocket_is_plugin_active
+ * Test class covering ::rocket_is_plugin_active
  * @uses   ::rocket_is_plugin_active_for_network
  * @group  Options
  * @group  Functions
  */
 class Test_RocketIsPluginActive extends TestCase {
-	private $config;
+	protected $config;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		if ( empty( $this->config ) ) {
 			$this->loadConfig();

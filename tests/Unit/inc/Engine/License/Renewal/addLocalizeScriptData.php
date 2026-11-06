@@ -2,15 +2,15 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
-use Brain\Monkey\Functions;
 use Mockery;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Renewal::add_localize_script_data
+ * Test class covering \WP_Rocket\Engine\License\Renewal::add_localize_script_data
  *
  * @group License
  */
@@ -19,7 +19,7 @@ class AddLocalizeScriptData extends TestCase {
 	private $user;
 	private $renewal;
 
-	public function setUp() {
+	public function setUp() : void {
 		parent::setUp();
 
 		$this->pricing = Mockery::mock( Pricing::class );
@@ -27,6 +27,7 @@ class AddLocalizeScriptData extends TestCase {
 		$this->renewal =  new Renewal(
 			$this->pricing,
 			$this->user,
+			Mockery::mock( Options_Data::class ),
 			'views'
 		);
 	}
@@ -39,12 +40,12 @@ class AddLocalizeScriptData extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['auto_renew'] );
-		
+
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->once()
 			->andReturn( $config['license_expired'] );
-	
+
 		$this->user->shouldReceive( 'get_license_expiration' )
 			->atMost()
 			->twice()

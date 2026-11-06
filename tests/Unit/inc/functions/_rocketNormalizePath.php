@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::_rocket_normalize_path
+ * Test class covering ::_rocket_normalize_path
  * @uses  ::_rocket_is_windows_fs
  *
  * @group Files
@@ -17,18 +17,18 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 class Test__RocketNormalizePath extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/functions/_rocketNormalizePath.php';
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass(): void {
 		parent::setUpBeforeClass();
 
 		// Reset before starting.
 		_rocket_is_windows_fs( true );
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	protected function tearDown(): void {
 		// Reset after each test.
 		_rocket_is_windows_fs( true );
+
+		parent::tearDown();
 	}
 
 	/**

@@ -7,13 +7,13 @@ use Brain\Monkey\Functions;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers ::rocket_is_live_site
+ * Test class covering ::rocket_is_live_site
  * @group  Functions
  * @group  API
  */
 class Test_RocketIsLiveSite extends TestCase {
 
-	public static function setUpBeforeClass() {
+	public static function setUpBeforeClass() : void {
 		parent::setUpBeforeClass();
 
 		require_once WP_ROCKET_PLUGIN_ROOT . 'inc/functions/api.php';
@@ -36,7 +36,7 @@ class Test_RocketIsLiveSite extends TestCase {
 	public function testShouldReturnFalseWhenLocalOrStaging() {
 		Functions\when( 'rocket_get_constant' )->justReturn( false );
 		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
-
+		Filters\expectApplied('rocket_staging_list')->andReturn($this->getLocalStagingDomains());
 		$urls   = $this->getLocalStagingSites();
 		foreach ( $urls as $domain ) {
 			Functions\when( 'wp_parse_url' )->justReturn( $domain );
@@ -77,6 +77,7 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.docksal.site',
 			'example.lndo.site',
 			'example.wpengine.com',
+			'example.wpenginepowered.com',
 			'example.pantheonsite.io',
 			'example.flywheelsites.com',
 			'example.flywheelstaging.com',
@@ -87,6 +88,39 @@ class Test_RocketIsLiveSite extends TestCase {
 			'example.wpserveur.net',
 			'example-liquidwebsites.com',
 			'example.myftpupload.com',
+			'example.wpstage.net',
+			'example.wpsc.site',
+			'example.runcloud.link',
+			'example.onrocket.site',
+			'example.bigscoots-staging.com',
+			'example.singlestaging.com',
+		];
+	}
+
+	public function getLocalStagingDomains() {
+		return [
+			'.wpengine.com',
+			'.wpenginepowered.com',
+			'.pantheonsite.io',
+			'.flywheelsites.com',
+			'.flywheelstaging.com',
+			'.kinsta.com',
+			'.kinsta.cloud',
+			'.cloudwaysapps.com',
+			'.azurewebsites.net',
+			'.wpserveur.net',
+			'-liquidwebsites.com',
+			'.myftpupload.com',
+			'.dream.press',
+			'.sg-host.com',
+			'.platformsh.site',
+			'.wpstage.net',
+			'.bigscoots-staging.com',
+			'.wpsc.site',
+			'.runcloud.link',
+			'.onrocket.site',
+			'.singlestaging.com',
+			'.myraidbox.de',
 		];
 	}
 }

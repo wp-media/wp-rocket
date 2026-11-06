@@ -8,7 +8,7 @@ use SitePress;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_uri
+ * Test class covering ::get_rocket_i18n_uri
  * @uses  ::rocket_has_i18n
  * @uses  ::get_rocket_i18n_code
  * @group Functions
@@ -16,15 +16,15 @@ use WPMedia\PHPUnit\Integration\TestCase;
  */
 class Test_GetRocketI18nUri extends TestCase {
 
-	public static function setUpBeforeClass() {
-		parent::setUpBeforeClass();
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/SitePress.php';
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/PLL_Frontend.php';
 	}
 
-	public function tearDown() {
-		parent::tearDown();
+	public function tear_down() {
+		parent::tear_down();
 
 		unset( $GLOBALS['sitepress'], $GLOBALS['q_config'], $GLOBALS['polylang'] );
 	}
