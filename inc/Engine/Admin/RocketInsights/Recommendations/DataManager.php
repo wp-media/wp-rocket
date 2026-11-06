@@ -391,6 +391,21 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Check if a fetch is in progress.
+	 *
+	 * Reads the raw transient so a fetch started for another language is still detected.
+	 * Recommendations are cached under a single key: users with different languages
+	 * replace each other's data and trigger a refetch when they alternate.
+	 *
+	 * @return bool
+	 */
+	private function is_loading(): bool {
+		$data = get_transient( self::TRANSIENT_NAME );
+
+		return is_array( $data ) && 'loading' === ( $data['status'] ?? '' );
+	}
+
+	/**
 	 * Check if at least one page is tracked in Rocket Insights.
 	 *
 	 * @return bool True if there are tracked pages, false otherwise.
@@ -635,8 +650,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_fetch_recommendations(): void {
-		// Bail if already loading.
-		if ( 'loading' === $this->get_status() ) {
+		// Bail if already loading, whatever language the fetch in progress is for.
+		if ( $this->is_loading() ) {
 			return;
 		}
 
