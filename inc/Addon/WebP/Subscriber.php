@@ -330,7 +330,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 * @return array
 	 */
 	private function get_attribute_names() {
-		$attributes = [ 'href', 'src', 'srcset', 'data-large_image', 'data-thumb' ];
+		$attributes = [ 'href', 'src', 'srcset', 'imagesrcset', 'data-large_image', 'data-thumb' ];
 
 		/**
 		 * Filter the names of the HTML attributes where WP Rocket must search for image files.
