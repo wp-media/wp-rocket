@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Addon\Cloudflare\API\Client;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::save_cloudflare_old_settings
@@ -13,7 +12,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group Cloudflare
  */
 class TestSaveCloudflareOldSettings extends TestCase {
-	use HttpRequestTrait;
 	use IsolateHookTrait;
 
 	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
@@ -22,8 +20,6 @@ class TestSaveCloudflareOldSettings extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
 
@@ -36,8 +32,6 @@ class TestSaveCloudflareOldSettings extends TestCase {
 		$this->restoreWpHook( 'pre_update_option_wp_rocket_settings' );
 
 		delete_transient( 'rocket_cloudflare_is_api_keys_valid' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

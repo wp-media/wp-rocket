@@ -76,7 +76,6 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                             => [
 				[ 'clean_performance_hint_result' ],
 			],
-			'rocket_dashboard_actions'                  => 'display_dashboard_button',
 			'admin_post_rocket_clean_performance_hints' => 'clean_performance_hints',
 			'admin_post_rocket_clean_performance_hints_url' => 'clean_url_performance_hints',
 			'pre_set_theme_mod_custom_logo'             => [ 'clean_performance_hints_on_logo_change', 10, 2 ],
@@ -169,14 +168,6 @@ class Subscriber implements Subscriber_Interface {
 		$this->admin_bar->add_clear_url_performance_hints_menu_item( $wp_admin_bar );
 	}
 
-	/**
-	 * Display the dashboard button to clear performance data hints features
-	 *
-	 * @return void
-	 */
-	public function display_dashboard_button() {
-		$this->admin_bar->display_dashboard_button();
-	}
 
 	/**
 	 * Truncate Performance Hints tables when clicking on the dashboard button/menu

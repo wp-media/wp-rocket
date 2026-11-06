@@ -41,11 +41,13 @@ class getRecommendations extends RESTfulTestCase {
 
 		// Clear any existing recommendations transient
 		delete_transient( 'wpr_ri_recommendations' );
+		delete_transient( 'wpr_global_score_data' );
 	}
 
 	public function tear_down() {
 		// Clean up recommendations transient
 		delete_transient( 'wpr_ri_recommendations' );
+		delete_transient( 'wpr_global_score_data' );
 
 		// Remove Rocket Insights enabled filter
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
@@ -85,6 +87,13 @@ class getRecommendations extends RESTfulTestCase {
 			}
 		}
 
+		// Track pages by default; 'no-url' means no tracked pages.
+		set_transient(
+			'wpr_global_score_data',
+			[ 'status' => $config['global_score_status'] ?? 'completed' ],
+			DAY_IN_SECONDS
+		);
+
 		// Set up transient data if provided
 		if ( isset( $config['transient_data'] ) ) {
 			set_transient( 'wpr_ri_recommendations', $config['transient_data'], DAY_IN_SECONDS );
@@ -110,6 +119,17 @@ class getRecommendations extends RESTfulTestCase {
 		// Check for error message if in failed status
 		if ( isset( $expected['has_error'] ) && $expected['has_error'] ) {
 			$this->assertStringContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['html'] );
+			$this->assertStringNotContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['html'] );
+			$this->assertStringContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['dashboard_html'] );
+			$this->assertStringNotContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['dashboard_html'] );
+		}
+
+		// Check for the no pages message.
+		if ( isset( $expected['has_no_pages'] ) && $expected['has_no_pages'] ) {
+			$this->assertStringContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['html'] );
+			$this->assertStringNotContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['html'] );
+			$this->assertStringContainsString( 'Add a first page to get performance recommendations.', $response['recommendations']['dashboard_html'] );
+			$this->assertStringNotContainsString( 'We’re sorry, recommendations are currently unavailable.', $response['recommendations']['dashboard_html'] );
 		}
 	}
 

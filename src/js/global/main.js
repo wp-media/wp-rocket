@@ -17,7 +17,7 @@ $(document).ready(function(){
 	function wprCloseDashboardNotice(){
 		var vTL = new TimelineLite()
 		  .to($notice, 1, {autoAlpha:0, x:40, ease:Power4.easeOut})
-		  .to($notice, 0.6, {height: 0, marginTop:0, ease:Power4.easeOut}, '=-.4')
+		  .to($notice, 0.6, {height: 0, marginTop:0, marginBottom:0, ease:Power4.easeOut}, '=-.4')
 		  .set($notice, {'display':'none'})
 		;
 	}
@@ -81,10 +81,8 @@ $(document).ready(function(){
 			var href = $(this).attr('href');
 			var text = $(this).text();
 
-			// Check if it's in FAQ section or sidebar documentation
-			if ($(this).closest('.wpr-fieldsContainer-fieldset').prev('.wpr-optionHeader').find('.wpr-title2').text().includes('Frequently Asked Questions')) {
-				window.wprTrackHelpButton('FAQ - ' + text, 'Dashboard');
-			} else if ($(this).closest('.wpr-documentation').length > 0) {
+			// Check if it's in sidebar documentation
+			if ($(this).closest('.wpr-documentation').length > 0) {
 				window.wprTrackHelpButton('Documentation', 'Sidebar');
 			} else {
 				window.wprTrackHelpButton('Documentation Link', 'General');
@@ -211,29 +209,6 @@ $(document).ready(function(){
 	}
 
 	/***
-	* Sidebar on/off
-	***/
-	var $wprSidebar    = $( '.wpr-Sidebar' );
-	var $wprButtonTips = $('.wpr-js-tips');
-
-	$wprButtonTips.on('change', function() {
-		wprDetectTips($(this));
-	});
-
-	function wprDetectTips(aElem){
-		if(aElem.is(':checked')){
-			$wprSidebar.css('display','block');
-			localStorage.setItem( 'wpr-show-sidebar', 'on' );
-		}
-		else{
-			$wprSidebar.css('display','none');
-			localStorage.setItem( 'wpr-show-sidebar', 'off' );
-		}
-	}
-
-
-
-	/***
 	* Detect Adblock
 	***/
 
@@ -282,22 +257,134 @@ $(document).ready(function(){
 		$(this).addClass('is-expanded');
 	});
 
-	// Track Rocket Insights Recommendation Activate button clicks
-	$(document).on('click', '.wpr-recommendation-item__activate', function() {
-		var recommendation = $(this).data('recommendation') || 'unknown';
+	// Handle expand/collapse of the dashboard recommendations list.
+	$(document).on('click', '.wpr-dash-recs__more', function() {
+		const $button = $(this);
+		const isExpanded = $button.hasClass('is-expanded');
 
-		// If the element is visible, scroll to the element with id matching the recommendation value.
-		// Delay scroll by 100ms to allow navigation to the section to complete and ensure the target element is in view.
-		setTimeout(function() {
-			var $target = $(`#${recommendation}`);
-			
-			if (!$target.length && !$target.is(':visible')) {
+		if (typeof window.wprTrackHelpButton === 'function') {
+			window.wprTrackHelpButton('rocket insights recommendations load more', 'load_more');
+		}
+
+		$button.toggleClass('is-expanded', !isExpanded).attr('aria-expanded', String(!isExpanded));
+		$button.siblings('.wpr-dash-recs__list').toggleClass('is-expanded', !isExpanded);
+	});
+
+
+	// Setting targeted by a recommendation Activate link, waiting for its page to be displayed.
+	var pendingRecommendation = null;
+	var highlightTimer = null;
+
+	/**
+	 * Scrolls to the setting of a recommendation and highlights it.
+	 * Falls back to the closest visible parent field when the setting is hidden, does nothing when it is not found.
+	 *
+	 * @param {string} slug Option slug of the recommendation.
+	 */
+	function scrollAndHighlight(slug) {
+		var escaped = CSS.escape(slug);
+		var target = document.querySelector('[name="wp_rocket_settings[' + escaped + ']"]') || document.getElementById(slug);
+
+		// A hidden input only stores the value (e.g. Remove Unused CSS), the option is displayed by a radio button.
+		if (!target || target.type === 'hidden') {
+			target = document.getElementById('wpr-radio-' + slug) || target;
+		}
+
+		if (!target) {
+			return;
+		}
+
+		var field = target.closest('.wpr-field') || target;
+
+		// Walk up through the parent fields until a visible one is found.
+		while (field && field.offsetParent === null) {
+			var parentId = field.dataset.parent;
+
+			if (!parentId) {
 				return;
 			}
 
-			$target[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
-		}, 100);
-		
+			var parent = document.getElementById(parentId);
+			field = parent ? (parent.closest('.wpr-field') || parent) : null;
+		}
+
+		if (!field) {
+			return;
+		}
+
+		var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		field.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth', block: 'center' });
+
+		$('.wpr-field--highlighted').removeClass('wpr-field--highlighted').css({'--wpr-highlight-end': '', '--wpr-highlight-inset': '', '--wpr-highlight-top': '', '--wpr-highlight-bottom': ''});
+		clearTimeout(highlightTimer);
+
+		// Extend the highlight down to the next visible element, or to the bottom of the container, covering the spacing left by hidden child fields.
+		var next = field.nextElementSibling;
+
+		while (next && next.offsetParent === null) {
+			next = next.nextElementSibling;
+		}
+
+		var prev = field.previousElementSibling;
+
+		while (prev && prev.offsetParent === null) {
+			prev = prev.previousElementSibling;
+		}
+
+		// Fields grouped with others are divided by separators: the highlight only spans slightly past their length and stays clear of them and of the container edges.
+		var groupSelector = '.wpr-field, .wpr-warningContainer';
+		var hasPrev = !!prev && prev.matches(groupSelector);
+		var hasNext = !!next && next.matches(groupSelector);
+		var isGrouped = hasPrev || hasNext;
+
+		var fieldBottom = field.getBoundingClientRect().bottom;
+		var containerBottom = field.parentElement.getBoundingClientRect().bottom - parseFloat(getComputedStyle(field.parentElement).borderBottomWidth);
+		var end = next ? next.getBoundingClientRect().top : containerBottom;
+
+		field.style.setProperty('--wpr-highlight-end', Math.max(0, end - fieldBottom) + 'px');
+		field.style.setProperty('--wpr-highlight-inset', isGrouped ? '-8px' : '');
+		field.style.setProperty('--wpr-highlight-top', isGrouped ? (field.matches(':first-child') ? '-8px' : '8px') : '');
+		field.style.setProperty('--wpr-highlight-bottom', isGrouped ? '8px' : '');
+		field.classList.add('wpr-field--highlighted');
+		highlightTimer = setTimeout(function() {
+			field.classList.remove('wpr-field--highlighted');
+			field.style.removeProperty('--wpr-highlight-end');
+			field.style.removeProperty('--wpr-highlight-inset');
+			field.style.removeProperty('--wpr-highlight-top');
+			field.style.removeProperty('--wpr-highlight-bottom');
+		}, 2000);
+	}
+
+	// Once the target page of a recommendation is displayed, scroll to its setting.
+	document.addEventListener('rocketJsAfterPageNavigation', function(e) {
+		if (!pendingRecommendation) {
+			return;
+		}
+
+		var pending = pendingRecommendation;
+		pendingRecommendation = null;
+
+		if (e.detail && e.detail.pageId === pending.pageId) {
+			scrollAndHighlight(pending.slug);
+		}
+	});
+
+	// Track Rocket Insights Recommendation Activate button clicks
+	$(document).on('click', '.wpr-recommendation-item__activate', function(e) {
+		var recommendation = $(this).data('recommendation') || 'unknown';
+		var pageId = (this.hash || '').slice(1);
+
+		if (pageId && pageId === window.location.hash.slice(1)) {
+			// Already on the target page: no navigation will happen, scroll right away.
+			// Prevent the native jump to the current hash, it would cancel the smooth scroll.
+			e.preventDefault();
+			pendingRecommendation = null;
+			scrollAndHighlight(recommendation);
+		} else if (pageId) {
+			pendingRecommendation = { slug: recommendation, pageId: pageId };
+		}
+
 		// Track directly with Mixpanel
 		if (typeof mixpanel !== 'undefined' && mixpanel.track) {
 			// Check if user has opted in

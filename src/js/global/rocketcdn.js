@@ -13,12 +13,17 @@
 	document.addEventListener( 'rocketCDNBannerFirstVisible', () => trackRocketCDNUpsellBannerViewed( BANNER_STATE.COLLAPSED ) );
 
 	document.addEventListener( 'DOMContentLoaded', () => {
-		document.querySelectorAll( '.wpr-rocketcdn-open' ).forEach( ( el ) => {
-			el.addEventListener( 'click', ( e ) => {
-				e.preventDefault();
-				const isCTA = el.classList.contains( 'wpr-rocketcdn-pricing--cta' );
-				checkButtonUrlAndOpen( isCTA );
-			} );
+		// Delegated: the Rocket Insights recommendations are re-rendered through REST, so their button can't be bound once.
+		document.addEventListener( 'click', ( e ) => {
+			const el = e.target.closest( '.wpr-rocketcdn-open' );
+
+			if ( ! el ) {
+				return;
+			}
+
+			e.preventDefault();
+			const isCTA = el.classList.contains( 'wpr-rocketcdn-pricing--cta' );
+			checkButtonUrlAndOpen( isCTA );
 		} );
 
 		// Always initialize MicroModal to set up close handlers

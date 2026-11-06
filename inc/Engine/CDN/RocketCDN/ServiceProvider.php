@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
 		'rocketcdn_frontend_subscriber',
+		'rocketcdn_recommendation_override',
 		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
@@ -84,6 +85,14 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 		// RocketCDN Frontend subscriber.
 		$this->getContainer()->addShared( 'rocketcdn_frontend_subscriber', FrontendSubscriber::class )
+			->addArguments(
+				[
+					'cdn_context',
+					'rocketcdn_subscription_controller',
+				]
+			);
+		// RocketCDN recommendation override.
+		$this->getContainer()->addShared( 'rocketcdn_recommendation_override', RecommendationOverride::class )
 			->addArguments(
 				[
 					'cdn_context',

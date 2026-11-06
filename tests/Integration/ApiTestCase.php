@@ -4,19 +4,16 @@ namespace WP_Rocket\Tests\Integration;
 
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WPMedia\PHPUnit\Integration\HttpRequestTrait;
+use WP_Rocket\Tests\TestCredentials;
 
 abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	use HttpRequestTrait;
 	use DBTrait;
 
-	protected static $api_credentials_config_file = 'rocketcdn.php';
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
 		self::uninstallAll();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
 	}
 
 	public static function tear_down_after_class()
@@ -82,10 +79,10 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 	}
 
 	public function set_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+		return TestCredentials::EMAIL;
 	}
 
 	public function set_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+		return TestCredentials::KEY;
 	}
 }

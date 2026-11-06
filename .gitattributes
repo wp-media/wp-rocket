@@ -1,5 +1,4 @@
 // directories
-.aiassistant export-ignore
 .claude export-ignore
 bin export-ignore
 src export-ignore

@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\Hummin
 
 use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
@@ -13,8 +12,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group ThirdParty
  */
 class Test_WarningNotice extends TestCase {
-	use HttpRequestTrait;
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::setAdminCap();
@@ -25,8 +22,6 @@ class Test_WarningNotice extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -41,8 +36,6 @@ class Test_WarningNotice extends TestCase {
 		set_current_screen( 'front' );
 
 		$this->restoreWpHook( 'admin_notices' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 

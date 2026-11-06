@@ -70,14 +70,14 @@ class DataManager implements LoggerAwareInterface {
 		'schedule_automatic_cleanup'   => 'database',
 		'cdn'                          => 'page_cdn',
 		'control_heartbeat'            => 'heartbeat',
-		'cache_logged_user'            => 'addons',
+		'cache_logged_user'            => 'advanced_cache',
 		'minify_concatenate_js'        => 'file_optimization',
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
 
 		'plugin_rocketcdn'             => 'page_cdn',
-		'plugin_imagify'               => 'imagify',
+		'plugin_imagify'               => 'media',
 	];
 
 	/**
@@ -383,7 +383,16 @@ class DataManager implements LoggerAwareInterface {
 		return $data['status'];
 	}
 
+	/**
+	 * Check if at least one page is tracked in Rocket Insights.
+	 *
+	 * @return bool True if there are tracked pages, false otherwise.
+	 */
+	public function has_tracked_pages(): bool {
+		$global_score_data = $this->global_score->get_global_score_data();
 
+		return 'no-url' !== ( $global_score_data['status'] ?? 'no-url' );
+	}
 
 	/**
 	 * Check if required metrics are available for recommendations.

@@ -39,19 +39,6 @@ jobs:
           --health-timeout=5s
           --health-retries=5
 
-    env:
-      ROCKETCDN_EMAIL: ${{ secrets.ROCKETCDN_EMAIL }}
-      ROCKETCDN_PWD: ${{ secrets.ROCKETCDN_PWD }}
-      ROCKETCDN_TOKEN: ${{ secrets.ROCKETCDN_TOKEN }}
-      ROCKETCDN_URL: ${{ secrets.ROCKETCDN_URL }}
-      ROCKETCDN_WEBSITE_ID: ${{ secrets.ROCKETCDN_WEBSITE_ID }}
-      ROCKET_EMAIL: ${{ secrets.ROCKET_EMAIL }}
-      ROCKET_KEY: ${{ secrets.ROCKET_KEY }}
-      ROCKET_CLOUDFLARE_API_KEY: ${{ secrets.ROCKET_CLOUDFLARE_API_KEY }}
-      ROCKET_CLOUDFLARE_EMAIL: ${{ secrets.ROCKET_CLOUDFLARE_EMAIL }}
-      ROCKET_CLOUDFLARE_SITE_URL: ${{ secrets.ROCKET_CLOUDFLARE_SITE_URL }}
-      ROCKET_CLOUDFLARE_ZONE_ID: ${{ secrets.ROCKET_CLOUDFLARE_ZONE_ID }}
-
     steps:
     - name: Checkout
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

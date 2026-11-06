@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Abilities\
 
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering wp-rocket/retest-page-insights ability registration and execution.
@@ -15,7 +14,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group AdminOnly
  */
 class RegisterRetestPageInsightsAbilityTest extends TestCase {
-	use DBTrait, HttpRequestTrait;
+	use DBTrait;
 
 	private $hook_fired    = false;
 	private $hook_fired_id = null;
@@ -41,8 +40,6 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 			$this->markTestSkipped( 'WordPress 6.9+ required for Abilities API' );
 		}
 
-		$this->setup_http();
-
 		// Clean up data before each test.
 		self::truncatePerformanceMonitoringTable();
 
@@ -63,8 +60,6 @@ class RegisterRetestPageInsightsAbilityTest extends TestCase {
 		// Remove filters.
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 		remove_action( 'rocket_rocket_insights_job_retest', [ $this, 'capture_hook_fired' ] );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

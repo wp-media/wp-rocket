@@ -91,9 +91,13 @@ class ConfigSubscriber implements Subscriber_Interface {
 	 *
 	 * @param mixed $value The new, unserialized option value.
 	 * @param mixed $old_value The old option value.
-	 * @return array
+	 * @return mixed
 	 */
-	public function change_cache_reject_uri_with_permalink( $value, $old_value ): array {
+	public function change_cache_reject_uri_with_permalink( $value, $old_value ) {
+		if ( ! is_array( $value ) || ! is_array( $old_value ) ) {
+			return $value;
+		}
+
 		if ( ! isset( $old_value['cache_reject_uri'], $value['cache_reject_uri'] ) ) {
 			return $value;
 		}

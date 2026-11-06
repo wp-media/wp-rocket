@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
 /**
  * Recommendations Render class.
@@ -22,14 +24,32 @@ class Render extends Abstract_Render {
 	private $data_manager;
 
 	/**
+	 * Recommendation overrides registry.
+	 *
+	 * @var Overrides
+	 */
+	private $overrides;
+
+	/**
+	 * Beacon instance.
+	 *
+	 * @var Beacon
+	 */
+	private $beacon;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param string      $template_path Path to the template file.
 	 * @param DataManager $data_manager Recommendations data manager instance.
+	 * @param Overrides   $overrides Recommendation overrides registry.
+	 * @param Beacon      $beacon Beacon instance.
 	 */
-	public function __construct( string $template_path, DataManager $data_manager ) { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+	public function __construct( string $template_path, DataManager $data_manager, Overrides $overrides, Beacon $beacon ) {
 		parent::__construct( $template_path );
 		$this->data_manager = $data_manager;
+		$this->overrides    = $overrides;
+		$this->beacon       = $beacon;
 	}
 
 	/**
@@ -62,6 +82,44 @@ class Render extends Abstract_Render {
 	 * @return string The rendered HTML of the recommendations widget.
 	 */
 	public function get_recommendations_widget( $cached_data ): string {
+		return $this->generate( 'partials/rocket-insights/recommendations/widget', $this->get_widget_data( $cached_data ) );
+	}
+
+	/**
+	 * Render the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return void
+	 */
+	public function render_dashboard_recommendations( $recommendations ): void {
+		echo $this->get_dashboard_recommendations( $recommendations ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned recommendations component displayed on the dashboard.
+	 *
+	 * @param array|false $recommendations Recommendations data or false if not cached.
+	 * @return string
+	 */
+	public function get_dashboard_recommendations( $recommendations ): string {
+		$data = $this->get_widget_data( $recommendations );
+
+		// The dashboard shows the first 5 recommendations; the legacy widget shows 3.
+		$data['show_load_more'] = count( $data['recommendations'] ) > 5;
+
+		$data['rows'] = array_map( [ $this, 'build_dashboard_row' ], $data['recommendations'] );
+		$data['help'] = $this->beacon->get_suggest( 'rocket_insights' );
+
+		return $this->generate( 'partials/rocket-insights/dashboard-recommendations', $data );
+	}
+
+	/**
+	 * Build the data passed to the recommendations templates.
+	 *
+	 * @param array|false $cached_data Recommendations data or false if not cached.
+	 * @return array
+	 */
+	private function get_widget_data( $cached_data ): array {
 		$widget_data = [
 			'state'           => 'loading',
 			'recommendations' => [],
@@ -74,7 +132,35 @@ class Render extends Abstract_Render {
 			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
 		}
 
-		return $this->generate( 'partials/rocket-insights/recommendations/widget', $widget_data );
+		// Without tracked pages, DataManager::save_empty_recommendations() caches a 'failed' status: override it so it isn't shown as an error.
+		if ( ! $this->data_manager->has_tracked_pages() ) {
+			$widget_data['state']           = 'no-pages';
+			$widget_data['recommendations'] = [];
+			$widget_data['show_load_more']  = false;
+		}
+
+		return $widget_data;
+	}
+
+	/**
+	 * Build the table-list-row data of a recommendation, used by the dashboard component.
+	 *
+	 * @param array $recommendation Formatted recommendation.
+	 * @return array Row data for the table-list-row partial.
+	 */
+	private function build_dashboard_row( array $recommendation ): array {
+		return [
+			'class'   => 'wpr-dash-recs__item',
+			'columns' => [
+				[
+					'content' => $this->generate( 'partials/rocket-insights/dashboard-recommendation-row', $recommendation ),
+				],
+				[
+					'content' => $this->generate( 'partials/rocket-insights/dashboard-recommendation-activate', $recommendation ),
+					'type'    => 'actions',
+				],
+			],
+		];
 	}
 
 	/**
@@ -116,7 +202,7 @@ class Render extends Abstract_Render {
 			];
 		}
 
-		return $formatted;
+		return $this->overrides->apply_all( $formatted );
 	}
 
 	/**

@@ -112,11 +112,16 @@ class Test_RenderRecommendationsWidget extends TestCase {
 	 * @return void
 	 */
 	private function setUpTest( array $config ): void {
-		// Set up Performance Monitoring data if provided.
-		if ( isset( $config['pm_data'] ) && is_array( $config['pm_data'] ) ) {
-			foreach ( $config['pm_data'] as $pm_row ) {
-				$this->addPmRow( $pm_row );
-			}
+		// Track one page by default; an empty 'pm_data' means no tracked pages.
+		$pm_data = $config['pm_data'] ?? [
+			[
+				'url'    => 'http://example.org',
+				'status' => 'completed',
+			],
+		];
+
+		foreach ( $pm_data as $pm_row ) {
+			$this->addPmRow( $pm_row );
 		}
 
 		// Set up transient data if provided.
