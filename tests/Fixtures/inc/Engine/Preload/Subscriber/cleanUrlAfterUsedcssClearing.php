@@ -84,11 +84,11 @@ return [
 			],
 		],
 	],
-	'genericPurgeShouldKeepLock' => [
+	'wildcardUrlShouldBeStrippedThenUnlocked' => [
 		'config' => [
 			'manual_preload' => true,
-			'hook' => 'rocket_after_clean_terms',
-			'arg' => [ 'https://example.org/url' ],
+			'hook' => 'rocket_rucss_after_clearing_usedcss',
+			'arg' => 'https://example.org/url/*',
 			'data' => [ $locked_row ],
 		],
 		'expected' => [
@@ -97,13 +97,13 @@ return [
 					'url' => 'https://example.org/url',
 					'status' => 'pending',
 					'is_mobile' => false,
-					'is_locked' => true,
+					'is_locked' => false,
 				],
 			],
 			'missing' => [
 				[
 					'url' => 'https://example.org/url',
-					'is_locked' => false,
+					'is_locked' => true,
 				],
 			],
 		],

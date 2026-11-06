@@ -81,6 +81,30 @@ return [
 			]
 		]
 	],
+	'releaseLockWildcardShouldStripAndUnlock' => [
+		'config' => [
+			'urls' => [
+				'https://example.org/url/*',
+			],
+			'checked_urls' => [
+				'https://example.org/url/',
+			],
+			'release_lock' => true,
+			'is_excluded' => false,
+			'is_excluded_by_filter' => false,
+		],
+		'expected' => [
+			'urls' => [
+				[
+					[
+						'url' => 'https://example.org/url/',
+						'status' => 'pending',
+						'is_locked' => false,
+					]
+				],
+			]
+		]
+	],
 	'releaseLockExcludedByFilterShouldDelete' => [
 		'config' => [
 			'urls' => [
