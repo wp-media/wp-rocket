@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const browserify = require('browserify');
-const babel = require('babelify');
+const babel = require('../babel-transform');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const sourcemaps = require('gulp-sourcemaps');
