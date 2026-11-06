@@ -26,6 +26,9 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_last_option_hash'        => null,
 		'wp_rocket_debug'                   => null,
 		'rocket_mixpanel_optin'             => null,
+		'wp_rocket_rucss_used_css_deduped'  => null,
+		'wp_rocket_rucss_used_css_dedupe_progress' => null,
+		'wpr_rucss_used_css_upgrade_lock'   => null,
 	];
 
 	protected static $transients = [
@@ -68,6 +71,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wpr_user_information_timeout_active'             => null,
 		'wpr_user_information_timeout'                    => null,
 		'rocket_mixpanel_reseller_synced'                 => null,
+		'wpr_rucss_used_css_upgrade_retry'                => null,
+		'rocket_rucss_delete_duplicate_rows_lock'         => null,
 	];
 
 	private $events = [
@@ -77,6 +82,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocketcdn_check_subscription_status_event',
 		'rocket_cron_deactivate_cloudflare_devmode',
 		'rocket_cron_refresh_trial_customer_data',
+		'rocket_rucss_delete_duplicate_rows',
 	];
 
 	public static function set_up_before_class() {
