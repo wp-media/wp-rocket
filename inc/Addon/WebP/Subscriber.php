@@ -417,7 +417,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 	 *
 	 * @param  string $url        A URL (I see you're very surprised).
 	 * @param  string $extensions Allowed image extensions.
-	 * @return string|bool        The same URL with a webp extension if the file exists. False if the webp image doesn't exist.
+	 * @return string|bool        The same URL with a webp extension if the file exists and is smaller than the original. False otherwise.
 	 */
 	private function url_to_webp( $url, $extensions ) {
 		if ( ! preg_match( '@^(?<src>.+\.(?<extension>' . $extensions . '))(?<query>(?:\?.*)?)$@i', $url, $src_url ) ) {
@@ -431,25 +431,29 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			return false;
 		}
 
+		// File name: image.jpg => image.webp.
 		$src_path_webp = preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_path );
+		$src_url_webp  = preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_url['src'] ) . $src_url['query'];
 
-		if ( $this->filesystem->exists( $src_path_webp ) ) {
-			// File name: image.jpg => image.webp.
-			$src_url_webp = preg_replace( '@\.' . $src_url['extension'] . '$@', '.webp', $src_url['src'] ) . $src_url['query'];
-		} elseif ( $this->filesystem->exists( $src_path_webp = $src_path . '.webp' ) ) { // phpcs:ignore Generic.Sniffs.CodeAnalysis.AssignmentInCondition,Squiz.Sniffs.PHP.DisallowMultipleAssignments
+		if ( ! $this->filesystem->exists( $src_path_webp ) ) {
 			// File name: image.jpg => image.jpg.webp.
-			$src_url_webp = $src_url['src'] . '.webp' . $src_url['query'];
-		} else {
-			// No webp exists.
+			$src_path_webp = $src_path . '.webp';
+			$src_url_webp  = $src_url['src'] . '.webp' . $src_url['query'];
+
+			if ( ! $this->filesystem->exists( $src_path_webp ) ) {
+				return false;
+			}
+		}
+
+		$webp_size = $this->filesystem->size( $src_path_webp );
+		$src_size  = $this->filesystem->size( $src_path );
+
+		// Don't serve a webp that isn't smaller than the original. Keep it if a size can't be read.
+		if ( $webp_size && $src_size && $webp_size >= $src_size ) {
 			return false;
 		}
 
-		if ( $this->filesystem->size( $src_path_webp ) < $this->filesystem->size( $src_path ) ) {
-			return $src_url_webp;
-		}
-
-		// The webp isn't smaller than the original, so don't use it.
-		return false;
+		return $src_url_webp;
 	}
 
 	/**
