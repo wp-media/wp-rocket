@@ -37,6 +37,22 @@ return [
 			],
 		],
 
+		'shouldReturnFalseWhenCachedDataHasNoLanguage' => [
+			'config'   => [
+				'locale'             => 'fr_FR',
+				'transient_data'     => [
+					'status'          => 'completed',
+					'recommendations' => [],
+					'metadata'        => [],
+					'timestamp'       => 1234567890,
+				],
+				'should_clear_cache' => false,
+			],
+			'expected' => [
+				'is_false' => true,
+			],
+		],
+
 		'shouldReturnCachedData' => [
 			'config'   => [
 				'transient_data'    => [
@@ -51,6 +67,7 @@ return [
 						'language' => 'en',
 					],
 					'timestamp'       => 1234567890,
+					'language'  => 'en',
 				],
 				'should_clear_cache' => false,
 			],
@@ -90,6 +107,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => 1234567890,
+					'language'  => 'en',
 				],
 				'should_clear_cache' => false,
 			],
@@ -106,6 +124,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => 1234567890,
+					'language'  => 'en',
 					'error'           => 'API Error',
 				],
 				'should_clear_cache' => false,

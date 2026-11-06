@@ -164,7 +164,8 @@ class DataManager implements LoggerAwareInterface {
 			return false;
 		}
 
-		if ( isset( $data['language'] ) && $this->get_language() !== $data['language'] ) {
+		// Data cached before language tagging has no language, so it counts as a mismatch.
+		if ( ( $data['language'] ?? '' ) !== $this->get_language() ) {
 			$this->logger::debug( 'Recommendations: Cached data is in another language' );
 			return false;
 		}

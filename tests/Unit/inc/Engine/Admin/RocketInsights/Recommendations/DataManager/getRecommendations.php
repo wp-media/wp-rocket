@@ -57,6 +57,8 @@ class Test_GetRecommendations extends TestCase {
 
 		if ( isset( $config['locale'] ) ) {
 			Functions\expect( 'get_user_locale' )->andReturn( $config['locale'] );
+		} else {
+			Functions\when( 'get_user_locale' )->justReturn( 'en_US' );
 		}
 
 		// Mock delete_transient if invalid structure
