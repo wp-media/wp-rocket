@@ -19,18 +19,20 @@ class Test_CpcssSection extends TestCase {
 
 	private $post;
 
-	protected function setUp() : void {
+	protected function setUp(): void {
 		parent::setUp();
 
 		$this->setUpMocks();
 		Functions\stubTranslationFunctions();
 		Functions\when( 'wp_sprintf_l' )->alias(
-			function( $pattern, $args ) {
+			function ( $pattern, $args ) {
 				return $this->wp_sprintf_l( $pattern, $args );
 			}
 		);
 
-		$this->post = Mockery::mock( Post::class . '[generate]', [
+		$this->post = Mockery::mock(
+			Post::class . '[generate]',
+			[
 				$this->options,
 				$this->beacon,
 				'wp-content/cache/critical-css/',
@@ -58,6 +60,10 @@ class Test_CpcssSection extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
+		if ( null === $expected ) {
+			$this->markTestSkipped( 'This scenario is for early-return tests.' );
+		}
+
 		$this->setUpTest( $config );
 
 		Functions\expect( 'current_user_can' )
@@ -65,8 +71,8 @@ class Test_CpcssSection extends TestCase {
 			->andReturn( true );
 
 		$this->post->shouldReceive( 'generate' )
-				   ->with( 'metabox/container', $expected['data'] )
-				   ->andReturn( '' );
+					->with( 'metabox/container', $expected['data'] )
+					->andReturn( '' );
 
 		Functions\expect( 'get_post_type' )
 			->once()
@@ -80,6 +86,25 @@ class Test_CpcssSection extends TestCase {
 		ob_start();
 		$this->post->cpcss_section();
 		ob_get_clean();
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldNotDisplaySection( $config, $expected ) {
+		if ( null !== $expected ) {
+			$this->markTestSkipped( 'This scenario is for display tests.' );
+		}
+
+		$this->setUpTest( $config );
+
+		Functions\expect( 'current_user_can' )
+			->once()
+			->andReturn( true );
+
+		$this->post->shouldNotReceive( 'generate' );
+
+		$this->assertNull( $this->post->cpcss_section() );
 	}
 
 	public function wp_sprintf_l( $pattern, $args ) {
@@ -106,7 +131,7 @@ class Test_CpcssSection extends TestCase {
 		$i = count( $args );
 		while ( $i ) {
 			$arg = array_shift( $args );
-			$i --;
+			--$i;
 			if ( 0 == $i ) {
 				$result .= $l['between_last_two'] . $arg;
 			} else {
