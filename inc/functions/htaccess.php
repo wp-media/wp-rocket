@@ -307,6 +307,7 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$rules      = '';
 	$gzip_rules = '';
 	$enc        = '';
+	$webp       = '';
 
 	if ( $is_1and1_or_force ) {
 		$cache_dir_path = str_replace( '/kunden/', '/', WP_ROCKET_CACHE_PATH ) . $http_host . '%{REQUEST_URI}';
@@ -337,11 +338,17 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 		$enc = '%{ENV:WPR_ENC}';
 	}
 
+	$webp_rules = rocket_get_webp_rewritecond( $cache_dir_path );
+
+	if ( ! empty( $webp_rules ) ) {
+		$webp = '%{ENV:WPR_WEBP}';
+	}
+
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
 	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
 	$rules .= get_rocket_htaccess_ssl_rewritecond();
-	$rules .= rocket_get_webp_rewritecond( $cache_dir_path );
+	$rules .= $webp_rules;
 	$rules .= $gzip_rules;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
@@ -363,8 +370,8 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
 	}
 
-	$rules .= 'RewriteCond "' . $cache_dir_path . '/index%{ENV:WPR_SSL}%{ENV:WPR_WEBP}.html' . $enc . '" -f' . PHP_EOL;
-	$rules .= 'RewriteRule .* "' . $cache_root . $http_host . '%{REQUEST_URI}/index%{ENV:WPR_SSL}%{ENV:WPR_WEBP}.html' . $enc . '" [L]' . PHP_EOL;
+	$rules .= 'RewriteCond "' . $cache_dir_path . '/index%{ENV:WPR_SSL}' . $webp . '.html' . $enc . '" -f' . PHP_EOL;
+	$rules .= 'RewriteRule .* "' . $cache_root . $http_host . '%{REQUEST_URI}/index%{ENV:WPR_SSL}' . $webp . '.html' . $enc . '" [L]' . PHP_EOL;
 	$rules .= '</IfModule>' . PHP_EOL;
 
 	/**
