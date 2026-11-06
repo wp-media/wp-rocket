@@ -214,4 +214,78 @@ return [
 			],
 		]
 	],
+	'shouldOnlySplitSelectorListOnTopLevelCommas' => [
+		'config' => [
+			'data' => [
+				[
+					'hash' => 'a31ss1',
+					'selector' => ':is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2:not(.elementor-motion-effects-element-type-background),:is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2>.elementor-motion-effects-container>.elementor-motion-effects-layer',
+					'url' => 'images/underline.png',
+				],
+				[
+					'hash' => 'a31ss2',
+					'selector' => ':is(.a,.b) .c:not(.x),:is(.a,.b) .c>.d',
+					'url' => 'images/underline.png',
+				],
+				[
+					'hash' => 'a31ss3',
+					'selector' => ':is(.a,.b) .c:hover,:is(.a,.b) .c:focus',
+					'url' => 'images/underline.png',
+				],
+				[
+					'hash' => 'a31ss4',
+					'selector' => ':where(.a, .b) .c::before',
+					'url' => 'images/underline.png',
+				],
+				[
+					'hash' => 'a31ss5',
+					'selector' => '.a[data-x="1,2"]:hover,.b',
+					'url' => 'images/underline.png',
+				],
+				[
+					'hash' => 'a31ss6',
+					'selector' => '.a\\,b:hover,.c',
+					'url' => 'images/underline.png',
+				],
+			],
+		],
+		'expected' => [
+			[
+				'selector' => ':is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2:not(.elementor-motion-effects-element-type-background),:is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2>.elementor-motion-effects-container>.elementor-motion-effects-layer',
+				'style' => ':is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2:not(.elementor-motion-effects-element-type-background),:is( .jet-listing-dynamic-post-18848:not( [class*=elementor-dcss-] ),.elementor-dcss-2500093068552996 ) .elementor-element.elementor-element-c1a7be2>.elementor-motion-effects-container>.elementor-motion-effects-layer{--wpr-bg-a31ss1: url(\'images/underline.png\');}',
+				'hash' => 'a31ss1',
+				'url' => 'images/underline.png',
+			],
+			[
+				'selector' => ':is(.a,.b) .c:not(.x),:is(.a,.b) .c>.d',
+				'style' => ':is(.a,.b) .c:not(.x),:is(.a,.b) .c>.d{--wpr-bg-a31ss2: url(\'images/underline.png\');}',
+				'hash' => 'a31ss2',
+				'url' => 'images/underline.png',
+			],
+			[
+				'selector' => ':is(.a,.b) .c',
+				'style' => ':is(.a,.b) .c:hover,:is(.a,.b) .c:focus{--wpr-bg-a31ss3: url(\'images/underline.png\');}',
+				'hash' => 'a31ss3',
+				'url' => 'images/underline.png',
+			],
+			[
+				'selector' => ':where(.a, .b) .c',
+				'style' => ':where(.a, .b) .c::before{--wpr-bg-a31ss4: url(\'images/underline.png\');}',
+				'hash' => 'a31ss4',
+				'url' => 'images/underline.png',
+			],
+			[
+				'selector' => '.a[data-x="1,2"],.b',
+				'style' => '.a[data-x="1,2"]:hover,.b{--wpr-bg-a31ss5: url(\'images/underline.png\');}',
+				'hash' => 'a31ss5',
+				'url' => 'images/underline.png',
+			],
+			[
+				'selector' => '.a\\,b,.c',
+				'style' => '.a\\,b:hover,.c{--wpr-bg-a31ss6: url(\'images/underline.png\');}',
+				'hash' => 'a31ss6',
+				'url' => 'images/underline.png',
+			],
+		],
+	],
 ];
