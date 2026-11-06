@@ -12,7 +12,7 @@ module.exports = function babelTransform( filename, opts = {} ) {
 	}
 
 	const chunks = [];
-	const basedir = path.resolve( ( opts._flags && opts._flags.basedir ) || '.' );
+	const basedir = path.resolve( opts.basedir || process.cwd() );
 
 	return new Transform( {
 		transform( chunk, enc, callback ) {

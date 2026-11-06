@@ -18,7 +18,7 @@ class gulpJs {
 		let bundle = browserify({
 			entries: filepath,
 			debug: true
-		}).transform(babel);
+		}).transform(babel, { basedir: process.cwd() });
 
 		let stream =  bundle.bundle()
 			.pipe(source(finalname + '.js'))
