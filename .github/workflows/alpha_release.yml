@@ -47,7 +47,7 @@ jobs:
           node-version: '20'
 
       - name: Install npm Dependencies
-        run: npm i
+        run: npm ci
 
       - name: Setup WP-CLI
         uses: godaddy-wordpress/setup-wp-cli@1
