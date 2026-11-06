@@ -338,11 +338,17 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 		$enc = '%{ENV:WPR_ENC}';
 	}
 
+	$webp_rules = rocket_get_webp_rewritecond( $cache_dir_path );
+
+	if ( ! empty( $webp_rules ) ) {
+		$webp = '%{ENV:WPR_WEBP}';
+	}
+
 	$rules .= '<IfModule mod_rewrite.c>' . PHP_EOL;
 	$rules .= 'RewriteEngine On' . PHP_EOL;
 	$rules .= 'RewriteBase ' . $home_root . PHP_EOL;
 	$rules .= get_rocket_htaccess_ssl_rewritecond();
-	$rules .= rocket_get_webp_rewritecond( $cache_dir_path );
+	$rules .= $webp_rules;
 	$rules .= $gzip_rules;
 	$rules .= 'RewriteCond %{REQUEST_METHOD} GET' . PHP_EOL;
 	$rules .= 'RewriteCond %{QUERY_STRING} =""' . PHP_EOL;
@@ -362,10 +368,6 @@ function get_rocket_htaccess_mod_rewrite() { // phpcs:ignore WordPress.NamingCon
 	$ua = get_rocket_cache_reject_ua();
 	if ( $ua ) {
 		$rules .= 'RewriteCond %{HTTP_USER_AGENT} !^(' . $ua . ').* [NC]' . PHP_EOL;
-	}
-
-	if ( get_rocket_option( 'cache_webp' ) ) {
-		$webp = '%{ENV:WPR_WEBP}';
 	}
 
 	$rules .= 'RewriteCond "' . $cache_dir_path . '/index%{ENV:WPR_SSL}' . $webp . '.html' . $enc . '" -f' . PHP_EOL;
