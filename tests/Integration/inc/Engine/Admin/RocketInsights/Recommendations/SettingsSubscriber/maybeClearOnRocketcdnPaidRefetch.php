@@ -107,7 +107,7 @@ class Test_MaybeClearOnRocketcdnPaidRefetch extends RocketCDNTestCase {
 
 		delete_transient( self::TRANSIENT );
 		delete_transient( 'rocketcdn_status' );
-		delete_option( 'rocketcdn_user_token' );
+		apply_filters( 'rocket_container', null )->get( 'rocketcdn_options_manager' )->save_token( '' );
 
 		global $wp_filter;
 		if ( null === $this->original_settings_hook ) {
@@ -163,7 +163,7 @@ class Test_MaybeClearOnRocketcdnPaidRefetch extends RocketCDNTestCase {
 		// Built before the write, so its Options_Data snapshot does not hold the new cdn_state.
 		$data_manager = $container->get( 'ri_recommendations_data_manager' );
 
-		update_option( 'rocketcdn_user_token', 'token' );
+		$container->get( 'rocketcdn_options_manager' )->save_token( 'token' );
 		set_transient( 'rocketcdn_status', $config['subscription'], HOUR_IN_SECONDS );
 
 		set_transient(
