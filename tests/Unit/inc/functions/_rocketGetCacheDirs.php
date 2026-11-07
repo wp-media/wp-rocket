@@ -63,6 +63,28 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 		$this->assertSame( $expected, _rocket_get_cache_dirs( $url ) );
 	}
 
+	/**
+	 * Host directories are found under a cache path with regex metacharacters (timestamped release folder).
+	 */
+	public function testShouldGetDirsWhenCachePathContainsRegexCharacters() {
+		$cache_path = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content/cache/wp-rocket/';
+
+		mkdir( $cache_path . 'example.org', 0777, true );
+		mkdir( $cache_path . 'example.org-tester-987654', 0777, true );
+		mkdir( $cache_path . 'exampleXorg', 0777, true );
+
+		$dirs = _rocket_get_cache_dirs( 'example.org', $cache_path );
+		sort( $dirs );
+
+		$this->assertSame(
+			[
+				$cache_path . 'example.org',
+				$cache_path . 'example.org-tester-987654',
+			],
+			$dirs
+		);
+	}
+
 	private function expectRocketGetConstant() {
 		Functions\expect( 'rocket_get_constant' )
 			->once()
