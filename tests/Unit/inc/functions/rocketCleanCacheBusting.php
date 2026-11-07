@@ -50,13 +50,8 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 	 * Busting files under a path with regex metacharacters (timestamped release folder) are cleaned.
 	 */
 	public function testShouldCleanBustingFilesWhenPathContainsRegexCharacters() {
-		$busting_path = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content/cache/busting/';
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $constant_name, $default = null ) use ( $busting_path ) {
-				return 'WP_ROCKET_CACHE_BUSTING_PATH' === $constant_name ? $busting_path : $this->getConstant( $constant_name, $default );
-			}
-		);
+		$this->wp_content_dir = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content';
+		$busting_path         = "{$this->wp_content_dir}/cache/busting/";
 
 		mkdir( $busting_path . '1/wp-content/', 0777, true );
 		$file = $busting_path . '1/wp-content/test.js';

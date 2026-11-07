@@ -77,19 +77,20 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 		Functions\when( 'get_rocket_i18n_code' )->justReturn( [ 'en' ] );
 		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'https://example.org/en/' );
 		Functions\when( 'get_rocket_parse_url' )->justReturn( [ 'host' => 'example.org', 'path' => '/en/' ] );
+		Functions\when( '_rocket_is_windows_fs' )->justReturn( false );
 		Filters\expectApplied( 'rocket_langs_to_preserve' )->once();
 
 		$patterns = get_rocket_i18n_to_preserve( 'fr', $cache_path );
 
 		// The pattern used by rocket_rrmdir() must match the real directory of the preserved language.
-		// Normalize the subject like the pattern is, so the test also passes on Windows (backslash separators).
-		$subject = _rocket_normalize_path( $cache_path . 'example.org/en' );
+		$subject = '/releases/2024-09-02T11:32:23+0000/wp-content/cache/wp-rocket/example.org/en';
 		$this->assertSame( 1, preg_match( '#^' . $patterns[0] . '$#', $subject ) );
 	}
 
 	public function testShouldEscapeWindowsCachePathInPreservePatterns() {
 		$cache_path = 'C:\releases\2024-09-02T11:32:23+0000\wp-content\cache\wp-rocket\\';
 
+		Functions\when( '_rocket_is_windows_fs' )->justReturn( true );
 		Functions\when( 'rocket_has_i18n' )->justReturn( true );
 		Functions\when( 'get_rocket_i18n_code' )->justReturn( [ 'en' ] );
 		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'https://example.org/en/' );
@@ -98,8 +99,8 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 
 		$patterns = get_rocket_i18n_to_preserve( 'fr', $cache_path );
 
-		// On Windows the subject is normalized to backslashes; on other systems it is used as is.
-		$subject = _rocket_normalize_path( $cache_path . 'example.org/en' );
+		// Explicit backslash-separated subject, as the filesystem path looks on Windows.
+		$subject = 'C:\releases\2024-09-02T11:32:23+0000\wp-content\cache\wp-rocket\example.org\en';
 		$this->assertSame( 1, preg_match( '#^' . $patterns[0] . '$#', $subject ) );
 	}
 

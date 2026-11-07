@@ -50,13 +50,8 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	 * Minified files under a path with regex metacharacters (timestamped release folder) are cleaned.
 	 */
 	public function testShouldCleanMinifiedWhenPathContainsRegexCharacters() {
-		$min_path = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content/cache/min/';
-
-		Functions\when( 'rocket_get_constant' )->alias(
-			function ( $constant_name, $default = null ) use ( $min_path ) {
-				return 'WP_ROCKET_MINIFY_CACHE_PATH' === $constant_name ? $min_path : $this->getConstant( $constant_name, $default );
-			}
-		);
+		$this->wp_content_dir = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content';
+		$min_path             = "{$this->wp_content_dir}/cache/min/";
 
 		mkdir( $min_path . '1/', 0777, true );
 		$file = $min_path . '1/5c795b0e3a1884eec34a989485f863ff.js';
