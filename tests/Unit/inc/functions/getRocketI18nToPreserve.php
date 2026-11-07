@@ -70,6 +70,40 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 		$this->assertSame( $expected, get_rocket_i18n_to_preserve( $current_lang ) );
 	}
 
+	public function testShouldEscapeCachePathAndHostInPreservePatterns() {
+		$cache_path = '/releases/2024-09-02T11:32:23+0000/wp-content/cache/wp-rocket/';
+
+		Functions\when( 'rocket_has_i18n' )->justReturn( true );
+		Functions\when( 'get_rocket_i18n_code' )->justReturn( [ 'en' ] );
+		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'https://example.org/en/' );
+		Functions\when( 'get_rocket_parse_url' )->justReturn( [ 'host' => 'example.org', 'path' => '/en/' ] );
+		Functions\when( '_rocket_is_windows_fs' )->justReturn( false );
+		Filters\expectApplied( 'rocket_langs_to_preserve' )->once();
+
+		$patterns = get_rocket_i18n_to_preserve( 'fr', $cache_path );
+
+		// The pattern used by rocket_rrmdir() must match the real directory of the preserved language.
+		$subject = '/releases/2024-09-02T11:32:23+0000/wp-content/cache/wp-rocket/example.org/en';
+		$this->assertSame( 1, preg_match( '#^' . $patterns[0] . '$#', $subject ) );
+	}
+
+	public function testShouldEscapeWindowsCachePathInPreservePatterns() {
+		$cache_path = 'C:\releases\2024-09-02T11:32:23+0000\wp-content\cache\wp-rocket\\';
+
+		Functions\when( '_rocket_is_windows_fs' )->justReturn( true );
+		Functions\when( 'rocket_has_i18n' )->justReturn( true );
+		Functions\when( 'get_rocket_i18n_code' )->justReturn( [ 'en' ] );
+		Functions\when( 'get_rocket_i18n_home_url' )->justReturn( 'https://example.org/en/' );
+		Functions\when( 'get_rocket_parse_url' )->justReturn( [ 'host' => 'example.org', 'path' => '/en/' ] );
+		Filters\expectApplied( 'rocket_langs_to_preserve' )->once();
+
+		$patterns = get_rocket_i18n_to_preserve( 'fr', $cache_path );
+
+		// Explicit backslash-separated subject, as the filesystem path looks on Windows.
+		$subject = 'C:\releases\2024-09-02T11:32:23+0000\wp-content\cache\wp-rocket\example.org\en';
+		$this->assertSame( 1, preg_match( '#^' . $patterns[0] . '$#', $subject ) );
+	}
+
 	public function providerTestData() {
 		return $this->getTestData( __DIR__, basename( __FILE__, '.php' ) );
 	}
