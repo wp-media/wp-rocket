@@ -41,6 +41,7 @@ return [
 						'total_recommendations' => 2,
 					],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
@@ -57,6 +58,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
@@ -74,6 +76,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 					'error'           => 'Recommendations unavailable',
 				],
 			],
@@ -91,6 +94,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 					'error'           => 'API request failed',
 				],
 			],
@@ -113,6 +117,7 @@ return [
 					],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
@@ -129,6 +134,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
