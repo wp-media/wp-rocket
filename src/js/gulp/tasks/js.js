@@ -1,6 +1,6 @@
 const gulp = require("gulp");
 const browserify = require('browserify');
-const babel = require('babelify');
+const babel = require('../babel-transform');
 const source = require('vinyl-source-stream');
 const buffer = require('vinyl-buffer');
 const sourcemaps = require('gulp-sourcemaps');
@@ -18,7 +18,7 @@ class gulpJs {
 		let bundle = browserify({
 			entries: filepath,
 			debug: true
-		}).transform(babel);
+		}).transform(babel, { basedir: process.cwd() });
 
 		let stream =  bundle.bundle()
 			.pipe(source(finalname + '.js'))
