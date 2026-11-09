@@ -233,6 +233,8 @@ Use the `font-size` mixin for consistent typography:
 
 ## Commands
 
+Building requires Node 22.18+ or 24.11+ (`.nvmrc` pins 24; run `nvm use`).
+
 ### Build CSS
 ```bash
 npm run build:css       # Build all SCSS variants

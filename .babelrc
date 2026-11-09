@@ -1,6 +1,5 @@
 {
 	"presets":[
-		"@babel/preset-react",
 		[
 			"@babel/preset-env", {
 				"targets": {
@@ -8,6 +7,5 @@
 				}
 			}
 		]
-	],
-	"plugins": ["@babel/proposal-class-properties"]
+	]
 }
