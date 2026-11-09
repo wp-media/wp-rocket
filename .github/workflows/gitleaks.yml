@@ -1,0 +1,43 @@
+name: Secret scan
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  # The job id is the required status check name; keep it stable.
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          # Full history for the commit range, but blobs are fetched on demand: the plugin repo has a long history.
+          filter: blob:none
+
+      # The container has no git credentials, so fetch the blobs the PR diff needs here.
+      - name: Fetch base branch and the PR blobs
+        env:
+          BASE: ${{ github.event.pull_request.base.ref }}
+        run: |
+          git fetch --filter=blob:none origin "$BASE"
+          git log -p --diff-merges=remerge --format= "origin/$BASE..HEAD" > /dev/null
+
+      # Two-dot range: only the PR's own commits. remerge shows what a merge resolution adds.
+      - name: Run Gitleaks on the PR commits
+        env:
+          BASE: ${{ github.event.pull_request.base.ref }}
+        run: |
+          set -o pipefail
+          docker run --rm -v "$GITHUB_WORKSPACE:/repo" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1 \
+            git /repo --config /repo/.gitleaks.toml --redact --no-color -v --log-opts="--diff-merges=remerge origin/$BASE..HEAD" \
+            2>&1 | tee "$RUNNER_TEMP/gitleaks.log"
+          # Gitleaks exits 0 when git fails, which would pass without scanning anything.
+          if grep -Eq '^[0-9:]+[AP]M ERR ' "$RUNNER_TEMP/gitleaks.log"; then
+            echo "::error::Gitleaks could not read the PR commits, see the log above."
+            exit 1
+          fi
