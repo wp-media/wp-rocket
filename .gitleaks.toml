@@ -7,6 +7,7 @@ useDefault = true
 # Dummy token of the PHPUnit credentials, never sent anywhere (HTTP requests are mocked in tests).
 [[allowlists]]
 description = "Dummy RocketCDN token in the test credentials"
+condition = "AND"
 targetRules = ["generic-api-key"]
 paths = ['''^tests/TestCredentials\.php$''']
 regexTarget = "secret"

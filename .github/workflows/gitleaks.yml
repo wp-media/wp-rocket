@@ -2,6 +2,8 @@ name: Secret scan
 
 on:
   pull_request:
+    branches-ignore:
+      - trunk
 
 permissions:
   contents: read
