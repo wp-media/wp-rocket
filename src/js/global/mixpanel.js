@@ -40,15 +40,6 @@ class RocketMixpanel {
 	}
 
 	/**
-	 * Whether tracking is currently allowed (live value, can change without a reload).
-	 *
-	 * @return {boolean}
-	 */
-	_isOptedIn() {
-		return !!this.config.optin_enabled && this.config.optin_enabled !== '0';
-	}
-
-	/**
 	 * Initializes the handler.
 	 */
 	init() {
@@ -80,7 +71,7 @@ class RocketMixpanel {
 		document.addEventListener( 'click', ( event ) => {
 			const target = event.target.closest( '.wpr-imagifyBanner [data-mixpanel-button]' );
 
-			if ( !target || !this._isOptedIn() ) {
+			if ( !target ) {
 				return;
 			}
 
@@ -94,10 +85,6 @@ class RocketMixpanel {
 	 * @param Event event Event instance.
 	 */
 	_onHashChange( event ) {
-		if ( !this._isOptedIn() ) {
-			return;
-		}
-
 		const oldHash = this._cleanHash(new URL(event.oldURL).hash);
 		const newHash = this._cleanHash(new URL(event.newURL).hash);
 
@@ -109,10 +96,6 @@ class RocketMixpanel {
 	}
 
 	_onPageLoad() {
-		if ( !this._isOptedIn() ) {
-			return;
-		}
-
 		const newHash = this._cleanHash(window.location.hash);
 		if ( !this._canTrackTab(newHash) ) {
 			return;
