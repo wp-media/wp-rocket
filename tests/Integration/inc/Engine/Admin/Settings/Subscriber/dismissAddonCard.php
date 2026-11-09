@@ -98,6 +98,43 @@ class Test_DismissAddonCard extends AjaxTestCase {
 		);
 	}
 
+	/**
+	 * @dataProvider provideDismissalStates
+	 */
+	public function testShouldFireDismissedHookOnlyWhenTheCardWasNotDismissed( $was_dismissed, $expected ) {
+		wp_set_current_user( self::$admin_id );
+
+		$banners = [];
+		add_action(
+			'rocket_mixpanel_track_event',
+			function ( $event, $data ) use ( &$banners ) {
+				$banners[] = [ $event, $data ];
+			},
+			10,
+			2
+		);
+
+		$_POST['nonce']   = wp_create_nonce( 'rocket-ajax' );
+		$_POST['card_id'] = 'imagify';
+
+		if ( $was_dismissed ) {
+			rocket_dismiss_box( 'rocket_addon_card_imagify' );
+		}
+
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( $expected, $banners );
+		$this->assertContains( 'rocket_addon_card_imagify', (array) get_user_meta( self::$admin_id, 'rocket_boxes', true ) );
+	}
+
+	public function provideDismissalStates() {
+		return [
+			'first dismissal'   => [ false, [ [ 'Dashboard Banner Dismissed', [ 'banner' => 'imagify' ] ] ] ],
+			'already dismissed' => [ true, [] ],
+		];
+	}
+
 	public function testShouldFailWhenUserCannotManageOptions() {
 		wp_set_current_user( self::$editor_id );
 
