@@ -37,11 +37,10 @@ class RocketMixpanel {
 
 	constructor( config ) {
 		this.config = config;
-		this.initialized = false;
 	}
 
 	/**
-	 * Whether the user currently allows tracking (live value, can change without a reload).
+	 * Whether tracking is currently allowed (live value, can change without a reload).
 	 *
 	 * @return {boolean}
 	 */
@@ -53,13 +52,14 @@ class RocketMixpanel {
 	 * Initializes the handler.
 	 */
 	init() {
-		if ( this.initialized || typeof mixpanel === 'undefined' || !mixpanel.track || !this._isOptedIn() ) {
+		if ( typeof mixpanel === 'undefined' || !mixpanel.track ) {
 			return;
 		}
-
-		mixpanel.identify( this.config.user_id );
+		if ( !this.config.optin_enabled || this.config.optin_enabled === '0') {
+			return;
+		}
+		mixpanel.identify(this.config.user_id);
 		this._initListeners( this );
-		this.initialized = true;
 	}
 
 	/**
@@ -217,9 +217,6 @@ class RocketMixpanel {
 
 		const instance = new RocketMixpanel( rocket_mixpanel_data );
 		instance.init();
-
-		// Tracking can be enabled without a reload: start once the SDK is loaded.
-		document.addEventListener( 'wpr:analytics-enabled', () => instance.init() );
 	}
 }
 

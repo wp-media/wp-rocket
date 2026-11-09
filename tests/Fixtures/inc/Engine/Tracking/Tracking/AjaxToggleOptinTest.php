@@ -25,30 +25,10 @@ return [
 		'config' => [
 			'capability' => true,
 			'value'      => '1',
-			'sdk'        => '<script>window.mixpanel = [];</script>',
 		],
 		'expected' => [
 			'success'  => true,
 			'message' => 'Opt-in enabled.',
-			'data'    => [
-				'message' => 'Opt-in enabled.',
-				'sdk'     => '<script>window.mixpanel = [];</script>',
-			],
-		],
-	],
-	'testShouldEnableOptinWithEmptySdk' => [
-		'config' => [
-			'capability' => true,
-			'value'      => '1',
-			'sdk'        => '',
-		],
-		'expected' => [
-			'success'  => true,
-			'message' => 'Opt-in enabled.',
-			'data'    => [
-				'message' => 'Opt-in enabled.',
-				'sdk'     => '',
-			],
 		],
 	],
 	'testShouldDisableOptin' => [
@@ -59,7 +39,6 @@ return [
 		'expected' => [
 			'success'  => true,
 			'message' => 'Opt-in disabled.',
-			'data'    => [ 'message' => 'Opt-in disabled.' ],
 		],
 	],
 ];

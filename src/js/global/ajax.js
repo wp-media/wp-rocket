@@ -291,45 +291,12 @@ $(document).ready(function(){
     });
 });
 
-/**
- * Loads the Mixpanel SDK from the markup returned by the server, once per page.
- *
- * The snippet declares a top-level const, so it must never run twice.
- *
- * @param {string} markup HTML containing the SDK bootstrap script.
- */
-function loadMixpanelSdk(markup) {
-	if (typeof mixpanel !== 'undefined' || !markup) {
-		return;
-	}
-
-	const doc = new DOMParser().parseFromString(markup, 'text/html');
-
-	doc.querySelectorAll('script').forEach((source) => {
-		const script = document.createElement('script');
-		script.textContent = source.textContent;
-		document.head.appendChild(script);
-	});
-}
-
 document.addEventListener('DOMContentLoaded', function() {
 	const analyticsCheckbox = document.getElementById('analytics_enabled');
 
 	if (analyticsCheckbox) {
 		analyticsCheckbox.addEventListener('change', function() {
 			const isChecked = this.checked;
-
-			// Only undo when no newer toggle happened meanwhile.
-			const revert = () => {
-				if (this.checked !== isChecked) {
-					return;
-				}
-
-				if (typeof rocket_mixpanel_data !== 'undefined') {
-					rocket_mixpanel_data.optin_enabled = isChecked ? '0' : '1';
-				}
-				this.checked = !isChecked;
-			};
 
 			// Update the global mixpanel data optin state immediately
 			if (typeof rocket_mixpanel_data !== 'undefined') {
@@ -349,25 +316,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 				.then((response) => response.json())
 				.then((response) => {
-					if (!response || !response.success) {
-						revert();
-						return null;
+					// The SDK is only printed at page load when opted in, so reload to load it.
+					if (response.success && isChecked && typeof mixpanel === 'undefined') {
+						location.reload();
 					}
-
-					return response;
-				}, revert)
-				.then((response) => {
-					if (!response || !isChecked) {
-						return;
-					}
-
-					try {
-						loadMixpanelSdk(response.data && response.data.sdk);
-						document.dispatchEvent(new CustomEvent('wpr:analytics-enabled'));
-					} catch (error) {
-						// The opt-in is saved server-side: a tracking load failure must not undo it.
-					}
-				});
+				})
+				.catch(() => {});
 		});
 	}
 });
