@@ -36,6 +36,13 @@ To be able to validate your license and use the plugin, you will also have to ma
 - `WP_ROCKET_EMAIL` which is the email for your WP Rocket account
 - `WP_ROCKET_KEY` which is your API Key
 
+## Building assets
+
+Building the admin JS/CSS requires Node.js `^22.18.0 || >=24.11.0` (`.nvmrc` pins 24).
+
+- Install the dependencies with `npm ci`.
+- Build with `npm run build:js && npm run build:css`.
+
 ## Gulp Tasks
 
 | Command                         |                                               Description                                               |
