@@ -4588,7 +4588,9 @@ div.wpr-tutorial-item {
 }
 .wpr-ri-add-section .wpr-speed-radar-input {
   display: flex;
-  width: 80%;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
   border-radius: 4px;
   border: 1px solid #E2E5E9;
   padding: 6px 8px 6px 16px;
@@ -4599,7 +4601,9 @@ div.wpr-tutorial-item {
   text-align: center;
   justify-content: center;
   padding: 16px;
-  width: 20%;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 20%;
   height: 50px;
   align-items: center;
   gap: 8px;
@@ -7019,6 +7023,7 @@ div.wpr-tutorial-item {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 700;
+  text-wrap: balance;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-image {
   display: block;
