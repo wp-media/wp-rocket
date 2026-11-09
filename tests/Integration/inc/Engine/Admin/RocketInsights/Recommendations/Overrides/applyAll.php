@@ -15,6 +15,17 @@ use WP_Rocket\Tests\Integration\TestCase;
 class Test_ApplyAll extends TestCase {
 
 	/**
+	 * Removes the filters added by the tests.
+	 */
+	public function tear_down() {
+		remove_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'return_free_state' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'return_byocdn_state' ] );
+		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cnames' ] );
+
+		parent::tear_down();
+	}
+
+	/**
 	 * Test that the container composes the RocketCDN override into the registry.
 	 */
 	public function testShouldApplyRocketCdnOverrideWhenResolvedFromContainer() {
@@ -29,8 +40,6 @@ class Test_ApplyAll extends TestCase {
 				],
 			]
 		);
-
-		remove_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'return_free_state' ] );
 
 		$this->assertSame( 'Upgrade to RocketCDN Pro', $result[0]['title'] );
 		$this->assertSame( 'Upgrade', $result[0]['cta_label'] );
@@ -57,9 +66,6 @@ class Test_ApplyAll extends TestCase {
 				],
 			]
 		);
-
-		remove_filter( 'pre_get_rocket_option_cdn_state', [ $this, 'return_byocdn_state' ] );
-		remove_filter( 'pre_get_rocket_option_cdn_cnames', [ $this, 'return_cnames' ] );
 
 		$this->assertSame( [ 'minify_css' ], array_column( $result, 'option_slug' ) );
 	}
