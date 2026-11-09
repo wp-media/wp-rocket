@@ -23,9 +23,9 @@ With Docker, from the repo root:
 docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 \
   git /repo --config /repo/.gitleaks.toml --redact -v --log-opts="--diff-merges=remerge origin/develop..HEAD"
 
-# Uncommitted changes
+# Staged changes (run `git add` first: untracked files are not scanned)
 docker run --rm -v "$PWD:/repo" ghcr.io/gitleaks/gitleaks:v8.30.1 \
-  git /repo --config /repo/.gitleaks.toml --redact -v --pre-commit
+  git /repo --config /repo/.gitleaks.toml --redact -v --pre-commit --staged
 ```
 
 Or with the binary (`brew install gitleaks`): `gitleaks git . --config .gitleaks.toml --redact -v --log-opts="--diff-merges=remerge origin/develop..HEAD"`.
@@ -35,7 +35,7 @@ Or with the binary (`brew install gitleaks`): `gitleaks git . --config .gitleaks
 First make sure it really is one. If it is, pick the narrowest fix:
 
 1. **One line in our code**: add `// gitleaks:allow` (or `# gitleaks:allow`) at the end of the line, with a short reason.
-2. **A pattern of values or a file**: add an entry to `.gitleaks.toml`, scoped to a rule (`targetRules`) and to a value pattern (`regexes`) or a file (`paths`).
+2. **A pattern of values or a file**: add an entry to `.gitleaks.toml`, scoped to a rule (`targetRules`) and to a value pattern (`regexes`) or a file (`paths`). If an entry uses both `regexes` and `paths`, set `condition = "AND"`: Gitleaks ORs them by default, so either one alone would allowlist a finding. Write `regexes` against the secret itself (`regexTarget = "secret"`), which is the captured token, not the whole line. Test the entry in `git` mode: in `dir` mode paths start with `/repo/` and anchored `paths` never match.
 
 Never allowlist a whole directory for every rule: that turns the check off for everything below it.
 
