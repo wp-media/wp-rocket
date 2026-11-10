@@ -20,6 +20,9 @@ class Subscriber implements Subscriber_Interface {
 	// The privacy policy stands in until there is a page explaining the assistant's access to the site.
 	private const SITE_ACCESS_URL = self::PRIVACY_URL;
 
+	// The chat library product the column is registered under, and whose Application Passwords are revoked.
+	private const PRODUCT = 'wprocket';
+
 	/**
 	 * Rest instance
 	 *
@@ -76,6 +79,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                 => 'maybe_display_unavailable_notice',
 			'rocket_ai_assistant_available' => 'filter_assistant_available',
 			'rocket_localize_admin_script'  => 'add_localize_script_data',
+			'rocket_deactivation'           => 'revoke_app_passwords',
 		];
 	}
 
@@ -120,6 +124,19 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Revokes the support chat's Application Passwords, for every user and on every site.
+	 *
+	 * @return void
+	 */
+	public function revoke_app_passwords(): void {
+		if ( ! class_exists( 'WapClient' ) ) {
+			return;
+		}
+
+		\WapClient::revoke_app_passwords( self::PRODUCT );
+	}
+
+	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
 	 * @return array<string, mixed> The column configuration, or an empty array when the licence data is missing or the assistant is not available.
@@ -138,7 +155,7 @@ class Subscriber implements Subscriber_Interface {
 
 		return [
 			'id'              => 'wp-rocket-support',
-			'product'         => 'wprocket',
+			'product'         => self::PRODUCT,
 			// The wp-rocket stylesheet exists from wap-client 2.5.3 (Gravity 5.52.4). Older clients load an empty one and the launcher disappears.
 			'brand'           => 'wp-rocket',
 			// Names the launcher (its title, shown as its text by the stylesheet) and the panel for screen readers.
