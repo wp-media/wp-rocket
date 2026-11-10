@@ -19,6 +19,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_track_context = [
+	'page_cdn'        => 'Content Delivery',
+	'rocket_insights' => 'Rocket Insights',
+][ $data['page'] ] ?? 'Settings';
+
 ?>
 
 
@@ -34,7 +39,7 @@ defined( 'ABSPATH' ) || exit;
 		<?php endif; ?>
 		data-wap-prompt="<?php echo esc_attr( sprintf( /* translators: 1: settings tab name, 2: settings section name */ __( "I need help with '%1\$s' > '%2\$s'", 'rocket' ), $data['page_title'], $data['title'] ) ); ?>"
 		data-wpr_track_button="Need Help"
-		data-wpr_track_context="Settings"
+		data-wpr_track_context="<?php echo esc_attr( $rocket_track_context ); ?>"
 		class="wpr-infoAction wpr-infoAction--help wpr-icon-help<?php echo ! empty( $data['help']['rocketcdn_url'] ) ? ' exclude-cdn-help-js' : ''; ?>"
 		target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 	<?php endif; ?>

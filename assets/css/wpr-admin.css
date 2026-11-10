@@ -2209,6 +2209,24 @@ div.wpr-upgrade-websites.notstacked {
   display: none;
 }
 
+.wpr-menuItem-external {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  margin-inline-start: 4px;
+  vertical-align: -1px;
+  background-color: currentColor;
+  -webkit-mask-image: url("../img/ri-report-url.svg");
+  mask-image: url("../img/ri-report-url.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
 #wpr-nav-dashboard .wpr-menuItem-icon {
   --wpr-nav-icon: url("../img/wpr-nav-home.svg");
 }
@@ -2635,6 +2653,50 @@ div.wpr-upgrade-websites.notstacked {
   visibility: visible;
   opacity: 1;
   z-index: 99;
+}
+
+/*-----------------------------------------------*\
+    WAP support chat launcher button
+\*-----------------------------------------------*/
+.wap-chat-column__launcher {
+  padding: 10px 16px 10px 12px !important;
+  width: auto !important;
+  background-color: rgb(64, 186, 203) !important;
+  border-color: rgb(64, 186, 203) !important;
+  color: #fff !important;
+  transition: transform 125ms ease-in-out, box-shadow 250ms ease;
+  height: 60px !important;
+  border-radius: 24px !important;
+  inset-block-end: 40px !important;
+  inset-inline-end: 40px !important;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+}
+.wap-chat-column__launcher:active {
+  box-shadow: none;
+}
+.wap-chat-column__launcher::after {
+  content: attr(title);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  line-height: 14px;
+}
+.wap-chat-column__launcher:hover, .wap-chat-column__launcher:focus {
+  transform: scale(1.125);
+  opacity: 1 !important;
+}
+@media (max-height: 740px) {
+  .wap-chat-column__launcher {
+    inset-block-end: 10px !important;
+    inset-inline-end: 20px !important;
+  }
+}
+@supports (corner-shape: squircle) {
+  .wap-chat-column__launcher {
+    border-radius: 30px !important;
+    corner-shape: superellipse(1.4);
+  }
 }
 
 /*-----------------------------------------------*\
@@ -4570,7 +4632,9 @@ div.wpr-tutorial-item {
 }
 .wpr-ri-add-section .wpr-speed-radar-input {
   display: flex;
-  width: 80%;
+  flex: 1 1 auto;
+  width: auto;
+  min-width: 0;
   border-radius: 4px;
   border: 1px solid #E2E5E9;
   padding: 6px 8px 6px 16px;
@@ -4581,7 +4645,9 @@ div.wpr-tutorial-item {
   text-align: center;
   justify-content: center;
   padding: 16px;
-  width: 20%;
+  flex: 0 0 auto;
+  width: auto;
+  min-width: 20%;
   height: 50px;
   align-items: center;
   gap: 8px;
@@ -7001,6 +7067,7 @@ div.wpr-tutorial-item {
   font-size: 1rem;
   line-height: 1.5;
   font-weight: 700;
+  text-wrap: balance;
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-image {
   display: block;
@@ -7791,50 +7858,4 @@ div.wpr-tutorial-item {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
-}
-
-/*-----------------------------------------------*\
-
-    WAP support chat launcher button
-
-\*-----------------------------------------------*/
-.wap-chat-column__launcher {
-  padding: 10px 16px 10px 12px !important;
-  width: auto !important;
-  background-color: rgb(64, 186, 203) !important;
-  border-color: rgb(64, 186, 203) !important;
-  color: #fff !important;
-  transition: transform 125ms ease-in-out, box-shadow 250ms ease;
-  height: 60px !important;
-  border-radius: 24px !important;
-  inset-block-end: 40px !important;
-  inset-inline-end: 40px !important;
-  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
-}
-.wap-chat-column__launcher:active {
-  box-shadow: none;
-}
-.wap-chat-column__launcher::after {
-  content: attr(title);
-  font-size: 14px;
-  font-weight: 600;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  line-height: 14px;
-}
-.wap-chat-column__launcher:hover, .wap-chat-column__launcher:focus {
-  transform: scale(1.125);
-  opacity: 1 !important;
-}
-@media (max-height: 740px) {
-  .wap-chat-column__launcher {
-    inset-block-end: 10px !important;
-    inset-inline-end: 20px !important;
-  }
-}
-@supports (corner-shape: squircle) {
-  .wap-chat-column__launcher {
-    border-radius: 30px !important;
-    corner-shape: superellipse(1.4);
-  }
 }
