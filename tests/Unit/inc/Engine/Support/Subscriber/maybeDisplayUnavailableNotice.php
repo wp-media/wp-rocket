@@ -47,7 +47,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 	public function testShouldDoExpected( $config, $expected ): void {
 		if ( $config['wap_class_exists'] ) {
 			/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
-			$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
+			$manager = Mockery::mock( 'alias:WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager' );
 
 			if ( $config['wap_check_called'] ) {
 				$manager->shouldReceive( 'are_app_passwords_available' )

@@ -42,7 +42,7 @@ class TestRegisterColumn extends TestCase {
 	public function testShouldDoExpected( $config, $expected ): void {
 		if ( $config['wap_client_exists'] ) {
 			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-			$wap_client = Mockery::mock( 'alias:WapClient' );
+			$wap_client = Mockery::mock( 'alias:WP_Rocket_WapClient' );
 
 			if ( $expected['registered'] ) {
 				$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
