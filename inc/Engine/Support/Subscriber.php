@@ -130,8 +130,6 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * Returning false removes the chat column and the notice about unavailable Application Passwords.
 		 *
-		 * @since 3.24
-		 *
 		 * @param bool $available True to make the support chat available. Default true.
 		 *
 		 * @return bool
