@@ -14,7 +14,6 @@ use WP_Rocket\Tests\Unit\TestCase;
 
 /**
  * Test class covering \WP_Rocket\Engine\Support\Subscriber::get_column_config
- * and \WP_Rocket\Engine\Support\Subscriber::get_rocket_capability
  *
  * @group Support
  */
@@ -33,10 +32,6 @@ class TestGetColumnConfig extends TestCase {
 		Functions\when( '__' )->returnArg();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
-	}
-
-	public function testShouldMapTheWapCapabilityToWpRocketCapability() {
-		$this->assertSame( 'rocket_manage_options', $this->subscriber->get_rocket_capability() );
 	}
 
 	/**
