@@ -30,6 +30,7 @@ return [
 				'brand'            => 'wp-rocket',
 				'i18n'             => [ 'columnLabel' => 'Ask Support' ],
 				'page_context'     => 'support',
+				'capability'       => 'rocket_manage_options',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',

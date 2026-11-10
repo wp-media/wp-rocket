@@ -74,7 +74,6 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_buffer'                 => [ 'add_meta_generator', PHP_INT_MAX ],
 			'admin_init'                    => 'register_column',
 			'admin_notices'                 => 'maybe_display_unavailable_notice',
-			'wap_client_capability'         => 'get_rocket_capability',
 			'rocket_ai_assistant_available' => 'filter_assistant_available',
 			'rocket_localize_admin_script'  => 'add_localize_script_data',
 		];
@@ -150,6 +149,7 @@ class Subscriber implements Subscriber_Interface {
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
 			'page_context'    => 'support',
+			'capability'      => 'rocket_manage_options',
 			'server_url'      => rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
 				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
 				: self::WAP_SERVER_URL,
@@ -209,18 +209,6 @@ class Subscriber implements Subscriber_Interface {
 			]
 		);
 	}
-
-	/**
-	 * Maps the WAP capability to WP Rocket's own capability so no separate activation is needed.
-	 *
-	 * The filter passes the default WAP capability, which is not needed: this always returns ours.
-	 *
-	 * @return string
-	 */
-	public function get_rocket_capability(): string {
-		return 'rocket_manage_options';
-	}
-
 
 	/**
 	 * Callback of the `rocket_ai_assistant_available` filter.
