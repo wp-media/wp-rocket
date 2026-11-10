@@ -61,7 +61,6 @@
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-		"groupone/wap-client": "2.6.0",
 		"league/container": "^4.2",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^3.74",
@@ -133,18 +132,12 @@
 				"wp-media/monolog",
 				"league/container",
 				"berlindb/core",
-				"wp-media/plugin-family",
-				"groupone/wap-client"
+				"wp-media/plugin-family"
 			],
 			"override_autoload": {
 				"mobiledetect/mobiledetectlib": {
 					"psr-4": {
 						"Detection\\": "src/"
-					}
-				},
-				"groupone/wap-client": {
-					"psr-4": {
-						"GroupOne\\WapClient\\": ""
 					}
 				}
 			}
@@ -271,13 +264,11 @@
 		"phpcs:fix": "phpcbf",
 		"post-install-cmd": [
 			"\"vendor/bin/mozart\" compose",
-			"@php bin/prefix-wap-client.php",
 			"composer dump-autoload",
 			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
 		"post-update-cmd": [
 			"\"vendor/bin/mozart\" compose",
-			"@php bin/prefix-wap-client.php",
 			"composer dump-autoload",
 			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
