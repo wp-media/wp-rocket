@@ -117,4 +117,18 @@ return [
 			'message_contains' => 'have been disabled',
 		],
 	],
+	'chat_disabled_by_filter'   => [
+		'config'   => [
+			'wap_class_exists'        => true,
+			'wap_check_called'        => false,
+			'app_passwords_available' => false,
+			'screen_id'               => 'settings_page_wprocket',
+			'consumer_key'            => 'test-consumer-key',
+			'consumer_email'          => 'user@example.org',
+			'filter_available'        => false,
+		],
+		'expected' => [
+			'notice_called' => false,
+		],
+	],
 ];

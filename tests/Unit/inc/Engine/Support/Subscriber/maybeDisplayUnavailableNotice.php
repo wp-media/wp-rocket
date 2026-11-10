@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -93,6 +94,10 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 				);
 		} else {
 			Functions\expect( 'rocket_notice_html' )->never();
+		}
+
+		if ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
 		}
 
 		$this->subscriber->maybe_display_unavailable_notice();

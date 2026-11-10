@@ -46,4 +46,15 @@ return [
 			'registered' => false,
 		],
 	],
+	'chat_disabled_by_filter'      => [
+		'config'   => [
+			'wap_client_exists' => true,
+			'consumer_key'      => 'test-consumer-key',
+			'consumer_email'    => 'user@example.org',
+			'filter_available'  => false,
+		],
+		'expected' => [
+			'registered' => false,
+		],
+	],
 ];

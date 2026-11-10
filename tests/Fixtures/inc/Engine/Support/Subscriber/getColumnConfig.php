@@ -118,4 +118,13 @@ return [
 		],
 		'expected' => [ 'is_empty' => true ],
 	],
+	'chat_disabled_by_filter'     => [
+		'config'   => [
+			'consumer_key'     => 'test-consumer-key',
+			'consumer_email'   => 'user@example.org',
+			'filter_available' => false,
+			'can_use_ai'       => null,
+		],
+		'expected' => [ 'is_empty' => true ],
+	],
 ];

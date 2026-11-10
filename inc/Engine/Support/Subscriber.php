@@ -122,9 +122,24 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
-	 * @return array<string, mixed> The column configuration, or an empty array when the licence data is missing or the assistant is not available.
+	 * @return array<string, mixed> The column configuration, or an empty array when the support chat is disabled by the filter, the licence data is missing or the assistant is not available.
 	 */
 	public function get_column_config(): array {
+		/**
+		 * Filters whether the WAP support chat is available on the WP Rocket settings screen.
+		 *
+		 * Returning false removes the chat column and the notice about unavailable Application Passwords.
+		 *
+		 * @since 3.24
+		 *
+		 * @param bool $available True to make the support chat available. Default true.
+		 *
+		 * @return bool
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_support_chat_available', true ) ) {
+			return [];
+		}
+
 		$license_key = $this->options->get( 'consumer_key', '' );
 		$email       = $this->options->get( 'consumer_email', '' );
 
