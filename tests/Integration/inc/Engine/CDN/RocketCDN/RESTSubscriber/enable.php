@@ -17,7 +17,7 @@ class Test_Enable extends ApiTestCase {
 
 	public function set_up() {
 		parent::set_up();
-		$this->original_settings = get_option( 'wp_rocket_settings' );
+		$this->original_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
 	public function tear_down() {

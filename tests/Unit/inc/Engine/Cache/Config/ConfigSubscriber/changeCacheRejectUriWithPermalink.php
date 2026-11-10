@@ -54,4 +54,24 @@ class Test_ChangeCacheRejectUriWithPermalink extends TestCase {
 			$this->config_subscriber->change_cache_reject_uri_with_permalink( $config['value'], $config['old_value'] )
 		);
 	}
+
+	/**
+	 * @dataProvider nonArrayValueProvider
+	 */
+	public function testShouldReturnValueUnchangedWhenNotArray( $value, $old_value ) {
+		Functions\expect( 'user_trailingslashit' )->never();
+
+		$this->assertSame(
+			$value,
+			$this->config_subscriber->change_cache_reject_uri_with_permalink( $value, $old_value )
+		);
+	}
+
+	public function nonArrayValueProvider(): array {
+		return [
+			'falseValue'    => [ false, [ 'cache_reject_uri' => [ '/a' ] ] ],
+			'falseOldValue' => [ [ 'cache_reject_uri' => [ '/a' ] ], false ],
+			'bothFalse'     => [ false, false ],
+		];
+	}
 }

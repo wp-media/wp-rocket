@@ -19,6 +19,11 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$rocket_track_context = [
+	'page_cdn'        => 'Content Delivery',
+	'rocket_insights' => 'Rocket Insights',
+][ $data['page'] ] ?? 'Settings';
+
 ?>
 
 

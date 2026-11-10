@@ -10,6 +10,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -18,6 +19,8 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.0
  */
 class Page extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Plugin slug.
 	 *
@@ -2393,7 +2396,13 @@ class Page extends Abstract_Render {
 			return; // @phpstan-ignore-line
 		}
 
+		$was_dismissed = $this->render->is_addon_card_dismissed( $id );
+
 		rocket_dismiss_box( $this->render->get_addon_card_box_key( $id ) );
+
+		if ( ! $was_dismissed && in_array( $id, [ 'imagify', 'rocketcdn' ], true ) ) {
+			$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => $id ] );
+		}
 
 		wp_send_json_success();
 	}
