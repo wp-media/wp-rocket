@@ -53,8 +53,7 @@
 		"wp-media/apply-filters-typed": "^1.0",
 		"wp-media/mcp-oauth": "2.0",
 		"wp-media/plugin-family": "1.0.8",
-		"wp-media/wp-mixpanel": "^1.4.4",
-		"groupone/wap-client": "^2.6.0"
+		"wp-media/wp-mixpanel": "^1.4.4"
 	},
 	"require-dev": {
 		"php": "^7.4 || ^8",
@@ -62,6 +61,7 @@
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"groupone/wap-client": "2.6.0",
 		"league/container": "^4.2",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^3.74",
@@ -94,6 +94,9 @@
 		"wpackagist-plugin/wp-smushit": "^3"
 	},
 	"autoload": {
+		"files": [
+			"inc/Dependencies/GroupOne/WapClient/wap-client.php"
+		],
 		"classmap": [
 			"inc/classes",
 			"inc/vendors/classes",
@@ -130,12 +133,18 @@
 				"wp-media/monolog",
 				"league/container",
 				"berlindb/core",
-				"wp-media/plugin-family"
+				"wp-media/plugin-family",
+				"groupone/wap-client"
 			],
 			"override_autoload": {
 				"mobiledetect/mobiledetectlib": {
 					"psr-4": {
 						"Detection\\": "src/"
+					}
+				},
+				"groupone/wap-client": {
+					"psr-4": {
+						"GroupOne\\WapClient\\": ""
 					}
 				}
 			}
@@ -262,11 +271,13 @@
 		"phpcs:fix": "phpcbf",
 		"post-install-cmd": [
 			"\"vendor/bin/mozart\" compose",
+			"@php bin/prefix-wap-client.php",
 			"composer dump-autoload",
 			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
 		"post-update-cmd": [
 			"\"vendor/bin/mozart\" compose",
+			"@php bin/prefix-wap-client.php",
 			"composer dump-autoload",
 			"WP_Rocket\\Dependencies\\WPMedia\\PluginFamily\\PostInstall::apply_text_domain"
 		],
