@@ -89,7 +89,7 @@ return [
 			],
 		],
 	],
-	'grnd_sends_user_ref'         => [
+	'grnd_sends_user_ref'            => [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
 			'consumer_email' => 'user@example.org',

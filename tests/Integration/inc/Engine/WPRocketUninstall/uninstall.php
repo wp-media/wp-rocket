@@ -136,6 +136,9 @@ class Test_Uninstall extends FilesystemTestCase {
 			wp_clear_scheduled_hook( $event );
 		}
 
+		delete_metadata( 'user', 0, 'wap_client_user_ref_wprocket', '', true );
+		delete_metadata( 'user', 0, 'wap_client_user_ref_otherproduct', '', true );
+
 		parent::tear_down();
 	}
 
@@ -196,6 +199,10 @@ class Test_Uninstall extends FilesystemTestCase {
 		foreach ( $user_ids as $user_id ) {
 			update_user_meta( $user_id, 'wap_client_user_ref_wprocket', str_repeat( 'a', 32 ) );
 			update_user_meta( $user_id, 'wap_client_user_ref_otherproduct', str_repeat( 'b', 32 ) );
+		}
+
+		foreach ( $user_ids as $user_id ) {
+			$this->assertSame( str_repeat( 'a', 32 ), get_user_meta( $user_id, 'wap_client_user_ref_wprocket', true ) );
 		}
 
 		$container = apply_filters( 'rocket_container', null );
