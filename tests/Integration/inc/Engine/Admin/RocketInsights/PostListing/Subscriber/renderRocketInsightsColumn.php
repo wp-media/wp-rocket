@@ -6,7 +6,6 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\License\API\RemoteSettingsClient;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\RocketInsights\PostListing\Subscriber::render_rocket_insights_column
@@ -22,7 +21,7 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	 */
 	private $remote_settings_transient = 'wp_rocket_remote_settings';
 
-	use DBTrait, HttpRequestTrait;
+	use DBTrait;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -40,8 +39,6 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		// Enable Rocket Insights.
 		add_filter( 'rocket_rocket_insights_enabled', '__return_true' );
 
@@ -57,8 +54,6 @@ class Test_RenderRocketInsightsColumn extends AdminTestCase {
 		delete_transient( $this->remote_settings_transient );
 		delete_transient( $this->remote_settings_transient . '_timeout' );
 		delete_transient( $this->remote_settings_transient . '_timeout_active' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

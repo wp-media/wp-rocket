@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
@@ -39,9 +40,35 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'update_option_wp_rocket_settings'           => [ 'maybe_fetch_after_settings_change', 10, 2 ],
+			'update_option_wp_rocket_settings'           => [
+				[ 'maybe_clear_on_rocketcdn_paid', 9, 2 ],
+				[ 'maybe_fetch_after_settings_change', 10, 2 ],
+			],
 			'rocket_insights_api_recommendations_params' => 'maybe_add_imagify_to_recommendations_api_params',
 		];
+	}
+
+	/**
+	 * Clears the cached recommendations when the CDN state changes to RocketCDN Pro.
+	 *
+	 * The API omits the RocketCDN recommendation once Pro is active, so the cached list is
+	 * dropped and refetched lazily on the next read. Runs before the fetch callback so that a
+	 * cleared cache is not refetched here with a stale state.
+	 *
+	 * @param array $old_options Previous settings.
+	 * @param array $new_options New settings.
+	 * @return void
+	 */
+	public function maybe_clear_on_rocketcdn_paid( array $old_options, array $new_options ): void {
+		if ( Context::ROCKETCDN_PAID_TYPE !== ( $new_options['cdn_state'] ?? '' ) ) {
+			return;
+		}
+
+		if ( Context::ROCKETCDN_PAID_TYPE === ( $old_options['cdn_state'] ?? '' ) ) {
+			return;
+		}
+
+		$this->data_manager->clear_recommendations();
 	}
 
 	/**
@@ -81,7 +108,7 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	/**
 	 * Adds the 'plugin_imagify' option to the recommendations API parameters.
 	 *
-	 * Adds 'plugin_imagify' if Imagify is active OR white label is enabled.
+	 * Adds 'plugin_imagify' if Imagify is active, has an API key OR white label is enabled.
 	 *
 	 * @param array $params The existing API parameters.
 	 * @return array The modified API parameters with 'plugin_imagify' added if applicable.
@@ -89,6 +116,8 @@ class SettingsSubscriber implements Subscriber_Interface, LoggerAwareInterface {
 	public function maybe_add_imagify_to_recommendations_api_params( array $params ): array {
 		if (
 			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT', false )
+			||
+			! empty( rocket_get_constant( 'IMAGIFY_VERSION' ) )
 			||
 			Imagify_Partner::has_imagify_api_key()
 		) {

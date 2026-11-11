@@ -11,8 +11,8 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 ?>
 <div class="rocket-renewal-banner">
 	<div class="rocket-renew-message">
-		<h3 class="rocket-promo-title"><?php esc_html_e( 'Your WP Rocket license is about to expire.', 'rocket' ); ?></h3>
-		<p><?php esc_html_e( 'You will soon lose access to product updates and support.', 'rocket' ); ?></p>
+		<h3 class="rocket-promo-title"><?php esc_html_e( 'Your license is about to expire!', 'rocket' ); ?></h3>
+		<p><?php esc_html_e( 'You will soon lose the features that keep your site fast, plus access to updates and support.', 'rocket' ); ?></p>
 		<?php if ( isset( $data['more_info'] ) && $data['more_info'] ) : ?>
 		<p><?php echo $data['message']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
 		<?php endif; ?>

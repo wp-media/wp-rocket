@@ -219,13 +219,14 @@ return [
 		<h3 class="rocket-promo-title">
 		<span class="rocket-promo-discount">
 		20% off</span>
-		Halloween promotion is live!</h3>
+		It&#039;s Halloween!</h3>
 		<p class="rocket-promo-message">
 		Take advantage of Halloween to speed up more websites:<br>
 		get a<strong>
 		20% off</strong>
 		for<strong>
 		upgrading your license to Growth!</strong>
+		Hurry up, deal ends in:
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
@@ -248,7 +249,7 @@ return [
 		Seconds</li>
 		</ul>
 		<button class="rocket-promo-cta wpr-popin-upgrade-toggle">
-		Upgrade WP Rocket</button>
+		Upgrade Now</button>
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">
@@ -315,13 +316,14 @@ return [
 		<h3 class="rocket-promo-title">
 		<span class="rocket-promo-discount">
 		20% off</span>
-		Halloween promotion is live!</h3>
+		It&#039;s Halloween!</h3>
 		<p class="rocket-promo-message">
 		Take advantage of Halloween to speed up more websites:<br>
 		get a<strong>
 		20% off</strong>
 		for<strong>
 		upgrading your license to Multi!</strong>
+		Hurry up, deal ends in:
 		</p>
 		</div>
 		<div class="rocket-promo-cta-block">
@@ -344,7 +346,7 @@ return [
 		Seconds</li>
 		</ul>
 		<button class="rocket-promo-cta wpr-popin-upgrade-toggle">
-		Upgrade WP Rocket</button>
+		Upgrade Now</button>
 		</div>
 		<button class="wpr-notice-close wpr-icon-close" id="rocket-dismiss-promotion">
 		<span class="screen-reader-text">

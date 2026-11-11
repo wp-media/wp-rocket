@@ -317,6 +317,21 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 	if ( version_compare( $actual_version, '3.24', '<' ) ) {
 		rocket_generate_config_file();
 		rocket_clean_domain();
+
+		// The activation banner is only for new installs: mark it as seen for existing administrators.
+		$admin_ids = get_users(
+			[
+				'role'   => 'administrator',
+				'fields' => 'ID',
+			]
+		);
+
+		foreach ( $admin_ids as $admin_id ) {
+			$boxes   = (array) get_user_meta( $admin_id, 'rocket_boxes', true );
+			$boxes[] = 'rocket_activation_notice';
+
+			update_user_meta( $admin_id, 'rocket_boxes', array_values( array_unique( array_filter( $boxes ) ) ) );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

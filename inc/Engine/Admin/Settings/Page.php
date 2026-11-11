@@ -3,7 +3,6 @@ namespace WP_Rocket\Engine\Admin\Settings;
 
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
@@ -11,6 +10,7 @@ use WP_Rocket\Engine\Optimization\DelayJS\Admin\Settings as DelayJSSettings;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 /**
  * Registers the admin page and WP Rocket settings.
@@ -19,6 +19,8 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.0
  */
 class Page extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Plugin slug.
 	 *
@@ -111,26 +113,18 @@ class Page extends Abstract_Render {
 	private $ri_context;
 
 	/**
-	 * Subscription controller instance.
-	 *
-	 * @var SubscriptionController
-	 */
-	private $subscription_controller;
-
-	/**
 	 * Creates an instance of the Page object.
 	 *
-	 * @param array                  $args        Array of required arguments to add the admin page.
-	 * @param Settings               $settings    Instance of Settings class.
-	 * @param Render                 $render      Render instance.
-	 * @param Beacon                 $beacon      Beacon instance.
-	 * @param Optimization           $optimize    Database optimization instance.
-	 * @param UserClient             $user_client User client instance.
-	 * @param SiteList               $delayjs_sitelist User client instance.
-	 * @param string                 $template_path Path to views.
-	 * @param Options_Data           $options       WP Rocket options instance.
-	 * @param Context                $ri_context   Rocket Insights context instance.
-	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param array        $args        Array of required arguments to add the admin page.
+	 * @param Settings     $settings    Instance of Settings class.
+	 * @param Render       $render      Render instance.
+	 * @param Beacon       $beacon      Beacon instance.
+	 * @param Optimization $optimize    Database optimization instance.
+	 * @param UserClient   $user_client User client instance.
+	 * @param SiteList     $delayjs_sitelist User client instance.
+	 * @param string       $template_path Path to views.
+	 * @param Options_Data $options       WP Rocket options instance.
+	 * @param Context      $ri_context   Rocket Insights context instance.
 	 * @since 3.0
 	 */
 	public function __construct(
@@ -143,8 +137,7 @@ class Page extends Abstract_Render {
 		SiteList $delayjs_sitelist,
 		$template_path,
 		Options_Data $options,
-		Context $ri_context,
-		SubscriptionController $subscription_controller
+		Context $ri_context
 	) {
 		parent::__construct( $template_path );
 		$args = array_merge(
@@ -156,18 +149,17 @@ class Page extends Abstract_Render {
 			$args
 		);
 
-		$this->slug                    = $args['slug'];
-		$this->title                   = $args['title'];
-		$this->capability              = $args['capability'];
-		$this->settings                = $settings;
-		$this->render                  = $render;
-		$this->beacon                  = $beacon;
-		$this->optimize                = $optimize;
-		$this->user_client             = $user_client;
-		$this->delayjs_sitelist        = $delayjs_sitelist;
-		$this->options                 = $options;
-		$this->ri_context              = $ri_context;
-		$this->subscription_controller = $subscription_controller;
+		$this->slug             = $args['slug'];
+		$this->title            = $args['title'];
+		$this->capability       = $args['capability'];
+		$this->settings         = $settings;
+		$this->render           = $render;
+		$this->beacon           = $beacon;
+		$this->optimize         = $optimize;
+		$this->user_client      = $user_client;
+		$this->delayjs_sitelist = $delayjs_sitelist;
+		$this->options          = $options;
+		$this->ri_context       = $ri_context;
 	}
 
 	/**
@@ -502,7 +494,6 @@ class Page extends Abstract_Render {
 				'title'                   => __( 'Dashboard', 'rocket' ),
 				'menu_description'        => __( 'Performance overview', 'rocket' ),
 				'rocket_insights_enabled' => $this->ri_context->is_allowed(),
-				'is_rocketcdn_paid_user'  => $this->subscription_controller->is_paid(),
 			]
 		);
 	}
@@ -2361,6 +2352,41 @@ class Page extends Abstract_Render {
 		$this->options->set( 'cache_mobile', 1 );
 		$this->options->set( 'do_caching_mobile_files', 1 );
 		update_option( rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ), $this->options->get_options() );
+
+		wp_send_json_success();
+	}
+
+	/**
+	 * Callback method for the AJAX request dismissing an add-on card of the Dashboard sidebar.
+	 *
+	 * The dismissal is permanent and per user.
+	 *
+	 * @since 3.24
+	 *
+	 * @return void
+	 */
+	public function dismiss_addon_card(): void {
+		check_ajax_referer( 'rocket-ajax', 'nonce', true );
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_send_json_error();
+			return; // @phpstan-ignore-line
+		}
+
+		$id = isset( $_POST['card_id'] ) ? sanitize_key( wp_unslash( $_POST['card_id'] ) ) : '';
+
+		if ( '' === $id || strlen( $id ) > 40 ) {
+			wp_send_json_error();
+			return; // @phpstan-ignore-line
+		}
+
+		$was_dismissed = $this->render->is_addon_card_dismissed( $id );
+
+		rocket_dismiss_box( $this->render->get_addon_card_box_key( $id ) );
+
+		if ( ! $was_dismissed && in_array( $id, [ 'imagify', 'rocketcdn' ], true ) ) {
+			$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => $id ] );
+		}
 
 		wp_send_json_success();
 	}

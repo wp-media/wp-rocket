@@ -152,6 +152,9 @@
     gap: $space*2;
 
     &-main{
+        // Always leaves room for the sidebar column, so the width does not change when the sidebar has nothing to show.
+        flex: 0 1 auto;
+        width: calc(100% - #{$sidebarFootprint});
         min-width: 0;
         padding: $space*4 $space*3;
         background: #fff;
@@ -173,6 +176,7 @@
 
         // Columns stacked: the card is no longer attached to the navigation.
         @include respond-to('md') {
+            width: auto;
             border-radius: 4px;
         }
 

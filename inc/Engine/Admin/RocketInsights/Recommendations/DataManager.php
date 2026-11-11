@@ -145,6 +145,8 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Get cached recommendations.
 	 *
+	 * Data cached for another language than the current user's is treated as not cached.
+	 *
 	 * @return array|false Recommendations data or false if not cached.
 	 */
 	public function get_recommendations() {
@@ -159,6 +161,12 @@ class DataManager implements LoggerAwareInterface {
 		if ( ! isset( $data['status'] ) || ! isset( $data['timestamp'] ) ) {
 			$this->logger::warning( 'Recommendations: Invalid cached data structure, clearing cache' );
 			$this->clear_recommendations();
+			return false;
+		}
+
+		// Data cached before language tagging has no language, so it counts as a mismatch.
+		if ( ( $data['language'] ?? '' ) !== $this->get_language() ) {
+			$this->logger::debug( 'Recommendations: Cached data is in another language' );
 			return false;
 		}
 
@@ -384,6 +392,21 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Check if a fetch is in progress.
+	 *
+	 * Reads the raw transient so a fetch started for another language is still detected.
+	 * Recommendations are cached under a single key: users with different languages
+	 * replace each other's data and trigger a refetch when they alternate.
+	 *
+	 * @return bool
+	 */
+	private function is_loading(): bool {
+		$data = get_transient( self::TRANSIENT_NAME );
+
+		return is_array( $data ) && 'loading' === ( $data['status'] ?? '' );
+	}
+
+	/**
 	 * Check if at least one page is tracked in Rocket Insights.
 	 *
 	 * @return bool True if there are tracked pages, false otherwise.
@@ -479,6 +502,7 @@ class DataManager implements LoggerAwareInterface {
 			'recommendations' => [],
 			'metadata'        => [],
 			'timestamp'       => time(),
+			'language'        => $this->get_language(),
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
@@ -493,6 +517,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function save_recommendations( array $data ): void {
+		$data['language'] = $this->get_language();
+
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		$this->logger::debug(
@@ -606,7 +632,7 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	private function get_language(): string {
 		// Get WordPress locale (e.g., 'en_US', 'fr_FR').
-		$locale = get_locale();
+		$locale = get_user_locale();
 
 		// Extract language code (first 2 characters).
 		$language = substr( $locale, 0, 2 );
@@ -625,8 +651,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_fetch_recommendations(): void {
-		// Bail if already loading.
-		if ( 'loading' === $this->get_status() ) {
+		// Bail if already loading, whatever language the fetch in progress is for.
+		if ( $this->is_loading() ) {
 			return;
 		}
 

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\RESTSubscriber;
 
 use WP_Rocket\Tests\Integration\ApiTestCase;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\RESTSubscriber::enable
@@ -16,7 +17,7 @@ class Test_Enable extends ApiTestCase {
 
 	public function set_up() {
 		parent::set_up();
-		$this->original_settings = get_option( 'wp_rocket_settings' );
+		$this->original_settings = get_option( 'wp_rocket_settings', [] );
 	}
 
 	public function tear_down() {
@@ -30,8 +31,8 @@ class Test_Enable extends ApiTestCase {
 	 */
 	public function testShouldUpdateRocketSettingsWhenEndpointRequest() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 
@@ -48,8 +49,8 @@ class Test_Enable extends ApiTestCase {
 	 */
 	public function testShouldDeleteTransientWhenEndpointRequestt() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 
@@ -67,8 +68,8 @@ class Test_Enable extends ApiTestCase {
 	 */
 	public function testShouldReturnSuccessWhenEndpointRequest() {
 		$body_params = [
-			'email' => self::getApiCredential( 'ROCKET_EMAIL' ),
-			'key'   => self::getApiCredential( 'ROCKET_KEY' ),
+			'email' => TestCredentials::EMAIL,
+			'key'   => TestCredentials::KEY,
 			'url'   => 'https://rocketcdn.me',
 		];
 

@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 			<h3 class="wpr-dash-section-header__title"><?php esc_html_e( 'Recommendations', 'rocket' ); ?></h3>
 		</div>
 		<div class="wpr-dash-section-header__actions">
-			<a href="<?php echo esc_url( $data['help']['url'] ?? '' ); ?>"<?php echo ! empty( $data['help']['id'] ) ? ' data-beacon-id="' . esc_attr( $data['help']['id'] ) . '"' : ''; ?> data-wpr_track_button="Need Help" data-wpr_track_context="Dashboard" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
+			<a href="<?php echo esc_url( $data['help']['url'] ?? '' ); ?>"<?php echo ! empty( $data['help']['id'] ) ? ' data-beacon-id="' . esc_attr( $data['help']['id'] ) . '"' : ''; ?> data-wpr_track_button="Need Help" data-wpr_track_context="Recommendations" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
 		</div>
 	</div>
 
@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) || exit;
 			?>
 			<div class="wpr-dash-recs__loading" role="status">
 				<?php $this->render_part( 'rocket-insights/loading-dots' ); ?>
-				<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Recommendations loading...', 'rocket' ); ?></p>
+				<p class="wpr-dash-recs__loading-text"><?php esc_html_e( 'Analyzing your page (~1 min)', 'rocket' ); ?></p>
 			</div>
 			<?php
 			break;

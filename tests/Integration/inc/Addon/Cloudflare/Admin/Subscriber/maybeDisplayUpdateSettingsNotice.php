@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Addon\Cloudflare\Admin\Subscriber::maybe_display_update_settings_notice
@@ -11,12 +10,8 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group CloudflareAdmin
  */
 class TestMaybeDisplayUpdateSettingsNotice extends TestCase {
-	use HttpRequestTrait;
-
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_update_settings_notice', 10 );
 
@@ -27,8 +22,6 @@ class TestMaybeDisplayUpdateSettingsNotice extends TestCase {
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
 		$this->restoreWpHook( 'current_screen' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

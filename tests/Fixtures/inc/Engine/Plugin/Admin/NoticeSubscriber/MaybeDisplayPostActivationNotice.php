@@ -40,15 +40,28 @@ return [
 			'html'    => 'is good to go',
 		],
 	],
-	'shouldDisplayStartWithMyHomepageButton'                 => [
+	'shouldDisplayVisitDashboardButton'                   => [
 		'config'   => [
 			'previous_version' => '',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
 		],
 		'expected' => [
-			'display' => true,
-			'html'    => 'Start with my homepage',
+			'display'     => true,
+			'html'        => 'Visit WP Rocket dashboard',
+			'html_absent' => [ 'Rocket Insights', 'Start with my homepage' ],
+		],
+	],
+	'shouldUseAddHomepageActionForButton'                 => [
+		'config'   => [
+			'previous_version' => '',
+			'role'             => 'administrator',
+			'screen'           => 'dashboard',
+		],
+		'expected' => [
+			'display'     => true,
+			'html'        => 'action=rocket_insights_add_homepage_notice',
+			'html_absent' => [ 'redirect=' ],
 		],
 	],
 	'shouldDisplayActivationNoticeDismissButton'             => [

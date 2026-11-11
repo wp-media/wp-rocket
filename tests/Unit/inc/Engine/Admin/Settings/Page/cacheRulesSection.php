@@ -11,7 +11,6 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
-use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -70,8 +69,7 @@ class Test_CacheRulesSection extends TestCase {
 			Mockery::mock( SiteList::class ),
 			'vfs://public/wp-content/plugins/wp-rocket/views',
 			$options,
-			Mockery::mock( Context::class ),
-			Mockery::mock( SubscriptionController::class )
+			Mockery::mock( Context::class )
 		);
 
 		$class = new ReflectionClass( Page::class );

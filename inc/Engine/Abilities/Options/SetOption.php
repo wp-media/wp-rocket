@@ -324,7 +324,7 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 	 * @return array List of writable option names.
 	 */
 	private function get_allowed_options(): array {
-		return array_diff( $this->allowed_options->get(), self::READ_ONLY_OPTIONS );
+		return array_values( array_diff( $this->allowed_options->get(), self::READ_ONLY_OPTIONS ) );
 	}
 
 	/**

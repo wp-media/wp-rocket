@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 
 /**
@@ -23,6 +24,13 @@ class Render extends Abstract_Render {
 	private $data_manager;
 
 	/**
+	 * Recommendation overrides registry.
+	 *
+	 * @var Overrides
+	 */
+	private $overrides;
+
+	/**
 	 * Beacon instance.
 	 *
 	 * @var Beacon
@@ -34,11 +42,13 @@ class Render extends Abstract_Render {
 	 *
 	 * @param string      $template_path Path to the template file.
 	 * @param DataManager $data_manager Recommendations data manager instance.
+	 * @param Overrides   $overrides Recommendation overrides registry.
 	 * @param Beacon      $beacon Beacon instance.
 	 */
-	public function __construct( string $template_path, DataManager $data_manager, Beacon $beacon ) { // phpcs:ignore Generic.CodeAnalysis.UselessOverridingMethod.Found
+	public function __construct( string $template_path, DataManager $data_manager, Overrides $overrides, Beacon $beacon ) {
 		parent::__construct( $template_path );
 		$this->data_manager = $data_manager;
+		$this->overrides    = $overrides;
 		$this->beacon       = $beacon;
 	}
 
@@ -119,7 +129,7 @@ class Render extends Abstract_Render {
 		if ( false !== $cached_data ) {
 			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
 			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
-			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
+			$widget_data['show_load_more']  = count( $widget_data['recommendations'] ) > 3;
 		}
 
 		// Without tracked pages, DataManager::save_empty_recommendations() caches a 'failed' status: override it so it isn't shown as an error.
@@ -192,7 +202,7 @@ class Render extends Abstract_Render {
 			];
 		}
 
-		return $formatted;
+		return $this->overrides->apply_all( $formatted );
 	}
 
 	/**

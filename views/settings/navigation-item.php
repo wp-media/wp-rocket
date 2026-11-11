@@ -24,17 +24,26 @@ $rocket_is_sub   = ! empty( $data['is_sub'] );
 $rocket_is_link  = ! empty( $data['url'] );
 $rocket_href     = $rocket_is_link ? $data['url'] : '#' . $data['id'];
 $rocket_classes  = 'wpr-menuItem' . ( $rocket_is_sub ? ' wpr-menuItem--sub' : '' ) . ( ! empty( $data['class'] ) ? ' ' . $data['class'] : '' );
-$rocket_rel_attr = $rocket_is_link && '_blank' === $data['target'] ? ' rel="noopener noreferrer"' : '';
+$rocket_new_tab  = $rocket_is_link && '_blank' === ( $data['target'] ?? '' );
+$rocket_rel_attr = $rocket_new_tab ? ' rel="noopener noreferrer"' : '';
 
 ?>
 <a href="<?php echo esc_url( $rocket_href ); ?>" id="wpr-nav-<?php echo esc_attr( $data['id'] ); ?>" class="<?php echo esc_attr( $rocket_classes ); ?>"<?php echo $rocket_is_link && ! empty( $data['target'] ) ? ' target="' . esc_attr( $data['target'] ) . '"' : ''; ?><?php echo $rocket_rel_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static string. ?>>
 	<?php if ( $rocket_is_sub ) : ?>
 		<?php echo esc_html( $data['title'] ); ?>
+		<?php if ( $rocket_new_tab ) : ?>
+			<span class="wpr-menuItem-external" aria-hidden="true"></span>
+			<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'rocket' ); ?></span>
+		<?php endif; ?>
 	<?php else : ?>
 		<span class="wpr-menuItem-icon" aria-hidden="true"></span>
 		<span class="wpr-menuItem-text">
 			<span class="wpr-menuItem-title">
 				<?php echo esc_html( $data['title'] ); ?>
+				<?php if ( $rocket_new_tab ) : ?>
+					<span class="wpr-menuItem-external" aria-hidden="true"></span>
+					<span class="screen-reader-text"><?php esc_html_e( '(opens in a new tab)', 'rocket' ); ?></span>
+				<?php endif; ?>
 				<?php if ( ! empty( $data['badge'] ) ) : ?>
 					<span class="wpr-badge wpr-badge--new"><?php echo esc_html( $data['badge'] ); ?></span>
 				<?php endif; ?>

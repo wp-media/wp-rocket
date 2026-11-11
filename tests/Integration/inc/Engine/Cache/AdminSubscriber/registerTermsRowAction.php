@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
@@ -12,8 +11,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group Cache
  */
 class Test_RegisterTermsRowAction extends AdminTestCase {
-	use HttpRequestTrait;
-
 	private static $container;
 
 	public static function set_up_before_class() {
@@ -25,8 +22,6 @@ class Test_RegisterTermsRowAction extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		// The test only checks that the row action is registered, not the license/upgrade
 		// flow rocket_upgrader() runs on admin_init when the 'version' option is missing.
 		add_filter( 'pre_get_rocket_option_version', [ $this, 'mock_version' ] );
@@ -34,8 +29,6 @@ class Test_RegisterTermsRowAction extends AdminTestCase {
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_version', [ $this, 'mock_version' ] );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
