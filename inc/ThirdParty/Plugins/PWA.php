@@ -4,8 +4,18 @@ declare(strict_types=1);
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class PWA implements Subscriber_Interface {
+class PWA implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the PWA plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return function_exists( 'wp_get_service_worker_url' );
+	}
+
 	/**
 	 * Subscribed events.
 	 */

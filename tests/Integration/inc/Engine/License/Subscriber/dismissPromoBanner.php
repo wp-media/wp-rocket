@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\Subscriber::dismiss_promo_banner
@@ -11,6 +12,8 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  License
  */
 class Test_DismissPromoBanner extends AjaxTestCase {
+	use IsolateHookTrait;
+
 	/**
 	 * User's ID.
 	 * @var int
@@ -32,12 +35,15 @@ class Test_DismissPromoBanner extends AjaxTestCase {
 
 		wp_set_current_user( self::$user_id );
 		$this->action = 'rocket_dismiss_promo';
+
+		$this->unregisterAllCallbacks( 'admin_init' );
 	}
 
 	public function tear_down() {
-		parent::tear_down();
-
 		delete_transient( 'rocket_promo_banner_' . self::$user_id );
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -56,5 +62,25 @@ class Test_DismissPromoBanner extends AjaxTestCase {
 		$this->callAjaxAction();
 
 		$this->assertTrue( (bool) get_transient( 'rocket_promo_banner_' . self::$user_id ) );
+	}
+
+	public function testShouldFireDismissedHookOnce() {
+		$banners = [];
+		add_action(
+			'rocket_mixpanel_track_event',
+			function ( $event, $data ) use ( &$banners ) {
+				$banners[] = [ $event, $data ];
+			},
+			10,
+			2
+		);
+
+		$_POST['nonce']  = wp_create_nonce( 'rocket-ajax' );
+		$_POST['action'] = 'rocket_dismiss_promo';
+
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( [ [ 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] ] ], $banners );
 	}
 }

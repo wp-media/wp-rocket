@@ -1,8 +1,6 @@
 <?php
 
-namespace WPMedia\Cloudflare\Auth;
-
-use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
+namespace WP_Rocket\Addon\Cloudflare\Auth;
 
 interface AuthFactoryInterface {
 

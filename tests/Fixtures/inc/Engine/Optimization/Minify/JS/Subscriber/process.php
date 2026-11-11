@@ -6,8 +6,56 @@ wp_default_scripts( $scripts );
 $jquery_path = $scripts->registered['jquery-core']->src;
 $timenow = time();
 
+$js_response = [
+	'body'     => <<<'JS'
+/*!
+ * Bootstrap v4.5.1 (https://getbootstrap.com/)
+ */
+(function (global, factory) {
+	// Module wrapper.
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) : (global = global || self, factory(global.bootstrap = {}));
+}(this, function (exports) {
+	'use strict';
+	var VERSION = "4.5.1";
+	var TRANSITION_END = /transitionend/i;
+	function toType(obj) {
+		if (obj === null || typeof obj === 'undefined') {
+			return "" + obj;
+		}
+		return {}.toString.call(obj).match(/\s([a-z]+)/i)[1].toLowerCase();
+	}
+	exports.VERSION = VERSION;
+	exports.toType = toType;
+	exports.isTransitionEnd = function (name) { return TRANSITION_END.test(name); };
+}));
+JS
+,
+	'response' => [ 'code' => 200, 'message' => 'OK' ],
+];
+
+$js_html_response = array_merge(
+	$js_response,
+	[ 'headers' => [ 'content-type' => 'text/html; charset=UTF-8' ] ]
+);
+
+$not_found_response = [
+	'body'     => '<!DOCTYPE html><html><head><style>body{display:none}</style></head><body>Not found</body></html>',
+	'headers'  => [ 'content-type' => 'text/html; charset=UTF-8' ],
+	'response' => [ 'code' => 404, 'message' => 'Not Found' ],
+];
+
+// The valid integrity hash is computed from the mocked body, so the remote file is never downloaded.
+$bootstrap_integrity = 'sha384-' . base64_encode( hash( 'sha384', $js_response['body'], true ) );
+
 return [
 	'vfs_dir' => 'wp-content/',
+
+	'http' => [
+		'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js' => $js_response,
+		'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js' => $js_response,
+		'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js' => $js_html_response,
+		'https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js'            => $not_found_response,
+	],
 
 	'settings' => [
 		'minify_concatenate_js' => 0,
@@ -71,7 +119,7 @@ return [
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalid"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="notvalidalgorithm-hashed"></script>
 					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.js" integrity="sha384-notvalidhash"></script>
-					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js" integrity="sha384-DCTGxr1MNV4fD9E8fGEPvxOCqu7hIyBSUrSwiSFtEloMCudWDuD8X75eb1x9b8eJ"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.1/js/bootstrap.js" integrity="' . $bootstrap_integrity . '"></script>
 				</head>
 				<body>
 				</body>
@@ -612,6 +660,145 @@ return [
 				'cdn'                   => 1,
 				'cdn_cnames'            => [ 'https://123456.rocketcdn.me/cdnpath' ],
 				'cdn_zone'              => [ 'all' ],
+				'defer_all_js'          => 0,
+			],
+		],
+
+		'shouldKeepExternalJSTagWhenRemoteReturns404' => [
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
+		'shouldMinifyJSServedAsHtml' => [
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script data-minify="1" type="text/javascript" src="http://example.org/wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js?ver={{mtime}}"></script>
+					</head>
+					<body>
+					</body>
+				</html>',
+				'files' => [
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js',
+					'wp-content/cache/min/1/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js.gz',
+				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 0,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
+		'shouldCombineJSFilesAndKeepExternalJSReturning404' => [
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+					<script type="text/javascript" src="http://example.org/wp-content/plugins/hello-dolly/script.js"></script>
+					<script type="text/javascript" src="http://example.org' . $jquery_path . '"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js"></script>
+					<script>
+					document.getElementById("demo").innerHTML = "Hello JavaScript!";
+					</script>
+					<script>
+					nonce = "nonce";
+					</script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+						<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/missing/1.0.0/missing.min.js"></script>
+						<script>
+						nonce = "nonce";
+						</script>
+					</head>
+					<body>
+					<script src="http://example.org/wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files'   => [
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js',
+					'wp-content/cache/min/1/f819bcaed244d53d3b4ffc4c5cc0efdc.js.gz',
+				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 1,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
+				'defer_all_js'          => 0,
+			],
+		],
+
+		'shouldCombineJSServedAsHtml' => [
+			'original' => '<html>
+				<head>
+					<title>Sample Page</title>
+					<script type="text/javascript" src="http://example.org/wp-content/themes/twentytwenty/assets/script.js"></script>
+					<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.js"></script>
+				</head>
+				<body>
+				</body>
+			</html>',
+			'expected' => [
+				'html'  => '<html>
+					<head>
+						<title>Sample Page</title>
+					</head>
+					<body>
+					<script src="http://example.org/wp-content/cache/min/1/e725b5c6071c2f2c2bb8e6b20499029a.js" data-minify="1"></script>
+					</body>
+				</html>',
+				'files'   => [
+					'wp-content/cache/min/1/e725b5c6071c2f2c2bb8e6b20499029a.js',
+					'wp-content/cache/min/1/e725b5c6071c2f2c2bb8e6b20499029a.js.gz',
+				],
+			],
+			'settings' => [
+				'minify_concatenate_js' => 1,
+				'cdn'                   => 0,
+				'cdn_cnames'            => [],
+				'cdn_zone'              => [],
 				'defer_all_js'          => 0,
 			],
 		],

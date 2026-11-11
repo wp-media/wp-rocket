@@ -8,6 +8,8 @@ use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 use stdClass;
@@ -41,6 +43,20 @@ class TrackRocketInsightsTest extends TestCase {
 	private $options;
 
 	/**
+	 * User mock instance.
+	 *
+	 * @var Mockery\MockInterface
+	 */
+	private $user;
+
+	/**
+	 * ChannelDetector mock instance.
+	 *
+	 * @var Mockery\MockInterface
+	 */
+	private $channel_detector;
+
+	/**
 	 * Tracking instance under test.
 	 *
 	 * @var Tracking
@@ -58,6 +74,7 @@ class TrackRocketInsightsTest extends TestCase {
 		$this->optin    = Mockery::mock( Optin::class );
 		$this->mixpanel = Mockery::mock( MixpanelTracking::class );
 		$this->options  = Mockery::mock( Options_Data::class );
+		$this->user     = Mockery::mock( User::class );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email', '' )
@@ -65,11 +82,20 @@ class TrackRocketInsightsTest extends TestCase {
 		$this->mixpanel->shouldReceive( 'identify' )
 			->once()
 			->with( '' );
+		Functions\when( 'is_admin' )->justReturn( true );
+		$this->optin->shouldReceive( 'can_track' )
+			->once()
+			->andReturn( false );
+
+		$this->channel_detector = Mockery::mock( ChannelDetector::class );
+		$this->channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
 
 		$this->tracking = new Tracking(
 			$this->options,
 			$this->optin,
 			$this->mixpanel,
+			$this->user,
+			$this->channel_detector,
 			'path/to/templates'
 		);
 	}
@@ -96,9 +122,19 @@ class TrackRocketInsightsTest extends TestCase {
 		$row_details->score  = $config['row_details']['score'];
 		$row_details->data   = $config['row_details']['data'];
 
-		// Mock home_url() for Utils::is_home() check.
+		// Mock home_url() and rocket_apply_filter_and_deprecated() for Utils::is_home() check.
 		if ( isset( $config['home_url'] ) ) {
 			Functions\when( 'home_url' )->justReturn( $config['home_url'] );
+			Functions\when( 'rocket_apply_filter_and_deprecated' )->alias(
+				function ( $tag, $args ) {
+					return $args[0];
+				}
+			);
+			Functions\when( 'untrailingslashit' )->alias(
+				function ( $string ) {
+					return rtrim( $string, '/\\' );
+				}
+			);
 		}
 
 		if ( ! $expected['track_called'] ) {

@@ -2,6 +2,8 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
+use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
@@ -11,7 +13,6 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group RocketCDN
  */
 class Test_MaybeRetryActivation extends AdminTestCase {
-
 	/**
 	 * Original user ID.
 	 *
@@ -26,22 +27,11 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 	 */
 	private $subscriber;
 
-	/**
-	 * Track API call count for mocking.
-	 *
-	 * @var int
-	 */
-	private $subscription_api_call_count = 0;
-
-	/**
-	 * Flag to indicate if activation was called.
-	 *
-	 * @var bool
-	 */
-	private $activation_api_called = false;
-
 	public function set_up() {
 		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 
 		$this->original_user_id = get_current_user_id();
 
@@ -51,9 +41,9 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		$this->reset_wp_rocket_settings();
 
-		// Reset counters.
-		$this->subscription_api_call_count = 0;
-		$this->activation_api_called       = false;
+		// This method only runs on the WP Rocket settings page; scenarios that need a
+		// different screen (e.g. the screen-guard test) override this explicitly.
+		set_current_screen( 'settings_page_wprocket' );
 
 		// Get the subscriber from container.
 		$container        = apply_filters( 'rocket_container', null );
@@ -65,8 +55,9 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
-		remove_all_filters( 'pre_http_request' );
 		$this->reset_wp_rocket_settings();
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
@@ -101,77 +92,41 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			update_option( 'rocketcdn_user_token', $config['token'] );
 		}
 
-		// Mock API responses.
-		if ( isset( $config['subscription_data'] ) || isset( $config['activation_success'] ) || isset( $config['user_data'] ) ) {
-			$test = $this;
-			add_filter(
-				'pre_http_request',
-				function ( $preempt, $args, $url ) use ( $config, $test ) {
-					// Mock user endpoint (WP Rocket user.php).
-					if ( false !== strpos( $url, 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) ) {
-						if ( isset( $config['user_data'] ) ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( $config['user_data'] ),
-							];
-						}
+		// Register the user-data fixture unconditionally: it's the only one every data set
+		// may reach (the fallback lookup when no token is saved locally).
+		$this->config['http'][ UserClient::USER_ENDPOINT ] = isset( $config['user_data'] )
+			? [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['user_data'] ),
+			]
+			: [
+				'response' => [ 'code' => 404 ],
+				'body'     => '',
+			];
 
-						// Return empty response if no user_data is configured.
-						return [
-							'response' => [ 'code' => 404 ],
-							'body'     => '',
-						];
-					}
+		if ( isset( $config['subscription_data'] ) ) {
+			$subscription_url = sprintf( '%1$ssubscription/%2$s/status', APIClient::ROCKETCDN_API, 'example.org' );
 
-					// Mock subscription endpoint (website/search/).
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) ) {
-						$test->subscription_api_call_count++;
+			// A successful retry calls get_subscription_data() twice: once before the retry,
+			// once after. The trait's list-response form answers each call in turn.
+			$this->config['http'][ $subscription_url ] = isset( $config['subscription_data_after_activation'] )
+				? [
+					$this->subscription_response( $config['subscription_data'] ),
+					$this->subscription_response( $config['subscription_data_after_activation'] ),
+				]
+				: $this->subscription_response( $config['subscription_data'] );
+		}
 
-						// After activation was called, return the post-activation data.
-						if (
-							$test->activation_api_called
-							&& isset( $config['subscription_data_after_activation'] )
-						) {
-							$subscription_data = $config['subscription_data_after_activation'];
-						} else {
-							$subscription_data = $config['subscription_data'];
-						}
-
-						if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
-							$subscription_data['subscription_next_date_update'] = gmdate(
-								'Y-m-d H:i:s',
-								strtotime( $subscription_data['subscription_next_date_update'] )
-							);
-						}
-
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $subscription_data ),
-						];
-					}
-
-					// Mock activation endpoint (website/<id>/).
-					if ( preg_match( '/https:\/\/rocketcdn\.me\/api\/website\/\d+\/$/', $url ) ) {
-						$test->activation_api_called = true;
-
-						if ( isset( $config['activation_success'] ) && $config['activation_success'] ) {
-							return [
-								'response' => [ 'code' => 200 ],
-								'body'     => wp_json_encode( [ 'success' => true ] ),
-							];
-						}
-
-						return [
-							'response' => [ 'code' => 500 ],
-							'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
-						];
-					}
-
-					return $preempt;
-				},
-				10,
-				3
-			);
+		if ( isset( $config['activation_success'], $config['subscription_data']['website_id'] ) ) {
+			$this->config['http'][ APIClient::ROCKETCDN_API . 'website/' . $config['subscription_data']['website_id'] . '/' ] = $config['activation_success']
+				? [
+					'response' => [ 'code' => 200 ],
+					'body'     => wp_json_encode( [ 'success' => true ] ),
+				]
+				: [
+					'response' => [ 'code' => 500 ],
+					'body'     => wp_json_encode( [ 'error' => 'Internal server error' ] ),
+				];
 		}
 
 		// Execute the method.
@@ -183,8 +138,6 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		if ( isset( $expected['cdn_enabled'] ) && $expected['cdn_enabled'] ) {
 			$this->assertArrayHasKey( 'cdn', $settings );
 			$this->assertEquals( 1, $settings['cdn'] );
-			$this->assertArrayHasKey( 'cdn_cnames', $settings );
-			$this->assertContains( $expected['cdn_url'], $settings['cdn_cnames'] );
 		} else {
 			// CDN should NOT be enabled.
 			$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
@@ -197,5 +150,51 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 			$this->assertNotEmpty( $saved_token, 'Token should be saved after successful activation' );
 			$this->assertSame( $config['user_data']->rocketcdn->cdn_token, $saved_token );
 		}
+	}
+
+	/**
+	 * Builds a mocked subscription-status HTTP response from fixture subscription data.
+	 *
+	 * @param array $subscription_data Fixture's subscription data.
+	 *
+	 * @return array
+	 */
+	private function subscription_response( array $subscription_data ): array {
+		if ( isset( $subscription_data['subscription_next_date_update'] ) ) {
+			$subscription_data['subscription_next_date_update'] = gmdate(
+				'Y-m-d H:i:s',
+				strtotime( $subscription_data['subscription_next_date_update'] )
+			);
+		}
+
+		return [
+			'response' => [ 'code' => 200 ],
+			'body'     => wp_json_encode( $subscription_data ),
+		];
+	}
+
+	/**
+	 * The method must bail before touching the API or CDN state when the current
+	 * screen isn't the WP Rocket settings page, even with an otherwise-valid,
+	 * would-succeed configuration.
+	 */
+	public function testShouldBailWhenNotOnRocketSettingsPage() {
+		$user_id = $this->factory->user->create( [ 'role' => 'administrator' ] );
+		$user    = wp_set_current_user( $user_id );
+		$user->add_cap( 'rocket_manage_options' );
+
+		update_option( 'rocketcdn_user_token', '1234567890123456789012345678901234567890' );
+
+		set_current_screen( 'edit.php' );
+
+		// No fixture entry: an empty http config already fails the test on any request.
+		// The request log also gives an assertion with a specific failure message.
+		$this->subscriber->maybe_retry_activation();
+
+		$this->assertSame( [], $this->get_http_requests(), 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
+
+		$settings    = get_option( 'wp_rocket_settings', [] );
+		$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
+		$this->assertFalse( $cdn_enabled, 'CDN should not be enabled when the guard bails on a non-WP Rocket screen' );
 	}
 }

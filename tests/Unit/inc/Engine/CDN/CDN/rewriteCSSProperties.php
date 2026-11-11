@@ -18,8 +18,8 @@ class TestRewriteCSSProperties extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options   = Mockery::mock( Options_Data::class );
+		$this->cdn       = new CDN( $this->options );
 	}
 
 	/**
@@ -52,6 +52,10 @@ class TestRewriteCSSProperties extends TestCase {
 				'default' => [],
 				'value' => [],
 			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
+			]
 		];
 
 		foreach ( $options as $key => $option ) {

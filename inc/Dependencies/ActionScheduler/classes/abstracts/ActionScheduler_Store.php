@@ -492,6 +492,12 @@ abstract class ActionScheduler_Store extends ActionScheduler_Store_Deprecated {
 	public function mark_migrated( $action_id ) {}
 
 	/**
+	 * Flush all store caches.
+	 */
+	public function flush_caches() {
+	}
+
+	/**
 	 * Get instance.
 	 *
 	 * @return ActionScheduler_Store

@@ -10,6 +10,19 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
  * @group CDN
  */
 class Test_RewriteSrcset extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		// Set after parent::set_up() so it stays inside the test transaction and is rolled back.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'running' ] );
+	}
+
+	public function tear_down() {
+		delete_transient( 'rocketcdn_status' );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */

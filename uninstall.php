@@ -31,6 +31,7 @@ require_once __DIR__ . '/inc/Engine/Optimization/LazyRenderContent/Database/Tabl
 require_once __DIR__ . '/inc/Engine/Media/PreloadFonts/Database/Table/PreloadFonts.php';
 require_once __DIR__ . '/inc/Engine/Media/PreconnectExternalDomains/Database/Table/PreconnectExternalDomains.php';
 require_once __DIR__ . '/inc/Engine/Admin/RocketInsights/Database/Tables/RocketInsights.php';
+require_once __DIR__ . '/inc/Engine/CDN/RocketCDN/Database/Tables/RocketCDN.php';
 
 $rocket_rucss_usedcss_table   = new WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS();
 $rocket_cache_table           = new WP_Rocket\Engine\Preload\Database\Tables\Cache();
@@ -39,6 +40,7 @@ $rocket_lrc_table             = new WP_Rocket\Engine\Optimization\LazyRenderCont
 $rocket_preload_fonts_table   = new WP_Rocket\Engine\Media\PreloadFonts\Database\Table\PreloadFonts();
 $rocket_preload_domains_table = new WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Table\PreconnectExternalDomains();
 $rocket_rocket_insights_table = new WP_Rocket\Engine\Admin\RocketInsights\Database\Tables\RocketInsights();
+$rocket_rocket_cdn_table      = new WP_Rocket\Engine\CDN\RocketCDN\Database\Tables\RocketCDN();
 
 $rocket_uninstall = new WPRocketUninstall(
 	WP_ROCKET_CACHE_ROOT_PATH,
@@ -51,6 +53,7 @@ $rocket_uninstall = new WPRocketUninstall(
 		$rocket_preload_fonts_table,
 		$rocket_preload_domains_table,
 		$rocket_rocket_insights_table,
+		$rocket_rocket_cdn_table,
 	]
 );
 

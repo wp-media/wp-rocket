@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Preload\Controller\Queue;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 class Test_OnPermalinkChanged extends TestCase
 {
@@ -31,7 +31,7 @@ class Test_OnPermalinkChanged extends TestCase
 		$this->controller = Mockery::mock(LoadInitialSitemap::class);
 		$this->query = $this->createMock(Cache::class);
 		$this->activation = Mockery::mock(Activation::class);
-		$this->mobile_detect = Mockery::mock(WP_Rocket_Mobile_Detect::class);
+		$this->mobile_detect = Mockery::mock(MobileDetect::class);
 		$this->clear_cache = Mockery::mock(ClearCache::class);
 		$this->queue = Mockery::mock(Queue::class);
 		$this->subscriber = new Subscriber($this->options, $this->controller, $this->query, $this->activation, $this->mobile_detect, $this->clear_cache, $this->queue );

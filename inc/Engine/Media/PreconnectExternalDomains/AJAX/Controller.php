@@ -71,6 +71,10 @@ class Controller implements ControllerInterface {
 		}
 
 		foreach ( (array) $domains as $index => $domain ) {
+			if ( 0 >= $max_preconnect_domains_number ) {
+				break;
+			}
+
 			$preconnect_domains[ $index ] = sanitize_url( wp_unslash( $domain ) );
 			--$max_preconnect_domains_number;
 		}

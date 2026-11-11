@@ -17,8 +17,6 @@ class GetPricingData extends TestCase {
 		'wp_rocket_pricing_timeout_active'
 	];
 
-	private $response;
-
 	public function set_up() {
 		parent::set_up();
 
@@ -32,8 +30,6 @@ class GetPricingData extends TestCase {
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
 
-		remove_filter( 'pre_http_request', [ $this, 'set_response' ] );
-
 		parent::tear_down();
 	}
 
@@ -43,9 +39,9 @@ class GetPricingData extends TestCase {
 	public function testShouldReturnExpected( $config, $expected ) {
 		$client = new PricingClient();
 
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'set_response' ] );
+		$this->config['http'] = false === $config['response']
+			? []
+			: [ PricingClient::PRICING_ENDPOINT => $config['response'] ];
 
 		if ( true === $config['pricing-transient'] ) {
 			set_transient( 'wp_rocket_pricing', $expected['result'] );
@@ -70,9 +66,5 @@ class GetPricingData extends TestCase {
 				get_transient( 'wp_rocket_pricing_timeout' )
 			);
 		}
-	}
-
-	public function set_response() {
-		return $this->response;
 	}
 }

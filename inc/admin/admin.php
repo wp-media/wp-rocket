@@ -158,7 +158,11 @@ function rocket_dismiss_boxes( $args = [] ) {
 		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
 			wp_send_json( [ 'error' => 0 ] );
 		} else {
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+			$redirect = ! empty( $args['redirect'] )
+				? wp_validate_redirect( esc_url_raw( wp_unslash( $args['redirect'] ) ), admin_url() )
+				: esc_url_raw( wp_get_referer() );
+
+			wp_safe_redirect( $redirect );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 	}

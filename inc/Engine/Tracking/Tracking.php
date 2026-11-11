@@ -7,6 +7,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Rows\RocketInsights;
 use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\License\API\User;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 
@@ -33,21 +34,78 @@ class Tracking extends Abstract_Render {
 	private $mixpanel;
 
 	/**
+	 * License User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
+	 * ChannelDetector instance.
+	 *
+	 * @var ChannelDetector
+	 */
+	private $channel_detector;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param Options_Data     $options Options Data instance.
-	 * @param Optin            $optin Optin instance.
-	 * @param MixpanelTracking $mixpanel Mixpanel Tracking instance.
-	 * @param string           $template_path Path to the template files.
+	 * @param Options_Data     $options          Options Data instance.
+	 * @param Optin            $optin            Optin instance.
+	 * @param MixpanelTracking $mixpanel         Mixpanel Tracking instance.
+	 * @param User             $user             License User instance.
+	 * @param ChannelDetector  $channel_detector Channel Detector instance.
+	 * @param string           $template_path    Path to the template files.
 	 */
-	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, $template_path ) {
+	public function __construct( Options_Data $options, Optin $optin, MixpanelTracking $mixpanel, User $user, ChannelDetector $channel_detector, $template_path ) {
 		parent::__construct( $template_path );
 
-		$this->options  = $options;
-		$this->optin    = $optin;
-		$this->mixpanel = $mixpanel;
+		$this->options          = $options;
+		$this->optin            = $optin;
+		$this->mixpanel         = $mixpanel;
+		$this->user             = $user;
+		$this->channel_detector = $channel_detector;
 
-		$this->mixpanel->identify( $this->options->get( 'consumer_email', '' ) );
+		$consumer_email = $this->options->get( 'consumer_email', '' );
+
+		$this->mixpanel->identify( $consumer_email );
+
+		$this->sync_is_reseller_property( $consumer_email );
+	}
+
+	/**
+	 * Sync the is_reseller property with Mixpanel when tracking is allowed.
+	 *
+	 * @param string $consumer_email Consumer email.
+	 *
+	 * @return void
+	 */
+	private function sync_is_reseller_property( string $consumer_email ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		if ( ! is_admin() ) {
+			return;
+		}
+
+		$is_reseller = $this->user->is_reseller_account();
+		if ( ! $is_reseller ) {
+			return;
+		}
+
+		if ( false !== get_transient( 'rocket_mixpanel_reseller_synced' ) ) {
+			return;
+		}
+
+		// We could fire this on change instead of running it once per day.
+		$this->mixpanel->set_user_property(
+			$this->mixpanel->hash( $consumer_email ),
+			'is_reseller',
+			$is_reseller
+		);
+
+		set_transient( 'rocket_mixpanel_reseller_synced', 1, DAY_IN_SECONDS );
 	}
 
 	/**
@@ -87,10 +145,11 @@ class Tracking extends Abstract_Render {
 			$this->mixpanel->track(
 				'Option Changed',
 				[
-					'context'        => 'wp_plugin',
-					'option_name'    => $option_tracked,
-					'previous_value' => $old_value[ $option_tracked ],
-					'new_value'      => $value[ $option_tracked ],
+					'context'             => 'wp_plugin',
+					'option_name'         => $option_tracked,
+					'previous_value'      => $old_value[ $option_tracked ],
+					'new_value'           => $value[ $option_tracked ],
+					'interaction_channel' => $this->channel_detector->detect(),
 				]
 			);
 		}
@@ -242,10 +301,11 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights Page Added',
 			[
-				'context'       => 'wp_plugin',
-				'plan_type'     => $plan,
-				'tracked_pages' => $urls_count,
-				'source'        => $source,
+				'context'             => 'wp_plugin',
+				'plan_type'           => $plan,
+				'tracked_pages'       => $urls_count,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -271,13 +331,14 @@ class Tracking extends Abstract_Render {
 		}
 
 		$event_data = [
-			'context'   => 'wp_plugin',
-			'status'    => $row_details->status,
-			'score'     => $row_details->score,
-			'retest'    => $row_details->data['is_retest'],
-			'duration'  => time() - $row_details->data['start_time'],
-			'plan_type' => $plan,
-			'source'    => $row_details->data['source'],
+			'context'             => 'wp_plugin',
+			'status'              => $row_details->status,
+			'score'               => $row_details->score,
+			'retest'              => $row_details->data['is_retest'],
+			'duration'            => time() - $row_details->data['start_time'],
+			'plan_type'           => $plan,
+			'source'              => $row_details->data['source'],
+			'interaction_channel' => $row_details->data['interaction_channel'] ?? $this->channel_detector->detect(),
 		];
 
 		if ( Utils::is_home( $row_details->url ) ) {
@@ -308,9 +369,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track(
 			'Rocket Insights View Details',
 			[
-				'context' => 'wp_plugin',
-				'source'  => $context,
-				'test_id' => $row_id,
+				'context'             => 'wp_plugin',
+				'source'              => $context,
+				'test_id'             => $row_id,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -332,9 +394,10 @@ class Tracking extends Abstract_Render {
 		$this->mixpanel->track_direct(
 			$event_name,
 			[
-				'context' => 'wp_plugin',
-				'test_id' => $row_id,
-				'source'  => $source,
+				'context'             => 'wp_plugin',
+				'test_id'             => $row_id,
+				'source'              => $source,
+				'interaction_channel' => $this->channel_detector->detect(),
 			]
 		);
 	}
@@ -345,16 +408,7 @@ class Tracking extends Abstract_Render {
 	 * @return void
 	 */
 	public function track_rocketcdn_activation_failed_banner_viewed(): void {
-		if ( ! $this->optin->can_track() ) {
-			return;
-		}
-
-		$this->mixpanel->track(
-			'RocketCDN Activation Failed Banner Viewed',
-			[
-				'context' => 'wp_plugin',
-			]
-		);
+		$this->track_event( 'RocketCDN Activation Failed Banner Viewed' );
 	}
 
 	/**
@@ -372,10 +426,66 @@ class Tracking extends Abstract_Render {
 		$event_data = wp_parse_args(
 			$event_data,
 			[
-				'context' => 'wp_plugin',
+				'context'             => 'wp_plugin',
+				'interaction_channel' => $this->channel_detector->detect(),
+				'path'                => isset( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 			]
-			);
+		);
 
 		$this->mixpanel->track( $event_name, $event_data );
+	}
+
+	/**
+	 * Track when the "Add Homepage" button is clicked for RocketCDN.
+	 *
+	 * @param string $source Either 'add_homepage_button' (CDN settings) or 'admin_notices'.
+	 * @return void
+	 */
+	public function track_add_rocket_cdn_homepage( string $source ): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'  => 'rocket cdn add homepage',
+				'context' => 'wp_plugin',
+				'source'  => $source,
+			]
+		);
+	}
+
+	/**
+	 * Track when RocketCDN free-tier is activated.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_free_activated(): void {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Activated' );
+	}
+
+	/**
+	 * Track when a RocketCDN notice is viewed
+	 *
+	 * @param string $box The notice box identifier.
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_viewed( string $box ) {
+		if ( ! $this->optin->can_track() ) {
+			return;
+		}
+
+		$rocketcdn_boxes = [ 'rocketcdn_install_notice', 'rocket_update_notice' ];
+
+		if ( ! in_array( $box, $rocketcdn_boxes, true ) ) {
+			return;
+		}
+
+		$this->track_event( 'RocketCDN Notice Viewed' );
 	}
 }

@@ -68,6 +68,10 @@ class Controller {
 			return;
 		}
 
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
 		if ( 'attachment' === get_post_type( $post_id ) ) {
 			return;
 		}

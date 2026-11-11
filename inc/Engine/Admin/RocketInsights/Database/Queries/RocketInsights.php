@@ -206,4 +206,27 @@ class RocketInsights extends AbstractQuery {
 			]
 		);
 	}
+
+	/**
+	 * Get the interaction channel from the most recently completed job.
+	 *
+	 * @return string Channel value, or empty string if not available.
+	 */
+	public function get_last_completed_channel(): string {
+		$rows = $this->query(
+			[
+				'status'  => 'completed',
+				'orderby' => 'modified',
+				'order'   => 'desc',
+				'number'  => 1,
+			]
+		);
+
+		if ( empty( $rows ) ) {
+			return '';
+		}
+
+		$row = reset( $rows );
+		return $row->data['interaction_channel'] ?? '';
+	}
 }

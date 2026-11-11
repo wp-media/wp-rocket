@@ -30,6 +30,9 @@ $(document).ready(function(){
                     if ( true === response.success ) {
                         account.html(response.data.license_type);
                         expire.addClass(response.data.license_class).html(response.data.license_expiration);
+						if ( response.data.license_expiration_label ) {
+                            document.getElementById('wpr-expiration-label').textContent = response.data.license_expiration_label;
+                        }
                         setTimeout(function() {
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
@@ -67,7 +70,14 @@ $(document).ready(function(){
         var name  = $(this).attr('id');
         var value = $(this).prop('checked') ? 1 : 0;
 
-		var excluded = [ 'cloudflare_auto_settings', 'cloudflare_devmode', 'analytics_enabled' ];
+		var excluded = [
+			'cloudflare_auto_settings',
+			'cloudflare_devmode',
+			'analytics_enabled',
+			'wpr-rocketcdn-free-toggle',
+			'wpr-byocdn-toggle',
+			'wpr-rocketcdn-paid-toggle'
+		];
 		if ( excluded.indexOf( name ) >= 0 ) {
 			return;
 		}
@@ -139,6 +149,28 @@ $(document).ready(function(){
         );
     });
 
+    /**
+     * Hides the Dashboard sidebar category holding a dismissed banner once it has no visible content left,
+     * then the whole sidebar (card and ribbon) once no category is left.
+     *
+     * @param {jQuery} $banner Dismissed banner.
+     */
+    function wprHideEmptiedSidebarCategory( $banner ) {
+        var $category = $banner.closest( '.wpr-Dashboard-sidebar-category' );
+        var $sidebar = $banner.closest( 'aside.wpr-Dashboard-sidebar' );
+
+        // The banner is hidden with an animation: wait for it to end before counting what is visible.
+        $banner.promise().done( function() {
+            if ( $category.length && ! $category.find( ':visible' ).not( '.wpr-Dashboard-sidebar-title' ).length ) {
+                $category.hide();
+            }
+
+            if ( $sidebar.length && ! $sidebar.find( '.wpr-Dashboard-sidebar-category:visible' ).length ) {
+                $sidebar.hide();
+            }
+        } );
+    }
+
     $( '#rocket-dismiss-promotion' ).on( 'click', function( e ) {
         e.preventDefault();
 
@@ -150,7 +182,10 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-promo-banner').hide( 'slow' );
+					var $banner = $('#rocket-promo-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );
@@ -167,11 +202,37 @@ $(document).ready(function(){
             },
 			function(response) {
 				if ( response.success ) {
-					$('#rocket-renewal-banner').hide( 'slow' );
+					var $banner = $('#rocket-renewal-banner');
+
+					$banner.hide( 'slow' );
+					wprHideEmptiedSidebarCategory( $banner );
 				}
 			}
         );
     } );
+
+    // jQuery on purpose: reuses wprHideEmptiedSidebarCategory() like the Promo and Renewal handlers above.
+    $( document ).on( 'click', '.wpr-addonCard-close', function( e ) {
+        e.preventDefault();
+
+        var $card = $( this ).closest( '.wpr-addonCard' );
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'rocket_dismiss_addon_card',
+                nonce: rocket_ajax_data.nonce,
+                card_id: $( this ).data( 'card-id' )
+            },
+            function( response ) {
+                if ( response.success ) {
+                    $card.hide( 'slow' );
+                    wprHideEmptiedSidebarCategory( $card );
+                }
+            }
+        );
+    } );
+
 	$( '#wpr-update-exclusion-list' ).on( 'click', function( e ) {
 		e.preventDefault();
 		$('#wpr-update-exclusion-msg').html('');
@@ -252,7 +313,19 @@ document.addEventListener('DOMContentLoaded', function() {
 					value: isChecked ? 1 : 0,
 					_ajax_nonce: rocket_ajax_data.nonce,
 				})
-			});
+			})
+				.then((response) => response.json())
+				.then((response) => {
+					if (!response.success) {
+						return;
+					}
+
+					// The SDK is only printed at page load when opted in, so reload to load it, or to unload it on opt-out.
+					if (!isChecked || typeof mixpanel === 'undefined') {
+						location.reload();
+					}
+				})
+				.catch(() => {});
 		});
 	}
 });
@@ -280,7 +353,6 @@ document.addEventListener('DOMContentLoaded', function() {
         html: '',
         row_html: '',
 		disabled_btn_html: {
-			global_score_widget: '',
 			rocket_insights: ''
 		}
     };
@@ -418,11 +490,30 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 
 	/**
+	 * Replaces the redesigned dashboard global score component with its freshly rendered HTML.
+	 *
+	 * @param {Object} scoreData Global score payload.
+	 * @param {string} scoreData.dashboard_html Rendered HTML of the dashboard global score component.
+	 */
+	let lastDashboardGlobalScoreHtml = '';
+
+	function updateDashboardGlobalScore(scoreData) {
+		if (!scoreData?.dashboard_html || scoreData.dashboard_html === lastDashboardGlobalScoreHtml) {
+			return;
+		}
+
+		lastDashboardGlobalScoreHtml = scoreData.dashboard_html;
+		$('.wpr-dash-score').replaceWith(scoreData.dashboard_html);
+	}
+
+	/**
 	 * Updates the global score UI widget or table row based on the selected menu.
 	 * When the dashboard or rocket insights menu is clicked, this function updates
 	 * the corresponding global score display after a short delay.
 	 */
 	function decideGlobalScoreToUpdate() {
+		updateDashboardGlobalScore(globalScoreData);
+
 		if ('' === globalScoreData.html) {
 			return;
 		}
@@ -434,13 +525,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 		// Update all global score widget instances.
 		globalScoreWidgets.html(globalScoreData.html);
-
-		// Disable "Add Pages" button on global score widget.
-		if (!('disabled_btn_html' in globalScoreData)) {
-			return;
-		}
-
-		$('.wpr-global-score-widget .wpr-global-score-widget-btn-wrapper').html(globalScoreData.disabled_btn_html.global_score_widget);
 	}
 
 	// ==== AJAX Handlers ====
@@ -469,6 +553,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 					// Update all global score widget instances.
 					$('.wpr-global-score-widget').html(response.global_score_data.html);
+					updateDashboardGlobalScore(response.global_score_data);
 					// Update global score row in table if on Rocket Insights page.
 					updateGlobalScoreRow(globalScoreData);
 

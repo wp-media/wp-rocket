@@ -162,10 +162,19 @@ class ActionScheduler_DataController {
 			return;
 		}
 
-		$wp_object_cache->group_ops      = array();
-		$wp_object_cache->stats          = array();
-		$wp_object_cache->memcache_debug = array();
-		$wp_object_cache->cache          = array();
+		// Not all drop-ins support these props, however, there may be existing installations that rely on these being cleared.
+		if ( property_exists( $wp_object_cache, 'group_ops' ) ) {
+			$wp_object_cache->group_ops = array();
+		}
+		if ( property_exists( $wp_object_cache, 'stats' ) ) {
+			$wp_object_cache->stats = array();
+		}
+		if ( property_exists( $wp_object_cache, 'memcache_debug' ) ) {
+			$wp_object_cache->memcache_debug = array();
+		}
+		if ( property_exists( $wp_object_cache, 'cache' ) ) {
+			$wp_object_cache->cache = array();
+		}
 
 		if ( is_callable( array( $wp_object_cache, '__remoteset' ) ) ) {
 			call_user_func( array( $wp_object_cache, '__remoteset' ) ); // important!

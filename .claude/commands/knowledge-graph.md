@@ -1,1 +1,0 @@
-../../.aiassistant/skills/knowledge-graph/SKILL.md

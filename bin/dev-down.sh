@@ -7,7 +7,7 @@ cd "$(dirname "$0")/.."
 
 if [[ "${1:-}" == "--destroy" ]]; then
   echo "Destroying wp-env (volumes and DB will be removed)..."
-  npx @wordpress/env destroy --yes
+  npx @wordpress/env destroy --force
 else
   echo "Stopping wp-env..."
   npx @wordpress/env stop

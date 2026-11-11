@@ -73,8 +73,6 @@ class Combine extends AbstractGFOptimization {
 			}
 		);
 
-		$num_fonts = count( $filtered_fonts );
-
 		$this->parse( $filtered_fonts );
 
 		if ( empty( $this->fonts ) ) {

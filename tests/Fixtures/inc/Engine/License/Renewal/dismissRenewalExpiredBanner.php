@@ -22,4 +22,12 @@ return [
 		],
 		'expected' => true,
 	],
+	'testShouldFireTrialExpiredWhenTrialCustomer' => [
+		'config' => [
+			'cap'       => true,
+			'transient' => false,
+			'trial'     => true,
+		],
+		'expected' => true,
+	],
 ];

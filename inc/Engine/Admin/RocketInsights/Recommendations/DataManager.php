@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Recommendations;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
@@ -69,14 +70,14 @@ class DataManager implements LoggerAwareInterface {
 		'schedule_automatic_cleanup'   => 'database',
 		'cdn'                          => 'page_cdn',
 		'control_heartbeat'            => 'heartbeat',
-		'cache_logged_user'            => 'addons',
+		'cache_logged_user'            => 'advanced_cache',
 		'minify_concatenate_js'        => 'file_optimization',
 		'database_all_transients'      => 'database',
 		'sucury_waf_cache_sync'        => 'addons',
 		'varnish_auto_purge'           => 'addons',
 
 		'plugin_rocketcdn'             => 'page_cdn',
-		'plugin_imagify'               => 'imagify',
+		'plugin_imagify'               => 'media',
 	];
 
 	/**
@@ -118,22 +119,33 @@ class DataManager implements LoggerAwareInterface {
 	private $metric_formatter;
 
 	/**
+	 * RocketInsights Query instance.
+	 *
+	 * @var RocketInsightsQuery
+	 */
+	private RocketInsightsQuery $ri_query;
+
+	/**
 	 * Constructor.
 	 *
-	 * @param APIClient       $api_client   API Client instance.
-	 * @param Options_Data    $options      Options instance.
-	 * @param GlobalScore     $global_score Global Score instance.
-	 * @param MetricFormatter $metric_formatter Metric Formatter instance.
+	 * @param APIClient           $api_client       API Client instance.
+	 * @param Options_Data        $options          Options instance.
+	 * @param GlobalScore         $global_score     Global Score instance.
+	 * @param MetricFormatter     $metric_formatter Metric Formatter instance.
+	 * @param RocketInsightsQuery $ri_query         RocketInsights Query instance.
 	 */
-	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score, MetricFormatter $metric_formatter ) {
+	public function __construct( APIClient $api_client, Options_Data $options, GlobalScore $global_score, MetricFormatter $metric_formatter, RocketInsightsQuery $ri_query ) {
 		$this->api_client       = $api_client;
 		$this->options          = $options;
 		$this->global_score     = $global_score;
 		$this->metric_formatter = $metric_formatter;
+		$this->ri_query         = $ri_query;
 	}
 
 	/**
 	 * Get cached recommendations.
+	 *
+	 * Data cached for another language than the current user's is treated as not cached.
 	 *
 	 * @return array|false Recommendations data or false if not cached.
 	 */
@@ -149,6 +161,12 @@ class DataManager implements LoggerAwareInterface {
 		if ( ! isset( $data['status'] ) || ! isset( $data['timestamp'] ) ) {
 			$this->logger::warning( 'Recommendations: Invalid cached data structure, clearing cache' );
 			$this->clear_recommendations();
+			return false;
+		}
+
+		// Data cached before language tagging has no language, so it counts as a mismatch.
+		if ( ( $data['language'] ?? '' ) !== $this->get_language() ) {
+			$this->logger::debug( 'Recommendations: Cached data is in another language' );
 			return false;
 		}
 
@@ -255,14 +273,16 @@ class DataManager implements LoggerAwareInterface {
 			);
 
 			// Track Mixpanel event immediately.
-			$this->track_event(
-				'Rocket Insights Recommendation',
-				[
-					'status'   => 'success',
-					'quantity' => $quantity,
-					'duration' => $duration,
-				]
-			);
+			$channel    = $this->get_triggering_channel();
+			$event_data = [
+				'status'   => 'success',
+				'quantity' => $quantity,
+				'duration' => $duration,
+			];
+			if ( '' !== $channel ) {
+				$event_data['interaction_channel'] = $channel;
+			}
+			$this->track_event( 'Rocket Insights Recommendation', $event_data );
 
 			return true;
 		}
@@ -292,14 +312,16 @@ class DataManager implements LoggerAwareInterface {
 		);
 
 		// Track Mixpanel event immediately.
-		$this->track_event(
-			'Rocket Insights Recommendation',
-			[
-				'status'   => 'error',
-				'quantity' => 0,
-				'duration' => $duration,
-			]
-		);
+		$channel    = $this->get_triggering_channel();
+		$event_data = [
+			'status'   => 'error',
+			'quantity' => 0,
+			'duration' => $duration,
+		];
+		if ( '' !== $channel ) {
+			$event_data['interaction_channel'] = $channel;
+		}
+		$this->track_event( 'Rocket Insights Recommendation', $event_data );
 
 		return false;
 	}
@@ -369,7 +391,31 @@ class DataManager implements LoggerAwareInterface {
 		return $data['status'];
 	}
 
+	/**
+	 * Check if a fetch is in progress.
+	 *
+	 * Reads the raw transient so a fetch started for another language is still detected.
+	 * Recommendations are cached under a single key: users with different languages
+	 * replace each other's data and trigger a refetch when they alternate.
+	 *
+	 * @return bool
+	 */
+	private function is_loading(): bool {
+		$data = get_transient( self::TRANSIENT_NAME );
 
+		return is_array( $data ) && 'loading' === ( $data['status'] ?? '' );
+	}
+
+	/**
+	 * Check if at least one page is tracked in Rocket Insights.
+	 *
+	 * @return bool True if there are tracked pages, false otherwise.
+	 */
+	public function has_tracked_pages(): bool {
+		$global_score_data = $this->global_score->get_global_score_data();
+
+		return 'no-url' !== ( $global_score_data['status'] ?? 'no-url' );
+	}
 
 	/**
 	 * Check if required metrics are available for recommendations.
@@ -437,6 +483,15 @@ class DataManager implements LoggerAwareInterface {
 	}
 
 	/**
+	 * Get the interaction channel from the most recently completed Rocket Insights job.
+	 *
+	 * @return string
+	 */
+	private function get_triggering_channel(): string {
+		return $this->ri_query->get_last_completed_channel();
+	}
+
+	/**
 	 * Set loading status in transient.
 	 *
 	 * @return void
@@ -447,6 +502,7 @@ class DataManager implements LoggerAwareInterface {
 			'recommendations' => [],
 			'metadata'        => [],
 			'timestamp'       => time(),
+			'language'        => $this->get_language(),
 		];
 
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
@@ -461,6 +517,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	private function save_recommendations( array $data ): void {
+		$data['language'] = $this->get_language();
+
 		set_transient( self::TRANSIENT_NAME, $data, self::CACHE_EXPIRATION );
 
 		$this->logger::debug(
@@ -528,7 +586,7 @@ class DataManager implements LoggerAwareInterface {
 			$value = $this->get_option_value( $option_key, $options );
 
 			// Check if option is enabled.
-			if ( $this->is_option_enabled( $option_key, $value ) ) {
+			if ( $this->is_option_enabled( $value ) ) {
 				$enabled[] = $option_key;
 			}
 		}
@@ -544,11 +602,10 @@ class DataManager implements LoggerAwareInterface {
 	/**
 	 * Check if a specific option is enabled.
 	 *
-	 * @param string $option_key Option key.
-	 * @param mixed  $value      Option value.
+	 * @param mixed $value Option value.
 	 * @return bool True if enabled, false otherwise.
 	 */
-	private function is_option_enabled( string $option_key, $value ): bool {
+	private function is_option_enabled( $value ): bool {
 		// Boolean options.
 		return ! empty( $value ) && 1 === (int) $value;
 	}
@@ -575,7 +632,7 @@ class DataManager implements LoggerAwareInterface {
 	 */
 	private function get_language(): string {
 		// Get WordPress locale (e.g., 'en_US', 'fr_FR').
-		$locale = get_locale();
+		$locale = get_user_locale();
 
 		// Extract language code (first 2 characters).
 		$language = substr( $locale, 0, 2 );
@@ -594,8 +651,8 @@ class DataManager implements LoggerAwareInterface {
 	 * @return void
 	 */
 	public function maybe_fetch_recommendations(): void {
-		// Bail if already loading.
-		if ( 'loading' === $this->get_status() ) {
+		// Bail if already loading, whatever language the fetch in progress is for.
+		if ( $this->is_loading() ) {
 			return;
 		}
 
@@ -687,14 +744,16 @@ class DataManager implements LoggerAwareInterface {
 		);
 
 		// Track Mixpanel event immediately.
-		$this->track_event(
-			'Rocket Insights Recommendation',
-			[
-				'status'   => 'error',
-				'quantity' => 0,
-				'duration' => $duration,
-			]
-		);
+		$channel    = $this->get_triggering_channel();
+		$event_data = [
+			'status'   => 'error',
+			'quantity' => 0,
+			'duration' => $duration,
+		];
+		if ( '' !== $channel ) {
+			$event_data['interaction_channel'] = $channel;
+		}
+		$this->track_event( 'Rocket Insights Recommendation', $event_data );
 	}
 
 	/**

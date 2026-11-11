@@ -84,23 +84,31 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		 * exceptions (and an exception thrown from a catch block cannot be caught by a later catch block in the *same*
 		 * structure).
 		 */
+		$valid_action = true;
 		try {
 			try {
-				$valid_action = false;
 				do_action( 'action_scheduler_before_execute', $action_id, $context );
 
 				if ( ActionScheduler_Store::STATUS_PENDING !== $this->store->get_status( $action_id ) ) {
+					$valid_action = false;
 					do_action( 'action_scheduler_execution_ignored', $action_id, $context );
 					return;
 				}
 
-				$valid_action = true;
 				do_action( 'action_scheduler_begin_execute', $action_id, $context );
 
-				$action = $this->store->fetch_action( $action_id );
+				$action = $this->fetch_complete_action( $action_id );
+				if ( null === $action ) {
+					$valid_action = false;
+					$this->cancel_corrupted_action( $action_id );
+					return;
+				}
+
 				$this->store->log_execution( $action_id );
 				$action->execute();
+
 				do_action( 'action_scheduler_after_execute', $action_id, $action, $context );
+
 				$this->store->mark_complete( $action_id );
 			} catch ( Throwable $e ) {
 				// Throwable is defined when executing under PHP 7.0 and up. We convert it to an exception, for
@@ -117,6 +125,44 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 		if ( isset( $action ) && is_a( $action, 'ActionScheduler_Action' ) && $action->get_schedule()->is_recurring() ) {
 			$this->schedule_next_instance( $action, $action_id );
 		}
+	}
+
+	/**
+	 * Fetches the action instance. On failure returns null instead of ActionScheduler_NullAction.
+	 *
+	 * @param int $action_id Action ID.
+	 * @return ActionScheduler_Action|null
+	 */
+	private function fetch_complete_action( int $action_id ) {
+		// Handle corrupted entries and potential DB read failures (corrupted arguments or schedule data; a known trigger is incomplete A-S migration).
+		$attempts_to_populate = 0;
+		do {
+			$action  = $this->store->fetch_action( $action_id );
+			$failure = $action instanceof ActionScheduler_NullAction;
+			// Sleep 0.01 second before retrying.
+			usleep( 10000 * (int) $failure );
+		} while ( $failure && ++$attempts_to_populate < 2 );
+
+		return $action instanceof ActionScheduler_NullAction ? null : $action;
+	}
+
+	/**
+	 * Cancels the corrupted actions and performs the necessary cleanup to address identified side effects.
+	 *
+	 * @param int $action_id Action ID.
+	 * @return void
+	 */
+	private function cancel_corrupted_action( int $action_id ) {
+		$this->store->cancel_action( $action_id );
+
+		// Corrupted entries typically contain an excessive number of logs, which we intend to remove immediately.
+		do_action( 'action_scheduler_canceled_corrupted_action', $action_id );
+
+		// Add a comment to clarify the missing logs and explain the reason for the cancellation.
+		ActionScheduler_Logger::instance()->log(
+			$action_id,
+			__( 'This action data appears to be corrupt. We are cancelling it to allow recurring actions to be re-created by extensions.', 'action-scheduler' )
+		);
 	}
 
 	/**
@@ -236,6 +282,8 @@ abstract class ActionScheduler_Abstract_QueueRunner extends ActionScheduler_Abst
 
 	/**
 	 * Run the queue cleaner.
+	 *
+	 * @deprecated since 4.0.0, action deletion is now handled automatically via a dedicated scheduled task.
 	 */
 	protected function run_cleanup() {
 		$this->cleaner->clean( 10 * $this->get_time_limit() );

@@ -4,9 +4,10 @@ namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
-class Jetpack implements Subscriber_Interface {
+class Jetpack implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	use ReturnTypesTrait;
 
@@ -24,6 +25,15 @@ class Jetpack implements Subscriber_Interface {
 	 */
 	public function __construct( Options_Data $option ) {
 		$this->option = $option;
+	}
+
+	/**
+	 * Whether Jetpack is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'Jetpack' );
 	}
 
 	/**

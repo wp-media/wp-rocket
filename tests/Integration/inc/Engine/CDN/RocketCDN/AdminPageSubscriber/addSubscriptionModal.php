@@ -21,12 +21,24 @@ class Test_AddSubscriptionModal extends TestCase {
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 	}
 
+	public function tear_down() {
+		delete_transient( 'wp_rocket_customer_data' );
+
+		parent::tear_down();
+	}
+
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDisplayExpected( $config, $expected ) {
 		$this->white_label = isset( $config['white_label'] ) ? $config['white_label'] : $this->white_label;
 		$this->home_url = $config['home_url'];
+
+		if ( isset( $config['user_data'] ) ) {
+			// Convert nested arrays to objects to match the actual API response structure.
+			$user_data = json_decode( wp_json_encode( $config['user_data'] ) );
+			set_transient( 'wp_rocket_customer_data', $user_data, MINUTE_IN_SECONDS );
+		}
 
 		ob_start();
 		do_action( 'rocket_settings_page_footer' );
@@ -41,5 +53,15 @@ class Test_AddSubscriptionModal extends TestCase {
 		}
 
 		$this->assertSame( $expected, $actual );
+
+		// AC-2: a button URL containing a single quote must never break out of the
+		// double-quoted JSON string that wp_json_encode() emits into the inline <script> block.
+		if ( isset( $config['user_data'] ) ) {
+			$this->assertMatchesRegularExpression(
+				'/window\.rocketcdnButtonUrl = "[^"]*";/',
+				$actual,
+				'The rendered rocketcdnButtonUrl assignment must be a syntactically valid, double-quoted JS string literal.'
+			);
+		}
 	}
 }

@@ -12,6 +12,28 @@ return [
 		],
 	],
 
+	'testShouldReturnSameArgsWhenURLEmpty' => [
+		'config'   => [
+			'url' => '',
+		],
+		'expected' => [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		],
+	],
+
+	'testShouldReturnSameArgsWhenURLNull' => [
+		'config'   => [
+			'url' => null,
+		],
+		'expected' => [
+			'method'  => 'GET',
+			'headers' => [],
+			'body'    => '',
+		],
+	],
+
 	'testShouldReturnSameArgsWhenAuthorizationHeadersEmptyAndEndpointIsPricing' => [
 		'config'   => [
 			'url' => 'https://rocketcdn.me/api/pricing',
@@ -25,8 +47,8 @@ return [
 
 	'testShouldReturnSameArgsWhenAuthorizationHeadersCorrect' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',
@@ -39,8 +61,8 @@ return [
 
 	'testShouldReturnCorrectTokenWhenAuthorizationHeadersEmpty' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',
@@ -58,8 +80,8 @@ return [
 
 	'testShouldReturnCorrectTokenWhenAuthorizationHeadersIncorrect' => [
 		'config'   => [
-			'url'              => 'https://rocketcdn.me/api/',
-			'getApiCredential' => true,
+			'url'          => 'https://rocketcdn.me/api/',
+			'append_token' => true,
 		],
 		'expected' => [
 			'method'  => 'GET',

@@ -1,7 +1,19 @@
 <?php
 namespace WP_Rocket\Engine\CDN;
 
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\{
+	CdnStateBridge,
+	CNAMEValidator,
+	Context,
+	Drivers\DriverInterface,
+	RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery,
+	RocketCDN\SubscriptionController
+};
+use WP_Rocket\Engine\Common\Utils;
+use WP_Rocket\Engine\Optimization\UrlTrait;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 
 /**
@@ -10,12 +22,22 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @since 3.4
  */
 class Subscriber implements Subscriber_Interface {
+	use UrlTrait;
+	use TrackingTrait;
+
 	/**
 	 * WP Rocket Options instance
 	 *
 	 * @var Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options instance.
+	 *
+	 * @var Options
+	 */
+	private $options_api;
 
 	/**
 	 * CDN instance
@@ -25,14 +47,80 @@ class Subscriber implements Subscriber_Interface {
 	private $cdn;
 
 	/**
+	 * Subscription controller instance.
+	 *
+	 * @var SubscriptionController
+	 */
+	private $subscription_controller;
+
+	/**
+	 * Cache instance.
+	 *
+	 * @var Cache
+	 */
+	private $cache;
+
+	/**
+	 * CDN Driver (Strategy)
+	 *
+	 * @var DriverInterface|null
+	 */
+	private $driver;
+
+	/**
+	 * RocketCDN pages query.
+	 *
+	 * @var RocketCDNQuery
+	 */
+	private $query;
+
+	/**
+	 * CNAME Validator instance.
+	 *
+	 * @var CNAMEValidator|null
+	 */
+	private $cname_validator;
+
+	/**
+	 * CDN state bridge instance.
+	 *
+	 * @var CdnStateBridge
+	 */
+	private $cdn_state_bridge;
+
+	/**
 	 * Constructor
 	 *
-	 * @param Options_Data $options WP Rocket Options instance.
-	 * @param CDN          $cdn     CDN instance.
+	 * @param Options_Data           $options                 WP Rocket Options_Data instance.
+	 * @param CDN                    $cdn                     CDN instance.
+	 * @param Options                $options_api             Options instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller instance.
+	 * @param Cache                  $cache                   Cache instance.
+	 * @param RocketCDNQuery         $query                   RocketCDN pages query.
+	 * @param CdnStateBridge         $cdn_state_bridge        CDN state bridge instance.
+	 * @param DriverInterface|null   $driver                  CDN Driver instance, optional.
+	 * @param CNAMEValidator|null    $cname_validator         CNAME Validator instance, optional.
 	 */
-	public function __construct( Options_Data $options, CDN $cdn ) {
-		$this->options = $options;
-		$this->cdn     = $cdn;
+	public function __construct(
+		Options_Data $options,
+		CDN $cdn,
+		Options $options_api,
+		SubscriptionController $subscription_controller,
+		Cache $cache,
+		RocketCDNQuery $query,
+		CdnStateBridge $cdn_state_bridge,
+		?DriverInterface $driver = null,
+		?CNAMEValidator $cname_validator = null
+	) {
+		$this->options                 = $options;
+		$this->cdn                     = $cdn;
+		$this->options_api             = $options_api;
+		$this->driver                  = $driver;
+		$this->subscription_controller = $subscription_controller;
+		$this->cache                   = $cache;
+		$this->query                   = $query;
+		$this->cdn_state_bridge        = $cdn_state_bridge;
+		$this->cname_validator         = $cname_validator;
 	}
 
 	/**
@@ -44,21 +132,45 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_buffer'           => [
+			'rocket_buffer'                            => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
 			],
-			'rocket_css_content'      => 'rewrite_css_properties',
-			'rocket_usedcss_content'  => 'rewrite_css_properties',
-			'rocket_cdn_hosts'        => [ 'get_cdn_hosts', 10, 2 ],
-			'rocket_dns_prefetch'     => 'add_dns_prefetch_cdn',
-			'rocket_facebook_sdk_url' => 'add_cdn_url',
-			'rocket_css_url'          => [ 'add_cdn_url', 10, 2 ],
-			'rocket_js_url'           => [ 'add_cdn_url', 10, 2 ],
-			'rocket_asset_url'        => [ 'maybe_replace_url', 10, 2 ],
-			'wp_resource_hints'       => [ 'add_preconnect_cdn', 10, 2 ],
-			'rocket_font_url'         => [ 'add_cdn_url', 10, 2 ],
+			'rocket_css_content'                       => 'rewrite_css_properties',
+			'rocket_usedcss_content'                   => 'rewrite_css_properties',
+			'rocket_cdn_hosts'                         => [ 'get_cdn_hosts', 10, 2 ],
+			'rocket_dns_prefetch'                      => 'add_dns_prefetch_cdn',
+			'rocket_facebook_sdk_url'                  => 'add_cdn_url',
+			'rocket_css_url'                           => [ 'add_cdn_url', 10, 2 ],
+			'rocket_js_url'                            => [ 'add_cdn_url', 10, 2 ],
+			'rocket_asset_url'                         => [ 'maybe_replace_url', 10, 2 ],
+			'wp_resource_hints'                        => [ 'add_preconnect_cdn', 10, 2 ],
+			'rocket_font_url'                          => [ 'add_cdn_url', 10, 2 ],
+			'rocket_first_install_options'             => 'add_cdn_type_option',
+			'wp_rocket_upgrade'                        => [
+				[ 'on_update_add_cdn_type_option', 10, 2 ],
+				[ 'on_update_add_cdn_state_option', 11, 2 ],
+			],
+			'rocketcdn_free_plan_subscription_expired' => [ 'clear_free_plan_pages_cache' ],
+			'rocket_cdnfree_activated'                 => 'clear_cache_on_free_activation',
+			'update_option_wp_rocket_settings'         => [
+				[ 'maybe_clear_cache', 10, 2 ],
+				[ 'maybe_clear_cname_cache', 10, 2 ],
+			],
+			'rocket_mixpanel_tracked_options'          => [ 'remove_cdn_from_tracked_options', 11 ],
 		];
+	}
+
+	/**
+	 * Removes the deprecated `cdn` key, replaced by `RocketCDN Mode Changed`. Filtered here
+	 * rather than in dynamic-lists.json, which is overwritten by a remote sync.
+	 *
+	 * @param array $options Tracked option keys.
+	 *
+	 * @return array
+	 */
+	public function remove_cdn_from_tracked_options( array $options ): array {
+		return array_values( array_diff( $options, [ 'cdn' ] ) );
 	}
 
 	/**
@@ -105,6 +217,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function rewrite_css_properties( $content ) {
+		if ( ! $this->cdn_driver_should_rewrite_url() ) {
+			return $content;
+		}
+
 		/**
 		 * Filters the application of the CDN on CSS properties
 		 *
@@ -119,6 +235,10 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		if ( ! $this->is_cdn_enabled() ) {
+			return $content;
+		}
+
+		if ( ! $this->subscription_controller->has_active_subscription() ) {
 			return $content;
 		}
 
@@ -189,6 +309,10 @@ class Subscriber implements Subscriber_Interface {
 	 * @return string
 	 */
 	public function add_cdn_url( $url, $original_url = '' ) {
+		if ( ! $this->is_allowed() ) {
+			return $url;
+		}
+
 		if ( ! empty( $original_url ) ) {
 			if ( $this->cdn->is_excluded( $original_url ) ) {
 				return $url;
@@ -335,6 +459,10 @@ class Subscriber implements Subscriber_Interface {
 			return false;
 		}
 
+		if ( ! $this->cdn_driver_should_rewrite_url() ) {
+			return false;
+		}
+
 		return true;
 	}
 
@@ -363,5 +491,239 @@ class Subscriber implements Subscriber_Interface {
 		 * @param bool $can_insert Can cdn insert resource hints or not, default is true.
 		 */
 		return wpm_apply_filters_typed( 'boolean', 'rocket_cdn_insert_resource_hints', true );
+	}
+
+	/**
+	 * Adds cdn_type option to WP Rocket options.
+	 *
+	 * @since 3.22
+	 *
+	 * @param array $options WP Rocket options array.
+	 *
+	 * @return array
+	 */
+	public function add_cdn_type_option( array $options ) {
+		$options = (array) $options;
+
+		$options['cdn_type'] = 'rocketcdn';
+
+		return $options;
+	}
+
+	/**
+	 * Add cdn_type option when upgrading from < 3.22.
+	 *
+	 * @since 3.22
+	 *
+	 * @param string $new_version New plugin version.
+	 * @param string $old_version Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_type_option( string $new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.22', '>=' ) ) {
+			return;
+		}
+
+		$has_active_subscription = $this->subscription_controller->has_active_subscription();
+		$cdn_type                = 'rocketcdn';
+		// Check if a CNAME is saved, cdn is enabled, and no RocketCDN subscription, then default to byocdn.
+		if (
+			! $has_active_subscription
+			&&
+			! empty( $this->options->get( 'cdn_cnames', [] ) ) && $this->is_cdn_enabled()
+		) {
+			$cdn_type = 'byocdn';
+		}
+
+		$current_options             = $this->options_api->get( 'settings', [] );
+		$current_options['cdn_type'] = $cdn_type;
+		if ( ! $has_active_subscription ) {
+			$current_options['cdn'] = 1;
+		}
+
+		$this->options_api->set( 'settings', $current_options );
+	}
+
+	/**
+	 * Add cdn_state option during plugin update when upgrading from < 3.23.4.
+	 *
+	 * @since 3.23.4
+	 *
+	 * @param string $_new_version New plugin version.
+	 * @param string $old_version  Previously installed plugin version.
+	 *
+	 * @return void
+	 */
+	public function on_update_add_cdn_state_option( string $_new_version, string $old_version ) {
+		if ( version_compare( $old_version, '3.23.4', '>=' ) ) {
+			return;
+		}
+
+		$current_options = $this->options_api->get( 'settings', [] );
+		$cdn_enabled     = ! empty( $current_options['cdn'] );
+		$cdn_type        = (string) ( $current_options['cdn_type'] ?? Context::ROCKETCDN_TYPE );
+		$has_cname       = ! empty( array_filter( (array) ( $current_options['cdn_cnames'] ?? [] ) ) );
+
+		// A RocketCDN site was only genuinely active pre-update if the CDN toggle was on AND
+		// a CNAME had been saved — either missing means CDN was not functional for this domain.
+		// Only applies when a subscription is active: free/inactive users with no CNAME fall
+		// through to legacy_to_state so they remain in rocketcdn_free rather than nothing.
+		if ( $cdn_enabled && Context::ROCKETCDN_TYPE === $cdn_type && ! $has_cname
+			&& $this->subscription_controller->has_active_subscription() ) {
+			$new_state              = Context::CDN_STATE_NOTHING;
+			$current_options['cdn'] = 0;
+		} else {
+			$new_state = $this->cdn_state_bridge->legacy_to_state( $current_options );
+		}
+
+		if ( ( $current_options['cdn_state'] ?? null ) === $new_state ) {
+			return;
+		}
+
+		$current_options['cdn_state'] = $new_state;
+		$this->options_api->set( 'settings', $current_options );
+
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => $new_state,
+				'cdn_status' => Context::CDN_STATE_NOTHING === $new_state ? 'inactive' : 'active',
+				'trigger'    => 'migration',
+			]
+		);
+	}
+
+	/**
+	 * Clear cached pages from free plan when subscription expired.
+	 *
+	 * @return void
+	 */
+	public function clear_free_plan_pages_cache(): void {
+		if ( null === $this->query ) {
+			return;
+		}
+
+		$pages = $this->query->get_all();
+
+		foreach ( $pages as $page ) {
+			if ( empty( $page->url ) ) {
+				continue;
+			}
+
+			if ( Utils::is_home( $page->url ) ) {
+				rocket_clean_home();
+				continue;
+			}
+
+			rocket_clean_files( [ $page->url ] );
+		}
+	}
+
+	/**
+	 * Clears all page cache when RocketCDN free mode is first activated.
+	 *
+	 * The page cache may have been rebuilt without CDN URL replacement during the window
+	 * between the admin settings save (which clears the cache early) and when the
+	 * subscription is confirmed active. Clearing here ensures all pages rebuild with
+	 * the CDN URL injected.
+	 *
+	 * @return void
+	 */
+	public function clear_cache_on_free_activation(): void {
+		$this->cache->clear_rocketcdn_free_pages_cache();
+	}
+
+	/**
+	 * Determines if the CDN driver should rewrite the current URL.
+	 *
+	 * Checks if a CDN driver is set and whether it allows rewriting of the current URL.
+	 *
+	 * @return bool True if the URL should be rewritten by the CDN driver, false otherwise.
+	 */
+	private function cdn_driver_should_rewrite_url(): bool {
+		if ( $this->driver && ! $this->driver->should_rewrite_url( $this->get_current_url() ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Clears the appropriate cache scope when the CDN state changes.
+	 *
+	 * @param mixed $old_value Old option value.
+	 * @param mixed $value     New option value.
+	 *
+	 * @return void
+	 */
+	public function maybe_clear_cache( $old_value, $value ) {
+		$cdn_state_changed = Utils::did_setting_change( 'cdn_state', $old_value, $value );
+
+		// Detect cdn status for cdn_state change.
+		if ( ! $cdn_state_changed ) {
+			return;
+		}
+
+		// Clear whole cache when moving from nothing to rocketcdn_paid OR from rocketcdn_paid to nothing.
+		// Clear whole cache when moving from nothing to byocdn OR from byocdn to nothing.
+		// Clear whole cache when moving from rocketcdn_paid to byocdn OR from byocdn to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_paid to rocketcdn_free OR from rocketcdn_free to rocketcdn_paid.
+		// Clear whole cache when moving from rocketcdn_free to byocdn OR from byocdn to rocketcdn_free.
+		// Clear free pages' cache when moving from nothing to rocketcdn_free OR from rocketcdn_free to nothing.
+
+		if (
+			( Context::CDN_STATE_NOTHING === $old_value['cdn_state'] && Context::ROCKETCDN_FREE_TYPE === $value['cdn_state'] )
+			||
+			( Context::ROCKETCDN_FREE_TYPE === $old_value['cdn_state'] && Context::CDN_STATE_NOTHING === $value['cdn_state'] )
+		) {
+			$this->cache->clear_rocketcdn_free_pages_cache();
+
+			$this->track_event(
+				'RocketCDN Cache Cleared',
+				[
+					'scope'       => 'free_pages',
+					'trigger'     => 'cdn_state_changed',
+					'pages_count' => $this->query->get_total_count(),
+				]
+			);
+			return;
+		}
+
+		// Clear whole cache.
+		$this->cache->clear_all_cache();
+
+		$this->track_event(
+			'RocketCDN Cache Cleared',
+			[
+				'scope'       => 'site_wide',
+				'trigger'     => 'cdn_state_changed',
+				'pages_count' => 0,
+			]
+		);
+	}
+
+	/**
+	 * Clears CNAME validation transients when CDN settings are saved.
+	 *
+	 * Runs on both old and new CNAME lists so no stale cache entry survives a
+	 * settings update regardless of whether CNAMEs were added or removed.
+	 *
+	 * @since 3.22.0.3
+	 *
+	 * @param mixed $old_value Previous option value.
+	 * @param mixed $value     New option value.
+	 * @return void
+	 */
+	public function maybe_clear_cname_cache( $old_value, $value ): void {
+		if ( null === $this->cname_validator ) {
+			return;
+		}
+
+		$old_cnames = is_array( $old_value ) && ! empty( $old_value['cdn_cnames'] ) ? (array) $old_value['cdn_cnames'] : [];
+		$new_cnames = is_array( $value ) && ! empty( $value['cdn_cnames'] ) ? (array) $value['cdn_cnames'] : [];
+		$all_cnames = array_filter( array_unique( array_merge( $old_cnames, $new_cnames ) ), 'is_string' );
+
+		$this->cname_validator->clear_validation_cache( $all_cnames );
 	}
 }
