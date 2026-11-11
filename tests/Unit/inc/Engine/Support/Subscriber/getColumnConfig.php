@@ -80,6 +80,9 @@ class TestGetColumnConfig extends TestCase {
 				case 'grnd_send_user_ref':
 					$this->assertTrue( $result['grnd']['send_user_ref'], 'grnd.send_user_ref' );
 					break;
+				case 'column_start_on_open':
+					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
+					break;
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
 					break;
