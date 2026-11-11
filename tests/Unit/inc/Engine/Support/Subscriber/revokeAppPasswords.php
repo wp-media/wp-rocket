@@ -31,23 +31,18 @@ class TestRevokeAppPasswords extends TestCase {
 	}
 
 	/**
+	 * @dataProvider configTestData
 	 * @runInSeparateProcess
 	 * @preserveGlobalState disabled
 	 */
-	public function testShouldRevokeTheWpRocketPasswords(): void {
-		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-		$wap_client = Mockery::mock( 'alias:WapClient' );
-		$wap_client->shouldReceive( 'revoke_app_passwords' )->once()->with( 'wprocket' );
-
-		$this->subscriber->revoke_app_passwords();
-	}
-
-	/**
-	 * @runInSeparateProcess
-	 * @preserveGlobalState disabled
-	 */
-	public function testShouldDoNothingWhenTheLibraryIsMissing(): void {
-		$this->assertFalse( class_exists( 'WapClient', false ) );
+	public function testShouldDoExpected( $config, $expected ): void {
+		if ( $config['wap_client_exists'] ) {
+			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+			$wap_client = Mockery::mock( 'alias:WapClient' );
+			$wap_client->shouldReceive( 'revoke_app_passwords' )->once()->with( $expected['product'] );
+		} else {
+			$this->assertFalse( class_exists( 'WapClient', false ) );
+		}
 
 		$this->subscriber->revoke_app_passwords();
 	}
