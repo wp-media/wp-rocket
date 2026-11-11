@@ -50,7 +50,9 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		add_filter( 'pre_get_rocket_option_cache_webp', [ $this, 'set_cache_webp' ] );
 		add_filter( 'rocket_disable_webp_cache', [ $this, 'disable_webp_cache'] );
 		add_filter( 'rocket_file_extensions_for_webp', [ $this, 'set_extensions_webp'] );
-		add_filter( 'rocket_attributes_for_webp', [ $this, 'set_attributes_webp' ] );
+		if ( isset( $config['filter_attr'] ) ) {
+			add_filter( 'rocket_attributes_for_webp', [ $this, 'set_attributes_webp' ] );
+		}
 		add_filter( 'rocket_cdn_cnames', [ $this, 'set_cdn_cnames'] );
 
 		Functions\when( 'apache_request_headers' )

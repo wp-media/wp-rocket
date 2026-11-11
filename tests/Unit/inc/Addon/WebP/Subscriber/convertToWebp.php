@@ -72,10 +72,12 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 			->once()
 			->andReturn( $config['filter_ext'] );
 
-		Filters\expectApplied( 'rocket_attributes_for_webp' )
-			->atMost()
-			->once()
-			->andReturn( $config['filter_attr'] );
+		if ( isset( $config['filter_attr'] ) ) {
+			Filters\expectApplied( 'rocket_attributes_for_webp' )
+				->atMost()
+				->once()
+				->andReturn( $config['filter_attr'] );
+		}
 
 		$this->stubWpParseUrl();
 		Functions\when( 'site_url' )->justReturn( 'http://example.org' );
