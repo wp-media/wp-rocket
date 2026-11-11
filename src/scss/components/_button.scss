@@ -150,3 +150,50 @@
 		}
 	}
 }
+
+/*-----------------------------------------------*\
+    WAP support chat launcher button
+\*-----------------------------------------------*/
+.wap-chat-column__launcher {
+    padding: 10px 16px 10px 12px !important;
+    width: auto !important;
+    background-color: rgb(64, 186, 203) !important;
+    border-color: rgb(64, 186, 203) !important;
+    color: $cWhite !important;
+    transition: transform 125ms ease-in-out, box-shadow 250ms ease;
+    height: 60px !important;
+    border-radius: 24px !important;
+    inset-block-end: 40px !important;
+    inset-inline-end: 40px !important;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+
+    &:active {
+        box-shadow: none;
+    }
+
+    &::after {
+        content: attr(title);
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        line-height: 14px;
+    }
+
+    &:hover,
+    &:focus {
+        transform: scale(1.125);
+        opacity: 1 !important;
+    }
+
+    @media (max-height: 740px) {
+        inset-block-end: 10px !important;
+        inset-inline-end: 20px !important;
+    }
+
+    // The previous button had squircle corners. Browsers without corner-shape keep the rounded corners above.
+    @supports (corner-shape: squircle) {
+        border-radius: 30px !important;
+        corner-shape: superellipse(1.4);
+    }
+}

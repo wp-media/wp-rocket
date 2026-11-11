@@ -2,7 +2,7 @@
 
 return [
 	'testShouldReturnErrorWhenWrongKeyAndEmail' => [
-		'params'   => [
+		'config'   => [
 			'key'   => false,
 			'email' => false,
 		],
@@ -19,7 +19,7 @@ return [
 		],
 	],
 	'testShouldReturnErrorWhenWrongKey' => [
-		'params'   => [
+		'config'   => [
 			'key'   => false,
 			'email' => true,
 		],
@@ -35,7 +35,7 @@ return [
 		],
 	],
 	'testShouldReturnErrorWhenWrongEmail' => [
-		'params'   => [
+		'config'   => [
 			'key'   => true,
 			'email' => false,
 		],
@@ -51,7 +51,7 @@ return [
 		],
 	],
 	'testShouldReturnSupportDataWhenValid' => [
-		'params'   => [
+		'config'   => [
 			'key'   => true,
 			'email' => true,
 		],
