@@ -97,6 +97,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'cdn_context',
 					'rocketcdn_subscription_controller',
+					'options',
 				]
 			);
 		// RocketCDN REST API pages controller.
