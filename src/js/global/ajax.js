@@ -313,7 +313,19 @@ document.addEventListener('DOMContentLoaded', function() {
 					value: isChecked ? 1 : 0,
 					_ajax_nonce: rocket_ajax_data.nonce,
 				})
-			});
+			})
+				.then((response) => response.json())
+				.then((response) => {
+					if (!response.success) {
+						return;
+					}
+
+					// The SDK is only printed at page load when opted in, so reload to load it, or to unload it on opt-out.
+					if (!isChecked || typeof mixpanel === 'undefined') {
+						location.reload();
+					}
+				})
+				.catch(() => {});
 		});
 	}
 });
