@@ -20,7 +20,7 @@ class Test_CpcssSection extends TestCase {
 	protected static $provider_class = 'Post';
 	private $async_css_mobile;
 	private $async_css;
-	private $remove_unused_css = 0;
+	private $remove_unused_css;
 	private $post_id;
 	private static $user_id;
 
@@ -61,17 +61,13 @@ class Test_CpcssSection extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDisplayCPCSSSection( $config, $expected ) {
-		if ( null === $expected ) {
-			$this->markTestSkipped( 'This scenario is for early-return tests.' );
-		}
-
 		wp_set_current_user( self::getUserId() );
 
-		$this->async_css_mobile  = $config['options']['async_css_mobile'] ?? 0;
-		$this->async_css         = $config['options']['async_css'];
+		$this->async_css_mobile = $config['options']['async_css_mobile'];
+		$this->async_css        = $config['options']['async_css'];
 		$this->remove_unused_css = $config['options']['remove_unused_css'] ?? 0;
-		$this->post_id           = $config['post']->ID;
-		$GLOBALS['post']         = $config['post'];
+		$this->post_id          = $config['post']->ID;
+		$GLOBALS['post']        = $config['post'];
 
 		if ( $config['is_option_excluded'] ) {
 			add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
