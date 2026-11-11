@@ -163,7 +163,11 @@ class Subscriber implements Subscriber_Interface {
 			'privacy_url'     => self::PRIVACY_URL,
 			'site_access_url' => self::SITE_ACCESS_URL,
 			'screens'         => [ 'settings_page_wprocket' ],
-			'column'          => [ 'side' => 'right' ],
+			// The chat connects only when the column is opened; older libraries silently drop the unknown startOnOpen key.
+			'column'          => [
+				'side'        => 'right',
+				'startOnOpen' => true,
+			],
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
