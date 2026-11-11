@@ -316,8 +316,12 @@ document.addEventListener('DOMContentLoaded', function() {
 			})
 				.then((response) => response.json())
 				.then((response) => {
-					// The SDK is only printed at page load when opted in, so reload to load it.
-					if (response.success && isChecked && typeof mixpanel === 'undefined') {
+					if (!response.success) {
+						return;
+					}
+
+					// The SDK is only printed at page load when opted in, so reload to load it, or to unload it on opt-out.
+					if (!isChecked || typeof mixpanel === 'undefined') {
 						location.reload();
 					}
 				})
