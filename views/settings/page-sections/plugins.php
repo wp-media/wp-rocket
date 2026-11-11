@@ -52,11 +52,11 @@ defined( 'ABSPATH' ) || exit;
 									<span class="dashicons dashicons-yes"></span>
 								</div>
 							<?php else : ?>
-							<a class="wpr-button wpr-button--black" href="<?php echo esc_html( $wpm_plugin['cta']['url'] ); ?>">
+							<a class="wpr-button wpr-button--black" href="<?php echo esc_url( $wpm_plugin['cta']['url'] ); ?>">
 								<?php echo esc_html( $wpm_plugin['cta']['text'] ); ?>
 							</a>
 
-							<a target="_blank" rel="noreferrer" href="<?php echo esc_html( $wpm_plugin['link'] ); ?>">
+							<a target="_blank" rel="noreferrer" href="<?php echo esc_url( $wpm_plugin['link'] ); ?>">
 								<?php esc_html_e( 'Learn More', 'rocket' ); ?>
 							</a>
 							<?php endif; ?>
