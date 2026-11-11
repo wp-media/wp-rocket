@@ -77,6 +77,9 @@ class TestGetColumnConfig extends TestCase {
 				case 'grnd_issuer_url':
 					$this->assertSame( $value, $result['grnd']['issuer_url'], 'grnd.issuer_url' );
 					break;
+				case 'column_start_on_open':
+					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
+					break;
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
 					break;

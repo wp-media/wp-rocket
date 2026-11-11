@@ -36,7 +36,11 @@ return [
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
 				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
 				'screens'          => [ 'settings_page_wprocket' ],
-				'column'           => [ 'side' => 'right' ],
+				'column'           => [
+					'side'        => 'right',
+					'startOnOpen' => true,
+				],
+				'column_start_on_open' => true,
 				'show_agent_selector' => false,
 			],
 		],
