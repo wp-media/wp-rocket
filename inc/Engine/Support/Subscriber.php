@@ -171,10 +171,12 @@ class Subscriber implements Subscriber_Interface {
 				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
 				: self::WAP_SERVER_URL,
 			'grnd'            => [
-				'issuer_url'  => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+				'issuer_url'    => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					? rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					: self::WAP_ISSUER_URL,
-				'license_key' => $license_key . '|' . $email,
+				'license_key'   => $license_key . '|' . $email,
+				// Gives each WordPress user their own chat history instead of one shared per site.
+				'send_user_ref' => true,
 			],
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,

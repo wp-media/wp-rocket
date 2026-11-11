@@ -256,6 +256,9 @@ class WPRocketUninstall {
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
+		// Delete the per-user chat reference, network-wide on multisite.
+		delete_metadata( 'user', '', 'wap_client_user_ref_wprocket', '', true );
+
 		// Delete all post meta related to WP Rocket.
 		foreach ( $this->post_meta as $post_meta ) {
 			delete_post_meta_by_key( "_rocket_exclude_{$post_meta}" );

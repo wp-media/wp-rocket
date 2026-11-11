@@ -93,6 +93,18 @@ return [
 			],
 		],
 	],
+	'grnd_sends_user_ref'            => [
+		'config'   => [
+			'consumer_key'   => 'test-consumer-key',
+			'consumer_email' => 'user@example.org',
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [
+				'grnd_send_user_ref' => true,
+			],
+		],
+	],
 	'always_support_agent'           => [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
