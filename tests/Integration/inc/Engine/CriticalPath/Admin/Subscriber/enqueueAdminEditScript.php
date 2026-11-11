@@ -22,6 +22,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	private static $user_id;
 	private $async_css;
 	private $async_css_mobile;
+	private $remove_unused_css;
 
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
@@ -42,6 +43,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	public function tear_down() {
 		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
 		unset( $GLOBALS['pagenow'] );
@@ -64,9 +66,11 @@ class Test_EnqueueAdminEditScript extends TestCase {
 			$this->async_css        = $config['options']['async_css'];
 			$this->post_id          = $config['post']->ID;
 			$this->async_css_mobile = isset( $config['options']['async_css_mobile'] ) ? $config['options']['async_css_mobile'] : 0;
+			$this->remove_unused_css = $config['options']['remove_unused_css'] ?? 0;
 
 			add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 			add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
+			add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 
 			if ( $config['is_option_excluded'] ) {
 				add_post_meta( $this->post_id, '_rocket_exclude_async_css', $config['is_option_excluded'], true );
@@ -95,6 +99,10 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	public function setCPCSSMobileOption() {
 		return $this->async_css_mobile;
+	}
+
+	public function setRemoveUnusedCSSOption() {
+		return $this->remove_unused_css;
 	}
 
 	public static function getUserId() {

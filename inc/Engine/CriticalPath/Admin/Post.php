@@ -63,13 +63,7 @@ class Post extends Abstract_Render {
 			return;
 		}
 
-		// Hide CPCSS section when LCA is not enabled globally.
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			return;
-		}
-
-		// Hide CPCSS section when RUCSS is active (supersedes CPCSS).
-		if ( $this->options->get( 'remove_unused_css', 0 ) ) {
+		if ( ! $this->is_section_available() ) {
 			return;
 		}
 
@@ -130,6 +124,10 @@ class Post extends Abstract_Render {
 			return;
 		}
 
+		if ( ! $this->is_section_available() ) {
+			return;
+		}
+
 		// Bailout if the CPCSS is not enabled for this Post / Page.
 		if ( $this->is_enabled() ) {
 			return;
@@ -156,6 +154,15 @@ class Post extends Abstract_Render {
 				'wprMobileCpcssEnabled' => $this->options->get( 'async_css_mobile', 0 ),
 			]
 		);
+	}
+
+	/**
+	 * Checks if the CPCSS section applies: LCA is enabled and RUCSS is not.
+	 *
+	 * @return bool
+	 */
+	private function is_section_available(): bool {
+		return (bool) $this->options->get( 'async_css', 0 ) && ! $this->options->get( 'remove_unused_css', 0 );
 	}
 
 	/**
