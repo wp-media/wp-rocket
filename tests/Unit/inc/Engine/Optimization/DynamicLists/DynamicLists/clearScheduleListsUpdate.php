@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::clear_schedule_lists_update
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::clear_schedule_lists_update
  *
  * @group  DynamicLists
  */

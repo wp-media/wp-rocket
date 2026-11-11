@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts::exclude_inline_from_rucss
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts::exclude_inline_from_rucss
  * @group InlineRelatedPosts
  * @group ThirdParty
  */

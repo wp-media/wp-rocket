@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_enable_cdn_option
  * @group OneCom
  * @group ThirdParty
  */

@@ -39,7 +39,7 @@ class Database {
 	 *
 	 * @return bool
 	 */
-	public function truncate_used_css_table() : bool {
+	public function truncate_used_css_table(): bool {
 		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return false;
 		}
@@ -56,7 +56,7 @@ class Database {
 			return;
 		}
 
-		$this->rucss_usedcss_table->delete_old_used_css();
+		$this->rucss_usedcss_table->delete_old_rows();
 	}
 
 	/**
@@ -64,11 +64,11 @@ class Database {
 	 *
 	 * @return array
 	 */
-	public function get_old_used_css() : array {
+	public function get_old_used_css(): array {
 		if ( ! $this->rucss_usedcss_table->exists() ) {
 			return [];
 		}
-		return $this->rucss_usedcss_table->get_old_used_css();
+		return $this->rucss_usedcss_table->get_old_rows();
 	}
 
 	/**

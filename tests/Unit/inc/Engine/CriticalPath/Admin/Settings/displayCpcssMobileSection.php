@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Tests\Unit\inc\Engine\CriticalPath\Admin\AdminTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::cpcss_section
  *
  * @group  CriticalPath
  */

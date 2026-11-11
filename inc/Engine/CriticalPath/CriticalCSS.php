@@ -133,6 +133,7 @@ class CriticalCSS {
 	 * @since 3.3
 	 */
 	public function stop_generation() {
+		// @phpstan-ignore-next-line
 		if ( method_exists( $this->process, 'cancel_process' ) ) {
 			$this->process->cancel_process();
 		}
@@ -281,7 +282,7 @@ class CriticalCSS {
 
 		foreach ( $this->items as $item ) {
 			if ( ! isset( $item['mobile'] ) ) {
-				$total ++;
+				++$total;
 				continue;
 			}
 
@@ -289,7 +290,7 @@ class CriticalCSS {
 				continue;
 			}
 
-			$total ++;
+			++$total;
 		}
 
 		$transient = [

@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Fixtures\DIContainer;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_generate_advanced_cache_file
+ * Test class covering ::rocket_generate_advanced_cache_file
  * @uses \WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
  * @uses   ::is_rocket_generate_caching_mobile_files
  * @uses ::get_rocket_option

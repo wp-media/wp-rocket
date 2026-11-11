@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists::get_combine_js_excluded_inline
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists::get_combine_js_excluded_inline
  *
  * @group  DynamicLists
  */

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\CacheDynamicResour
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
+ * Test class covering \WP_Rocket\Engine\Optimization\CacheDynamicResource::cache_dynamic_resource
  * @group  CacheDynamicResource
  */
 class Test_CacheDynamicResource extends FilesystemTestCase {
@@ -26,7 +26,6 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 
 	public function tear_down() {
 		remove_filter( "pre_get_rocket_option_minify_{$this->minify_type}_key", [ $this, 'getMinifyKey' ] );
-		remove_filter( 'pre_http_request', [ $this, 'pre_request' ] );
 
 		if ( $this->isCSSTestData ) {
 			wp_dequeue_style( $this->src );
@@ -42,7 +41,7 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testCacheDynamicResource( $event, $src, $expected, $settings ) {
+	public function testCacheDynamicResource( $event, $src, $expected, $settings, $response_code = 200 ) {
 		// Set up the test.
 		$this->isCSSTestData = ( 'style_loader_src' === $event );
 		$this->src = $src;
@@ -59,7 +58,15 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
 			wp_enqueue_script( $src, $src );
 		}
 
-		add_filter( 'pre_http_request', [ $this, 'pre_request' ] );
+		$this->config['http'] = [
+			$src => [
+				'headers'  => [],
+				'body'     => 'test',
+				'response' => [ 'code' => $response_code ],
+				'cookies'  => [],
+				'filename' => '',
+			],
+		];
 
 		// Apply the filter event. Check the result.
 		$this->assertSame( $expected, apply_filters( $event, $src, '' ) );
@@ -119,13 +126,4 @@ class Test_CacheDynamicResource extends FilesystemTestCase {
         return $this->zones;
     }
 
-	public function pre_request() {
-		return [
-			'headers' => [],
-			'body' => 'test',
-			'response' => [],
-			'cookies' => [],
-			'filename' => ''
-		];
-	}
 }

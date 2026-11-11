@@ -51,6 +51,10 @@ class HostSubscriberFactory implements SubscriberFactoryInterface {
 				return new OneCom();
 			case 'proisp':
 				return new ProIsp();
+			case 'pressidium':
+				return new Pressidium();
+			case 'siteground':
+				return new SiteGround();
 			default:
 				return new NullSubscriber();
 		}

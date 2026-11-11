@@ -10,5 +10,5 @@ interface ContextInterface {
 	 * @param array $data Data to pass to the context.
 	 * @return bool
 	 */
-	public function is_allowed( array $data = []): bool;
+	public function is_allowed( array $data = [] ): bool;
 }

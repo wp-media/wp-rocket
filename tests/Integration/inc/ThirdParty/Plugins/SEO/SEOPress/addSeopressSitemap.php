@@ -2,18 +2,18 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\SEO\SEOPress;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\SEOPress::add_seopress_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\SEOPress::add_seopress_sitemap
  *
  * @group  SEOPress
  * @group  ThirdParty
  */
 class Test_AddSeopressSitemap extends TestCase
 {
-	use FilterTrait;
+	use IsolateHookTrait;
 
 
 	public function setUp(): void
@@ -24,7 +24,7 @@ class Test_AddSeopressSitemap extends TestCase
 
 	public function tearDown(): void
 	{
-		$this->restoreWpFilter('rocket_sitemap_preload_list');
+		$this->restoreWpHook('rocket_sitemap_preload_list');
 		parent::tearDown();
 	}
 

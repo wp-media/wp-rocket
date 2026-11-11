@@ -8,13 +8,13 @@ use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::notice_wp_config_permissions
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::notice_wp_config_permissions
  * @uses   ::rocket_get_constant
  * @uses   ::rocket_notice_html
  *
  * @group  WPCache
  */
-class Test_NoticeWpConfigPermissions extends FileSystemTestCase {
+class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Cache/WPCache/noticeWpConfigPermissions.php';
 
 	protected function setUp(): void {

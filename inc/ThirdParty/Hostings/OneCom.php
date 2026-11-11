@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\ThirdParty\Hostings;
 
+use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
@@ -22,18 +23,21 @@ class OneCom implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'pre_get_rocket_option_cdn'               => 'maybe_enable_cdn_option',
 			'pre_get_rocket_option_cdn_cnames'        => 'maybe_update_cdn_cname',
 			'pre_get_rocket_option_cdn_zone'          => 'maybe_update_cdn_zone',
 			'rocket_cdn_reject_files'                 => 'exclude_from_cdn',
 			'rocket_disable_cdn_option_change'        => 'is_oc_cdn_enabled',
-			'rocket_cdn_settings_fields'              => 'disable_cdn_change',
 			'do_rocket_varnish_http_purge'            => 'is_varnish_active',
 			'rocket_varnish_field_settings'           => 'maybe_set_varnish_addon_title',
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 			'rocket_display_rocketcdn_cta'            => 'return_false',
 			'rocket_display_rocketcdn_status'         => 'return_false',
-			'rocket_promote_rocketcdn_notice'         => 'return_false',
+			'rocket_display_rocketcdn_recommendation' => 'return_false',
+			'rocket_cdn_driver_sections'              => [ 'disable_cdn_mode_toggle', PHP_INT_MAX ],
+			'rocket_hide_rocketcdn_notices'           => 'return_true',
+			'pre_get_rocket_option_cdn_type'          => 'disable_rocketcdn_tab',
+			'pre_get_rocket_option_cdn_state'         => 'maybe_set_cdn_state',
+			'rocket_display_cdn_mode_toggle'          => [ 'maybe_display_cdn_mode_toggle', 10, 2 ],
 		];
 	}
 
@@ -47,32 +51,22 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Enable CDN option.
-	 *
-	 * @param string|null $cdn CDN Option.
-	 * @return bool|null
-	 */
-	public function maybe_enable_cdn_option( ?string $cdn ) {
-		return $this->is_oc_cdn_enabled() ? true : $cdn;
-	}
-
-	/**
 	 * Update CNAME
 	 *
-	 * @param string|null $cname CDN CNAME.
+	 * @param array|null $cname CDN CNAME.
 	 * @return array|null
 	 */
-	public function maybe_update_cdn_cname( ?string $cname ) {
+	public function maybe_update_cdn_cname( ?array $cname ) {
 		return $this->is_oc_cdn_enabled() ? [ $this->build_cname() ] : $cname;
 	}
 
 	/**
 	 * Update CDN Zones.
 	 *
-	 * @param string|null $zone CDN ZONES.
+	 * @param array|null $zone CDN ZONES.
 	 * @return array|null
 	 */
-	public function maybe_update_cdn_zone( ?string $zone ) {
+	public function maybe_update_cdn_zone( ?array $zone ) {
 		return $this->is_oc_cdn_enabled() ? [ 'all' ] : $zone;
 	}
 
@@ -94,20 +88,43 @@ class OneCom implements Subscriber_Interface {
 	}
 
 	/**
-	 * Disable CDN option change.
+	 * Disables the CDN mode toggle for all CDN driver sections.
 	 *
-	 * @param array $settings CDN field settings data.
+	 * When One.com's own CDN handling is active, WP Rocket's CDN mode toggle
+	 * (BYOCDN, RocketCDN Free, RocketCDN Paid) must not be switchable — One.com
+	 * manages CDN delivery itself, so letting a user flip WP Rocket's own CDN
+	 * modes on top of it would conflict.
+	 *
+	 * @param array $sections CDN sections data.
 	 * @return array
 	 */
-	public function disable_cdn_change( array $settings ): array {
+	public function disable_cdn_mode_toggle( array $sections ): array {
 		if ( ! $this->is_oc_cdn_enabled() ) {
-			return $settings;
+			return $sections;
 		}
 
-		$settings['cdn']['container_class'][]      = 'wpr-isDisabled';
-		$settings['cdn']['input_attr']['disabled'] = 1;
+		$cdn_sections = [
+			'cdn',
+			'rocketcdn_paid',
+			'rocketcdn_free',
+		];
 
-		return $settings;
+		foreach ( $cdn_sections as $cdn_section ) {
+			$cdn_section_key = $cdn_section . '_section';
+
+			if ( ! isset( $sections[ $cdn_section_key ] ) ) {
+				continue;
+			}
+
+			$sections[ $cdn_section_key ]['is_forced_off'] = true;
+
+			// Hide the "Your CDN is active" status indicator; one.com manages the CDN.
+			if ( isset( $sections[ $cdn_section_key ]['status_indicator'] ) ) {
+				$sections[ $cdn_section_key ]['status_indicator']['is_active'] = false;
+			}
+		}
+
+		return $sections;
 	}
 
 	/**
@@ -164,7 +181,36 @@ class OneCom implements Subscriber_Interface {
 		$http_host   = sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ) );
 
 		$is_subdomain = '' === str_replace( $domain_name, '', $http_host ) ? false : true;
-
 		return $is_subdomain ? "usercontent.one/wp/$http_host" : "usercontent.one/wp/www.$http_host";
+	}
+
+	/**
+	 * Disable rocketcdn tab completely.
+	 *
+	 * @return string
+	 */
+	public function disable_rocketcdn_tab() {
+		return 'byocdn';
+	}
+
+	/**
+	 * Force the CDN state to BYOCDN when one.com's own CDN handling is active.
+	 *
+	 * @param string|null $cdn_state CDN state.
+	 * @return string|null
+	 */
+	public function maybe_set_cdn_state( ?string $cdn_state ) {
+		return $this->is_oc_cdn_enabled() ? Context::BYOCDN_TYPE : $cdn_state;
+	}
+
+	/**
+	 * Show the CDN mode toggles only when one.com's own CDN handling is active.
+	 *
+	 * @param bool   $show CDN mode toggle would be displayed.
+	 * @param string $mode CDN mode identifier (rocketcdn_free|rocketcdn_paid|byocdn).
+	 * @return bool
+	 */
+	public function maybe_display_cdn_mode_toggle( $show, $mode ): bool {
+		return ! $this->is_oc_cdn_enabled();
 	}
 }

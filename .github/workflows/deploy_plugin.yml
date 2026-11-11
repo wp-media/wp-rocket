@@ -10,23 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
-          php-version: '7.3'
+          php-version: '7.4'
           tools: composer:v2
-
-      - name: Get composer cache directory
-        id: composercache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composercache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}
-          restore-keys: ${{ runner.os }}-composer-
 
       - name: Download zip
         run: |
@@ -40,8 +30,10 @@ jobs:
         working-directory: /tmp/wp-rocket
 
       - name: Run composer
-        run: composer install --no-scripts --no-dev
-        working-directory: /tmp/wp-rocket
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
+        with:
+          working-directory: /tmp/wp-rocket
+          composer-options: "--no-scripts --no-dev"
 
       - name: Remove composer installers
         run: composer remove composer/installers --update-no-dev --no-scripts
@@ -52,13 +44,45 @@ jobs:
         working-directory: /tmp/wp-rocket
 
       - name: Zip Folder
-        run: zip -r __wp-rocket_${GITHUB_REF##*v}.zip wp-rocket
+        run: |
+          VERSION=${{ github.event.release.tag_name }}
+          zip -r __wp-rocket_${VERSION#v}.zip wp-rocket
+        working-directory: /tmp
+
+      # The zip is published under the tag's version, and licence-data.php is
+      # personalised for each customer at download time. Fail the release
+      # before anything is uploaded when the zip is not what its tag says: a
+      # Version: header that differs from the tag (3.23.2 shipped with
+      # 3.23.2-alpha), or no licence-data.php (3.17.3).
+      - name: Check Zip
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          VERSION=${TAG#v}
+          ZIP=__wp-rocket_${VERSION}.zip
+          fail() { echo "::error title=Release zip::$ZIP: $1"; exit 1; }
+
+          roots=$(unzip -Z1 "$ZIP" | cut -d/ -f1 | sort -u | paste -s -d , -)
+          [ "$roots" = "wp-rocket" ] || fail "expected a single wp-rocket/ folder, found: $roots"
+
+          files=$(mktemp -d)
+          unzip -q "$ZIP" wp-rocket/wp-rocket.php -d "$files" || fail "wp-rocket/wp-rocket.php is missing"
+          header=$(grep -m 1 -i -E '^[[:space:]/*#@]*Version:' "$files/wp-rocket/wp-rocket.php" | sed -E 's/^[^:]*:[[:space:]]*//; s/[[:space:]].*$//' || true)
+          [ "$header" = "$VERSION" ] || fail "wp-rocket.php says Version: ${header:-nothing}, the release is $VERSION"
+
+          unzip -q "$ZIP" wp-rocket/licence-data.php -d "$files" || fail "wp-rocket/licence-data.php is missing"
+          for constant in WP_ROCKET_KEY WP_ROCKET_EMAIL; do
+            grep -q -E "^[[:space:]]*(//[[:space:]]*)?define\([[:space:]]*'$constant'[[:space:]]*,.*\);[[:space:]]*$" "$files/wp-rocket/licence-data.php" \
+              || fail "wp-rocket/licence-data.php has no define( '$constant', ... ); line"
+          done
+          echo "$ZIP: wp-rocket/ at version $VERSION, with licence-data.php"
         working-directory: /tmp
 
       - name: Upload Zip
         run: |
+          VERSION=${{ github.event.release.tag_name }}
           curl -v -X POST \
             -H "Content-Type: multipart/form-data" \
-            -F "file=@/tmp/__wp-rocket_${GITHUB_REF##*v}.zip;type=application/zip" \
+            -F "file=@/tmp/__wp-rocket_${VERSION#v}.zip;type=application/zip" \
             -H "Authorization: Bearer ${{ secrets.UPLOAD_ZIP_TOKEN }}" \
             ${{ secrets.UPLOAD_ZIP_URL }}

@@ -47,7 +47,7 @@ trait VirtualFilesystemTrait {
 	}
 
 	protected function getEntriesBefore( $dir = '' ) {
-		$this->entriesBefore = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
+		$this->entriesBefore = $this->filesystem->is_dir( $this->getDirUrl( $dir ) ) ? $this->filesystem->getListing( $this->getDirUrl( $dir ) ) : [];
 	}
 
 	protected function getShouldNotCleanEntries( array $shouldNotClean ) {
@@ -94,7 +94,8 @@ trait VirtualFilesystemTrait {
 				$this->assertFalse( $this->filesystem->exists( $entry ) );
 			} else {
 				// Emptied, but not deleted.
-				$entries = $this->filesystem->getFilesListing( $entry );
+				$entries = $this->filesystem->is_dir( $entry ) ? $this->filesystem->getFilesListing( $entry ) : [];
+
 				if ( $this->dumpResults ) {
 					var_dump( $entries );
 				}
@@ -104,7 +105,7 @@ trait VirtualFilesystemTrait {
 	}
 
 	protected function checkShouldNotDeleteEntries( $dir = '' ) {
-		$entriesAfterCleaning = $this->filesystem->getListing( $this->getDirUrl( $dir ) );
+		$entriesAfterCleaning = $this->filesystem->is_dir( $this->getDirUrl( $dir ) ) ? $this->filesystem->getListing( $this->getDirUrl( $dir ) ) : [];
 		$actual               = array_diff( $entriesAfterCleaning, $this->shouldNotClean );
 		if ( $this->dumpResults ) {
 			var_dump( $actual );

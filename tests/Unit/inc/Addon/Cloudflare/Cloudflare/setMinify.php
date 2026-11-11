@@ -11,7 +11,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::set_minify
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::set_minify
  *
  * @group Cloudflare
  */

@@ -15,9 +15,10 @@ class Iframe {
 	/**
 	 * Finds iframes in the HTML provided and call the methods to lazyload them
 	 *
-	 * @param string $html   Original HTML.
-	 * @param string $buffer Content to parse.
-	 * @param array  $args   Array of arguments to use.
+	 * @param string      $html   Original HTML.
+	 * @param string      $buffer Content to parse.
+	 * @param array<bool> $args   Array of arguments to use.
+	 *
 	 * @return string
 	 */
 	public function lazyloadIframes( $html, $buffer, $args = [] ) {
@@ -49,6 +50,8 @@ class Iframe {
 				continue;
 			}
 
+			$iframe_lazyload = '';
+
 			if ( $args['youtube'] ) {
 				$iframe_lazyload = $this->replaceYoutubeThumbnail( $iframe );
 			}
@@ -68,7 +71,7 @@ class Iframe {
 	/**
 	 * Checks if the provided iframe is excluded from lazyload
 	 *
-	 * @param array $iframe Array of matched patterns.
+	 * @param array<string> $iframe Array of matched patterns.
 	 * @return boolean
 	 */
 	public function isIframeExcluded( $iframe ) {
@@ -87,7 +90,7 @@ class Iframe {
 	 *
 	 * @since 2.1.1
 	 *
-	 * @return array
+	 * @return array<string>
 	 */
 	private function getExcludedPatterns() {
 		/**
@@ -114,7 +117,8 @@ class Iframe {
 	/**
 	 * Applies lazyload on the iframe provided
 	 *
-	 * @param array $iframe Array of matched elements.
+	 * @param array<string> $iframe Array of matched elements.
+	 *
 	 * @return string
 	 */
 	private function replaceIframe( $iframe ) {
@@ -139,7 +143,7 @@ class Iframe {
 		 *
 		 * @since 1.0
 		 *
-		 * @param array $html Output that will be printed.
+		 * @param string $html Output that will be printed.
 		 */
 		$iframe_lazyload  = apply_filters( 'rocket_lazyload_iframe_html', $iframe_lazyload );
 		$iframe_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
@@ -150,17 +154,22 @@ class Iframe {
 	/**
 	 * Replaces the iframe provided by the Youtube thumbnail
 	 *
-	 * @param array $iframe Array of matched elements.
-	 * @return bool|string
+	 * @param array<string> $iframe Array of matched elements.
+	 *
+	 * @return string
 	 */
 	private function replaceYoutubeThumbnail( $iframe ) {
 		$youtube_id = $this->getYoutubeIDFromURL( $iframe['src'] );
 
-		if ( ! $youtube_id ) {
-			return false;
+		if ( '' === $youtube_id ) {
+			return '';
 		}
 
 		$query = wp_parse_url( htmlspecialchars_decode( $iframe['src'] ), PHP_URL_QUERY );
+
+		if ( ! is_string( $query ) ) {
+			$query = '';
+		}
 
 		$youtube_url = $this->changeYoutubeUrlForYoutuDotBe( $iframe['src'] );
 		$youtube_url = $this->cleanYoutubeUrl( $iframe['src'] );
@@ -173,7 +182,7 @@ class Iframe {
 		 *
 		 * @since 2.11
 		 *
-		 * @param array $html Output that will be printed.
+		 * @param string $html Output that will be printed.
 		 */
 		$youtube_lazyload  = apply_filters( 'rocket_lazyload_youtube_html', '<div class="rll-youtube-player" data-src="' . esc_attr( $youtube_url ) . '" data-id="' . esc_attr( $youtube_id ) . '" data-query="' . esc_attr( $query ) . '" data-alt="' . esc_attr( $title ) . '"></div>' );
 		$youtube_lazyload .= '<noscript>' . $iframe[0] . '</noscript>';
@@ -185,19 +194,20 @@ class Iframe {
 	 * Gets the Youtube ID from the URL provided
 	 *
 	 * @param string $url URL to search.
-	 * @return bool|string
+	 *
+	 * @return string
 	 */
 	public function getYoutubeIDFromURL( $url ) {
 		$pattern = '#^(?:https?:)?(?://)?(?:www\.)?(?:youtu\.be|youtube\.com|youtube-nocookie\.com)/(?:embed/|v/|watch/?\?v=)?([\w-]{11})#iU';
 		$result  = preg_match( $pattern, $url, $matches );
 
 		if ( ! $result ) {
-			return false;
+			return '';
 		}
 
 		// exclude playlist.
 		if ( 'videoseries' === $matches[1] ) {
-			return false;
+			return '';
 		}
 
 		return $matches[1];

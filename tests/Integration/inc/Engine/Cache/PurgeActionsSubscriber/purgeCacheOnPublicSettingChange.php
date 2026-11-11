@@ -2,11 +2,10 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\PurgeActionsSubscriber;
 
 use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_domain
+ * Test class covering ::rocket_clean_domain
  * @uses  ::get_rocket_i18n_home_url
  * @uses  ::get_rocket_i18n_to_preserve
  * @uses  ::get_rocket_i18n_uri
@@ -21,19 +20,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group Clean
  */
 class Test_PurgeCacheOnPublicSettingChange extends FilesystemTestCase {
-	use i18nTrait, DBTrait;
+	use i18nTrait;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 	protected $path_to_test_data = '/inc/Engine/Cache/PurgeActionsSubscriber/purgeCacheOnPublicSettingChange.php';
 
 	public function tear_down() {

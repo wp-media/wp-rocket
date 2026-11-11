@@ -160,7 +160,7 @@ class Cloudflare {
 	 *
 	 * @return mixed true if the purge is successful, WP_Error otherwise
 	 */
-	public function purge_by_url( $post, $purge_urls, $lang ) {
+	public function purge_by_url( $post, $purge_urls, $lang ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 		$result = $this->endpoints->purge_files( $this->options->get( 'cloudflare_zone_id', '' ), $purge_urls );
 
 		if ( is_wp_error( $result ) ) {

@@ -1,8 +1,6 @@
 <?php
 
-namespace WPMedia\Cloudflare\Auth;
-
-use WP_Rocket\Addon\Cloudflare\Auth\AuthInterface;
+namespace WP_Rocket\Addon\Cloudflare\Auth;
 
 interface AuthFactoryInterface {
 
@@ -12,5 +10,5 @@ interface AuthFactoryInterface {
 	 * @param array $data Data to inject into the  client.
 	 * @return AuthInterface
 	 */
-	public function create( array $data = []): AuthInterface;
+	public function create( array $data = [] ): AuthInterface;
 }

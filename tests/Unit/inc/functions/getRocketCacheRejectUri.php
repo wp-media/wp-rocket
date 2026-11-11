@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::get_rocket_cache_reject_uri
+ * Test class covering ::get_rocket_cache_reject_uri
  * @group Functions
  * @group Options
  */
@@ -44,9 +44,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 	}
 	public function sanitizeURL( $url) {
 
-		$protocols = null;
 		$_context = 'db';
-		$original_url = $url;
 
 		if ( '' === $url ) {
 			return $url;

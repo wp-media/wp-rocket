@@ -2,23 +2,24 @@
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Cache\Purge;
 
-use Mockery;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\Purge;
-use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
+use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
- * @group  purge_actions
+ * Test class covering \WP_Rocket\Engine\Cache\Purge::purge_dates_archives
+ *
+ * @group purge_actions
  */
-class Test_PurgeDatesArchives extends FilesystemTestCase {
+class TestPurgeDatesArchives extends FilesystemTestCase {
+	private $purge;
 	protected $path_to_test_data = '/inc/Engine/Cache/Purge/purgeDatesArchives.php';
 
 	protected function setUp(): void {
 		parent::setUp();
-		
-		$query = $this->createPartialMock(Cache::class, ['query']);
+
+		$query       = $this->createPartialMock( Cache::class, [ 'query' ] );
 		$this->purge = new Purge( $this->filesystem, $query );
 	}
 
@@ -56,13 +57,11 @@ class Test_PurgeDatesArchives extends FilesystemTestCase {
 			->with( $date[0], $date[1], $date[2] )
 			->andReturn( "http://example.org/{$date[0]}/{$date[1]}/{$date[2]}/" );
 
-		Functions\when( 'wp_parse_url' )->alias( function( $url, $component = -1 ) {
-			return parse_url( $url, $component );
-		} );
+		$this->stubWpParseUrl();
 
 		$this->purge->purge_dates_archives( $post );
 
 		$this->checkEntriesDeleted( $cleaned );
 		$this->checkShouldNotDeleteEntries();
-   }
+	}
 }

@@ -18,7 +18,7 @@ add_action( 'wp_rocket_loaded', 'rocket_pl_remove_partial_purge_hooks' );
  *
  * @since 3.3
  *
- * @param object $post The Post object itself for which the action occured.
+ * @param object $post The Post object itself for which the action occurred.
  * @param array  $permalink A list of permalinks to be flushed from cache.
  *
  * @return void
@@ -45,7 +45,7 @@ function rocket_pl_clean_post( $post = false, $permalink = false ) {
  *
  * @return void
  */
-function rocket_pl_clean_home( $root = false, $lang = false ) {
+function rocket_pl_clean_home( $root = false, $lang = false ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed
 	if ( ! $post || ! $permalink ) {
 		return;
 	}
@@ -72,7 +72,7 @@ function rocket_pl_remove_partial_purge_hooks() {
 	];
 	// Remove rocket_clean_post() from core action hooks.
 	array_map(
-		function( $hook ) {
+		function ( $hook ) {
 			remove_action( $hook, 'rocket_clean_post' );
 		},
 		$clean_post_hooks

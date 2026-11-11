@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use wpdb;
 
 /**
- * @covers \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::check_on_update_options
+ * Test class covering \WP_Rocket\Engine\HealthCheck\ActionSchedulerCheck::check_on_update_options
  * @group  HealthCheck
  */
 class Test_CheckOnUpdateOptions extends TestCase {
@@ -30,7 +30,7 @@ class Test_CheckOnUpdateOptions extends TestCase {
 
 		$this->as_check = new ActionSchedulerCheck();
 
-		$GLOBALS['wpdb'] = $this->wpdb = new wpdb();
+		$GLOBALS['wpdb'] = $this->wpdb = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 	}
 
 	protected function tearDown(): void {

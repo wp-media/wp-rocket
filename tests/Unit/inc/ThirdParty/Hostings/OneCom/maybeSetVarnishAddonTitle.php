@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_set_varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\OneCom::maybe_set_varnish_addon_title
  * @group OneCom
  * @group ThirdParty
  */

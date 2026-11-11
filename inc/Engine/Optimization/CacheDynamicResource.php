@@ -12,6 +12,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class CacheDynamicResource extends AbstractOptimization implements Subscriber_Interface {
 	use CSSTrait;
+	use RemoteAssetTrait;
 
 	/**
 	 * Plugin options instance.
@@ -79,15 +80,15 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 		 *
 		 * @param array $excluded_files An array of filepath to exclude.
 		 */
-		$this->excluded_files   = (array) apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
-		$this->excluded_files[] = '/wp-admin/admin-ajax.php';
+		$excluded_files   = (array) apply_filters( 'rocket_exclude_static_dynamic_resources', [] );
+		$excluded_files[] = '.*/wp-admin/admin-ajax\.php'; // Leading .* also covers subdirectory installs.
 
-		foreach ( $this->excluded_files as $i => $excluded_file ) {
+		foreach ( $excluded_files as $i => $excluded_file ) {
 			// Escape character for future use in regex pattern.
-			$this->excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
+			$excluded_files[ $i ] = str_replace( '#', '\#', $excluded_file );
 		}
 
-		$this->excluded_files = implode( '|', $this->excluded_files );
+		$this->excluded_files = implode( '|', $excluded_files );
 	}
 
 	/**
@@ -298,7 +299,8 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	 * @return string|bool
 	 */
 	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		// PHP serves text/html by default, so only the response code is checked.
+		$content = $this->get_remote_asset_content( $url, false );
 
 		if ( ! $content ) {
 			return false;

@@ -13,7 +13,7 @@ use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Actions;
 /**
- * @covers \WP_Rocket\Engine\Admin\DomainChange\Subscriber::maybe_clean_cache_domain_change
+ * Test class covering \WP_Rocket\Engine\Admin\DomainChange\Subscriber::maybe_clean_cache_domain_change
  */
 class Test_maybeCleanCacheDomainChange extends TestCase {
 
@@ -54,10 +54,10 @@ class Test_maybeCleanCacheDomainChange extends TestCase {
 		Filters\expectApplied('rocket_configurations_changed')->andReturn($config['rocket_configurations_changed']);
 
 		if($config['options'] && ! $config['rocket_configurations_changed']) {
-			Actions\expectDone('rocket_options_changed');
+			Actions\expectDone('rocket_domain_options_changed');
 		}
 
         $this->subscriber->maybe_clean_cache_domain_change();
-		$this->assertTrue(true);
+		$this->assertTrue(true); // @phpstan-ignore-line
     }
 }

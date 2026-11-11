@@ -2,12 +2,12 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Queries;
 
+use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Logger\Logger;
-use WP_Rocket\Dependencies\Database\Query;
 use WP_Rocket\Engine\Preload\Database\Rows\CacheRow;
 use WP_Rocket\Engine\Preload\Database\Schemas\Cache as Schema;
 
-class Cache extends Query {
+class Cache extends AbstractQuery {
 
 	/**
 	 * Logger instance.
@@ -119,9 +119,9 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function create_or_update( array $resource ) {
+	public function create_or_update( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
 		/**
 		 * Format the url.
@@ -156,7 +156,7 @@ class Cache extends Query {
 				]
 			);
 
-			if ( $resource_id ) {
+			if ( ! empty( $resource_id ) ) {
 				return $resource_id;
 			}
 
@@ -194,9 +194,9 @@ class Cache extends Query {
 	 *
 	 * @param array $resource Resource array.
 	 *
-	 * @return bool
+	 * @return bool|int
 	 */
-	public function create_or_nothing( array $resource ) {
+	public function create_or_nothing( array $resource ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.resourceFound
 
 		if ( $this->is_rejected( $resource['url'] ) ) {
 			return false;
@@ -234,7 +234,7 @@ class Cache extends Query {
 			]
 		);
 
-		if ( $resource_id ) {
+		if ( ! empty( $resource_id ) ) {
 			return $resource_id;
 		}
 
@@ -298,12 +298,12 @@ class Cache extends Query {
 	 * @param string $unit unit from the delay.
 	 * @return array
 	 */
-	public function get_old_cache( float $delay = 1, string $unit = 'month' ) : array {
+	public function get_old_cache( float $delay = 1, string $unit = 'month' ): array {
 		// Get the database interface.
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return [];
 		}
 
@@ -338,8 +338,16 @@ class Cache extends Query {
 	 * @return array
 	 */
 	public function get_pending_jobs( int $total = 45 ) {
+		$inprogress_count = $this->query(
+			[
+				'count'     => true,
+				'status'    => 'in-progress',
+				'is_locked' => false,
+			],
+			false
+		);
 
-		if ( $total <= 0 ) {
+		if ( $total <= 0 || (int) $inprogress_count >= $total ) {
 			return [];
 		}
 
@@ -358,7 +366,7 @@ class Cache extends Query {
 
 		return $this->query(
 			[
-				'number'         => $total,
+				'number'         => ( $total - $inprogress_count ),
 				'status'         => 'pending',
 				'fields'         => [
 					'id',
@@ -380,7 +388,7 @@ class Cache extends Query {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_inprogress( int $id ) {
+	public function make_status_inprogress_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[
@@ -416,6 +424,37 @@ class Cache extends Query {
 				'modified' => current_time( 'mysql', true ),
 			]
 		);
+	}
+
+	/**
+	 * Get the number of rows for each tracked status.
+	 *
+	 * Uses the indexed `status` column with a `count` query per status to avoid
+	 * ever loading full rows or running an unbounded `SELECT *`, matching the
+	 * approach already used by `has_pending_jobs()`.
+	 *
+	 * @return array<string,int> Associative array keyed by status (pending, in-progress, completed, failed).
+	 */
+	public function get_status_counts(): array {
+		$statuses = [
+			'pending',
+			'in-progress',
+			'completed',
+			'failed',
+		];
+
+		$counts = [];
+
+		foreach ( $statuses as $status ) {
+			$counts[ $status ] = (int) $this->query(
+				[
+					'count'  => true,
+					'status' => $status,
+				]
+			);
+		}
+
+		return $counts;
 	}
 
 	/**
@@ -458,14 +497,14 @@ class Cache extends Query {
 	/**
 	 * Revert old in-progress rows
 	 *
-	 * @depecated
+	 * @deprecated
 	 */
 	public function revert_old_in_progress() {
 		// Get the database interface.
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -481,7 +520,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -497,7 +536,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -560,7 +599,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -595,7 +634,7 @@ class Cache extends Query {
 		$db = $this->get_db();
 
 		// Bail if no database interface is available.
-		if ( empty( $db ) ) {
+		if ( ! $db ) {
 			return false;
 		}
 
@@ -645,7 +684,7 @@ class Cache extends Query {
 	 * @param int $id id from the task.
 	 * @return bool
 	 */
-	public function make_status_failed( int $id ) {
+	public function make_status_failed_by_id( int $id ) {
 		return $this->update_item(
 			$id,
 			[
@@ -691,6 +730,5 @@ class Cache extends Query {
 			],
 			false
 		);
-
 	}
 }

@@ -2,7 +2,7 @@
 
 namespace WP_Rocket\Engine\Preload\Database\Rows;
 
-use WP_Rocket\Dependencies\Database\Row;
+use WP_Rocket\Dependencies\BerlinDB\Database\Row;
 
 class CacheRow extends Row {
 	/**

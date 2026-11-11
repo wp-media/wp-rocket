@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\EmojisSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\EmojisSubscriber::disable_emoji
+ * Test class covering \WP_Rocket\Engine\Media\EmojisSubscriber::disable_emoji
  *
  * @group Media
  * @group Emojis
@@ -18,7 +18,7 @@ class disableEmoji extends TestCase {
 
         unset( $_GET['nowprocket'] );
 		remove_filter( 'pre_get_rocket_option_emoji', [ $this, 'set_emoji_value' ] );
-		$this->restoreWpFilter( 'init' );
+		$this->restoreWpHook( 'init' );
 	}
 
 	/**

@@ -9,7 +9,7 @@ define( 'WP_ROCKET_IS_TESTING', true );
 
 // Set the path and URL to our virtual filesystem.
 define( 'WP_ROCKET_CACHE_ROOT_PATH', 'vfs://public/wp-content/cache/' );
-define( 'WP_ROCKET_CACHE_ROOT_URL', 'vfs://public/wp-content/cache/' );
+define( 'WP_ROCKET_CACHE_ROOT_URL', 'http://example.org/wp-content/cache/' );
 define( 'OBJECT', 'OBJECT' );
 /**
  * The original files need to loaded into memory before we mock them with Patchwork. Add files here before the unit
@@ -39,6 +39,7 @@ function load_original_files_before_mocking() {
 		'/WP_Post.php',
 		'/WP_Theme.php',
 		'/WPDieException.php',
+		'/WP_REST_Controller.php',
 		'/WP_Sitemaps_Index.php',
 		'/WP_Sitemaps.php',
 		'/WP_Filesystem_Direct.php',
@@ -47,7 +48,7 @@ function load_original_files_before_mocking() {
 		'/WP_Rewrite.php',
 		'/inc/ThirdParty/Plugins/SEO/RankMathSEO/fixtures.php',
 		'/inc/ThirdParty/Plugins/SEO/TheSEOFramework/fixtures.php',
-	  	'/classes/TRP_Url_Converter.php',
+	    '/classes/TRP_Url_Converter.php',
 		'/classes/TRP_Translate_Press.php',
 		'/classes/TRP_Settings.php',
 		'/classes/TRP_Languages.php',

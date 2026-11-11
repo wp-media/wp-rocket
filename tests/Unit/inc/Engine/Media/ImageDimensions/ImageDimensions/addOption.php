@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::add_option
+ * Test class covering \WP_Rocket\Engine\Media\ImageDimensions\ImageDimensions::add_option
  *
  * @group  ImageDimensions
  * @group  Media

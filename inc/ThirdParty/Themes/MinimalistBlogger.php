@@ -2,24 +2,15 @@
 
 namespace WP_Rocket\ThirdParty\Themes;
 
-class MinimalistBlogger extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'minimalistblogger';
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
+class MinimalistBlogger implements Subscriber_Interface {
 	/**
 	 * Return an array of events that this subscriber wants to listen to.
 	 *
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! self::is_current_theme() ) {
-			return [];
-		}
-
 		return [
 			'rocket_delay_js_exclusions' => 'exclude_jquery_from_delay_js',
 		];

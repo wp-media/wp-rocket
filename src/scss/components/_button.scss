@@ -33,11 +33,20 @@
         box-shadow: 0 7px 14px rgba(50,50,93,.25), 0 3px 6px rgba(0,0,0,.2);
     }
 
+	&--disabled, &:disabled{
+		opacity: 0.5;
+		pointer-events: none;
+        background: $cOrange;
+	}
+
     &--small{
         padding: 5px 0;
         letter-spacing: -0.08px;
         @include font-size(11,20);
     }
+	&--no-min-width{
+		min-width: auto !important;
+	}
 
     &--icon{
         min-width: 160px;
@@ -113,4 +122,31 @@
         outline: none;
         color: #fff !important;
     }
+
+	&--black{
+		background: $cBlack;
+		color: #fff;
+		&:hover{
+
+		}
+	}
+}
+.wpr-btn-with-tool-tip{
+	position: relative;
+	display: inline-block;
+
+	.wpr-tooltip{
+		position: absolute;
+		right: auto;
+		top: auto;
+		font-weight: 400;
+	}
+
+	&:hover {
+		.wpr-tooltip {
+			visibility: visible;
+			opacity: 1;
+			z-index: 99;
+		}
+	}
 }

@@ -148,7 +148,7 @@ function is_rocket_generate_caching_mobile_files() { // phpcs:ignore WordPress.N
  * return Array An array of domain names to DNS prefetch
  */
 function rocket_get_dns_prefetch_domains() {
-	$domains = (array) get_rocket_option( 'dns_prefetch' );
+	$domains = (array) get_rocket_option( 'dns_prefetch', [] );
 
 	/**
 	 * Filter list of domains to prefetch DNS
@@ -213,7 +213,7 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 		foreach ( $uris as $i => $uri ) {
 			/**
 			 * Since these URIs can be regex patterns like `/homeroot(/.+)/`, we can't simply search for the string `/homeroot/` (nor `/homeroot`).
-			 * So this pattern searchs for `/homeroot/` and `/homeroot(/`.
+			 * So this pattern searches for `/homeroot/` and `/homeroot(/`.
 			 */
 			if ( ! preg_match( '/' . $home_root_escaped . '\(?\//', $uri ) ) {
 				// Reject URIs located outside site's folder.
@@ -229,7 +229,7 @@ function get_rocket_cache_reject_uri( $force = false, $show_safe_content = true 
 	// Exclude feeds.
 	$uris[] = '/(?:.+/)?' . $wp_rewrite->feed_base . '(?:/(?:.+/?)?)?$';
 
-	// Exlude embedded URLs.
+	// Exclude embedded URLs.
 	$uris[] = '/(?:.+/)?embed/';
 
 	/**
@@ -334,6 +334,9 @@ function get_rocket_cache_mandatory_cookies() { // phpcs:ignore WordPress.Naming
 /**
  * Get list of dynamic cookies.
  *
+ * An entry is either a cookie name, or a cookie name mapped to the parts of that cookie the cache
+ * varies by ( 'parent' => [ 'child' ] ). Both shapes reach the cache file name.
+ *
  * @since 2.7
  *
  * @return array List of dynamic cookies.
@@ -350,7 +353,17 @@ function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingCo
 	 */
 	$cookies = (array) apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
 	$cookies = array_filter( $cookies );
-	$cookies = array_unique( $cookies );
+	$tokens  = [];
+
+	foreach ( $cookies as $key => $cookie ) {
+		if ( is_scalar( $cookie ) ) {
+			$tokens[ $key ] = 'name:' . $cookie;
+		} elseif ( is_array( $cookie ) ) {
+			$tokens[ $key ] = 'key:' . $key;
+		}
+	}
+
+	$cookies = array_intersect_key( $cookies, array_unique( $tokens ) );
 
 	return $cookies;
 }
@@ -458,10 +471,8 @@ function rocket_check_key() {
 		return $return;
 	}
 
-	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
-
 	$response = wp_remote_get(
-		rocket_get_constant( 'WP_ROCKET_WEB_VALID' ),
+		'https://api.wp-rocket.me/valid_key.php',
 		[
 			'timeout' => 30,
 		]
@@ -526,6 +537,13 @@ function rocket_check_key() {
 			return $return;
 		}
 
+		if ( 'BANNED_WEBSITE' === $body ) {
+			// Translators: %1$s = opening link tag, %2$s = closing link tag.
+			$message = __( 'License validation failed. This website is revoked.', 'rocket' ) . '<br>' . sprintf( __( 'Please see %1$sthis guide%2$s for more info.', 'rocket' ), '<a href="https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation#errors" rel="noopener noreferrer" target=_"blank">', '</a>' );
+			set_transient( 'rocket_check_key_errors', [ $message ] );
+			return $return;
+		}
+
 		// Translators: %1$s = opening em tag, %2$s = closing em tag, %3$s = opening link tag, %4$s closing link tag.
 		$message = __( 'License validation failed. Our server could not resolve the request from your website.', 'rocket' ) . '<br>' . sprintf( __( 'Try clicking %1$sSave Changes%2$s below. If the error persists, follow %3$sthis guide%4$s.', 'rocket' ), '<em>', '</em>', '<a href="https://docs.wp-rocket.me/article/100-resolving-problems-with-license-validation#general" rel="noopener noreferrer" target=_"blank">', '</a>' );
 		set_transient( 'rocket_check_key_errors', [ $message ] );
@@ -571,8 +589,6 @@ function rocket_check_key() {
 	if ( ! get_rocket_option( 'license' ) ) {
 		$rocket_options['license'] = '1';
 	}
-
-	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
 	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );

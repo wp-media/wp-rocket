@@ -6,14 +6,13 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
  *
  * @group AdminOnly
  * @group ThirdParty
  * @group CloudflarePlugin
  */
 class Test_DisplayServerPushingModeNotice extends TestCase{
-
 	protected $rucss;
     protected $combine_css;
     private static $admin_user_id = 0;
@@ -29,10 +28,23 @@ class Test_DisplayServerPushingModeNotice extends TestCase{
 		self::$contributer_user_id = static::factory()->user->create( [ 'role' => 'contributor' ] );
 	}
 
+	public function set_up()
+	{
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_server_pushing_mode_notice' );
+	}
+
 	public function tear_down()
 	{
 		remove_filter('pre_get_rocket_option_remove_unused_css', [$this, 'rucss']);
         remove_filter('pre_get_rocket_option_minify_concatenate_css', [$this, 'combine_css']);
+
+		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
+		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
+		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 	}

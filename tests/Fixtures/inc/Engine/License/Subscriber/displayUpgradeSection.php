@@ -19,6 +19,15 @@ return [
 		'data'   => json_decode( json_encode( [
 			'licence_account'    => 1,
 			'licence_expiration' => strtotime( 'next year' ),
+			'licence' => [
+				'prices' => [
+					'upgrades' => [
+						(object) [
+							"name"=> "Growth",
+						]
+					],
+				],
+			],
 		] ) ),
 		'expected' => '<p>
 		You can use WP Rocket on more websites by upgrading your license (you will only pay the price difference between your current and new licenses). <button class="wpr-license-upgrade-button wpr-popin-upgrade-toggle">Upgrade now</button>

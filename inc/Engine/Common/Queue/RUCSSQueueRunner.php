@@ -5,6 +5,9 @@ namespace WP_Rocket\Engine\Common\Queue;
 
 use WP_Rocket\Logger\Logger;
 use ActionScheduler_Abstract_QueueRunner;
+use ActionScheduler_Store;
+use ActionScheduler_FatalErrorMonitor;
+use ActionScheduler_AsyncRequest_QueueRunner;
 
 class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 
@@ -46,7 +49,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * @return RUCSSQueueRunner Instance.
 	 */
 	public static function instance() {
-		if ( empty( self::$runner ) ) {
+		if ( null === self::$runner ) {
 			self::$runner = new RUCSSQueueRunner();
 		}
 		return self::$runner;
@@ -55,19 +58,20 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	/**
 	 * ActionScheduler_QueueRunner constructor.
 	 *
-	 * @param \ActionScheduler_Store|null                    $store Store Instance.
-	 * @param \ActionScheduler_FatalErrorMonitor|null        $monitor Fatal Error monitor instance.
-	 * @param Cleaner|null                                   $cleaner Cleaner instance.
-	 * @param \ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
+	 * @param ActionScheduler_Store|null                    $store Store Instance.
+	 * @param ActionScheduler_FatalErrorMonitor|null        $monitor Fatal Error monitor instance.
+	 * @param Cleaner|null                                  $cleaner Cleaner instance.
+	 * @param ActionScheduler_AsyncRequest_QueueRunner|null $async_request Async Request Queue Runner instance.
 	 */
-	public function __construct( \ActionScheduler_Store $store = null, \ActionScheduler_FatalErrorMonitor $monitor = null, Cleaner $cleaner = null, \ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
+	public function __construct( ?ActionScheduler_Store $store = null, ?ActionScheduler_FatalErrorMonitor $monitor = null, ?Cleaner $cleaner = null, ?ActionScheduler_AsyncRequest_QueueRunner $async_request = null ) {
 		if ( is_null( $cleaner ) ) {
 			/**
 			 * Filters the clean batch size.
 			 *
 			 * @since 3.11.0.5
 			 *
-			 * @param int $batch_size Batch size.
+			 * @param int    $batch_size Batch size.
+			 * @param string $group The group name.
 			 *
 			 * @return int
 			 */
@@ -105,6 +109,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			wp_schedule_event( time(), $schedule, self::WP_CRON_HOOK, $cron_context );
 		}
 
+		// @phpstan-ignore-next-line Action callback returns int but should not return anything.
 		add_action( self::WP_CRON_HOOK, [ self::instance(), 'run' ] );
 		$this->hook_dispatch_async_request();
 	}
@@ -159,9 +164,10 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 *
 	 * @see ActionScheduler_AsyncRequest_QueueRunner::handle()
 	 *
-	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
-	 * @return int The number of actions processed.
+	 *
+	 * @return int
 	 */
 	public function run( $context = 'WP Cron' ) {
 		\ActionScheduler_Compatibility::raise_memory_limit();
@@ -178,6 +184,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 		}
 
 		do_action( 'action_scheduler_after_process_queue' );// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
 		return $processed_actions;
 	}
 
@@ -188,12 +195,16 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 * size is completed, or memory or time limits are reached, defined by @see $this->batch_limits_exceeded().
 	 *
 	 * @param int    $size The maximum number of actions to process in the batch.
-	 * @param string $context Optional identifer for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
+	 * @param string $context Optional identifier for the context in which this action is being processed, e.g. 'WP CLI' or 'WP Cron'
 	 *        Generally, this should be capitalised and not localised as it's a proper noun.
 	 * @return int The number of actions processed.
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
 		try {
+			if ( ! $this->has_claimable_actions() ) {
+				return 0;
+			}
+
 			$claim = $this->store->stake_claim( $size, null, [], $this->group );
 			$this->monitor->attach( $claim );
 			$processed_actions = 0;
@@ -204,7 +215,7 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 					break;
 				}
 				$this->process_action( $action_id, $context );
-				$processed_actions++;
+				++$processed_actions;
 
 				if ( $this->batch_limits_exceeded( $processed_actions ) ) {
 					break;
@@ -213,13 +224,54 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$this->store->release_claim( $claim );
 			$this->monitor->detach();
 			$this->clear_caches();
-
+			$this->reset_group();
 			return $processed_actions;
 		} catch ( \Exception $exception ) {
-			Logger::debug( $exception->getMessage() );
-
+			Logger::error( $exception->getMessage() );
+			$this->reset_group();
 			return 0;
 		}
+	}
+
+	/**
+	 * Checks if the group has pending, due and unclaimed actions, mirroring the claim query filters.
+	 *
+	 * @return bool
+	 *
+	 * @throws \RuntimeException When the query fails, so do_batch() logs the database error.
+	 */
+	private function has_claimable_actions(): bool {
+		global $wpdb;
+
+		$actions = $this->store->query_actions(
+			[
+				'group'        => $this->group,
+				'status'       => ActionScheduler_Store::STATUS_PENDING,
+				'claimed'      => false,
+				'date'         => as_get_datetime_object(),
+				'date_compare' => '<=',
+				'per_page'     => 1,
+				'orderby'      => 'none',
+			]
+		);
+
+		if ( empty( $actions ) && ! empty( $wpdb->last_error ) ) {
+			throw new \RuntimeException( sprintf( 'Unable to query claimable actions. Database error: %s', esc_html( $wpdb->last_error ) ) );
+		}
+
+		return ! empty( $actions );
+	}
+
+	/**
+	 * Reset group in store's claim filter.
+	 *
+	 * @return void
+	 */
+	private function reset_group() {
+		if ( ! method_exists( $this->store, 'set_claim_filter' ) ) {
+			return;
+		}
+		$this->store->set_claim_filter( 'group', '' );
 	}
 
 	/**
@@ -264,5 +316,4 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	public function get_allowed_concurrent_batches() {
 		return 2;
 	}
-
 }

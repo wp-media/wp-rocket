@@ -5,7 +5,7 @@ namespace WP_Rocket\Engine\Preload\Activation;
 
 use WP_Rocket\Engine\Activation\ActivationInterface;
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket\Engine\Preload\Controller\{PreloadUrl,Queue};
+use WP_Rocket\Engine\Preload\Controller\{PreloadUrl, Queue};
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 
 class Activation implements ActivationInterface {

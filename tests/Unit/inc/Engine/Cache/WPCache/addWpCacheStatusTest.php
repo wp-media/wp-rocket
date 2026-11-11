@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::add_wp_cache_status_test
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::add_wp_cache_status_test
  *
  * @group WPCache
  */

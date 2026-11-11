@@ -2,39 +2,20 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
- * @covers \WP_Rocket\Engine\Support\Subscriber::register_support_route
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_support_route
  *
  * @group Support
  */
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
-	use ApiTrait;
 	use StubTrait;
-	use DBTrait;
 
-	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
-	private $consumer_key;
-	private $consumer_email;
 	private $wp_version;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-		self::installFresh();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAll();
-
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();
@@ -80,8 +61,8 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		$wp_version           = '5.5';
 
 		$body = [
-			'email' => $params['email'] ? self::getApiCredential( 'ROCKET_EMAIL' ) : '',
-			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
+			'email' => $params['email'] ? TestCredentials::EMAIL : '',
+			'key'   => $params['key'] ? TestCredentials::KEY : '',
 		];
 
 		$actual = $this->requestSupportEndpoint( $body );
@@ -112,11 +93,11 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	}
 
 	public function set_consumer_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+		return TestCredentials::KEY;
 	}
 
 	public function set_consumer_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+		return TestCredentials::EMAIL;
 	}
 
 	public function configTestData() {

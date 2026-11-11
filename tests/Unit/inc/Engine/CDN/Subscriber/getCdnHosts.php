@@ -4,26 +4,41 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WPMedia\PHPUnit\Unit\TestCase;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\CDN\Cache;
 use WP_Rocket\Engine\CDN\CDN;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
+use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
+use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\CDN\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
+ * Test class covering \WP_Rocket\Engine\CDN\Subscriber::get_cdn_hosts
  * @group  CDN
  */
 class Test_GetCdnHosts extends TestCase {
 	private $cdn;
 	private $subscriber;
 
+	private $subscription_controller;
+
 	public function setUp() : void {
 		parent::setUp();
 
 		$this->cdn        = Mockery::mock( CDN::class );
+		$query = $this->createMock( RocketCDN::class );
+		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
+
 		$this->subscriber = new Subscriber(
 			Mockery::mock( Options_Data::class ),
-			$this->cdn
+			$this->cdn,
+			Mockery::mock( Options::class ),
+			$this->subscription_controller,
+			Mockery::mock( Cache::class ),
+			$query,
+			Mockery::mock( CdnStateBridge::class )
 		);
 
 		Functions\when( 'get_rocket_parse_url' )->alias( function( $url ) {
@@ -61,16 +76,19 @@ class Test_GetCdnHosts extends TestCase {
 	}
 
 	/**
-	 * @dataProvider addDataProvider
+	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnCdnArray( $original, $zones, $cdn_urls, $expected ) {
+	public function testShouldReturnCdnArray( $config, $expected ) {
 		$this->cdn->shouldReceive( 'get_cdn_urls' )
 			->once()
-			->andReturn( $cdn_urls );
+			->andReturn( $config['cdn_urls'] );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( true );
 
 		$this->assertSame(
 			$expected,
-			array_values( $this->subscriber->get_cdn_hosts( $original, $zones ) )
+			array_values( $this->subscriber->get_cdn_hosts( $config['original'], $config['zones'] ) )
 		);
 	}
 }

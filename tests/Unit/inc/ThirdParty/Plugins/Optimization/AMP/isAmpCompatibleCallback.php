@@ -10,21 +10,19 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::is_amp_compatible_callback
  * @group  ThirdParty
  * @group  WithAmp
  */
 class Test_IsAmpCompatibleCallback extends TestCase {
 	private $amp;
-	private $options;
 	private $cdn_subscriber;
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options        = Mockery::mock( Options_Data::class );
 		$this->cdn_subscriber = Mockery::mock( Subscriber::class );
-		$this->amp            = new AMP( $this->options, $this->cdn_subscriber );
+		$this->amp            = new AMP( $this->cdn_subscriber );
 	}
 
 	/**

@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack::add_all_in_one_seo_sitemap
  *
  * @group  AllInOneSEOPack
  * @group  ThirdParty

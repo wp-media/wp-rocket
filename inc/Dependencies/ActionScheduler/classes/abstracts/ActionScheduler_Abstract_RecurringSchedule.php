@@ -15,17 +15,17 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	 *
 	 * @var DateTime
 	 */
-	private $first_date = NULL;
+	private $first_date = null;
 
 	/**
 	 * Timestamp equivalent of @see $this->first_date
 	 *
 	 * @var int
 	 */
-	protected $first_timestamp = NULL;
+	protected $first_timestamp = null;
 
 	/**
-	 * The recurrance between each time an action is run using this schedule.
+	 * The recurrence between each time an action is run using this schedule.
 	 * Used to calculate the start date & time. Can be a number of seconds, in the
 	 * case of ActionScheduler_IntervalSchedule, or a cron expression, as in the
 	 * case of ActionScheduler_CronSchedule. Or something else.
@@ -35,17 +35,21 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	protected $recurrence;
 
 	/**
-	 * @param DateTime $date The date & time to run the action.
-	 * @param mixed $recurrence The data used to determine the schedule's recurrance.
+	 * Construct.
+	 *
+	 * @param DateTime      $date The date & time to run the action.
+	 * @param mixed         $recurrence The data used to determine the schedule's recurrence.
 	 * @param DateTime|null $first (Optional) The date & time the first instance of this interval schedule ran. Default null, meaning this is the first instance.
 	 */
-	public function __construct( DateTime $date, $recurrence, DateTime $first = null ) {
+	public function __construct( DateTime $date, $recurrence, ?DateTime $first = null ) {
 		parent::__construct( $date );
 		$this->first_date = empty( $first ) ? $date : $first;
 		$this->recurrence = $recurrence;
 	}
 
 	/**
+	 * Schedule is recurring.
+	 *
 	 * @return bool
 	 */
 	public function is_recurring() {
@@ -62,6 +66,8 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 	}
 
 	/**
+	 * Get the schedule's recurrence.
+	 *
 	 * @return string
 	 */
 	public function get_recurrence() {
@@ -70,15 +76,19 @@ abstract class ActionScheduler_Abstract_RecurringSchedule extends ActionSchedule
 
 	/**
 	 * For PHP 5.2 compat, since DateTime objects can't be serialized
+	 *
 	 * @return array
 	 */
 	public function __sleep() {
-		$sleep_params = parent::__sleep();
+		$sleep_params          = parent::__sleep();
 		$this->first_timestamp = $this->first_date->getTimestamp();
-		return array_merge( $sleep_params, array(
-			'first_timestamp',
-			'recurrence'
-		) );
+		return array_merge(
+			$sleep_params,
+			array(
+				'first_timestamp',
+				'recurrence',
+			)
+		);
 	}
 
 	/**

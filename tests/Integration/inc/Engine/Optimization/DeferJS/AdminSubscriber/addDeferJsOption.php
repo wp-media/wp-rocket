@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DeferJS\AdminSubsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::add_defer_js_option
+ * Test class covering \WP_Rocket\Engine\Optimization\DeferJS\AdminSubscriber::add_defer_js_option
  *
  * @group  AdminOnly
  * @group  DeferJS
@@ -20,7 +20,7 @@ class Test_AddDeferJsOption extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'rocket_first_install_options' );
+		$this->restoreWpHook( 'rocket_first_install_options' );
 	}
 
 	/**

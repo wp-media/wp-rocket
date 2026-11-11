@@ -3,14 +3,16 @@ declare(strict_types=1);
 
 namespace WP_Rocket\ThirdParty\Plugins\CDN;
 
-use WP_Rocket\Admin\{Options,Options_Data};
+use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Deactivation\DeactivationInterface;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\Engine\Common\Utils;
 
 /**
  * Compatibility class for cloudflare.
  */
-class Cloudflare implements Subscriber_Interface {
+class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 	/**
 	 * Options instance.
 	 *
@@ -69,12 +71,15 @@ class Cloudflare implements Subscriber_Interface {
 			'rocket_display_input_do_cloudflare'  => 'hide_addon_radio',
 			'rocket_cloudflare_field_settings'    => 'update_addon_field',
 			'pre_get_rocket_option_do_cloudflare' => 'disable_cloudflare_option',
-			'after_rocket_clean_domain'           => 'purge_cloudflare',
+			'rocket_after_clean_domain'           => 'purge_cloudflare',
 			'after_rocket_clean_files'            => 'purge_cloudflare_partial',
-			'rocket_rucss_complete_job_status'    => 'purge_cloudflare_after_usedcss',
+			'after_rocket_clean_home'             => 'purge_cloudflare_home',
+			'rocket_after_automatic_cache_purge'  => 'purge_cloudflare_after_automatic_purge',
+			'rocket_saas_complete_job_status'     => 'purge_cloudflare_after_usedcss',
 			'rocket_rucss_after_clearing_usedcss' => 'purge_cloudflare_after_usedcss',
 			'admin_post_rocket_enable_separate_mobile_cache' => 'enable_separate_mobile_cache',
 			'rocket_cdn_helper_addons'            => 'add_cdn_helper_message',
+			'init'                                => 'unregister_cloudflare_clean_on_post',
 		];
 	}
 
@@ -340,6 +345,41 @@ class Cloudflare implements Subscriber_Interface {
 	}
 
 	/**
+	 * Purge home page on Cloudflare
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param string $lang Current language.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_home( $lang = '' ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		// Get the home URL for the specific language.
+		$home_url = get_rocket_i18n_home_url( $lang );
+
+		// Try to get post ID from home URL.
+		$post_id = url_to_postid( $home_url );
+
+		// If we have a valid post ID, purge that specific URL.
+		if ( $post_id > 0 ) {
+			$this->facade->purge_urls( $post_id );
+			return;
+		}
+
+		// If no post ID found, check if we have a static front page.
+		if ( 'page' === get_option( 'show_on_front' ) ) {
+			$page_on_front = get_option( 'page_on_front' );
+			if ( $page_on_front && get_post( $page_on_front ) instanceof \WP_Post ) {
+				$this->facade->purge_urls( (int) $page_on_front );
+			}
+		}
+	}
+
+	/**
 	 * Purges posts when using purge this URL button
 	 *
 	 * @param array $urls Array of URLs.
@@ -354,6 +394,34 @@ class Cloudflare implements Subscriber_Interface {
 		$post_ids = array_filter( array_map( 'url_to_postid', $urls ) );
 
 		$this->facade->purge_urls( $post_ids );
+	}
+
+	/**
+	 * Purges Cloudflare cache after automatic cache purge (cache lifespan)
+	 *
+	 * @since 3.20.2
+	 *
+	 * @param array $deleted Array of deleted cache data.
+	 *
+	 * @return void
+	 */
+	public function purge_cloudflare_after_automatic_purge( $deleted ) {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		$urls_to_purge = Utils::process_deleted_cache_urls( $deleted );
+
+		if ( empty( $urls_to_purge ) ) {
+			return;
+		}
+
+		// Convert URLs to post IDs for Cloudflare purging.
+		$post_ids = array_filter( array_map( 'url_to_postid', $urls_to_purge ) );
+
+		if ( ! empty( $post_ids ) ) {
+			$this->facade->purge_urls( $post_ids );
+		}
 	}
 
 	/**
@@ -447,5 +515,63 @@ class Cloudflare implements Subscriber_Interface {
 		}
 		$addons[] = 'Cloudflare';
 		return $addons;
+	}
+
+	/**
+	 * Purge Cloudflare on deactivate.
+	 *
+	 * @return void
+	 */
+	public function deactivate() {
+		$this->purge_cloudflare();
+	}
+
+	/**
+	 * Unregister Call on clean posts.
+	 *
+	 * @return void
+	 */
+	public function unregister_cloudflare_clean_on_post() {
+		if ( ! $this->is_plugin_active() ) {
+			return;
+		}
+
+		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs', PHP_INT_MAX );
+		$this->unregister_callback( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
+	}
+
+	/**
+	 * Unregister a callback.
+	 *
+	 * @param string $hook Hook on which to unregister.
+	 * @param string $method The callback to unregister.
+	 * @param int    $priority the priority from the callback.
+	 * @return void
+	 */
+	protected function unregister_callback( string $hook, string $method, int $priority = 10 ) {
+		global $wp_filter;
+
+		if ( ! key_exists( $hook, $wp_filter ) ) {
+			return;
+		}
+
+		$original_wp_filter = $wp_filter[ $hook ]->callbacks;
+
+		if ( ! is_array( $original_wp_filter ) ) {
+			return;
+		}
+
+		if ( ! key_exists( $priority, $original_wp_filter ) ) {
+			return;
+		}
+
+		foreach ( $original_wp_filter[ $priority ] as $key => $config ) {
+
+			if ( substr( (string) $key, - strlen( $method ) ) !== $method ) {
+				continue;
+			}
+
+			unset( $wp_filter[ $hook ]->callbacks[ $priority ][ $key ] );
+		}
 	}
 }

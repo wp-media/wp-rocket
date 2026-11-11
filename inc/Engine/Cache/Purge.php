@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use DirectoryIterator;
 use Exception;
+use WP_Filesystem_Direct;
 use WP_Term;
 use WP_Post;
 
@@ -56,11 +57,7 @@ class Purge {
 	 * @param boolean $pagination Purge also pagination.
 	 * @return void
 	 */
-	public function purge_url( $url, $pagination = false ) {
-		if ( ! is_string( $url ) ) {
-			return;
-		}
-
+	public function purge_url( string $url, $pagination = false ) {
 		global $wp_rewrite;
 
 		$parsed_url = $this->parse_url( $url );
@@ -73,8 +70,14 @@ class Purge {
 			}
 
 			foreach ( $this->get_iterator( $path ) as $item ) {
+
 				if ( $item->isFile() ) {
 					$this->filesystem->delete( $item->getPathname() );
+					continue;
+				}
+
+				if ( str_contains( $item->getPathname(), '#' ) ) {
+					$this->filesystem->delete( $item->getPathname(), true );
 				}
 			}
 
@@ -181,7 +184,7 @@ class Purge {
 		/**
 		 * Action to preload urls after cleaning cache.
 		 *
-		 * @param array urls to preload.
+		 * @param array $urls urls to preload.
 		 */
 		do_action( 'rocket_after_clean_terms', $urls );
 	}

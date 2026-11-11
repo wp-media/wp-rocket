@@ -5,15 +5,9 @@ namespace WP_Rocket\ThirdParty\Themes;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Engine\Optimization\DelayJS\HTML;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
+use WP_Rocket\Event_Management\Subscriber_Interface;
 
-class Divi extends ThirdpartyTheme {
-	/**
-	 * Theme name
-	 *
-	 * @var string
-	 */
-	protected static $theme_name = 'divi';
-
+class Divi implements Subscriber_Interface {
 	/**
 	 * Options API instance.
 	 *
@@ -64,13 +58,10 @@ class Divi extends ThirdpartyTheme {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'switch_theme'                    => [ 'maybe_disable_youtube_preview', PHP_INT_MAX, 2 ],
+			'after_switch_theme'              => [ 'maybe_disable_youtube_preview', PHP_INT_MAX ],
 			'rocket_specify_dimension_images' => 'disable_image_dimensions_height_percentage',
 		];
 
-		if ( ! self::is_current_theme() ) {
-			return $events;
-		}
 		$events['rocket_exclude_js']                            = 'exclude_js';
 		$events['rocket_maybe_disable_youtube_lazyload_helper'] = 'add_divi_to_description';
 
@@ -116,16 +107,9 @@ class Divi extends ThirdpartyTheme {
 	 *
 	 * @since 3.6.3
 	 *
-	 * @param string   $name  Name of the new theme.
-	 * @param WP_Theme $theme instance of the new theme.
-	 *
 	 * @return void
 	 */
-	public function maybe_disable_youtube_preview( $name, $theme ) {
-		if ( ! self::is_current_theme( $theme ) ) {
-			return;
-		}
-
+	public function maybe_disable_youtube_preview() {
 		$this->options->set( 'lazyload_youtube', 0 );
 		$this->options_api->set( 'settings', $this->options->get_options() );
 	}
@@ -140,10 +124,6 @@ class Divi extends ThirdpartyTheme {
 	 * @return array
 	 */
 	public function add_divi_to_description( $disable_youtube_lazyload ) {
-		if ( ! self::is_current_theme() ) {
-			return $disable_youtube_lazyload;
-		}
-
 		$disable_youtube_lazyload[] = 'Divi';
 
 		return $disable_youtube_lazyload;
@@ -182,7 +162,6 @@ class Divi extends ThirdpartyTheme {
 
 			add_filter( 'et_builder_enable_jquery_body', '__return_false' );
 		}
-
 	}
 
 	/**
@@ -195,7 +174,6 @@ class Divi extends ThirdpartyTheme {
 			return;
 		}
 		add_filter( 'et_use_dynamic_css', '__return_false' );
-
 	}
 
 	/**

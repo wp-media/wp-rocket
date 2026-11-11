@@ -7,7 +7,8 @@ use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use RegexTrait, LoggerAware;
+	use RegexTrait;
+	use LoggerAware;
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -71,11 +72,13 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
-				&&
-				! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
+				(
+					! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
+					&&
+					! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
+				)
 				||
-				( strstr( $style['url'], '//fonts.googleapis.com/css' ) )
+				strstr( $style['url'], '//fonts.googleapis.com/css' )
 			) {
 				$this->logger::notice(
 					"Skipped URL: {$style['url']}",

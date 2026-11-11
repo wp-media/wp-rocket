@@ -1,3 +1,5 @@
+import '../custom/custom-select.js';
+
 var $ = jQuery;
 $(document).ready(function(){
 
@@ -84,7 +86,67 @@ $(document).ready(function(){
         return wprIsParentActive( $parent.closest( '.wpr-field' ) );
     }
 
-    // Display/Hide childern fields on checkbox change.
+	/**
+	 * Masks sensitive information in an input field by replacing all but the last 4 characters with asterisks.
+	 *
+	 * @param {string} id_selector - The ID of the input field to be masked.
+	 * @returns {void} - Modifies the input field value in-place.
+	 *
+	 * @example
+	 * // HTML: <input type="text" id="creditCardInput" value="1234567890123456">
+	 * maskField('creditCardInput');
+	 * // Result: Updates the input field value to '************3456'.
+	 */
+	function maskField(proxy_selector, concrete_selector) {
+		var concrete = {
+			'val': concrete_selector.val(),
+			'length': concrete_selector.val().length
+		}
+
+		if (concrete.length > 4) {
+
+			var hiddenPart = '\u2022'.repeat(Math.max(0, concrete.length - 4));
+			var visiblePart = concrete.val.slice(-4);
+
+			// Combine the hidden and visible parts
+			var maskedValue = hiddenPart + visiblePart;
+
+			proxy_selector.val(maskedValue);
+		}
+		// Ensure events are not added more than once
+		if (!proxy_selector.data('eventsAttached')) {
+			proxy_selector.on('input', handleInput);
+			proxy_selector.on('focus', handleFocus);
+			proxy_selector.data('eventsAttached', true);
+		}
+
+		/**
+		 * Handle the input event
+		 */
+		function handleInput() {
+			var proxyValue = proxy_selector.val();
+			if (proxyValue.indexOf('\u2022') === -1) {
+				concrete_selector.val(proxyValue);
+			}
+		}
+
+		/**
+		 * Handle the focus event
+		 */
+		function handleFocus() {
+			var concrete_value = concrete_selector.val();
+			proxy_selector.val(concrete_value);
+		}
+
+	}
+
+		// Update the concrete field when the proxy is updated.
+
+
+	maskField($('#cloudflare_api_key_mask'), $('#cloudflare_api_key'));
+	maskField($('#cloudflare_zone_id_mask'), $('#cloudflare_zone_id'));
+
+	// Display/Hide children fields on checkbox change.
     $( '.wpr-isParent input[type=checkbox]' ).on('change', function() {
         wprShowChildren($(this));
     });
@@ -163,7 +225,7 @@ $(document).ready(function(){
      */
     $(document).on('click', '.wpr-multiple-close', function(e) {
 		e.preventDefault();
-		$(this).parent().slideUp( 'slow' , function(){$(this).remove(); } );
+		$(this).parent().remove();
 	} );
 
 	$('.wpr-button--addMulti').on('click', function(e) {
@@ -259,7 +321,7 @@ $(document).ready(function(){
 			disable_radio_warning = ('remove_unused_css' === $elm.data('value') && 1 === rucssActive)
 		});
 
-	$( ".wpr-multiple-select .wpr-list-header-arrow" ).click(function (e) {
+	$( ".wpr-multiple-select .wpr-list-header" ).click(function (e) {
 		$(e.target).closest('.wpr-multiple-select .wpr-list').toggleClass('open');
 	});
 
@@ -292,4 +354,75 @@ $(document).ready(function(){
 			$(checkbox).attr('checked', not_checked <= 0 ? 'checked' : null );
 		});
 	}
+
+	let checkBoxCounter = {
+		checked: {},
+		total: {}
+	};
+	$('.wpr-field--categorizedmultiselect .wpr-list').each(function () {
+		// Get the ID of the current element
+		let id = $(this).attr('id');
+		if (id) {
+			checkBoxCounter.checked[id] = $(`#${id} input[type='checkbox']:checked`).length;
+			checkBoxCounter.total[id] = $(`#${id} input[type='checkbox']:not(.wpr-main-checkbox)`).length;
+			// Update the counter text
+			$(`#${id} .wpr-badge-counter span`).text(checkBoxCounter.checked[id]);
+			// Show or hide the counter badge based on the count
+			$(`#${id} .wpr-badge-counter`).toggle(checkBoxCounter.checked[id] > 0);
+
+			// Check the select all option if all exclusions are checked in a section.
+			if (checkBoxCounter.checked[id] === checkBoxCounter.total[id]) {
+				$(`#${id} .wpr-main-checkbox`).attr('checked', true);
+			}
+		}
+	});
+
+	/**
+	 * Delay JS Execution Safe Mode Field
+	 */
+	var $dje_safe_mode_checkbox = $('#delay_js_execution_safe_mode');
+	$('#delay_js').on('change', function () {
+		if ($(this).is(':not(:checked)') && $dje_safe_mode_checkbox.is(':checked')) {
+			$dje_safe_mode_checkbox.trigger('click');
+		}
+	});
+
+	let stacked_select = document.getElementById( 'rocket_stacked_select' );
+	if ( stacked_select ) {
+		stacked_select.addEventListener('custom-select-change',function(event){
+
+			let selected_option = $( event.detail.selectedOption );
+
+			let name = selected_option.data('name');
+
+			let saving = selected_option.data('saving');
+			let regular_price  = selected_option.data('regular-price');
+			let price  = selected_option.data('price');
+			let url    = selected_option.data('url');
+
+			let parent_item = $(this).parents( '.wpr-upgrade-item' );
+
+			if ( saving ) {
+				parent_item.find( '.wpr-upgrade-saving span' ).html( saving );
+			}
+			if ( name ) {
+				parent_item.find( '.wpr-upgrade-title' ).html( name );
+			}
+			if ( regular_price ) {
+				parent_item.find( '.wpr-upgrade-price-regular span' ).html( regular_price );
+			}
+			if ( price ) {
+				parent_item.find( '.wpr-upgrade-price-value' ).html( price );
+			}
+			if ( url ) {
+				parent_item.find( '.wpr-upgrade-link' ).attr( 'href', url );
+			}
+
+		} );
+	}
+
+	$(document).on( 'click', '.wpr-confirm-delete', function (e) {
+		return confirm( $(this).data('wpr_confirm_msg') );
+	} );
+
 });

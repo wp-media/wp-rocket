@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Links\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Links\Subscriber::add_preload_script
+ * Test class covering \WP_Rocket\Engine\Preload\Links\Subscriber::add_preload_script
  *
  * @group  PreloadLinks
  */

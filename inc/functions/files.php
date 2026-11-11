@@ -543,16 +543,18 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  * @param string|array              $urls       URLs of cache files to be deleted.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  * @param bool                      $run_actions Run actions.
+ *
+ * @return array Associative array of the given URLs and whether their cache was actually cleared.
  */
 function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
@@ -574,7 +576,12 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
-	foreach ( $urls as $url ) {
+	$results = [];
+
+	foreach ( $urls as $url_key => $url ) {
+		$original_url = $url;
+		$cleared      = false;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
@@ -603,7 +610,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// Encode Non-latin characters if found in url path.
 				if ( false !== preg_match_all( '/(?<non_latin>[^\x00-\x7F]+)/', $parsed_url['path'], $matches ) ) {
-					$cb_encode_non_latin = function( $non_latin ) {
+					$cb_encode_non_latin = function ( $non_latin ) {
 						return strtolower( rawurlencode( $non_latin ) );
 					};
 
@@ -611,6 +618,23 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				}
 
 				$entry = $dir . $parsed_url['path'];
+
+				// For regex we use it for file names only, and it should include the * character.
+				if ( str_contains( $entry, '*' ) ) {
+					$regex_part    = basename( $entry );
+					$search_dir    = str_replace( $regex_part, '', $entry );
+					$matched_files = _rocket_get_dir_files_by_regex( $search_dir, '#' . $regex_part . '#i' );
+					foreach ( $matched_files as $item ) {
+						$current_file = $item->getPath() . DIRECTORY_SEPARATOR . $item->getFilename();
+						if ( $filesystem->exists( $current_file ) ) {
+							$filesystem->delete( $current_file );
+							$cleared = true;
+						}
+					}
+					// Remove the regex part from the url.
+					$url              = str_replace( $regex_part, '', $url );
+					$urls[ $url_key ] = $url;
+				}
 
 				// Skip if the dir/file does not exist.
 				if ( ! $filesystem->exists( $entry ) ) {
@@ -622,8 +646,13 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				} else {
 					$filesystem->delete( $entry );
 				}
+
+				$cleared = true;
 			}
 		}
+
+		$results[ $original_url ] = $cleared;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires after the cache file is deleted.
@@ -636,7 +665,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	}
 
 	if ( ! $run_actions ) {
-		return;
+		return $results;
 	}
 
 	/**
@@ -647,6 +676,8 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	 */
 	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	return $results;
 }
 
 /**
@@ -705,6 +736,14 @@ function rocket_clean_home( $lang = '' ) {
 	$dirs = glob( $root . '*/' . $GLOBALS['wp_rewrite']->pagination_base, GLOB_NOSORT );
 	if ( $dirs ) {
 		foreach ( $dirs as $dir ) {
+			rocket_rrmdir( $dir );
+		}
+	}
+
+	$param_dirs = glob( $root . '/#*', GLOB_NOSORT );
+
+	if ( $param_dirs ) {
+		foreach ( $param_dirs as $dir ) {
 			rocket_rrmdir( $dir );
 		}
 	}
@@ -795,10 +834,17 @@ function rocket_clean_home_feeds() {
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  */
 function rocket_clean_domain( $lang = '', $filesystem = null ) {
+	if ( did_action( 'rocket_after_clean_domain' ) ) {
+		return;
+	}
+
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	$urls = ( ! $lang || is_object( $lang ) || is_array( $lang ) || is_int( $lang ) )
 		? (array) get_rocket_i18n_uri()
 		: (array) get_rocket_i18n_home_url( $lang );
-
 	/**
 	 * Filter URLs to delete all caching files from a domain.
 	 *
@@ -867,6 +913,16 @@ function rocket_clean_domain( $lang = '', $filesystem = null ) {
 		 */
 		do_action( 'after_rocket_clean_domain', $root, $lang, $url ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
+
+	/**
+	 * Fires after all cache files was deleted.
+	 *
+	 * @since 3.15.5
+	 *
+	 * @param string $lang The current lang to purge.
+	 * @param array|string[] $urls  All urls to clean.
+	 */
+	do_action( 'rocket_after_clean_domain', $lang, $urls );
 
 	return true;
 }
@@ -1137,7 +1193,7 @@ function rocket_rrmdir( $dir, array $dirs_to_preserve = [], $filesystem = null )
 }
 
 /**
- * Instanciate the filesystem class
+ * Instantiate the filesystem class
  *
  * @since 2.10
  *
@@ -1340,7 +1396,6 @@ function _rocket_get_dir_files_by_regex( $dir, $regex ) { // phpcs:ignore WordPr
 	} catch ( Exception $e ) {
 		return [];
 	}
-
 }
 
 /**

@@ -133,6 +133,42 @@ class Tests {
 	/** ----------------------------------------------------------------------------------------- */
 
 	/**
+	 * Tell if any buffer process should be initiated.
+	 *
+	 * @return bool
+	 */
+	public function can_process_any_buffer() {
+		$this->last_error = [];
+
+		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
+		if ( $this->is_rejected_file() ) {
+			return false;
+		}
+
+		// Don't process disallowed file extensions (like php, xml, xsl).
+		if ( $this->is_rejected_extension() ) {
+			return false;
+		}
+
+		// Don't cache if in admin or ajax.
+		if ( $this->is_admin() ) {
+			return false;
+		}
+
+		// Don't process the customizer preview.
+		if ( $this->is_customizer_preview() ) {
+			return false;
+		}
+
+		// Don't process without GET method.
+		if ( ! $this->is_allowed_request_method() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Tell if the process should be initiated.
 	 *
 	 * @since  3.3
@@ -141,40 +177,7 @@ class Tests {
 	 * @return bool
 	 */
 	public function can_init_process() {
-		$this->last_error = [];
-
-		// Don't process robots.txt && .htaccess files (it has happened sometimes with weird server configuration).
-		if ( $this->is_rejected_file() ) {
-			$this->set_error( 'Robots.txt or .htaccess file is excluded.' );
-			return false;
-		}
-
-		// Don't process disallowed file extensions (like php, xml, xsl).
-		if ( $this->is_rejected_extension() ) {
-			$this->set_error( 'PHP, XML, or XSL file is excluded.' );
-			return false;
-		}
-
-		// Don't cache if in admin or ajax.
-		if ( $this->is_admin() ) {
-			$this->set_error( 'Admin or AJAX URL is excluded.' );
-			return false;
-		}
-
-		// Don't process the customizer preview.
-		if ( $this->is_customizer_preview() ) {
-			$this->set_error( 'Customizer preview is excluded.' );
-			return false;
-		}
-
-		// Don't process without GET method.
-		if ( ! $this->is_allowed_request_method() ) {
-			$this->set_error(
-				'Request method is not allowed. Page cannot be cached.',
-				[
-					'request_method' => $this->get_request_method(),
-				]
-			);
+		if ( ! $this->can_process_any_buffer() ) {
 			return false;
 		}
 
@@ -314,7 +317,7 @@ class Tests {
 
 		if ( strlen( $buffer ) <= 255 ) {
 			// Buffer length must be > 255 (IE does not read pages under 255 c).
-			$this->set_error( 'Buffer content under 255 caracters.' );
+			$this->set_error( 'Buffer content under 255 characters.' );
 			return false;
 		}
 

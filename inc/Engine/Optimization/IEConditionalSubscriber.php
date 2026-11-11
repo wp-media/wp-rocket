@@ -67,7 +67,7 @@ class IEConditionalSubscriber implements Subscriber_Interface {
 	public function extract_ie_conditionals( $html ) {
 		preg_match_all( self::IE_PATTERN, $html, $conditionals_match );
 
-		if ( ! $conditionals_match ) {
+		if ( count( $conditionals_match[0] ) === 0 ) {
 			return $html;
 		}
 

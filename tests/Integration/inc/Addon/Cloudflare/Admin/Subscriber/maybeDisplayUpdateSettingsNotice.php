@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Admin\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Admin\Subscriber::maybe_display_update_settings_notice
+ * Test class covering WP_Rocket\Addon\Cloudflare\Admin\Subscriber::maybe_display_update_settings_notice
  *
  * @group CloudflareAdmin
  */
@@ -14,10 +14,14 @@ class TestMaybeDisplayUpdateSettingsNotice extends TestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_update_settings_notice', 10 );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'admin_notices' );
+		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

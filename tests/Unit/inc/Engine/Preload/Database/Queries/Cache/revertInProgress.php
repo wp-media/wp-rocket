@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::revert_in_progress
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::revert_in_progress
  *
  * @group Database
  * @group Preload

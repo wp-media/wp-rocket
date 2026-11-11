@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::rocket_clean_cache_on_deactivation
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad::rocket_clean_cache_on_deactivation
  */
 class Test_RocketCleanCacheOnDeactivation extends TestCase {
 	protected $subscriber;

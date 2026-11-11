@@ -4,15 +4,16 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Tests\Integration\ContentTrait;
+use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::stop_critical_css_generation
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSSSubscriber::stop_critical_css_generation
  *
  * @group  CriticalPath
  * @group  vfs
  */
 class Test_stopCpcssProcess extends FilesystemTestCase {
-	use ContentTrait;
+	use ContentTrait, CriticalCssLoopbackTrait;
 
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/stopCpcssProcess.php';
 
@@ -38,13 +39,15 @@ class Test_stopCpcssProcess extends FilesystemTestCase {
 		if($this->filesystem->exists( $this->cancel_file_path )){
 			$this->filesystem->delete( $this->cancel_file_path );
 		}
-		$this->restoreWpFilter( 'wp_rocket_upgrade' );
-		$this->restoreWpFilter( 'rocket_before_rollback' );
+		$this->restoreWpHook( 'wp_rocket_upgrade' );
+		$this->restoreWpHook( 'rocket_before_rollback' );
 	}
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldDoExpected($config, $expected) {
+		$this->config['http'] = $this->critical_css_loopback_fixture();
+
 		$this->subscriber->generate_critical_css_on_activation( $config['old'], $config['new'] );
 
 		if('rollback' === $config['upgrade_rollback']){

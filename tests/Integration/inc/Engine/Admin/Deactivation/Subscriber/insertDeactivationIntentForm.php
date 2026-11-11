@@ -5,16 +5,25 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Deactivation\Deactivation
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::insert_deactivation_intent_form
+ * Test class covering \WP_Rocket\Engine\Admin\Deactivation\DeactivationIntent::insert_deactivation_intent_form
  *
  * @group  AdminOnly
  * @group  DeactivationIntent
  */
 class Test_InsertDeactivationIntentForm extends TestCase {
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
 	public function tear_down() {
 		delete_option( 'wp_rocket_hide_deactivation_form' );
 		delete_transient( 'rocket_hide_deactivation_form' );
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

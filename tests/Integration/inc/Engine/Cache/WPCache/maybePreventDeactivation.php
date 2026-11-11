@@ -5,8 +5,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
 use WP_Rocket\Engine\Cache\WPCache;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
- * @uses   ::find_wp_config_path
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::maybe_prevent_deactivation
  *
  * @group  WPCache
  */

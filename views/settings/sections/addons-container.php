@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) || exit;
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
 	<?php if ( ! empty( $data['help'] ) ) : ?>
-	<button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
+	<button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
 	<?php endif; ?>
 </div>
 

@@ -8,10 +8,10 @@ use WP_Rocket\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Tests\Unit\TestCase;
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::save_cloudflare_options
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::save_cloudflare_options
  *
  * @group Cloudflare
  */
@@ -64,14 +64,8 @@ class TestSaveCloudflareOptions extends TestCase {
 		$this->cloudflare->shouldReceive( 'set_cache_level' )
 			->with( 'aggressive' )
 			->atMost()
-			->once()
+			->twice()
 			->andReturn( 'aggressive' );
-
-		$this->cloudflare->shouldReceive( 'set_minify' )
-			->with( 'on' )
-			->atMost()
-			->once()
-			->andReturn( 'on' );
 
 		$this->cloudflare->shouldReceive( 'set_rocket_loader' )
 			->with( 'off' )

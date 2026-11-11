@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Links\AdminSubscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_incompatible_plugins
+ * Test class covering \WP_Rocket\Engine\Preload\Links\AdminSubscriber::add_incompatible_plugins
  *
  * @group  PreloadLinks
  */
@@ -17,7 +17,7 @@ class Test_AddIncompatiblePlugins extends TestCase {
 
         remove_filter( 'pre_get_rocket_option_preload_links', [ $this, 'set_preload_value' ] );
 
-		$this->restoreWpFilter( 'rocket_plugins_to_deactivate' );
+		$this->restoreWpHook( 'rocket_plugins_to_deactivate' );
     }
 
 	/**

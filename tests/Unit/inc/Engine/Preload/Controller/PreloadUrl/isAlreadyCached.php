@@ -12,7 +12,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Controller\PreloadUrl::is_already_cached
+ * Test class covering \WP_Rocket\Engine\Preload\Controller\PreloadUrl::is_already_cached
  * @group  Preload
  */
 class Test_IsAlreadyCached extends TestCase

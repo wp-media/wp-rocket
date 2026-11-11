@@ -10,7 +10,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Database::drop_resources_table
  *
  * @group  RUCSS
  */
@@ -31,7 +31,7 @@ class Test_DropResourcesTable extends TestCase {
 			return;
 		}
 
-		$GLOBALS['wpdb'] = new wpdb();
+		$GLOBALS['wpdb'] = new wpdb( 'dbuser', 'dbpassword', 'dbname', 'dbhost' );
 
 		$this->usedCSS  = $this->getMockBuilder( UsedCSS::class )
 			->disableOriginalConstructor()
@@ -47,7 +47,7 @@ class Test_DropResourcesTable extends TestCase {
 
 	public function testShouldDeleteTableAndOption() {
 		if ( $this->isPHP8() ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return;
 		}
 
@@ -67,7 +67,7 @@ class Test_DropResourcesTable extends TestCase {
 	public function isPHP8() {
 		$version = explode('.', PHP_VERSION);
 		if ( $version[0] >= 8 ) {
-			$this->assertTrue(true);
+			$this->assertTrue(true); // @phpstan-ignore-line
 			return true;
 		}
 

@@ -4,6 +4,7 @@ namespace WP_Rocket\Engine\Optimization\Minify\CSS;
 use WP_Rocket\Dependencies\Minify as Minifier;
 use WP_Rocket\Engine\Optimization\CSSTrait;
 use WP_Rocket\Engine\Optimization\Minify\ProcessorInterface;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Logger\Logger;
 
 /**
@@ -13,6 +14,7 @@ use WP_Rocket\Logger\Logger;
  */
 class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	use CSSTrait;
+	use CommentTrait;
 
 	/**
 	 * Minifies CSS files
@@ -24,8 +26,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'CSS MINIFICATION PROCESS STARTED.', [ 'css minification process' ] );
-
 		$styles = $this->get_styles( $html );
 
 		if ( empty( $styles ) ) {
@@ -77,7 +77,7 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 			$html = $this->replace_style( $style, $minify_url, $html );
 		}
 
-		return $html;
+		return $this->add_meta_comment( 'minify_css', $html );
 	}
 
 	/**
@@ -96,14 +96,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 			return [];
 		}
-
-		Logger::debug(
-			'Found ' . count( $styles ) . ' `<link>` tags.',
-			[
-				'css minification process',
-				'tags' => $styles,
-			]
-		);
 
 		return $styles;
 	}
@@ -139,14 +131,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		$minified_file = rawurldecode( $this->minify_base_path . $filename );
 
 		if ( rocket_direct_filesystem()->exists( $minified_file ) ) {
-			Logger::debug(
-				'Minified CSS file already exists.',
-				[
-					'css minification process',
-					'path' => $minified_file,
-				]
-			);
-
 			return $this->get_full_minified_url( $minified_file, $this->get_minify_url( $filename, $url ) );
 		}
 
@@ -214,14 +198,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 		$replace_style = str_replace( '<link', '<link data-minify="1"', $replace_style );
 		$html          = str_replace( $style[0], $replace_style, $html );
 
-		Logger::info(
-			'Style minification succeeded.',
-			[
-				'css minification process',
-				'url' => $minify_url,
-			]
-		);
-
 		return $html;
 	}
 
@@ -249,13 +225,6 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 
 			return false;
 		}
-		Logger::debug(
-			'Minified CSS file successfully created.',
-			[
-				'css minification process',
-				'path' => $minified_file,
-			]
-		);
 
 		return true;
 	}
@@ -320,10 +289,10 @@ class Minify extends AbstractCSSOptimization implements ProcessorInterface {
 				]
 			);
 
-			return '';
+			return ''; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 		}
 
-		return $minified_content;
+		return $minified_content; // phpcs:ignore Universal.CodeAnalysis.ConstructorDestructorReturn.ReturnValueFound
 	}
 
 	/**

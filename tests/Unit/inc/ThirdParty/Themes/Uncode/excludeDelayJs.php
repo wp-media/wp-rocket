@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Themes\Uncode;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Uncode::exclude_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Uncode::exclude_delay_js
  *
  * @group Uncode
  * @group ThirdParty

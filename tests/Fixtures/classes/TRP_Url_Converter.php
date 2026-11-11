@@ -6,6 +6,8 @@ if ( ! class_exists( 'TRP_Url_Converter' ) ) {
 
 		public static $lang = '';
 
+		public static $slug = '';
+
 		public function get_lang_from_url_string( $url ) {
 			return self::$lang;
 		}
@@ -14,6 +16,8 @@ if ( ! class_exists( 'TRP_Url_Converter' ) ) {
 			$parts = parse_url( $url );
 			$path = isset( $parts['path'] ) ? $parts['path'] : '';
 			$code = explode( '_', $code );
+
+			$path = '' !== self::$slug ? '/' . self::$slug : $path;
 
 			return $parts['scheme'] . '://' . $parts['host'] . '/' . $code[0] . $path;
 		}

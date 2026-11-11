@@ -86,7 +86,7 @@ class LiteSpeed implements Subscriber_Interface {
 
 		array_walk(
 			$urls,
-			function( &$url ) {
+			function ( &$url ) {
 				$url = wp_parse_url( $url, PHP_URL_PATH );
 			}
 		);
@@ -99,7 +99,6 @@ class LiteSpeed implements Subscriber_Interface {
 
 		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['home'] );
 		$this->send_header( 'X-LiteSpeed-Purge: ' . $urls['pagination'] );
-
 	}
 
 	/**

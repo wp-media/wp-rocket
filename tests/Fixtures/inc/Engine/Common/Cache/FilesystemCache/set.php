@@ -17,7 +17,7 @@ return [
         'expected' => [
 			'content' => 'content',
 			'url' => 'http://example.org/blog/test/file.css',
-			'path' => '/var/html/wp-content/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css',
 			'output' => true,
         ]
     ],
@@ -38,7 +38,7 @@ return [
 		'expected' => [
 			'content' => 'content',
 			'url' => 'http://example.org/blog/test/file.css',
-			'path' => '/var/html/wp-content/cache/background-css/example.org/blog/test/file.css',
+			'path' => '/var/html/wp-content/cache/background-css/1/example.org/blog/test/file.css',
 			'output' => false,
 		]
 	],

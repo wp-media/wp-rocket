@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers ::rocket_clean_cache_theme_update
+ * Test class covering ::rocket_clean_cache_theme_update
  * @uses   ::rocket_clean_domain
  *
  * @group  Common
@@ -42,7 +42,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldReturnUrls( $config, $expected ) {
-		$this->markTestSkipped('Error with require');
 		$post_id = isset( $config['post_data']['ID'] ) ? $config['post_data']['ID'] : 0;
 		$post    = isset( $config['post_data'] ) ? (object) $config['post_data'] : null;
 		$options = isset( $config['options'] ) ? $config['options'] : [];
@@ -107,10 +106,6 @@ class Test_RocketGetPurgeUrls extends FilesystemTestCase {
 				->andReturn( $archive_url );
 
 			if ( $archive_url ) {
-				Functions\expect('is_ssl')
-					->once()
-					->andReturn( $config['is_ssl'] );
-
 				$GLOBALS['wp_rewrite'] = (object) [
 					'pagination_base' => 'page'
 				];

@@ -24,5 +24,4 @@ class DataManager extends AbstractDataManager {
 	protected function get_json_filename() {
 		return 'dynamic-lists-delayjs';
 	}
-
 }

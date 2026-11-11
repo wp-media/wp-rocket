@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::get_root_path
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::get_root_path
  */
 class Test_getRootPath extends TestCase {
 
@@ -43,6 +43,7 @@ class Test_getRootPath extends TestCase {
     public function testShouldReturnAsExpected( $config, $expected )
     {
 		Functions\when('rocket_get_constant')->justReturn($config['root']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
         $this->assertSame($expected, $this->filesystemcache->get_root_path());
     }
 }

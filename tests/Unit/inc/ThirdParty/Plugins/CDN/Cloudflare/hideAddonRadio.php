@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::hide_addon_radio
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::hide_addon_radio
  *
  * @group ThirdParty
  * @group CloudflarePlugin

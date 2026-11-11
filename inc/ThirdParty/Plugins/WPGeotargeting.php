@@ -51,7 +51,7 @@ class WPGeotargeting implements Subscriber_Interface {
 	 * @param string $current_url Current URL.
 	 * @return bool
 	 */
-	public function maybe_disable_rules( $bool, $opts, $current_url ) {
+	public function maybe_disable_rules( $bool, $opts, $current_url ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.boolFound
 		$query = wp_parse_url( $current_url, PHP_URL_QUERY );
 		return ! str_contains( $query ? $query : '', 'nowprocket' );
 	}

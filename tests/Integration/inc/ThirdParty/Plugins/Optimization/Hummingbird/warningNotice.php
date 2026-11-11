@@ -6,13 +6,12 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\Hummingbird::warning_notice
  *
  * @group Hummingbird
  * @group ThirdParty
  */
 class Test_WarningNotice extends TestCase {
-
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 		self::setAdminCap();
@@ -24,12 +23,19 @@ class Test_WarningNotice extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+		// Keep only the notice under test: other notices, like ModPagespeed's, request the home page.
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'warning_notice' );
+
 		set_current_screen( 'settings_page_wprocket' );
 		add_filter( 'pre_option_active_plugins', [ $this, 'active_plugin' ] );
 	}
 
 	public function tear_down() {
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'admin_notices' );
 
 		parent::tear_down();
 

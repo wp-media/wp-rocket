@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Media\Lazyload;
 
@@ -17,6 +18,8 @@ trait CanLazyloadTrait {
 			rocket_get_constant( 'DONOTLAZYLOAD', false )
 			||
 			rocket_get_constant( 'DONOTROCKETOPTIMIZE', false )
+			||
+			rocket_get_constant( 'DONOTCACHEPAGE', false )
 		) {
 			return false;
 		}

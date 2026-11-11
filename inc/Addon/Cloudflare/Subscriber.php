@@ -6,7 +6,7 @@ namespace WP_Rocket\Addon\Cloudflare;
 use WP_Post;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\{Options, Options_Data};
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 class Subscriber implements Subscriber_Interface {
 	/**
@@ -64,8 +64,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_varnish_ip'                         => 'set_varnish_localhost',
 			'rocket_varnish_purge_request_host'         => 'set_varnish_purge_request_host',
 			'rocket_cron_deactivate_cloudflare_devmode' => 'deactivate_devmode',
-			'after_rocket_clean_domain'                 => 'auto_purge',
+			'rocket_after_clean_domain'                 => 'auto_purge',
 			'after_rocket_clean_post'                   => [ 'auto_purge_by_url', 10, 3 ],
+			'after_rocket_clean_home'                   => [ 'purge_url', 10, 2 ],
+			'after_rocket_clean_files'                  => 'purge_url',
 			'admin_post_rocket_purge_cloudflare'        => 'purge_cache',
 			'init'                                      => [ 'set_real_ip', 1 ],
 			'update_option_' . $slug                    => [
@@ -213,6 +215,43 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Purge specific Cloudflare cache URLs automatically.
+	 *
+	 * Used as the callback for both after_rocket_clean_home( $root, $lang ) and after_rocket_clean_files( $urls ).
+	 *
+	 * @param array|string $urls_or_root Array of URLs to purge when triggered by after_rocket_clean_files, or the home cache root path when triggered by after_rocket_clean_home.
+	 * @param string       $lang         The language to purge, only used when triggered by after_rocket_clean_home.
+	 *
+	 * @return void
+	 */
+	public function purge_url( $urls_or_root, $lang = '' ) {
+		if ( ! current_user_can( 'rocket_purge_cloudflare_cache' ) ) {
+			return;
+		}
+
+		if ( is_wp_error( $this->cloudflare->check_connection() ) ) {
+			return;
+		}
+
+		$cf_cache_everything = $this->cloudflare->has_page_rule( 'cache_everything' );
+
+		if ( is_wp_error( $cf_cache_everything ) || ! $cf_cache_everything ) {
+			return;
+		}
+
+		// after_rocket_clean_files passes an array of URLs directly; after_rocket_clean_home passes a cache root path, so purge the home URL for that lang instead.
+		$purge_urls = is_array( $urls_or_root ) ? $urls_or_root : [ get_rocket_i18n_home_url( $lang ) ];
+		$purge_urls = array_unique( array_filter( $purge_urls ) );
+
+		if ( empty( $purge_urls ) ) {
+			return;
+		}
+
+		// Purge CloudFlare.
+		$this->cloudflare->purge_by_url( null, $purge_urls, $lang );
+	}
+
+	/**
 	 * Purge CloudFlare cache.
 	 *
 	 * @return void
@@ -352,31 +391,6 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Save Cloudflare minify admin option.
-	 *
-	 * @param string $value New value for Cloudflare minify.
-	 *
-	 * @return string[]
-	 */
-	private function save_minify( $value ) {
-		$result = $this->cloudflare->set_minify( $value );
-
-		if ( is_wp_error( $result ) ) {
-			return [
-				'result'  => 'error',
-				// translators: %s is the message returned by the CloudFlare API.
-				'message' => sprintf( __( 'Cloudflare minification error: %s', 'rocket' ), $result->get_error_message() ),
-			];
-		}
-
-		return [
-			'result'  => 'success',
-			// translators: %s is the message returned by the CloudFlare API.
-			'message' => sprintf( __( 'Cloudflare minification %s', 'rocket' ), $result ),
-		];
-	}
-
-	/**
 	 * Save Cloudflare rocket loader admin option.
 	 *
 	 * @param string $value New value for Cloudflare rocket loader.
@@ -440,12 +454,8 @@ class Subscriber implements Subscriber_Interface {
 		$result = [];
 
 		// Set Cache Level to Aggressive.
-		$cf_cache_level = isset( $cf_old_settings[0] ) && 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
+		$cf_cache_level = 0 === $auto_settings ? $cf_old_settings[0] : 'aggressive';
 		$result[]       = $this->save_cache_level( $cf_cache_level );
-
-		// Active Minification for HTML, CSS & JS.
-		$cf_minify = isset( $cf_old_settings[1] ) && 0 === $auto_settings ? $cf_old_settings[1] : 'on';
-		$result[]  = $this->save_minify( $cf_minify );
 
 		// Deactivate Rocket Loader to prevent conflicts.
 		$cf_rocket_loader = isset( $cf_old_settings[2] ) && 0 === $auto_settings ? $cf_old_settings[2] : 'off';
@@ -593,7 +603,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Change the authentification.
+	 * Change the authentication.
 	 *
 	 * @param array $value     An array of previous values for the settings.
 	 * @param array $old_value An array of submitted values for the settings.
@@ -657,7 +667,7 @@ class Subscriber implements Subscriber_Interface {
 
 		$connection = $this->cloudflare->check_connection( $value['cloudflare_zone_id'] );
 
-		if ( is_wp_error( $connection ) ) {
+		if ( is_wp_error( $connection ) && function_exists( 'add_settings_error' ) ) {
 			add_settings_error( 'general', 'cloudflare_api_key_invalid', __( 'WP Rocket: ', 'rocket' ) . '</strong>' . $connection->get_error_message() . '<strong>', 'error' );
 		}
 

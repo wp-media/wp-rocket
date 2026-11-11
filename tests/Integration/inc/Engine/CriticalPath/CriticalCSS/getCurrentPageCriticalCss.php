@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
+ * Test class covering \WP_Rocket\Engine\CriticalPath\CriticalCSS::get_current_page_critical_css
  *
  * @group  CriticalPath
  * @group  vfs

@@ -7,7 +7,7 @@ use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Cache\WPCache::check_wp_cache_value
+ * Test class covering \WP_Rocket\Engine\Cache\WPCache::check_wp_cache_value
  *
  * @group WPCache
  */

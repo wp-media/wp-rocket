@@ -6,7 +6,7 @@ use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Database\Queries\Cache::remove_all_not_accessed_rows
+ * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\Cache::remove_all_not_accessed_rows
  *
  * @group Database
  * @group Preload

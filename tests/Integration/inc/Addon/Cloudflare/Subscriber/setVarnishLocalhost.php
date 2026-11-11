@@ -5,11 +5,15 @@ namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_localhost
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_localhost
  *
  * @group Cloudflare
  */
 class TestSetVarnishLocalhost extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
 	private $option;
 	private $filter;
 

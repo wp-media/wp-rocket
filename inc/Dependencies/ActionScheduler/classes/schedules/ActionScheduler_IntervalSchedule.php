@@ -7,19 +7,23 @@ class ActionScheduler_IntervalSchedule extends ActionScheduler_Abstract_Recurrin
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $start_timestamp = NULL;
+	 *
+	 * @var null
+	 */
+	private $start_timestamp = null;
 
 	/**
 	 * Deprecated property @see $this->__wakeup() for details.
-	 **/
-	private $interval_in_seconds = NULL;
+	 *
+	 * @var null
+	 */
+	private $interval_in_seconds = null;
 
 	/**
 	 * Calculate when this schedule should start after a given date & time using
 	 * the number of seconds between recurrences.
 	 *
-	 * @param DateTime $after
+	 * @param DateTime $after Timestamp.
 	 * @return DateTime
 	 */
 	protected function calculate_next( DateTime $after ) {
@@ -28,6 +32,8 @@ class ActionScheduler_IntervalSchedule extends ActionScheduler_Abstract_Recurrin
 	}
 
 	/**
+	 * Schedule interval in seconds.
+	 *
 	 * @return int
 	 */
 	public function interval_in_seconds() {
@@ -38,7 +44,7 @@ class ActionScheduler_IntervalSchedule extends ActionScheduler_Abstract_Recurrin
 	/**
 	 * Serialize interval schedules with data required prior to AS 3.0.0
 	 *
-	 * Prior to Action Scheduler 3.0.0, reccuring schedules used different property names to
+	 * Prior to Action Scheduler 3.0.0, recurring schedules used different property names to
 	 * refer to equivalent data. For example, ActionScheduler_IntervalSchedule::start_timestamp
 	 * was the same as ActionScheduler_SimpleSchedule::timestamp. Action Scheduler 3.0.0
 	 * aligned properties and property names for better inheritance. To guard against the
@@ -55,10 +61,13 @@ class ActionScheduler_IntervalSchedule extends ActionScheduler_Abstract_Recurrin
 		$this->start_timestamp     = $this->scheduled_timestamp;
 		$this->interval_in_seconds = $this->recurrence;
 
-		return array_merge( $sleep_params, array(
-			'start_timestamp',
-			'interval_in_seconds'
-		) );
+		return array_merge(
+			$sleep_params,
+			array(
+				'start_timestamp',
+				'interval_in_seconds',
+			)
+		);
 	}
 
 	/**

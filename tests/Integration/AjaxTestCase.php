@@ -7,8 +7,10 @@ use WP_Rocket\Tests\CallbackTrait;
 use WP_Rocket\Tests\SettingsTrait;
 use WP_Rocket\Tests\StubTrait;
 use WPMedia\PHPUnit\Integration\AjaxTestCase as WPMediaAjaxTestCase;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 abstract class AjaxTestCase extends WPMediaAjaxTestCase {
+	use HttpRequestTrait;
 	use CallbackTrait;
 	use CapTrait;
 	use SettingsTrait;
@@ -25,8 +27,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 		self::hasAdminCapBeforeClass();
 
-		self::installFresh();
-
 		if ( static::$use_settings_trait ) {
 			self::getOriginalSettings();
 		}
@@ -40,8 +40,6 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 
 	public static function tear_down_after_class() {
 		self::resetAdminCap();
-
-		self::uninstallAll();
 
 		if ( static::$use_settings_trait ) {
 			self::resetOriginalSettings();
@@ -61,6 +59,9 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Any HTTP request a test doesn't mock fails it.
+		$this->setup_http();
+
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
@@ -75,8 +76,8 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 	}
 
 	public function tear_down() {
-		unset( $_POST['action'], $_POST['nonce'] );
-		$this->action = null;
+		unset( $_POST );
+		$this->action = '';
 		self::resetAdminCap();
 
 		if ( static::$use_settings_trait ) {
@@ -84,6 +85,9 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 		}
 
 		parent::tear_down();
+
+		// Last, so an unmocked-request failure can't skip the cleanup above.
+		$this->tear_down_http();
 	}
 
 	public function configTestData() {

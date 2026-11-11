@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_cpcss_heartbeat_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_cpcss_heartbeat_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -28,8 +28,19 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
@@ -38,7 +49,7 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
-		wp_set_current_user( static::$user_id );
+		wp_set_current_user( self::getUserId() );
 		set_current_screen( 'post.php' );
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_cpcss_heartbeat_nonce' );
@@ -61,5 +72,9 @@ class Test_EnqueueAdminCpcssHeartbeatScript extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	public static function getUserId() {
+		return self::$user_id;
 	}
 }

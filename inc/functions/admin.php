@@ -62,7 +62,7 @@ function rocket_renew_all_boxes( $uid = null, $keep_this = [] ) {
  * @param int    $uid User ID.
  * @return void
  */
-function rocket_renew_box( $function, $uid = 0 ) {
+function rocket_renew_box( $function, $uid = 0 ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	global $current_user;
 	$uid    = 0 === $uid ? $current_user->ID : $uid;
 	$actual = get_user_meta( $uid, 'rocket_boxes', true );
@@ -81,7 +81,7 @@ function rocket_renew_box( $function, $uid = 0 ) {
  *
  * @param string $function Function (box) name.
  */
-function rocket_dismiss_box( $function ) {
+function rocket_dismiss_box( $function ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.functionFound
 	$actual = get_user_meta( get_current_user_id(), 'rocket_boxes', true );
 	$actual = array_merge( (array) $actual, [ $function ] );
 	$actual = array_filter( $actual );
@@ -270,7 +270,7 @@ function rocket_after_update_array_options( $old_value, $value ) {
  * @since 2.10
  * @author Remy Perona
  *
- * @return true if a mobile plugin in the list is active, false otherwise.
+ * @return bool true if a mobile plugin in the list is active, false otherwise.
  **/
 function rocket_is_mobile_plugin_active() {
 	return \WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber::is_mobile_plugin_active();
@@ -327,7 +327,7 @@ function rocket_check_json_filetype( $wp_check_filetype_and_ext, $file, $filenam
 
 	$finfo     = finfo_open( FILEINFO_MIME_TYPE );
 	$real_mime = finfo_file( $finfo, $file );
-	finfo_close( $finfo );
+	finfo_close( $finfo ); // phpcs:ignore Generic.PHP.DeprecatedFunctions.Deprecated
 
 	if ( 'text/plain' !== $real_mime ) {
 		return $wp_check_filetype_and_ext;
@@ -361,7 +361,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Server type:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['web_server'] );
+	$html .= sprintf( '<em>%s</em>', $data['web_server'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -370,7 +370,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'PHP version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['php_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['php_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -379,7 +379,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress version number:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['wordpress_version'] );
+	$html .= sprintf( '<em>%s</em>', $data['wordpress_version'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -388,7 +388,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'WordPress multisite:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['multisite'] ? 'true' : 'false' );
+	$html .= sprintf( '<em>%s</em>', $data['multisite'] ? 'true' : 'false' );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -397,7 +397,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current theme:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['current_theme'] );
+	$html .= sprintf( '<em>%s</em>', $data['current_theme'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -406,7 +406,7 @@ function rocket_data_collection_preview_table() {
 	$html .= sprintf( '<strong>%s</strong>', __( 'Current site language:', 'rocket' ) );
 	$html .= '</td>';
 	$html .= '<td>';
-	$html .= sprintf( '<code>%s</code>', $data['locale'] );
+	$html .= sprintf( '<em>%s</em>', $data['locale'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -425,6 +425,24 @@ function rocket_data_collection_preview_table() {
 	$html .= '</td>';
 	$html .= '<td>';
 	$html .= sprintf( '<em>%s</em>', __( 'Which WP Rocket settings are active', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'Anonymized WP Rocket statistics:', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', __( 'How WP Rocket features function and perform.', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '</tr>';
+
+	$html .= '<tr>';
+	$html .= '<td class="column-primary">';
+	$html .= sprintf( '<strong>%s</strong>', __( 'WP Rocket license type', 'rocket' ) );
+	$html .= '</td>';
+	$html .= '<td>';
+	$html .= sprintf( '<em>%s</em>', $data['license_type'] );
 	$html .= '</td>';
 	$html .= '</tr>';
 
@@ -483,6 +501,16 @@ function rocket_can_display_options() {
 /**
  * Create a hash from wp rocket options.
  *
+ * Cdn_state, cdn, and cdn_type are excluded: Subscriber::maybe_clear_cache() already
+ * reacts to every relevant change on this same update_option_wp_rocket_settings hook and
+ * decides the correct clearing scope (full or free-pages-only) for each transition -
+ * including any of these here would make rocket_after_save_options() redundantly force a
+ * full clear on top of whatever maybe_clear_cache() already decided, defeating the
+ * scoped-clear optimization for the nothing<->rocketcdn_free transition. cdn_state alone
+ * is not enough to exclude: it's a derived field computed from cdn/cdn_type (see
+ * CdnStateBridge::reconcile()), so a Free-toggle flip still changes cdn itself and would
+ * otherwise still change this hash even with cdn_state excluded.
+ *
  * @param array $value options.
  *
  * @return string
@@ -518,6 +546,9 @@ function rocket_create_options_hash( $value ) {
 		'preload_excluded_uri'        => true,
 		'cache_reject_uri'            => true,
 		'version'                     => true,
+		'cdn_state'                   => true,
+		'cdn'                         => true,
+		'cdn_type'                    => true,
 	];
 
 	// Create 2 arrays to compare.
@@ -525,4 +556,72 @@ function rocket_create_options_hash( $value ) {
 	ksort( $value_diff );
 
 	return md5( wp_json_encode( $value_diff ) );
+}
+
+/**
+ * This function returns the license type for a customer.
+ *
+ * @param object $customer_data customer data as an object.
+ * @return string the type of the license the user has.
+ */
+function rocket_get_license_type( $customer_data ) {
+	if ( false === $customer_data
+		||
+		! isset( $customer_data->licence_account )
+	) {
+		return __( 'Unavailable', 'rocket' );
+	}
+
+	if ( isset( $customer_data->licence->is_revoked ) && $customer_data->licence->is_revoked ) {
+		return __( 'Revoked', 'rocket' );
+	}
+
+	// The licence name directly from User endpoint.
+	if ( ! empty( $customer_data->licence->name ) ) {
+		return esc_html( $customer_data->licence->name );
+	}
+
+	// Fallback to licence account.
+	if ( 1 <= $customer_data->licence_account
+		&&
+		$customer_data->licence_account < 3
+	) {
+		return 'Single';
+	} elseif ( -1 === (int) $customer_data->licence_account ) {
+		return 'Infinite';
+	}
+
+	return 'Plus';
+}
+
+/**
+ * Fires callback attached to a deprecated filter hook.
+ *
+ * @param string $new_hook    The hook that should have been used.
+ * @param array  $args        Array of additional function arguments to be passed.
+ * @param string $version     The version of WPR that deprecated the hook.
+ * @param string $old_hook    Name of the original filter hook.
+ *
+ * @return mixed The filtered value after all hooked functions are applied to it.
+ */
+function rocket_apply_filter_and_deprecated( string $new_hook, array $args, string $version, string $old_hook ) {
+	$filtered_value = apply_filters_deprecated( $old_hook, $args, $version, $new_hook );
+	$args[0]        = $filtered_value;
+
+	return apply_filters_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+}
+
+/**
+ * Fires callback attached to a deprecated action hook.
+ *
+ * @param string $new_hook    The hook that should have been used.
+ * @param array  $args        Array of additional function arguments to be passed.
+ * @param string $version     The version of WPR that deprecated the hook.
+ * @param string $old_hook    The name of the action hook.
+ *
+ * @return void
+ */
+function rocket_do_action_and_deprecated( string $new_hook, array $args, string $version, string $old_hook ): void {
+	do_action_deprecated( $old_hook, $args, $version, $new_hook );
+	do_action_ref_array( $new_hook, $args ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 }

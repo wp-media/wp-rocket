@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_bypass
+ * Test class covering ::rocket_bypass
  * @group API
  */
 class Bypass extends TestCase {

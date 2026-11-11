@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Ajax\AjaxHandler::validate_referer
+ * Test class covering \WP_Rocket\Engine\Common\Ajax\AjaxHandler::validate_referer
  */
 class Test_validateReferer extends TestCase {
 

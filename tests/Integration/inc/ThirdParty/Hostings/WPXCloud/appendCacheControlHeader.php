@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\WPXCloud;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\WPXCloud::append_cache_control_header
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\WPXCloud::append_cache_control_header
  *
  * @group  WPXCloud
  */

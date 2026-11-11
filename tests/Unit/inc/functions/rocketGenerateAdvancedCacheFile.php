@@ -8,7 +8,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_generate_advanced_cache_file
+ * Test class covering ::rocket_generate_advanced_cache_file
  * @uses   WP_Rocket\Engine\Cache\AdvancedCache::get_advanced_cache_content
  * @uses   ::rocket_put_content
  * @uses   ::rocket_get_constant

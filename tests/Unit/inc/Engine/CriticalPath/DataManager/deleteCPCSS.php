@@ -8,7 +8,7 @@ use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\DataManager::delete_cpcss
  * @uses ::rocket_direct_filesystem
  *
  * @group  CriticalPath

@@ -24,6 +24,7 @@ return [
 			'async_css'                   => 0,
 			'critical_css'                => '',
 			'lazyload'                    => 0,
+			'lazyload_css_bg_img'         => 0,
 			'lazyload_iframes'            => 0,
 			'lazyload_youtube'            => 0,
 			'minify_css'                  => 0,
@@ -78,7 +79,7 @@ return [
 			'WP Rocket Version'        => '3.7.5',
 			'Theme'                    => 'WordPress Default',
 			'Plugins Enabled'          => 'Hello Dolly',
-			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload - Hearbeat Control',
+			'WP Rocket Active Options' => 'Mobile Cache - Disable Emojis - Combine Google Fonts - Preload - Heartbeat Control - Optimize Critical Images - Automatic Lazy Rendering',
 		],
 	],
 ];

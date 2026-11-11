@@ -1,0 +1,13 @@
+#internal-BG-images {
+	background: url(/wp-content/rocket-test-data/images/first.avif) right bottom no-repeat;
+	background: url(/wp-content/rocket-test-data/images/butterfly.avif) right bottom no-repeat;
+	padding: 15px;
+}
+
+#internal-BG-images{background: url(/wp-content/rocket-test-data/images/first.avif) right bottom no-repeat;background: url(/wp-content/rocket-test-data/images/butterfly.avif) right bottom no-repeat;padding:15px;}
+
+.external-css-background{
+	background: url('/test.png') no-repeat;
+	background-image: url('/test2.png');
+	background-color: #4fc1dd;
+}

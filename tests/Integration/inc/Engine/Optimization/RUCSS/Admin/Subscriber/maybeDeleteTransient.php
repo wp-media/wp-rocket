@@ -2,15 +2,15 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::maybe_delete_transient
  */
 class Test_maybeDeleteTransient extends TestCase {
 
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	public function set_up()
 	{
@@ -21,7 +21,7 @@ class Test_maybeDeleteTransient extends TestCase {
 
 	public function tear_down()
 	{
-		$this->restoreWpFilter('update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ));
+		$this->restoreWpHook('update_option_' . rocket_get_constant( 'WP_ROCKET_SLUG', 'wp_rocket_settings' ));
 		delete_transient('wp_rocket_no_licence');
 		parent::tear_down();
 	}

@@ -1,35 +1,21 @@
 <?php
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
 
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber::show_notempty_product_gallery_with_delayJS
  * @group WooCommerce
  * @group ThirdParty
  * @group WithWoo
  */
 class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
-	use WooTrait, DBTrait;
+	use WooTrait;
 
 	private $delay_js_option;
 	private $product_with_gallery;
 	private $product_without_gallery;
 	private $wp_version;
-
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
-
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		global $wp_version;
@@ -42,14 +28,14 @@ class Test_ShowNotEmptyProductGalleryWithDelayJS extends TestCase {
 		$this->wp_version = $wp_version;
 	}
 
-	public function tear_down() : void {
+	public function tear_down() {
 		global $wp_version;
-
-		parent::tear_down();
 
 		$wp_version = $this->wp_version;
 
 		remove_filter( 'pre_get_rocket_option_delay_js', [ $this, 'set_delay_js' ] );
+
+		parent::tear_down();
 	}
 
 	/**

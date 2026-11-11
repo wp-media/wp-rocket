@@ -1,107 +1,62 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\ThirdParty;
 
-use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\EWWW_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Imagify_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\ShortPixel_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\Mobile_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\NGG_Subscriber;
-use WP_Rocket\Subscriber\Third_Party\Plugins\SyntaxHighlighter_Subscriber;
-use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;
-use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
-use WP_Rocket\ThirdParty\Plugins\Ecommerce\BigCommerce;
-use WP_Rocket\ThirdParty\Plugins\Ecommerce\WooCommerceSubscriber;
-use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
-use WP_Rocket\ThirdParty\Plugins\I18n\WPML;
-use WP_Rocket\ThirdParty\Plugins\InlineRelatedPosts;
+use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
+use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
-use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
-use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
-use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
-use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
-use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
-use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
-use WP_Rocket\ThirdParty\Plugins\PWA;
-use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
-use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
-use WP_Rocket\ThirdParty\Plugins\SEO\Yoast;
-use WP_Rocket\ThirdParty\Plugins\SimpleCustomCss;
-use WP_Rocket\ThirdParty\Plugins\Smush;
-use WP_Rocket\ThirdParty\Plugins\TheEventsCalendar;
-use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
-use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
-use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
-use WP_Rocket\ThirdParty\Plugins\Jetpack;
-use WP_Rocket\ThirdParty\Plugins\WPGeotargeting;
-use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
-use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
-use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
-use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
-use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
-use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
-use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
+use WP_Rocket\ThirdParty\Plugins\PluginResolver;
+use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
 
 /**
  * Service provider for WP Rocket third party compatibility
- *
- * @since 3.3
  */
-class ServiceProvider extends AbstractServiceProvider {
+class ServiceProvider extends AbstractServiceProvider implements BootableServiceProviderInterface {
+	/**
+	 * Ids registered unconditionally, outside the plugin resolver.
+	 *
+	 * @var array<string>
+	 */
+	private const STATIC_PROVIDES = [ 'ezoic', 'mod_pagespeed', 'cloudflare_plugin_facade' ];
 
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Gated ids kept fetchable from the container for external code; their subscription stays resolver-gated.
+	 *
+	 * @var array<string>
+	 */
+	private const ALWAYS_REGISTERED = [ 'elementor_subscriber' ];
+
+	/**
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
-	protected $provides = [
-		'mobile_subscriber',
-		'woocommerce_subscriber',
-		'syntaxhighlighter_subscriber',
-		'elementor_subscriber',
-		'ngg_subscriber',
-		'smush_subscriber',
-		'imagify_webp_subscriber',
-		'shortpixel_webp_subscriber',
-		'ewww_webp_subscriber',
-		'optimus_webp_subscriber',
-		'bigcommerce_subscriber',
-		'beaverbuilder_subscriber',
-		'amp_subscriber',
-		'simple_custom_css',
-		'pdfembedder',
-		'mod_pagespeed',
-		'adthrive',
-		'autoptimize',
-		'wp-meteor',
-		'revolution_slider_subscriber',
-		'wordfence_subscriber',
-		'ezoic',
-		'pwa',
-		'convertplug',
-		'unlimited_elements',
-		'inline_related_posts',
-		'jetpack',
-		'rank_math_seo',
-		'all_in_one_seo_pack',
-		'seopress',
-		'the_seo_framework',
-		'wpml',
-		'cloudflare_plugin_facade',
-		'cloudflare_plugin_subscriber',
-		'rocket_lazy_load',
-		'the_events_calendar',
-		'perfmatters',
-		'rapidload',
-		'translatepress',
-		'wpgeotargeting',
-	];
+	protected $provides = [];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
+
+	/**
+	 * Builds the list of provided service ids from the static extras, the
+	 * always-registered ids and the resolver's active plugin ids.
+	 *
+	 * @return void
+	 */
+	public function boot(): void {
+		$this->provides = array_values(
+			array_unique( array_merge( self::STATIC_PROVIDES, self::ALWAYS_REGISTERED, PluginResolver::get_active_plugins() ) )
+		);
+	}
 
 	/**
 	 * Registers the subscribers in the container
@@ -110,152 +65,30 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
+	public function register(): void {
+		$container = $this->getContainer();
 
-		$this->getContainer()
-			->share( 'mobile_subscriber', Mobile_Subscriber::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'elementor_subscriber', Elementor::class )
-			->addArgument( $options )
-			->addArgument( rocket_direct_filesystem() )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'woocommerce_subscriber', WooCommerceSubscriber::class )
-			->addArgument( $this->getContainer()->get( 'delay_js_html' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'syntaxhighlighter_subscriber', SyntaxHighlighter_Subscriber::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'ngg_subscriber', NGG_Subscriber::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'smush_subscriber', Smush::class )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'options' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'imagify_webp_subscriber', Imagify_Subscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'shortpixel_webp_subscriber', ShortPixel_Subscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'ewww_webp_subscriber', EWWW_Subscriber::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'optimus_webp_subscriber', Optimus_Subscriber::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'bigcommerce_subscriber', BigCommerce::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'beaverbuilder_subscriber', BeaverBuilder::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'amp_subscriber', AMP::class )
-			->addArgument( $options )->addArgument( $this->getContainer()->get( 'cdn_subscriber' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'simple_custom_css', SimpleCustomCss::class )
-			->addArgument( WP_ROCKET_CACHE_BUSTING_PATH )->addArgument( WP_ROCKET_CACHE_BUSTING_URL )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'pdfembedder', PDFEmbedder::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'mod_pagespeed', ModPagespeed::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'adthrive', Adthrive::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'autoptimize', Autoptimize::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'wp-meteor', WPMeteor::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'revolution_slider_subscriber', RevolutionSlider::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'wordfence_subscriber', WordFenceCompatibility::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'ezoic', Ezoic::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'thirstyaffiliates', ThirstyAffiliates::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'pwa', PWA::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'yoast_seo', Yoast::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'convertplug', ConvertPlug::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'unlimited_elements', UnlimitedElements::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'inline_related_posts', InlineRelatedPosts::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'wpml', WPML::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
-		$this->getContainer()
-			->share( 'cloudflare_plugin_subscriber', Cloudflare::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'options_api' ) )
-			->addArgument( $this->getContainer()->get( 'beacon' ) )
-			->addArgument( $this->getContainer()->get( 'cloudflare_plugin_facade' ) )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'jetpack', Jetpack::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'convertplug', ConvertPlug::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'rank_math_seo', RankMathSEO::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'all_in_one_seo_pack', AllInOneSEOPack::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'seopress', SEOPress::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'the_seo_framework', TheSEOFramework::class )
-			->addArgument( $options )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'rocket_lazy_load', RocketLazyLoad::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'the_events_calendar', TheEventsCalendar::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'perfmatters', Perfmatters::class )
-			->addTag( 'common_subscriber' );
-		$this->getContainer()
-			->share( 'rapidload', RapidLoad::class );
-		$this->getContainer()->share( 'translatepress', TranslatePress::class );
-		$this->getContainer()->share( 'wpgeotargeting', WPGeotargeting::class );
+		// Non-resolver dependency + SPECIAL always-load ids.
+		$container->add( 'cloudflare_plugin_facade', CloudflareFacade::class );
+		$container->addShared( 'ezoic', Ezoic::class );
+		$container->addShared( 'mod_pagespeed', ModPagespeed::class );
+
+		$factory  = new SubscriberFactory();
+		$registry = $factory->get_registry();
+
+		$ids = array_unique( array_merge( PluginResolver::get_active_plugins(), self::ALWAYS_REGISTERED ) );
+
+		foreach ( $ids as $id ) {
+			if ( ! isset( $registry[ $id ] ) ) {
+				continue;
+			}
+
+			$definition = $container->addShared( $id, $registry[ $id ] );
+			$args       = $factory->get_arguments( $id );
+
+			if ( ! empty( $args ) ) {
+				$definition->addArguments( $args );
+			}
+		}
 	}
 }

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\WPGeotargeting;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::add_geot_cookies
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::add_geot_cookies
  * @group WPGeotargeting
  */
 class Test_addGeotCookies extends TestCase {

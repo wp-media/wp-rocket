@@ -12,7 +12,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Tables\UsedCSS;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::sanitize_options
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings::sanitize_options
  *
  * @group  RUCSS
  */

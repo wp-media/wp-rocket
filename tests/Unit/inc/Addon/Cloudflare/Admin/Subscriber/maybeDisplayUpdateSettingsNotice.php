@@ -7,7 +7,7 @@ use WP_Rocket\Addon\Cloudflare\Admin\Subscriber;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Admin\Subscriber::maybe_print_update_settings_notice
+ * Test class covering WP_Rocket\Addon\Cloudflare\Admin\Subscriber::maybe_print_update_settings_notice
  *
  * @group Cloudflare
  */

@@ -3,12 +3,12 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\CDN;
 
 use Mockery;
-use Brain\Monkey\Functions;
+use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\CDN;
 
 /**
- * @covers \WP_Rocket\Engine\CDN\CDN::rewrite
+ * Test class covering \WP_Rocket\Engine\CDN\CDN::rewrite
  * @group  CDN
  */
 class Test_Rewrite extends TestCase {
@@ -18,14 +18,19 @@ class Test_Rewrite extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options   = Mockery::mock( Options_Data::class );
+		$this->cdn       = new CDN( $this->options );
 	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRewriteURLToCDN( $home_url, $original, $expected ) {
+		Filters\expectApplied( 'rocket_disable_meta_generator' )
+			->atMost()
+			->once()
+			->andReturn( true );
+
 		Functions\when( 'content_url' )->justReturn( "{$home_url}/wp-content/" );
 		Functions\when( 'includes_url' )->justReturn( "{$home_url}/wp-includes/" );
 		Functions\when( 'wp_upload_dir' )->justReturn( "{$home_url}/wp-content/uploads/" );
@@ -62,6 +67,10 @@ class Test_Rewrite extends TestCase {
 			'cdn_reject_files' => [
 				'default' => [],
 				'value' => [],
+			],
+			'cdn_type' => [
+				'default' => 'rocketcdn',
+				'value' => 'rocketcdn',
 			],
 		];
 

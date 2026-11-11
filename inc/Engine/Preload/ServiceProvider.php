@@ -3,38 +3,33 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload;
 
-use WP_Filesystem_Direct;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheHealth;
+use WP_Rocket\Engine\Preload\Abilities\CheckCacheStatus;
+use WP_Rocket\Engine\Preload\Abilities\Subscriber as AbilitiesSubscriber;
 use WP_Rocket\Engine\Preload\Activation\Activation;
 use WP_Rocket\Engine\Preload\Admin\Settings;
 use WP_Rocket\Engine\Preload\Admin\Subscriber as AdminSubscriber;
-use WP_Rocket\Engine\Preload\Controller\{CheckFinished,ClearCache,CrawlHomepage,LoadInitialSitemap,PreloadUrl,Queue};
+use WP_Rocket\Engine\Preload\Controller\{CheckFinished, ClearCache, CrawlHomepage, LoadInitialSitemap, PreloadUrl, Queue};
 use WP_Rocket\Engine\Preload\Cron\Subscriber as CronSubscriber;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Preload\Database\Tables\Cache as CacheTable;
 use WP_Rocket\Engine\Preload\Frontend\FetchSitemap;
 use WP_Rocket\Engine\Preload\Frontend\SitemapParser;
 use WP_Rocket\Engine\Preload\Frontend\Subscriber as FrontEndSubscriber;
-use WP_Rocket\Logger\Logger;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
 
 /**
  * Service provider for the WP Rocket preload.
- *
- * @since 3.3
  */
 class ServiceProvider extends AbstractServiceProvider {
-
 	/**
-	 * The provides array is a way to let the container
-	 * know that a service is provided by this service
-	 * provider. Every service that is registered via
-	 * this service provider must have an alias added
-	 * to this array or it will be ignored.
+	 * Array of services provided by this service provider
 	 *
 	 * @var array
 	 */
 	protected $provides = [
+		'mobile_detect',
 		'preload_queue',
 		'sitemap_parser',
 		'fetch_sitemap_controller',
@@ -48,9 +43,22 @@ class ServiceProvider extends AbstractServiceProvider {
 		'preload_subscriber',
 		'preload_front_subscriber',
 		'preload_cron_subscriber',
-		'fonts_preload_subscriber',
 		'preload_activation',
+		'preload_check_cache_status_ability',
+		'preload_check_cache_health_ability',
+		'preload_abilities_subscriber',
 	];
+
+	/**
+	 * Check if the service provider provides a specific service.
+	 *
+	 * @param string $id The id of the service.
+	 *
+	 * @return bool
+	 */
+	public function provides( string $id ): bool {
+		return in_array( $id, $this->provides, true );
+	}
 
 	/**
 	 * Registers the subscribers in the container
@@ -59,107 +67,123 @@ class ServiceProvider extends AbstractServiceProvider {
 	 *
 	 * @return void
 	 */
-	public function register() {
-		$options = $this->getContainer()->get( 'options' );
-
-		$this->getContainer()->add( 'preload_mobile_detect', WP_Rocket_Mobile_Detect::class );
-
-		$this->getContainer()->add( 'wp_direct_filesystem', WP_Filesystem_Direct::class )
-			->addArgument( [] );
-		$wp_file_system = $this->getContainer()->get( 'wp_direct_filesystem' );
-
+	public function register(): void {
+		$this->getContainer()->add( 'mobile_detect', MobileDetect::class );
 		$this->getContainer()->add( 'preload_caches_table', CacheTable::class );
 		$this->getContainer()->add( 'preload_caches_query', CacheQuery::class )
-			->addArgument( new Logger() );
+			->addArgument( 'logger' );
 		$this->getContainer()->get( 'preload_caches_table' );
 
-		$cache_query = $this->getContainer()->get( 'preload_caches_query' );
-
 		$this->getContainer()->add( 'preload_queue', Queue::class );
-		$queue = $this->getContainer()->get( 'preload_queue' );
-
 		$this->getContainer()->add( 'preload_url_controller', PreloadUrl::class )
-			->addArgument( $options )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $wp_file_system );
-
-		$preload_url_controller = $this->getContainer()->get( 'preload_url_controller' );
-
+			->addArguments(
+				[
+					'options',
+					'preload_queue',
+					'preload_caches_query',
+					rocket_direct_filesystem(),
+				]
+			);
 		$this->getContainer()->add( 'homepage_crawler', CrawlHomepage::class );
-		$crawl_homepage = $this->getContainer()->get( 'homepage_crawler' );
-
 		$this->getContainer()->add( 'sitemap_parser', SitemapParser::class );
-		$sitemap_parser = $this->getContainer()->get( 'sitemap_parser' );
-
 		$this->getContainer()->add( 'fetch_sitemap_controller', FetchSitemap::class )
-			->addArgument( $sitemap_parser )
-			->addArgument( $queue )
-			->addArgument( $cache_query );
-
-		$fetch_sitemap_controller = $this->getContainer()->get( 'fetch_sitemap_controller' );
-
+			->addArguments(
+				[
+					'sitemap_parser',
+					'preload_queue',
+					'preload_caches_query',
+					'logger',
+				]
+			);
 		$this->getContainer()->add( 'load_initial_sitemap_controller', LoadInitialSitemap::class )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $crawl_homepage );
-
+			->addArguments(
+				[
+					'preload_queue',
+					'preload_caches_query',
+					'homepage_crawler',
+				]
+			);
 		$this->getContainer()->add( 'preload_activation', Activation::class )
-			->addArgument( $preload_url_controller )
-			->addArgument( $queue )
-			->addArgument( $cache_query )
-			->addArgument( $options );
-
+			->addArguments(
+				[
+					'preload_url_controller',
+					'preload_queue',
+					'preload_caches_query',
+					'options',
+				]
+			);
 		$this->getContainer()->add( 'preload_settings', Settings::class )
-			->addArgument( $options )
-			->addArgument( $preload_url_controller );
-
-		$preload_settings = $this->getContainer()->get( 'preload_settings' );
-
+			->addArguments(
+				[
+					'options',
+					'preload_url_controller',
+					'load_initial_sitemap_controller',
+					'preload_caches_table',
+				]
+			);
 		$this->getContainer()->add( 'check_finished_controller', CheckFinished::class )
-			->addArgument( $preload_settings )
-			->addArgument( $cache_query )
-			->addArgument( $queue );
-
-		$check_finished_controller = $this->getContainer()->get( 'check_finished_controller' );
-
-		$this->getContainer()->share( 'preload_front_subscriber', FrontEndSubscriber::class )
-			->addArgument( $fetch_sitemap_controller )
-			->addArgument( $preload_url_controller )
-			->addArgument( $check_finished_controller )
-			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
-			->addTag( 'common_subscriber' );
-
+			->addArguments(
+				[
+					'preload_settings',
+					'preload_caches_query',
+					'preload_queue',
+				]
+			);
+		$this->getContainer()->addShared( 'preload_front_subscriber', FrontEndSubscriber::class )
+			->addArguments(
+				[
+					'fetch_sitemap_controller',
+					'preload_url_controller',
+					'check_finished_controller',
+					'load_initial_sitemap_controller',
+				]
+			);
 		$this->getContainer()->add( 'preload_clean_controller', ClearCache::class )
-			->addArgument( $cache_query );
+			->addArgument( 'preload_caches_query' );
+		$this->getContainer()->addShared( 'preload_subscriber', Subscriber::class )
+			->addArguments(
+				[
+					'options',
+					'load_initial_sitemap_controller',
+					'preload_caches_query',
+					'preload_activation',
+					'mobile_detect',
+					'preload_clean_controller',
+					'preload_queue',
+				]
+			);
+		$this->getContainer()->addShared( 'preload_cron_subscriber', CronSubscriber::class )
+			->addArguments(
+				[
+					'preload_settings',
+					'preload_caches_query',
+					'preload_url_controller',
+				]
+			);
+		$this->getContainer()->addShared( 'preload_admin_subscriber', AdminSubscriber::class )
+			->addArgument( 'preload_settings' );
 
-		$clean_controller = $this->getContainer()->get( 'preload_clean_controller' );
-
-		$this->getContainer()->share( 'preload_subscriber', Subscriber::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'load_initial_sitemap_controller' ) )
-			->addArgument( $cache_query )
-			->addArgument( $this->getContainer()->get( 'preload_activation' ) )
-			->addArgument( $this->getContainer()->get( 'preload_mobile_detect' ) )
-			->addArgument( $clean_controller )
-			->addArgument( $queue )
-			->addTag( 'common_subscriber' );
-
-		$this->getContainer()->share( 'preload_cron_subscriber', CronSubscriber::class )
-			->addArgument( $preload_settings )
-			->addArgument( $cache_query )
-			->addArgument( $preload_url_controller )
-			->addTag( 'common_subscriber' );
-
-		$this->getContainer()->share( 'fonts_preload_subscriber', Fonts::class )
-			->addArgument( $options )
-			->addArgument( $this->getContainer()->get( 'cdn' ) )
-			->addTag( 'common_subscriber' );
-
-		$this->getContainer()->add( 'preload_admin_subscriber', AdminSubscriber::class )
-			->addArgument( $options )
-			->addArgument( $preload_settings )
-			->addTag( 'common_subscriber' );
-
+		$this->getContainer()->add( 'preload_check_cache_status_ability', CheckCacheStatus::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->add( 'preload_check_cache_health_ability', CheckCacheHealth::class )
+			->addArguments(
+				[
+					'options',
+					'preload_caches_query',
+				]
+			);
+		$this->getContainer()->addShared( 'preload_abilities_subscriber', AbilitiesSubscriber::class )
+			->addArguments(
+				[
+					'preload_check_cache_status_ability',
+					'preload_check_cache_health_ability',
+					'abilities_context',
+				]
+			);
 	}
 }

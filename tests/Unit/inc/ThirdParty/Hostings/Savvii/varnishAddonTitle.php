@@ -6,7 +6,7 @@ use WP_Rocket\ThirdParty\Hostings\Savvii;
 use WPMedia\PHPUnit\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Savvii::varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Savvii::varnish_addon_title
  * @group Savvii
  * @group ThirdParty
  */

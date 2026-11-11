@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Unit\FilesystemTestCase;
 use WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clean_minify
+ * Test class covering \WP_Rocket\Engine\Optimization\Minify\CSS\AdminSubscriber::clean_minify
  * @uses   ::rocket_clean_minify
  * @uses   ::rocket_direct_filesystem
  *

@@ -7,10 +7,18 @@
  */
 abstract class ActionScheduler_Lock {
 
-	/** @var ActionScheduler_Lock */
-	private static $locker = NULL;
+	/**
+	 * Instance.
+	 *
+	 * @var ActionScheduler_Lock
+	 */
+	private static $locker = null;
 
-	/** @var int */
+	/**
+	 * Duration of lock.
+	 *
+	 * @var int
+	 */
 	protected static $lock_duration = MINUTE_IN_SECONDS;
 
 	/**
@@ -25,6 +33,8 @@ abstract class ActionScheduler_Lock {
 
 	/**
 	 * Set a lock.
+	 *
+	 * To prevent race conditions, implementations should avoid setting the lock if the lock is already held.
 	 *
 	 * @param string $lock_type A string to identify different lock types.
 	 * @return bool
@@ -50,11 +60,13 @@ abstract class ActionScheduler_Lock {
 	}
 
 	/**
+	 * Get instance.
+	 *
 	 * @return ActionScheduler_Lock
 	 */
 	public static function instance() {
 		if ( empty( self::$locker ) ) {
-			$class = apply_filters( 'action_scheduler_lock_class', 'ActionScheduler_OptionLock' );
+			$class        = apply_filters( 'action_scheduler_lock_class', 'ActionScheduler_OptionLock' );
 			self::$locker = new $class();
 		}
 		return self::$locker;

@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::display_upgrade_popin
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::display_upgrade_popin
  *
  * @group License
  * @group AdminOnly
@@ -34,7 +34,7 @@ class DisplayUpgradePopin extends TestCase {
 	}
 
 	public function tear_down() {
-		$this->restoreWpFilter( 'rocket_settings_page_footer' );
+		$this->restoreWpHook( 'rocket_settings_page_footer' );
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 		$this->set_reflective_property( $this->original_pricing, 'pricing', self::$pricing );
 

@@ -11,7 +11,7 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\ThirdParty\Plugins\CDN\{Cloudflare,CloudflareFacade};
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\CDN\Cloudflare::display_server_pushing_mode_notice
  *
  * @group ThirdParty
  * @group CloudflarePlugin

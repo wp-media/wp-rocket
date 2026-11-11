@@ -151,5 +151,4 @@ abstract class AbstractCSSOptimization extends AbstractOptimization {
 
 		return false;
 	}
-
 }

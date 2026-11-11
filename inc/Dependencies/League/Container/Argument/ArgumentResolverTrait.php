@@ -1,101 +1,100 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace WP_Rocket\Dependencies\League\Container\Argument;
 
-use WP_Rocket\Dependencies\League\Container\Container;
+use WP_Rocket\Dependencies\League\Container\DefinitionContainerInterface;
 use WP_Rocket\Dependencies\League\Container\Exception\{ContainerException, NotFoundException};
 use WP_Rocket\Dependencies\League\Container\ReflectionContainer;
 use WP_Rocket\Dependencies\Psr\Container\ContainerInterface;
 use ReflectionFunctionAbstract;
-use ReflectionParameter;
+use ReflectionNamedType;
 
 trait ArgumentResolverTrait
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function resolveArguments(array $arguments) : array
+    public function resolveArguments(array $arguments): array
     {
-        return array_map(function ($argument) {
-            $justStringValue = false;
+        try {
+            $container = $this->getContainer();
+        } catch (ContainerException $e) {
+            $container = ($this instanceof ReflectionContainer) ? $this : null;
+        }
 
-            if ($argument instanceof RawArgumentInterface) {
-                return $argument->getValue();
-            } elseif ($argument instanceof ClassNameInterface) {
-                $id = $argument->getClassName();
-            } elseif (!is_string($argument)) {
-                return $argument;
+        foreach ($arguments as &$arg) {
+            // if we have a literal, we don't want to do anything more with it
+            if ($arg instanceof LiteralArgumentInterface) {
+                $arg = $arg->getValue();
+                continue;
+            }
+
+            if ($arg instanceof ArgumentInterface) {
+                $argValue = $arg->getValue();
             } else {
-                $justStringValue = true;
-                $id = $argument;
+                $argValue = $arg;
             }
 
-            $container = null;
-
-            try {
-                $container = $this->getLeagueContainer();
-            } catch (ContainerException $e) {
-                if ($this instanceof ReflectionContainer) {
-                    $container = $this;
-                }
+            if (!is_string($argValue)) {
+                 continue;
             }
 
-            if ($container !== null) {
+            // resolve the argument from the container, if it happens to be another
+            // argument wrapper, use that value
+            if ($container instanceof ContainerInterface && $container->has($argValue)) {
                 try {
-                    return $container->get($id);
-                } catch (NotFoundException $exception) {
-                    if ($argument instanceof ClassNameWithOptionalValue) {
-                        return $argument->getOptionalValue();
+                    $arg = $container->get($argValue);
+
+                    if ($arg instanceof ArgumentInterface) {
+                        $arg = $arg->getValue();
                     }
 
-                    if ($justStringValue) {
-                        return $id;
-                    }
-
-                    throw $exception;
+                    continue;
+                } catch (NotFoundException $e) {
                 }
             }
 
-            if ($argument instanceof ClassNameWithOptionalValue) {
-                return $argument->getOptionalValue();
+            // if we have a default value, we use that, no more resolution as
+            // we expect a default/optional argument value to be literal
+            if ($arg instanceof DefaultValueInterface) {
+                $arg = $arg->getDefaultValue();
             }
+        }
 
-            // Just a string value.
-            return $id;
-        }, $arguments);
+        return $arguments;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function reflectArguments(ReflectionFunctionAbstract $method, array $args = []) : array
+    public function reflectArguments(ReflectionFunctionAbstract $method, array $args = []): array
     {
-        $arguments = array_map(function (ReflectionParameter $param) use ($method, $args) {
-            $name = $param->getName();
-            $type = $param->getType();
+        $params    = $method->getParameters();
+        $arguments = [];
 
+        foreach ($params as $param) {
+            $name = $param->getName();
+
+            // if we've been given a value for the argument, treat as literal
             if (array_key_exists($name, $args)) {
-                return new RawArgument($args[$name]);
+                $arguments[] = new LiteralArgument($args[$name]);
+                continue;
             }
 
-            if ($type) {
-                if (PHP_VERSION_ID >= 70100) {
-                    $typeName = $type->getName();
-                } else {
-                    $typeName = (string) $type;
-                }
+            $type = $param->getType();
 
-                $typeName = ltrim($typeName, '?');
+            if ($type instanceof ReflectionNamedType) {
+                // in PHP 8, nullable arguments have "?" prefix
+                $typeHint = ltrim($type->getName(), '?');
 
                 if ($param->isDefaultValueAvailable()) {
-                    return new ClassNameWithOptionalValue($typeName, $param->getDefaultValue());
+                    $arguments[] = new DefaultValueArgument($typeHint, $param->getDefaultValue());
+                    continue;
                 }
 
-                return new ClassName($typeName);
+                $arguments[] = new ResolvableArgument($typeHint);
+                continue;
             }
 
             if ($param->isDefaultValueAvailable()) {
-                return new RawArgument($param->getDefaultValue());
+                $arguments[] = new LiteralArgument($param->getDefaultValue());
+                continue;
             }
 
             throw new NotFoundException(sprintf(
@@ -103,18 +102,10 @@ trait ArgumentResolverTrait
                 $name,
                 $method->getName()
             ));
-        }, $method->getParameters());
+        }
 
         return $this->resolveArguments($arguments);
     }
 
-    /**
-     * @return ContainerInterface
-     */
-    abstract public function getContainer() : ContainerInterface;
-
-    /**
-     * @return Container
-     */
-    abstract public function getLeagueContainer() : Container;
+    abstract public function getContainer(): DefinitionContainerInterface;
 }

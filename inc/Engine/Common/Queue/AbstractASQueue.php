@@ -62,9 +62,11 @@ abstract class AbstractASQueue implements QueueInterface {
 	 * @param int    $interval_in_seconds How long to wait between runs.
 	 * @param string $hook The hook to trigger.
 	 * @param array  $args Arguments to pass when the hook triggers.
+	 * @param int    $priority Lower values take precedence over higher values. Defaults to 10, with acceptable values falling in the range 0-255.
+	 * @param bool   $unique Whether the action should be unique. Defaults to true to prevent duplicates.
 	 * @return int The action ID.
 	 */
-	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [] ) {
+	public function schedule_recurring( $timestamp, $interval_in_seconds, $hook, $args = [], $priority = 10, $unique = true ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
 			// TODO: When v3.3.0 from Action Scheduler is commonly used use the array notation for status to reduce search queries to one.
 			$pending_actions = $this->search(
@@ -77,7 +79,7 @@ abstract class AbstractASQueue implements QueueInterface {
 
 			if ( 1 < count( $pending_actions ) ) {
 				$this->cancel_all( $hook, $args );
-				return '';
+				return 0;
 			}
 
 			$running_actions = $this->search(
@@ -89,14 +91,14 @@ abstract class AbstractASQueue implements QueueInterface {
 			);
 
 			if ( 1 === count( $pending_actions ) + count( $running_actions ) ) {
-				return '';
+				return 0;
 			}
 
 			$this->cancel_all( $hook, $args );
 		}
 
 		try {
-			return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group );
+			return as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $this->group, $unique, $priority );
 		} catch ( Exception $exception ) {
 			Logger::error( $exception->getMessage(), [ 'Action Scheduler Queue' ] );
 
@@ -147,7 +149,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	 */
 	public function schedule_cron( $timestamp, $cron_schedule, $hook, $args = [] ) {
 		if ( $this->is_scheduled( $hook, $args ) ) {
-			return '';
+			return 0;
 		}
 
 		try {
@@ -183,6 +185,20 @@ abstract class AbstractASQueue implements QueueInterface {
 	}
 
 	/**
+	 * Deprecate action without any args or group.
+	 *
+	 * @param string $hook Action hook name.
+	 * @return void
+	 */
+	public function deprecate_action( $hook ) {
+		try {
+			as_unschedule_action( $hook );
+		} catch ( Exception $exception ) {
+			Logger::error( $exception->getMessage(), [ 'Action Scheduler Queue' ] );
+		}
+	}
+
+	/**
 	 * Dequeue all actions with a matching hook (and optionally matching args and group) so no matching actions are ever run.
 	 *
 	 * @param string $hook The hook that the job will trigger.
@@ -197,7 +213,7 @@ abstract class AbstractASQueue implements QueueInterface {
 	}
 
 	/**
-	 * Get the date and time for the next scheduled occurence of an action with a given hook
+	 * Get the date and time for the next scheduled occurrence of an action with a given hook
 	 * (an optionally that matches certain args and group), if any.
 	 *
 	 * @param string $hook The hook that the job will trigger.

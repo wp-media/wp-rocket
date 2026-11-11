@@ -112,7 +112,7 @@ class Subscriber implements Subscriber_Interface {
 		 *
 		 * @param array $value An array of submitted values for the settings.
 		 */
-		do_action( 'rocket_options_changed', $options );
+		do_action( 'rocket_domain_options_changed', $options );
 	}
 
 	/**

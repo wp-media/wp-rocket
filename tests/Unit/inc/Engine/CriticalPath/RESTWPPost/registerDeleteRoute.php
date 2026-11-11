@@ -12,7 +12,7 @@ use WPMedia\PHPUnit\Unit\TestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\RESTWPPost::register_delete_route
+ * Test class covering \WP_Rocket\Engine\CriticalPath\RESTWPPost::register_delete_route
  * @group  CriticalPath
  */
 class Test_RegisterDeleteRoute extends TestCase {

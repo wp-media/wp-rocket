@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Admin\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;
-use WP_Rocket\Engine\Optimization\RUCSS\Controller\Queue;
+use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Database;
 use WP_Rocket\Engine\Optimization\RUCSS\Admin\Settings;
@@ -13,7 +13,7 @@ use WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
+ * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Admin\Subscriber::delete_term_used_css
  *
  * @group  RUCSS
  */
@@ -54,7 +54,10 @@ class Test_DeleteTermUsedCss extends TestCase {
 		if(! array_key_exists('is_disabled', $config)) {
 			return;
 		}
-		Functions\expect('apply_filters')->with( 'rocket_rucss_deletion_activated' )->andReturn($config['is_disabled']);
+		
+		Functions\expect( 'rocket_apply_filter_and_deprecated' )
+			->with( 'rocket_saas_deletion_enabled', [ true ], '3.16', 'rocket_rucss_deletion_enabled' )
+			->andReturn( $config['is_disabled'] );
 	}
 
 	protected function configureDeletion($config) {

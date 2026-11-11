@@ -3,19 +3,25 @@
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Cloudflare;
 
 use WP_Error;
+use WP_Rocket\Addon\Cloudflare\API\Client;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Cloudflare::has_page_rule
+ * Test class covering WP_Rocket\Addon\Cloudflare\Cloudflare::has_page_rule
  *
  * @group Cloudflare
  */
 class TestHasPageRule extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
 	private $cloudflare;
-	private $response;
 
 	public function set_up() {
 		parent::set_up();
+
+		add_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
 
 		$container = apply_filters( 'rocket_container', null );
 
@@ -23,18 +29,23 @@ class TestHasPageRule extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
+		remove_filter( 'pre_get_rocket_option_cloudflare_zone_id', [ $this, 'mock_cloudflare_zone_id' ] );
 
 		parent::tear_down();
+	}
+
+	/** Forces the Cloudflare zone ID option to a fixed value for the mocked HTTP fixtures. */
+	public function mock_cloudflare_zone_id() {
+		return '12345';
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'http_request'] );
+		$this->config['http'] = [
+			Client::CLOUDFLARE_API . 'zones/12345/pagerules?status=active' => $config['response'],
+		];
 
 		$result = $this->cloudflare->has_page_rule( $config['action_value'] );
 
@@ -49,9 +60,5 @@ class TestHasPageRule extends TestCase {
 				$result
 			);
 		}
-	}
-
-	public function http_request() {
-		return $this->response;
 	}
 }

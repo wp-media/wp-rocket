@@ -7,7 +7,7 @@ use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_edit_script
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enqueue_admin_edit_script
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -31,11 +31,22 @@ class Test_EnqueueAdminEditScript extends TestCase {
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
+	public function set_up() {
+		parent::set_up();
+		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+	}
+
 	public function tear_down() {
+		remove_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 		unset( $GLOBALS['post'] );
 		unset( $GLOBALS['pagenow'] );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}
@@ -44,7 +55,7 @@ class Test_EnqueueAdminEditScript extends TestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEnqueueAdminScript( $config, $expected ) {
-		wp_set_current_user( static::$user_id );
+		wp_set_current_user( self::getUserId() );
 		set_current_screen( $config['page'] );
 
 		Functions\when( 'wp_create_nonce' )->justReturn( 'wp_rest_nonce' );
@@ -84,5 +95,9 @@ class Test_EnqueueAdminEditScript extends TestCase {
 
 	public function setCPCSSMobileOption() {
 		return $this->async_css_mobile;
+	}
+
+	public static function getUserId() {
+		return self::$user_id;
 	}
 }

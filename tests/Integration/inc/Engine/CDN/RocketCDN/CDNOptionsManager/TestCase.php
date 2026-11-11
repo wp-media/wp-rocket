@@ -5,12 +5,9 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\RocketCDN\CDNOptionsManager;
-use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 abstract class TestCase extends FilesystemTestCase {
-	use DBTrait;
-
 	protected static $rocketcdn_user_token;
 
 	public static function set_up_before_class() {
@@ -20,15 +17,7 @@ abstract class TestCase extends FilesystemTestCase {
 		];
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		static::$rocketcdn_user_token = get_option( 'rocketcdn_user_token', null );
-	}
-
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
 	}
 
 	public function set_up() {

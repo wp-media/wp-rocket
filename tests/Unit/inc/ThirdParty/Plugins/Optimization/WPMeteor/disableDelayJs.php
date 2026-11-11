@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::disable_delay_js
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor::disable_delay_js
  *
  * @group WPMeteor
  * @group ThirdParty

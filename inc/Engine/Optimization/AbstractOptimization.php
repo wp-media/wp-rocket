@@ -11,6 +11,7 @@ use WP_Rocket\Admin\Options_Data;
  */
 abstract class AbstractOptimization {
 	use RegexTrait;
+
 	/**
 	 * Plugin options.
 	 *

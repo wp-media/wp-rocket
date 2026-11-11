@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\ExtractCSS\Subscriber::extract_inline_css_from_html
+ * Test class covering \WP_Rocket\Engine\Common\ExtractCSS\Subscriber::extract_inline_css_from_html
  */
 class Test_extractInlineCssFromHtml extends TestCase {
 	use HasLoggerTrait;

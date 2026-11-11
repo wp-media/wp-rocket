@@ -7,13 +7,13 @@ use WP_Rocket\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Addon\Cloudflare\Subscriber::add_cdn_helper_message
+ * Test class covering \WP_Rocket\Addon\Cloudflare\Subscriber::add_cdn_helper_message
  */
 class Test_addCdnHelperMessage extends TestCase {
 

@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::add_geot_cookies
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\WPGeotargeting::add_geot_cookies
  */
 class Test_addGeotCookies extends TestCase {
 

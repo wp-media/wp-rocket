@@ -2,11 +2,10 @@
 
 namespace WP_Rocket\Tests\Integration\Addon\Varnish\Subscriber;
 
-use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Varnish\Subscriber::clean_home
+ * Test class covering WP_Rocket\Addon\Varnish\Subscriber::clean_home
  * @group  Varnish
  * @group  Addon
  */
@@ -31,41 +30,55 @@ class Test_CleanHome extends TestCase {
 		add_filter( 'pre_get_rocket_option_varnish_auto_purge', [ $this, 'set_option' ] );
 		add_filter( 'do_rocket_varnish_http_purge', [ $this, 'set_filter' ] );
 
-		if ( $expected ) {
-			Functions\expect( 'wp_remote_request' )
-			->once()
-			->with(
-				'http://example.org/',
-				[
-					'method'      => 'PURGE',
-					'blocking'    => false,
-					'redirection' => 0,
-					'headers'     => [
-						'host'           => 'example.org',
-						'X-Purge-Method' => 'default',
-					],
-				]
-            )
-            ->andAlsoExpectIt()
-            ->once()
-            ->with(
-				'http://example.org/page/.*',
-				[
-					'method'      => 'PURGE',
-					'blocking'    => false,
-					'redirection' => 0,
-					'headers'     => [
-						'host'           => 'example.org',
-						'X-Purge-Method' => 'regex',
-					],
-				]
-            );
-		} else {
-			Functions\expect( 'wp_remote_request' )
-			->never();
-		}
+		$purges = $expected ? [
+			[
+				'url'         => 'http://example.org/',
+				'method'      => 'PURGE',
+				'blocking'    => false,
+				'redirection' => 0,
+				'headers'     => [
+					'host'           => 'example.org',
+					'X-Purge-Method' => 'default',
+				],
+			],
+			[
+				'url'         => 'http://example.org/page/.*',
+				'method'      => 'PURGE',
+				'blocking'    => false,
+				'redirection' => 0,
+				'headers'     => [
+					'host'           => 'example.org',
+					'X-Purge-Method' => 'regex',
+				],
+			],
+		] : [];
+
+		$this->config['http'] = array_fill_keys(
+			array_column( $purges, 'url' ),
+			[
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => 200, 'message' => 'OK' ],
+				'cookies'  => [],
+			]
+		);
 
 		do_action( 'before_rocket_clean_home', 'wp-rocket/cache', '' );
+
+		$requests = array_map(
+			static function ( $request ) {
+				return [
+					'url'         => $request['url'],
+					'method'      => $request['args']['method'],
+					'blocking'    => $request['args']['blocking'],
+					'redirection' => $request['args']['redirection'],
+					'headers'     => $request['args']['headers'],
+				];
+			},
+			$this->get_http_requests()
+		);
+
+		$this->assertSame( $purges, $requests );
 	}
 
 	public function set_option() {

@@ -7,7 +7,7 @@ use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\Pricing::get_single_to_plus_price
+ * Test class covering \WP_Rocket\Engine\License\API\Pricing::get_single_to_plus_price
  *
  * @group License
  */

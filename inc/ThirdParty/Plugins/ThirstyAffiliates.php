@@ -4,8 +4,22 @@ declare( strict_types=1 );
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class ThirstyAffiliates implements Subscriber_Interface {
+class ThirstyAffiliates implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether ThirstyAffiliates is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		return is_plugin_active( 'thirstyaffiliates/thirstyaffiliates.php' );
+	}
+
 	/**
 	 * Returns an array of events this subscriber listens to.
 	 *
@@ -28,7 +42,7 @@ class ThirstyAffiliates implements Subscriber_Interface {
 	 * @return array
 	 */
 	public function exclude_link_prefix( $excluded, $default ): array {
-		if ( ! is_array( $excluded ) ) {
+		if ( ! is_array( $excluded ) ) { // @phpstan-ignore-line
 			$excluded = (array) $excluded;
 		}
 

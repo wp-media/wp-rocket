@@ -16,12 +16,15 @@ use WP_Rocket\Engine\Media\Lazyload\CSS\Front\{ContentFetcher,
 	TagGenerator};
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
 use WP_Rocket\Engine\Optimization\RegexTrait;
+use WP_Rocket\Engine\Support\CommentTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
 use WP_Rocket\Logger\LoggerAwareInterface;
 
 class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
-	use LoggerAware, RegexTrait;
+	use LoggerAware;
+	use RegexTrait;
+	use CommentTrait;
 
 	/**
 	 * Extract background images from CSS.
@@ -115,7 +118,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param LazyloadCSSContentFactory $lazyloaded_content_factory Make LazyloadedContent instance.
 	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( Extractor $extractor, RuleFormatter $rule_formatter, FileResolver $file_resolver, CacheInterface $cache, MappingFormatter $mapping_formatter, TagGenerator $tag_generator, ContentFetcher $fetcher, ContextInterface $context, Options_Data $options, LazyloadCSSContentFactory $lazyloaded_content_factory, ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->extractor                  = $extractor;
 		$this->cache                      = $cache;
 		$this->rule_formatter             = $rule_formatter;
@@ -141,12 +144,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'create_lazy_inline_css', 21 ],
 				[ 'add_lazy_tag', 24 ],
 			],
-			'rocket_buffer'                         => [ 'maybe_replace_css_images', 1002 ],
-			'after_rocket_clean_domain'             => 'clear_generated_css',
+			'rocket_buffer'                         => [ 'maybe_replace_css_images', 110000 ],
+			'rocket_after_clean_domain'             => 'clear_generated_css',
 			'wp_enqueue_scripts'                    => 'insert_lazyload_script',
-			'rocket_exclude_js'                     => 'add_lazyload_script_exclude_js',
-			'rocket_exclude_defer_js'               => 'add_lazyload_script_rocket_exclude_defer_js',
-			'rocket_delay_js_exclusions'            => 'add_lazyload_script_rocket_delay_js_exclusions',
 			'rocket_css_image_lazyload_images_load' => [ 'exclude_rocket_lazyload_excluded_src', 10, 2 ],
 			'rocket_lazyload_css_ignored_urls'      => 'remove_svg_from_lazyload_css',
 		];
@@ -159,54 +159,32 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return string
 	 */
 	public function maybe_replace_css_images( string $html ): string {
-
 		if ( ! $this->context->is_allowed() ) {
 			return $html;
 		}
-
-		$this->logger::debug(
-			'Starting lazyload',
-			$this->generate_log_context(
-				[
-					'data' => $html,
-				]
-				)
-			);
 
 		/**
 		 * Generate lazyload CSS for the page.
 		 *
 		 * @param array $data Data passed to generate the lazyload CSS.
 		 */
-		$output = apply_filters(
+		$output = wpm_apply_filters_typed(
+			'array',
 			'rocket_generate_lazyloaded_css',
 			[
 				'html' => $html,
 			]
-			);
+		);
 
-		if ( ! is_array( $output ) || ! key_exists( 'html', $output ) ) {
-			$this->logger::debug(
-				'Lazyload bailed out',
-				$this->generate_log_context(
-					[
-						'data' => $html,
-					]
-					)
-				);
+		if ( ! key_exists( 'html', $output ) ) {
+			$this->logger::debug( 'Lazyload CSS bailed out' );
+
 			return $html;
 		}
 
-		$this->logger::debug(
-			'Ending lazyload',
-			$this->generate_log_context(
-				[
-					'data' => $html,
-				]
-				)
-			);
+		$html = $this->add_meta_comment( 'lazyload_css_bg_img', $output['html'] );
 
-		return $output['html'];
+		return $html;
 	}
 
 	/**
@@ -215,10 +193,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return void
 	 */
 	public function clear_generated_css() {
-		$this->logger::debug(
-			'Clear lazy CSS',
-			$this->generate_log_context()
-		);
 		$this->cache->clear();
 	}
 
@@ -299,7 +273,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 			if ( $this->is_excluded( $url ) ) {
 				$this->logger::debug(
-					"Excluded lazy css files $url",
+					"Excluded lazy css file $url",
 					$this->generate_log_context()
 				);
 				continue;
@@ -307,15 +281,10 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 			$url_key = $this->format_url( $url );
 			if ( ! $this->cache->has( $url_key ) ) {
-				$this->logger::debug(
-					"Generate lazy css files $url",
-					$this->generate_log_context()
-					);
-
 				$file_mapping = $this->generate_css_file( $url );
 				if ( empty( $file_mapping ) ) {
 					$this->logger::debug(
-						"Create lazy css files $url bailed out",
+						"Create lazy css file $url bailed out",
 						$this->generate_log_context()
 						);
 					continue;
@@ -324,10 +293,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				$mapping = array_merge( $mapping, $file_mapping );
 
 			} else {
-				$this->logger::debug(
-					"Load lazy css files $url",
-					$this->generate_log_context()
-					);
 				$mapping = array_merge( $mapping, $this->load_existing_mapping( $url ) );
 			}
 
@@ -361,7 +326,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	public function add_lazy_tag( array $data ): array {
-
 		if ( ! key_exists( 'html', $data ) || ! key_exists( 'lazyloaded_images', $data ) ) {
 			$this->logger::debug(
 				'Add lazy tag bailed out',
@@ -384,15 +348,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 */
 		$loaded = apply_filters( 'rocket_css_image_lazyload_images_load', [], $lazyload_images );
 
-		$tags = $this->tag_generator->generate( $lazyload_images, $loaded );
-		$this->logger::debug(
-			'Add lazy tag generated',
-			$this->generate_log_context(
-				[
-					'data' => $tags,
-				]
-				)
-			);
+		$tags         = $this->tag_generator->generate( $lazyload_images, $loaded );
 		$data['html'] = str_replace( '</head>', "$tags</head>", $data['html'] );
 
 		return $data;
@@ -417,7 +373,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return [];
 		}
 
-		$output = $this->generate_content( $content );
+		$output = $this->generate_content( $content, $this->cache->generate_url( $url ) );
 
 		if ( count( $output->get_urls() ) === 0 ) {
 			return [];
@@ -436,10 +392,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * Generate lazy content for a certain content.
 	 *
 	 * @param string $content Content to generate lazy for.
+	 * @param string $url URL of the file we are extracting content from.
 	 * @return LazyloadedContent
 	 */
-	protected function generate_content( string $content ): LazyloadedContent {
-		$urls           = $this->extractor->extract( $content );
+	protected function generate_content( string $content, string $url = '' ): LazyloadedContent {
+		$urls           = $this->extractor->extract( $content, $url );
 		$formatted_urls = [];
 		foreach ( $urls as $url_tags ) {
 			$url_tags       = $this->add_hashes( $url_tags );
@@ -521,7 +478,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @param string $string String to check.
 	 * @return bool
 	 */
-	protected function is_excluded( string $string ) {
+	protected function is_excluded( string $string ) { // phpcs:ignore Universal.NamingConventions.NoReservedKeywordParameterNames.stringFound
 
 		$values = [
 			$string,
@@ -530,7 +487,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$parsed_url_host = wp_parse_url( $string, PHP_URL_HOST );
 
 		if ( ! $parsed_url_host ) {
-			$values [] = home_url() . $string;
+			$values [] = rocket_get_home_url() . $string;
 		}
 
 		/**
@@ -538,11 +495,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 *
 		 * @param array $excluded_src An array of excluded src.
 		 */
-		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
+		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 
-		if ( ! is_array( $excluded_values ) ) {
-			$excluded_values = (array) $excluded_values;
-		}
+		$excluded_values = array_filter( $excluded_values );
 
 		if ( empty( $excluded_values ) ) {
 			return false;
@@ -557,51 +512,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Add the lazyload script to exclude js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_exclude_js( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
-	}
-
-	/**
-	 * Add the lazyload script to defer js exclusions.
-	 *
-	 * @param array $exclude_defer_js Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_exclude_defer_js( array $exclude_defer_js ) {
-		if ( ! $this->is_activated() ) {
-			return $exclude_defer_js;
-		}
-
-		$exclude_defer_js [] = '#rocket_lazyload_css-js-after';
-		return $exclude_defer_js;
-	}
-
-	/**
-	 * Add the lazyload script to delay js exclusions.
-	 *
-	 * @param array $js_files Exclusions.
-	 * @return array
-	 */
-	public function add_lazyload_script_rocket_delay_js_exclusions( array $js_files ) {
-		if ( ! $this->is_activated() ) {
-			return $js_files;
-		}
-
-		$js_files [] = '#rocket_lazyload_css-js-after';
-		return $js_files;
 	}
 
 	/**
@@ -627,11 +537,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		 *
 		 * @param array $excluded_src An array of excluded src.
 		 */
-		$excluded_values = apply_filters( 'rocket_lazyload_excluded_src', [] );
+		$excluded_values = wpm_apply_filters_typed( 'array', 'rocket_lazyload_excluded_src', [] );
 
-		if ( ! is_array( $excluded_values ) ) {
-			$excluded_values = (array) $excluded_values;
-		}
+		$excluded_values = array_filter( $excluded_values );
 
 		if ( empty( $excluded_values ) ) {
 			return $excluded;
@@ -662,6 +570,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				 * Lazyload CSS hash.
 				 *
 				 * @param string $hash Lazyload CSS hash.
+				 * @param mixed  $url_tag URL tag.
 				 */
 				$url_tag['hash'] = apply_filters( 'rocket_lazyload_css_hash',  wp_generate_uuid4(), $url_tag );
 				return $url_tag;
@@ -698,15 +607,6 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$queries['wpr_t'] = current_time( 'timestamp' ); // phpcs:ignore WordPress.DateTime.CurrentTimeTimestamp.Requested
 
 		$cached_url = $this->cache->generate_url( $this->format_url( $url ) );
-
-		$this->logger::debug(
-			"Generated url lazy css files $url",
-			$this->generate_log_context(
-				[
-					'data' => $cached_url,
-				]
-				)
-		);
 
 		return add_query_arg( $queries, $cached_url );
 	}

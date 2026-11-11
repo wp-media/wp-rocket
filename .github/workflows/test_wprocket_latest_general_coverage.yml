@@ -1,0 +1,81 @@
+name: PHP tests code coverage
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+# Cancel all previous workflow runs for the same branch that have not yet completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        operating-system: [ubuntu-latest]
+        php-versions: ['8.4']
+        wp-versions: ['latest']
+
+    name: WP ${{ matrix.wp-versions }} with PHP ${{ matrix.php-versions }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+    - name: Setup PHP + Composer
+      uses: wp-media/workflows/.github/actions/setup-php-composer@main
+      with:
+        php-version: ${{ matrix.php-versions }}
+        coverage: pcov
+        ini-values: pcov.directory=inc
+        extra-require: phpunit/phpcov
+
+    - name: Setup WordPress test suite
+      uses: wp-media/workflows/.github/actions/setup-wp-tests@main
+      with:
+        wp-version: ${{ matrix.wp-versions }}
+
+    # Registered here, not in the composite action: GitHub removes problem
+    # matchers added inside a composite action when it finishes, so they must
+    # be added in the caller to stay active for the test steps below.
+    - name: Setup problem matchers for PHP
+      run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+    - name: Setup problem matchers for PHPUnit
+      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+    - name: Test
+      run: composer run-tests-coverage
+
+    - name: Code Coverage Report
+      run: composer report-code-coverage
+
+    # Secrets aren't available to pull requests from forks, and Dependabot-triggered
+    # runs only get Dependabot secrets, so the Codacy token is empty in both cases.
+    - name: Run codacy-coverage-reporter
+      if: github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+      uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
+      with:
+        project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        coverage-reports: tests/report/coverage.clover

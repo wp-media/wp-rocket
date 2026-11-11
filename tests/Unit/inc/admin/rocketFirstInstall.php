@@ -7,12 +7,15 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_first_install
+ * Test class covering ::rocket_first_install
  * @group admin
  * @group upgrade
  * @group AdminOnly
  */
 class Test_RocketFirstInstall extends TestCase {
+
+	protected $mock_rocket_get_constant = false;
+
 	public function setUp() : void {
 		parent::setUp();
 
@@ -31,7 +34,7 @@ class Test_RocketFirstInstall extends TestCase {
 
 		Functions\expect( 'create_rocket_uniqid' )
 			->times( 3 )
-			->andReturnValues( $uniqids );
+			->andReturnValues( array_values( $uniqids ) );
 		Functions\expect( 'rocket_get_constant' )
 			->with( 'WP_ROCKET_SLUG' )
 			->andReturn( 'wp_rocket_settings' );

@@ -10,7 +10,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\Cache\FilesystemCache::generate_url
+ * Test class covering \WP_Rocket\Engine\Common\Cache\FilesystemCache::generate_url
  */
 class Test_generateUrl extends TestCase {
 
@@ -56,6 +56,7 @@ class Test_generateUrl extends TestCase {
 		});
 
 		Functions\when('home_url')->justReturn($config['home_url']);
+		Functions\when('get_current_blog_id')->justReturn( 1 );
 
 		Functions\when('rocket_get_constant')->alias(function ($name, $default = false) use ($config) {
 			if('WP_CONTENT_URL' === $name) {
@@ -71,8 +72,6 @@ class Test_generateUrl extends TestCase {
 
 			return $default;
 		});
-
-		$this->filesystem->expects()->exists($expected['path'])->andReturn($config['exists']);
 
         $this->assertSame($expected['output'], $this->filesystemcache->generate_url($config['url']));
 

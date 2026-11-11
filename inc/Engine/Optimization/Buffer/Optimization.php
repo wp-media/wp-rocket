@@ -28,19 +28,6 @@ class Optimization extends Abstract_Buffer {
 	 */
 	protected $tests;
 
-	/**
-	 * Constructor.
-	 *
-	 * @since  3.3
-	 *
-	 * @param Tests $tests Tests instance.
-	 */
-	public function __construct( Tests $tests ) {
-		parent::__construct( $tests );
-
-		$this->log( 'OPTIMIZATION PROCESS STARTED.', [], 'info' );
-	}
-
 	/** ----------------------------------------------------------------------------------------- */
 	/** CACHE =================================================================================== */
 	/** ----------------------------------------------------------------------------------------- */
@@ -97,7 +84,13 @@ class Optimization extends Abstract_Buffer {
 		 *
 		 * @param string $buffer The page content.
 		 */
-		$buffer = (string) apply_filters( 'rocket_buffer', $buffer );
+		$filtered_buffer = (string) apply_filters( 'rocket_buffer', $buffer );
+
+		if ( empty( $filtered_buffer ) ) {
+			$this->log_last_test_error();
+			$this->log( 'Empty buffer.', [], 'error' );
+			return $buffer;
+		}
 
 		$this->log( 'Page optimized.', [], 'info' );
 
@@ -108,7 +101,7 @@ class Optimization extends Abstract_Buffer {
 		 */
 		do_action( 'rocket_after_process_buffer' );
 
-		return $buffer;
+		return $filtered_buffer;
 	}
 
 	/**

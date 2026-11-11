@@ -8,10 +8,10 @@ use WP_Rocket\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Tests\Unit\TestCase;
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_localhost
+ * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::set_varnish_localhost
  *
  * @group Cloudflare
  */

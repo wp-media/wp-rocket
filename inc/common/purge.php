@@ -63,15 +63,8 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
 		if ( 'post' !== $post_type ) {
 			$post_type_archive = get_post_type_archive_link( $post_type );
 			if ( $post_type_archive ) {
-				// Rename the caching filename for SSL URLs.
-				$filename = 'index';
-				if ( is_ssl() ) {
-					$filename .= '-https';
-				}
-
 				$post_type_archive = trailingslashit( $post_type_archive );
-				$purge_urls[]      = $post_type_archive . $filename . '.html';
-				$purge_urls[]      = $post_type_archive . $filename . '.html_gzip';
+				$purge_urls[]      = $post_type_archive . 'index(.*).html';
 				$purge_urls[]      = $post_type_archive . $GLOBALS['wp_rewrite']->pagination_base;
 			}
 		}
@@ -172,6 +165,10 @@ if ( ! function_exists( 'rocket_get_purge_urls' ) ) {
  * @param WP_Post $post    WP_Post object.
  */
 function rocket_clean_post( $post_id, $post = null ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	static $done = [];
 
 	if ( isset( $done[ $post_id ] ) ) {
@@ -244,8 +241,10 @@ function rocket_clean_post( $post_id, $post = null ) {
 	// Purge all files.
 	rocket_clean_files( $purge_urls );
 
-	// Never forget to purge homepage and their pagination.
-	rocket_clean_home( $lang );
+	if ( wpm_apply_filters_typed( 'boolean', 'rocket_clean_home_after_clean_post', true, $post_id ) ) {
+		// Never forget to purge homepage and their pagination.
+		rocket_clean_home( $lang );
+	}
 
 	// Purge home feeds (blog & comments).
 	if ( has_filter( 'rocket_cache_reject_uri', 'wp_rocket_cache_feed' ) !== false ) {
@@ -288,15 +287,20 @@ add_action( 'wp_update_comment_count', 'rocket_clean_post' );
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_status_change( $post_id, $post_data ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	if ( 'publish' !== get_post_field( 'post_status', $post_id ) || 'draft' !== $post_data['post_status'] ) {
 		return;
 	}
 
 	$purge_urls = [];
 	$post       = get_post( $post_id );
+	$post_type  = get_post_type_object( $post->post_type );
 
-	// Return if $post is not an object.
-	if ( ! is_object( $post ) ) {
+	// Return if $post is not an object or $post_type is not public.
+	if ( ! is_object( $post ) || true !== $post_type->public ) {
 		return;
 	}
 	// Get the post language.
@@ -575,6 +579,10 @@ add_action( 'admin_post_purge_cache', 'do_admin_post_rocket_purge_cache' );
  * @param array       $hook_extra  Array of bulk item update data.
  */
 function rocket_clean_cache_theme_update( $wp_upgrader, $hook_extra ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	if ( ! isset( $hook_extra['action'] ) || 'update' !== $hook_extra['action'] ) {
 		return;
 	}
@@ -611,6 +619,10 @@ add_action( 'upgrader_process_complete', 'rocket_clean_cache_theme_update', 10, 
  * @param array $post_data Array of unslashed post data.
  */
 function rocket_clean_post_cache_on_slug_change( $post_id, $post_data ) {
+	if ( rocket_is_importing() ) {
+		return;
+	}
+
 	// Bail out if the post status is draft, pending or auto-draft.
 	if ( in_array( get_post_field( 'post_status', $post_id ), [ 'draft', 'pending', 'auto-draft', 'trash' ], true ) ) {
 		return;

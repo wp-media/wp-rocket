@@ -1,14 +1,14 @@
-.external-css-background-image{width:100%;height:400px;background-image:var(--wpr-bg-hash);background-color:#ccc}.external-css-background-images{width:100%;height:400px;background-image:var(--wpr-bg-hash),var(--wpr-bg-hash);background-color:#3dd83d}.external-css-background-image-gradient{width:100%;height:400px;background-image:linear-gradient(rgba(0,0,255,.5),rgba(255,255,0,.5)),var(--wpr-bg-hash)}.external-css-background{background:var(--wpr-bg-hash) no-repeat #c63dd8}
+.external-css-background-image{width:100%;height:400px;background-image:var(--wpr-bg-18ef11);background-color:#ccc}.external-css-background-images{width:100%;height:400px;background-image:var(--wpr-bg-19ef12),var(--wpr-bg-25ef18);background-color:#3dd83d}.external-css-background-image-gradient{width:100%;height:400px;background-image:linear-gradient(rgba(0,0,255,.5),rgba(255,255,0,.5)),var(--wpr-bg-25ef18)}.external-css-background{background:var(--wpr-bg-17ef10) no-repeat #c63dd8}
 .external-css-background-image-space{
 	width: 100%;
 	height: 400px;
-	background-image: var(--wpr-bg-hash);
+	background-image: var(--wpr-bg-20ef13);
 	background-color: #cccccc;
 }
 .external-css-background-image-space{
 	width: 100%;
 	height: 400px;
-	background-image: var(--wpr-bg-hash);
+	background-image: var(--wpr-bg-21ef14);
 	background-color: #cccccc;
 }
 .external-css-background-image-svg{

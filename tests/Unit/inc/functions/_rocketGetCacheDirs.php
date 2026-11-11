@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::_rocket_get_cache_dirs
+ * Test class covering ::_rocket_get_cache_dirs
  *
  * @group Files
  * @group vfs

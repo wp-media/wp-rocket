@@ -11,21 +11,19 @@ use WP_Rocket\Engine\CDN\Subscriber;
 use WP_Rocket\ThirdParty\Plugins\Optimization\AMP;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Optimization\AMP::disable_options_on_amp
  * @group  ThirdParty
  * @group  WithAmp
  */
 class Test_DisableOptionsOnAmp extends TestCase {
 	private $amp;
-	private $options;
 	private $cdn_subscriber;
 
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->options        = Mockery::mock( Options_Data::class );
 		$this->cdn_subscriber = Mockery::mock( Subscriber::class );
-		$this->amp            = new AMP( $this->options, $this->cdn_subscriber );
+		$this->amp            = new AMP( $this->cdn_subscriber );
 	}
 
 	/**
@@ -48,7 +46,6 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 		if ( $expected[ 'bailout' ] ) {
 			Functions\expect( 'remove_filter' )->never();
-			$this->options->shouldReceive( 'get' )->never();
 		} else {
 			global $wp_filter;
 			add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
@@ -58,7 +55,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 			// Check the hooks before invoking the method.
 			$this->assertSame(
 				10,
-				has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 )
+				has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' )
 			);
 			$this->assertFalse( has_filter( 'do_rocket_lazyload', '__return_false' ) );
 			$this->assertFalse( has_filter( 'do_rocket_lazyload_iframes', '__return_false' ) );
@@ -70,7 +67,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 			$this->assertSame(
 				PHP_INT_MAX,
-				has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset', PHP_INT_MAX )
+				has_filter( 'wp_calculate_image_srcset', 'rocket_protocol_rewrite_srcset' )
 			);
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite' ] ) );
 			$this->assertFalse( has_filter( 'rocket_buffer', [ $this->cdn_subscriber, 'rewrite_srcset' ] ) );
@@ -85,7 +82,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 
 		if ( ! $expected[ 'bailout' ] ) {
 			// Check the hooks after invoking the method.
-			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 ) );
+			$this->assertFalse( has_filter( 'wp_resource_hints', 'rocket_dns_prefetch' ) );
 			$this->assertSame(
 				10,
 				has_filter( 'do_rocket_lazyload', '__return_false' )
@@ -102,7 +99,7 @@ class Test_DisableOptionsOnAmp extends TestCase {
 				10,
 				has_filter( 'do_rocket_protocol_rewrite', '__return_false' )
 			);
-			$this->assertEmpty( $wp_filter );
+			$this->assertEmpty( $wp_filter ); // @phpstan-ignore-line
 
 			if ( in_array( $config[ 'amp_options' ][ 'theme_support' ], [ 'transitional', 'reader' ], true ) ) {
 				$this->assertSame(

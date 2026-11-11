@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::add_license_expire_warning
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::add_license_expire_warning
  *
  * @group License
  * @group AdminOnly
@@ -35,7 +35,7 @@ class Test_AddLicenseExpireWarning extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_optimize_css_delivery', [ $this, 'set_ocd' ] );
 
-		$this->restoreWpFilter( 'rocket_before_add_field_to_settings' );
+		$this->restoreWpHook( 'rocket_before_add_field_to_settings' );
 
 		parent::tear_down();
 	}

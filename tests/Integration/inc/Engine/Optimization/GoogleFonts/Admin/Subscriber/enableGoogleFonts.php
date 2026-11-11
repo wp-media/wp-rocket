@@ -3,15 +3,17 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::enable_google_fonts
+ * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::enable_google_fonts
  * @uses   \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Settings::enable_google_fonts
  *
  * @group  AdminOnly
  * @group  GoogleFonts
  */
 class Test_EnableGoogleFonts extends AjaxTestCase {
+	use IsolateHookTrait;
 
 	public function set_up() {
 		parent::set_up();
@@ -19,6 +21,14 @@ class Test_EnableGoogleFonts extends AjaxTestCase {
 		$options                        = get_option( 'wp_rocket_settings', [] );
 		$options['minify_google_fonts'] = 0;
 		update_option( 'wp_rocket_settings', $options );
+
+		$this->unregisterAllCallbacks( 'admin_init' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	/**
@@ -34,7 +44,12 @@ class Test_EnableGoogleFonts extends AjaxTestCase {
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );
-		$response       = $this->callAjaxAction();
+
+		$this->expectException( 'WPAjaxDieContinueException' );
+
+		$this->_handleAjax( $this->action );
+
+		$response = json_decode( $this->_last_response );
 
 		$options   = get_option( 'wp_rocket_settings' );
 		$gf_minify = $options['minify_google_fonts'];

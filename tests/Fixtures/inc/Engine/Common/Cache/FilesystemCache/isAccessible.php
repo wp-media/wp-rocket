@@ -7,7 +7,7 @@ return [
 			'root' => '/var/html/wp-content/cache'
         ],
         'expected' => [
-			'path' => '/var/html/wp-content/cache/background-css/',
+			'path' => '/var/html/wp-content/cache/background-css/1/',
 			'output' => false
         ]
     ],
@@ -19,7 +19,7 @@ return [
 			'root' => '/var/html/wp-content/cache'
 		],
 		'expected' => [
-			'path' => '/var/html/wp-content/cache/background-css/',
+			'path' => '/var/html/wp-content/cache/background-css/1/',
 			'output' => true
 		]
 	],

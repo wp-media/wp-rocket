@@ -6,7 +6,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Auth\APIKey::get_headers
+ * Test class covering WP_Rocket\Addon\Cloudflare\Auth\APIKey::get_headers
  *
  * @group Cloudflare
  */

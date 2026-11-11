@@ -86,13 +86,24 @@ abstract class Abstract_Render implements Render_Interface {
 			'url'        => '',
 			'parameter'  => '',
 			'attributes' => '',
+			'tooltip'    => '',
+			'icon'       => [
+				'data'   => '',
+				'before' => true,
+			],
 		];
 
-		$args = wp_parse_args( $args, $default );
+		$args         = wp_parse_args( $args, $default );
+		$args['icon'] = wp_parse_args( $args['icon'], $default['icon'] );
 
 		if ( ! empty( $args['attributes'] ) ) {
 			$attributes = '';
 			foreach ( $args['attributes'] as $key => $value ) {
+				if ( true === $value ) {
+					$attributes .= ' ' . sanitize_key( $key );
+					continue;
+				}
+
 				$attributes .= ' ' . sanitize_key( $key ) . '="' . esc_attr( $value ) . '"';
 			}
 
@@ -124,7 +135,7 @@ abstract class Abstract_Render implements Render_Interface {
 			case 'rocket_export':
 			case 'rocket_generate_critical_css':
 			case 'rocket_purge_rocketcdn':
-			case 'rocket_clear_usedcss':
+			case 'rocket_rocket_insights_add_homepage':
 				$referer = '';
 
 				if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
@@ -152,5 +163,37 @@ abstract class Abstract_Render implements Render_Interface {
 		}
 
 		echo $this->generate( 'buttons/link', $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays a partial template.
+	 *
+	 * @since 3.0
+	 *
+	 * @param string $part Partial template name.
+	 */
+	public function render_part( $part ) {
+		echo $this->generate( 'partials/' . $part ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Displays or returns a partial template with provided data.
+	 *
+	 * @since 3.20
+	 *
+	 * @param string $part             Partial template name (relative to 'partials/').
+	 * @param mixed  $data             Data to pass to the template.
+	 * @param bool   $return_template  Optional. Whether to return the template as a string instead of echoing it. Default false.
+	 *
+	 * @return void|string Returns the template string if $return_template is true, otherwise echoes the template.
+	 */
+	public function render_parts_with_data( string $part, $data, $return_template = false ) {
+		$template = $this->generate( 'partials/' . $part, $data );
+
+		if ( $return_template ) {
+			return $template;
+		}
+
+		echo $template; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 }

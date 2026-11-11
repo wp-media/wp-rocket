@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\API;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers ::rocket_bypass
+ * Test class covering ::rocket_bypass
  * @group API
  */
 class Bypass extends TestCase {

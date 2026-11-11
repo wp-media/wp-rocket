@@ -11,7 +11,7 @@ use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Engine\Cache\WPCache;
 use WP_Rocket\Event_Management\Event_Manager;
 /**
- * @covers WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
+ * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::register_terms_row_action
  *
  * @group Cache
  */
@@ -22,7 +22,7 @@ class Test_RegisterTermsRowAction extends TestCase {
 	public function setUp() : void {
 		parent::setUp();
 
-		$this->event_manager = Mockery::mock( Event_manager::class );
+		$this->event_manager = Mockery::mock( Event_Manager::class );
 		$this->subscriber    = new AdminSubscriber(
 			Mockery::mock( AdvancedCache::class ),
 			Mockery::mock( WPCache::class ),

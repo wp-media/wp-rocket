@@ -2,34 +2,16 @@
 return [
 	'notMatchingShouldReturnFalse' => [
 		'config' => [
-			'regexes' => [
-				'test',
-			],
-			'url' => 'http://example.org/wsf'
-		],
-		'expected' => false
-	],
-	'emptyFilterShouldReturnFalse' => [
-		'config' => [
-			'regexes' => [],
-			'url' => 'http://example.org/wsf'
+			'url' => 'http://example.org/wsf',
+			'isPrivate' => false
 		],
 		'expected' => false
 	],
 	'matchingShouldReturnTrue' => [
 		'config' => [
-			'regexes' => [
-				'test',
-			],
-			'url' => 'http://example.org/test'
+			'url' => 'http://example.org/test',
+			'isPrivate' => true
 		],
 		'expected' => true
 	],
-	'matchingPaginationShouldReturnTrue' => [
-		'config' => [
-			'regexes' => [],
-			'url' => 'http://example.org/page/22'
-		],
-		'expected' => true
-	]
 ];

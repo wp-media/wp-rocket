@@ -2,28 +2,23 @@
 
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\HostSubscriberFactory;
 
-use Mockery;
-use WP_Rocket\Engine\Cache\AdminSubscriber;
-use WP_Rocket\Event_Management\Event_Manager;
 use WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory;
 use WP_Rocket\Tests\Unit\TestCase;
+use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\HostSubscriberFactory::get_subscriber
  *
- * @group  Hostings
- * @group  ThirdParty
+ * @group Hostings
+ * @group ThirdParty
  */
-class Test_GetSubscriber extends TestCase {
+class TestGetSubscriber extends TestCase {
 	private $factory;
 
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->factory = new HostSubscriberFactory(
-			Mockery::mock( AdminSubscriber::class ),
-			Mockery::mock( Event_Manager::class )
-		);
+		$this->factory = new HostSubscriberFactory();
 	}
 
 	protected function tearDown(): void {
@@ -34,9 +29,27 @@ class Test_GetSubscriber extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
+		Functions\when( 'wp_unslash' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? stripslashes( $value ) : $value;
+			}
+		);
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
+
+		// The siteground branch (rocket_is_plugin_active()) is reached, and evaluated, for every case
+		// that doesn't match an earlier branch; default it to "not active" unless overridden below.
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'is_multisite' )->justReturn( false );
+
 		switch ( $host ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -51,10 +64,16 @@ class Test_GetSubscriber extends TestCase {
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
 				break;
+			case 'siteground':
+				Functions\when( 'rocket_is_plugin_active' )->justReturn( true );
+				break;
 			default:
 				break;
 		}
 
-		$this->assertInstanceOf( $expected, $this->factory->get_subscriber());
+		$this->assertInstanceOf(
+			$expected,
+			$this->factory->get_subscriber()
+		);
 	}
 }

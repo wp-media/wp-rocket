@@ -31,6 +31,7 @@ class ActionSchedulerCheck implements Subscriber_Interface, ActivationInterface 
 	 * @return void
 	 */
 	public function activate() {
+		// @phpstan-ignore-next-line
 		add_action( 'rocket_activation', [ $this, 'maybe_recreate_as_tables' ] );
 	}
 

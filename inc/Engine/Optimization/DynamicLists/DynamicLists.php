@@ -102,14 +102,20 @@ class DynamicLists extends Abstract_Render {
 			];
 		}
 
-		$response = [];
-		$success  = false;
+		$response     = [];
+		$success      = false;
+		$should_purge = false;
+		$titles       = [
+			'defaultlists'         => __( 'Default Lists', 'rocket' ),
+			'delayjslists'         => __( 'Delay JavaScript Execution Exclusion Lists', 'rocket' ),
+			'incompatible_plugins' => __( 'Incompatible plugins Lists', 'rocket' ),
+		];
 
-		foreach ( $this->providers as $provider ) {
+		foreach ( $this->providers as $provider_id => $provider ) {
 			$result = $provider->api_client->get_exclusions_list( $provider->data_manager->get_lists_hash() );
 
 			if ( empty( $result['code'] ) || empty( $result['body'] ) ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not get updated lists from server.', 'rocket' ),
@@ -118,7 +124,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( 206 === $result['code'] ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => true,
 					'data'    => '',
 					'message' => __( 'Lists are up to date.', 'rocket' ),
@@ -127,7 +133,7 @@ class DynamicLists extends Abstract_Render {
 			}
 
 			if ( ! $provider->data_manager->save_dynamic_lists( $result['body'] ) ) {
-				$response[ $provider->title ] = [
+				$response[ $titles[ $provider_id ] ] = [
 					'success' => false,
 					'data'    => '',
 					'message' => __( 'Could not update lists.', 'rocket' ),
@@ -135,12 +141,15 @@ class DynamicLists extends Abstract_Render {
 				continue;
 			}
 
-			$success                      = true;
-			$response[ $provider->title ] = [
+			$success = true;
+
+			$response[ $titles[ $provider_id ] ] = [
 				'success' => true,
 				'data'    => '',
 				'message' => __( 'Lists are successfully updated.', 'rocket' ),
 			];
+
+			$should_purge |= $provider->clear_cache ?? true;
 		}
 
 		if ( $success ) {
@@ -148,8 +157,10 @@ class DynamicLists extends Abstract_Render {
 			 * Fires after saving all dynamic lists files.
 			 *
 			 * @since 3.12.1
+			 *
+			 * @param bool $should_purge Should purge status based on the updated providers.
 			 */
-			do_action( 'rocket_after_save_dynamic_lists' );
+			do_action( 'rocket_after_save_dynamic_lists', $should_purge );
 		}
 
 		return $response;
@@ -248,7 +259,7 @@ class DynamicLists extends Abstract_Render {
 	/**
 	 * Get Delay JS dynamic list.
 	 *
-	 * @return array
+	 * @return object
 	 */
 	public function get_delayjs_list() {
 		return $this->providers['delayjslists']->data_manager->get_lists();
@@ -274,5 +285,100 @@ class DynamicLists extends Abstract_Render {
 		$lists = $this->providers['incompatible_plugins']->data_manager->get_plugins_list();
 
 		return isset( $lists ) ? $lists : [];
+	}
+
+	/**
+	 * Get the staging list
+	 *
+	 * @return array
+	 */
+	public function get_stagings(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return isset( $lists->staging_domains ) ? $lists->staging_domains : [];
+	}
+
+	/**
+	 * Get the JS minify excluded templates
+	 *
+	 * @return array
+	 */
+	public function get_exclude_js_templates(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->exclude_js_template ?? [];
+	}
+
+	/**
+	 * Get the lazy rendered exclusions.
+	 *
+	 * @return array
+	 */
+	public function get_lrc_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->lazy_rendering_exclusions ?? [];
+	}
+
+	/**
+	 * Updates the lists from JSON files
+	 *
+	 * @return void
+	 */
+	public function update_lists_from_files() {
+		foreach ( $this->providers as $provider ) {
+			$provider->data_manager->remove_lists_cache();
+			$provider->data_manager->get_lists();
+		}
+	}
+
+	/**
+	 * Get the host fonts excluded templates
+	 *
+	 * @return array
+	 */
+	public function get_exclude_media_fonts(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->host_fonts ?? [];
+	}
+
+	/**
+	 * Get the MixPanel tracked options
+	 *
+	 * @return array
+	 */
+	public function get_mixpanel_tracked_options(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->mixpanel_tracked_settings ?? [];
+	}
+
+	/**
+	 * Get the external font exclusions
+	 *
+	 * @since 3.19.1
+	 * @return array
+	 */
+	public function get_external_font_exclusions(): array {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->external_font_exclusions ?? [];
+	}
+
+	/**
+	 * Get the Rocket Insights auto-add homepage expiry interval.
+	 *
+	 * Returns the number of days before license expiry to automatically
+	 * add homepage to Rocket Insights. Value of 0 disables the feature.
+	 *
+	 * @since 3.20.3
+	 *
+	 * @return int Number of days before expiry, or 0 to disable.
+	 */
+	public function get_rocket_insights_add_homepage_expiry_interval(): int {
+		$lists = $this->providers['defaultlists']->data_manager->get_lists();
+
+		return $lists->rocket_insights_add_homepage_expiry_interval ?? 1;
 	}
 }

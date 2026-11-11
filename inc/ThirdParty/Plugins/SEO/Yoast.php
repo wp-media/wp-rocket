@@ -5,22 +5,17 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class Yoast implements Subscriber_Interface {
-	/**
-	 * Options Data instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
+class Yoast implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
-	 * Constructor
+	 * Whether Yoast SEO is active.
 	 *
-	 * @param Options_Data $options Options_Data instance.
+	 * @return bool
 	 */
-	public function __construct( Options_Data $options ) {
-		$this->options = $options;
+	public static function is_activated(): bool {
+		return rocket_has_constant( 'WPSEO_VERSION' );
 	}
 
 	/**
@@ -43,11 +38,7 @@ class Yoast implements Subscriber_Interface {
 	 *
 	 * @return array
 	 */
-	public function add_sitemap( $sitemaps ): array {
-		if ( ! is_array( $sitemaps ) ) {
-			$sitemaps = (array) $sitemaps;
-		}
-
+	public function add_sitemap( array $sitemaps ): array {
 		if ( ! $this->is_sitemap_enabled() ) {
 			return $sitemaps;
 		}

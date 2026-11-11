@@ -3,10 +3,14 @@
 namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class Upgrade extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Pricing instance
 	 *
@@ -41,6 +45,14 @@ class Upgrade extends Abstract_Render {
 	 * @return void
 	 */
 	public function display_upgrade_section() {
+		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
@@ -55,6 +67,14 @@ class Upgrade extends Abstract_Render {
 	 */
 	public function display_upgrade_popin() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return;
+		}
+
+		if ( $this->user->is_revoked() ) {
+			return;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
 			return;
 		}
 
@@ -74,9 +94,14 @@ class Upgrade extends Abstract_Render {
 	 * Adds the notification bubble to WP Rocket menu item when a promo is active
 	 *
 	 * @param string $menu_title Menu title.
+	 * @param string $context Filter context.
 	 * @return string
 	 */
-	public function add_notification_bubble( $menu_title ) {
+	public function add_notification_bubble( $menu_title, $context = 'adminmenu' ) {
+		if ( 'adminmenu' !== $context ) {
+			return $menu_title;
+		}
+
 		if ( ! $this->can_use_promo() ) {
 			return $menu_title;
 		}
@@ -108,17 +133,19 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the promotion banner
+	 * Returns the promotion banner HTML
 	 *
-	 * @return void
+	 * @since 3.24
+	 *
+	 * @return string
 	 */
-	public function display_promo_banner() {
+	public function get_promo_banner(): string {
 		if ( ! $this->can_use_promo() ) {
-			return;
+			return '';
 		}
 
 		if ( false !== get_transient( 'rocket_promo_banner_' . get_current_user_id() ) ) {
-			return;
+			return '';
 		}
 
 		$promo          = $this->pricing->get_promo_data();
@@ -132,7 +159,7 @@ class Upgrade extends Abstract_Render {
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
-		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return (string) $this->generate( 'promo-banner', $data );
 	}
 
 	/**
@@ -155,6 +182,8 @@ class Upgrade extends Abstract_Render {
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
 
+		$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] );
+
 		wp_send_json_success();
 	}
 
@@ -166,11 +195,7 @@ class Upgrade extends Abstract_Render {
 	 * @param array $data Localize script data.
 	 * @return array
 	 */
-	public function add_localize_script_data( $data ) {
-		if ( ! is_array( $data ) ) {
-			$data = (array) $data;
-		}
-
+	public function add_localize_script_data( array $data ) {
 		if ( ! $this->can_use_promo() ) {
 			return $data;
 		}
@@ -224,6 +249,20 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
+	 * Get upgrade types
+	 *
+	 * @return array
+	 */
+	private function get_upgrade_types(): array {
+		$types = [];
+		foreach ( $this->get_upgrade_choices() as $choice_key => $choice ) {
+			$types[] = 'stacked' === $choice_key ? end( $choice )['name'] : $choice['name'];
+		}
+
+		return $types;
+	}
+
+	/**
 	 * Returns the promotion message to display in the banner
 	 *
 	 * @param string $promo_name     Name of the promotion.
@@ -232,33 +271,20 @@ class Upgrade extends Abstract_Render {
 	 * @return string
 	 */
 	private function get_promo_message( $promo_name = '', $promo_discount = 0 ) {
-		$choices       = 0;
-		$license       = $this->user->get_license_type();
-		$plus_websites = $this->pricing->get_plus_websites_count();
-
-		if ( $license === $plus_websites ) {
-			$choices = 2;
-		} elseif (
-			$license >= $this->pricing->get_single_websites_count()
-			&&
-			$license < $plus_websites
-			) {
-			$choices = 1;
-		}
+		$license_types = $this->get_upgrade_types();
 
 		return sprintf(
-			// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>.
-			_n(
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Plus or Infinite!%5$s',
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to Infinite!%5$s',
-				$choices,
+		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
+			esc_html__(
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 				'rocket'
 			),
 			$promo_name,
 			'<br>',
 			'<strong>',
 			$promo_discount . '%',
-			'</strong>'
+			'</strong>',
+			implode( ' ' . esc_html__( 'or', 'rocket' ) . ' ', $license_types ),
 		);
 	}
 
@@ -274,6 +300,10 @@ class Upgrade extends Abstract_Render {
 			return false;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return false;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return false;
 		}
@@ -283,6 +313,10 @@ class Upgrade extends Abstract_Render {
 		}
 
 		if ( $this->is_new_user() ) {
+			return false;
+		}
+
+		if ( $this->user->is_revoked() ) {
 			return false;
 		}
 
@@ -316,9 +350,9 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function can_upgrade() {
 		return (
-			-1 !== $this->user->get_license_type()
-			&&
 			! $this->user->is_license_expired()
+			&&
+			! empty( $this->user->get_available_upgrades() )
 		);
 	}
 
@@ -328,88 +362,55 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_upgrade_choices() {
-		$choices       = [];
-		$license       = $this->user->get_license_type();
-		$plus_websites = $this->pricing->get_plus_websites_count();
+		$choices = [];
 
-		if ( $license === $plus_websites ) {
-			$choices['infinite'] = $this->get_upgrade_from_plus_to_infinite_data();
-		} elseif (
-			$license >= $this->pricing->get_single_websites_count()
-			&&
-			$license < $plus_websites
-			) {
-			$choices['plus']     = $this->get_upgrade_from_single_to_plus_data();
-			$choices['infinite'] = $this->get_upgrade_from_single_to_infinite_data();
+		foreach ( $this->user->get_available_upgrades() as $available_upgrade ) {
+			$upgrade_data = $this->get_generic_upgrade_data( $available_upgrade );
+
+			if ( ! empty( $available_upgrade->stack ) && ! empty( $available_upgrade->slug ) ) {
+				if ( ! isset( $choices['stacked'] ) ) {
+					$choices['stacked'] = [];
+				}
+				$choices['stacked'][ $available_upgrade->slug ] = $upgrade_data;
+				continue;
+			}
+
+			$choices[ $available_upgrade->slug ] = $upgrade_data;
 		}
 
 		return $choices;
 	}
 
 	/**
-	 * Gets the data to upgrade from single to plus
+	 * Prepare the upgrade array based on the upgrade object from the API.
 	 *
+	 * @param object $upgrade_item Upgrade item object from the API.
 	 * @return array
 	 */
-	private function get_upgrade_from_single_to_plus_data() {
-		$price = $this->pricing->get_single_to_plus_price();
-		$data  = [
-			'name'        => 'Plus',
-			'price'       => $price,
-			'websites'    => $this->pricing->get_plus_websites_count(),
-			'upgrade_url' => $this->user->get_upgrade_plus_url(),
-		];
+	private function get_generic_upgrade_data( $upgrade_item ) {
+		$currency = $this->user->get_currency();
 
+		$prices_classes = [];
+		if ( Currency::is_euro( $currency ) ) {
+			$prices_classes[] = 'wpr-with-euro';
+		}
 		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_single_to_plus_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
+			$prices_classes[] = 'wpr-with-promo';
 		}
 
-		return $data;
-	}
-
-	/**
-	 * Gets the data to upgrade from single to infinite
-	 *
-	 * @return array
-	 */
-	private function get_upgrade_from_single_to_infinite_data() {
-		$price = $this->pricing->get_single_to_infinite_price();
-		$data  = [
-			'name'        => 'Infinite',
-			'price'       => $price,
-			'websites'    => __( 'Unlimited', 'rocket' ),
-			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
+		$data = [
+			'name'            => $upgrade_item->name,
+			'price'           => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
+			'websites'        => $upgrade_item->websites,
+			'upgrade_url'     => $upgrade_item->upgrade_url,
+			'currency'        => $currency,
+			'currency_symbol' => Currency::get_symbol( $currency ),
+			'prices_classes'  => ! empty( $prices_classes ) ? ' ' . implode( ' ', $prices_classes ) : '',
 		];
 
 		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_single_to_infinite_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Gets the data to upgrade from plus to infinite
-	 *
-	 * @return array
-	 */
-	private function get_upgrade_from_plus_to_infinite_data() {
-		$price = $this->pricing->get_plus_to_infinite_price();
-		$data  = [
-			'name'        => 'Infinite',
-			'price'       => $price,
-			'websites'    => __( 'Unlimited', 'rocket' ),
-			'upgrade_url' => $this->user->get_upgrade_infinite_url(),
-		];
-
-		if ( $this->pricing->is_promo_active() ) {
-			$regular_price         = $this->pricing->get_regular_plus_to_infinite_price();
-			$data['saving']        = $regular_price - $price;
-			$data['regular_price'] = $regular_price;
+			$data['saving']        = $upgrade_item->regular_price - $upgrade_item->saving;
+			$data['regular_price'] = $upgrade_item->regular_price;
 		}
 
 		return $data;

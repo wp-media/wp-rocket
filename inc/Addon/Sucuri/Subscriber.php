@@ -40,7 +40,7 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'after_rocket_clean_domain'      => 'maybe_clean_firewall_cache',
+			'rocket_after_clean_domain'      => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_post'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_term'        => 'maybe_clean_firewall_cache',
 			'after_rocket_clean_user'        => 'maybe_clean_firewall_cache',

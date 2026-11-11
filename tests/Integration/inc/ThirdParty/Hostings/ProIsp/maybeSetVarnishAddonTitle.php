@@ -5,7 +5,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\ProIsp::maybe_set_varnish_addon_title
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\ProIsp::maybe_set_varnish_addon_title
  * @group ProIsp
  */
 class Test_MaybeSetVarnishAddonTitle extends TestCase {

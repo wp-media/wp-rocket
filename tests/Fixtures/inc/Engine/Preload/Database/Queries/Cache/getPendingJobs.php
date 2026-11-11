@@ -8,6 +8,7 @@ return [
 	'shouldReturnPendingRowsWhenInProgressLessThanTotal' => [
 		'config' => [
 			'total' => 45,
+			'in-progress' => 1,
 			'results' => [
 				$cache,
 			]
@@ -16,9 +17,33 @@ return [
 			$cache
 		]
 	],
+	'shouldNotReturnEmptyPendingRowsWhenInProgressNotEqualsTotal' => [
+		'config' => [
+			'total' => 45,
+			'in-progress' => 44,
+			'results' => [
+				$cache,
+			],
+		],
+		'expected' => [
+			$cache
+		]
+	],
+	'shouldReturnEmptyPendingRowsWhenInProgressEqualsTotal' => [
+		'config' => [
+			'total' => 45,
+			'in-progress' => 45,
+			'results' => [
+				$cache,
+			],
+		],
+		'expected' => [
+		]
+	],
 	'negativeCountShouldReturnEmpty' => [
 		'config' => [
 			'total' => -10,
+			'in-progress' => 35,
 			'results' => [
 				$cache,
 			]

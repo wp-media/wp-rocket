@@ -1,23 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Preload\Database\Tables;
 
-use WP_Rocket\Dependencies\Database\Table;
+use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 
-class Cache extends Table {
-
-	/**
-	 * Hook into queries, admin screens, and more!
-	 *
-	 * @since 1.0.0
-	 */
-	public function __construct() {
-		parent::__construct();
-		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
-		add_action( 'init', [ $this, 'maybe_upgrade' ] );
-		add_action( 'admin_init',  [ $this, 'maybe_trigger_recreate_table' ], 9 );
-	}
-
+class Cache extends AbstractTable {
 	/**
 	 * Table name
 	 *
@@ -47,6 +35,16 @@ class Cache extends Table {
 	protected $upgrades = [
 		20220927 => 'add_is_locked_column',
 	];
+
+	/**
+	 * Hook into queries, admin screens, and more!
+	 *
+	 * @since 1.0.0
+	 */
+	public function __construct() {
+		parent::__construct();
+		add_action( 'rocket_preload_activation', [ $this, 'maybe_upgrade' ] );
+	}
 
 	/**
 	 * Setup the database schema
@@ -95,5 +93,18 @@ class Cache extends Table {
 		}
 
 		return $this->is_success( $created );
+	}
+
+	/**
+	 * Truncate cache table.
+	 *
+	 * @return bool
+	 */
+	public function truncate_cache_table(): bool {
+		if ( ! $this->exists() ) {
+			return false;
+		}
+
+		return parent::truncate();
 	}
 }

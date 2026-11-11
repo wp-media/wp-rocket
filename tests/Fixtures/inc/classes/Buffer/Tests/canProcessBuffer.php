@@ -9,7 +9,7 @@ return [
 		'expected' => [
 			'buffer_results' => false,
 			'error' => [
-				'message' => 'Buffer content under 255 caracters.',
+				'message' => 'Buffer content under 255 characters.',
 				'data' => [],
 			],
 		],

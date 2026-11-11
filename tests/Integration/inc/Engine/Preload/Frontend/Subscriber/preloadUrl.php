@@ -5,45 +5,33 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Frontend\Subscriber;
 use WP_Error;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\ASTrait;
-use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
- * @group  Preload
+ * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::preload_url
+ *
+ * @group Preload
  */
-class Test_PreloadUrl extends AdminTestCase
-{
+class Test_PreloadUrl extends AdminTestCase {
 	use ASTrait;
 
 	protected $mobile_cache;
 
 	protected $config;
 
-	public static function set_up_before_class()
-	{
-		parent::set_up_before_class();
-		self::installFresh();
+	public function set_up() {
+		parent::set_up();
 
-	}
+		self::installPreloadCacheTable();
 
-	public static function tear_down_after_class()
-	{
-		self::uninstallAll();
-		parent::tear_down_after_class();
-	}
-
-	public function setUp(): void
-	{
-		parent::setUp();
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
-		add_filter('pre_http_request', [$this, 'request']);
 	}
 
-	public function tearDown(): void
-	{
-		parent::tearDown();
-		remove_filter('pre_http_request', [$this, 'request']);
+	public function tear_down() {
+		self::uninstallPreloadCacheTable();
+
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
+
+		parent::tear_down();
 	}
 
 	/**
@@ -52,6 +40,8 @@ class Test_PreloadUrl extends AdminTestCase
 	public function testShouldReturnAsExpected($config, $expected) {
 
 		$this->config = $config;
+		// One response answers both the desktop and the mobile preload requests.
+		$this->config['http'] = [ user_trailingslashit( $config['url'] ) => $this->preload_response() ];
 
 		$this->mobile_cache = $config['mobile_cache'];
 
@@ -71,7 +61,12 @@ class Test_PreloadUrl extends AdminTestCase
 		return $this->mobile_cache;
 	}
 
-	public function request() {
+	/**
+	 * Builds the preload response from the data set.
+	 *
+	 * @return array|WP_Error
+	 */
+	private function preload_response() {
 		if ( ! empty( $this->config['process_generate']['is_wp_error'] ) ) {
 			return new WP_Error( 'error', 'error_data' );
 		} else {

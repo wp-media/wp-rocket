@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_preload_exclusions()
+ * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::add_preload_exclusions()
  *
  * @group  DynamicLists
  */
@@ -20,7 +20,7 @@ class Test_AddPreloadExclusions extends TestCase {
 	public function tear_down() {
 		delete_transient( 'wpr_dynamic_lists' );
 
-		$this->restoreWpFilter( 'rocket_preload_exclude_urls' );
+		$this->restoreWpHook( 'rocket_preload_exclude_urls' );
 
 		parent::tear_down();
 	}

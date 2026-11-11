@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Ads\Adthrive;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::maybe_add_delay_js_exclusion
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Ads\Adthrive::maybe_add_delay_js_exclusion
  *
  * @group Adthrive
  * @group ThirdParty

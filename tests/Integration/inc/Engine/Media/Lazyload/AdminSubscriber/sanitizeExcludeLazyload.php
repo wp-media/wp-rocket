@@ -9,7 +9,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::sanitize_exclude_lazyload
+ * Test class covering \WP_Rocket\Engine\Media\Lazyload\AdminSubscriber::sanitize_exclude_lazyload
  *
  * @group AdminOnly
  * @group Media
@@ -25,7 +25,7 @@ class Test_SanitizeExcludeLazyload extends TestCase {
 	public function tear_down() {
 		parent::tear_down();
 
-		$this->restoreWpFilter( 'rocket_input_sanitize' );
+		$this->restoreWpHook( 'rocket_input_sanitize' );
 	}
 
 	/**

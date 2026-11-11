@@ -3,9 +3,15 @@
 namespace WP_Rocket\Engine\License\API;
 
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\JobManager\APIHandler\AbstractSafeAPIClient;
 
-class UserClient {
-	const USER_ENDPOINT = 'https://wp-rocket.me/stat/1.0/wp-rocket/user.php';
+class UserClient extends AbstractSafeAPIClient {
+	/**
+	 * Use the CustomerDataTrait
+	 */
+	use CustomerDataTrait;
+
+	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
 	 * WP Rocket options instance
@@ -13,6 +19,28 @@ class UserClient {
 	 * @var Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Get the transient key for plugin updates.
+	 *
+	 * This method returns the transient key used for caching plugin updates.
+	 *
+	 * @return string The transient key for plugin updates.
+	 */
+	protected function get_transient_key() {
+		return 'wpr_user_information';
+	}
+
+	/**
+	 * Get the API URL for plugin updates.
+	 *
+	 * This method returns the API URL used for fetching plugin updates.
+	 *
+	 * @return string The API URL for plugin updates.
+	 */
+	protected function get_api_url() {
+		return self::USER_ENDPOINT;
+	}
 
 	/**
 	 * Instantiate the class
@@ -51,6 +79,15 @@ class UserClient {
 	}
 
 	/**
+	 * Flushes the user data cache.
+	 *
+	 * @return void
+	 */
+	public function flush_cache() {
+		delete_transient( 'wp_rocket_customer_data' );
+	}
+
+	/**
 	 * Gets the user data from the user endpoint
 	 *
 	 * @since 3.7.3
@@ -58,21 +95,16 @@ class UserClient {
 	 * @return bool|object
 	 */
 	private function get_raw_user_data() {
-		$customer_key   = ! empty( $this->options->get( 'consumer_key', '' ) )
-			? $this->options->get( 'consumer_key', '' )
-			: rocket_get_constant( 'WP_ROCKET_KEY', '' );
-		$customer_email = ! empty( $this->options->get( 'consumer_email', '' ) )
-			? $this->options->get( 'consumer_email', '' )
-			: rocket_get_constant( 'WP_ROCKET_EMAIL', '' );
+		$customer_data = $this->get_customer_data();
 
-		$response = wp_safe_remote_post(
-			self::USER_ENDPOINT,
+		$response = $this->send_post_request(
 			[
-				'body' => 'user_id=' . rawurlencode( $customer_email ) . '&consumer_key=' . sanitize_key( $customer_key ),
-			]
+				'body' => 'user_id=' . rawurlencode( $customer_data['email'] ) . '&consumer_key=' . $customer_data['key'],
+			],
+			true
 		);
 
-		if ( 200 !== wp_remote_retrieve_response_code( $response ) ) {
+		if ( is_wp_error( $response ) ) {
 			return false;
 		}
 

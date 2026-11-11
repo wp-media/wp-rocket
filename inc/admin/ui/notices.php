@@ -441,31 +441,6 @@ function rocket_warning_busting_cache_dir_permissions() {
 }
 add_action( 'admin_notices', 'rocket_warning_busting_cache_dir_permissions' );
 
-/**
- * Confirming notice when the site has been added
- *
- * @since 2.2
- */
-function rocket_thank_you_license() {
-	if ( '1' === get_rocket_option( 'license' ) ) {
-		$options            = get_option( WP_ROCKET_SLUG );
-		$options['license'] = time();
-		$options['ignore']  = true;
-		update_option( WP_ROCKET_SLUG, $options );
-
-		$message = sprintf(
-			/* translators: %1$s = plugin name, %2$s + %3$s = opening links, %4$s = closing link */
-			__( '%1$s is good to go! %2$sTest your load time%4$s, or visit your %3$ssettings%4$s.', 'rocket' ),
-			'<strong>' . WP_ROCKET_PLUGIN_NAME . '</strong>',
-			'<a href="https://wp-rocket.me/blog/how-to-test-wordpress-site-performance-measure-speed-results/?utm_source=wp_plugin&utm_medium=wp_rocket" target="_blank">',
-			'<a href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG ) . '">',
-			'</a>'
-		);
-
-		rocket_notice_html( [ 'message' => $message ] );
-	}
-}
-add_action( 'admin_notices', 'rocket_thank_you_license' );
 
 /**
  * Displays a notice for analytics opt-in
@@ -489,7 +464,7 @@ function rocket_analytics_optin_notice() {
 		return;
 	}
 
-	if ( get_rocket_option( 'analytics_enabled' ) ) {
+	if ( get_option( 'rocket_mixpanel_optin' ) ) {
 		return;
 	}
 
@@ -557,19 +532,12 @@ function rocket_analytics_optin_thankyou_notice() {
 	}
 
 	$thankyou_message = sprintf(
-		// Opening <p> provided by rocket_notice_html().
-		'<strong>%s</strong></p>',
-		__( 'Thank you!', 'rocket' )
+		/* translators: %1$s = opening strong tag; %2$s = closing strong tag; %3$s = plugin name */
+		esc_html__( '%1$sThank you!%2$s The data you share helps us improve %3$s.', 'rocket' ),
+		'<strong>',
+		'</strong>',
+		rocket_get_constant( 'WP_ROCKET_PLUGIN_NAME' ),
 	);
-
-	$thankyou_message .= sprintf(
-		'<p>%1$s</p><div>%2$s</div>',
-		__( 'WP Rocket now collects these metrics from your website:', 'rocket' ),
-		rocket_data_collection_preview_table()
-	);
-
-	// Closing </p> provided by rocket_notice_html().
-	$thankyou_message .= '<p>';
 
 	rocket_notice_html(
 		[
@@ -662,6 +630,7 @@ function rocket_notice_html( $args ) {
 		'dismiss_button_message' => __( 'Dismiss this notice', 'rocket' ),
 		'readonly_content'       => '',
 		'id'                     => '',
+		'class_prefix'           => '',
 	];
 
 	$args = wp_parse_args( $args, $defaults );
@@ -672,7 +641,7 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'clear_used_css':
 			$params = [
-				'action' => 'rocket_clear_usedcss',
+				'action' => 'rocket_clean_saas',
 			];
 
 			if ( ! empty( $_SERVER['REQUEST_URI'] ) ) {
@@ -683,12 +652,6 @@ function rocket_notice_html( $args ) {
 			break;
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
-			break;
-		case 'switch_to_rucss':
-			$params         = [
-				'action' => 'switch_to_rucss',
-			];
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
 			break;
 		case 'enable_separate_mobile_cache':
 			$params         = [
@@ -715,6 +678,37 @@ function rocket_notice_html( $args ) {
 				$args['action'] = '<a href="' . wp_nonce_url( 'plugins.php?action=deactivate&amp;rocket_nonce=' . $rocket_nonce . '&amp;plugin=' . $plugin_file . '&amp;plugin_status=' . $status . '&amp;paged=' . $page . '&amp;s=' . $s, 'deactivate-plugin_' . $plugin_file ) . '">' . __( 'Force deactivation ', 'rocket' ) . '</a>';
 			}
 			break;
+		case 'rocket_insights_page':
+			$args['action'] = '<a class="button button-primary" href="' . admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_insights_promotion_notice#rocket_insights' ) . '">' . __( 'Run the test now!', 'rocket' ) . '</a>';
+			break;
+		case 'rocketcdn_upgrade_page':
+			$dismiss_key    = 'rocket_update_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_upgrade#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Add your pages now', 'rocket' )
+				. '</a>';
+			break;
+		case 'rocketcdn_install_page':
+			$dismiss_key    = 'rocketcdn_install_notice';
+			$redirect_url   = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_rocketcdn_promotion#page_cdn' );
+			$dismiss_url    = wp_nonce_url(
+				admin_url(
+					'admin-post.php?action=rocket_ignore&box=' . $dismiss_key
+					. '&redirect=' . rawurlencode( $redirect_url )
+				),
+				'rocket_ignore_' . $dismiss_key
+			);
+			$args['action'] = '<a class="button button-primary" href="' . esc_url( $dismiss_url ) . '">'
+				. __( 'Start with my homepage', 'rocket' )
+				. '</a>';
+			break;
 	}
 	/**
 	 * Notice arguments.
@@ -735,7 +729,7 @@ function rocket_notice_html( $args ) {
 	}
 
 	?>
-	<div class="notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
+	<div class="<?php echo esc_attr( $args['class_prefix'] ); ?>notice notice-<?php echo esc_attr( $args['status'] ); ?> <?php echo esc_attr( $args['dismissible'] ); ?>"<?php echo $notice_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>>
 		<?php
 			$tag = 0 !== strpos( $args['message'], '<p' ) && 0 !== strpos( $args['message'], '<ul' );
 

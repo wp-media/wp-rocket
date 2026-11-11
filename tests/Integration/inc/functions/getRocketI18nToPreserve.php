@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Fixtures\i18n\i18nTrait;
 use WPMedia\PHPUnit\Integration\TestCase;
 
 /**
- * @covers ::get_rocket_i18n_to_preserve
+ * Test class covering ::get_rocket_i18n_to_preserve
  * @uses  ::rocket_has_i18n
  * @uses  ::get_rocket_i18n_code
  * @uses  ::get_rocket_i18n_home_url

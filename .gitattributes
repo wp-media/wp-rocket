@@ -1,12 +1,16 @@
 // directories
+.claude export-ignore
 bin export-ignore
 src export-ignore
 tests export-ignore
 
 // files
+AGENTS.md export-ignore
 .babelrc export-ignore
 .editorconfig export-ignore
 .gitattributes export-ignore
+.nvmrc export-ignore
+.npmrc export-ignore
 .github export-ignore
 .gitignore export-ignore
 .travis.yml export-ignore
@@ -22,3 +26,5 @@ phpcs.xml export-ignore
 phpstan.neon.dist export-ignore
 phpunit.xml.dist export-ignore
 README.md export-ignore
+
+.github/workflows/*.lock.yml linguist-generated=true merge=ours

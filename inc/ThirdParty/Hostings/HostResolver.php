@@ -44,7 +44,15 @@ class HostResolver {
 			}
 		}
 
-		if ( isset( $_SERVER['cw_allowed_ip'] ) ) {
+		if (
+			(
+				isset( $_SERVER['DOCUMENT_ROOT'] )
+				&&
+				str_contains( sanitize_text_field( wp_unslash( $_SERVER['DOCUMENT_ROOT'] ) ), '.cloudwaysapps.com/' )
+			)
+			||
+			isset( $_SERVER['cw_allowed_ip'] )
+		) {
 			self::$hostname = 'cloudways';
 
 			return 'cloudways';
@@ -116,6 +124,16 @@ class HostResolver {
 		if ( isset( $_SERVER['KINSTA_CACHE_ZONE'] ) ) {
 			self::$hostname = 'kinsta';
 			return 'kinsta';
+		}
+
+		if ( defined( 'WP_NINUKIS_WP_NAME' ) || class_exists( 'NinukisCaching' ) ) {
+			self::$hostname = 'pressidium';
+			return self::$hostname;
+		}
+
+		if ( rocket_is_plugin_active( 'sg-cachepress/sg-cachepress.php' ) ) {
+			self::$hostname = 'siteground';
+			return 'siteground';
 		}
 
 		return '';

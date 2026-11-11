@@ -2,52 +2,50 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\AssetsLocalCache;
 
+use WP_Error;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
+ * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
  * @group  Optimize
  * @group  AssetsLocalCache
  */
 class Test_GetContent extends FilesystemTestCase {
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/getContent.php';
 
-	private $content = [];
-
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldSaveLocalContent( $config, $expected ) {
-		$local_cache = new AssetsLocalCache( $this->filesystem->getUrl( 'wp-content/cache/min/' ), $this->filesystem );
+		$local_cache = new AssetsLocalCache(
+			$this->filesystem->getUrl( 'wp-content/cache/min/' ),
+			$this->filesystem,
+			$config['reject_html']
+		);
 
-		if ( ! $config['found'] ) {
-			$this->content [$config['url'] ] = [
-				'body' => $expected
-			];
-		}
-
-		add_filter( 'pre_http_request', [ $this, 'bypass_request'], 10, 3 );
+		// A content already cached locally must not be fetched again.
+		$this->config['http'] = $config['found'] ? [] : [
+			$config['url'] => $this->get_mocked_response( $config['response'] ),
+		];
 
 		$this->assertSame(
 			$this->format_the_html( $expected ),
 			$this->format_the_html( $local_cache->get_content( $config['url'] ) )
 		);
 
-		$this->assertTrue( $this->filesystem->exists( $config['file'] ) );
+		$this->assertSame( $config['file_written'], $this->filesystem->exists( $config['file'] ) );
 	}
 
-	public function bypass_request( $content, $parsed_args, $url ) {
-		if ( ! isset( $this->content[ $url ] ) ) {
-			return $content;
+	private function get_mocked_response( array $response ) {
+		if ( '' === $response['code'] ) {
+			return new WP_Error( 'http_request_failed', 'Request failed' );
 		}
 
-		return $this->content[ $url ];
-	}
-
-	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'bypass_request' ], 10 );
-
-		parent::tear_down();
+		return [
+			'body'     => $response['body'],
+			'headers'  => $response['headers'],
+			'response' => [ 'code' => $response['code'] ],
+		];
 	}
 }

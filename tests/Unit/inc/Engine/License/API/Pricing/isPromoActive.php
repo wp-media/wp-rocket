@@ -7,7 +7,7 @@ use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\API\Pricing::is_promo_active
+ * Test class covering \WP_Rocket\Engine\License\API\Pricing::is_promo_active
  *
  * @group License
  */

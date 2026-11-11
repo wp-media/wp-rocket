@@ -10,7 +10,7 @@ use WP_Rocket\Tests\Unit\HasLoggerTrait;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\Common\ExtractCSS\Subscriber::extract_css_files_from_html
+ * Test class covering \WP_Rocket\Engine\Common\ExtractCSS\Subscriber::extract_css_files_from_html
  */
 class Test_extractCssFilesFromHtml extends TestCase {
 

@@ -8,7 +8,7 @@ use WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::detect_homepage
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::detect_homepage
  * @group TranslatePress
  */
 class Test_detectHomepage extends TestCase {

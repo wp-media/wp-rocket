@@ -3,11 +3,10 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
-use WP_Rocket\Tests\Integration\CapTrait;
-use WP_Rocket\Tests\Integration\DBTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::enable_mobile_cpcss
  * @uses   ::rocket_get_constant
  *
  * @group  AdminOnly
@@ -15,7 +14,9 @@ use WP_Rocket\Tests\Integration\DBTrait;
  * @group  CriticalPathAdminSubscriber
  */
 class Test_EnableMobileCpcss extends AjaxTestCase {
-	use ProviderTrait, DBTrait;
+	use IsolateHookTrait;
+	use ProviderTrait;
+
 	protected static $provider_class = 'Settings';
 
 	protected static $use_settings_trait = true;
@@ -26,8 +27,6 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	public static function set_up_before_class() {
 		parent::set_up_before_class();
 
-		self::installFresh();
-
 		self::setAdminCap();
 
 		//create an editor user that has the capability
@@ -36,16 +35,21 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		self::$editor_user_id = static::factory()->user->create( [ 'role' => 'editor' ] );
 	}
 
-	public static function tear_down_after_class()
-	{
-		parent::tear_down_after_class();
-		self::uninstallAll();
-	}
-
 	public function set_up() {
 		parent::set_up();
 
 		$this->action = 'rocket_enable_mobile_cpcss';
+		$this->unregisterAllCallbacks( 'admin_init' );
+
+		// The generation's loopback request is unrelated to the AJAX response under test.
+		add_filter( 'do_rocket_critical_css_generation', '__return_false' );
+	}
+
+	public function tear_down() {
+		remove_filter( 'do_rocket_critical_css_generation', '__return_false' );
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -62,9 +66,9 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 	 */
 	public function testShouldEnableMobileCpcss( $config, $update ) {
 		if ( $config['rocket_manage_options'] ) {
-			$user_id = static::$admin_user_id;
+			$user_id = self::getAdminUserId();
 		} else {
-			$user_id = static::$editor_user_id;
+			$user_id = self::getEditorUserId();
 		}
 
 		if ( ! empty( $config['rocket_regenerate_critical_css'] ) ) {
@@ -79,16 +83,20 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		$options = get_option( 'wp_rocket_settings' );
 		$this->assertArrayNotHasKey( 'async_css_mobile', $options );
 
-		$response = $this->callAjaxAction();
+		$this->expectException( 'WPAjaxDieContinueException' );
+
+		$this->_handleAjax( $this->action );
+
+		$response = json_decode( $this->_last_response );
 
 		$options = get_option( 'wp_rocket_settings' );
 		if ( $update ) {
 			$this->assertArrayHasKey( 'async_css_mobile', $options );
-			$this->assertObjectHasAttribute( 'success', $response );
+			$this->assertObjectHasProperty( 'success', $response );
 			$this->assertTrue( $response->success );
 		} else {
 			$this->assertArrayNotHasKey( 'async_css_mobile', $options );
-			$this->assertObjectHasAttribute( 'success', $response );
+			$this->assertObjectHasProperty( 'success', $response );
 			$this->assertFalse( $response->success );
 		}
 	}
@@ -103,5 +111,13 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 		$admin = get_role( 'administrator' );
 		$admin->add_cap( 'rocket_regenerate_critical_css' );
 		$admin->add_cap( 'rocket_manage_options' );
+	}
+
+	public function getAdminUserId() {
+		return self::$admin_user_id;
+	}
+
+	public function getEditorUserId() {
+		return self::$editor_user_id;
 	}
 }

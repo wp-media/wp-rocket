@@ -6,7 +6,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
 
 /**
- * @covers WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters::disable_rucss_setting
+ * Test class covering WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters::disable_rucss_setting
  */
 class Test_DisableRucssOptionPerfmatters extends TestCase {
 	protected $subscriber;

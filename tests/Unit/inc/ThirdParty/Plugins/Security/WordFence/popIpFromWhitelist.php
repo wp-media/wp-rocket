@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
 use wfConfig;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility::pop_ip_from_whitelist
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility::pop_ip_from_whitelist
  *
  * @group  WordFence
  * @group  ThirdParty

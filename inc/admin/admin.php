@@ -96,7 +96,6 @@ function rocket_post_row_actions( $actions, $post ) {
 	$actions['rocket_purge'] = sprintf( '<a href="%s">%s</a>', $url, __( 'Clear this cache', 'rocket' ) );
 
 	return $actions;
-
 }
 add_filter( 'page_row_actions', 'rocket_post_row_actions', 10, 2 );
 add_filter( 'post_row_actions', 'rocket_post_row_actions', 10, 2 );
@@ -126,7 +125,7 @@ add_filter( 'user_row_actions', 'rocket_user_row_actions', 10, 2 );
  *
  * @since 3.6   Reverse dependency with rocket_dismiss_box().
  * @since 2.4   Add a delete_transient on function name (box name).
- * @since 1.3.0 $args can replace $_GET when called internaly.
+ * @since 1.3.0 $args can replace $_GET when called internally.
  * @since 1.1.10
  *
  * @param array $args An array of query args. Should not be used: see rocket_dismiss_box().
@@ -159,7 +158,11 @@ function rocket_dismiss_boxes( $args = [] ) {
 		if ( rocket_get_constant( 'DOING_AJAX' ) ) {
 			wp_send_json( [ 'error' => 0 ] );
 		} else {
-			wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+			$redirect = ! empty( $args['redirect'] )
+				? wp_validate_redirect( esc_url_raw( wp_unslash( $args['redirect'] ) ), admin_url() )
+				: esc_url_raw( wp_get_referer() );
+
+			wp_safe_redirect( $redirect );
 			rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
 		}
 	}
@@ -324,32 +327,19 @@ function rocket_analytics_data() {
 		$data['cdn_cnames'] = 0;
 	}
 
+	$customer_data        = get_transient( 'wp_rocket_customer_data' );
+	$data['license_type'] = '';
+	if ( false !== $customer_data ) {
+		$data['license_type'] = rocket_get_license_type( $customer_data );
+	}
+
+	$media_font_data = get_transient( 'rocket_fonts_data_collection' );
+
+	if ( false !== $media_font_data ) {
+		$data = array_merge( $data, $media_font_data );
+	}
+
 	return $data;
-}
-
-/**
- * Determines if we should send the analytics data
- *
- * @since 2.11
- * @author Remy Perona
- *
- * @return bool True if we should send them, false otherwise
- */
-function rocket_send_analytics_data() {
-	if ( ! get_rocket_option( 'analytics_enabled' ) ) {
-		return false;
-	}
-
-	if ( ! current_user_can( 'administrator' ) ) {
-		return false;
-	}
-
-	if ( false === get_transient( 'rocket_send_analytics_data' ) ) {
-		set_transient( 'rocket_send_analytics_data', 1, 7 * DAY_IN_SECONDS );
-		return true;
-	}
-
-	return false;
 }
 
 /**
@@ -363,14 +353,21 @@ function rocket_analytics_optin() {
 		wp_nonce_ays( '' );
 	}
 
-	if ( ! current_user_can( 'administrator' ) ) {
+	if ( ! current_user_can( 'rocket_manage_options' ) ) {
 		wp_safe_redirect( wp_get_referer() );
 		die();
 	}
 
 	if ( isset( $_GET['value'] ) && 'yes' === $_GET['value'] ) {
-		update_rocket_option( 'analytics_enabled', 1 );
+		update_option( 'rocket_mixpanel_optin', 1 );
 		set_transient( 'rocket_analytics_optin', 1 );
+
+		/**
+		 * Fires when the Mixpanel opt-in status changes to enabled.
+		 *
+		 * @param bool $status The opt-in status.
+		 */
+		do_action( 'rocket_mixpanel_optin_changed', true );
 	}
 
 	update_option( 'rocket_analytics_notice_displayed', 1 );
@@ -401,8 +398,8 @@ function rocket_handle_settings_import() {
 		rocket_settings_import_redirect( __( 'Settings import failed: no file uploaded.', 'rocket' ), 'error' );
 	}
 
-	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.(?:txt|json)/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
-		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename.', 'rocket' ), 'error' );
+	if ( isset( $_FILES['import']['name'] ) && ! preg_match( '/wp-rocket-settings(?:-.*)?-20\d{2}-\d{2}-\d{2}-[a-f0-9]{13}\.json/', sanitize_file_name( $_FILES['import']['name'] ) ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.MissingUnslash
+		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filename. Only JSON format is supported.', 'rocket' ), 'error' );
 	}
 
 	add_filter( 'mime_types', 'rocket_allow_json_mime_type' );
@@ -412,8 +409,8 @@ function rocket_handle_settings_import() {
 	$mimes     = rocket_allow_json_mime_type( $mimes );
 	$file_data = wp_check_filetype_and_ext( $_FILES['import']['tmp_name'], sanitize_file_name( $_FILES['import']['name'] ), $mimes ); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized, WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 
-	if ( 'text/plain' !== $file_data['type'] && 'application/json' !== $file_data['type'] ) {
-		rocket_settings_import_redirect( __( 'Settings import failed: incorrect filetype.', 'rocket' ), 'error' );
+	if ( 'application/json' !== $file_data['type'] ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: only JSON format is supported for security reasons.', 'rocket' ), 'error' );
 	}
 
 	$_post_action       = isset( $_POST['action'] ) ? wp_unslash( sanitize_key( $_POST['action'] ) ) : '';
@@ -431,24 +428,19 @@ function rocket_handle_settings_import() {
 	remove_filter( 'mime_types', 'rocket_allow_json_mime_type' );
 	remove_filter( 'wp_check_filetype_and_ext', 'rocket_check_json_filetype', 10 );
 
-	if ( 'text/plain' === $file_data['type'] ) {
-		$gz       = 'gz' . strrev( 'etalfni' );
-		$settings = $gz( $settings );
-		$settings = maybe_unserialize( $settings );
-	} elseif ( 'application/json' === $file_data['type'] ) {
-		$settings = json_decode( $settings, true );
+	$settings = json_decode( $settings, true );
 
-		if ( null === $settings ) {
-			rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
-		}
+	if ( ! is_array( $settings ) ) {
+		rocket_settings_import_redirect( __( 'Settings import failed: unexpected file content.', 'rocket' ), 'error' );
 	}
 
 	rocket_put_content( $file['file'], '' );
 	rocket_direct_filesystem()->delete( $file['file'] );
 
 	if ( is_array( $settings ) ) {
-		$options_api     = new WP_Rocket\Admin\Options( 'wp_rocket_' );
-		$current_options = $options_api->get( 'settings', [] );
+		$options_api        = new WP_Rocket\Admin\Options( 'wp_rocket_' );
+		$current_options    = $options_api->get( 'settings', [] );
+		$regenerate_configs = false;
 
 		$settings['consumer_key']     = $current_options['consumer_key'];
 		$settings['consumer_email']   = $current_options['consumer_email'];
@@ -467,7 +459,21 @@ function rocket_handle_settings_import() {
 			$settings['cache_webp'] = 0;
 		}
 
+		if ( $settings['cache_mobile'] && ! $settings['do_caching_mobile_files'] ) {
+			$settings['do_caching_mobile_files'] = 1;
+			$regenerate_configs                  = true;
+		}
+
 		$options_api->set( 'settings', $settings );
+
+		/**
+		 * Fires after imported settings have been saved.
+		 *
+		 * @since 3.16
+		 *
+		 * @param boolean $regenerate_configs Returns whether to regenerate config.
+		 */
+		do_action( 'rocket_after_save_import', $regenerate_configs );
 
 		rocket_settings_import_redirect( __( 'Settings imported and saved.', 'rocket' ), 'updated' );
 	}

@@ -2,11 +2,11 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\Admin\Subscriber;
 
-use WP_Rocket\Tests\Integration\FilterTrait;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_hidden_async_css_mobile
+ * Test class covering \WP_Rocket\Engine\CriticalPath\Admin\Subscriber::add_hidden_async_css_mobile
  *
  * @group  AdminOnly
  * @group  CriticalPath
@@ -14,7 +14,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  */
 class Test_AddHiddenAsyncCssMobile extends TestCase {
 	use ProviderTrait;
-	use FilterTrait;
+	use IsolateHookTrait;
 
 	protected static $provider_class = 'Settings';
 
@@ -26,7 +26,7 @@ class Test_AddHiddenAsyncCssMobile extends TestCase {
 
 	public function tear_down()
 	{
-		$this->restoreWpFilter('rocket_hidden_settings_fields');
+		$this->restoreWpHook('rocket_hidden_settings_fields');
 		parent::tear_down();
 	}
 

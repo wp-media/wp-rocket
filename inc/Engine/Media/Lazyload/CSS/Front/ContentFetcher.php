@@ -4,10 +4,12 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\RemoteAssetTrait;
 
 class ContentFetcher {
 
 	use CSSTrait;
+	use RemoteAssetTrait;
 
 	/**
 	 * WordPress filesystem.
@@ -19,9 +21,9 @@ class ContentFetcher {
 	/**
 	 * Instance.
 	 *
-	 * @param WP_Filesystem_Direct $filesystem WordPress filesystem.
+	 * @param WP_Filesystem_Direct|null $filesystem WordPress filesystem.
 	 */
-	public function __construct( WP_Filesystem_Direct $filesystem = null ) {
+	public function __construct( ?WP_Filesystem_Direct $filesystem = null ) {
 		$this->filesystem = $filesystem ?: rocket_direct_filesystem();
 	}
 
@@ -57,8 +59,12 @@ class ContentFetcher {
 	 */
 	protected function fetch_content( string $path ) {
 		if ( ! wp_http_validate_url( $path ) ) {
-			return $this->filesystem->get_contents( $path );
+			$file_extension = pathinfo( $path, PATHINFO_EXTENSION );
+
+			if ( strtolower( $file_extension ) !== 'php' ) {
+				return $this->filesystem->get_contents( $path );
+			}
 		}
-		return wp_remote_retrieve_body( wp_remote_get( $path ) );
+		return $this->get_remote_asset_content( $path );
 	}
 }

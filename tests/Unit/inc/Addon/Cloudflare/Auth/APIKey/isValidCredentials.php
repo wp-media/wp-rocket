@@ -7,7 +7,7 @@ use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers WP_Rocket\Addon\Cloudflare\Auth\APIKey::is_valid_credentials
+ * Test class covering WP_Rocket\Addon\Cloudflare\Auth\APIKey::is_valid_credentials
  *
  * @group Cloudflare
  */

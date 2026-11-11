@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 namespace WP_Rocket\Engine\Media\Lazyload\CSS\Admin;
 
 use WP_Rocket\Engine\Common\Cache\CacheInterface;
@@ -29,17 +31,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rocket_meta_boxes_fields'       => 'add_meta_box',
+			'rocket_meta_boxes_fields'       => [ 'add_meta_box', 8 ],
 			'admin_notices'                  => 'maybe_add_error_notice',
 			'rocket_safe_mode_reset_options' => 'add_option_safemode',
+			'wp_rocket_upgrade'              => [ 'clear_background_css_with_upgrade', 10, 2 ],
 		];
 	}
 
 	/**
-	 * Add the field to the metaboxes.
+	 * Add the field to the WP Rocket metabox on the post edit page.
 	 *
-	 * @param array $fields Metaboxes fields.
-	 * @return array
+	 * @param string[] $fields Metaboxes fields.
+	 *
+	 * @return string[]
 	 */
 	public function add_meta_box( array $fields ) {
 		$fields['lazyload_css_bg_img'] = __( 'LazyLoad CSS backgrounds', 'rocket' );
@@ -68,12 +72,30 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add option to safe mode.
 	 *
-	 * @param string[] $options Safe mode options.
-	 * @return string[]
+	 * @param array $options Safe mode options.
+	 *
+	 * @return array
 	 */
 	public function add_option_safemode( array $options ) {
 		$options['lazyload_css_bg_img'] = 0;
 		return $options;
 	}
 
+	/**
+	 * Upgrade callback.
+	 *
+	 * @param string $new_version Plugin new version.
+	 * @param string $old_version Plugin old version.
+	 * @return void
+	 */
+	public function clear_background_css_with_upgrade( $new_version, $old_version ) {
+		if ( empty( $old_version ) || version_compare( $old_version, '3.18', '>' ) ) {
+			return;
+		}
+
+		$preserve_dirs = is_multisite() ? get_sites( [ 'fields' => 'ids' ] ) : [ get_current_blog_id() ];
+
+		// Completely clear background-css directory.
+		$this->cache->full_clear( $preserve_dirs );
+	}
 }

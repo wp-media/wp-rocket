@@ -8,7 +8,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\FilesystemTestCase;
 
 /**
- * @covers ::rocket_clean_files
+ * Test class covering ::rocket_clean_files
  * @uses  ::_rocket_get_wp_rocket_cache_path
  * @uses  ::rocket_get_constant
  * @uses  ::rocket_rrmdir
@@ -55,7 +55,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
-			$this->doCleanFilesTest( $urls, $config, $expected );
+			$this->doCleanFilesTest( $urls, $expected );
 		}
 
 		// Run it.
@@ -71,7 +71,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		Functions\expect( 'rocket_rrmdir' )->never();
 	}
 
-	private function doCleanFilesTest( $urls, $config, $expected ) {
+	private function doCleanFilesTest( $urls, $expected ) {
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )

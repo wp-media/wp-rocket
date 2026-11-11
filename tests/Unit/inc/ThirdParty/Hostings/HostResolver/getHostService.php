@@ -7,7 +7,7 @@ use WP_Rocket\ThirdParty\Hostings\HostResolver;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\HostResolver::get_host_service
  * @uses   ::rocket_get_constant
  *
  * @group  Hostings
@@ -23,6 +23,8 @@ class Test_GetHostResolver extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpectedValue( $expected ) {
@@ -31,6 +33,11 @@ class Test_GetHostResolver extends TestCase {
 
 		Functions\when( 'sanitize_text_field' )
 			->returnArg();
+
+		// The siteground branch (rocket_is_plugin_active()) is reached, and evaluated, for every case
+		// that doesn't match an earlier branch; default it to "not active" unless overridden below.
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'is_multisite' )->justReturn( false );
 
 		switch ( $expected ) {
 			case 'cloudways':
@@ -48,6 +55,9 @@ class Test_GetHostResolver extends TestCase {
 				break;
 			case 'onecom':
 				$_SERVER['GROUPONE_BRAND_NAME'] = 'one.com';
+				break;
+			case 'siteground':
+				Functions\when( 'rocket_is_plugin_active' )->justReturn( true );
 				break;
 			default:
 				break;

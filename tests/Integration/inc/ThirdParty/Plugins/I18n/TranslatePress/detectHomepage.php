@@ -6,7 +6,7 @@ use TRP_Url_Converter;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::detect_homepage
+ * Test class covering \WP_Rocket\ThirdParty\Plugins\I18n\TranslatePress::detect_homepage
  * @group TranslatePress
  */
 class Test_detectHomepage extends TestCase {
@@ -18,7 +18,7 @@ class Test_detectHomepage extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_rucss_is_home_url', $config['home_url'], $config['url'] )
+			apply_filters( 'rocket_saas_is_home_url', $config['home_url'], $config['url'] )
 		);
 	}
 }

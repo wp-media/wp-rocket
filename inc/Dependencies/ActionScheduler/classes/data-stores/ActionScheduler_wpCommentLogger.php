@@ -5,17 +5,19 @@
  */
 class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	const AGENT = 'ActionScheduler';
-	const TYPE = 'action_log';
+	const TYPE  = 'action_log';
 
 	/**
-	 * @param string $action_id
-	 * @param string $message
-	 * @param DateTime $date
+	 * Create log entry.
+	 *
+	 * @param string        $action_id Action ID.
+	 * @param string        $message   Action log's message.
+	 * @param DateTime|null $date      Action log's timestamp.
 	 *
 	 * @return string The log entry ID
 	 */
-	public function log( $action_id, $message, DateTime $date = NULL ) {
-		if ( empty($date) ) {
+	public function log( $action_id, $message, ?DateTime $date = null ) {
+		if ( empty( $date ) ) {
 			$date = as_get_datetime_object();
 		} else {
 			$date = as_get_datetime_object( clone $date );
@@ -24,30 +26,41 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		return $comment_id;
 	}
 
+	/**
+	 * Create comment.
+	 *
+	 * @param int      $action_id Action ID.
+	 * @param string   $message Action log's message.
+	 * @param DateTime $date Action log entry's timestamp.
+	 */
 	protected function create_wp_comment( $action_id, $message, DateTime $date ) {
 
-		$comment_date_gmt = $date->format('Y-m-d H:i:s');
+		$comment_date_gmt = $date->format( 'Y-m-d H:i:s' );
 		ActionScheduler_TimezoneHelper::set_local_timezone( $date );
 		$comment_data = array(
-			'comment_post_ID' => $action_id,
-			'comment_date' => $date->format('Y-m-d H:i:s'),
+			'comment_post_ID'  => $action_id,
+			'comment_date'     => $date->format( 'Y-m-d H:i:s' ),
 			'comment_date_gmt' => $comment_date_gmt,
-			'comment_author' => self::AGENT,
-			'comment_content' => $message,
-			'comment_agent' => self::AGENT,
-			'comment_type' => self::TYPE,
+			'comment_author'   => self::AGENT,
+			'comment_content'  => $message,
+			'comment_agent'    => self::AGENT,
+			'comment_type'     => self::TYPE,
 		);
-		return wp_insert_comment($comment_data);
+
+		return wp_insert_comment( $comment_data );
 	}
 
 	/**
-	 * @param string $entry_id
+	 * Get single log entry for action.
+	 *
+	 * @param string $entry_id Entry ID.
 	 *
 	 * @return ActionScheduler_LogEntry
 	 */
 	public function get_entry( $entry_id ) {
 		$comment = $this->get_comment( $entry_id );
-		if ( empty($comment) || $comment->comment_type != self::TYPE ) {
+
+		if ( empty( $comment ) || self::TYPE !== $comment->comment_type ) {
 			return new ActionScheduler_NullLogEntry();
 		}
 
@@ -57,59 +70,75 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	}
 
 	/**
-	 * @param string $action_id
+	 * Get action's logs.
+	 *
+	 * @param string $action_id Action ID.
 	 *
 	 * @return ActionScheduler_LogEntry[]
 	 */
 	public function get_logs( $action_id ) {
 		$status = 'all';
-		if ( get_post_status($action_id) == 'trash' ) {
+		$logs   = array();
+
+		if ( get_post_status( $action_id ) === 'trash' ) {
 			$status = 'post-trashed';
 		}
-		$comments = get_comments(array(
-			'post_id' => $action_id,
-			'orderby' => 'comment_date_gmt',
-			'order' => 'ASC',
-			'type' => self::TYPE,
-			'status' => $status,
-		));
-		$logs = array();
+
+		$comments = get_comments(
+			array(
+				'post_id' => $action_id,
+				'orderby' => 'comment_date_gmt',
+				'order'   => 'ASC',
+				'type'    => self::TYPE,
+				'status'  => $status,
+			)
+		);
+
 		foreach ( $comments as $c ) {
 			$entry = $this->get_entry( $c );
-			if ( !empty($entry) ) {
+
+			if ( ! empty( $entry ) ) {
 				$logs[] = $entry;
 			}
 		}
+
 		return $logs;
 	}
 
+	/**
+	 * Get comment.
+	 *
+	 * @param int $comment_id Comment ID.
+	 */
 	protected function get_comment( $comment_id ) {
 		return get_comment( $comment_id );
 	}
 
-
-
 	/**
-	 * @param WP_Comment_Query $query
+	 * Filter comment queries.
+	 *
+	 * @param WP_Comment_Query $query Comment query object.
 	 */
 	public function filter_comment_queries( $query ) {
-		foreach ( array('ID', 'parent', 'post_author', 'post_name', 'post_parent', 'type', 'post_type', 'post_id', 'post_ID') as $key ) {
-			if ( !empty($query->query_vars[$key]) ) {
-				return; // don't slow down queries that wouldn't include action_log comments anyway
+		foreach ( array( 'ID', 'parent', 'post_author', 'post_name', 'post_parent', 'type', 'post_type', 'post_id', 'post_ID' ) as $key ) {
+			if ( ! empty( $query->query_vars[ $key ] ) ) {
+				return; // don't slow down queries that wouldn't include action_log comments anyway.
 			}
 		}
-		$query->query_vars['action_log_filter'] = TRUE;
+		$query->query_vars['action_log_filter'] = true;
 		add_filter( 'comments_clauses', array( $this, 'filter_comment_query_clauses' ), 10, 2 );
 	}
 
 	/**
-	 * @param array $clauses
-	 * @param WP_Comment_Query $query
+	 * Filter comment queries.
+	 *
+	 * @param array            $clauses Query's clauses.
+	 * @param WP_Comment_Query $query Query object.
 	 *
 	 * @return array
 	 */
 	public function filter_comment_query_clauses( $clauses, $query ) {
-		if ( !empty($query->query_vars['action_log_filter']) ) {
+		if ( ! empty( $query->query_vars['action_log_filter'] ) ) {
 			$clauses['where'] .= $this->get_where_clause();
 		}
 		return $clauses;
@@ -119,8 +148,8 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	 * Make sure Action Scheduler logs are excluded from comment feeds, which use WP_Query, not
 	 * the WP_Comment_Query class handled by @see self::filter_comment_queries().
 	 *
-	 * @param string $where
-	 * @param WP_Query $query
+	 * @param string   $where Query's `where` clause.
+	 * @param WP_Query $query Query object.
 	 *
 	 * @return string
 	 */
@@ -144,8 +173,8 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	/**
 	 * Remove action log entries from wp_count_comments()
 	 *
-	 * @param array $stats
-	 * @param int $post_id
+	 * @param array $stats   Comment count.
+	 * @param int   $post_id Post ID.
 	 *
 	 * @return object
 	 */
@@ -170,17 +199,21 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		$stats = get_transient( 'as_comment_count' );
 
 		if ( ! $stats ) {
-			$stats = array();
-
-			$count = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} WHERE comment_type NOT IN('order_note','action_log') GROUP BY comment_approved", ARRAY_A );
-
-			$total = 0;
-			$stats = array();
-			$approved = array( '0' => 'moderated', '1' => 'approved', 'spam' => 'spam', 'trash' => 'trash', 'post-trashed' => 'post-trashed' );
+			$stats    = array();
+			$count    = $wpdb->get_results( "SELECT comment_approved, COUNT( * ) AS num_comments FROM {$wpdb->comments} WHERE comment_type NOT IN('order_note','action_log') GROUP BY comment_approved", ARRAY_A );
+			$total    = 0;
+			$stats    = array();
+			$approved = array(
+				'0'            => 'moderated',
+				'1'            => 'approved',
+				'spam'         => 'spam',
+				'trash'        => 'trash',
+				'post-trashed' => 'post-trashed',
+			);
 
 			foreach ( (array) $count as $row ) {
-				// Don't count post-trashed toward totals
-				if ( 'post-trashed' != $row['comment_approved'] && 'trash' != $row['comment_approved'] ) {
+				// Don't count post-trashed toward totals.
+				if ( 'post-trashed' !== $row['comment_approved'] && 'trash' !== $row['comment_approved'] ) {
 					$total += $row['num_comments'];
 				}
 				if ( isset( $approved[ $row['comment_approved'] ] ) ) {
@@ -213,6 +246,8 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 	}
 
 	/**
+	 * Initialize.
+	 *
 	 * @codeCoverageIgnore
 	 */
 	public function init() {
@@ -222,19 +257,26 @@ class ActionScheduler_wpCommentLogger extends ActionScheduler_Logger {
 		parent::init();
 
 		add_action( 'pre_get_comments', array( $this, 'filter_comment_queries' ), 10, 1 );
-		add_action( 'wp_count_comments', array( $this, 'filter_comment_count' ), 20, 2 ); // run after WC_Comments::wp_count_comments() to make sure we exclude order notes and action logs
+		add_action( 'wp_count_comments', array( $this, 'filter_comment_count' ), 20, 2 ); // run after WC_Comments::wp_count_comments() to make sure we exclude order notes and action logs.
 		add_action( 'comment_feed_where', array( $this, 'filter_comment_feed' ), 10, 2 );
 
-		// Delete comments count cache whenever there is a new comment or a comment status changes
+		// Delete comments count cache whenever there is a new comment or a comment status changes.
 		add_action( 'wp_insert_comment', array( $this, 'delete_comment_count_cache' ) );
 		add_action( 'wp_set_comment_status', array( $this, 'delete_comment_count_cache' ) );
 	}
 
+	/**
+	 * Defer comment counting.
+	 */
 	public function disable_comment_counting() {
-		wp_defer_comment_counting(true);
+		wp_defer_comment_counting( true );
 	}
+
+	/**
+	 * Enable comment counting.
+	 */
 	public function enable_comment_counting() {
-		wp_defer_comment_counting(false);
+		wp_defer_comment_counting( false );
 	}
 
 }

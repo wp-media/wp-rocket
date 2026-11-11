@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
- * @covers \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
+ * Test class covering \WP_Rocket\Addon\WebP\Subscriber::convert_to_webp
  * @group WebP
  */
 class Test_ConvertToWebp extends FilesystemTestCase {
@@ -21,6 +21,8 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'convert_to_webp', 16 );
+
+		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 	}
 
 	public function tear_down() {
@@ -29,8 +31,9 @@ class Test_ConvertToWebp extends FilesystemTestCase {
 		remove_filter( 'rocket_file_extensions_for_webp', [ $this, 'set_extensions_webp'] );
 		remove_filter( 'rocket_attributes_for_webp', [ $this, 'set_attributes_webp' ] );
 		remove_filter( 'rocket_cdn_cnames', [ $this, 'set_cdn_cnames'] );
+		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
-		$this->restoreWpFilter( 'rocket_buffer' );
+		$this->restoreWpHook( 'rocket_buffer' );
 
 		parent::tear_down();
 	}

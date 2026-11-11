@@ -10,7 +10,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function rocket_upgrader() {
 	// Grab some infos.
-	$actual_version = (string) get_rocket_option( 'version' );
+	$actual_version = (string) get_rocket_option( 'version', '' );
 	// You can hook the upgrader to trigger any action when WP Rocket is upgraded.
 	// first install.
 	if ( ! $actual_version ) {
@@ -25,10 +25,10 @@ function rocket_upgrader() {
 	if ( did_action( 'wp_rocket_first_install' ) || did_action( 'wp_rocket_upgrade' ) ) {
 		flush_rocket_htaccess();
 
-		rocket_renew_all_boxes( 0, [ 'rocket_warning_plugin_modification' ] );
+		$options = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
 
-		$options            = get_option( WP_ROCKET_SLUG ); // do not use get_rocket_option() here.
-		$options['version'] = WP_ROCKET_VERSION;
+		$options['version']          = WP_ROCKET_VERSION;
+		$options['previous_version'] = $actual_version;
 
 		$keys = rocket_check_key();
 		if ( is_array( $keys ) ) {
@@ -83,7 +83,7 @@ function rocket_first_install() {
 			[
 				'secret_cache_key'            => $secret_cache_key,
 				'cache_mobile'                => 1,
-				'do_caching_mobile_files'     => 0,
+				'do_caching_mobile_files'     => 1,
 				'cache_webp'                  => 0,
 				'cache_logged_user'           => 0,
 				'cache_ssl'                   => 1,
@@ -104,9 +104,9 @@ function rocket_first_install() {
 				'lazyload'                    => 0,
 				'lazyload_iframes'            => 0,
 				'lazyload_youtube'            => 0,
-				'minify_css'                  => 0,
+				'minify_css'                  => 1,
 				'minify_css_key'              => $minify_css_key,
-				'minify_js'                   => 0,
+				'minify_js'                   => 1,
 				'minify_js_key'               => $minify_js_key,
 				'minify_concatenate_js'       => 0,
 				'minify_google_fonts'         => 1,
@@ -126,6 +126,7 @@ function rocket_first_install() {
 				'cdn_cnames'                  => [],
 				'cdn_zone'                    => [],
 				'cdn_reject_files'            => [],
+				'cdn_state'                   => 'nothing',
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
 				'cloudflare_api_key'          => '',
@@ -142,6 +143,7 @@ function rocket_first_install() {
 				'analytics_enabled'           => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
+				'wpr-js-tips'                 => 1,
 			]
 		)
 	);
@@ -220,7 +222,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
-		rocket_generate_config_file();
 
 		// Create a .htaccess file in the log folder.
 		$handler = Logger::get_stream_handler();
@@ -270,7 +271,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
-		rocket_clean_domain();
 	}
 
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
@@ -306,13 +306,32 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
-		rocket_generate_config_file();
-	}
-
 	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
 		delete_transient( 'wp_rocket_pricing' );
 	}
 
+	if ( version_compare( $actual_version, '3.23', '<' ) ) {
+		flush_rewrite_rules();
+	}
+
+	if ( version_compare( $actual_version, '3.24', '<' ) ) {
+		rocket_generate_config_file();
+		rocket_clean_domain();
+
+		// The activation banner is only for new installs: mark it as seen for existing administrators.
+		$admin_ids = get_users(
+			[
+				'role'   => 'administrator',
+				'fields' => 'ID',
+			]
+		);
+
+		foreach ( $admin_ids as $admin_id ) {
+			$boxes   = (array) get_user_meta( $admin_id, 'rocket_boxes', true );
+			$boxes[] = 'rocket_activation_notice';
+
+			update_user_meta( $admin_id, 'rocket_boxes', array_values( array_unique( array_filter( $boxes ) ) ) );
+		}
+	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

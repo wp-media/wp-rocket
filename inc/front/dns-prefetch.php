@@ -32,4 +32,3 @@ function rocket_dns_prefetch( $hints, $relation_type ) {
 	return $hints;
 }
 add_filter( 'wp_resource_hints', 'rocket_dns_prefetch', 10, 2 );
-

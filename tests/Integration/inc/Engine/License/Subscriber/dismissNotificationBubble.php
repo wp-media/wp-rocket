@@ -5,7 +5,7 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\Subscriber;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\Engine\License\Subscriber::dismiss_notification_bubble
+ * Test class covering \WP_Rocket\Engine\License\Subscriber::dismiss_notification_bubble
  *
  * @group License
  * @group AdminOnly
@@ -33,6 +33,10 @@ class DismissNotificationBubble extends TestCase {
 		parent::set_up();
 
 		wp_set_current_user( self::$user_id );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 
 		$this->original_user    = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
@@ -45,6 +49,8 @@ class DismissNotificationBubble extends TestCase {
 
 		delete_transient( 'rocket_promo_seen_' . self::$user_id );
 		set_current_screen( 'front' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

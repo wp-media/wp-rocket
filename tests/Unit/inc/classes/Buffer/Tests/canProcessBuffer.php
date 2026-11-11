@@ -9,21 +9,21 @@ use Brain\Monkey\Functions;
 use Mockery;
 
 /**
- * @covers \WP_Rocket\Buffer\Tests::can_process_buffer
+ * Test class covering \WP_Rocket\Buffer\Tests::can_process_buffer
  *
  * @group  Buffer
  */
 class Test_CanProcessBuffer extends TestCase {
 
 	protected $tests;
-	protected $config;
+	protected $config_mock;
 
 	public function setUp(): void
 	{
 		parent::setUp();
-		$this->config = \Mockery::mock(Config::class);
+		$this->config_mock = \Mockery::mock(Config::class);
 		$this->tests = Mockery::mock(Tests::class.'[has_donotcachepage,is_404,is_search,is_feed_uri,is_html,get_http_response_code]',
-			[$this->config]);
+			[$this->config_mock]);
 	}
 
 	/**

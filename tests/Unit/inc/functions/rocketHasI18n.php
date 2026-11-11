@@ -6,7 +6,7 @@ use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
- * @covers ::rocket_has_i18n
+ * Test class covering ::rocket_has_i18n
  * @group Functions
  * @group i18n
  */

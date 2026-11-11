@@ -4,7 +4,7 @@ namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\Godaddy;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Hostings\Godaddy::remove_html_expire
+ * Test class covering \WP_Rocket\ThirdParty\Hostings\Godaddy::remove_html_expire
  *
  * @group  Godaddy
  * @group  ThirdParty

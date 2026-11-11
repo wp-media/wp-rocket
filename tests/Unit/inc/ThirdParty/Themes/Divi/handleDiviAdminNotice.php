@@ -8,7 +8,7 @@ use WP_Rocket\ThirdParty\Themes\Divi;
 use Brain\Monkey\Functions;
 
 /**
- * @covers \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
+ * Test class covering \WP_Rocket\ThirdParty\Themes\Divi::handle_divi_admin_notice
  *
  * @group  ThirdParty
  * @group  Divi
