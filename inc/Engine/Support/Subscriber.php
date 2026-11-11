@@ -194,7 +194,7 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		// An older library copy loaded by another plugin may lack unavailable_reason().
-		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) {
+		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) { // @phpstan-ignore-line
 			$reason_code = \GroupOne\WapClient\AppPasswordManager::unavailable_reason();
 		} else {
 			$reason_code = \GroupOne\WapClient\AppPasswordManager::is_https_missing() ? 'https' : 'disabled';
