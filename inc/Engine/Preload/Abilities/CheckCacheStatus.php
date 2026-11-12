@@ -172,7 +172,7 @@ If tracked is false, tell the user the URL is not currently tracked by Preload (
 				'last_accessed' => null,
 				'note'          => $tracking_enabled
 					? __( 'This URL is not currently tracked by Preload. It may be excluded from preloading, or it has not been crawled yet.', 'rocket' )
-					: __( 'Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Preload to track cache status.', 'rocket' ),
+					: __( 'Preload tracking is disabled. Enable "Preload Cache" in Settings > WP Rocket > Cache > Preload to track cache status.', 'rocket' ),
 				'error'         => null,
 			];
 		}

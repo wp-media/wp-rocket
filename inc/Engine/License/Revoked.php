@@ -33,20 +33,18 @@ class Revoked extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the revoked website banner on the WP Rocket settings page.
+	 * Returns the revoked website banner HTML for the WP Rocket dashboard sidebar.
 	 *
-	 * This method checks whether the revoked banner should be shown, confirms the user is viewing the settings page,
-	 * constructs a message identifying loss of access to features, and renders the banner template.
+	 * This method checks whether the revoked banner should be shown, constructs a message identifying
+	 * loss of access to features, and returns the rendered banner template.
 	 *
-	 * @return void
+	 * @since 3.24
+	 *
+	 * @return string
 	 */
-	public function maybe_display_revoked_banner(): void {
+	public function get_revoked_banner(): string {
 		if ( ! $this->can_display() ) {
-			return;
-		}
-
-		if ( 'settings_page_wprocket' !== get_current_screen()->id ) {
-			return;
+			return '';
 		}
 
 		$message = sprintf(
@@ -58,8 +56,7 @@ class Revoked extends Abstract_Render {
 			'</strong>'
 		);
 
-        // phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo $this->generate(
+		return (string) $this->generate(
 			'revoked-website-banner',
 			[
 				'purchase_url' => $this->purchase_url,

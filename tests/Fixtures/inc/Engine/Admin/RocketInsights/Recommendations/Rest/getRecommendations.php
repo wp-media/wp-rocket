@@ -41,6 +41,7 @@ return [
 						'total_recommendations' => 2,
 					],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
@@ -57,11 +58,31 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
 				'status'               => 'loading',
 				'recommendations_count' => 0,
+			],
+		],
+
+		'shouldReturnNoPagesMessageWhenNoTrackedPagesAndCachedFailed' => [
+			'config'   => [
+				'user_role'           => 'administrator',
+				'global_score_status' => 'no-url',
+				'transient_data'      => [
+					'status'          => 'failed',
+					'recommendations' => [],
+					'metadata'        => [],
+					'timestamp'       => time(),
+					'language'        => 'en',
+					'error'           => 'Recommendations unavailable',
+				],
+			],
+			'expected' => [
+				'status'       => 'failed',
+				'has_no_pages' => true,
 			],
 		],
 
@@ -73,6 +94,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 					'error'           => 'API request failed',
 				],
 			],
@@ -95,6 +117,7 @@ return [
 					],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [
@@ -111,6 +134,7 @@ return [
 					'recommendations' => [],
 					'metadata'        => [],
 					'timestamp'       => time(),
+					'language'        => 'en',
 				],
 			],
 			'expected' => [

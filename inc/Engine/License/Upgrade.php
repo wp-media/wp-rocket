@@ -6,8 +6,11 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class Upgrade extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Pricing instance
 	 *
@@ -130,17 +133,19 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the promotion banner
+	 * Returns the promotion banner HTML
 	 *
-	 * @return void
+	 * @since 3.24
+	 *
+	 * @return string
 	 */
-	public function display_promo_banner() {
+	public function get_promo_banner(): string {
 		if ( ! $this->can_use_promo() ) {
-			return;
+			return '';
 		}
 
 		if ( false !== get_transient( 'rocket_promo_banner_' . get_current_user_id() ) ) {
-			return;
+			return '';
 		}
 
 		$promo          = $this->pricing->get_promo_data();
@@ -154,7 +159,7 @@ class Upgrade extends Abstract_Render {
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
-		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return (string) $this->generate( 'promo-banner', $data );
 	}
 
 	/**
@@ -176,6 +181,8 @@ class Upgrade extends Abstract_Render {
 		}
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] );
 
 		wp_send_json_success();
 	}
@@ -269,7 +276,7 @@ class Upgrade extends Abstract_Render {
 		return sprintf(
 		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
 			esc_html__(
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 				'rocket'
 			),
 			$promo_name,

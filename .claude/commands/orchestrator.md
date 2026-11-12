@@ -1,1 +1,0 @@
-../skills/orchestrator/SKILL.md

@@ -4,9 +4,13 @@ $(document).ready(function(){
         /**
          * Show beacons on button "help" click
          */
-        var $help = $('.wpr-infoAction--help');
-        $help.on('click', function(e){
+        $(document).on('click', '.wpr-infoAction--help[data-beacon-id]', function(e){
             var ids = $(this).attr('data-beacon-id');
+
+            if ( ! ids ) {
+                return true;
+            }
+
             var button = $(this).data('wpr_track_button') || 'Beacon Help';
             var context = $(this).data('wpr_track_context') || 'Settings';
 
@@ -28,6 +32,7 @@ $(document).ready(function(){
                     window.Beacon("suggest", aID);
 
                     setTimeout(function() {
+                        window.Beacon("navigate", "/answers/");
                         window.Beacon("open");
                     }, 200);
                 } else {
@@ -54,6 +59,8 @@ $(document).ready(function(){
                 mixpanel.identify(rocket_mixpanel_data.user_id);
             }
 
+            var path = window.location.pathname + window.location.search + window.location.hash;
+
             mixpanel.track('Button Clicked', {
                 'button': button,
 				'button_context': context,
@@ -61,7 +68,7 @@ $(document).ready(function(){
                 'brand': rocket_mixpanel_data.brand,
                 'application': rocket_mixpanel_data.app,
                 'context': rocket_mixpanel_data.context,
-                'path': rocket_mixpanel_data.path,
+                'path': path || rocket_mixpanel_data.path,
                 'interaction_channel': 'UI'
             });
         }

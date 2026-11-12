@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdminSubscriber;
 use Brain\Monkey\Functions;
 use WP_Rocket\Engine\Cache\AdminSubscriber;
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Engine\Cache\AdminSubscriber::add_purge_term_link
@@ -14,8 +13,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group Cache
  */
 class AddPurgeTermLinkTest extends AdminTestCase {
-	use HttpRequestTrait;
-
 	private $tag;
 
 	public static function set_up_before_class() {
@@ -26,8 +23,6 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// The test only checks that the row action is registered, not the license/upgrade
 		// flow rocket_upgrader() runs on admin_init when the 'version' option is missing.
@@ -55,8 +50,6 @@ class AddPurgeTermLinkTest extends AdminTestCase {
 		self::uninstallPreconnectDomainsTable();
 
 		remove_filter( 'pre_get_rocket_option_version', [ $this, 'mock_version' ] );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

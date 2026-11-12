@@ -1,0 +1,45 @@
+/* Icon-only WP Rocket admin bar item on mobile, where core hides non-whitelisted items. */
+@media screen and (max-width: 782px) {
+	#wpadminbar li#wp-admin-bar-wp-rocket {
+		display: block;
+	}
+
+	#wpadminbar #wp-admin-bar-wp-rocket > .ab-item {
+		position: relative;
+		width: 52px;
+		padding: 0;
+		overflow: hidden;
+		white-space: nowrap;
+		text-indent: 150%;
+	}
+
+	/* ::after, not ::before: core resets the background on ::before at this width. */
+	#wpadminbar #wp-admin-bar-wp-rocket > .ab-item::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 52px;
+		height: 46px;
+		background: url(../img/picto-wprocket-dark.svg) center / auto 26px no-repeat;
+	}
+
+	/*
+	 * Anchor the dropdown to the admin bar edge instead of the icon, which sits mid-bar:
+	 * a left-aligned submenu would run past the right edge of the screen.
+	 */
+	#wpadminbar li#wp-admin-bar-wp-rocket {
+		position: static;
+	}
+
+	#wpadminbar #wp-admin-bar-wp-rocket > .ab-sub-wrapper {
+		left: auto;
+		right: 0;
+		max-width: 100%;
+	}
+
+	.rtl #wpadminbar #wp-admin-bar-wp-rocket > .ab-sub-wrapper {
+		left: 0;
+		right: auto;
+	}
+}

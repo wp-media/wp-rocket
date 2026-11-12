@@ -9,6 +9,8 @@ use WP_Filesystem_Direct;
  * @since 3.1
  */
 class AssetsLocalCache {
+	use RemoteAssetTrait;
+
 	/**
 	 * 3rd party assets cache folder path
 	 *
@@ -33,16 +35,25 @@ class AssetsLocalCache {
 	private $url_cache = [];
 
 	/**
+	 * Whether responses served as text/html are rejected (true for CSS).
+	 *
+	 * @var bool
+	 */
+	private $reject_html;
+
+	/**
 	 * Constructor
 	 *
 	 * @since 3.1
 	 *
 	 * @param string               $cache_path 3rd party assets cache folder path.
 	 * @param WP_Filesystem_Direct $filesystem Filesysten instance.
+	 * @param bool                 $reject_html Whether to reject responses served as text/html.
 	 */
-	public function __construct( $cache_path, $filesystem ) {
-		$this->cache_path = "{$cache_path}3rd-party/";
-		$this->filesystem = $filesystem;
+	public function __construct( $cache_path, $filesystem, bool $reject_html = false ) {
+		$this->cache_path  = "{$cache_path}3rd-party/";
+		$this->filesystem  = $filesystem;
+		$this->reject_html = $reject_html;
 	}
 
 	/**
@@ -56,7 +67,7 @@ class AssetsLocalCache {
 		$cache_key = md5( $url );
 
 		if ( ! isset( $this->url_cache[ $cache_key ] ) ) {
-			$this->url_cache[ $cache_key ] = wp_remote_retrieve_body( wp_remote_get( $url ) );
+			$this->url_cache[ $cache_key ] = $this->get_remote_asset_content( $url, $this->reject_html );
 		}
 
 		return $this->url_cache[ $cache_key ];

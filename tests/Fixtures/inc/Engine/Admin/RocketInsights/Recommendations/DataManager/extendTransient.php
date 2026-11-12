@@ -15,6 +15,7 @@ return [
 				'transient_data' => [
 					'status'          => 'completed',
 					'timestamp'       => 1234567890,
+					'language'  => 'en',
 					'recommendations' => [],
 					'metadata'        => [],
 					'metrics_hash'    => 'abc123',

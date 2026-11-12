@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Abilities;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Abilities\Admin\AdapterNotice;
+use WP_Rocket\Engine\Abilities\Admin\Subscriber as AdminSubscriber;
 use WP_Rocket\Engine\Abilities\Catalog;
 use WP_Rocket\Engine\Abilities\CLI\Command as CLICommand;
 use WP_Rocket\Engine\Abilities\CLI\Subscriber as CLISubscriber;
@@ -28,6 +30,8 @@ class ServiceProvider extends AbstractServiceProvider {
 		'abilities_catalog',
 		'abilities_cli_command',
 		'abilities_cli_subscriber',
+		'abilities_adapter_notice',
+		'abilities_admin_subscriber',
 	];
 
 	/**
@@ -66,5 +70,9 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArgument( 'abilities_catalog' );
 		$this->getContainer()->addShared( 'abilities_cli_subscriber', CLISubscriber::class )
 			->addArgument( 'abilities_cli_command' );
+		$this->getContainer()->addShared( 'abilities_adapter_notice', AdapterNotice::class )
+			->addArgument( 'abilities_context' );
+		$this->getContainer()->addShared( 'abilities_admin_subscriber', AdminSubscriber::class )
+			->addArgument( 'abilities_adapter_notice' );
 	}
 }
