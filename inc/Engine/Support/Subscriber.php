@@ -23,6 +23,10 @@ class Subscriber implements Subscriber_Interface {
 	// The chat library product the column is registered under, and whose Application Passwords are revoked.
 	private const PRODUCT = 'wprocket';
 
+	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
+	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
+	private const PERMISSION_MANAGE_SITE   = 'manage-site';
+
 	/**
 	 * Rest instance
 	 *
@@ -190,6 +194,55 @@ class Subscriber implements Subscriber_Interface {
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
+			],
+			// The ids are bare: the wp-rocket.me token issuer adds the `wprocket:` namespace and drops ids it doesn't allow.
+			'permissions'     => $this->get_permission_rows(),
+		];
+	}
+
+	/**
+	 * Gets the permission rows shown in the support chat's settings.
+	 *
+	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
+	 * from other plugins and core. It only offers Deny, so the library can only store deny for it (locked
+	 * server-side); `disabled` merely greys it out in the UI.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function get_permission_rows(): array {
+		return [
+			[
+				'id'           => self::PERMISSION_MANAGE_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may act on WP Rocket.
+				'label'        => __( 'Manage your WP Rocket plugin', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'allow',
+						'label' => _x( 'Allow', 'support chat permission option', 'rocket' ),
+					],
+					[
+						'value' => 'ask',
+						'label' => _x( 'Ask permission', 'support chat permission option', 'rocket' ),
+					],
+					[
+						'value' => 'deny',
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'allow',
+			],
+			[
+				'id'           => self::PERMISSION_MANAGE_SITE,
+				// translators: Label of the support chat setting deciding whether the assistant may act on the rest of the site.
+				'label'        => __( 'Manage your WordPress site', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'deny',
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'deny',
+				'disabled'     => true,
 			],
 		];
 	}

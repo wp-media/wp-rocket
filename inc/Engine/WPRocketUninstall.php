@@ -259,6 +259,8 @@ class WPRocketUninstall {
 		// Delete the per-user chat reference, network-wide on multisite.
 		delete_metadata( 'user', '', 'wap_client_user_ref_wprocket', '', true );
 
+		$this->delete_support_chat_permissions();
+
 		// Delete all post meta related to WP Rocket.
 		foreach ( $this->post_meta as $post_meta ) {
 			delete_post_meta_by_key( "_rocket_exclude_{$post_meta}" );
@@ -273,6 +275,30 @@ class WPRocketUninstall {
 				continue;
 			}
 			wp_clear_scheduled_hook( $event );
+		}
+	}
+
+	/**
+	 * Deletes every user's support chat permission choices, stored by the WAP chat library.
+	 *
+	 * @return void
+	 */
+	private function delete_support_chat_permissions(): void {
+		global $wpdb;
+
+		// Found by prefix rather than listed, so rows added or removed later are cleaned up too.
+		// Another product's slug starting with "wprocket_" would also match; none exists.
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
+		$keys = $wpdb->get_col(
+			$wpdb->prepare(
+				"SELECT DISTINCT meta_key FROM {$wpdb->usermeta} WHERE meta_key LIKE %s",
+				$wpdb->esc_like( 'wap_client_permission_wprocket_' ) . '%'
+			)
+		);
+
+		// Through delete_metadata() so the user meta cache is cleared too.
+		foreach ( $keys as $key ) {
+			delete_metadata( 'user', 0, $key, '', true );
 		}
 	}
 

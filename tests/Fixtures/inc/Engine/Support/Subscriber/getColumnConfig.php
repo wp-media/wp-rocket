@@ -117,6 +117,52 @@ return [
 			],
 		],
 	],
+	'permission_rows'                => [
+		'config'   => [
+			'consumer_key'   => 'test-consumer-key',
+			'consumer_email' => 'user@example.org',
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [
+				// The WP Rocket row is a real choice, allowed by default.
+				// The whole-site row only offers Deny and is locked, so other plugins' and core abilities never run.
+				'permissions' => [
+					[
+						'id'           => 'manage-plugin',
+						'label'        => 'Manage your WP Rocket plugin',
+						'options'      => [
+							[
+								'value' => 'allow',
+								'label' => 'Allow',
+							],
+							[
+								'value' => 'ask',
+								'label' => 'Ask permission',
+							],
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'allow',
+					],
+					[
+						'id'           => 'manage-site',
+						'label'        => 'Manage your WordPress site',
+						'options'      => [
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'deny',
+						'disabled'     => true,
+					],
+				],
+			],
+		],
+	],
 	'user_cannot_use_assistant'      => [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
