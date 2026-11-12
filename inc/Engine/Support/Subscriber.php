@@ -161,9 +161,11 @@ class Subscriber implements Subscriber_Interface {
 			// Names the launcher (its title, shown as its text by the stylesheet) and the panel for screen readers.
 			'i18n'            => [
 				// translators: Text of the floating button that opens the support chat.
-				'columnLabel'    => __( 'Ask Support', 'rocket' ),
-				'settings'       => __( 'Settings', 'rocket' ),
-				'closeAssistant' => __( 'Close', 'rocket' ),
+				'columnLabel'       => __( 'Ask Support', 'rocket' ),
+				'settings'          => __( 'Settings', 'rocket' ),
+				'closeAssistant'    => __( 'Close', 'rocket' ),
+				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
+				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
