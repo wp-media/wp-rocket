@@ -39,6 +39,8 @@ parameters:
 		- %currentWorkingDirectory%/tests/Fixtures/
 		- %currentWorkingDirectory%/vendor/antecedent/patchwork/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/ewww-image-optimizer/
+		# The chat library's file names don't follow PSR-4, so Composer can't autoload its classes for PHPStan.
+		- %currentWorkingDirectory%/vendor/groupone/wap-client/includes/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/cloudflare/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/amp/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/hummingbird-performance/

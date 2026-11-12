@@ -31,6 +31,7 @@ class TestGetColumnConfig extends TestCase {
 		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
 
 		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
@@ -86,6 +87,12 @@ class TestGetColumnConfig extends TestCase {
 					break;
 				case 'grnd_issuer_url':
 					$this->assertSame( $value, $result['grnd']['issuer_url'], 'grnd.issuer_url' );
+					break;
+				case 'grnd_send_user_ref':
+					$this->assertTrue( $result['grnd']['send_user_ref'], 'grnd.send_user_ref' );
+					break;
+				case 'column_start_on_open':
+					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
 					break;
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );

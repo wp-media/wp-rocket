@@ -20,6 +20,13 @@ class Subscriber implements Subscriber_Interface {
 	// The privacy policy stands in until there is a page explaining the assistant's access to the site.
 	private const SITE_ACCESS_URL = self::PRIVACY_URL;
 
+	// The chat library product the column is registered under, and whose Application Passwords are revoked.
+	private const PRODUCT = 'wprocket';
+
+	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
+	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
+	private const PERMISSION_MANAGE_SITE   = 'manage-site';
+
 	/**
 	 * Rest instance
 	 *
@@ -76,6 +83,7 @@ class Subscriber implements Subscriber_Interface {
 			'admin_notices'                 => 'maybe_display_unavailable_notice',
 			'rocket_ai_assistant_available' => 'filter_assistant_available',
 			'rocket_localize_admin_script'  => 'add_localize_script_data',
+			'rocket_deactivation'           => 'revoke_app_passwords',
 		];
 	}
 
@@ -120,6 +128,19 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Revokes the support chat's Application Passwords, for every user and on every site.
+	 *
+	 * @return void
+	 */
+	public function revoke_app_passwords(): void {
+		if ( ! class_exists( 'WapClient' ) ) {
+			return;
+		}
+
+		\WapClient::revoke_app_passwords( self::PRODUCT );
+	}
+
+	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
 	 * @return array<string, mixed> The column configuration, or an empty array when the support chat is disabled by the filter, the licence data is missing or the assistant is not available.
@@ -152,13 +173,17 @@ class Subscriber implements Subscriber_Interface {
 
 		return [
 			'id'              => 'wp-rocket-support',
-			'product'         => 'wprocket',
+			'product'         => self::PRODUCT,
 			// The wp-rocket stylesheet exists from wap-client 2.5.3 (Gravity 5.52.4). Older clients load an empty one and the launcher disappears.
 			'brand'           => 'wp-rocket',
 			// Names the launcher (its title, shown as its text by the stylesheet) and the panel for screen readers.
 			'i18n'            => [
 				// translators: Text of the floating button that opens the support chat.
-				'columnLabel' => __( 'Ask Support', 'rocket' ),
+				'columnLabel'       => __( 'Ask Support', 'rocket' ),
+				'settings'          => __( 'Settings', 'rocket' ),
+				'closeAssistant'    => __( 'Close', 'rocket' ),
+				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
+				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
@@ -168,19 +193,74 @@ class Subscriber implements Subscriber_Interface {
 				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
 				: self::WAP_SERVER_URL,
 			'grnd'            => [
-				'issuer_url'  => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+				'issuer_url'    => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					? rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					: self::WAP_ISSUER_URL,
-				'license_key' => $license_key . '|' . $email,
+				'license_key'   => $license_key . '|' . $email,
+				// Gives each WordPress user their own chat history instead of one shared per site.
+				'send_user_ref' => true,
 			],
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,
 			'site_access_url' => self::SITE_ACCESS_URL,
 			'screens'         => [ 'settings_page_wprocket' ],
-			'column'          => [ 'side' => 'right' ],
+			// The chat connects only when the column is opened; older libraries silently drop the unknown startOnOpen key.
+			'column'          => [
+				'side'        => 'right',
+				'startOnOpen' => true,
+			],
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
+			],
+			// The ids are bare: the wp-rocket.me token issuer adds the `wprocket:` namespace and drops ids it doesn't allow.
+			'permissions'     => $this->get_permission_rows(),
+		];
+	}
+
+	/**
+	 * Gets the permission rows shown in the support chat's settings.
+	 *
+	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
+	 * from other plugins and core. It only offers Deny, so the library can only store deny for it (locked
+	 * server-side); `disabled` merely greys it out in the UI.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function get_permission_rows(): array {
+		return [
+			[
+				'id'           => self::PERMISSION_MANAGE_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may act on WP Rocket.
+				'label'        => __( 'Manage your WP Rocket plugin', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'allow',
+						'label' => _x( 'Allow', 'support chat permission option', 'rocket' ),
+					],
+					[
+						'value' => 'ask',
+						'label' => _x( 'Ask permission', 'support chat permission option', 'rocket' ),
+					],
+					[
+						'value' => 'deny',
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'allow',
+			],
+			[
+				'id'           => self::PERMISSION_MANAGE_SITE,
+				// translators: Label of the support chat setting deciding whether the assistant may act on the rest of the site.
+				'label'        => __( 'Manage your WordPress site', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'deny',
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'deny',
+				'disabled'     => true,
 			],
 		];
 	}
@@ -207,9 +287,23 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$reason = \GroupOne\WapClient\AppPasswordManager::is_https_missing()
-			? __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' )
-			: __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+		// An older library copy loaded by another plugin may lack unavailable_reason().
+		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) { // @phpstan-ignore-line
+			$reason_code = \GroupOne\WapClient\AppPasswordManager::unavailable_reason();
+		} else {
+			$reason_code = \GroupOne\WapClient\AppPasswordManager::is_https_missing() ? 'https' : 'disabled';
+		}
+
+		switch ( $reason_code ) {
+			case 'multisite':
+				$reason = __( 'The support assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
+				break;
+			case 'https':
+				$reason = __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
+				break;
+			default:
+				$reason = __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+		}
 
 		rocket_notice_html(
 			[

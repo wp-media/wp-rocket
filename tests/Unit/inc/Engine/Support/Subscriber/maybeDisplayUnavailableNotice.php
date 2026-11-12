@@ -38,6 +38,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
 	}
 
 	/**
@@ -47,16 +48,18 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
 		if ( $config['wap_class_exists'] ) {
-			/** @var \Mockery\MockInterface $manager The class is aliased, so PHPStan cannot resolve it. */
-			$manager = Mockery::mock( 'alias:GroupOne\WapClient\AppPasswordManager' );
+			$has_reason = $config['wap_has_reason_method'] ?? true;
+			$stub       = $has_reason
+				? 'GroupOne\WapClient\AppPasswordManagerWithReason'
+				: 'GroupOne\WapClient\AppPasswordManagerLegacy';
+			require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/' . substr( $stub, strrpos( $stub, '\\' ) + 1 ) . '.php';
+			class_alias( $stub, 'GroupOne\WapClient\AppPasswordManager' );
 
-			if ( $config['wap_check_called'] ) {
-				$manager->shouldReceive( 'are_app_passwords_available' )
-						->andReturn( $config['app_passwords_available'] );
-				$manager->shouldReceive( 'is_https_missing' )
-						->andReturn( $config['https_missing'] ?? false );
-			} else {
-				$manager->shouldNotReceive( 'are_app_passwords_available' );
+			$stub::$available     = $config['app_passwords_available'] ?? false;
+			$stub::$https_missing = $config['https_missing'] ?? false;
+
+			if ( $has_reason ) {
+				$stub::$reason = $config['unavailable_reason'] ?? '';
 			}
 
 			if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {

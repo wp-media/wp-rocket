@@ -22,4 +22,8 @@ class TestGetSubscribedEvents extends TestCase {
 		$this->assertSame( 'register_column', $events['admin_init'] );
 		$this->assertSame( 'maybe_display_unavailable_notice', $events['admin_notices'] );
 	}
+
+	public function testShouldRevokeTheAppPasswordsOnDeactivation() {
+		$this->assertSame( 'revoke_app_passwords', Subscriber::get_subscribed_events()['rocket_deactivation'] );
+	}
 }

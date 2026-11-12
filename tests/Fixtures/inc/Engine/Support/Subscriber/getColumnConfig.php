@@ -28,7 +28,13 @@ return [
 			'fields'   => [
 				'product'          => 'wprocket',
 				'brand'            => 'wp-rocket',
-				'i18n'             => [ 'columnLabel' => 'Ask Support' ],
+				'i18n'             => [
+					'columnLabel'       => 'Ask Support',
+					'settings'          => 'Settings',
+					'closeAssistant'    => 'Close',
+					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
+					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+				],
 				'page_context'     => 'support',
 				'capability'       => 'rocket_manage_options',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
@@ -36,7 +42,11 @@ return [
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
 				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
 				'screens'          => [ 'settings_page_wprocket' ],
-				'column'           => [ 'side' => 'right' ],
+				'column'           => [
+					'side'        => 'right',
+					'startOnOpen' => true,
+				],
+				'column_start_on_open' => true,
 				'show_agent_selector' => false,
 			],
 		],
@@ -89,6 +99,18 @@ return [
 			],
 		],
 	],
+	'grnd_sends_user_ref'            => [
+		'config'   => [
+			'consumer_key'   => 'test-consumer-key',
+			'consumer_email' => 'user@example.org',
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [
+				'grnd_send_user_ref' => true,
+			],
+		],
+	],
 	'always_support_agent'           => [
 		'config'   => [
 			'consumer_key'   => 'test-consumer-key',
@@ -98,6 +120,52 @@ return [
 			'is_empty' => false,
 			'fields'   => [
 				'page_context' => 'support',
+			],
+		],
+	],
+	'permission_rows'                => [
+		'config'   => [
+			'consumer_key'   => 'test-consumer-key',
+			'consumer_email' => 'user@example.org',
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [
+				// The WP Rocket row is a real choice, allowed by default.
+				// The whole-site row only offers Deny and is locked, so other plugins' and core abilities never run.
+				'permissions' => [
+					[
+						'id'           => 'manage-plugin',
+						'label'        => 'Manage your WP Rocket plugin',
+						'options'      => [
+							[
+								'value' => 'allow',
+								'label' => 'Allow',
+							],
+							[
+								'value' => 'ask',
+								'label' => 'Ask permission',
+							],
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'allow',
+					],
+					[
+						'id'           => 'manage-site',
+						'label'        => 'Manage your WordPress site',
+						'options'      => [
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'deny',
+						'disabled'     => true,
+					],
+				],
 			],
 		],
 	],
