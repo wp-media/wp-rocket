@@ -195,7 +195,7 @@ class Subscriber implements Subscriber_Interface {
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
 			],
-			// Each user's choices go into the token, and WAP's WP Rocket policy enforces them.
+			// From wap-client 2.7.0 the library sends each user's choices in the token request, and WAP's WP Rocket policy enforces them.
 			// The ids must be ones the wp-rocket.me token issuer allows; any other id ends up as deny.
 			'permissions'     => $this->get_permission_rows(),
 		];
@@ -205,7 +205,8 @@ class Subscriber implements Subscriber_Interface {
 	 * Gets the permission rows shown in the support chat's settings.
 	 *
 	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
-	 * from other plugins and core, and only offers Deny, so it shows locked.
+	 * from other plugins and core. It only offers Deny, so the library can only store deny for it (locked
+	 * server-side); `disabled` merely greys it out in the UI.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
