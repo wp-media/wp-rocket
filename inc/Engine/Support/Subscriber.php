@@ -110,7 +110,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function register_column(): void {
-		if ( ! class_exists( 'WapClient' ) ) {
+		if ( ! class_exists( 'WP_Rocket_WapClient' ) ) {
 			return;
 		}
 
@@ -120,7 +120,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		\WapClient::register_chat_column( $config );
+		\WP_Rocket_WapClient::register_chat_column( $config );
 	}
 
 	/**
@@ -202,7 +202,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_display_unavailable_notice(): void {
-		if ( ! class_exists( '\GroupOne\WapClient\AppPasswordManager' ) || ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! class_exists( '\WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager' ) || ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -212,11 +212,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available() ) {
+		if ( \WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager::are_app_passwords_available() ) {
 			return;
 		}
 
-		$reason = \GroupOne\WapClient\AppPasswordManager::is_https_missing()
+		$reason = \WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager::is_https_missing()
 			? __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' )
 			: __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
 
