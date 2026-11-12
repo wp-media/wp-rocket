@@ -256,6 +256,9 @@ class WPRocketUninstall {
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
+		// Delete the per-user chat reference, network-wide on multisite.
+		delete_metadata( 'user', '', 'wap_client_user_ref_wprocket', '', true );
+
 		// Each user's support chat permission choices, stored by the WAP chat library (ids from Support\Subscriber).
 		foreach ( [ 'manage-plugin', 'manage-site' ] as $permission ) {
 			delete_metadata( 'user', 0, 'wap_client_permission_wprocket_' . $permission, '', true );
