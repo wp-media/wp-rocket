@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -61,12 +62,17 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 				$stub::$reason = $config['unavailable_reason'] ?? '';
 			}
 
-			$this->options->shouldReceive( 'get' )
-						  ->with( 'consumer_key', '' )
-						  ->andReturn( $config['consumer_key'] ?? '' );
-			$this->options->shouldReceive( 'get' )
-						  ->with( 'consumer_email', '' )
-						  ->andReturn( $config['consumer_email'] ?? '' );
+			if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+				// The filter is checked first, so no option is read when the chat is disabled.
+				$this->options->shouldNotReceive( 'get' );
+			} else {
+				$this->options->shouldReceive( 'get' )
+							  ->with( 'consumer_key', '' )
+							  ->andReturn( $config['consumer_key'] ?? '' );
+				$this->options->shouldReceive( 'get' )
+							  ->with( 'consumer_email', '' )
+							  ->andReturn( $config['consumer_email'] ?? '' );
+			}
 		} else {
 			$this->options->shouldNotReceive( 'get' );
 		}
@@ -96,6 +102,10 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 				);
 		} else {
 			Functions\expect( 'rocket_notice_html' )->never();
+		}
+
+		if ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
 		}
 
 		$this->subscriber->maybe_display_unavailable_notice();

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
@@ -39,8 +40,13 @@ class TestGetColumnConfig extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+			// The filter is checked first, so no option is read when the chat is disabled.
+			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+		}
 
 		if ( ! array_key_exists( 'can_use_ai', $config ) ) {
 			// byDefault from set_up applies.
@@ -48,6 +54,10 @@ class TestGetColumnConfig extends TestCase {
 			$this->user->shouldNotReceive( 'can_use_ai' );
 		} else {
 			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		if ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
 		}
 
 		if ( isset( $config['valid_key'] ) ) {
