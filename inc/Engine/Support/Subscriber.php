@@ -216,9 +216,23 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$reason = \GroupOne\WapClient\AppPasswordManager::is_https_missing()
-			? __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' )
-			: __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+		// An older library copy loaded by another plugin may lack unavailable_reason().
+		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) { // @phpstan-ignore-line
+			$reason_code = \GroupOne\WapClient\AppPasswordManager::unavailable_reason();
+		} else {
+			$reason_code = \GroupOne\WapClient\AppPasswordManager::is_https_missing() ? 'https' : 'disabled';
+		}
+
+		switch ( $reason_code ) {
+			case 'multisite':
+				$reason = __( 'The support assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
+				break;
+			case 'https':
+				$reason = __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
+				break;
+			default:
+				$reason = __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+		}
 
 		rocket_notice_html(
 			[
