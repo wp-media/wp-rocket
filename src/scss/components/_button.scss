@@ -167,10 +167,6 @@
     inset-inline-end: 40px !important;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
 
-    &:active {
-        box-shadow: none;
-    }
-
     &::after {
         content: attr(title);
         font-size: 14px;
@@ -180,10 +176,21 @@
         line-height: 14px;
     }
 
-    &:hover,
+    // The base `button:focus` rule removes the shadow, and the launcher keeps focus after the chat closes.
     &:focus {
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    }
+
+    // Grow on hover only: focus stays on the launcher after the chat closes, so it must look like the rest state.
+    &:hover {
         transform: scale(1.125);
         opacity: 1 !important;
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    }
+
+    // Keep last so it wins over the hover and focus shadows.
+    &:active {
+        box-shadow: none;
     }
 
     @media (max-height: 740px) {

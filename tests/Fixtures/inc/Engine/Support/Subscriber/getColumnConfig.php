@@ -28,7 +28,13 @@ return [
 			'fields'   => [
 				'product'          => 'wprocket',
 				'brand'            => 'wp-rocket',
-				'i18n'             => [ 'columnLabel' => 'Ask Support' ],
+				'i18n'             => [
+					'columnLabel'       => 'Ask Support',
+					'settings'          => 'Settings',
+					'closeAssistant'    => 'Close',
+					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
+					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+				],
 				'page_context'     => 'support',
 				'capability'       => 'rocket_manage_options',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
