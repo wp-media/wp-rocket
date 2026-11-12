@@ -181,16 +181,11 @@
         box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
     }
 
-    // Placeholder hover shadow, design to confirm.
+    // Grow on hover only: focus stays on the launcher after the chat closes, so it must look like the rest state.
     &:hover {
         transform: scale(1.125);
         opacity: 1 !important;
-        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
-    }
-
-    &:focus-visible {
-        outline: 2px solid rgb(64, 186, 203);
-        outline-offset: 3px;
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
     }
 
     // Keep last so it wins over the hover and focus shadows.
