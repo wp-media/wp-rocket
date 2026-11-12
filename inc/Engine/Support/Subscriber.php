@@ -23,6 +23,10 @@ class Subscriber implements Subscriber_Interface {
 	// The chat library product the column is registered under, and whose Application Passwords are revoked.
 	private const PRODUCT = 'wprocket';
 
+	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
+	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
+	private const PERMISSION_MANAGE_SITE   = 'manage-site';
+
 	/**
 	 * Rest instance
 	 *
@@ -188,6 +192,55 @@ class Subscriber implements Subscriber_Interface {
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
+			],
+			// Each user's choices go into the token, and WAP's WP Rocket policy enforces them.
+			// The ids must be ones the wp-rocket.me token issuer allows; any other id ends up as deny.
+			'permissions'     => $this->get_permission_rows(),
+		];
+	}
+
+	/**
+	 * Gets the permission rows shown in the support chat's settings.
+	 *
+	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
+	 * from other plugins and core, and only offers Deny, so it shows locked.
+	 *
+	 * @return array<int, array<string, mixed>>
+	 */
+	private function get_permission_rows(): array {
+		return [
+			[
+				'id'           => self::PERMISSION_MANAGE_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may act on WP Rocket.
+				'label'        => __( 'Manage your WP Rocket plugin', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'allow',
+						'label' => __( 'Allow', 'rocket' ),
+					],
+					[
+						'value' => 'ask',
+						'label' => __( 'Ask permission', 'rocket' ),
+					],
+					[
+						'value' => 'deny',
+						'label' => __( 'Deny', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'allow',
+			],
+			[
+				'id'           => self::PERMISSION_MANAGE_SITE,
+				// translators: Label of the support chat setting deciding whether the assistant may act on the rest of the site.
+				'label'        => __( 'Manage your WordPress site', 'rocket' ),
+				'options'      => [
+					[
+						'value' => 'deny',
+						'label' => __( 'Deny', 'rocket' ),
+					],
+				],
+				'defaultValue' => 'deny',
+				'disabled'     => true,
 			],
 		];
 	}

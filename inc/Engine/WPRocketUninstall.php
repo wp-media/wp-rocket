@@ -256,6 +256,11 @@ class WPRocketUninstall {
 		// Delete all user meta related to WP Rocket.
 		delete_metadata( 'user', '', 'rocket_boxes', '', true );
 
+		// Each user's support chat permission choices, stored by the WAP chat library (ids from Support\Subscriber).
+		foreach ( [ 'manage-plugin', 'manage-site' ] as $permission ) {
+			delete_metadata( 'user', 0, 'wap_client_permission_wprocket_' . $permission, '', true );
+		}
+
 		// Delete all post meta related to WP Rocket.
 		foreach ( $this->post_meta as $post_meta ) {
 			delete_post_meta_by_key( "_rocket_exclude_{$post_meta}" );

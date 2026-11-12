@@ -163,6 +163,17 @@ class Test_Uninstall extends FilesystemTestCase {
 			$rocketcdn_table,
 		];
 
+		// Support chat permission choices, stored per user by the WAP chat library.
+		$permission_keys = [ 'wap_client_permission_wprocket_manage-plugin', 'wap_client_permission_wprocket_manage-site' ];
+		$user_ids        = self::factory()->user->create_many( 2 );
+		foreach ( $user_ids as $user_id ) {
+			foreach ( $permission_keys as $key ) {
+				update_user_meta( $user_id, $key, 'deny' );
+			}
+		}
+		// Another product's choice is left alone.
+		update_user_meta( $user_ids[0], 'wap_client_permission_rankmath_manage-plugin', 'allow' );
+
 		$uninstall = new WPRocketUninstall(
 			$cache_path,
 			$config_path,
@@ -182,6 +193,13 @@ class Test_Uninstall extends FilesystemTestCase {
 		foreach ( $this->events as $event ) {
 			$this->assertFalse( wp_next_scheduled( $event ) );
 		}
+
+		foreach ( $user_ids as $user_id ) {
+			foreach ( $permission_keys as $key ) {
+				$this->assertSame( '', get_user_meta( $user_id, $key, true ), $key );
+			}
+		}
+		$this->assertSame( 'allow', get_user_meta( $user_ids[0], 'wap_client_permission_rankmath_manage-plugin', true ) );
 
 		$this->assertEmpty( $this->filesystem->getListing( $cache_path ) );
 		$this->assertFalse( $this->filesystem->exists( $config_path ) );
