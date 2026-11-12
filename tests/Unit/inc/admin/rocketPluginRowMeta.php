@@ -9,6 +9,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * Test class covering ::rocket_plugin_row_meta.
  *
  * @group admin
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
  */
 class Test_RocketPluginRowMeta extends TestCase {
 
