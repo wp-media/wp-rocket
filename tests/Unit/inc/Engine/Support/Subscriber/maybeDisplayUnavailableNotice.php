@@ -37,6 +37,7 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
 	}
 
 	/**

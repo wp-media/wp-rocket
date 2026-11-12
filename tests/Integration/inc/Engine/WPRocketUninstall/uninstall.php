@@ -168,7 +168,12 @@ class Test_Uninstall extends FilesystemTestCase {
 
 		// Support chat permission choices, stored per user by the WAP chat library.
 		// Key format checked against wap-client 2.6.0 (ChatWidget::permission_meta_key()).
-		$permission_keys = [ 'wap_client_permission_wprocket_manage-plugin', 'wap_client_permission_wprocket_manage-site' ];
+		// manage-future isn't a row today: uninstall finds the keys by prefix, so a row added later is cleaned up too.
+		$permission_keys = [
+			'wap_client_permission_wprocket_manage-plugin',
+			'wap_client_permission_wprocket_manage-site',
+			'wap_client_permission_wprocket_manage-future',
+		];
 		$user_ids        = self::factory()->user->create_many( 2 );
 		foreach ( $user_ids as $user_id ) {
 			foreach ( $permission_keys as $key ) {

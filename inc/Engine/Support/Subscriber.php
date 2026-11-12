@@ -195,8 +195,7 @@ class Subscriber implements Subscriber_Interface {
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
 			],
-			// From wap-client 2.7.0 the library sends each user's choices in the token request, and WAP's WP Rocket policy enforces them.
-			// The ids must be ones the wp-rocket.me token issuer allows; any other id ends up as deny.
+			// The ids are bare: the wp-rocket.me token issuer adds the `wprocket:` namespace and drops ids it doesn't allow.
 			'permissions'     => $this->get_permission_rows(),
 		];
 	}
@@ -219,15 +218,15 @@ class Subscriber implements Subscriber_Interface {
 				'options'      => [
 					[
 						'value' => 'allow',
-						'label' => __( 'Allow', 'rocket' ),
+						'label' => _x( 'Allow', 'support chat permission option', 'rocket' ),
 					],
 					[
 						'value' => 'ask',
-						'label' => __( 'Ask permission', 'rocket' ),
+						'label' => _x( 'Ask permission', 'support chat permission option', 'rocket' ),
 					],
 					[
 						'value' => 'deny',
-						'label' => __( 'Deny', 'rocket' ),
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
 					],
 				],
 				'defaultValue' => 'allow',
@@ -239,7 +238,7 @@ class Subscriber implements Subscriber_Interface {
 				'options'      => [
 					[
 						'value' => 'deny',
-						'label' => __( 'Deny', 'rocket' ),
+						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
 					],
 				],
 				'defaultValue' => 'deny',
