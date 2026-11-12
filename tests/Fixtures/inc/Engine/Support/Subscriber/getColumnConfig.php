@@ -118,6 +118,20 @@ return [
 		],
 		'expected' => [ 'is_empty' => true ],
 	],
+	'chat_enabled_by_filter'      => [
+		'config'   => [
+			'consumer_key'     => 'test-consumer-key',
+			'consumer_email'   => 'user@example.org',
+			'filter_available' => true,
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [
+				'product'          => 'wprocket',
+				'grnd_license_key' => 'test-consumer-key|user@example.org',
+			],
+		],
+	],
 	'chat_disabled_by_filter'     => [
 		'config'   => [
 			'consumer_key'     => 'test-consumer-key',

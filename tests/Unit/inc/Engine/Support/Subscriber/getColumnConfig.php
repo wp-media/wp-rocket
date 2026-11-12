@@ -39,8 +39,13 @@ class TestGetColumnConfig extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
-		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+			// The filter is checked first, so no option is read when the chat is disabled.
+			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+		}
 
 		if ( ! array_key_exists( 'can_use_ai', $config ) ) {
 			// byDefault from set_up applies.

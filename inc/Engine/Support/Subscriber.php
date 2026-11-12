@@ -129,6 +129,7 @@ class Subscriber implements Subscriber_Interface {
 		 * Filters whether the WAP support chat is available on the WP Rocket settings screen.
 		 *
 		 * Returning false removes the chat column and the notice about unavailable Application Passwords.
+		 * The "Need Help?" controls are not affected: they are governed by `rocket_ai_assistant_available`.
 		 *
 		 * @param bool $available True to make the support chat available. Default true.
 		 *
