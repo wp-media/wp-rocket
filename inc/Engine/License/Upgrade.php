@@ -6,8 +6,11 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class Upgrade extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Pricing instance
 	 *
@@ -178,6 +181,8 @@ class Upgrade extends Abstract_Render {
 		}
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] );
 
 		wp_send_json_success();
 	}

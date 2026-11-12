@@ -30,6 +30,7 @@ return [
 				'status'          => 'pending',
 				'recommendations' => [],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -50,6 +51,7 @@ return [
 				'recommendations' => [],
 				'error_message'   => 'API connection failed',
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -75,6 +77,7 @@ return [
 				'recommendations' => [],
 				'error'           => 'Recommendations unavailable',
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -111,6 +114,7 @@ return [
 				'status'          => 'completed',
 				'recommendations' => [],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -148,6 +152,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -216,6 +221,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -285,6 +291,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -320,6 +327,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -352,6 +360,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
@@ -422,6 +431,7 @@ return [
 					],
 				],
 				'timestamp'       => time(),
+				'language'        => 'en',
 			],
 		],
 		'expected' => [
