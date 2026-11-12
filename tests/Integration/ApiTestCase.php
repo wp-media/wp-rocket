@@ -41,43 +41,6 @@ abstract class ApiTestCase extends WPMediaRESTfulTestCase {
 		$this->tear_down_http();
 	}
 
-	/**
-	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
-	 *
-	 * @param array $body_params Optional. Array of body parameters.
-	 *
-	 * @return array a response packet.
-	 */
-	protected function requestDisableEndpoint( array $body_params = [] ) {
-		if ( empty( $body_params ) ) {
-			$body_params = [
-				'email' => '',
-				'key'   => '',
-			];
-		}
-
-		return $this->doRestPut( '/wp-rocket/v1/rocketcdn/disable', $body_params );
-	}
-
-	/**
-	 * Runs the RESTful endpoint which invokes WordPress to run in an integrated fashion. Callback will be fired.
-	 *
-	 * @param array $body_params Optional. Array of body parameters.
-	 *
-	 * @return array a response packet.
-	 */
-	protected function requestEnableEndpoint( array $body_params = [] ) {
-		if ( empty( $body_params ) ) {
-			$body_params = [
-				'email' => '',
-				'key'   => '',
-				'url'   => 'https://rocketcdn.me',
-			];
-		}
-
-		return $this->doRestPut( '/wp-rocket/v1/rocketcdn/enable', $body_params );
-	}
-
 	public function set_email() {
 		return TestCredentials::EMAIL;
 	}
