@@ -55,6 +55,12 @@ class Test_GetRecommendations extends TestCase {
 			->with( 'wpr_ri_recommendations' )
 			->andReturn( $config['transient_data'] );
 
+		if ( isset( $config['locale'] ) ) {
+			Functions\expect( 'get_user_locale' )->andReturn( $config['locale'] );
+		} else {
+			Functions\when( 'get_user_locale' )->justReturn( 'en_US' );
+		}
+
 		// Mock delete_transient if invalid structure
 		if ( $config['should_clear_cache'] ) {
 			Functions\expect( 'delete_transient' )

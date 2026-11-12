@@ -9,7 +9,6 @@ use WP_Rocket\Dependencies\Monolog\Logger as Monolog;
 use WP_Rocket\Logger\Logger;
 use WP_Rocket\Tests\Integration\ASTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Frontend\Subscriber::parse_sitemap
@@ -17,7 +16,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group Preload
  */
 class Test_ParseSitemap extends TestCase {
-	use ASTrait, HttpRequestTrait;
+	use ASTrait;
 
 	protected $config;
 
@@ -47,8 +46,6 @@ class Test_ParseSitemap extends TestCase {
 
 		$this->capture_logs();
 
-		$this->setup_http();
-
 		// Install the preload cache table.
 		self::installPreloadCacheTable();
 	}
@@ -56,8 +53,6 @@ class Test_ParseSitemap extends TestCase {
 	public function tear_down() {
 		// Uninstall the preload cache table.
 		self::uninstallPreloadCacheTable();
-
-		$this->tear_down_http();
 
 		$this->release_logs();
 

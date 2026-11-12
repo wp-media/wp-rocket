@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber
 
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber::activation_failed_notice
@@ -13,8 +12,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group RocketCDN
  */
 class Test_ActivationFailedNotice extends TestCase {
-	use HttpRequestTrait;
-
 	/**
 	 * Exact URL of the RocketCDN website-search endpoint for the default test home host.
 	 */
@@ -38,8 +35,6 @@ class Test_ActivationFailedNotice extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -67,8 +62,6 @@ class Test_ActivationFailedNotice extends TestCase {
 		remove_filter( 'pre_transient_rocketcdn_status', [ $this, 'mock_rocketcdn_status_transient' ] );
 
 		$this->restoreWpHook( 'current_screen' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

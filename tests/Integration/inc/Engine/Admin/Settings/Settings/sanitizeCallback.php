@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
 use WP_Error;
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Admin\Settings\Settings::sanitize_callback
@@ -14,14 +13,10 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
-	use HttpRequestTrait;
-
 	const VALID_KEY_ENDPOINT = 'https://api.wp-rocket.me/valid_key.php';
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// The license check triggered by sanitize_callback() and rocket_upgrader() is not
 		// part of the behaviour under test.
@@ -37,8 +32,6 @@ class Test_SanitizeCallback extends AdminTestCase {
 
 	public function tear_down() {
 		$this->restoreWpHook( 'current_screen' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

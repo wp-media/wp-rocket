@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\UserClient;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\TestCredentials;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\API\UserClient::get_user_data
@@ -14,8 +13,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group AdminOnly
  */
 class Test_GetUserData extends TestCase {
-	use HttpRequestTrait;
-
 	private static $client;
 
 	public static function set_up_before_class() {
@@ -28,8 +25,6 @@ class Test_GetUserData extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
@@ -44,8 +39,6 @@ class Test_GetUserData extends TestCase {
 		delete_transient( 'wpr_user_information_timeout' );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\Minify\JS\Subscriber;
 
 use WP_Rocket\Tests\Integration\inc\Engine\Optimization\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\Minify\JS\Subscriber::process
@@ -21,8 +20,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  Minify
  */
 class Test_Process extends TestCase {
-	use HttpRequestTrait;
-
 	private $defer_all_js;
 
 	protected $path_to_test_data = '/inc/Engine/Optimization/Minify/JS/Subscriber/process.php';
@@ -30,16 +27,12 @@ class Test_Process extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		add_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->unregisterAllCallbacksExcept( 'rocket_buffer', 'process', 22 );
 	}
 
 	public function tear_down() {
-		$this->tear_down_http();
-
 		parent::tear_down();
 
 		$this->restoreWpHook( 'rocket_buffer' );
