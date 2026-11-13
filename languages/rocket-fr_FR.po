@@ -6,9 +6,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.24.1-alpha1\n"
+"Project-Id-Version: WP Rocket 3.24.1-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-11-12T10:21:43+00:00\n"
+"POT-Creation-Date: 2026-11-13T07:49:11+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: Romain • WP Rocket <contact@wp-rocket.me>, 2026\n"
 "Language-Team: French (France) (https://app.transifex.com/wp-media/teams/18133/fr_FR/)\n"
@@ -3101,7 +3101,7 @@ msgstr "Ajoutez des fonctionnalités"
 
 #: inc/Engine/Admin/Settings/Page.php:1878
 msgid "One-click Rocket Add-ons"
-msgstr "One-click Rocket Add-ons"
+msgstr "Add-ons Rocket en un clic"
 
 #: inc/Engine/Admin/Settings/Page.php:1879
 msgid ""
@@ -4029,14 +4029,6 @@ msgstr "L'URL fournie n'est pas valide."
 msgid "URL must be on the same domain as the site."
 msgstr "L'URL doit appartenir au même domaine que le site."
 
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:170
-msgid "RocketCDN enabled"
-msgstr "RocketCDN activé"
-
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:193
-msgid "RocketCDN disabled"
-msgstr "RocketCDN désactivé"
-
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
 #: inc/Engine/CDN/RocketCDN/views/cta-big.php:76
@@ -4568,9 +4560,9 @@ msgid ""
 "Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s"
 " for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:"
 msgstr ""
-"Profitez de%1$s pour accélérer davantage de sites web :%2$s obtenir un "
-"%3$s%4$s remise %5$s pour %3$smettre à niveau votre licence vers %6$s!%5$s "
-"Dépêchez-vous, l'offre prend fin dans :"
+"Profitez du %1$s pour accélérer davantage de sites web :%2$s obtenez une "
+"remise de %3$s%4$s %5$s pour %3$smettre à niveau votre licence vers %6$s ! "
+"%5$s Dépêchez-vous, l'offre prend fin dans :"
 
 #: inc/Engine/License/Upgrade.php:287
 msgid "or"
