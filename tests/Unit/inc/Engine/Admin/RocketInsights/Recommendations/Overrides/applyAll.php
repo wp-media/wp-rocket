@@ -17,7 +17,7 @@ use WP_Rocket\Tests\Unit\TestCase;
 class Test_ApplyAll extends TestCase {
 
 	/**
-	 * Test that only the overrides matching a recommendation slug are applied, in registration order.
+	 * Test that only the overrides matching a recommendation slug are applied, in registration order, and the removed ones are dropped.
 	 *
 	 * @dataProvider configTestData
 	 *
@@ -30,6 +30,7 @@ class Test_ApplyAll extends TestCase {
 		foreach ( $config['overrides'] as $slug => $suffix ) {
 			$override = Mockery::mock( Override_Interface::class );
 			$override->shouldReceive( 'get_option_slug' )->andReturn( $slug );
+			$override->shouldReceive( 'should_remove' )->andReturn( in_array( $slug, $config['removed'] ?? [], true ) );
 			$override->shouldReceive( 'apply' )->andReturnUsing(
 				function ( array $recommendation ) use ( $suffix ) {
 					$recommendation['title'] .= $suffix;

@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Abilities\GetReco
 
 use WP_Rocket\Engine\Admin\RocketInsights\Abilities\GetRecommendations;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -27,7 +28,24 @@ class ExecuteTest extends TestCase {
 			->method( 'get_recommendations' )
 			->willReturn( $config['recommendations_data'] );
 
-		$get_recommendations = new GetRecommendations( $mock_data_manager );
+		$removed   = $config['removed'] ?? [];
+		$overrides = $this->createMock( Overrides::class );
+		$overrides
+			->method( 'remove_hidden' )
+			->willReturnCallback(
+				function ( array $recommendations ) use ( $removed ) {
+					return array_values(
+						array_filter(
+							$recommendations,
+							function ( $recommendation ) use ( $removed ) {
+								return ! in_array( $recommendation['option_slug'] ?? '', $removed, true );
+							}
+						)
+					);
+				}
+			);
+
+		$get_recommendations = new GetRecommendations( $mock_data_manager, $overrides );
 
 		$result = $get_recommendations->execute();
 
