@@ -38,6 +38,18 @@ class UsedCSS extends Schema {
 			'sortable'   => true,
 		],
 
+		// URL hash column: md5 of the exact stored url, backs the (url_hash, is_mobile) unique key.
+		[
+			'name'       => 'url_hash',
+			'type'       => 'varchar',
+			'length'     => '32',
+			'default'    => null,
+			'allow_null' => true,
+			'cache_key'  => false,
+			'searchable' => false,
+			'sortable'   => false,
+		],
+
 		// CSS column.
 		[
 			'name'       => 'css',
@@ -108,7 +120,7 @@ class UsedCSS extends Schema {
 			'type'       => 'varchar',
 			'length'     => '255',
 			'default'    => null,
-			'cache_key'  => true,
+			'cache_key'  => false,
 			'searchable' => false,
 			'sortable'   => false,
 		],
