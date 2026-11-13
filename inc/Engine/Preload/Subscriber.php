@@ -110,7 +110,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_domain_changed'                  => 'on_permalink_changed',
 			'wp_rocket_upgrade'                      => [ 'on_update', 16, 2 ],
 			'rocket_saas_complete_job_status'        => 'clean_url',
-			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url', 20 ],
+			'rocket_rucss_after_clearing_usedcss'    => [ 'clean_url_after_usedcss_cleared', 20 ],
 			'rocket_after_automatic_cache_purge'     => 'preload_after_automatic_cache_purge',
 			'after_rocket_clean_post'                => [ 'clean_partial_cache', 10, 3 ],
 			'after_rocket_clean_term'                => [ 'clean_partial_cache', 10, 3 ],
@@ -289,6 +289,21 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 		$this->clear_cache->partial_clean( [ $url ] );
+	}
+
+	/**
+	 * Clean the url and release its lock after its used CSS was cleared.
+	 *
+	 * The used CSS job that owned the lock is deleted with the used CSS, so the lock would never be released otherwise.
+	 *
+	 * @param string $url url.
+	 * @return void
+	 */
+	public function clean_url_after_usedcss_cleared( string $url ) {
+		if ( ! $this->options->get( 'manual_preload', 0 ) ) {
+			return;
+		}
+		$this->clear_cache->partial_clean( [ $url ], true );
 	}
 
 	/**
