@@ -3101,7 +3101,7 @@ msgstr "Ajoutez des fonctionnalités"
 
 #: inc/Engine/Admin/Settings/Page.php:1878
 msgid "One-click Rocket Add-ons"
-msgstr "One-click Rocket Add-ons"
+msgstr "Add-ons Rocket en un clic"
 
 #: inc/Engine/Admin/Settings/Page.php:1879
 msgid ""
