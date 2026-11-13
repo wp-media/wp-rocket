@@ -13,6 +13,11 @@ use WP_Rocket\Engine\Common\Database\Tables\AbstractTable;
 class UsedCSS extends AbstractTable {
 
 	/**
+	 * Name of the (url_hash, is_mobile) unique key.
+	 */
+	const UNIQUE_KEY = 'url_hash_is_mobile';
+
+	/**
 	 * Options row used as the in-flight lock of the url_hash upgrade.
 	 */
 	const UPGRADE_LOCK = 'wpr_rucss_used_css_upgrade_lock';
@@ -336,7 +341,7 @@ class UsedCSS extends AbstractTable {
 			return false;
 		}
 
-		if ( $this->index_exists( 'url_hash_is_mobile' ) ) {
+		if ( $this->index_exists( self::UNIQUE_KEY ) ) {
 			return true;
 		}
 
@@ -365,7 +370,7 @@ class UsedCSS extends AbstractTable {
 	 * @return bool
 	 */
 	private function add_unique_key(): bool {
-		$added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD UNIQUE KEY url_hash_is_mobile (url_hash, is_mobile)" );
+		$added = $this->get_db()->query( "ALTER TABLE {$this->table_name} ADD UNIQUE KEY " . self::UNIQUE_KEY . ' (url_hash, is_mobile)' );
 
 		return $this->is_success( $added );
 	}

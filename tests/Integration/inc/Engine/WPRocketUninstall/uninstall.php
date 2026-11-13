@@ -27,7 +27,6 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wp_rocket_debug'                   => null,
 		'rocket_mixpanel_optin'             => null,
 		'wp_rocket_rucss_used_css_deduped'  => null,
-		'wp_rocket_rucss_used_css_dedupe_progress' => null,
 		'wpr_rucss_used_css_upgrade_lock'   => null,
 	];
 

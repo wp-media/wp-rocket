@@ -4,197 +4,93 @@ $start = 1000;
 
 return [
 	'test_data' => [
-		'shouldReturnDoneWhenAlreadyDone'              => [
+		'shouldReturnDoneWhenAlreadyDone' => [
 			'config'   => [
 				'done'     => true,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 0,
-				'clock'    => [],
-				'calls'    => [],
+				'index'    => true,
+				'clock'    => [  ],
+				'calls'    => [  ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [],
-			],
+			'expected' => 'done',
 		],
-		'shouldReturnLockedWhenLockHeld'               => [
+		'shouldReturnLockedWhenLockHeld' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => true,
-				'progress' => [],
-				'max_id'   => 0,
-				'clock'    => [],
-				'calls'    => [],
+				'index'    => true,
+				'clock'    => [  ],
+				'calls'    => [  ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'locked',
-				'saves'  => [],
-			],
+			'expected' => 'locked',
 		],
-		'shouldCompleteAndFlushGroupWhenSupported'     => [
+		'shouldReturnNotReadyWithoutWorkWhenTheKeyIsMissing' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 250,
-				'clock'    => [ $start, $start ],
-				'calls'    => [
-					[ 0, 250, 100, 0 ],
-				],
+				'index'    => false,
+				'clock'    => [  ],
+				'calls'    => [  ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [
-					[ 'cursor' => 250, 'max' => 250 ],
-				],
+			'expected' => 'not_ready',
+		],
+		'shouldCompleteAndFlushGroupWhenNothingToDelete' => [
+			'config'   => [
+				'done'     => false,
+				'locked'   => false,
+				'index'    => true,
+				'clock'    => [ $start, $start ],
+				'calls'    => [ 0 ],
+				'supports' => true,
 			],
+			'expected' => 'done',
 		],
 		'shouldCompleteWithoutFlushWhenGroupFlushUnsupported' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 250,
+				'index'    => true,
 				'clock'    => [ $start, $start ],
-				'calls'    => [
-					[ 0, 250, 100, 0 ],
-				],
+				'calls'    => [ 0 ],
 				'supports' => false,
 			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [
-					[ 'cursor' => 250, 'max' => 250 ],
-				],
-			],
+			'expected' => 'done',
 		],
-		'shouldCompleteWithoutQueryWhenTableIsEmpty'   => [
+		'shouldCompleteAfterSeveralPasses' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 0,
-				'clock'    => [ $start ],
-				'calls'    => [],
+				'index'    => true,
+				'clock'    => [ $start, $start, $start, $start ],
+				'calls'    => [ 100, 100, 3, 0 ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [],
-			],
+			'expected' => 'done',
 		],
-		'shouldScanSameRangeAgainAfterFullBatch'       => [
+		'shouldReturnPartialWhenBudgetIsSpent' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 250,
-				'clock'    => [ $start, $start, $start ],
-				'calls'    => [
-					[ 0, 250, 100, 100 ],
-					[ 0, 250, 100, 3 ],
-				],
-				'supports' => true,
-			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [
-					[ 'cursor' => 250, 'max' => 250 ],
-				],
-			],
-		],
-		'shouldWalkRangeChunkByChunk'                  => [
-			'config'   => [
-				'done'     => false,
-				'locked'   => false,
-				'progress' => [ 'cursor' => 5000, 'max' => 12000 ],
-				'max_id'   => 0,
-				'clock'    => [ $start, $start, $start ],
-				'calls'    => [
-					[ 5000, 10000, 100, 0 ],
-					[ 10000, 12000, 100, 0 ],
-				],
-				'supports' => true,
-			],
-			'expected' => [
-				'result' => 'done',
-				'saves'  => [
-					[ 'cursor' => 10000, 'max' => 12000 ],
-					[ 'cursor' => 12000, 'max' => 12000 ],
-				],
-			],
-		],
-		'shouldStopAndKeepProgressWhenBudgetIsSpent'   => [
-			'config'   => [
-				'done'     => false,
-				'locked'   => false,
-				'progress' => [ 'cursor' => 5000, 'max' => 12000 ],
-				'max_id'   => 0,
+				'index'    => true,
 				'clock'    => [ $start, $start + 21 ],
-				'calls'    => [
-					[ 5000, 10000, 100, 0 ],
-				],
+				'calls'    => [ 100 ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'partial',
-				'saves'  => [
-					[ 'cursor' => 10000, 'max' => 12000 ],
-				],
-			],
+			'expected' => 'partial',
 		],
-		'shouldStopWithoutSavingWhenBudgetIsSpentOnFullBatch' => [
+		'shouldReturnErrorWithoutFlaggingDoneOnDatabaseError' => [
 			'config'   => [
 				'done'     => false,
 				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 12000,
-				'clock'    => [ $start, $start + 21 ],
-				'calls'    => [
-					[ 0, 5000, 100, 100 ],
-				],
+				'index'    => true,
+				'clock'    => [ $start, $start ],
+				'calls'    => [ 100, false ],
 				'supports' => true,
 			],
-			'expected' => [
-				'result' => 'partial',
-				'saves'  => [],
-			],
-		],
-		'shouldReturnErrorWithoutFlaggingDoneWhenMaxIdCannotBeRead' => [
-			'config'   => [
-				'done'     => false,
-				'locked'   => false,
-				'progress' => [],
-				'max_id'   => false,
-				'clock'    => [ $start ],
-				'calls'    => [],
-				'supports' => true,
-			],
-			'expected' => [
-				'result' => 'error',
-				'saves'  => [],
-			],
-		],
-		'shouldReturnErrorWhenQueryFails'              => [
-			'config'   => [
-				'done'     => false,
-				'locked'   => false,
-				'progress' => [],
-				'max_id'   => 250,
-				'clock'    => [ $start ],
-				'calls'    => [
-					[ 0, 250, 100, false ],
-				],
-				'supports' => true,
-			],
-			'expected' => [
-				'result' => 'error',
-				'saves'  => [],
-			],
+			'expected' => 'error',
 		],
 	],
 ];

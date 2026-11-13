@@ -50,7 +50,6 @@ class WPRocketUninstall {
 		'rocket_cdn_website_search_fetch_lock',
 		'rocket_cdn_retry_pro_detection_attempts',
 		'wp_rocket_rucss_used_css_deduped',
-		'wp_rocket_rucss_used_css_dedupe_progress',
 		'wpr_rucss_used_css_upgrade_lock',
 	];
 

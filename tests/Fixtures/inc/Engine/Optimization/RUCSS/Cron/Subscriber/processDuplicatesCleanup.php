@@ -10,6 +10,10 @@ return [
 			'config'   => [ 'result' => 'error' ],
 			'expected' => 3600,
 		],
+		'shouldRescheduleInAnHourWhenNotReady' => [
+			'config'   => [ 'result' => 'not_ready' ],
+			'expected' => 3600,
+		],
 		'shouldNotRescheduleWhenLocked'        => [
 			'config'   => [ 'result' => 'locked' ],
 			'expected' => false,

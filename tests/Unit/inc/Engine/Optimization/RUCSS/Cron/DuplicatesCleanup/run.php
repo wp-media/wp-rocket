@@ -17,100 +17,44 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group RUCSS
  */
 class Test_Run extends TestCase {
-	private $query;
-	private $options_api;
-	private $clock;
-	private $cleanup;
-
-	protected function setUp(): void {
-		parent::setUp();
-
-		$this->query       = $this->createMock( UsedCSS_Query::class );
-		$this->options_api = Mockery::mock( Options::class );
-		$this->clock       = Mockery::mock( ClockInterface::class );
-		$this->cleanup     = new DuplicatesCleanup( $this->query, $this->options_api, $this->clock );
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->options_api->shouldReceive( 'get' )->with( UsedCSS_Table::DEDUPED_OPTION, false )->andReturn( $config['done'] );
+		$query       = $this->createMock( UsedCSS_Query::class );
+		$table       = $this->createMock( UsedCSS_Table::class );
+		$options_api = Mockery::mock( Options::class );
+		$clock       = Mockery::mock( ClockInterface::class );
+		$cleanup     = new DuplicatesCleanup( $query, $table, $options_api, $clock );
 
-		if ( $config['done'] ) {
-			$this->expectDeleteCalls( [] );
-			Functions\expect( 'get_transient' )->never();
+		$completes = 'done' === $expected && ! $config['done'];
+		$runs      = ! $config['done'] && ! $config['locked'] && $config['index'];
 
-			$this->assertSame( $expected['result'], $this->cleanup->run() );
-			return;
+		$options_api->shouldReceive( 'get' )->with( UsedCSS_Table::DEDUPED_OPTION, false )->andReturn( $config['done'] );
+
+		Functions\expect( 'get_transient' )->times( $config['done'] ? 0 : 1 )->with( DuplicatesCleanup::LOCK )->andReturn( $config['locked'] );
+		Functions\expect( 'set_transient' )->times( (int) $runs )->with( DuplicatesCleanup::LOCK, Mockery::type( 'int' ), 300 );
+		Functions\expect( 'delete_transient' )->times( (int) $runs )->with( DuplicatesCleanup::LOCK );
+
+		$table->expects( $this->exactly( $config['done'] || $config['locked'] ? 0 : 1 ) )
+			->method( 'index_exists' )
+			->with( UsedCSS_Table::UNIQUE_KEY )
+			->willReturn( $config['index'] );
+
+		$delete = $query->expects( $this->exactly( count( $config['calls'] ) ) )->method( 'delete_older_duplicates' );
+
+		if ( ! empty( $config['calls'] ) ) {
+			$delete->with( DuplicatesCleanup::BATCH )->willReturnOnConsecutiveCalls( ...$config['calls'] );
+			$clock->shouldReceive( 'current_time' )->with( 'timestamp', true )->andReturn( ...$config['clock'] );
 		}
 
-		Functions\expect( 'get_transient' )->once()->with( DuplicatesCleanup::LOCK )->andReturn( $config['locked'] );
+		$options_api->shouldReceive( 'set' )->times( (int) $completes )->with( UsedCSS_Table::DEDUPED_OPTION, 1 );
 
-		if ( $config['locked'] ) {
-			$this->expectDeleteCalls( [] );
-			Functions\expect( 'set_transient' )->never();
-
-			$this->assertSame( $expected['result'], $this->cleanup->run() );
-			return;
-		}
-
-		Functions\expect( 'set_transient' )->once()->with( DuplicatesCleanup::LOCK, Mockery::type( 'int' ), 300 );
-		Functions\expect( 'delete_transient' )->once()->with( DuplicatesCleanup::LOCK );
-
-		$this->options_api->shouldReceive( 'get' )->with( DuplicatesCleanup::PROGRESS_OPTION, [] )->andReturn( $config['progress'] );
-
-		if ( empty( $config['progress'] ) ) {
-			$this->query->expects( $this->once() )->method( 'get_max_id' )->willReturn( $config['max_id'] );
-			Functions\expect( 'add_option' )
-				->times( false === $config['max_id'] ? 0 : 1 )
-				->with( 'wp_rocket_' . DuplicatesCleanup::PROGRESS_OPTION, [ 'cursor' => 0, 'max' => $config['max_id'] ], '', false );
-		} else {
-			$this->query->expects( $this->never() )->method( 'get_max_id' );
-		}
-
-		$this->clock->shouldReceive( 'current_time' )->with( 'timestamp', true )->andReturn( ...$config['clock'] );
-
-		$this->expectDeleteCalls( $config['calls'] );
-
-		foreach ( $expected['saves'] as $save ) {
-			$this->options_api->shouldReceive( 'set' )->once()->with( DuplicatesCleanup::PROGRESS_OPTION, $save );
-		}
-
-		if ( 'done' === $expected['result'] ) {
-			$this->options_api->shouldReceive( 'set' )->once()->with( UsedCSS_Table::DEDUPED_OPTION, 1 );
-			$this->options_api->shouldReceive( 'delete' )->once()->with( DuplicatesCleanup::PROGRESS_OPTION );
-
+		if ( $completes ) {
 			Functions\when( 'wp_cache_supports' )->justReturn( $config['supports'] );
-
-			if ( $config['supports'] ) {
-				Functions\expect( 'wp_cache_flush_group' )->once()->with( 'wpr_used_css-by-job_id' );
-			} else {
-				Functions\expect( 'wp_cache_flush_group' )->never();
-			}
-		} else {
-			$this->options_api->shouldReceive( 'set' )->with( UsedCSS_Table::DEDUPED_OPTION, 1 )->never();
+			Functions\expect( 'wp_cache_flush_group' )->times( (int) $config['supports'] )->with( 'wpr_used_css-by-job_id' );
 		}
 
-		$this->assertSame( $expected['result'], $this->cleanup->run() );
-	}
-
-	/**
-	 * Expects the given delete_older_duplicates() calls, as [ after_id, up_to_id, limit, result ] lists.
-	 *
-	 * @param array $calls Expected calls.
-	 *
-	 * @return void
-	 */
-	private function expectDeleteCalls( array $calls ) {
-		$method = $this->query->expects( $this->exactly( count( $calls ) ) )->method( 'delete_older_duplicates' );
-
-		if ( empty( $calls ) ) {
-			return;
-		}
-
-		$method->withConsecutive( ...array_map( function ( $call ) {
-			return array_slice( $call, 0, 3 );
-		}, $calls ) )->willReturnOnConsecutiveCalls( ...array_column( $calls, 3 ) );
+		$this->assertSame( $expected, $cleanup->run() );
 	}
 }

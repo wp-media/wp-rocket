@@ -95,7 +95,7 @@ class Subscriber implements Subscriber_Interface {
 
 		if ( 'partial' === $result ) {
 			wp_schedule_single_event( time() + MINUTE_IN_SECONDS, DuplicatesCleanup::HOOK );
-		} elseif ( 'error' === $result ) {
+		} elseif ( in_array( $result, [ 'error', 'not_ready' ], true ) ) {
 			wp_schedule_single_event( time() + HOUR_IN_SECONDS, DuplicatesCleanup::HOOK );
 		}
 	}

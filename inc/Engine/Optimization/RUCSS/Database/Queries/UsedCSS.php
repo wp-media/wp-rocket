@@ -142,39 +142,16 @@ class UsedCSS extends AbstractQuery {
 	}
 
 	/**
-	 * Get the highest row ID.
+	 * Delete the oldest row of each (url, is_mobile) group having several rows.
 	 *
-	 * @return int|false The highest ID, 0 for an empty table, false on a database error.
+	 * Repeated calls leave only the newest row of each group, the one url-keyed writes target.
+	 * Groups are formed with the column collation, like get_row() matches urls.
+	 *
+	 * @param int $limit Maximum number of groups handled, so of rows deleted.
+	 *
+	 * @return int|false Number of rows found (a full batch means more may remain), false on a database error or when no row of a non-empty batch could be deleted.
 	 */
-	public function get_max_id() {
-		$db = $this->get_db();
-
-		if ( ! $db ) {
-			return false;
-		}
-
-		$max_id = $db->get_var( "SELECT MAX(id) FROM `{$db->{$this->table_name}}`" );
-
-		if ( ! empty( $db->last_error ) ) {
-			return false;
-		}
-
-		return (int) $max_id;
-	}
-
-	/**
-	 * Delete the rows of an ID range having a newer row with the same url and is_mobile.
-	 *
-	 * The newest row of each group is kept: it is the one url-keyed writes target. Urls are
-	 * compared with the column collation, like get_row() does.
-	 *
-	 * @param int $after_id Exclusive lower bound of the ID range.
-	 * @param int $up_to_id Inclusive upper bound of the ID range.
-	 * @param int $limit    Maximum number of rows to delete.
-	 *
-	 * @return int|false Number of rows found in the range (so a full batch means more may remain), false on a database error or when no row of a non-empty batch could be deleted.
-	 */
-	public function delete_older_duplicates( int $after_id, int $up_to_id, int $limit ) {
+	public function delete_older_duplicates( int $limit ) {
 		$db = $this->get_db();
 
 		if ( ! $db ) {
@@ -185,9 +162,7 @@ class UsedCSS extends AbstractQuery {
 
 		$ids = $db->get_col(
 			$db->prepare(
-				"SELECT DISTINCT t1.id FROM `{$table}` t1 INNER JOIN `{$table}` t2 ON t2.url = t1.url AND t2.is_mobile = t1.is_mobile AND t2.id > t1.id WHERE t1.id > %d AND t1.id <= %d LIMIT %d",
-				$after_id,
-				$up_to_id,
+				"SELECT MIN(id) FROM `{$table}` GROUP BY url, is_mobile HAVING COUNT(*) > 1 LIMIT %d",
 				$limit
 			)
 		);

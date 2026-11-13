@@ -153,6 +153,7 @@ class ServiceProvider extends AbstractServiceProvider {
 			->addArguments(
 				[
 					'rucss_used_css_query',
+					'rucss_usedcss_table',
 					'options_api',
 					'wpr_clock',
 				]
