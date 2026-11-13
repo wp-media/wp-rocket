@@ -28,17 +28,16 @@ function rocket_settings_action_links( $actions ) {
 add_filter( 'plugin_action_links_' . plugin_basename( WP_ROCKET_FILE ), 'rocket_settings_action_links' );
 
 /**
- * Add a link "Renew your licence" when you can't do it automatically (expired licence but new version available)
+ * Add a changelog link and a renewal link when an expired licence prevents automatic updates.
  *
  * @since 2.2
  *
  * @param array  $plugin_meta An array of the plugin's metadata, including the version, author, author URI, and plugin URI.
  * @param string $plugin_file Path to the plugin file, relative to the plugins directory.
- * @return array Updated meta content if license is expired
+ * @return array Plugin metadata with changelog and applicable licence renewal links.
  */
 function rocket_plugin_row_meta( $plugin_meta, $plugin_file ) {
 	if ( 'wp-rocket/wp-rocket.php' === $plugin_file ) {
-
 		$update_plugins = get_site_transient( 'update_plugins' );
 
 		if ( false !== $update_plugins && isset( $update_plugins->response[ $plugin_file ] ) && empty( $update_plugins->response[ $plugin_file ]->package ) ) {
@@ -47,6 +46,12 @@ function rocket_plugin_row_meta( $plugin_meta, $plugin_file ) {
 
 			$plugin_meta = array_merge( (array) $link, $plugin_meta );
 		}
+
+		$plugin_meta[] = sprintf(
+			'<a href="%1$s" target="_blank" rel="noopener noreferrer">%2$s</a>',
+			esc_url( 'https://wp-rocket.me/changelog/' ),
+			esc_html__( 'Changelog', 'rocket' )
+		);
 	}
 
 	return $plugin_meta;
