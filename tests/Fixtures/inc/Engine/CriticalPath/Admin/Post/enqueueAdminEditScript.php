@@ -106,6 +106,43 @@ return [
 		'expected' => false,
 	],
 
+	'testShouldNotEnqueueScriptWhenLCADisabled' => [
+		'config'   => [
+			'page'               => 'post.php',
+			'pagenow'            => 'post.php',
+			'options'            => [
+				'async_css'        => 0,
+				'async_css_mobile' => 0,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => false,
+	],
+
+	'testShouldNotEnqueueScriptWhenRUCSSEnabled' => [
+		'config'   => [
+			'page'               => 'post.php',
+			'pagenow'            => 'post.php',
+			'options'            => [
+				'async_css'         => 1,
+				'async_css_mobile'  => 1,
+				'remove_unused_css' => 1,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => false,
+	],
+
 	'testShouldEnqueueScript' => [
 		'config'   => [
 			'page'               => 'edit.php',
