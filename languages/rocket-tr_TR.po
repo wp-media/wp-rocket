@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.24.1-alpha1\n"
+"Project-Id-Version: WP Rocket 3.24.1-beta1\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
-"POT-Creation-Date: 2026-11-12T10:21:43+00:00\n"
+"POT-Creation-Date: 2026-11-13T07:49:11+00:00\n"
 "PO-Revision-Date: 2019-08-26 15:14+0000\n"
 "Last-Translator: BouRock, 2026\n"
 "Language-Team: Turkish (Turkey) (https://app.transifex.com/wp-media/teams/18133/tr_TR/)\n"
@@ -3981,14 +3981,6 @@ msgstr "Geçersiz URL sağlandı."
 #: inc/Engine/CDN/RocketCDN/Rest.php:735
 msgid "URL must be on the same domain as the site."
 msgstr "URL, siteyle aynı etki alanında olmak zorundadır."
-
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:170
-msgid "RocketCDN enabled"
-msgstr "RocketCDN etkinleştirildi"
-
-#: inc/Engine/CDN/RocketCDN/RESTSubscriber.php:193
-msgid "RocketCDN disabled"
-msgstr "RocketCDN etkisizleştirildi"
 
 #. Translators: %s = date formatted using date_i18n() and get_option(
 #. 'date_format' ).
