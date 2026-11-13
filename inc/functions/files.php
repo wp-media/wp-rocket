@@ -370,7 +370,7 @@ function rocket_clean_minify( $extensions = [ 'js', 'css' ] ) {
 	}
 
 	$filesystem     = rocket_direct_filesystem();
-	$min_path_regex = str_replace( '/', '\/', $min_path );
+	$min_path_regex = preg_quote( $min_path, '/' );
 
 	foreach ( $extensions as $ext ) {
 		/**
@@ -449,7 +449,7 @@ function rocket_clean_cache_busting( $extensions = [ 'js', 'css' ] ) {
 	}
 
 	$filesystem         = rocket_direct_filesystem();
-	$busting_path_regex = str_replace( '/', '\/', $cache_busting_path );
+	$busting_path_regex = preg_quote( $cache_busting_path, '/' );
 
 	if ( ! rocket_direct_filesystem()->is_dir( $cache_busting_path ) ) {
 		rocket_mkdir_p( $cache_busting_path );
@@ -1460,8 +1460,8 @@ function _rocket_get_cache_dirs( $url_host, $cache_path = '', $hard_reset = fals
 
 	$regex = sprintf(
 		'/%1$s%2$s(.*)/i',
-		_rocket_normalize_path( $cache_path, true ),
-		$url_host
+		preg_quote( _rocket_normalize_path( $cache_path ), '/' ),
+		preg_quote( $url_host, '/' )
 	);
 
 	try {
