@@ -619,6 +619,11 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				$entry = $dir . $parsed_url['path'];
 
+				// Query string pages are cached in their own directory, where the question mark is replaced with a hash.
+				if ( ! empty( $parsed_url['query'] ) ) {
+					$entry .= '#' . $parsed_url['query'];
+				}
+
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
 					$regex_part    = basename( $entry );

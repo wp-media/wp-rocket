@@ -152,5 +152,37 @@ return [
 				],
 			],
 		],
+		'shouldOnlyDeleteQueryStringDirForHomeUrlWithQuery'     => [
+			'urls'     => [
+				'http://example.org/?p=245',
+			],
+			'configs' => [
+				'post_id' => 0,
+				'create'  => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#p=245/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#p=245' => [],
+				],
+			],
+		],
+		'shouldOnlyDeleteQueryStringDirForLanguageUrlWithQuery' => [
+			'urls'     => [
+				'http://example.org/de/?p=245/',
+			],
+			'configs' => [
+				'post_id' => 0,
+				'create'  => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/#p=245/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/#p=245/' => [],
+				],
+			],
+		],
 	],
 ];

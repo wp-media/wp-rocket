@@ -52,6 +52,16 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 			$GLOBALS['debug_fs'] = true;
 		}
 
+		foreach ( $config['create'] ?? [] as $file ) {
+			$dir = dirname( $file );
+
+			if ( ! $this->filesystem->is_dir( $dir ) ) {
+				$this->filesystem->mkdir( $dir );
+			}
+
+			$this->filesystem->put_contents( $file, '' );
+		}
+
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
