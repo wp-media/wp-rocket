@@ -115,6 +115,17 @@ return [
 			'original' => $original,
 			'expected' => $updated . '<!-- Rocket has webp -->',
 		],
+		'shouldUseWebpForRelativeUrl' => [
+			'config' => [
+				'webp' => 1,
+				'filter_disable' => false,
+				'headers' => '*/webp',
+				'filter_ext' => [ 'jpg', 'jpeg', 'jpe', 'png', 'gif' ],
+				'filter_attr' => [ 'href', 'src', 'srcset', 'data-large_image', 'data-thumb' ],
+			],
+			'original' => '<img src="/wp-content/uploads/2019/09/one-image.png" alt="" />',
+			'expected' => '<img src="/wp-content/uploads/2019/09/one-image.webp" alt="" /><!-- Rocket has webp -->',
+		],
 		'shouldNotUseWebpNotSmallerThanOriginal' => [
 			'config' => [
 				'webp' => 1,
