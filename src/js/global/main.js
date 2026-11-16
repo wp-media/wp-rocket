@@ -100,7 +100,7 @@ $(document).ready(function(){
 	// Track "Need help?" links (existing help buttons)
 	$(document).on('click', '.wpr-infoAction--help:not([data-beacon-id])', function() {
 		if (typeof window.wprTrackHelpButton === 'function') {
-			window.wprTrackHelpButton('Need Help', 'General');
+			window.wprTrackHelpButton('Need Help', $(this).data('wpr_track_context') || 'General');
 		}
 	});
 

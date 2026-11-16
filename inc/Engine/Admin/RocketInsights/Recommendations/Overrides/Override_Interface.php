@@ -28,4 +28,12 @@ interface Override_Interface {
 	 * @return array
 	 */
 	public function apply( array $recommendation ): array;
+
+	/**
+	 * Checks whether the recommendation must be removed from the list for this site.
+	 *
+	 * @param array $recommendation Formatted recommendation.
+	 * @return bool
+	 */
+	public function should_remove( array $recommendation ): bool;
 }

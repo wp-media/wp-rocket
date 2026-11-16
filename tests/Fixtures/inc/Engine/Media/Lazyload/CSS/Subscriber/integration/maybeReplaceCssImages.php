@@ -5,6 +5,10 @@ $html = file_get_contents(__DIR__ . '/HTML/html.php');
 $html_filtered = file_get_contents(__DIR__ . '/HTML/html_output.php');
 $html_excluded = file_get_contents(__DIR__ . '/HTML/html_excluded.php');
 
+$html_not_found = '<html><head><title>Sample Page</title><link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/not_found.css"></head><body></body></html>';
+
+$html_not_found_output = '<html><head><title>Sample Page</title><link rel="stylesheet" href="https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/not_found.css"><style id="wpr-lazyload-bg-container"></style><style id="wpr-lazyload-bg-exclusion"></style><noscript><style id="wpr-lazyload-bg-nostyle"></style></noscript><script type="application/javascript">const rocket_pairs = []; const rocket_excluded_pairs = [];</script></head><body></body></html>';
+
 return [
 	'vfs_dir' => 'wp-content/',
 	'structure' => [
@@ -130,6 +134,38 @@ return [
 						'exists' => false,
 					],
 					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css.json' => [
+						'exists' => false,
+					],
+				]
+			]
+		],
+		'externalCssReturning404ShouldBeIgnored' => [
+			'config' => [
+				'html' => $html_not_found,
+				'current_time' => 17895120,
+				'lazyload_css_bg_img' => true,
+				'external' => [
+					'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/not_found.css',
+					'response' => [
+						'body' => '<!DOCTYPE html><html><head><style>body{background:url(https://new.rocketlabsqa.ovh/error.png)}</style></head></html>',
+						'headers' => [ 'content-type' => 'text/html; charset=UTF-8' ],
+						'response' => [ 'code' => 404 ],
+					],
+				],
+				'no_background' => [
+					'url' => 'https://new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/no_background.css',
+					'response' => [ 'body' => file_get_contents(__DIR__ . '/CSS/no_background.css'), 'response' => ['code' => 200 ] ],
+				],
+				'excluded' => [],
+				'hash_mapping' => [],
+			],
+			'expected' => [
+				'output' => $html_not_found_output,
+				'files' => [
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/not_found.css' => [
+						'exists' => false,
+					],
+					'/wp-content/cache/background-css/1/new.rocketlabsqa.ovh/wp-content/rocket-test-data/styles/not_found.css.json' => [
 						'exists' => false,
 					],
 				]

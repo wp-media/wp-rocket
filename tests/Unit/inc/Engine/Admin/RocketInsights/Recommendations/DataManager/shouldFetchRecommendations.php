@@ -50,6 +50,8 @@ class Test_ShouldFetchRecommendations extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		Functions\when( 'get_user_locale' )->justReturn( 'en_US' );
+
 		$api_client         = Mockery::mock( APIClient::class );
 		$this->options      = Mockery::mock( Options_Data::class );
 		$this->global_score = Mockery::mock( GlobalScore::class );

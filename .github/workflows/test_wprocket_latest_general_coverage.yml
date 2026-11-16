@@ -71,9 +71,10 @@ jobs:
     - name: Code Coverage Report
       run: composer report-code-coverage
 
-    # Secrets aren't available to pull requests from forks.
+    # Secrets aren't available to pull requests from forks, and Dependabot-triggered
+    # runs only get Dependabot secrets, so the Codacy token is empty in both cases.
     - name: Run codacy-coverage-reporter
-      if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+      if: github.actor != 'dependabot[bot]' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
       uses: codacy/codacy-coverage-reporter-action@89d6c85cfafaec52c72b6c5e8b2878d33104c699 # v1.3.0
       with:
         project-token: ${{ secrets.CODACY_PROJECT_TOKEN }}

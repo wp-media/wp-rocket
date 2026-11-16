@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subsc
 
 use WP_Rocket\Engine\Optimization\DynamicLists\AbstractAPIClient;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\DynamicLists\Subscriber::update_lists
@@ -12,8 +11,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  DynamicLists
  */
 class Test_UpdateLists extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	private $original_user;
 	private static $user;
 	protected $path_to_test_data = '/inc/Engine/Optimization/DynamicLists/Subscriber/updateLists.php';
@@ -29,8 +26,6 @@ class Test_UpdateLists extends FilesystemTestCase {
 		delete_transient( 'wpr_dynamic_lists' );
 		parent::set_up();
 
-		$this->setup_http();
-
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
@@ -38,8 +33,6 @@ class Test_UpdateLists extends FilesystemTestCase {
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 
 		delete_transient( 'wpr_dynamic_lists' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

@@ -2,9 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\AssetsLocalCache;
 
+use WP_Error;
 use WP_Rocket\Engine\Optimization\AssetsLocalCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\AssetsLocalCache::get_content
@@ -12,28 +12,21 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  AssetsLocalCache
  */
 class Test_GetContent extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Optimization/AssetsLocalCache/getContent.php';
-
-	public function set_up() {
-		parent::set_up();
-
-		$this->setup_http();
-	}
 
 	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldSaveLocalContent( $config, $expected ) {
-		$local_cache = new AssetsLocalCache( $this->filesystem->getUrl( 'wp-content/cache/min/' ), $this->filesystem );
+		$local_cache = new AssetsLocalCache(
+			$this->filesystem->getUrl( 'wp-content/cache/min/' ),
+			$this->filesystem,
+			$config['reject_html']
+		);
 
 		// A content already cached locally must not be fetched again.
 		$this->config['http'] = $config['found'] ? [] : [
-			$config['url'] => [
-				'body'     => $expected,
-				'response' => [ 'code' => 200, 'message' => 'OK' ],
-			],
+			$config['url'] => $this->get_mocked_response( $config['response'] ),
 		];
 
 		$this->assertSame(
@@ -41,12 +34,18 @@ class Test_GetContent extends FilesystemTestCase {
 			$this->format_the_html( $local_cache->get_content( $config['url'] ) )
 		);
 
-		$this->assertTrue( $this->filesystem->exists( $config['file'] ) );
+		$this->assertSame( $config['file_written'], $this->filesystem->exists( $config['file'] ) );
 	}
 
-	public function tear_down() {
-		$this->tear_down_http();
+	private function get_mocked_response( array $response ) {
+		if ( '' === $response['code'] ) {
+			return new WP_Error( 'http_request_failed', 'Request failed' );
+		}
 
-		parent::tear_down();
+		return [
+			'body'     => $response['body'],
+			'headers'  => $response['headers'],
+			'response' => [ 'code' => $response['code'] ],
+		];
 	}
 }

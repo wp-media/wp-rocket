@@ -63,4 +63,24 @@ class Test_DismissPromoBanner extends AjaxTestCase {
 
 		$this->assertTrue( (bool) get_transient( 'rocket_promo_banner_' . self::$user_id ) );
 	}
+
+	public function testShouldFireDismissedHookOnce() {
+		$banners = [];
+		add_action(
+			'rocket_mixpanel_track_event',
+			function ( $event, $data ) use ( &$banners ) {
+				$banners[] = [ $event, $data ];
+			},
+			10,
+			2
+		);
+
+		$_POST['nonce']  = wp_create_nonce( 'rocket-ajax' );
+		$_POST['action'] = 'rocket_dismiss_promo';
+
+		$response = $this->callAjaxAction();
+
+		$this->assertTrue( $response->success );
+		$this->assertSame( [ [ 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] ] ], $banners );
+	}
 }

@@ -59,6 +59,8 @@ $(document).ready(function(){
                 mixpanel.identify(rocket_mixpanel_data.user_id);
             }
 
+            var path = window.location.pathname + window.location.search + window.location.hash;
+
             mixpanel.track('Button Clicked', {
                 'button': button,
 				'button_context': context,
@@ -66,7 +68,7 @@ $(document).ready(function(){
                 'brand': rocket_mixpanel_data.brand,
                 'application': rocket_mixpanel_data.app,
                 'context': rocket_mixpanel_data.context,
-                'path': rocket_mixpanel_data.path,
+                'path': path || rocket_mixpanel_data.path,
                 'interaction_channel': 'UI'
             });
         }

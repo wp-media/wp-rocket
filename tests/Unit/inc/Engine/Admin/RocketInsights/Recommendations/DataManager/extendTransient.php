@@ -36,6 +36,8 @@ class Test_ExtendTransient extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
+		Functions\when( 'get_user_locale' )->justReturn( 'en_US' );
+
 		$api_client       = Mockery::mock( APIClient::class );
 		$options          = Mockery::mock( Options_Data::class );
 		$global_score     = Mockery::mock( GlobalScore::class );

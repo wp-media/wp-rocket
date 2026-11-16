@@ -12,6 +12,7 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  */
 class CacheDynamicResource extends AbstractOptimization implements Subscriber_Interface {
 	use CSSTrait;
+	use RemoteAssetTrait;
 
 	/**
 	 * Plugin options instance.
@@ -298,7 +299,8 @@ class CacheDynamicResource extends AbstractOptimization implements Subscriber_In
 	 * @return string|bool
 	 */
 	protected function get_url_content( $url ) {
-		$content = wp_remote_retrieve_body( wp_remote_get( $url ) );
+		// PHP serves text/html by default, so only the response code is checked.
+		$content = $this->get_remote_asset_content( $url, false );
 
 		if ( ! $content ) {
 			return false;

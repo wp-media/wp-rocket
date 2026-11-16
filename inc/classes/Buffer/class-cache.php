@@ -177,14 +177,28 @@ class Cache extends Abstract_Buffer {
 	 * @since  3.3
 	 *
 	 * @param string $cache_filepath Path to the cache file.
+	 * @return false Only returns, always false, when the file could not be served. Exits otherwise.
 	 */
 	private function serve_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		$modified_time = @filemtime( $cache_filepath );
+
+		if ( false === $modified_time ) {
+			// The file disappeared since it was found (e.g. replaced on a shared filesystem): let the caller fall back.
+			$this->log(
+				'Cache file not found when serving it.',
+				[
+					'path' => $cache_filepath,
+				]
+			);
+			return false;
+		}
+
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $modified_time ) . ' GMT' );
 
 		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === $modified_time ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -202,7 +216,9 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readfile( $cache_filepath ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+		if ( false === @readfile( $cache_filepath ) ) { // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_readfile
+			return $this->abort_serving( $cache_filepath );
+		}
 
 		$this->log(
 			'Serving cache file.',
@@ -221,14 +237,28 @@ class Cache extends Abstract_Buffer {
 	 * @since  3.3
 	 *
 	 * @param string $cache_filepath Path to the gzip cache file.
+	 * @return false Only returns, always false, when the file could not be served. Exits otherwise.
 	 */
 	private function serve_gzip_cache_file( $cache_filepath ) {
-		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', filemtime( $cache_filepath ) ) . ' GMT' );
+		$modified_time = @filemtime( $cache_filepath );
+
+		if ( false === $modified_time ) {
+			// The file disappeared since it was found (e.g. replaced on a shared filesystem): let the caller fall back.
+			$this->log(
+				'Gzip cache file not found when serving it.',
+				[
+					'path' => $cache_filepath,
+				]
+			);
+			return false;
+		}
+
+		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s', $modified_time ) . ' GMT' );
 
 		$if_modified_since = $this->get_if_modified_since();
 
 		// Checking if the client is validating his cache and if it is current.
-		if ( $if_modified_since && ( strtotime( $if_modified_since ) === @filemtime( $cache_filepath ) ) ) {
+		if ( $if_modified_since && ( strtotime( $if_modified_since ) === $modified_time ) ) {
 			// Client's cache is current, so we just respond '304 Not Modified'.
 			header( $this->config->get_server_input( 'SERVER_PROTOCOL', '' ) . ' 304 Not Modified', true, 304 );
 			header( 'Expires: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -246,7 +276,9 @@ class Cache extends Abstract_Buffer {
 		}
 
 		// Serve the cache if file isn't store in the client browser cache.
-		readgzfile( $cache_filepath );
+		if ( false === @readgzfile( $cache_filepath ) ) {
+			return $this->abort_serving( $cache_filepath );
+		}
 
 		$this->log(
 			'Serving gzip cache file.',
@@ -257,6 +289,27 @@ class Cache extends Abstract_Buffer {
 			'info'
 		);
 		exit;
+	}
+
+	/**
+	 * Give up serving a cache file whose content could not be read, so the caller can fall back.
+	 *
+	 * Nothing was sent at this point, so the `Last-Modified` header of the missing file is dropped too.
+	 *
+	 * @param string $cache_filepath Path to the cache file.
+	 * @return false
+	 */
+	private function abort_serving( $cache_filepath ) {
+		header_remove( 'Last-Modified' );
+
+		$this->log(
+			'Cache file could not be read when serving it.',
+			[
+				'path' => $cache_filepath,
+			]
+		);
+
+		return false;
 	}
 
 	/**

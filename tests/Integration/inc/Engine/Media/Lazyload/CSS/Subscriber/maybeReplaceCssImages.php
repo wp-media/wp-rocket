@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Media\Lazyload\CSS\Subscriber::maybe_replace_css_images
@@ -12,16 +11,12 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group LazyloadCSS
  */
 class Test_MaybeReplaceCssImages extends FilesystemTestCase {
-	use HttpRequestTrait;
-
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Subscriber/integration/maybeReplaceCssImages.php';
 
 	protected $config;
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$this->unregisterAllCallbacksExcept('rocket_buffer', 'maybe_replace_css_images', 110000);
 
@@ -38,8 +33,6 @@ class Test_MaybeReplaceCssImages extends FilesystemTestCase {
 		remove_filter( 'rocket_disable_meta_generator', '__return_true' );
 
 		$this->restoreWpHook('rocket_buffer');
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
