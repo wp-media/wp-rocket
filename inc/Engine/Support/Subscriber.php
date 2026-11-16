@@ -56,6 +56,13 @@ class Subscriber implements Subscriber_Interface {
 	private $user;
 
 	/**
+	 * Whether the chat column was registered in this request.
+	 *
+	 * @var bool
+	 */
+	private $chat_registered = false;
+
+	/**
 	 * Instantiate the class
 	 *
 	 * @param Rest         $rest Rest instance.
@@ -111,9 +118,14 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Registers the WAP support chat column on the WP Rocket settings screen.
 	 *
+	 * The column is registered only when the library is present, the configuration is available and WordPress
+	 * Application Passwords can be used. The menu and the floating link follow the result, see is_chat_registered().
+	 *
 	 * @return void
 	 */
 	public function register_column(): void {
+		$this->chat_registered = false;
+
 		if ( ! class_exists( 'WapClient' ) ) {
 			return;
 		}
@@ -124,7 +136,61 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
+		// An older library copy may lack the manager: it cannot tell, so the column is registered as before.
+		if (
+			class_exists( '\GroupOne\WapClient\AppPasswordManager' )
+			&& ! \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available()
+		) {
+			return;
+		}
+
 		\WapClient::register_chat_column( $config );
+
+		$this->chat_registered = true;
+	}
+
+	/**
+	 * Checks whether the support chat column was registered in this request.
+	 *
+	 * Only meaningful after the `admin_init` action, which registers it.
+	 *
+	 * @return bool
+	 */
+	public function is_chat_registered(): bool {
+		return $this->chat_registered;
+	}
+
+	/**
+	 * Checks whether the customer can use the assistant, ignoring the chat library and the Application Passwords.
+	 *
+	 * For screens without the chat column, such as the admin bar. The licence key and the user data are
+	 * checked first and cannot be overridden by the filters.
+	 *
+	 * @return bool
+	 */
+	public function has_assistant(): bool {
+		if ( ! $this->can_use_assistant() ) {
+			return false;
+		}
+
+		/**
+		 * Filters whether the WP Rocket support assistant is available.
+		 *
+		 * True opens the support chat from the Support menu, the "Need Help?" controls and the floating
+		 * button. False replaces them with links to the contact page and the documentation: the Support menu,
+		 * the admin bar and the floating "Ask Support" button open the contact page, and "Need Help?" opens
+		 * its article. A licence key that fails the local check or user data that does not allow the assistant
+		 * make it false whatever the filters return. The same value is passed to the admin script.
+		 *
+		 * @param bool $available True when the assistant is available. Default true.
+		 *
+		 * @return bool
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true ) ) {
+			return false;
+		}
+
+		return $this->is_chat_filter_on();
 	}
 
 	/**
@@ -143,20 +209,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
-	 * @return array<string, mixed> The column configuration, or an empty array when the support chat is disabled by the filter, the licence data is missing or the assistant is not available.
+	 * @return array<string, mixed> The column configuration, or an empty array when the assistant is not available or the licence data is missing.
 	 */
 	public function get_column_config(): array {
-		/**
-		 * Filters whether the WAP support chat is available on the WP Rocket settings screen.
-		 *
-		 * Returning false removes the chat column and the notice about unavailable Application Passwords.
-		 * The "Need Help?" controls are not affected: they are governed by `rocket_ai_assistant_available`.
-		 *
-		 * @param bool $available True to make the support chat available. Default true.
-		 *
-		 * @return bool
-		 */
-		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_support_chat_available', true ) ) {
+		if ( ! $this->has_assistant() ) {
 			return [];
 		}
 
@@ -164,10 +220,6 @@ class Subscriber implements Subscriber_Interface {
 		$email       = $this->options->get( 'consumer_email', '' );
 
 		if ( empty( $license_key ) || empty( $email ) ) {
-			return [];
-		}
-
-		if ( ! $this->can_use_assistant() ) {
 			return [];
 		}
 
@@ -321,16 +373,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback of the `rocket_ai_assistant_available` filter.
 	 *
-	 * The filter controls the "Need Help?" controls and the value passed to the admin script. It is true by default
-	 * and false when the licence key fails the local check or the user data does not allow the assistant. The chat
-	 * column is decided by the same check in get_column_config() and does not apply this filter.
+	 * Makes the value false when the licence key fails the local check, the user data does not allow the
+	 * assistant or the `rocket_support_chat_available` filter is false. The value is passed to the admin script.
 	 *
-	 * @param bool $available True when the assistant entries should be shown.
+	 * @param bool $available True when the assistant is available.
 	 *
 	 * @return bool
 	 */
 	public function filter_assistant_available( $available ): bool {
-		return (bool) $available && $this->can_use_assistant();
+		return (bool) $available && $this->can_use_assistant() && $this->is_chat_filter_on();
 	}
 
 	/**
@@ -345,7 +396,7 @@ class Subscriber implements Subscriber_Interface {
 	public function add_localize_script_data( $data ): array {
 		$data = (array) $data;
 
-		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		/** This filter is documented in inc/Engine/Support/Subscriber.php */
 		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		return $data;
@@ -364,5 +415,25 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $this->user->can_use_ai();
+	}
+
+	/**
+	 * Applies the `rocket_support_chat_available` filter.
+	 *
+	 * @return bool
+	 */
+	private function is_chat_filter_on(): bool {
+		/**
+		 * Filters whether the WAP support chat is part of the assistant.
+		 *
+		 * Returning false behaves like `rocket_ai_assistant_available` returning false: the chat column and
+		 * the notice about unavailable Application Passwords are removed and the contact page and documentation
+		 * links take over.
+		 *
+		 * @param bool $available True to make the support chat available. Default true.
+		 *
+		 * @return bool
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_support_chat_available', true );
 	}
 }

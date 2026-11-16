@@ -37,4 +37,24 @@ return [
 		],
 		'expected' => [ 'result' => false ],
 	],
+	'chat_filter_on'             => [
+		'config'   => [
+			'valid_key'        => true,
+			'call_can_use_ai'  => true,
+			'can_use_ai'       => true,
+			'input'            => true,
+			'chat_filter'      => true,
+		],
+		'expected' => [ 'result' => true ],
+	],
+	'chat_filter_off'            => [
+		'config'   => [
+			'valid_key'        => true,
+			'call_can_use_ai'  => true,
+			'can_use_ai'       => true,
+			'input'            => true,
+			'chat_filter'      => false,
+		],
+		'expected' => [ 'result' => false ],
+	],
 ];

@@ -40,8 +40,13 @@ class TestGetColumnConfig extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
-			// The filter is checked first, so no option is read when the chat is disabled.
+		$blocked = false === ( $config['valid_key'] ?? true )
+			|| false === ( $config['can_use_ai'] ?? true )
+			|| false === ( $config['ai_filter_available'] ?? true )
+			|| false === ( $config['filter_available'] ?? true );
+
+		if ( $blocked ) {
+			// The assistant check comes first, so no option is read when it fails.
 			$this->options->shouldNotReceive( 'get' );
 		} else {
 			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
@@ -54,6 +59,10 @@ class TestGetColumnConfig extends TestCase {
 			$this->user->shouldNotReceive( 'can_use_ai' );
 		} else {
 			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		if ( isset( $config['ai_filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['ai_filter_available'] );
 		}
 
 		if ( isset( $config['filter_available'] ) ) {

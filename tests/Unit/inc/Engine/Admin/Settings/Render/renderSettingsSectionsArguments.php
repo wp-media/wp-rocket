@@ -14,7 +14,6 @@ use WP_Rocket\Tests\Unit\TestCase;
  * Checks the arguments Render::render_settings_sections() passes to the section renderers, without rendering templates.
  *
  * @covers \WP_Rocket\Engine\Admin\Settings\Render::render_settings_sections
- * @covers \WP_Rocket\Engine\Admin\Settings\Render::hide_need_help
  *
  * @group SettingsPage
  */
@@ -39,7 +38,7 @@ class Test_RenderSettingsSectionsArguments extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
 
 		$received = [];
 
@@ -71,12 +70,7 @@ class Test_RenderSettingsSectionsArguments extends TestCase {
 		$render->render_settings_sections( 'page_slug' );
 
 		$this->assertSame( $expected['help'], $received['help'] );
-
-		if ( $expected['has_hide_need_help'] ) {
-			$this->assertTrue( $received['hide_need_help'] );
-		} else {
-			$this->assertArrayNotHasKey( 'hide_need_help', $received );
-		}
+		$this->assertArrayNotHasKey( 'hide_need_help', $received );
 
 		if ( isset( $expected['class'] ) ) {
 			$this->assertSame( $expected['class'], $received['class'] );

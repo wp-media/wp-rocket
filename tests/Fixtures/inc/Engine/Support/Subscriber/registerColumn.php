@@ -72,4 +72,59 @@ return [
 			'registered' => false,
 		],
 	],
+	'assistant_disabled_by_filter' => [
+		'config'   => [
+			'wap_client_exists'   => true,
+			'consumer_key'        => 'test-consumer-key',
+			'consumer_email'      => 'user@example.org',
+			'ai_filter_available' => false,
+		],
+		'expected' => [
+			'registered' => false,
+		],
+	],
+	'invalid_key'                  => [
+		'config'   => [
+			'wap_client_exists' => true,
+			'valid_key'         => false,
+			'consumer_key'      => 'test-consumer-key',
+			'consumer_email'    => 'user@example.org',
+		],
+		'expected' => [
+			'registered' => false,
+		],
+	],
+	'app_passwords_unavailable'    => [
+		'config'   => [
+			'wap_client_exists'       => true,
+			'consumer_key'            => 'test-consumer-key',
+			'consumer_email'          => 'user@example.org',
+			'app_passwords_available' => false,
+		],
+		'expected' => [
+			'registered' => false,
+		],
+	],
+	'app_passwords_available'      => [
+		'config'   => [
+			'wap_client_exists'       => true,
+			'consumer_key'            => 'test-consumer-key',
+			'consumer_email'          => 'user@example.org',
+			'app_passwords_available' => true,
+		],
+		'expected' => [
+			'registered' => true,
+		],
+	],
+	'filter_false_late'            => [
+		'config'   => [
+			'wap_client_exists' => true,
+			'consumer_key'      => 'test-consumer-key',
+			'consumer_email'    => 'user@example.org',
+			'filter_false_late' => true,
+		],
+		'expected' => [
+			'registered' => true,
+		],
+	],
 ];

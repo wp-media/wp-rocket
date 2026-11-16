@@ -66,8 +66,15 @@ class TestRegisterColumn extends TestCase {
 				$wap_client->shouldNotReceive( 'register_chat_column' );
 			}
 
-			if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
-				// The filter is checked first, so no option is read when the chat is disabled.
+			if ( array_key_exists( 'app_passwords_available', $config ) ) {
+				$stub = 'GroupOne\WapClient\AppPasswordManagerWithReason';
+				require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/AppPasswordManagerWithReason.php';
+				class_alias( $stub, 'GroupOne\WapClient\AppPasswordManager' );
+				$stub::$available = $config['app_passwords_available'];
+			}
+
+			if ( false === ( $config['filter_available'] ?? true ) || false === ( $config['ai_filter_available'] ?? true ) || false === ( $config['valid_key'] ?? true ) ) {
+				// The assistant check comes first, so no option is read when it fails.
 				$this->options->shouldNotReceive( 'get' );
 			} else {
 				$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
@@ -81,10 +88,30 @@ class TestRegisterColumn extends TestCase {
 			$this->options->shouldNotReceive( 'get' );
 		}
 
-		if ( isset( $config['filter_available'] ) ) {
+		if ( isset( $config['valid_key'] ) ) {
+			Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		}
+
+		if ( isset( $config['ai_filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['ai_filter_available'] );
+		}
+
+		if ( ! empty( $config['filter_false_late'] ) ) {
+			// True while the column is registered, false afterwards.
+			Filters\expectApplied( 'rocket_support_chat_available' )->twice()->with( true )->andReturn( true, false );
+		} elseif ( isset( $config['filter_available'] ) ) {
 			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
 		}
 
+		$this->assertFalse( $this->subscriber->is_chat_registered(), 'Nothing is registered before admin_init.' );
+
 		$this->subscriber->register_column();
+
+		$this->assertSame( $expected['registered'], $this->subscriber->is_chat_registered() );
+
+		if ( ! empty( $config['filter_false_late'] ) ) {
+			$this->assertFalse( $this->subscriber->has_assistant(), 'The filter now says no.' );
+			$this->assertTrue( $this->subscriber->is_chat_registered(), 'The registered column stays the source of truth.' );
+		}
 	}
 }

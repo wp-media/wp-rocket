@@ -152,9 +152,11 @@
 }
 
 /*-----------------------------------------------*\
-    WAP support chat launcher button
+    WAP support chat launcher button, and the
+    link to the contact page that replaces it
 \*-----------------------------------------------*/
-.wap-chat-column__launcher {
+.wap-chat-column__launcher,
+.wpr-support-launcher {
     padding: 10px 16px 10px 12px !important;
     width: auto !important;
     background-color: rgb(64, 186, 203) !important;
@@ -166,15 +168,6 @@
     inset-block-end: 40px !important;
     inset-inline-end: 40px !important;
     box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
-
-    &::after {
-        content: attr(title);
-        font-size: 14px;
-        font-weight: 600;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        line-height: 14px;
-    }
 
     // The base `button:focus` rule removes the shadow, and the launcher keeps focus after the chat closes.
     &:focus {
@@ -202,5 +195,45 @@
     @supports (corner-shape: squircle) {
         border-radius: 30px !important;
         corner-shape: superellipse(1.4);
+    }
+}
+
+// The launcher shows its title through a pseudo-element, the link through its label.
+.wap-chat-column__launcher::after {
+    content: attr(title);
+}
+
+.wap-chat-column__launcher::after,
+.wpr-support-launcher__label {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 14px;
+}
+
+.wpr-support-launcher {
+    position: fixed;
+    z-index: 9988;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-sizing: border-box;
+    border: 1px solid;
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $cWhite;
+        outline-offset: -4px;
+    }
+
+    @media print {
+        display: none;
     }
 }

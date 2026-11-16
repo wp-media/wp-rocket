@@ -69,6 +69,10 @@ class TestFilterAssistantAvailable extends TestCase {
 			$this->user->shouldNotReceive( 'can_use_ai' );
 		}
 
+		if ( isset( $config['chat_filter'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['chat_filter'] );
+		}
+
 		$this->assertSame( $expected['result'], $this->subscriber->filter_assistant_available( $config['input'] ) );
 	}
 }

@@ -39,7 +39,8 @@ class Test_RenderRocketInsightsUrlsTable extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
+		// The assistant filter does not decide whether "Need Help?" is printed.
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
 
 		$context = Mockery::mock( Context::class );
 		$beacon  = Mockery::mock( Beacon::class );

@@ -54,3 +54,25 @@ function wprFillWapPrompt( columnEl, prompt ) {
         }
     }
 }
+
+// Support menu item: open the chat column instead of following the link to the contact page.
+document.addEventListener( 'click', function( e ) {
+    var item = e.target && e.target.closest( '[data-wap-open-chat]' );
+    if ( ! item ) {
+        return;
+    }
+
+    // Without the column or its launcher the link works as a normal link.
+    var columnEl = document.querySelector( '[data-wap-chat-column="wp-rocket-support"]' );
+    var launcher = columnEl && columnEl.querySelector( '.wap-chat-column__launcher' );
+    if ( ! launcher ) {
+        return;
+    }
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    if ( ! launcher.hidden ) {
+        launcher.click();
+    }
+}, true );

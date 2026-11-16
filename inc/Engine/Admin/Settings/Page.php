@@ -342,7 +342,7 @@ class Page extends Abstract_Render {
 		// The refresh of the customer data runs in this request: keep the shared user current for the assistant check.
 		$this->shared_user->set_user( $user_data );
 
-		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		/** This filter is documented in inc/Engine/Support/Subscriber.php */
 		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		if ( ! empty( $user_data->licence_expiration ) ) {
@@ -2350,6 +2350,17 @@ class Page extends Abstract_Render {
 
 		$data = $this->beacon->get_suggest( 'mobile_cache' );
 		echo $this->generate( 'settings/mobile-cache', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
+	}
+
+	/**
+	 * Prints the floating link to the contact page.
+	 *
+	 * @param string $url URL of the contact page.
+	 *
+	 * @return void
+	 */
+	public function render_support_launcher( string $url ): void {
+		echo $this->generate( 'settings/support-launcher', [ 'url' => $url ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view.
 	}
 
 	/**

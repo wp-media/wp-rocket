@@ -82,6 +82,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'settings_page',
 					'plugin_family_controller',
+					'support_subscriber',
 				]
 			);
 	}
