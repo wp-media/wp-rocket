@@ -40,15 +40,28 @@ return [
 			'html'    => 'is good to go',
 		],
 	],
-	'shouldDisplayStartWithMyHomepageButton'                 => [
+	'shouldDisplayVisitDashboardButton'                   => [
 		'config'   => [
 			'previous_version' => '',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
 		],
 		'expected' => [
-			'display' => true,
-			'html'    => 'Start with my homepage',
+			'display'     => true,
+			'html'        => 'Visit WP Rocket dashboard',
+			'html_absent' => [ 'Rocket Insights', 'Start with my homepage' ],
+		],
+	],
+	'shouldUseAddHomepageActionForButton'                 => [
+		'config'   => [
+			'previous_version' => '',
+			'role'             => 'administrator',
+			'screen'           => 'dashboard',
+		],
+		'expected' => [
+			'display'     => true,
+			'html'        => 'action=rocket_insights_add_homepage_notice',
+			'html_absent' => [ 'redirect=' ],
 		],
 	],
 	'shouldDisplayActivationNoticeDismissButton'             => [
@@ -118,7 +131,7 @@ return [
 			'previous_version' => '3.21.0',
 			'role'             => 'administrator',
 			'screen'           => 'dashboard',
-			'boxes'            => [ 'rocket_major_release_notice_3_23' ],
+			'boxes'            => [ 'rocket_major_release_notice_' . implode( '_', array_slice( explode( '.', WP_ROCKET_VERSION ), 0, 2 ) ) ],
 		],
 		'expected' => [
 			'display' => false,

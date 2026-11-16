@@ -536,7 +536,7 @@ class Cloudflare implements Subscriber_Interface, DeactivationInterface {
 			return;
 		}
 
-		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs' );
+		$this->unregister_callback( 'deleted_post', 'purgeCacheByRelevantURLs', PHP_INT_MAX );
 		$this->unregister_callback( 'transition_post_status', 'purgeCacheOnPostStatusChange', PHP_INT_MAX );
 	}
 

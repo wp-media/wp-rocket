@@ -455,8 +455,7 @@ class Rest extends WP_REST_Controller {
 			$data['reach_max_url'] = true;
 
 			$payload['global_score_data']['disabled_btn_html'] = [
-				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
-				'rocket_insights'     => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+				'rocket_insights' => $this->render->get_add_page_btn( 'rocket-insights', $data ),
 			];
 		}
 
@@ -810,9 +809,10 @@ class Rest extends WP_REST_Controller {
 		$payload['remaining_urls'] = $this->get_remaining_url_count();
 
 		return [
-			'data'     => $payload,
-			'html'     => $this->render->get_global_score_widget_content( $payload ),
-			'row_html' => $this->render->get_global_score_row( $payload ),
+			'data'           => $payload,
+			'html'           => $this->render->get_global_score_widget_content( $payload ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $payload ),
+			'row_html'       => $this->render->get_global_score_row( $payload ),
 		];
 	}
 

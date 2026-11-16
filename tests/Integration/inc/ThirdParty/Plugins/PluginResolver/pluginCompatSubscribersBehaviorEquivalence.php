@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\PluginResolver;
 
+use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
@@ -12,7 +13,8 @@ use WP_Rocket\Tests\Integration\TestCase;
  * live container: every id the resolver reports active must resolve to an
  * object, and every id gated behind PluginCompatibilityInterface (whose
  * target plugin is absent in this test environment) must resolve to absent
- * rather than being force-registered.
+ * rather than being force-registered, except the always-registered
+ * elementor_subscriber, which stays fetchable but unsubscribed.
  *
  * The hook-collision half of this coverage lives in the Unit suite instead
  * (tests/Unit/inc/ThirdParty/Plugins/PluginResolver/easy25HookCollisionScan.php):
@@ -101,6 +103,23 @@ class Test_PluginCompatSubscribersBehaviorEquivalence extends TestCase {
 		foreach ( [ 'yoast_seo', 'thirstyaffiliates' ] as $id ) {
 			$this->assertFalse( $container->has( $id ), "Expected container to NOT provide '{$id}' when its target plugin is absent." );
 		}
+	}
+
+	/**
+	 * elementor_subscriber stays fetchable for external code when ELEMENTOR_VERSION
+	 * is undefined, but is neither resolver-active nor subscribed.
+	 */
+	public function testShouldResolveElementorWithoutSubscribingItWhenAbsent() {
+		$container = apply_filters( 'rocket_container', null );
+
+		$this->assertNotContains( 'elementor_subscriber', PluginResolver::get_active_plugins( true ) );
+		$this->assertTrue( $container->has( 'elementor_subscriber' ), 'Expected container to provide "elementor_subscriber".' );
+
+		$subscriber = $container->get( 'elementor_subscriber' );
+
+		$this->assertInstanceOf( Elementor::class, $subscriber );
+		$this->assertFalse( has_filter( 'rocket_exclude_css', [ $subscriber, 'exclude_post_css' ] ), 'Expected elementor_subscriber to NOT be subscribed.' );
+		$this->assertFalse( has_action( 'elementor/core/files/clear_cache', [ $subscriber, 'clear_cache' ] ), 'Expected elementor_subscriber to NOT be subscribed.' );
 	}
 
 	/**

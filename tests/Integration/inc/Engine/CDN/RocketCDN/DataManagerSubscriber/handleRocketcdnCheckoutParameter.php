@@ -7,7 +7,6 @@ use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\DBTrait;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::handle_rocketcdn_checkout_parameter
@@ -17,8 +16,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  */
 class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	use DBTrait;
-	use HttpRequestTrait;
-
 	/**
 	 * Original $_GET superglobal.
 	 *
@@ -61,8 +58,6 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- Test setup, not processing form data.
 		$this->original_get = $_GET;
 
@@ -99,8 +94,6 @@ class Test_HandleRocketcdnCheckoutParameter extends AdminTestCase {
 		$settings = apply_filters( 'rocket_container', null )->get( 'options_api' )->get( 'settings', [] );
 		unset( $settings['cdn_state'], $settings['cdn'], $settings['cdn_type'] );
 		apply_filters( 'rocket_container', null )->get( 'options_api' )->set( 'settings', $settings );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

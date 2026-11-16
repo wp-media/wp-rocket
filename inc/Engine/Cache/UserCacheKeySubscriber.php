@@ -103,7 +103,7 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$name    = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
+		$name    = Cache::get_user_cache_cookie_name( (string) rocket_get_constant( 'COOKIEHASH', '' ), $secret );
 		$current = isset( $_COOKIE[ $name ] ) ? sanitize_text_field( wp_unslash( $_COOKIE[ $name ] ) ) : '';
 
 		if ( Cache::is_valid_user_cache_cookie_value( $current, $auth_cookie['username'], $secret ) ) {
@@ -139,13 +139,17 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 			return;
 		}
 
-		$name   = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
-		$expire = time() - YEAR_IN_SECONDS;
+		$name   = Cache::get_user_cache_cookie_name( (string) rocket_get_constant( 'COOKIEHASH', '' ), $secret );
+		$expire = time() - (int) rocket_get_constant( 'YEAR_IN_SECONDS', 31536000 );
 
-		$this->set_cookie( $name, ' ', $expire, COOKIEPATH, COOKIE_DOMAIN, false, true );
+		$cookie_path      = (string) rocket_get_constant( 'COOKIEPATH', '/' );
+		$site_cookie_path = (string) rocket_get_constant( 'SITECOOKIEPATH', '/' );
+		$cookie_domain    = (string) rocket_get_constant( 'COOKIE_DOMAIN', '' );
 
-		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			$this->set_cookie( $name, ' ', $expire, SITECOOKIEPATH, COOKIE_DOMAIN, false, true );
+		$this->set_cookie( $name, ' ', $expire, $cookie_path, $cookie_domain, false, true );
+
+		if ( $cookie_path !== $site_cookie_path ) {
+			$this->set_cookie( $name, ' ', $expire, $site_cookie_path, $cookie_domain, false, true );
 		}
 	}
 
@@ -166,12 +170,16 @@ class UserCacheKeySubscriber implements Subscriber_Interface {
 		 */
 		$secure_logged_in_cookie = wpm_apply_filters_typed( 'boolean', 'secure_logged_in_cookie', $secure_logged_in_cookie, $user_id, is_ssl() );
 
-		$name = Cache::get_user_cache_cookie_name( COOKIEHASH, $secret );
+		$name = Cache::get_user_cache_cookie_name( (string) rocket_get_constant( 'COOKIEHASH', '' ), $secret );
 
-		$this->set_cookie( $name, $value, $expire, COOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+		$cookie_path      = (string) rocket_get_constant( 'COOKIEPATH', '/' );
+		$site_cookie_path = (string) rocket_get_constant( 'SITECOOKIEPATH', '/' );
+		$cookie_domain    = (string) rocket_get_constant( 'COOKIE_DOMAIN', '' );
 
-		if ( COOKIEPATH !== SITECOOKIEPATH ) {
-			$this->set_cookie( $name, $value, $expire, SITECOOKIEPATH, COOKIE_DOMAIN, $secure_logged_in_cookie, true );
+		$this->set_cookie( $name, $value, $expire, $cookie_path, $cookie_domain, $secure_logged_in_cookie, true );
+
+		if ( $cookie_path !== $site_cookie_path ) {
+			$this->set_cookie( $name, $value, $expire, $site_cookie_path, $cookie_domain, $secure_logged_in_cookie, true );
 		}
 	}
 

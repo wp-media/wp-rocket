@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Integration test covering the full hook chain for the cdn_state migration.
@@ -22,8 +21,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  AdminOnly
  */
 class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
-	use HttpRequestTrait;
-
 	/**
 	 * Settings present before this test, restored in tear_down.
 	 *
@@ -38,8 +35,6 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		$this->options          = new Options( 'wp_rocket_' );
 		$this->original_settings = $this->options->get( 'settings', [] );
@@ -68,8 +63,6 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
 		$this->options->set( 'settings', $this->original_settings );
 		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

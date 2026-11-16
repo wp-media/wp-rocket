@@ -6,7 +6,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering WP_Rocket\Engine\Admin\RocketInsights\Rest::handle_sync_submission
@@ -15,7 +14,7 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group AdminOnly
  */
 class HandleSyncSubmissionTest extends TestCase {
-	use DBTrait, HttpRequestTrait;
+	use DBTrait;
 
 	private $controller;
 	private $container;
@@ -52,15 +51,11 @@ class HandleSyncSubmissionTest extends TestCase {
 				'body'     => wp_json_encode( [ 'error' => 'API error' ] ),
 			],
 		];
-
-		$this->setup_http();
 	}
 
 	public function tear_down() {
 		// Clean up data after each test
 		self::truncatePerformanceMonitoringTable();
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

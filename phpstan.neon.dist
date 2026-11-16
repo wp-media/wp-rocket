@@ -45,6 +45,7 @@ parameters:
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/the-events-calendar/
 		- %currentWorkingDirectory%/vendor/wpackagist-plugin/woocommerce/
 	scanFiles:
+		- %currentWorkingDirectory%/inc/3rd-party/plugins/i18n/polylang.php
 		- %currentWorkingDirectory%/inc/admin/upgrader.php
 		- %currentWorkingDirectory%/inc/admin/options.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php

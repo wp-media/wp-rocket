@@ -20,6 +20,7 @@ use WP_Rocket\Addon\ServiceProvider as AddonServiceProvider;
 use WP_Rocket\Addon\Cloudflare\ServiceProvider as CloudflareServiceProvider;
 use WP_Rocket\Addon\Varnish\ServiceProvider as VarnishServiceProvider;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
+use WP_Rocket\Engine\Admin\AdminBar\ServiceProvider as AdminBarServiceProvider;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
 use WP_Rocket\Engine\Admin\Database\ServiceProvider as AdminDatabaseServiceProvider;
 use WP_Rocket\Engine\Admin\ServiceProvider as EngineAdminServiceProvider;
@@ -314,8 +315,10 @@ class Plugin {
 		$this->container->addServiceProvider( new PreconnectExternalDomainsServiceProvider() );
 		$this->container->addServiceProvider( new RocketInsightsServiceProvider() );
 		$this->container->addServiceProvider( new TrackingServiceProvider() );
+		$this->container->addServiceProvider( new AdminBarServiceProvider() );
 
 		$common_subscribers = [
+			'admin_bar_subscriber',
 			'license_subscriber',
 			'cdn_subscriber',
 			'cdn_admin_subscriber',
@@ -433,6 +436,7 @@ class Plugin {
 			'cache_abilities_subscriber',
 			'preload_abilities_subscriber',
 			'abilities_cli_subscriber',
+			'abilities_admin_subscriber',
 		];
 
 		// Registered here rather than with the other providers: the Fleet route

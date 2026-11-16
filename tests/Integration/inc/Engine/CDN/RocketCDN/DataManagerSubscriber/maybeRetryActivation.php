@@ -2,11 +2,9 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\DataManagerSubscriber;
 
-use WP_Error;
 use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\AdminTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\CDN\RocketCDN\DataManagerSubscriber::maybe_retry_activation
@@ -15,8 +13,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group RocketCDN
  */
 class Test_MaybeRetryActivation extends AdminTestCase {
-	use HttpRequestTrait;
-
 	/**
 	 * Original user ID.
 	 *
@@ -31,17 +27,8 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 	 */
 	private $subscriber;
 
-	/**
-	 * Whether an outbound HTTP request was attempted, set by count_any_request().
-	 *
-	 * @var bool
-	 */
-	private $api_request_made = false;
-
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -71,8 +58,6 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		$this->reset_wp_rocket_settings();
 
 		$this->restoreWpHook( 'current_screen' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -203,33 +188,13 @@ class Test_MaybeRetryActivation extends AdminTestCase {
 		set_current_screen( 'edit.php' );
 
 		// No fixture entry: an empty http config already fails the test on any request.
-		// The inspector also gives an assertion with a specific failure message.
-		add_filter( 'pre_http_request', [ $this, 'count_any_request' ], 9, 3 );
-
+		// The request log also gives an assertion with a specific failure message.
 		$this->subscriber->maybe_retry_activation();
 
-		remove_filter( 'pre_http_request', [ $this, 'count_any_request' ], 9 );
-
-		$this->assertFalse( $this->api_request_made, 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
+		$this->assertSame( [], $this->get_http_requests(), 'No RocketCDN API request should be made when not on the WP Rocket settings page.' );
 
 		$settings    = get_option( 'wp_rocket_settings', [] );
 		$cdn_enabled = isset( $settings['cdn'] ) && 1 === (int) $settings['cdn'];
 		$this->assertFalse( $cdn_enabled, 'CDN should not be enabled when the guard bails on a non-WP Rocket screen' );
-	}
-
-	/**
-	 * Records that an outbound HTTP request was attempted, without altering the response.
-	 * Registered at priority 9, ahead of the trait's own mock at priority 10.
-	 *
-	 * @param false|array|WP_Error $response Preemptive response as received.
-	 * @param array                $args     Unused request arguments.
-	 * @param string               $url      Unused requested URL.
-	 *
-	 * @return false|array|WP_Error
-	 */
-	public function count_any_request( $response, $args, $url ) {
-		$this->api_request_made = true;
-
-		return $response;
 	}
 }

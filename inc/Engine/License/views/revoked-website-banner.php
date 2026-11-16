@@ -21,6 +21,6 @@ $data = isset( $data ) ? $data : []; // phpcs:ignore WordPress.NamingConventions
 		</div>
 	</div>
 	<div class="rocket-expired-cta-container">
-		<a href="<?php echo esc_url( $data['purchase_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'GET WP ROCKET AT 20% OFF', 'rocket' ); ?></a>
+		<a href="<?php echo esc_url( $data['purchase_url'] ); ?>" class="rocket-renew-cta" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Get WP Rocket at 20% off', 'rocket' ); ?></a>
 	</div>
 </section>

@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\License\API\PricingClient;
 
 use WP_Rocket\Engine\License\API\PricingClient;
 use WP_Rocket\Tests\Integration\TestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\License\API\PricingClient::get_pricing_data
@@ -12,8 +11,6 @@ use WPMedia\PHPUnit\Integration\HttpRequestTrait;
  * @group  License
  */
 class GetPricingData extends TestCase {
-	use HttpRequestTrait;
-
 	protected static $transients = [
 		'wp_rocket_pricing',
 		'wp_rocket_pricing_timeout',
@@ -22,8 +19,6 @@ class GetPricingData extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		$this->setup_http();
 
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
@@ -34,8 +29,6 @@ class GetPricingData extends TestCase {
 		delete_transient( 'wp_rocket_pricing' );
 		delete_transient( 'wp_rocket_pricing_timeout' );
 		delete_transient( 'wp_rocket_pricing_timeout_active' );
-
-		$this->tear_down_http();
 
 		parent::tear_down();
 	}

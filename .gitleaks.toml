@@ -1,0 +1,20 @@
+# Config of the PR secret scan (.github/workflows/gitleaks.yml). See docs/secret-scan.md.
+# Every exception is scoped to a rule or a value pattern: never allowlist a whole directory for every rule.
+
+[extend]
+useDefault = true
+
+# Dummy token of the PHPUnit credentials, never sent anywhere (HTTP requests are mocked in tests).
+[[allowlists]]
+description = "Dummy RocketCDN token in the test credentials"
+condition = "AND"
+targetRules = ["generic-api-key"]
+paths = ['''^tests/TestCredentials\.php$''']
+regexTarget = "secret"
+regexes = ['''^a1b2c3d4e5f6a7b8c9d0$''']
+
+# A plugin name in the exclusion list ("theChampRegRedirectionUrl"), not a Twitter key.
+[[allowlists]]
+description = "Dynamic exclusion lists (script and plugin identifiers)"
+targetRules = ["twitter-api-key"]
+paths = ['''^dynamic-lists\.json$''']

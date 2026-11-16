@@ -201,6 +201,10 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 	 */
 	protected function do_batch( $size = 100, $context = '' ) {
 		try {
+			if ( ! $this->has_claimable_actions() ) {
+				return 0;
+			}
+
 			$claim = $this->store->stake_claim( $size, null, [], $this->group );
 			$this->monitor->attach( $claim );
 			$processed_actions = 0;
@@ -227,6 +231,35 @@ class RUCSSQueueRunner extends ActionScheduler_Abstract_QueueRunner {
 			$this->reset_group();
 			return 0;
 		}
+	}
+
+	/**
+	 * Checks if the group has pending, due and unclaimed actions, mirroring the claim query filters.
+	 *
+	 * @return bool
+	 *
+	 * @throws \RuntimeException When the query fails, so do_batch() logs the database error.
+	 */
+	private function has_claimable_actions(): bool {
+		global $wpdb;
+
+		$actions = $this->store->query_actions(
+			[
+				'group'        => $this->group,
+				'status'       => ActionScheduler_Store::STATUS_PENDING,
+				'claimed'      => false,
+				'date'         => as_get_datetime_object(),
+				'date_compare' => '<=',
+				'per_page'     => 1,
+				'orderby'      => 'none',
+			]
+		);
+
+		if ( empty( $actions ) && ! empty( $wpdb->last_error ) ) {
+			throw new \RuntimeException( sprintf( 'Unable to query claimable actions. Database error: %s', esc_html( $wpdb->last_error ) ) );
+		}
+
+		return ! empty( $actions );
 	}
 
 	/**

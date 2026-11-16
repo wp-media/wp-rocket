@@ -4,7 +4,6 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\CriticalCSSSubscri
 
 use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
-use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 use Brain\Monkey\Functions;
 use Brain\Monkey\Filters;
 
@@ -18,7 +17,7 @@ use Brain\Monkey\Filters;
  * @group  CriticalPath
  */
 class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
-	use CriticalCssLoopbackTrait, HttpRequestTrait;
+	use CriticalCssLoopbackTrait;
 
 	protected      $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSSSubscriber/maybeGenerateCpcssMobile.php';
 	private        $subscriber;
@@ -33,14 +32,10 @@ class Test_MaybeGenerateCpcssMobile extends FilesystemTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		$this->setup_http();
-
 		$this->subscriber = self::$container->get( 'critical_css_subscriber' );
 	}
 
 	public function tear_down() {
-		$this->tear_down_http();
-
 		parent::tear_down();
 
 		delete_transient( 'rocket_critical_css_generation_process_running' );

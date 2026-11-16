@@ -36,7 +36,36 @@ settings_errors( $data['slug'] ); ?>
 			</div>
 		</header>
 
-		<section class="wpr-Content">
+		<section class="wpr-Content<?php echo rocket_valid_key() ? '' : ' wpr-Content--noSidebar'; ?>">
+			<?php // Same page lookup as pageManager.js, run before the first paint, at the start of the content so that no section is painted before it: the other sections and the sidebar stay hidden without a flash (pageManager.js removes the style). ?>
+			<script>
+				( function () {
+					try {
+						var page = window.location.hash.slice( 1 ).split( '=' )[0] || window.localStorage.getItem( 'wpr-hash' ) || 'dashboard';
+
+						// Pages merged into another one, as in pageManager.js and mixpanel.js.
+						if ( 'imagify' === page ) {
+							page = 'media';
+						}
+
+						var content = document.querySelector( '.wpr-Content' );
+
+						content.dataset.page = page;
+
+						// pageManager.js adds it on every page: adding it now avoids a width change (layout shift) of the
+						// content and sidebar when the script runs, and applies the Dashboard container styles at first paint.
+						content.classList.add( 'isNotFull' );
+
+						if ( /^[\w-]+$/.test( page ) ) {
+							var style = document.createElement( 'style' );
+							style.id = 'wpr-first-paint';
+							style.textContent = '.wpr-Content .wpr-Page:not(#' + page + '){display:none}';
+							style.setAttribute( 'data-page', page );
+							document.head.appendChild( style );
+						}
+					} catch ( e ) {}
+				}() );
+			</script>
 			<form action="options.php" method="POST" id="<?php echo esc_attr( $data['slug'] ); ?>_options">
 				<?php settings_fields( $data['slug'] ); ?>
 				<?php $this->render_form_sections(); ?>
@@ -45,34 +74,34 @@ settings_errors( $data['slug'] ); ?>
 			</form>
 			<?php
 			if ( rocket_valid_key() ) {
-				if (
-					! \Imagify_Partner::has_imagify_api_key()
-					&&
-					! rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
-				) {
-					$this->render_imagify_section();
-				}
 				$this->render_tools_section( $data['tools_page'] );
 				$this->render_tutorials_section();
 				$this->render_plugin_section();
-				?>
-			<div class="wpr-Content-tips">
-				<div class="wpr-radio wpr-radio--reverse wpr-radio--tips">
-					<input type="checkbox" class="wpr-js-tips" id="wpr-js-tips" value="1" checked>
-					<label for="wpr-js-tips">
-						<span data-l10n-active="On"
-							data-l10n-inactive="Off" class="wpr-radio-ui"></span>
-						<?php esc_html_e( 'Show Sidebar', 'rocket' ); ?></label>
-				</div>
-			</div>
-				<?php
 			}
 			?>
+			<script>
+				// An unknown page must not blank the screen: drop the first paint style when the section does not exist.
+				( function () {
+					var style = document.getElementById( 'wpr-first-paint' );
+					var section = style ? document.getElementById( style.getAttribute( 'data-page' ) ) : null;
+
+					if ( style && ( ! section || ! section.classList.contains( 'wpr-Page' ) ) ) {
+						style.remove();
+					}
+				}() );
+			</script>
 		</section>
 
+		<?php
+		// The license validation screen only shows the license form: no sidebar (Global score, Recommendations) without a valid key.
+		$rocket_sidebar = rocket_valid_key() ? trim( (string) $this->generate( 'partials/sidebar' ) ) : '';
+
+		if ( '' !== $rocket_sidebar ) :
+			?>
 		<aside class="wpr-Sidebar">
-			<?php $this->render_part( 'sidebar' ); ?>
+			<?php echo $rocket_sidebar; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is properly escaped in the view. ?>
 		</aside>
+		<?php endif; ?>
 	</div>
 
 	<div class="wpr-Popin wpr-Popin-Analytics">

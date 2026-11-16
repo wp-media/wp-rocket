@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
 		'rocketcdn_frontend_subscriber',
+		'rocketcdn_recommendation_override',
 		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
@@ -90,6 +91,15 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_subscription_controller',
 				]
 			);
+		// RocketCDN recommendation override.
+		$this->getContainer()->addShared( 'rocketcdn_recommendation_override', RecommendationOverride::class )
+			->addArguments(
+				[
+					'cdn_context',
+					'rocketcdn_subscription_controller',
+					'options',
+				]
+			);
 		// RocketCDN REST API pages controller.
 		$this->getContainer()->add( 'rocketcdn_rest', Rest::class )
 			->addArguments(
@@ -106,8 +116,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
 			->addArguments(
 				[
-					'rocketcdn_options_manager',
-					'options',
 					'rocketcdn_rest',
 					'rocketcdn_subscription_controller',
 				]
