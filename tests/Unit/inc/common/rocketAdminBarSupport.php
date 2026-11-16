@@ -27,6 +27,7 @@ class Test_RocketAdminBarSupport extends TestCase {
 		}
 
 		Functions\stubTranslationFunctions();
+		unset( $_SERVER['REQUEST_URI'] );
 		Functions\when( 'current_user_can' )->alias(
 			function ( $capability ) {
 				return 'rocket_manage_options' === $capability;
