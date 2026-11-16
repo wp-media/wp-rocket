@@ -40,6 +40,7 @@ function load_original_files_before_mocking() {
 		'/WP_Theme.php',
 		'/WPDieException.php',
 		'/WP_REST_Controller.php',
+		'/WP_REST_Response.php',
 		'/WP_Sitemaps_Index.php',
 		'/WP_Sitemaps.php',
 		'/WP_Filesystem_Direct.php',
