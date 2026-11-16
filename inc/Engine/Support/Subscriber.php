@@ -24,6 +24,7 @@ class Subscriber implements Subscriber_Interface {
 	private const PRODUCT = 'wprocket';
 
 	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
+	private const PERMISSION_READ_PLUGIN   = 'read-plugin';
 	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
 	private const PERMISSION_MANAGE_SITE   = 'manage-site';
 
@@ -221,18 +222,19 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the permission rows shown in the support chat's settings.
 	 *
-	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
-	 * from other plugins and core. It only offers Deny, so the library can only store deny for it (locked
-	 * server-side); `disabled` merely greys it out in the UI.
+	 * WAP maps each ability to a row: `read-plugin` for WP Rocket's `get-` abilities, which are exactly its
+	 * read-only ones; `manage-plugin` for WP Rocket's other abilities; `manage-site` for every other ability,
+	 * from other plugins and core. The last two are coming later: they only offer Deny, so the library can
+	 * only store deny for them (locked server-side); `disabled` merely greys them out in the UI.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function get_permission_rows(): array {
 		return [
 			[
-				'id'           => self::PERMISSION_MANAGE_PLUGIN,
-				// translators: Label of the support chat setting deciding whether the assistant may act on WP Rocket.
-				'label'        => __( 'Manage your WP Rocket plugin', 'rocket' ),
+				'id'           => self::PERMISSION_READ_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may read WP Rocket's settings.
+				'label'        => __( 'Read WP Rocket settings', 'rocket' ),
 				'options'      => [
 					[
 						'value' => 'allow',
@@ -249,19 +251,41 @@ class Subscriber implements Subscriber_Interface {
 				],
 				'defaultValue' => 'allow',
 			],
-			[
-				'id'           => self::PERMISSION_MANAGE_SITE,
-				// translators: Label of the support chat setting deciding whether the assistant may act on the rest of the site.
-				'label'        => __( 'Manage your WordPress site', 'rocket' ),
-				'options'      => [
-					[
-						'value' => 'deny',
-						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
-					],
+			$this->get_locked_permission_row(
+				self::PERMISSION_MANAGE_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may change WP Rocket's settings.
+				__( 'Change WP Rocket settings', 'rocket' )
+			),
+			$this->get_locked_permission_row(
+				self::PERMISSION_MANAGE_SITE,
+				// translators: Label of the support chat setting deciding whether the assistant may read and change the rest of the WordPress site.
+				__( 'Read & Write WordPress configuration', 'rocket' )
+			),
+		];
+	}
+
+	/**
+	 * Gets a permission row that is not available yet: locked to Deny and marked as coming soon.
+	 *
+	 * @param string $id    Permission id.
+	 * @param string $label Row label.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function get_locked_permission_row( string $id, string $label ): array {
+		return [
+			'id'           => $id,
+			'label'        => $label,
+			'options'      => [
+				[
+					'value' => 'deny',
+					'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
 				],
-				'defaultValue' => 'deny',
-				'disabled'     => true,
 			],
+			'defaultValue' => 'deny',
+			'disabled'     => true,
+			// translators: Badge on a support chat setting that cannot be changed yet.
+			'badge'        => __( 'Coming soon', 'rocket' ),
 		];
 	}
 
