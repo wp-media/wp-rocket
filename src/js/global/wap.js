@@ -62,6 +62,11 @@ document.addEventListener( 'click', function( e ) {
         return;
     }
 
+    // Modified and non-primary clicks keep the link behavior, for example opening it in a new tab.
+    if ( e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey ) {
+        return;
+    }
+
     // Without the column or its launcher the link works as a normal link.
     var columnEl = document.querySelector( '[data-wap-chat-column="wp-rocket-support"]' );
     var launcher = columnEl && columnEl.querySelector( '.wap-chat-column__launcher' );

@@ -136,7 +136,7 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// An older library copy may lack the manager: it cannot tell, so the column is registered as before.
+		// An older library copy may lack the manager: availability cannot be checked, so the column is registered.
 		if (
 			class_exists( '\GroupOne\WapClient\AppPasswordManager' )
 			&& ! \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available()
