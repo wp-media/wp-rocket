@@ -2672,6 +2672,10 @@ div.wpr-upgrade-websites.notstacked {
   inset-block-end: 40px !important;
   inset-inline-end: 40px !important;
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+  font-family: PlusJakartaSans, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
 }
 .wap-chat-column__launcher:focus,
 .wpr-support-launcher:focus {
@@ -2706,8 +2710,7 @@ div.wpr-upgrade-websites.notstacked {
   content: attr(title);
 }
 
-.wap-chat-column__launcher::after,
-.wpr-support-launcher__label {
+.wap-chat-column__launcher::after {
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
@@ -2715,12 +2718,17 @@ div.wpr-upgrade-websites.notstacked {
   line-height: 14px;
 }
 
+.wpr-support-launcher__label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .wpr-support-launcher {
   position: fixed;
   z-index: 9988;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   box-sizing: border-box;
   border: 1px solid;
   text-decoration: none;
