@@ -26,4 +26,12 @@ class TestGetSubscribedEvents extends TestCase {
 	public function testShouldRevokeTheAppPasswordsOnDeactivation() {
 		$this->assertSame( 'revoke_app_passwords', Subscriber::get_subscribed_events()['rocket_deactivation'] );
 	}
+
+	public function testShouldBootTheWapClientAfterAllPluginsAreLoaded() {
+		$this->assertSame( [ 'boot_wap_client', 20 ], Subscriber::get_subscribed_events()['plugins_loaded'] );
+	}
+
+	public function testShouldLoadTheWapClientTranslationsOnInit() {
+		$this->assertSame( 'load_wap_client_textdomain', Subscriber::get_subscribed_events()['init'] );
+	}
 }

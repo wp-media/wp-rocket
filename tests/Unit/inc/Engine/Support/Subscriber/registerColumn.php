@@ -42,43 +42,39 @@ class TestRegisterColumn extends TestCase {
 	 * @preserveGlobalState disabled
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		if ( $config['wap_client_exists'] ) {
-			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-			$wap_client = Mockery::mock( 'alias:WapClient' );
+		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+		$wap_client = Mockery::mock( 'alias:WP_Rocket\Dependencies\GroupOne\WapClient\WapClient' );
 
-			if ( $expected['registered'] ) {
-				$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
+		if ( $expected['registered'] ) {
+			$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
 
-				if ( ! empty( $expected['config_check'] ) ) {
-					$check = $expected['config_check'];
-					$expectation->with(
-						Mockery::on(
-							function ( $cfg ) use ( $check ) {
-								return ( ! isset( $check['product'] ) || $check['product'] === $cfg['product'] )
-									&& ( ! isset( $check['page_context'] ) || $check['page_context'] === $cfg['page_context'] )
-									&& ( ! isset( $check['grnd_license_key'] ) || $check['grnd_license_key'] === $cfg['grnd']['license_key'] )
-									&& ( ! isset( $check['screens'] ) || $check['screens'] === $cfg['screens'] );
-							}
-						)
-					);
-				}
-			} else {
-				$wap_client->shouldNotReceive( 'register_chat_column' );
-			}
-
-			if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
-				// The filter is checked first, so no option is read when the chat is disabled.
-				$this->options->shouldNotReceive( 'get' );
-			} else {
-				$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
-				$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] ?? '' );
-			}
-
-			if ( array_key_exists( 'can_use_ai', $config ) ) {
-				$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+			if ( ! empty( $expected['config_check'] ) ) {
+				$check = $expected['config_check'];
+				$expectation->with(
+					Mockery::on(
+						function ( $cfg ) use ( $check ) {
+							return ( ! isset( $check['product'] ) || $check['product'] === $cfg['product'] )
+								&& ( ! isset( $check['page_context'] ) || $check['page_context'] === $cfg['page_context'] )
+								&& ( ! isset( $check['grnd_license_key'] ) || $check['grnd_license_key'] === $cfg['grnd']['license_key'] )
+								&& ( ! isset( $check['screens'] ) || $check['screens'] === $cfg['screens'] );
+						}
+					)
+				);
 			}
 		} else {
+			$wap_client->shouldNotReceive( 'register_chat_column' );
+		}
+
+		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+			// The filter is checked first, so no option is read when the chat is disabled.
 			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] ?? '' );
+		}
+
+		if ( array_key_exists( 'can_use_ai', $config ) ) {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
 		}
 
 		if ( isset( $config['filter_available'] ) ) {

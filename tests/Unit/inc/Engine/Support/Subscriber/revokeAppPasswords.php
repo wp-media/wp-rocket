@@ -36,13 +36,9 @@ class TestRevokeAppPasswords extends TestCase {
 	 * @preserveGlobalState disabled
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		if ( $config['wap_client_exists'] ) {
-			/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
-			$wap_client = Mockery::mock( 'alias:WapClient' );
-			$wap_client->shouldReceive( 'revoke_app_passwords' )->once()->with( $expected['product'] );
-		} else {
-			$this->assertFalse( class_exists( 'WapClient', false ) );
-		}
+		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+		$wap_client = Mockery::mock( 'alias:WP_Rocket\Dependencies\GroupOne\WapClient\WapClient' );
+		$wap_client->shouldReceive( 'revoke_app_passwords' )->once()->with( $expected['product'] );
 
 		$this->subscriber->revoke_app_passwords();
 	}

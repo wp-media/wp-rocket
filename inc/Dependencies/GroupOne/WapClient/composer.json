@@ -1,0 +1,47 @@
+{
+    "name": "groupone/wap-client",
+    "description": "WordPress AI Platform (WAP) client library — drop-in Composer package for integrating AI chat into any WordPress plugin.",
+    "type": "wordpress-plugin",
+    "version": "3.0.0",
+    "license": "GPL-2.0-or-later",
+    "homepage": "https://github.com/One-com/wap-client",
+    "authors": [
+        {
+            "name": "group.one",
+            "homepage": "https://www.group.one"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/One-com/wap-client/issues",
+        "source": "https://github.com/One-com/wap-client"
+    },
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "GroupOne\\WapClient\\": "includes/"
+        },
+        "files": [
+            "wap-client.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GroupOne\\WapClient\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "keywords": [
+        "wordpress",
+        "ai",
+        "chat",
+        "group-one",
+        "wap"
+    ]
+}

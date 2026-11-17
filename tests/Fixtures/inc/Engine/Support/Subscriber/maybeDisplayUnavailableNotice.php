@@ -1,18 +1,8 @@
 <?php
 
 return [
-	'wap_client_missing'        => [
-		'config'   => [
-			'wap_class_exists' => false,
-			'screen_id'        => 'settings_page_wprocket',
-		],
-		'expected' => [
-			'notice_called' => false,
-		],
-	],
 	'without_capability'        => [
 		'config'   => [
-			'wap_class_exists' => true,
 			'wap_check_called' => false,
 			'screen_id'        => 'settings_page_wprocket',
 			'consumer_key'     => 'test-consumer-key',
@@ -25,7 +15,6 @@ return [
 	],
 	'without_screen'            => [
 		'config'   => [
-			'wap_class_exists' => true,
 			'wap_check_called' => false,
 			'screen_id'        => null,
 			'consumer_key'     => 'test-consumer-key',
@@ -37,7 +26,6 @@ return [
 	],
 	'another_screen'            => [
 		'config'   => [
-			'wap_class_exists' => true,
 			'wap_check_called' => false,
 			'screen_id'        => 'dashboard',
 			'consumer_key'     => 'test-consumer-key',
@@ -49,7 +37,6 @@ return [
 	],
 	'without_licence_data'      => [
 		'config'   => [
-			'wap_class_exists' => true,
 			'wap_check_called' => false,
 			'screen_id'        => 'settings_page_wprocket',
 			'consumer_key'     => '',
@@ -61,7 +48,6 @@ return [
 	],
 	'app_passwords_available'   => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
 			'app_passwords_available' => true,
 			'screen_id'               => 'settings_page_wprocket',
@@ -74,7 +60,6 @@ return [
 	],
 	'user_cannot_use_assistant' => [
 		'config'   => [
-			'wap_class_exists' => true,
 			'wap_check_called' => false,
 			'screen_id'        => 'settings_page_wprocket',
 			'consumer_key'     => 'test-consumer-key',
@@ -85,47 +70,10 @@ return [
 			'notice_called' => false,
 		],
 	],
-	'https_missing'             => [
-		'config'   => [
-			'wap_class_exists'        => true,
-			'wap_check_called'        => true,
-			'wap_has_reason_method'   => false,
-			'app_passwords_available' => false,
-			'https_missing'           => true,
-			'screen_id'               => 'settings_page_wprocket',
-			'consumer_key'            => 'test-consumer-key',
-			'consumer_email'          => 'user@example.org',
-		],
-		'expected' => [
-			'notice_called'    => true,
-			'status'           => 'warning',
-			'message_contains' => 'requires HTTPS',
-		],
-	],
-	'app_passwords_disabled'    => [
-		'config'   => [
-			'wap_class_exists'        => true,
-			'wap_check_called'        => true,
-			'wap_has_reason_method'   => false,
-			'app_passwords_available' => false,
-			'https_missing'           => false,
-			'screen_id'               => 'settings_page_wprocket',
-			'consumer_key'            => 'test-consumer-key',
-			'consumer_email'          => 'user@example.org',
-		],
-		'expected' => [
-			'notice_called'    => true,
-			'status'           => 'warning',
-			'message_contains' => 'have been disabled',
-		],
-	],
 	'multisite_not_network_activated' => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
-			'wap_has_reason_method'   => true,
 			'app_passwords_available' => false,
-			'https_missing'           => true,
 			'unavailable_reason'      => 'multisite',
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
@@ -139,11 +87,8 @@ return [
 	],
 	'reason_https' => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
-			'wap_has_reason_method'   => true,
 			'app_passwords_available' => false,
-			'https_missing'           => true,
 			'unavailable_reason'      => 'https',
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
@@ -157,11 +102,8 @@ return [
 	],
 	'reason_disabled' => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
-			'wap_has_reason_method'   => true,
 			'app_passwords_available' => false,
-			'https_missing'           => false,
 			'unavailable_reason'      => 'disabled',
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
@@ -175,11 +117,8 @@ return [
 	],
 	'reason_empty_is_silent' => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
-			'wap_has_reason_method'   => true,
 			'app_passwords_available' => true,
-			'https_missing'           => false,
 			'unavailable_reason'      => '',
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
@@ -189,31 +128,10 @@ return [
 			'notice_called' => false,
 		],
 	],
-	'reason_method_missing_https' => [
+	'reason_empty_while_unavailable' => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
-			'wap_has_reason_method'   => false,
 			'app_passwords_available' => false,
-			'https_missing'           => true,
-			'unavailable_reason'      => '',
-			'screen_id'               => 'settings_page_wprocket',
-			'consumer_key'            => 'test-consumer-key',
-			'consumer_email'          => 'user@example.org',
-		],
-		'expected' => [
-			'notice_called'    => true,
-			'status'           => 'warning',
-			'message_contains' => 'requires HTTPS',
-		],
-	],
-	'reason_method_missing_disabled' => [
-		'config'   => [
-			'wap_class_exists'        => true,
-			'wap_check_called'        => true,
-			'wap_has_reason_method'   => false,
-			'app_passwords_available' => false,
-			'https_missing'           => false,
 			'unavailable_reason'      => '',
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
@@ -227,10 +145,8 @@ return [
 	],
 	'chat_enabled_by_filter'    => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => true,
 			'app_passwords_available' => false,
-			'https_missing'           => false,
 			'screen_id'               => 'settings_page_wprocket',
 			'consumer_key'            => 'test-consumer-key',
 			'consumer_email'          => 'user@example.org',
@@ -244,7 +160,6 @@ return [
 	],
 	'chat_disabled_by_filter'   => [
 		'config'   => [
-			'wap_class_exists'        => true,
 			'wap_check_called'        => false,
 			'app_passwords_available' => false,
 			'screen_id'               => 'settings_page_wprocket',

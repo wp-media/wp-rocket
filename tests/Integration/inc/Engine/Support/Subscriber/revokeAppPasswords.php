@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
-use GroupOne\WapClient\AppPasswordManager;
+use WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager;
 use WP_Application_Passwords;
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -17,13 +17,6 @@ class Test_RevokeAppPasswords extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
-
-		// The bootstrap loads Composer before WordPress defines ABSPATH, so the library's bootstrap
-		// returned early and never registered its class map. Run it now, as WP Rocket's load does in
-		// production. require, not require_once: PHP already counts the early return as an include.
-		if ( ! class_exists( 'WapClient', false ) ) {
-			require WP_ROCKET_PLUGIN_ROOT . 'vendor/groupone/wap-client/wap-client.php';
-		}
 
 		$this->user_id = self::factory()->user->create( [ 'role' => 'administrator' ] );
 		wp_set_current_user( $this->user_id );

@@ -1,0 +1,50 @@
+/**
+ * Document-shell styles for register_chat_page(['render_mode' => 'standalone']).
+ *
+ * A standalone chat page skips wp-admin/admin-header.php, so none of core's
+ * admin stylesheets load — including the resets and the height chain that
+ * .wap-chat-root.wap-height-fill needs to resolve against. This file supplies
+ * only that shell; everything inside #wap-chat-root is styled by wap-chat.css
+ * and the Gravity design system, exactly as in admin mode.
+ *
+ * Declared as dependent on wap-chat.css so it loads after it.
+ */
+
+html,
+body.wap-standalone {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body.wap-standalone {
+    background: var(--color-background-default, #fff);
+    color: var(--color-body-on-default, #1e1d1f);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+body.wap-standalone *,
+body.wap-standalone *::before,
+body.wap-standalone *::after {
+    box-sizing: border-box;
+}
+
+.wap-standalone-shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    height: 100%;
+}
+
+.wap-standalone-shell>.wap-chat-root {
+    flex: 1 1 auto;
+    min-height: 0;
+}
+
+/* Supersedes wap-chat.css's calc(100vh - 170px), which is sized for wp-admin's
+   header and gutters — neither exists here. */
+.wap-standalone-shell>.wap-chat-root.wap-height-fill {
+    height: auto;
+    min-height: 0;
+}
