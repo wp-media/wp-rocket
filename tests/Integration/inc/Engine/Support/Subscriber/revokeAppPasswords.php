@@ -130,7 +130,7 @@ class Test_RevokeAppPasswords extends TestCase {
 	 * Skips on libraries older than the one deciding ownership by app_id.
 	 */
 	private function skipBeforeOwnershipByAppId(): void {
-		if ( version_compare( Config::VERSION, '3.1.0', '<' ) ) {
+		if ( version_compare( Config::version(), '3.1.0', '<' ) ) {
 			$this->markTestSkipped( 'Needs wap-client 3.1.0, which decides ownership by app_id and names the password as given (wp-media/wp-rocket#9217).' );
 		}
 	}
