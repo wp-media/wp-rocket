@@ -211,6 +211,9 @@ class FilesystemCache implements CacheInterface {
 
 		$relative_path = str_replace( $wp_content_dir, '', $path );
 
+		// generate_path() stores decoded folder names, so re-encode each segment to keep the URL valid.
+		$relative_path = implode( '/', array_map( 'rawurlencode', explode( '/', $relative_path ) ) );
+
 		$generated_url = $wp_content_url . $relative_path;
 
 		return (string) apply_filters( 'rocket_css_url', $generated_url );
@@ -227,6 +230,13 @@ class FilesystemCache implements CacheInterface {
 		$root_path       = rtrim( $root_path, '/' );
 		$parsed_url      = get_rocket_parse_url( $url );
 		$parsed_url_path = trim( $parsed_url['path'], '/' );
+
+		// Store the file under the decoded folder name so the webserver, which decodes the request path,
+		// can find it; a space or non-ASCII folder would otherwise be saved as my%20dir / %C3%A9 and 404.
+		$decoded_path = rawurldecode( $parsed_url_path );
+		if ( ! in_array( '..', explode( '/', $decoded_path ), true ) ) {
+			$parsed_url_path = $decoded_path;
+		}
 
 		$home_url        = home_url();
 		$home_parsed_url = get_rocket_parse_url( $home_url );
