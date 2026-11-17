@@ -76,6 +76,8 @@ class Test_RevokeAppPasswords extends TestCase {
 
 	/**
 	 * Passwords the user created are kept, including one named like the chat's.
+	 *
+	 * @return void
 	 */
 	public function testShouldKeepTheUsersOwnPasswordsEvenWhenNamedLikeTheChatOnes() {
 		$this->skipBeforeOwnershipByAppId();
@@ -101,15 +103,16 @@ class Test_RevokeAppPasswords extends TestCase {
 
 	/**
 	 * The chat password gets the configured name and is the only one of WP Rocket's revoked.
+	 *
+	 * @return void
 	 */
 	public function testShouldNameTheChatPasswordExactlyAndRevokeIt() {
 		$this->skipBeforeOwnershipByAppId();
 
 		$manager = new AppPasswordManager();
-		$other   = new AppPasswordManager();
 
 		$this->assertIsString( $manager->provision( $this->user_id, 'wprocket', 'WP Rocket AI Assistant' ) );
-		$this->assertIsString( $other->provision( $this->user_id, 'imagify', 'Imagify Assistant' ) );
+		$this->assertIsString( $manager->provision( $this->user_id, 'imagify', 'Imagify Assistant' ) );
 
 		$rocket_uuid = get_user_meta( $this->user_id, AppPasswordGuard::build_meta_key( 'wprocket' ), true );
 		$other_uuid  = get_user_meta( $this->user_id, AppPasswordGuard::build_meta_key( 'imagify' ), true );
@@ -128,6 +131,8 @@ class Test_RevokeAppPasswords extends TestCase {
 
 	/**
 	 * Skips on libraries older than the one deciding ownership by app_id.
+	 *
+	 * @return void
 	 */
 	private function skipBeforeOwnershipByAppId(): void {
 		if ( version_compare( Config::version(), '3.1.0', '<' ) ) {
@@ -139,6 +144,8 @@ class Test_RevokeAppPasswords extends TestCase {
 	 * Moves the password creation time two hours back by writing the user meta, as core cannot change it.
 	 *
 	 * @param string $uuid Application Password uuid.
+	 *
+	 * @return void
 	 */
 	private function backdate( string $uuid ): void {
 		$items = WP_Application_Passwords::get_user_application_passwords( $this->user_id );
