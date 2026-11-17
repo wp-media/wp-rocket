@@ -15,8 +15,18 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Support
  */
 class Test_RevokeAppPasswords extends TestCase {
+	/**
+	 * Administrator user id.
+	 *
+	 * @var int
+	 */
 	private $user_id;
 
+	/**
+	 * Creates an administrator and enables Application Passwords and consent.
+	 *
+	 * @return void
+	 */
 	public function set_up() {
 		parent::set_up();
 
@@ -29,6 +39,11 @@ class Test_RevokeAppPasswords extends TestCase {
 		$this->unregisterAllCallbacksExcept( 'rocket_deactivation', 'revoke_app_passwords' );
 	}
 
+	/**
+	 * Restores the hooks and filters changed in set_up().
+	 *
+	 * @return void
+	 */
 	public function tear_down() {
 		$this->restoreWpHook( 'rocket_deactivation' );
 
@@ -38,6 +53,11 @@ class Test_RevokeAppPasswords extends TestCase {
 		parent::tear_down();
 	}
 
+	/**
+	 * Only WP Rocket's chat password is revoked on deactivation.
+	 *
+	 * @return void
+	 */
 	public function testShouldRevokeOnlyTheWpRocketChatPasswords() {
 		$manager = new AppPasswordManager();
 
