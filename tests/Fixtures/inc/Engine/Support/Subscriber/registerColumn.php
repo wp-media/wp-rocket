@@ -1,17 +1,8 @@
 <?php
 
 return [
-	'wap_client_missing'           => [
-		'config'   => [
-			'wap_client_exists' => false,
-		],
-		'expected' => [
-			'registered' => false,
-		],
-	],
 	'without_licence_data'         => [
 		'config'   => [
-			'wap_client_exists' => true,
 			'consumer_key'      => '',
 			'consumer_email'    => '',
 		],
@@ -21,7 +12,6 @@ return [
 	],
 	'register_with_configuration'  => [
 		'config'   => [
-			'wap_client_exists' => true,
 			'consumer_key'      => 'test-consumer-key',
 			'consumer_email'    => 'user@example.org',
 		],
@@ -37,7 +27,6 @@ return [
 	],
 	'user_cannot_use_assistant'    => [
 		'config'   => [
-			'wap_client_exists' => true,
 			'consumer_key'      => 'test-consumer-key',
 			'consumer_email'    => 'user@example.org',
 			'can_use_ai'        => false,
@@ -48,7 +37,6 @@ return [
 	],
 	'chat_enabled_by_filter'       => [
 		'config'   => [
-			'wap_client_exists' => true,
 			'consumer_key'      => 'test-consumer-key',
 			'consumer_email'    => 'user@example.org',
 			'filter_available'  => true,
@@ -63,7 +51,6 @@ return [
 	],
 	'chat_disabled_by_filter'      => [
 		'config'   => [
-			'wap_client_exists' => true,
 			'consumer_key'      => 'test-consumer-key',
 			'consumer_email'    => 'user@example.org',
 			'filter_available'  => false,

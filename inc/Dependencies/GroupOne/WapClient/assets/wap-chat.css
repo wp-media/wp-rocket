@@ -1,0 +1,2089 @@
+/**
+ * WAP Chat Widget — layout glue only.
+ *
+ * The chat is built entirely from Gravity (group-one brand) UI components:
+ *   gv-chat / gv-chat-list / gv-chat-message / gv-chat-message-body  (conversation)
+ *   gv-input-ai / gv-input-textarea / gv-input-toolbar               (composer)
+ *   gv-input-message                                                 (legal notice)
+ *   gv-stream-loader                                                 (thinking state)
+ *   gv-chip                                                          (suggested prompts)
+ *   gv-text-indicator / gv-indicator                                (connection status)
+ *   gv-button / gv-button-icon                                      (actions / send)
+ *   gv-notice                                                        (errors / success)
+ *   gv-accordion                                                     (tool-use cards)
+ *
+ * This file only sizes the shell and adds the few things Gravity has no token
+ * for (full-height fit, chat header row, markdown spacing inside a message
+ * body, suggestion-chip row, reply timestamp). No bespoke message styling —
+ * Gravity owns that; layout uses Gravity utility classes and tokens.
+ *
+ * @package GroupOne\WapClient
+ * @version 1.4.0
+ */
+
+/* ---------------------------------------------------------------------------
+   Shell — give gv-chat a height to fill (gv-chat is height:100%)
+   --------------------------------------------------------------------------- */
+
+.wap-client-wrap {
+    box-sizing: border-box;
+}
+
+.wap-chat-root {
+    position: relative;
+    /* positioning context for the settings sheet */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 900px;
+    /* Height in three layers, last one wins:
+       1. 100vh — fallback for browsers without dvh (< Safari 15.4).
+       2. 100dvh — accurate viewport that accounts for the collapsing URL bar.
+       3. var(--wap-vh) — set by JS from window.visualViewport; handles the
+          iOS on-screen keyboard, which neither vh nor dvh shrinks for. The
+          variable defaults to 100dvh when JS hasn't run (older browsers, or
+          visualViewport unsupported). */
+    height: calc(100vh - 170px);
+    height: calc(100dvh - 170px);
+    height: calc(var(--wap-vh, 100dvh) - 170px);
+    min-height: 480px;
+    overflow: hidden;
+    border: 1px solid var(--color-border-default, #e3e5ea);
+    border-radius: var(--border-radius, 12px);
+    box-shadow: var(--shadow-md, 0 4px 16px rgba(0, 0, 0, 0.08));
+    background: var(--color-surface-bright, #fff);
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+.wap-chat-root :where(p, h1, h2, h3, h4, h5, h6, ul, ol, li, dl, dt, dd,
+    blockquote, pre, code, kbd, samp, table, caption, thead, tbody, tfoot,
+    tr, th, td, span, strong, b, em, i, u, s, small, sub, sup, abbr,
+    figure, figcaption, hr, label, legend, fieldset) {
+    color: inherit;
+}
+
+/* gv-chat fills the remaining height below the header and scrolls internally */
+.wap-chat-root .gv-chat {
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+}
+
+/* ---------------------------------------------------------------------------
+   Header row (title + status + actions). Built from Gravity atoms.
+   --------------------------------------------------------------------------- */
+
+.wap-chat__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--size-md, 16px);
+    padding: var(--size-md, 18px) var(--size-lg, 24px);
+    border-bottom: 1px solid var(--color-border-default, #e3e5ea);
+    background: var(--color-surface-bright, #fff);
+    flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Suggested-prompt chips (welcome state). gv-chip provides the chip styling;
+   this only lays them out in a wrapping row.
+   --------------------------------------------------------------------------- */
+
+.wap-chat__suggestions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--size-sm, 8px);
+    margin-top: var(--size-sm, 8px);
+}
+
+.wap-chat__suggestions .gv-chip {
+    cursor: pointer;
+}
+
+/* ask_user response selector (RKM-2088): a card docked right above the
+   composer — question + close, numbered quick replies, then a "Type something
+   else…" row with Skip. Multi-select adds a Confirm bar. */
+.wap-chat-root .wap-reply-dock:empty {
+    display: none;
+}
+
+.wap-chat-root .wap-reply {
+    margin-bottom: var(--size-sm, 8px);
+    padding: var(--size-sm, 8px);
+    border-radius: var(--radius-md, 8px);
+    background: var(--color-surface-dim, #f3f4f6);
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+/* The docked card follows the conversation, so drop the footer's top padding. */
+.wap-chat-root.gv-activated .gv-chat footer .gv-chat-footer:has(.wap-reply) {
+    padding-top: 0;
+}
+
+/* ...and the gap between the list and the footer. */
+.wap-chat-root.gv-activated .gv-chat:has(.wap-reply) {
+    gap: 0;
+}
+
+/* Focused by script only (tabindex=-1), to catch the keys; no ring. */
+.wap-chat-root .wap-reply:focus {
+    outline: none;
+}
+
+.wap-chat-root .wap-reply__head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--size-sm, 8px);
+    padding: var(--size-xs, 4px) var(--size-xs, 4px) var(--size-sm, 8px) var(--size-sm, 8px);
+}
+
+.wap-chat-root .wap-reply__head .wap-chat__question-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: .875rem;
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1.45;
+}
+
+.wap-chat-root .wap-reply__head .wap-chat__question-text p,
+.wap-chat-root .wap-reply__head .wap-chat__question-text ul {
+    margin: 0 0 0.35em;
+}
+
+.wap-chat-root .wap-reply__head .wap-chat__question-text > :last-child {
+    margin-bottom: 0;
+}
+
+.wap-chat-root .wap-reply__close {
+    flex: 0 0 auto;
+}
+
+.wap-chat-root .wap-reply__options {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wap-chat-root .wap-reply__option {
+    display: flex;
+    align-items: center;
+    gap: var(--size-sm, 8px);
+    width: 100%;
+    margin: 0;
+    padding: var(--size-xs, 6px) var(--size-sm, 8px);
+    border: 0;
+    border-radius: var(--radius-sm, 6px);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: .875rem;
+    line-height: 1.4;
+    text-align: left;
+    cursor: pointer;
+}
+
+.wap-chat-root .wap-reply__option:hover,
+.wap-chat-root .wap-reply__option:focus-visible,
+.wap-chat-root .wap-reply__option[aria-pressed="true"] {
+    background: var(--color-bg-default, #fff);
+}
+
+.wap-chat-root .wap-reply__option:focus-visible,
+.wap-chat-root .wap-reply__skip:focus-visible {
+    outline: 2px solid var(--color-focus, var(--color-primary, #1e6fc0));
+    outline-offset: 1px;
+}
+
+/* Number badge; a selected multi-select row fills it. */
+.wap-chat-root .wap-reply__key {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.375rem;
+    height: 1.375rem;
+    border: 1px solid var(--color-border-default, #d7d9de);
+    border-radius: var(--radius-xs, 4px);
+    background: var(--color-bg-default, #fff);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--color-body-on-alternative, #646970);
+}
+
+.wap-chat-root .wap-reply__option[aria-pressed="true"] .wap-reply__key {
+    border-color: var(--color-primary, #1e6fc0);
+    background: var(--color-primary, #1e6fc0);
+    color: var(--color-on-primary, #fff);
+}
+
+.wap-chat-root .wap-reply__label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+/* Typing an answer: the choices step back, the field turns white, and Skip
+   gives way to a send arrow. */
+.wap-chat-root .wap-reply--typing .wap-reply__option,
+.wap-chat-root .wap-reply--typing .wap-reply__key {
+    color: var(--color-body-on-placeholder, #a7aaad);
+}
+
+.wap-chat-root .wap-reply--typing .wap-reply__else {
+    border-radius: var(--radius-sm, 6px);
+    background: var(--color-bg-default, #fff);
+}
+
+/* .wap-reply prefix: outranks the generic .wap-icon-btn display rule. */
+.wap-chat-root .wap-reply .wap-reply__send,
+.wap-chat-root .wap-reply--typing .wap-reply__skip {
+    display: none;
+}
+
+.wap-chat-root .wap-reply--typing .wap-reply__else .wap-reply__send {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+}
+
+.wap-chat-root .wap-reply__send gv-icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* The "else" path: borderless inline field with a Skip action. */
+.wap-chat-root .wap-reply__else {
+    display: flex;
+    align-items: center;
+    gap: var(--size-sm, 8px);
+    padding: var(--size-xs, 6px) var(--size-sm, 8px);
+}
+
+.wap-chat-root .wap-reply__else-icon {
+    flex: 0 0 auto;
+    width: 1.375rem;
+    height: 1rem;
+    color: var(--color-body-on-alternative, #646970);
+}
+
+.wap-chat-root .wap-reply__else input {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: inherit;
+    font: inherit;
+    font-size: .875rem;
+    line-height: 1.4;
+}
+
+.wap-chat-root .wap-reply__else input:focus {
+    outline: none;
+}
+
+.wap-chat-root .wap-reply__else:focus-within {
+    border-radius: var(--radius-sm, 6px);
+    background: var(--color-bg-default, #fff);
+}
+
+.wap-chat-root .wap-reply__skip {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 2px var(--size-xs, 4px);
+    border: 0;
+    border-radius: var(--radius-xs, 4px);
+    background: transparent;
+    color: var(--color-body-on-default, #1e1d1f);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: var(--font-weight-medium, 500);
+    cursor: pointer;
+}
+
+.wap-chat-root .wap-reply__skip:hover {
+    text-decoration: underline;
+}
+
+.wap-chat-root .wap-reply__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--size-sm, 8px);
+    padding: var(--size-sm, 8px) var(--size-sm, 8px) var(--size-xs, 4px);
+}
+
+.wap-chat-root .wap-reply__info {
+    margin-right: auto;
+    font-size: 0.8125rem;
+    color: var(--color-body-on-alternative, #646970);
+}
+
+.wap-chat-root .wap-reply--error .wap-reply__info {
+    color: var(--color-error, #d63638);
+}
+
+/* ---------------------------------------------------------------------------
+   Width overrides.
+
+   Gravity's chat is tuned for a narrow support/side-panel: it caps the message
+   column at 696px and every message body at 320px. That is far too narrow for
+   AI answers with tables and code, and it leaves assistant replies sitting in
+   ~half the chat. These selectors are deliberately MORE specific than Gravity's
+   own rules (which use `.gv-activated …`), so they actually win the cascade —
+   the previous override lost to Gravity's 4-class `max-width:320px` rule.
+
+   We widen the column to the full shell and let ASSISTANT (incoming) bodies use
+   the full width; USER (outgoing) bubbles keep a sensible cap so short messages
+   still read as bubbles rather than full-width banners.
+   --------------------------------------------------------------------------- */
+
+/* Inner content column (list + composer): `--wap-inner-width` caps it (default
+   100%), `--wap-align-inline` places it. keepScrollbar:false hides the scrollbar. */
+.wap-chat-root.gv-activated .gv-chat .gv-chat-list,
+.wap-chat-root.gv-activated .gv-chat footer {
+    max-width: var(--wap-inner-width, 100%);
+    margin-inline: var(--wap-align-inline, 0);
+}
+.wap-chat-root.wap-align-center { --wap-align-inline: auto; }
+.wap-chat-root.wap-align-right  { --wap-align-inline: auto 0; }
+
+/* keepScrollbar:false — hide the scrollbar, keep the list scrollable. */
+.wap-chat-root.wap-hide-scrollbar .gv-chat-list {
+    scrollbar-width: none;              /* Firefox */
+}
+.wap-chat-root.wap-hide-scrollbar .gv-chat-list::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;                      /* WebKit / Blink */
+}
+
+/* Assistant (incoming): allow the full column for tables/code, but keep
+   Gravity's `width: fit-content` so short replies hug their text instead of
+   stretching to a full-width banner (matches the Gravity conversational demo). */
+.wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-incoming .gv-chat-message-body {
+    max-width: 100%;
+    width: fit-content;
+}
+
+/* A bubble holding a figure takes the full column: under fit-content a
+   figure-only bubble (e.g. after a reload) would shrink to the card's
+   intrinsic width. Text inside keeps its own reading measure. */
+.wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-incoming .gv-chat-message-body.wap-visual-host {
+    width: 100%;
+}
+
+/* User (outgoing): Gravity caps the bubble at 320px. We widened the column, so
+   cap at 75% but never wider than ~32rem, so long questions still read as a
+   right-aligned bubble rather than a full-width block. `width: fit-content`
+   (inherited from Gravity's base rule) keeps short messages tight. */
+.wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-outgoing .gv-chat-message-body {
+    max-width: min(75%, 32rem);
+}
+
+/* Markdown typography inside a message body (Gravity styles inline text, not
+   block flow or long-form reading rhythm — that is set here).
+
+   Reading measure: assistant answers are long-form prose in a wide (≤900px)
+   column, so unconstrained lines run 120+ characters and are tiring to scan.
+   We cap the *text* blocks at a comfortable ~68ch measure while leaving wide
+   blocks (tables, code, images) free to use the full width — see the
+   max-width:none override below. `--wap-measure` is the single knob.
+
+   Font: the body inherits the brand font from the Gravity root (Plus Jakarta
+   Sans for rankmath) at the header title's size, as in the design — there is
+   no --font-family-base token, so the old system-stack fallback always won.
+   Kerning + ligatures on, contextuals off so AI output never breaks
+   unexpectedly.
+
+   Streamed replies render into a .wap-chat-message-text wrapper while history
+   replies render straight into the body, so the block-level rules below match
+   both as the parent. */
+.wap-chat-root .gv-chat-message-body {
+    --wap-measure: 68ch;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: var(--line-height-body, 1.5);
+    color: var(--color-body-on-default, #1e1d1f);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+}
+
+/* Assistant answers are 14px; the user's own question bubbles keep 1rem. */
+.wap-chat-root .gv-chat-message.gv-chat-incoming .gv-chat-message-body {
+    font-size: .875rem;
+}
+
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text)>*:first-child {
+    margin-top: 0;
+}
+
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text)>*:last-child {
+    margin-bottom: 0;
+}
+
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text)>:is(p, ul, ol, h1, h2, h3, h4, h5, h6, blockquote) {
+    max-width: var(--wap-measure);
+}
+
+/* Wide blocks opt out of the reading measure and use the full column. */
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text)>:is(pre, table, img) {
+    max-width: 100%;
+}
+
+/* The "Thinking…" checklist above the answer: Gravity sets it in 12px caption
+   type and leaves no gap before the text; the design has it at 14px with the
+   regular block gap. */
+.wap-chat-root .gv-chat-message-body>.gv-stream-loader {
+    font-size: 0.875rem;
+}
+
+.wap-chat-root .gv-chat-message-body>.gv-stream-loader:not(:last-child) {
+    margin-bottom: var(--size-sm, 8px);
+}
+
+/* Body paragraphs: text-wrap:pretty avoids single-word orphan lines (common in
+   short chat paragraphs); hyphens lets long unbreakable URLs/wrap still flow
+   without leaving a stranded first character. Both are progressive
+   enhancements — ignored where unsupported. */
+/* font-size/line-height inherit: wp-admin's bare `p { font-size: 13px }` would
+   otherwise shrink paragraphs below the list items next to them. */
+.wap-chat-root .gv-chat-message-body p,
+.wap-chat-root .wap-chat__question-text p {
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.wap-chat-root .gv-chat-message-body p {
+    margin: 0 0 0.5em;
+    text-wrap: pretty;
+    hanging-punctuation: first allow-end;
+}
+
+/* Lists: the text sits 1.5em in (list padding + item padding); splitting it
+   moves the outside marker off the column edge and leaves a wider gap before
+   the text, as in the design. Items stack at the plain line height — the block
+   gap is the same 0.5em as between paragraphs. */
+.wap-chat-root .gv-chat-message-body ul,
+.wap-chat-root .gv-chat-message-body ol {
+    margin: 0.5em 0;
+    padding-left: 1.25em;
+}
+
+/* Restore list markers — Gravity resets list-style to none globally, which
+   makes bulleted/numbered answers read as indented paragraphs. */
+.wap-chat-root .gv-chat-message-body ul {
+    list-style: disc;
+}
+
+.wap-chat-root .gv-chat-message-body ol {
+    list-style: decimal;
+}
+
+.wap-chat-root .gv-chat-message-body li {
+    margin: 0;
+    padding-left: 0.25em;
+}
+
+/* Bullets are muted so they don't compete with the text; numbers carry the
+   order and stay at text colour. */
+.wap-chat-root .gv-chat-message-body ul>li::marker {
+    color: var(--color-body-on-alternative, #8c8f94);
+}
+
+.wap-chat-root .gv-chat-message-body ol>li::marker {
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+/* An item that carries its own paragraphs or list is a section: "1. Check your
+   email" with its explanation underneath. The bold lead-in plus a bold number
+   reads as a numbered sub-title, and sections get room between them. */
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text) > ol > li:has(> p, > ul, > ol) {
+    margin: 0.5em 0;
+}
+
+.wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text) > ol > li:has(> strong:first-child)::marker,
+.wap-chat-root .gv-chat-message-body li > strong:first-child {
+    font-weight: var(--font-weight-semibold, 600);
+}
+
+.wap-chat-root .gv-chat-message-body li > p {
+    margin: 0.5em 0 0;
+}
+
+/* Nested lists indent less so they don't drift to the right edge of the
+   column. */
+.wap-chat-root .gv-chat-message-body li>ul,
+.wap-chat-root .gv-chat-message-body li>ol {
+    margin: 0.5em 0;
+    padding-left: 1em;
+}
+
+/* Links: always underlined, since the underline is the only thing setting them
+   apart from body text. --color-link, not --color-state-active — that one is a
+   brand tint over the surface, i.e. a background. --wap-link-color lets a brand
+   stylesheet colour links (Rank Math's design uses its blue) without touching
+   Gravity's own --color-link. */
+.wap-chat-root {
+    --wap-link-color: var(--color-link, var(--color-body-on-default, #1e1d1f));
+}
+
+/* Rank Math's design colours links with its brand blue; Gravity's rankmath
+   brand keeps --color-link near-black. */
+.wap-chat-root[data-wap-brand="rankmath"] {
+    --wap-link-color: var(--color-primary, #1e6fc0);
+}
+
+.wap-chat-root .gv-chat-message-body a {
+    color: var(--wap-link-color);
+    font-weight: var(--font-weight-medium, 500);
+    text-decoration: underline;
+    text-decoration-thickness: 0.07em;
+    text-underline-offset: 0.18em;
+    text-decoration-color: currentColor;
+    transition: color 0.12s ease, text-decoration-thickness 0.12s ease, background-color 0.12s ease;
+}
+
+.wap-chat-root .gv-chat-message-body a:hover,
+.wap-chat-root .gv-chat-message-body a:focus-visible {
+    color: var(--wap-link-color);
+    text-decoration-thickness: 0.12em;
+}
+
+.wap-chat-root .gv-chat-message-body a:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* FIX: the fallback used to be #1e1e22 (near-black) while every other use of
+   --color-surface-dim falls back to light #f6f7f9 — if the token failed to
+   resolve, code came out dark-on-dark with the default text colour. Fallback
+   is now consistent with the rest of the file. */
+.wap-chat-root .gv-chat-message-body pre {
+    background: var(--color-surface-toned, #f1f1f1);
+    border: 1px solid var(--color-border-alt, #e2e2e2);
+    border-radius: var(--border-radius, 8px);
+    padding: var(--size-sm, 12px);
+    overflow-x: auto;
+    margin: 0.5em 0;
+}
+
+/* Inline code: a slightly darker surface than the chat background so the chip
+   reads as a deliberate annotation rather than a faint highlight. Disable
+   contextual alternates and ligatures — they make some monospace fonts (Jet
+  Brains Mono, Fira Code) render emoji-style substitutions mid-string which
+   look broken inside AI output. */
+.wap-chat-root .gv-chat-message-body code {
+    font-family: var(--font-family-mono,
+        ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace);
+    font-size: 0.86em;
+    font-feature-settings: "calt" 0, "liga" 0;
+    background: var(--color-surface-toned, #f1f1f1);
+    padding: 0.12em 0.38em;
+    border-radius: var(--border-radius-sm, 4px);
+    border: 1px solid var(--color-border-alt, #e2e2e2);
+    vertical-align: baseline;
+    /* A long unbreakable token (a URL, a hook name like
+       `wp_enqueue_scripts_footer`) would otherwise push past the reading
+       measure and force the whole bubble to scroll horizontally. `anywhere`
+       lets the chip wrap mid-token only when it would overflow — short inline
+       code is unaffected. */
+    overflow-wrap: anywhere;
+}
+
+/* Code inside a fenced block owns the block's own styling — no inline chip,
+   no inline border (the block supplies its own background + border). Tabular
+   numbers so column-aligned code (tables of values, JSON output) lines up. */
+.wap-chat-root .gv-chat-message-body pre code {
+    background: transparent;
+    padding: 0;
+    border: 0;
+    font-size: 0.82em;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Headings: keep them modest. In a chat reply a heading is a section label,
+   not a page title — so the size step over body text is small and hierarchy
+   comes mostly from weight + the generous space *above* each heading (which
+   separates sections) versus the tight space *below* (which binds the heading
+   to its content).
+
+   Use Gravity's --font-heading-storefront so headings follow the brand's
+   heading family. The fallback chain covers environments where the Gravity
+   brand sheet hasn't loaded the variable. */
+.wap-chat-root .gv-chat-message-body h1,
+.wap-chat-root .gv-chat-message-body h2,
+.wap-chat-root .gv-chat-message-body h3,
+.wap-chat-root .gv-chat-message-body h4,
+.wap-chat-root .gv-chat-message-body h5,
+.wap-chat-root .gv-chat-message-body h6 {
+    margin: 1.1em 0 0.4em;
+    font-family: var(--font-heading-storefront,
+        system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+    line-height: var(--line-height-heading, 1.25);
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+.wap-chat-root .gv-chat-message-body h1 {
+    font-size: 1.25em;
+    letter-spacing: -0.02em;
+    font-weight: var(--font-weight-bold, 700);
+}
+
+.wap-chat-root .gv-chat-message-body h2 {
+    font-size: 1.125em;
+    letter-spacing: -0.015em;
+}
+
+.wap-chat-root .gv-chat-message-body h3 {
+    font-size: 1.0625em;
+    letter-spacing: -0.005em;
+}
+
+/* h4–h6 in chat replies are rare. Render them as small caps so they read as
+   a *category* label rather than a competing heading — "STEP", "TIP", etc. —
+   without becoming too prominent in the visual hierarchy. */
+.wap-chat-root .gv-chat-message-body h4,
+.wap-chat-root .gv-chat-message-body h5,
+.wap-chat-root .gv-chat-message-body h6 {
+    font-size: 0.78em;
+    font-weight: var(--font-weight-bold, 700);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-body-on-alternative, #646970);
+}
+
+/* Emoji inside headings often renders on the text baseline and looks a hair
+   low; nudge it onto a vertical-centre alignment that matches the surrounding
+   semibold line so the heading reads as one tight unit. */
+.wap-chat-root .gv-chat-message-body h1,
+.wap-chat-root .gv-chat-message-body h2,
+.wap-chat-root .gv-chat-message-body h3 {
+    /* Drop-cap behaviour on emoji glyphs that don't centre cleanly. */
+    font-variant-emoji: text;
+}
+.wap-chat-root .gv-chat-message-body h1 > img,
+.wap-chat-root .gv-chat-message-body h2 > img,
+.wap-chat-root .gv-chat-message-body h3 > img {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.12em;
+}
+
+/* A heading followed by another heading is rare in chat replies, but when it
+   happens the second one was getting the 1.3em top margin and felt disjointed.
+   Tighten that adjacent-sibling rhythm. */
+.wap-chat-root .gv-chat-message-body h1 + h2,
+.wap-chat-root .gv-chat-message-body h2 + h3,
+.wap-chat-root .gv-chat-message-body h3 + h4 {
+    margin-top: 0.4em;
+}
+
+/* Horizontal rule: a thin neutral line with extra breathing room — a divider
+   in prose deserves space to breathe on either side. */
+.wap-chat-root .gv-chat-message-body hr {
+    border: none;
+    border-top: 1px solid var(--color-border-default, #e3e5ea);
+    margin: 1.4em 0;
+}
+
+/* Blockquote: italic body + accent-coloured rule on the left, so a quoted
+   note reads as a *separate voice* without needing a label. The accent is
+   borrowed from the brand signal colour (warning yellow #fec600) at low
+   opacity — enough to feel intentional without being loud. */
+.wap-chat-root .gv-chat-message-body blockquote {
+    margin: 0.85em 0;
+    padding: 0.1em 0 0.1em 1em;
+    border-left: 3px solid var(--color-surface-accent, #fec600);
+    color: var(--color-body-on-alternative, #5b5e63);
+    font-style: italic;
+    font-size: 0.95em;
+}
+.wap-chat-root .gv-chat-message-body blockquote > :first-child { margin-top: 0; }
+.wap-chat-root .gv-chat-message-body blockquote > :last-child  { margin-bottom: 0; }
+
+/* Tables: borderless rows at body size with a plain bold header and the odd
+   body rows tinted, so a Setting/Value answer reads as a light list of rows
+   rather than a spreadsheet grid. Numeric columns align via tabular-nums. */
+.wap-chat-root .gv-chat-message-body table {
+    border-collapse: collapse;
+    width: 100%;
+    line-height: 1.45;
+}
+
+/* A reply with a table spans the column instead of hugging its text, so the
+   table gets the full width like in the design rather than its content's. */
+.wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-incoming .gv-chat-message-body:has(.wap-table-wrap) {
+    width: 100%;
+}
+
+/* Scroll container for wide tables (added by the renderer, see renderMarkdown).
+   The wrapper owns horizontal overflow so the <table> keeps real table
+   semantics — replacing the old `display:block` on the table itself, which
+   stopped screen readers announcing row/column relationships. overflow-x:auto
+   establishes a BFC, so the vertical rhythm lives on the wrapper (the table's
+   own margin would otherwise be trapped inside it). */
+.wap-chat-root .gv-chat-message-body .wap-table-wrap {
+    margin: 0.75em 0;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.wap-chat-root .gv-chat-message-body th,
+.wap-chat-root .gv-chat-message-body td {
+    border: 0;
+    padding: 0.6em 1em;
+    text-align: left;
+    vertical-align: top;
+}
+
+/* Tabular figures keep columns of numbers vertically aligned — AI answers
+   produce a lot of numeric tables. */
+.wap-chat-root .gv-chat-message-body td {
+    font-variant-numeric: tabular-nums;
+}
+
+.wap-chat-root .gv-chat-message-body th {
+    background: transparent;
+    font-weight: var(--font-weight-semibold, 600);
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+/* Odd body rows tinted: the first data row sits on a tint right under the
+   untinted header, which separates the two without a rule. */
+.wap-chat-root .gv-chat-message-body tbody tr:nth-child(odd) td {
+    background: var(--color-surface-dim, #f6f7f9);
+}
+
+/* ---------------------------------------------------------------------------
+   Tool-use action JSON inside the gv-accordion body.
+   --------------------------------------------------------------------------- */
+
+.wap-chat__action-json {
+    background: var(--color-surface-dim, #f6f7f9);
+    border: 1px solid var(--color-border-default, #e3e5ea);
+    border-radius: var(--border-radius-sm, 6px);
+    font-family: var(--font-family-mono, ui-monospace, Menlo, monospace);
+    /* FIX: fallback aligned with every other --font-size-caption-lg use
+       (was 0.8, everywhere else 0.75). */
+    font-size: calc(var(--font-size-caption-lg, 0.75) * 1rem);
+    margin: var(--size-xs, 4px) 0 0;
+    max-height: 220px;
+    overflow: auto;
+    padding: var(--size-sm, 8px);
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+/* The "thinking" checklist is Gravity's native stream-loader (gv-stream-loader
+   with gv-step-working / gv-step-done spans, built in appendStepRow()). The CDN
+   supplies the step styling — the spinning ring, the checkmark, indentation
+   and typography. With more than one step it collapses to the latest step on
+   one line, and a caret after it (row 1, column 2) toggles the full list. */
+.wap-chat-root.gv-activated .gv-chat-list .gv-stream-loader.wap-steps--many {
+    display: grid;
+    grid-template-columns: minmax(0, max-content) auto;
+    justify-content: start;
+    align-items: start;
+    column-gap: var(--size-xs, 4px);
+}
+
+.wap-chat-root .wap-steps--many > :not(.wap-steps__toggle) {
+    grid-column: 1;
+}
+
+.wap-chat-root .wap-steps--many:not(.wap-steps--open) > :not(.wap-steps__toggle):not(.wap-step--latest) {
+    display: none;
+}
+
+.wap-chat-root .wap-steps--many:not(.wap-steps--open) > .wap-step--latest {
+    margin-bottom: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.wap-chat-root.gv-activated .gv-stream-loader > .wap-steps__toggle {
+    grid-column: 2;
+    grid-row: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 1lh;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-sm, 4px);
+    background: none;
+    color: var(--color-body-on-alternative, #646970);
+    cursor: pointer;
+}
+
+.wap-chat-root.gv-activated .wap-steps__toggle:hover {
+    color: var(--color-body-on-default, #1e1d1f);
+}
+
+.wap-chat-root .wap-steps__toggle gv-icon {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.15s ease;
+}
+
+.wap-chat-root .wap-steps--open .wap-steps__toggle gv-icon {
+    transform: rotate(180deg);
+}
+
+/* ---------------------------------------------------------------------------
+   Confirmation modal (Delete my data). Uses Gravity gv-modal; we only narrow it
+   from Gravity's default 700px (built for content modals) to a confirm-dialog
+   width and right-align the action buttons. Selector beats Gravity's
+   `.gv-activated .gv-modal …` (root carries both classes).
+   --------------------------------------------------------------------------- */
+
+/* Scope the modal + its dark backdrop to the widget, not the whole page.
+   Gravity's gv-modal is position:fixed inset:0, so its shade covers the entire
+   host page (the WP admin screen). Both our gv-modals are appended INSIDE the
+   position:relative .wap-chat-root, so switching to absolute confines the
+   overlay to the chat interface — matching the .wap-settings sheet. */
+.wap-chat-root.gv-activated .gv-modal.wap-confirm,
+.wap-chat-root.gv-activated .gv-modal.wap-consent-modal {
+    position: absolute;
+    inset: 0;
+}
+
+.wap-chat-root.gv-activated .gv-modal.wap-confirm .gv-modal-content {
+    max-width: 460px;
+}
+
+.wap-chat-root.gv-activated .gv-modal.wap-confirm .gv-button-group {
+    justify-content: flex-end;
+    gap: var(--size-sm, 12px);
+}
+
+.wap-chat-root.gv-activated .gv-modal.wap-confirm #wap-confirm-msg {
+    color: var(--color-body-on-alternative, #646970);
+    line-height: var(--line-height-body, 1.5);
+}
+
+/* AI + legal notice right under the composer (Gravity's input disclaimer line). */
+.wap-chat-root.gv-activated .wap-legal-notice {
+    display: block;
+    margin-top: var(--size-xs, 8px);
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-body-on-alternative, #50575e);
+}
+
+/* Hidden while the reply is only an open question card (see appendQuestion). */
+.wap-chat-root .wap-msg--asking .wap-msg-time {
+    display: none;
+}
+
+/* An open question's bubble stays empty until the card settles; hide it until then. */
+.wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.wap-msg--asking:has(> .gv-chat-message-body > .wap-chat__question-slot:only-child) {
+    display: none;
+}
+
+/* "5 minutes ago" under a reply. The margin adds to the message's 4px flex gap
+   for the design's 8px. */
+.wap-chat-root .wap-msg-time {
+    display: block;
+    margin-top: var(--size-xs, 4px);
+    font-size: 0.875rem;
+    line-height: var(--line-height-body, 1.5);
+    color: var(--color-body-on-alternative, #646970);
+}
+
+/* ---------------------------------------------------------------------------
+   No horizontal scrolling. The widget never scrolls left-right; long content
+   wraps instead. (Wide tables/code still scroll WITHIN their own block via the
+   overflow-x:auto rules above — that does not scroll the widget itself.)
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root .gv-chat-list {
+    /* Containing block for the absolute gv-sr-only author labels: without it
+       they escape the list and stretch .gv-chat's scroll area below the composer. */
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* FIX: dropped the deprecated `word-break: break-word` — overflow-wrap already
+   covers it, and keeping both occasionally over-breaks long inline code tokens. */
+.wap-chat-root .gv-chat-message-body {
+    overflow-wrap: anywhere;
+}
+
+.wap-chat-root .gv-chat-message-body img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Scroll-to-bottom: uses Gravity's native .gv-chat-scroll-bottom pattern,
+   revealed by toggling .gv-show-scroll on the .gv-chat section (positioning and
+   appearance are owned entirely by Gravity). We only guard horizontal overflow.
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root .gv-chat {
+    overflow-x: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Responsive — layered, smallest → largest. The widget must look right on
+   every device: phone portrait / landscape, tablet portrait / landscape, and
+   desktop, including notched iPhones and devices with the on-screen keyboard.
+
+   The shell height uses --wap-vh (set from window.visualViewport by the JS)
+   with 100dvh and 100vh as fallbacks, so the same property drives all three
+   breakpoints — only the vertical offset changes (less header chrome on
+   phones, even less on tiny landscape).
+
+   Touch-target bumps (Apple HIG 44pt) only apply on touch-primary devices —
+   a desktop user keeps the compact 32px header buttons.
+
+   Why these rules are bespoke (verified against the Gravity MCP foundation):
+   - Viewport-height utilities (100dvh, visualViewport CSS var): Gravity has
+     none — its foundation covers spacing/sizing/colors/text, not viewport.
+   - safe-area-inset-* env() constants: no Gravity utility or token.
+   - touch-action: manipulation: no Gravity utility — this is a browser-level
+     behaviour override to remove the 300ms tap delay.
+   - font-size: 16px on the textarea: defeats iOS zoom-on-focus (which fires
+     when an input's computed font-size is < 16px). Gravity has no such guard.
+   - (orientation: landscape) and (hover: none) / (pointer: coarse) media
+     queries: Gravity's breakpoint system is width-only (tab / tab-lg / desk /
+     desk-lg) with no orientation or input-modality variant.
+   - -webkit-overflow-scrolling: touch: Safari-specific momentum for iOS.
+   Where Gravity DOES provide equivalents (verified), they are used: every
+   spacing/colour/sizing value above flows through Gravity tokens
+   (var(--size-*), var(--color-*, var(--font-size-*), var(--border-radius-*)).
+   --------------------------------------------------------------------------- */
+
+@media (max-width: 480px) {
+    /* Small phones — tighter header, full-bleed, safe-area aware. */
+    .wap-chat-root {
+        height: calc(var(--wap-vh, 100dvh) - 100px);
+        min-height: 0;
+    }
+
+    .wap-chat__header {
+        padding: var(--size-sm, 12px);
+        /* Notch / Dynamic Island clearance on iOS. */
+        padding-top: max(var(--size-sm, 12px), env(safe-area-inset-top, 0));
+    }
+
+    /* Tighter user-bubble cap so a short question reads as a bubble, not a
+       block, even on narrow phones. */
+    .wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-outgoing .gv-chat-message-body {
+        max-width: min(85%, 22rem);
+    }
+
+    /* Welcome subtitle: clamp to viewport so a long translated string never
+       overflows the chip row beneath it. */
+    .wap-empty__subtitle {
+        max-width: min(34ch, calc(100vw - 64px));
+    }
+
+    /* Suggestion chips shrink so four fit on a 320px screen. */
+    .wap-chat__suggestions .gv-chip {
+        font-size: 0.8125rem;
+    }
+
+    /* The consent modal is 460px on desktop — on a 360px phone it should
+       breathe within the screen, not push the close button off-frame. */
+    .wap-chat-root.gv-activated .gv-modal.wap-confirm .gv-modal-content {
+        max-width: min(460px, calc(100vw - 32px));
+    }
+}
+
+/* WordPress collapses its admin bar to 46px below this width; reclaim the
+   vertical space, go full-bleed, and drop the 480px desktop floor. */
+@media (max-width: 782px) {
+    .wap-client-wrap {
+        margin-top: var(--size-md, 16px);
+    }
+
+    .wap-chat-root {
+        height: calc(var(--wap-vh, 100dvh) - 130px);
+        min-height: 0;
+        max-width: 100%;
+        border-left: 0;
+        border-right: 0;
+        border-radius: 0;
+    }
+
+    .wap-chat__action-json {
+        max-height: 140px;
+    }
+
+    /* iOS home-bar clearance so the legal notice is never behind the gesture
+       indicator. */
+    .wap-chat-root.gv-activated .gv-chat footer {
+        padding-bottom: max(var(--size-xs, 8px), env(safe-area-inset-bottom, 0));
+    }
+
+}
+
+/* Tablet portrait — enough horizontal space that we can keep the 900px
+   max-width shell with margin, but iPad Safari still has the URL bar so dvh
+   beats vh. The default rule already caps at 900px; we just re-affirm the
+   accurate height. */
+@media (min-width: 783px) and (max-width: 1024px) {
+    .wap-chat-root {
+        height: calc(var(--wap-vh, 100dvh) - 170px);
+    }
+}
+
+/* Landscape phones / very short windows — the header is too tall vs the
+   usable chat column, so drop its vertical padding to recover room. */
+@media (orientation: landscape) and (max-height: 500px) {
+    .wap-chat__header {
+        padding-top: var(--size-xs, 8px);
+        padding-bottom: var(--size-xs, 8px);
+    }
+}
+
+/* Touch-primary devices — bump hit targets to 44pt (Apple HIG / Material
+   48dp floor). Desktop / hybrid users keep the compact 32px buttons.
+   Also pin font-size ≥16px on the textarea to suppress iOS zoom-on-focus,
+   and opt interactive elements out of the 300ms tap delay. */
+@media (hover: none) and (pointer: coarse) {
+    .wap-chat-root .wap-icon-btn {
+        width: 44px;
+        height: 44px;
+    }
+    .wap-chat-root .wap-icon-btn gv-icon {
+        width: 24px;
+        height: 24px;
+    }
+    .wap-chat-root .wap-icon-btn,
+    .wap-chat-root .gv-chip,
+    .wap-chat-root .gv-button {
+        touch-action: manipulation;
+    }
+    .wap-chat-root.gv-activated .gv-input-ai .gv-input-textarea textarea {
+        font-size: 16px;
+    }
+}
+
+/* Notched / safe-area devices — even on desktop / iPad, the inset constants
+   need a horizontal guard so the header doesn't sit under the notch in
+   landscape. Wrapped in @supports so non-supporting browsers (very old)
+   ignore the rule entirely instead of falling back to a malformed value. */
+@supports (padding: max(0px)) {
+    .wap-chat__header {
+        padding-left: max(var(--size-lg, 20px), env(safe-area-inset-left, 0px));
+        padding-right: max(var(--size-lg, 20px), env(safe-area-inset-right, 0px));
+    }
+}
+
+/* Momentum scrolling on iOS for the chat list — kept separate so we can
+   target without affecting the wider .gv-chat styles. */
+.wap-chat-root .gv-chat-list,
+.wap-chat-root .gv-chat {
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ---------------------------------------------------------------------------
+   Header icon actions — borderless icon buttons (New chat · Settings · Full
+   screen · Delete). Gravity's gv-tooltip-button gives a borderless trigger; we
+   only size it, add a subtle hover surface, and a danger tint for Delete.
+   --------------------------------------------------------------------------- */
+
+/* Connection status ("Connected") — smaller, semibold and a touch more muted
+   so it reads as a quiet header label. .gv-activated beats Gravity's own
+   gv-text-indicator sizing. The state dot keeps its own colour. */
+.wap-chat-root.gv-activated .wap-chat__header .gv-text-indicator {
+    font-size: calc(var(--font-size-caption-lg, 0.75) * 1rem);
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--color-body-on-placeholder, #8c8f94);
+}
+
+.wap-chat__actions {
+    flex-shrink: 0;
+}
+
+/* Sparkle + assistant name; the status chip only appears when not connected. */
+.wap-chat-root .wap-chat__title {
+    display: flex;
+    align-items: center;
+    gap: var(--size-sm, 10px);
+    min-width: 0;
+}
+
+.wap-chat-root .wap-chat__title-icon {
+    flex: 0 0 auto;
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-primary, #fec600);
+}
+
+.wap-chat-root .wap-chat__title-text {
+    margin: 0;
+    overflow: hidden;
+    font-size: 1rem;
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: 1.3;
+    color: var(--color-body-on-default, #1e1e22);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* `hidden` alone loses to Gravity's display rule on .gv-text-indicator. */
+.wap-chat-root .wap-chat__header .gv-text-indicator[hidden] {
+    display: none;
+}
+
+.wap-chat-root .wap-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--border-radius, 6px);
+    background: transparent;
+    color: var(--color-body-on-default, #3c434a);
+    cursor: pointer;
+    transition: background-color 0.12s ease, color 0.12s ease;
+}
+
+.wap-chat-root .wap-icon-btn gv-icon {
+    width: 22px;
+    height: 22px;
+}
+
+.wap-chat-root .wap-icon-btn:hover,
+.wap-chat-root .wap-icon-btn:focus-visible {
+    background: var(--color-surface-dim, #f6f7f9);
+    color: var(--color-body-on-default, #1e1e22);
+    outline: none;
+}
+
+.wap-chat-root .wap-icon-btn--danger:hover,
+.wap-chat-root .wap-icon-btn--danger:focus-visible {
+    background: var(--color-signal-alert-light, #f8d9dd);
+    color: var(--color-signal-alert, #b30016);
+}
+
+/* ---------------------------------------------------------------------------
+   Header tooltips — pinned beneath the trigger and revealed on hover/focus.
+   (The Gravity tooltip normally relies on JS positioning; we pin it with CSS so
+   it works standalone and stays inside the shell.)
+   --------------------------------------------------------------------------- */
+
+.wap-chat__header .wap-tip {
+    position: relative;
+}
+
+.wap-chat__header .wap-tip .gv-tooltip {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+}
+
+.wap-chat__header .wap-tip--end .gv-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+/* Reveal on hover, or on keyboard focus only (:focus-visible) — NOT plain
+   :focus-within, which would keep the tooltip open after a mouse click until
+   focus moved elsewhere. With :focus-visible a mouse click leaves no lingering
+   tooltip, and moving the pointer away hides it immediately. */
+.wap-chat__header .wap-tip:hover .gv-tooltip,
+.wap-chat__header .wap-tip:has(:focus-visible) .gv-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Suppressed right after a click so the tooltip doesn't linger over the action
+   it just triggered; cleared on the next mouseleave/blur (see iconAction). */
+.wap-chat__header .wap-tip.wap-tip-hide .gv-tooltip {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+/* Force-show on touch: hover and :focus-visible never fire on a tap, so the
+   JS adds this class for ~1.5s after a click on touch-primary devices, giving
+   the user a chance to read the action label. The click also adds
+   .wap-tip-hide to suppress the regular reveal; wap-tip-force wins because it
+   is declared after. */
+.wap-chat__header .wap-tip.wap-tip-force .gv-tooltip {
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Empty / welcome state — centred sparkle + greeting + muted subtitle + chips.
+   Replaces the old left-aligned assistant bubble.
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root .wap-empty {
+    display: flex;
+    flex: 1 1 auto;
+    /* fill the list column so content centres */
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--size-sm, 8px);
+    min-height: 70%;
+    margin: auto;
+    /* stop the intrinsic chip width overflowing the list column */
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: var(--size-lg, 24px);
+    list-style: none;
+}
+
+/* Sparkle on a small raised tile. */
+.wap-chat-root .wap-empty__mark {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: var(--size-sm, 8px);
+    border: 1px solid var(--color-border-on-default, #e8e8ea);
+    border-radius: var(--radius-md, 8px);
+    background: var(--color-bg-default, #fff);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.wap-chat-root .wap-empty__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    color: var(--color-primary, #fec600);
+}
+
+.wap-chat-root .wap-empty__title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: var(--font-weight-bold, 700);
+    line-height: 1.3;
+    color: var(--color-body-on-default, #1e1e22);
+}
+
+.wap-chat-root .wap-empty__subtitle {
+    margin: 0;
+    max-width: 40ch;
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-regular, 400);
+    line-height: var(--line-height-body, 1.5);
+    color: var(--color-body-on-default, #1e1e22);
+}
+
+.wap-chat-root .wap-empty .wap-chat__suggestions {
+    justify-content: center;
+    /* keep the row inside the column so a long chip ellipsises */
+    max-width: 100%;
+    min-width: 0;
+    margin-top: var(--size-md, 16px);
+}
+
+/* ---------------------------------------------------------------------------
+   Composer — start at a single line; JS autoGrow expands as the user types.
+   --------------------------------------------------------------------------- */
+
+/* cursor: the whole box reads as the text field (clicks on it focus the textarea). */
+.wap-chat-root.gv-activated .gv-input-ai .gv-input.gv-input-textarea {
+    overflow: hidden;
+    cursor: text;
+}
+
+.wap-chat-root.gv-activated .gv-input-ai .gv-input-textarea textarea {
+    min-height: 0;
+    resize: none;
+    overflow-y: hidden;
+}
+
+/* ---------------------------------------------------------------------------
+   Monthly quota (WPIN-8805) — a counter in the meta bar plus a notice attached
+   to the top of the composer once the allowance runs low.
+   --------------------------------------------------------------------------- */
+
+/* Notice + composer as one flex item, so the footer's gap lands around the pair
+   and never opens a seam between them. */
+.wap-chat-root.gv-activated .wap-composer-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+/* Required: Gravity's `.gv-notice { display: flex }` outranks the UA
+   stylesheet's `[hidden] { display: none }`. */
+.wap-chat-root.gv-activated .wap-quota-notice[hidden] {
+    display: none;
+}
+
+/* Mirror Gravity's addon-notice radius onto the top edge and square off the
+   composer against it, so the two read as one block. */
+.wap-chat-root.gv-activated .wap-composer-stack .wap-quota-notice {
+    border-start-start-radius: var(--notice-radius, 6px);
+    border-start-end-radius: var(--notice-radius, 6px);
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+}
+
+.wap-chat-root.gv-activated .wap-quota-notice:not([hidden]) + .gv-input-ai .gv-input.gv-input-textarea {
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Chat settings page — opened from the header gear, it covers the whole widget
+   (header included) until the back arrow returns to the chat.
+   --------------------------------------------------------------------------- */
+
+/* Above Gravity's chat footer (z-index 100), below its modals (1100) so the
+   delete confirmation still opens on top. */
+.wap-chat-root .wap-settings {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-surface-bright, #fff);
+    overflow-y: auto;
+}
+
+.wap-chat-root .wap-settings__card {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+}
+
+/* Same footprint as .wap-chat__header so the swap doesn't jump. */
+.wap-chat-root .wap-settings__head {
+    display: flex;
+    align-items: center;
+    gap: var(--size-xs, 6px);
+    padding: var(--size-md, 18px) var(--size-lg, 24px) var(--size-md, 18px) var(--size-md, 16px);
+    border-bottom: 1px solid var(--color-border-default, #e3e5ea);
+    flex-shrink: 0;
+}
+
+.wap-chat-root .wap-settings__close {
+    color: var(--color-body-on-default, #1e1e22);
+}
+
+.wap-chat-root .wap-settings__title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: var(--font-weight-medium, 500);
+    color: var(--color-body-on-default, #1e1e22);
+}
+
+.wap-chat-root .wap-settings__body {
+    display: flex;
+    flex-direction: column;
+    padding: var(--size-sm, 8px) var(--size-lg, 24px) var(--size-lg, 24px);
+}
+
+.wap-chat-root .wap-settings__rows {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label + hint on the left, the control on the right; rows split by a rule. */
+.wap-chat-root .wap-settings__row {
+    display: flex;
+    align-items: center;
+    gap: var(--size-md, 16px);
+    padding: var(--size-md, 16px) 0;
+    border-bottom: 1px solid var(--color-border-default, #e3e5ea);
+}
+
+.wap-chat-root .wap-settings__text {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wap-chat-root .wap-settings__label-line {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--size-sm, 8px);
+}
+
+.wap-chat-root .wap-settings__label {
+    font-size: 0.9375rem;
+    font-weight: var(--font-weight-medium, 500);
+    line-height: 1.4;
+    color: var(--color-body-on-default, #1e1e22);
+    /* A long word wraps instead of pushing under the control. */
+    overflow-wrap: break-word;
+}
+
+.wap-chat-root .wap-settings__hint {
+    margin: 2px 0 0;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: var(--color-body-on-alternative, #646970);
+}
+
+.wap-chat-root .wap-settings__badge {
+    padding: 1px var(--size-xs, 6px);
+    border: 1px solid var(--color-border-default, #d7d9de);
+    border-radius: var(--radius-xs, 4px);
+    font-size: 0.75rem;
+    font-weight: var(--font-weight-medium, 500);
+    line-height: 1.5;
+    color: var(--color-body-on-alternative, #646970);
+}
+
+/* A row that can't be changed reads as such, not just its control. */
+.wap-chat-root .wap-settings__row--disabled .wap-settings__label,
+.wap-chat-root .wap-settings__row--disabled .wap-settings__hint {
+    color: var(--color-body-on-placeholder, #a7aaad);
+}
+
+.wap-chat-root .wap-settings__toggle {
+    flex: 0 0 auto;
+}
+
+/* Pinned basis: Gravity's .gv-input width:100% would make an `auto` basis claim the whole row. */
+.wap-chat-root .wap-settings__row .gv-input-select {
+    flex: 0 0 9.5rem;
+    width: 9.5rem;
+    max-width: 50%;
+}
+
+.wap-chat-root .wap-settings__delete {
+    flex: 0 0 auto;
+}
+
+.wap-chat-root .wap-settings__error {
+    margin-top: var(--size-sm, 8px);
+}
+
+/* .gv-notice's display outranks the UA [hidden] rule; restore it. */
+.wap-chat-root .wap-settings__error[hidden] {
+    display: none;
+}
+
+.wap-chat-root .wap-settings__note {
+    margin: var(--size-md, 16px) 0 0;
+    font-size: calc(var(--font-size-caption-lg, 0.75) * 1rem);
+    line-height: var(--line-height-body, 1.5);
+    color: var(--color-body-on-placeholder, #8c8f94);
+}
+
+/* ---------------------------------------------------------------------------
+   Full screen — expand the shell to fill the viewport (above the WP admin bar).
+   !important is deliberate: the mount container belongs to the host (npm/SaaS
+   embeds size it with their own — often inline — styles), and fullscreen must
+   override that sizing regardless of how it was applied.
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root.wap-fullscreen {
+    position:      fixed !important;
+    inset:         0 !important;
+    z-index:       100000 !important;
+    width:         100% !important;
+    max-width:     none !important;
+    /* Same three-layer fallback as the desktop shell: vh → dvh → --wap-vh. */
+    height:        100vh !important;
+    height:        100dvh !important;
+    height:        var(--wap-vh, 100dvh) !important;
+    max-height:    none !important;
+    min-height:    0 !important;
+    margin:        0 !important;
+    border:        none !important;
+    border-radius: 0 !important;
+}
+
+/* ---------------------------------------------------------------------------
+   Layout modes — cfg.layout via classes/vars from applyLayout(). Two-class
+   selectors beat the one-class base rule without !important.
+   --------------------------------------------------------------------------- */
+
+/* Fluid shell: fill the parent width (NOT the window overlay). .wap-expanded is
+   the same, toggled at runtime for expandToggle:'container'. */
+.wap-chat-root.wap-width-fluid,
+.wap-chat-root.wap-expanded {
+    max-width: none;
+}
+
+/* Flat chrome: no card framing, for a widget that fills a content area. */
+.wap-chat-root.wap-chrome-flat {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* Fill height: 100% of the parent (host must give the parent a height). */
+.wap-chat-root.wap-height-fill {
+    height: 100%;
+    min-height: 0;
+}
+
+/* Custom-accent arrow contrast: applyLayout() computes a legible --wap-on-accent;
+   the extra .gv-activated class wins over Gravity's button rule without !important. */
+.wap-chat-root.gv-activated[data-wap-accent] .gv-button-primary,
+.wap-chat-root.gv-activated[data-wap-accent] .gv-button-primary gv-icon {
+    color: var(--wap-on-accent, #ffffff);
+}
+
+/* Agent selector (WPIN-8684) — the composer toolbar's left slot
+   (gv-toolbar-content), in Gravity's own select look: white field, divider,
+   chevron. Only its width is set here, so a long agent name truncates instead
+   of pushing Send off the row. */
+.wap-chat-root.gv-activated .wap-agent-select {
+    flex: 0 1 14rem;
+    width: 14rem;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+}
+
+.wap-chat-root.gv-activated .gv-input-ai .gv-toolbar-content {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.wap-chat-root.gv-activated .wap-agent-select select {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* `hidden` alone loses to Gravity's display rule on .gv-input. */
+.wap-chat-root.gv-activated .wap-agent-select[hidden],
+.wap-chat-root .wap-agent-select[hidden] {
+    display: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Docked column — modes and framing are documented in the package README
+   ("The chat as a docked column"). Driven by data attributes the JS writes.
+   `side` is logical, not physical, so RTL mirrors automatically.
+   --------------------------------------------------------------------------- */
+
+.wap-chat-column {
+    --wap-column-width: 400px;
+    --wap-column-top: 0px;
+    display: contents;
+}
+
+/* Clear wp-admin's fixed admin bar. Non-WordPress hosts keep 0. */
+body.wp-admin .wap-chat-column {
+    --wap-column-top: 32px;
+}
+
+.wap-chat-column__panel {
+    position: fixed;
+    inset-block: var(--wap-column-top) 0;
+    inset-inline-end: 0;
+    z-index: 9990;
+    display: flex;
+    flex-direction: column;
+    width: min(var(--wap-column-width), 100vw);
+    background: var(--color-surface-bright, #fff);
+    color: var(--color-body-on-default, #1e1d1f);
+    border-inline-start: 1px solid var(--color-border-default, #e3e5ea);
+    box-shadow: var(--color-shadow-elevated, 0 0 12px 0 rgba(20, 20, 20, 0.16));
+    overflow: hidden;
+    --wap-hide-x: 100%;
+}
+
+.wap-chat-column[data-wap-column-side="left"] .wap-chat-column__panel {
+    inset-inline: 0 auto;
+    border-inline-start: none;
+    border-inline-end: 1px solid var(--color-border-default, #e3e5ea);
+}
+
+.wap-chat-column[data-wap-column-side="left"] .wap-chat-column__panel {
+    --wap-hide-x: -100%;
+}
+
+html[dir="rtl"] .wap-chat-column .wap-chat-column__panel {
+    --wap-hide-x: -100%;
+}
+
+html[dir="rtl"] .wap-chat-column[data-wap-column-side="left"] .wap-chat-column__panel {
+    --wap-hide-x: 100%;
+}
+
+.wap-chat-column__panel,
+.wap-chat-column[data-wap-column-state="collapsed"] .wap-chat-column__panel {
+    transform: translateX(var(--wap-hide-x));
+    visibility: hidden;
+}
+
+.wap-chat-column[data-wap-column-state="expanded"] .wap-chat-column__panel {
+    transform: none;
+    visibility: visible;
+}
+
+/* OAuth consent card — the link is the reliable affordance when the browser
+   blocks the auto-opened tab, so it has to look like one rather than sit as
+   bare inline text among the question copy. */
+.wap-chat__oauth-link {
+    margin: 0.5rem 0;
+}
+
+.wap-chat__oauth-link a {
+    font-weight: 600;
+    text-decoration: underline;
+    word-break: break-word;
+}
+
+.wap-chat__oauth-hint {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+    opacity: 0.75;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .wap-chat-column.wap-column-animate .wap-chat-column__panel,
+    .wap-chat-column.wap-column-animate .wap-chat-column__scrim {
+        transition: opacity 200ms ease, transform 200ms ease, visibility 0s;
+    }
+
+    /* Held until the slide/fade finishes, so neither blinks out in frame 1. */
+    .wap-chat-column.wap-column-animate[data-wap-column-state="collapsed"] .wap-chat-column__panel,
+    .wap-chat-column.wap-column-animate[data-wap-column-state="collapsed"] .wap-chat-column__scrim {
+        transition: opacity 200ms ease, transform 200ms ease, visibility 0s 200ms;
+    }
+}
+
+/* Beats the base .wap-chat-root sizing, which is written for a page embed. */
+.wap-chat-column__panel > .wap-chat-root,
+.wap-chat-column__panel > .wap-chat-root.wap-height-fill {
+    height: 100%;
+    max-width: none;
+    min-height: 0;
+    margin: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+/* The dismiss control needs no styling of its own — it joins the widget's
+   header action row. Only layout.showHeader:false has no row to join. */
+.wap-chat-column--no-header .wap-chat-column__panel > .wap-tip {
+    position: absolute;
+    inset-block-start: var(--size-xs, 8px);
+    inset-inline-end: var(--size-xs, 8px);
+    z-index: 2;
+    border-radius: var(--border-radius-sm, 8px);
+    background: var(--color-surface-bright, #fff);
+    box-shadow: var(--color-shadow-subtle, 0 1px 1px 0 rgba(20, 20, 20, 0.05));
+}
+
+.wap-chat-column__scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 9989;
+    background: var(--color-overlay-dark, rgba(20, 20, 20, 0.6));
+    opacity: 0;
+    visibility: hidden;
+}
+
+.wap-chat-column[data-wap-column-mode="overlay"][data-wap-column-state="expanded"] .wap-chat-column__scrim {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ---- Launcher ---- */
+
+.wap-chat-column__launcher {
+    position: fixed;
+    inset-block-end: var(--size-lg, 20px);
+    inset-inline-end: var(--size-lg, 20px);
+    z-index: 9988;
+    /* gv-button stretches to 100% on mobile; a floating launcher must not. */
+    width: auto;
+}
+
+.wap-chat-column[data-wap-column-side="left"] .wap-chat-column__launcher {
+    inset-inline: var(--size-lg, 20px) auto;
+}
+
+.wap-chat-column__launcher[hidden] {
+    display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    html.wap-column-host #wpcontent,
+    html.wap-column-host #wpfooter,
+    html.wap-column-host #adminmenuwrap,
+    html.wap-column-host #adminmenuback,
+    html.wap-column-host [data-wap-column-push] {
+        transition: padding-inline-end 200ms ease, inset-inline-start 200ms ease;
+    }
+}
+
+html.wap-column-pushing #wpcontent,
+html.wap-column-pushing #wpfooter,
+html.wap-column-pushing [data-wap-column-push] {
+    padding-inline-end: var(--wap-column-push, 0);
+}
+
+html.wap-column-pushing[data-wap-column-side="left"] #wpcontent,
+html.wap-column-pushing[data-wap-column-side="left"] #wpfooter,
+html.wap-column-pushing[data-wap-column-side="left"] [data-wap-column-push] {
+    padding-inline: var(--wap-column-push, 0) 0;
+}
+
+html.wap-column-pushing[data-wap-column-side="left"] #adminmenuwrap,
+html.wap-column-pushing[data-wap-column-side="left"] #adminmenuback {
+    inset-inline-start: var(--wap-column-push, 0);
+}
+
+html.wap-column-locked {
+    scrollbar-gutter: stable;
+}
+
+html.wap-column-locked,
+html.wap-column-locked body {
+    overflow: hidden;
+}
+
+.wap-chat-column.wap-chat-column--narrow .wap-chat-column__panel {
+    width: 100vw;
+    border-inline: none;
+}
+
+@media (max-width: 782px) {
+    body.wp-admin .wap-chat-column {
+        --wap-column-top: 46px;
+    }
+
+    .wap-chat-column__launcher {
+        inset-block-end: max(var(--size-md, 16px), env(safe-area-inset-bottom, 0));
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Narrow CONTAINER — the widget is often much narrower than the viewport.
+
+   Every media query above asks how wide the *screen* is. That is the wrong
+   question for an embedded chatbox: a post-editor sidebar panel is ~300px on a
+   1920px desktop, and a docked column defaults to 400px, so neither ever
+   triggers the phone breakpoints and both render with desktop spacing they have
+   no room for. Measured on a 300px container, that clipped the welcome block by
+   20px: the suggestion chips were `nowrap`, so a long prompt ran under the
+   root's `overflow: hidden` edge.
+
+   These blocks ask how wide the *widget* is instead. They are ADDITIVE — the
+   viewport queries stay as the floor, so a browser without container-query
+   support keeps exactly today's behaviour. Rules may only target DESCENDANTS: a
+   container cannot style itself, which is why the root's own
+   height/border/full-bleed rules stay in the media queries above.
+
+   LAST IN THE FILE ON PURPOSE. Container queries add no specificity, so these
+   rules only beat their desktop counterparts on source order — and several of
+   those counterparts (`.wap-chat-root .wap-settings__body`)
+   live near the end of the file. Placed earlier, they silently lost and the
+   tier was partly inert. Anything competing with a `.wap-chat-root`-prefixed
+   rule must carry that prefix here too, for the same reason.
+
+   Vertical padding uses explicit longhands, never `padding` or `padding-block`:
+   the phone media queries above layer `env(safe-area-inset-top/bottom)` onto
+   the header and meta bar, and a shorthand here would silently drop the notch
+   and home-bar guards on every phone (a container is always narrow there).
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root {
+    container: wap-chat / inline-size;
+}
+
+@container wap-chat (max-width: 480px) {
+    /* Reclaim horizontal room: the header and meta bar are the two widest
+       fixed paddings in the shell. env() guards preserved on all four sides. */
+    .wap-chat__header {
+        padding-top: max(var(--size-sm, 12px), env(safe-area-inset-top, 0px));
+        padding-bottom: var(--size-sm, 12px);
+        padding-left: max(var(--size-sm, 12px), env(safe-area-inset-left, 0px));
+        padding-right: max(var(--size-sm, 12px), env(safe-area-inset-right, 0px));
+    }
+
+    /* The status label must yield before the icon buttons do — .wap-chat__actions
+       is flex-shrink: 0, so without this a long translated string ("Connecting…")
+       pushes the actions past the edge instead of truncating. */
+    .wap-chat-root.gv-activated .wap-chat__header .gv-text-indicator {
+        min-width: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    /* Tighter user-bubble cap so a short question still reads as a bubble. */
+    .wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-outgoing .gv-chat-message-body {
+        max-width: min(85%, 22rem);
+    }
+
+    /* cqi, not vw: clamp to the widget's width, not the screen's. Needs the
+       .wap-chat-root prefix to outrank the desktop rule of the same name. */
+    .wap-chat-root .wap-empty__subtitle {
+        max-width: min(34ch, calc(100cqi - 64px));
+    }
+
+    /* Chips shrink so several fit per line instead of one each. */
+    .wap-chat__suggestions .gv-chip {
+        font-size: 0.8125rem;
+    }
+
+    /* Settings page: reclaim the side gutters. */
+    .wap-chat-root .wap-settings__body {
+        padding-left: var(--size-md, 16px);
+        padding-right: var(--size-md, 16px);
+    }
+
+    /* Both modals are absolute inside the root, so they must fit the CONTAINER.
+       Gravity's own `.gv-modal { padding: 48px }` plus a 48px content padding is
+       the binding constraint here, not its 460px cap — in a 300px panel that
+       left roughly 106px of text column, wrapping "Delete your data?" over
+       three lines. Reclaim it, and cap the content to the container as well. */
+    .wap-chat-root.gv-activated .gv-modal.wap-confirm,
+    .wap-chat-root.gv-activated .gv-modal.wap-consent-modal {
+        padding: var(--size-md, 16px);
+    }
+
+    .wap-chat-root.gv-activated .gv-modal.wap-confirm .gv-modal-content,
+    .wap-chat-root.gv-activated .gv-modal.wap-consent-modal .gv-modal-content {
+        max-width: 100%;
+        padding: var(--size-md, 16px);
+    }
+}
+
+/* ---------------------------------------------------------------------------
+   Visual answers — the card a chart, KPI row or free-HTML figure renders into.
+
+   The figure itself carries no styling from here: the four data kinds are SVG
+   the widget draws with resolved Gravity tokens, and a free-HTML figure is
+   isolated in a sandboxed frame that this stylesheet cannot reach into (and
+   must not — see the containment notes in wap-chat.js). What these rules own is
+   the frame around it: the card, its title, its caption and its actions.
+   --------------------------------------------------------------------------- */
+
+.wap-chat-root .gv-chat-message-body .wap-visual {
+    margin: 0.9em 0;
+    padding: var(--size-sm, 8px);
+    border: 1px solid var(--color-border-alt, #e2e2e2);
+    border-radius: var(--inner-container-radius, 6px);
+    background: var(--color-surface-bright, #fff);
+    /* Fills the bubble, but no wider than ~the charts' 640px design width: a
+       fluid host column can be 1500px wide, which would stretch a small figure
+       across the page and scale chart labels to twice their size. */
+    max-width: min(100%, 42rem);
+    overflow: hidden;
+}
+
+.wap-chat-root .wap-visual-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--size-sm, 8px);
+}
+
+.wap-chat-root .wap-visual-title {
+    margin: 0 0 var(--size-xs, 4px);
+    font-weight: var(--font-weight-semibold, 600);
+    line-height: var(--line-height-heading, 1.3);
+    color: var(--color-body-on-default, #141414);
+}
+
+.wap-chat-root .wap-visual-body {
+    /* A chart's SVG is width:100% with an auto height, so the card is as tall
+       as the figure needs and never scrolls internally. */
+    display: block;
+    line-height: 0;
+}
+
+.wap-chat-root .wap-visual-body > svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* The frame is sized by the height its own content reports (see the postMessage
+   handler in wap-chat.js); until that arrives it holds the placeholder height
+   set inline, so the card does not jump on load. */
+.wap-chat-root .wap-visual-frame {
+    display: block;
+    width: 100%;
+    border: 0;
+    background: var(--color-surface-bright, #fff);
+    transition: height 120ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wap-chat-root .wap-visual-frame {
+        transition: none;
+    }
+}
+
+.wap-chat-root .wap-visual-caption {
+    margin: var(--size-xs, 4px) 0 0;
+    font-size: var(--font-size-text-sm, 0.875rem);
+    color: var(--color-body-on-alternative, #69686b);
+}
+
+.wap-chat-root .wap-visual-foot {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--size-sm, 8px);
+    margin-top: var(--size-sm, 8px);
+}
+
+/* Inline media: approved images and YouTube videos inside a reply (see
+   inlineImageHtml / inlineVideoHtml in wap-chat.js). Each sits on its own line
+   under the step it illustrates; a video card stays thumbnail-sized. */
+.wap-chat-root .wap-inline-media {
+    margin: 0.6em 0;
+    max-width: min(100%, 36rem);
+}
+
+.wap-chat-root .wap-inline-media.wap-media-video {
+    max-width: min(100%, 24rem);
+}
+
+.wap-chat-root .wap-media-image,
+.wap-chat-root .wap-media-video {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    border-radius: var(--inner-container-radius, 6px);
+}
+
+.wap-chat-root .wap-media-image:focus-visible,
+.wap-chat-root .wap-media-video:focus-visible {
+    outline: 2px solid var(--color-focus, var(--color-primary, #1e6fc0));
+    outline-offset: 2px;
+}
+
+.wap-chat-root .wap-media-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 28rem;
+    object-fit: contain;
+    border-radius: var(--inner-container-radius, 6px);
+    background: var(--color-surface-dim, #f4f4f4);
+}
+
+.wap-chat-root .wap-media-broken {
+    padding: var(--size-md, 16px);
+    line-height: var(--line-height-body, 1.5);
+    font-size: var(--font-size-text-sm, 0.875rem);
+    color: var(--color-body-on-alternative, #69686b);
+    background: var(--color-surface-dim, #f4f4f4);
+    text-decoration: underline;
+}
+
+.wap-chat-root .wap-media-thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--inner-container-radius, 6px);
+    background: var(--color-surface-dim, #f4f4f4);
+}
+
+/* hqdefault is 4:3 with letterbox bars baked in; cover crops them away. */
+.wap-chat-root .wap-media-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.wap-chat-root .wap-media-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 3.4rem;
+    height: auto;
+    transform: translate(-50%, -50%);
+    transition: transform 120ms ease-out;
+}
+
+.wap-chat-root .wap-media-video:hover .wap-media-play,
+.wap-chat-root .wap-media-video:focus-visible .wap-media-play {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .wap-chat-root .wap-media-play {
+        transition: none;
+    }
+}
+
+.wap-chat-root .wap-media-label {
+    display: block;
+    margin-top: var(--size-xs, 4px);
+    line-height: var(--line-height-body, 1.5);
+    font-size: var(--font-size-text-sm, 0.875rem);
+    color: var(--color-body-on-default, #141414);
+}
+
+.wap-chat-root .wap-media-video:hover .wap-media-label {
+    text-decoration: underline;
+}
+
+.wap-chat-root .wap-visual-note {
+    font-size: var(--font-size-caption-lg, 0.75rem);
+    color: var(--color-body-on-alternative, #69686b);
+    /* Pushed to the trailing edge so the actions stay grouped together. */
+    margin-inline-start: auto;
+}
+
+/* A generated document (render_document) reuses the visual card. Its summary
+   line ("Invoice INV-014 · Acme BV · Total EUR 1,452.00") sits under the title,
+   above the preview, because it is what identifies the document at a glance. */
+.wap-chat-root .wap-document .wap-document-summary {
+    margin: 0 0 var(--size-sm, 8px);
+}
+
+/* The preview frame is capped in wap-chat.js (DOCUMENT_FRAME_MAX_H) and scrolls
+   inside itself beyond that — a page, not a figure, so it gets a border. */
+.wap-chat-root .wap-document-frame {
+    border: 1px solid var(--color-border-alt, #e2e2e2);
+    border-radius: var(--inner-container-radius, 6px);
+}
+
+.wap-chat-root .wap-document-error {
+    margin: var(--size-xs, 4px) 0 0;
+    font-size: var(--font-size-text-sm, 0.875rem);
+    color: var(--color-error, #d63638);
+}
+
+/* Extra-tight — a post-editor sidebar panel is around 300px. */
+@container wap-chat (max-width: 360px) {
+    .wap-chat__header {
+        gap: var(--size-sm, 8px);
+    }
+
+    /* One chip per line is fine here; what is not fine is a chip wider than the
+       panel, so let the text wrap inside it. */
+    .wap-chat__suggestions .gv-chip {
+        max-width: 100%;
+        white-space: normal;
+        height: auto;
+    }
+
+    .wap-chat-root.gv-activated .gv-chat-list .gv-chat-message.gv-chat-outgoing .gv-chat-message-body {
+        max-width: 92%;
+    }
+}

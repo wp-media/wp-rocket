@@ -47,34 +47,23 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 	 * @preserveGlobalState disabled
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		if ( $config['wap_class_exists'] ) {
-			$has_reason = $config['wap_has_reason_method'] ?? true;
-			$stub       = $has_reason
-				? 'GroupOne\WapClient\AppPasswordManagerWithReason'
-				: 'GroupOne\WapClient\AppPasswordManagerLegacy';
-			require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/' . substr( $stub, strrpos( $stub, '\\' ) + 1 ) . '.php';
-			class_alias( $stub, 'GroupOne\WapClient\AppPasswordManager' );
+		$stub = 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManagerWithReason';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/AppPasswordManagerWithReason.php';
+		class_alias( $stub, 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager' );
 
-			$stub::$available     = $config['app_passwords_available'] ?? false;
-			$stub::$https_missing = $config['https_missing'] ?? false;
+		$stub::$available = $config['app_passwords_available'] ?? false;
+		$stub::$reason    = $config['unavailable_reason'] ?? '';
 
-			if ( $has_reason ) {
-				$stub::$reason = $config['unavailable_reason'] ?? '';
-			}
-
-			if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
-				// The filter is checked first, so no option is read when the chat is disabled.
-				$this->options->shouldNotReceive( 'get' );
-			} else {
-				$this->options->shouldReceive( 'get' )
-							  ->with( 'consumer_key', '' )
-							  ->andReturn( $config['consumer_key'] ?? '' );
-				$this->options->shouldReceive( 'get' )
-							  ->with( 'consumer_email', '' )
-							  ->andReturn( $config['consumer_email'] ?? '' );
-			}
-		} else {
+		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+			// The filter is checked first, so no option is read when the chat is disabled.
 			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_key', '' )
+						  ->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_email', '' )
+						  ->andReturn( $config['consumer_email'] ?? '' );
 		}
 
 		if ( isset( $config['current_user_can'] ) ) {

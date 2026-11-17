@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Support;
 
+use WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager;
+use WP_Rocket\Dependencies\GroupOne\WapClient\Bootstrap;
+use WP_Rocket\Dependencies\GroupOne\WapClient\WapClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
@@ -77,6 +80,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'plugins_loaded'                => [ 'boot_wap_client', 20 ],
+			'init'                          => 'load_wap_client_textdomain',
 			'rest_api_init'                 => 'register_support_route',
 			'rocket_buffer'                 => [ 'add_meta_generator', PHP_INT_MAX ],
 			'admin_init'                    => 'register_column',
@@ -109,22 +114,38 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Boots the WAP chat library: registers its AJAX handlers.
+	 *
+	 * The library is bundled under WP Rocket's namespace prefix, so it does not boot itself.
+	 *
+	 * @return void
+	 */
+	public function boot_wap_client(): void {
+		Bootstrap::boot();
+	}
+
+	/**
+	 * Loads the WAP chat library's translations.
+	 *
+	 * @return void
+	 */
+	public function load_wap_client_textdomain(): void {
+		Bootstrap::load_textdomain();
+	}
+
+	/**
 	 * Registers the WAP support chat column on the WP Rocket settings screen.
 	 *
 	 * @return void
 	 */
 	public function register_column(): void {
-		if ( ! class_exists( 'WapClient' ) ) {
-			return;
-		}
-
 		$config = $this->get_column_config();
 
 		if ( empty( $config ) ) {
 			return;
 		}
 
-		\WapClient::register_chat_column( $config );
+		WapClient::register_chat_column( $config );
 	}
 
 	/**
@@ -133,11 +154,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function revoke_app_passwords(): void {
-		if ( ! class_exists( 'WapClient' ) ) {
-			return;
-		}
-
-		\WapClient::revoke_app_passwords( self::PRODUCT );
+		WapClient::revoke_app_passwords( self::PRODUCT );
 	}
 
 	/**
@@ -273,7 +290,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_display_unavailable_notice(): void {
-		if ( ! class_exists( '\GroupOne\WapClient\AppPasswordManager' ) || ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -283,16 +300,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available() ) {
+		if ( AppPasswordManager::are_app_passwords_available() ) {
 			return;
 		}
 
-		// An older library copy loaded by another plugin may lack unavailable_reason().
-		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) { // @phpstan-ignore-line
-			$reason_code = \GroupOne\WapClient\AppPasswordManager::unavailable_reason();
-		} else {
-			$reason_code = \GroupOne\WapClient\AppPasswordManager::is_https_missing() ? 'https' : 'disabled';
-		}
+		$reason_code = AppPasswordManager::unavailable_reason();
 
 		switch ( $reason_code ) {
 			case 'multisite':
