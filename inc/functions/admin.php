@@ -11,12 +11,7 @@ function rocket_need_api_key() {
 	$errors  = (array) get_transient( 'rocket_check_key_errors' );
 
 	foreach ( $errors as $error ) {
-		/**
-		 * The `invalid_license_data` sentinel is stored by `rocket_valid_key()`, which can run before
-		 * the `rocket` textdomain is loaded. Translate it here, at render time, on the `admin_notices`
-		 * hook (after `init`). Other errors are server-returned strings that are stored, already
-		 * translated, during the live license check, so they are echoed as-is.
-		 */
+		// Sentinel set by rocket_valid_key() before the textdomain loads; translate at render time.
 		if ( 'invalid_license_data' === $error ) {
 			$error = __( 'The provided license data are not valid.', 'rocket' ) .
 				' <br>' .
