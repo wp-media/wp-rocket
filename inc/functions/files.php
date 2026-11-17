@@ -558,8 +558,9 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path  = _rocket_get_wp_rocket_cache_path();
+	$url_no_dots    = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$cache_path     = _rocket_get_wp_rocket_cache_path();
+	$ignored_params = null;
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -597,6 +598,29 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		}
 
 		$parsed_url = get_rocket_parse_url( $url );
+		$query_dir  = '';
+		$raw_query  = wp_parse_url( $original_url, PHP_URL_QUERY );
+
+		// Name the query string directory like the cache does: ignored parameters removed, the others sorted and encoded.
+		if ( ! empty( $raw_query ) ) {
+			if ( null === $ignored_params ) {
+				$ignored_params = rocket_get_ignored_parameters();
+			}
+
+			parse_str( $raw_query, $query_params );
+			$query_params = array_diff_key( $query_params, $ignored_params );
+
+			if ( ! empty( $query_params ) ) {
+				ksort( $query_params );
+				$query_dir = '#' . preg_replace_callback(
+					'/%[0-9A-F]{2}/',
+					function ( $matches ) {
+						return strtolower( $matches[0] );
+					},
+					http_build_query( $query_params )
+				);
+			}
+		}
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
@@ -617,12 +641,8 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
 
-				$entry = $dir . $parsed_url['path'];
-
 				// Query string pages are cached in their own directory, where the question mark is replaced with a hash.
-				if ( ! empty( $parsed_url['query'] ) ) {
-					$entry .= '#' . $parsed_url['query'];
-				}
+				$entry = $dir . $parsed_url['path'] . $query_dir;
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {

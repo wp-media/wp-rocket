@@ -62,6 +62,14 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 			$this->filesystem->put_contents( $file, '' );
 		}
 
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+
+		if ( isset( $config['ignored_params'] ) ) {
+			Filters\expectApplied( 'rocket_cache_ignored_parameters' )
+				->once()
+				->andReturn( $config['ignored_params'] );
+		}
+
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
