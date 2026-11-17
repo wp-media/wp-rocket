@@ -88,10 +88,17 @@ class Filesystem extends AbstractFileSystem {
 		$download_average = 0;
 
 		foreach ( $font_urls as $font_url ) {
-			$font_path = wp_parse_url( $font_url, PHP_URL_PATH );
+			$parsed_font_url = wp_parse_url( $font_url );
+			$font_path       = isset( $parsed_font_url['path'] ) ? $parsed_font_url['path'] : '';
 
 			if ( ! $font_path ) {
 				continue;
+			}
+
+			// Subsetted fonts requested with the text= parameter share the same path (e.g. /l/font) and
+			// differ only by the query string, so include its hash to store each subset in its own file.
+			if ( ! empty( $parsed_font_url['query'] ) ) {
+				$font_path .= '-' . md5( $parsed_font_url['query'] );
 			}
 
 			$local_path = $fonts_basepath . $font_path;
