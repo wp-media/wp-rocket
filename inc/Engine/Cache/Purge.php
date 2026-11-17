@@ -62,8 +62,17 @@ class Purge {
 
 		$parsed_url = $this->parse_url( $url );
 
+		// Lowercase the percent-encoding to match the cache files on disk, which are stored lowercase (see Cache::reset_lowercase()).
+		$encoded_path = preg_replace_callback(
+			'/%[0-9A-F]{2}/',
+			static function ( $matches ) {
+				return strtolower( $matches[0] );
+			},
+			$parsed_url['path']
+		);
+
 		foreach ( _rocket_get_cache_dirs( $parsed_url['host'] ) as $dir ) {
-			$path = $dir . $parsed_url['path'];
+			$path = $dir . $encoded_path;
 
 			if ( ! $this->filesystem->exists( $path ) ) {
 				continue;
