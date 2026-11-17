@@ -51,7 +51,7 @@ class UsedCSS extends AbstractTable {
 	 *
 	 * @var int
 	 */
-	protected $version = 20261021;
+	protected $version = 20261117;
 
 	/**
 	 * Key => value array of versions => methods.
@@ -66,7 +66,7 @@ class UsedCSS extends AbstractTable {
 		20221104 => 'add_error_columns',
 		20231010 => 'add_submitted_at_column',
 		20231031 => 'add_next_retry_time_column',
-		20261021 => 'add_url_hash_unique_key',
+		20261117 => 'add_url_hash_unique_key',
 	];
 
 	/**
