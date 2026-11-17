@@ -38,6 +38,7 @@ return [
 				'page_context'     => 'support',
 				'capability'       => 'rocket_manage_options',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
+				'grnd_password_label' => 'WP Rocket AI Assistant',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
 				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',

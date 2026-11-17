@@ -26,6 +26,11 @@ class Subscriber implements Subscriber_Interface {
 	// The chat library product the column is registered under, and whose Application Passwords are revoked.
 	private const PRODUCT = 'wprocket';
 
+	/**
+	 * Application Password name shown on the user's profile, kept untranslated so it is the same on every site.
+	 */
+	private const APP_PASSWORD_NAME = 'WP Rocket AI Assistant';
+
 	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
 	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
 	private const PERMISSION_MANAGE_SITE   = 'manage-site';
@@ -210,12 +215,13 @@ class Subscriber implements Subscriber_Interface {
 				? rocket_get_constant( 'WP_ROCKET_WAP_SERVER_URL', false )
 				: self::WAP_SERVER_URL,
 			'grnd'            => [
-				'issuer_url'    => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
+				'issuer_url'     => rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					? rocket_get_constant( 'WP_ROCKET_WAP_ISSUER_URL', false )
 					: self::WAP_ISSUER_URL,
-				'license_key'   => $license_key . '|' . $email,
+				'license_key'    => $license_key . '|' . $email,
+				'password_label' => self::APP_PASSWORD_NAME,
 				// Gives each WordPress user their own chat history instead of one shared per site.
-				'send_user_ref' => true,
+				'send_user_ref'  => true,
 			],
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,
