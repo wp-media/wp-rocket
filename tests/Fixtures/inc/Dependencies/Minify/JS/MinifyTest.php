@@ -122,6 +122,22 @@ var t50 = css`${ c ? html` a  b ${ c ? html` a  b ${ (
 			'input'    => 'var  t = `a  ${b}`;  if ( t ) { go ( `c  d` ) ; }',
 			'expected' => 'var t=`a  ${b}`;if(t){go(`c  d`)}',
 		],
+		'shouldKeepSemicolonOfEmptyForOfLoopBeforeClosingBrace' => [
+			'input'    => 'function g(c){for(let t of Object.values(c));}',
+			'expected' => 'function g(c){for(let t of Object.values(c));}',
+		],
+		'shouldKeepSemicolonOfEmptyForLoopWithBracesInHead' => [
+			'input'    => 'function f(c,l,t,n){for(;n>c.push({value:l*c.length+t}););}',
+			'expected' => 'function f(c,l,t,n){for(;n>c.push({value:l*c.length+t}););}',
+		],
+		'shouldKeepSemicolonOfEmptyWhileLoopWithBracesInHead' => [
+			'input'    => 'function w(c){while(c.next({a:1}));}',
+			'expected' => 'function w(c){while(c.next({a:1}));}',
+		],
+		'shouldKeepWhitespaceInRegexAfterTernaryOperator' => [
+			'input'    => 'var r = R ? /[ ,\t]+/ : /[,\t]+/;',
+			'expected' => 'var r=R?/[ ,\t]+/:/[,\t]+/',
+		],
 		'shouldMinifyCodeWithoutLiterals' => [
 			'input'    => 'var a = "x"  +  \'y\'; if ( a ) { b ( ) ; }',
 			'expected' => 'var a="x"+\'y\';if(a){b()}',

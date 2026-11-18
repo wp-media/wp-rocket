@@ -349,7 +349,7 @@ class JS extends Minify
 		// of the RegExp methods (a `\` followed by a variable or value is
 		// likely part of a division, not a regex)
 		$keywords = array('do', 'in', 'new', 'else', 'throw', 'yield', 'delete', 'return',  'typeof');
-		$before = '(^|[=:,;\+\-\*\/\}\(\{\[&\|!]|'.implode('|', $keywords).')\s*';
+		$before = '(^|[=:,;\+\-\*\/\}\(\{\[&\|!\?]|'.implode('|', $keywords).')\s*';
 		$propertiesAndMethods = array(
 			// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Properties_2
 			'constructor',
@@ -369,7 +369,7 @@ class JS extends Minify
 		);
 		$delimiters = array_fill(0, count($propertiesAndMethods), '/');
 		$propertiesAndMethods = array_map('preg_quote', $propertiesAndMethods, $delimiters);
-		$after = '(?=\s*([\.,;\)\}&\|+]|\/\/|$|\.('.implode('|', $propertiesAndMethods).')))';
+		$after = '(?=\s*([\.,;:\)\}&\|+]|\/\/|$|\.('.implode('|', $propertiesAndMethods).')))';
 		$this->registerPattern('/'.$before.'\K'.$pattern.$after.'/', $callback);
 
 		// regular expressions following a `)` are rather annoying to detect...
@@ -501,15 +501,19 @@ class JS extends Minify
 		 * I'm going to double that semicolon (if any) so after the next line,
 		 * which strips semicolons here & there, we're still left with this one.
 		 */
-		$content = preg_replace('/(for\([^;\{]*;[^;\{]*;[^;\{]*\));(\}|$)/s', '\\1;;\\2', $content);
-		$content = preg_replace('/(for\([^;\{]+\s+in\s+[^;\{]+\));(\}|$)/s', '\\1;;\\2', $content);
 		/*
+		 * The loop head is matched with balanced parentheses so this also
+		 * covers `for(x of y);` and heads containing `{`, e.g. an object
+		 * literal like `for(;n>c.push({v:1}););`. Strings, regexes and
+		 * template literals are placeholders at this point, so parentheses
+		 * inside them can't unbalance the match.
+		 *
 		 * Below will also keep `;` after a `do{}while();` along with `while();`
 		 * While these could be stripped after do-while, detecting this
 		 * distinction is cumbersome, so I'll play it safe and make sure `;`
 		 * after any kind of `while` is kept.
 		 */
-		$content = preg_replace('/(while\([^;\{]+\));(\}|$)/s', '\\1;;\\2', $content);
+		$content = preg_replace('/(\b(?:for|while)(\((?:[^()]++|(?2))*+\)));(\}|$)/s', '\\1;;\\3', $content);
 
 		/*
 		 * We also can't strip empty else-statements. Even though they're
