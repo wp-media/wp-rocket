@@ -198,7 +198,15 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return; // Bail out if preload is disabled.
 		}
 
-		$url = home_url( add_query_arg( [], $wp->request ) );
+		$original = home_url( add_query_arg( [], $wp->request ) );
+
+		/**
+		 * Filters the current URL used to record the preload cache row.
+		 *
+		 * @param string $current_url The current URL.
+		 * @return string
+		 */
+		$url = wpm_apply_filters_typed( 'string', 'rocket_current_url', $original );
 
 		$detected = $this->mobile_detect->isMobile() && ! $this->mobile_detect->isTablet() ? 'mobile' : 'desktop';
 
@@ -214,8 +222,14 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			return;
 		}
 
-		if ( $this->is_excluded_by_filter( $url ) ) {
+		if ( $this->is_excluded_by_filter( $url ) || ( $original !== $url && $this->is_excluded_by_filter( $original ) ) ) {
 			$this->query->delete_by_url( $url );
+
+			if ( $original !== $url ) {
+				// Keep cleaning rows keyed by the visited (internal) URL.
+				$this->query->delete_by_url( $original );
+			}
+
 			return;
 		}
 
