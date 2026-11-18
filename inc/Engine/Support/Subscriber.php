@@ -28,8 +28,10 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Application Password name shown on the user's profile, kept untranslated so it is the same on every site.
+	 * The "1h" and "MCP" match the library: it expires the password an hour after creation and only accepts
+	 * it on MCP requests. Change the name if either changes.
 	 */
-	private const APP_PASSWORD_NAME = 'WP Rocket AI Assistant';
+	private const APP_PASSWORD_NAME = 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities';
 
 	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
 	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';

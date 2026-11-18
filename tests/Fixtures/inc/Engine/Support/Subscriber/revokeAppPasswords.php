@@ -44,7 +44,7 @@ return [
 			'passwords'           => [
 				'rocket' => [
 					'product' => 'wprocket',
-					'name'    => 'WP Rocket AI Assistant',
+					'name'    => 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities',
 				],
 				'own'    => [
 					'name'     => 'WAP – my staging deploy key',
@@ -69,7 +69,7 @@ return [
 			'passwords'           => [
 				'rocket' => [
 					'product' => 'wprocket',
-					'name'    => 'WP Rocket AI Assistant',
+					'name'    => 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities',
 				],
 				'other'  => [
 					'product' => 'imagify',
@@ -80,7 +80,7 @@ return [
 		'expected' => [
 			'product' => 'wprocket',
 			'names'   => [
-				'rocket' => 'WP Rocket AI Assistant',
+				'rocket' => 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities',
 			],
 			'kept'    => [ 'other' ],
 			'revoked' => [ 'rocket' ],
