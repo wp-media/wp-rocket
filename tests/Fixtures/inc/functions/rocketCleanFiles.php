@@ -152,5 +152,85 @@ return [
 				],
 			],
 		],
+		'shouldOnlyDeleteQueryStringDirForHomeUrlWithQuery'     => [
+			'urls'     => [
+				'http://example.org/?p=245',
+			],
+			'configs' => [
+				'post_id' => 0,
+				'create'  => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#p=245/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#p=245' => [],
+				],
+			],
+		],
+		'shouldOnlyDeleteQueryStringDirForLanguageUrlWithQuery' => [
+			'urls'     => [
+				'http://example.org/de/?p=245/',
+			],
+			'configs' => [
+				'post_id' => 0,
+				'create'  => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/#p=245%2f/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/#p=245%2f' => [],
+				],
+			],
+		],
+		'shouldDeletePageDirWhenOnlyIgnoredParameters'     => [
+			'urls'     => [
+				'http://example.org/lorem-ipsum/?utm_source=test',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [ 'utm_source' => 1 ],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/'                => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/lorem-ipsum/' => null,
+				],
+			],
+		],
+		'shouldDeleteSortedQueryStringDirWithoutIgnored'   => [
+			'urls'     => [
+				'http://example.org/?utm_source=test&size=xl&color=red',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [ 'utm_source' => 1 ],
+				'create'         => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#color=red&size=xl/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#color=red&size=xl' => [],
+				],
+			],
+		],
+		'shouldDeleteQueryStringDirWithEncodedValue'       => [
+			'urls'     => [
+				'http://example.org/?color=caf%C3%A9%20au%20lait',
+			],
+			'configs'  => [
+				'post_id' => 0,
+				'create'  => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#color=caf%c3%a9+au+lait/index.html',
+				],
+			],
+			'expected' => [
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/#color=caf%c3%a9+au+lait' => [],
+				],
+			],
+		],
 	],
 ];
