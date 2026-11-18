@@ -64,7 +64,6 @@ class Test_Delete extends RESTVfsTestCase {
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
 
-		$this->set_permalink_structure( '' );
 		$this->restoreWpHook( 'permalink_structure_changed' );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
@@ -72,6 +71,9 @@ class Test_Delete extends RESTVfsTestCase {
 		$admin->remove_cap( 'rocket_regenerate_critical_css' );
 
 		parent::tear_down();
+
+		// The rollback restored the permalink option: rebuild the rewrite object from it.
+		$GLOBALS['wp_rewrite']->init();
 	}
 
 	/**
