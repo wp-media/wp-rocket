@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\GoogleFonts\Admin\Subscriber::enable_google_fonts
@@ -12,6 +13,7 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  * @group  GoogleFonts
  */
 class Test_EnableGoogleFonts extends AjaxTestCase {
+	use IsolateHookTrait;
 
 	public function set_up() {
 		parent::set_up();
@@ -19,6 +21,14 @@ class Test_EnableGoogleFonts extends AjaxTestCase {
 		$options                        = get_option( 'wp_rocket_settings', [] );
 		$options['minify_google_fonts'] = 0;
 		update_option( 'wp_rocket_settings', $options );
+
+		$this->unregisterAllCallbacks( 'admin_init' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	/**

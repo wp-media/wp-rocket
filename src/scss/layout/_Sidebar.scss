@@ -8,18 +8,26 @@
 
 .wpr-Sidebar{
     position: relative;
-    display: none;
-    flex: 0 0 290px;
+    display: flex;
+    flex: 0 0 $sidebarWidth;
 	padding: 0 $space*2;
 	flex-direction: column;
 	gap: $space*2;
+
+    // Wide screens only: the content column needs about 660px, so the wider sidebar
+    // (cards 322px as in the design) fits from 1500px of viewport (WP menu 160 + page 32 + nav 274).
+    // Symmetric padding: nothing to mirror for RTL.
+    @media (min-width: $sidebarWideBreakpoint) {
+        flex-basis: $sidebarWideWidth;
+        padding: 0 $space*2.5;
+    }
 
     @include respond-to('md') {
         flex: 0 0 260px;
     }
 
     @include respond-to('sm') {
-        display: none !important;
+        padding: $space*2 0 0;
     }
 
     &-title{
@@ -86,4 +94,9 @@
             text-align: center;
         }
     }
+}
+
+// No sidebar on the Dashboard: it has its own column.
+.wpr-Content[data-page="dashboard"] + .wpr-Sidebar{
+    display: none;
 }

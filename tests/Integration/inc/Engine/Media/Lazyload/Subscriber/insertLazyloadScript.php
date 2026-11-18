@@ -24,9 +24,13 @@ class Test_InsertLazyloadScript extends TestCase {
 		$this->threshold = null;
 
 		$this->unregisterAllCallbacksExcept( 'wp_footer', 'insert_lazyload_script', PHP_INT_MAX );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
+		$this->restoreWpHook( 'current_screen' );
 		remove_filter( 'rocket_lazyload_script_tag', [ $this, 'set_js_to_min' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload', [ $this, 'setLazyload' ] );
 		remove_filter( 'pre_get_rocket_option_lazyload_iframes', [ $this, 'setIframes' ] );

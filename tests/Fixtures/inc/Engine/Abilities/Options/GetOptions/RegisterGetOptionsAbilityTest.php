@@ -2,19 +2,18 @@
 
 return [
 	'settings'  => [
-		'cache_mobile'            => 1,
-		'do_caching_mobile_files' => 0,
-		'cache_webp'              => 1,
-		'cache_logged_user'       => 0,
-		'minify_css'              => 1,
-		'lazyload'                => 1,
-		'cdn'                     => 0,
-		'preload_fonts'           => [ 'https://example.com/font.woff2' ],
-		'dns_prefetch'            => [ 'example.com' ],
-		// Denylist keys - should be filtered out.
-		'secret_cache_key'        => 'secret-value',
-		'consumer_key'            => 'consumer-secret',
-		'license'                 => 'license-secret',
+		'cache_webp'        => 1,
+		'cache_logged_user' => 0,
+		'minify_css'        => 1,
+		'lazyload'          => 1,
+		'cdn'               => 0,
+		'preload_fonts'     => [ 'https://example.com/font.woff2' ],
+		'dns_prefetch'      => [ 'example.com' ],
+		// Keys outside the allowlist — must not appear in results.
+		'secret_cache_key'  => 'secret-value',
+		'consumer_key'      => 'consumer-secret',
+		'license'           => 'license-secret',
+		'analytics_enabled' => 1,
 	],
 	'test_data' => [
 		'testShouldReturnOptionsWhenUserHasPermission' => [
@@ -24,15 +23,13 @@ return [
 			'expected' => [
 				'is_error' => false,
 				'data'     => [
-					'cache_mobile'            => 1,
-					'do_caching_mobile_files' => 0,
-					'cache_webp'              => 1,
-					'cache_logged_user'       => 0,
-					'minify_css'              => 1,
-					'lazyload'                => 1,
-					'cdn'                     => 0,
-					'preload_fonts'           => [ 'https://example.com/font.woff2' ],
-					'dns_prefetch'            => [ 'example.com' ],
+					'cache_webp'        => 1,
+					'cache_logged_user' => 0,
+					'minify_css'        => 1,
+					'lazyload'          => 1,
+					'cdn'               => 0,
+					'preload_fonts'     => [ 'https://example.com/font.woff2' ],
+					'dns_prefetch'      => [ 'example.com' ],
 				],
 			],
 		],

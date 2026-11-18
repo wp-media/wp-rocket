@@ -4,7 +4,13 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Abilities;
 
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Abilities\Admin\AdapterNotice;
+use WP_Rocket\Engine\Abilities\Admin\Subscriber as AdminSubscriber;
+use WP_Rocket\Engine\Abilities\Catalog;
+use WP_Rocket\Engine\Abilities\CLI\Command as CLICommand;
+use WP_Rocket\Engine\Abilities\CLI\Subscriber as CLISubscriber;
 use WP_Rocket\Engine\Abilities\Context;
+use WP_Rocket\Engine\Abilities\Options\AllowedOptions;
 use WP_Rocket\Engine\Abilities\Options\GetOptions;
 use WP_Rocket\Engine\Abilities\Options\SetOption;
 use WP_Rocket\Engine\Abilities\Options\Subscriber;
@@ -17,9 +23,15 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	protected $provides = [
 		'abilities_context',
+		'abilities_allowed_options',
 		'abilities_get_options',
 		'abilities_set_option',
 		'abilities_subscriber',
+		'abilities_catalog',
+		'abilities_cli_command',
+		'abilities_cli_subscriber',
+		'abilities_adapter_notice',
+		'abilities_admin_subscriber',
 	];
 
 	/**
@@ -40,9 +52,11 @@ class ServiceProvider extends AbstractServiceProvider {
 	 */
 	public function register(): void {
 		$this->getContainer()->addShared( 'abilities_context', Context::class );
+		$this->getContainer()->addShared( 'abilities_allowed_options', AllowedOptions::class );
 		$this->getContainer()->add( 'abilities_get_options', GetOptions::class )
-			->addArgument( 'options' );
-		$this->getContainer()->add( 'abilities_set_option', SetOption::class );
+			->addArguments( [ 'options', 'abilities_allowed_options' ] );
+		$this->getContainer()->add( 'abilities_set_option', SetOption::class )
+			->addArgument( 'abilities_allowed_options' );
 		$this->getContainer()->addShared( 'abilities_subscriber', Subscriber::class )
 			->addArguments(
 				[
@@ -51,5 +65,14 @@ class ServiceProvider extends AbstractServiceProvider {
 					'abilities_context',
 				]
 			);
+		$this->getContainer()->addShared( 'abilities_catalog', Catalog::class );
+		$this->getContainer()->add( 'abilities_cli_command', CLICommand::class )
+			->addArgument( 'abilities_catalog' );
+		$this->getContainer()->addShared( 'abilities_cli_subscriber', CLISubscriber::class )
+			->addArgument( 'abilities_cli_command' );
+		$this->getContainer()->addShared( 'abilities_adapter_notice', AdapterNotice::class )
+			->addArgument( 'abilities_context' );
+		$this->getContainer()->addShared( 'abilities_admin_subscriber', AdminSubscriber::class )
+			->addArgument( 'abilities_adapter_notice' );
 	}
 }

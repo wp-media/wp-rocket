@@ -97,6 +97,8 @@ class ServiceProvider extends AbstractServiceProvider {
 					'upgrade',
 					'renewal',
 					'revoked',
+					'user',
+					'user_client',
 				]
 			);
 	}

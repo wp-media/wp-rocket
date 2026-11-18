@@ -4,13 +4,14 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Support;
 
 use WP_Rocket\Admin\Options_Data;
-use WP_Rocket_Mobile_Detect;
+use WP_Rocket\Dependencies\Detection\MobileDetect;
+use WP_Rocket\Engine\License\API\User;
 
 class Meta {
 	/**
 	 * Mobile Detect instance
 	 *
-	 * @var WP_Rocket_Mobile_Detect
+	 * @var MobileDetect
 	 */
 	private $mobile_detect;
 
@@ -22,14 +23,23 @@ class Meta {
 	private $options;
 
 	/**
+	 * User instance
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
 	 * Instantiate the class
 	 *
-	 * @param WP_Rocket_Mobile_Detect $mobile_detect Mobile Detect instance.
-	 * @param Options_Data            $options Options instance.
+	 * @param MobileDetect $mobile_detect Mobile Detect instance.
+	 * @param Options_Data $options Options instance.
+	 * @param User         $user User instance.
 	 */
-	public function __construct( WP_Rocket_Mobile_Detect $mobile_detect, Options_Data $options ) {
+	public function __construct( MobileDetect $mobile_detect, Options_Data $options, User $user ) {
 		$this->mobile_detect = $mobile_detect;
 		$this->options       = $options;
+		$this->user          = $user;
 	}
 
 	/**
@@ -90,7 +100,7 @@ class Meta {
 	 *
 	 * @param array $features Features to add to the meta tag.
 	 *
-	 * @return string
+	 * @return string The meta tag, or an empty string when there is no feature to report.
 	 */
 	private function get_meta_tag( array $features = [] ): string {
 		$options = $this->options;
@@ -118,7 +128,12 @@ class Meta {
 			$features[] = 'wpr_dns_prefetch';
 		}
 
-		if ( ! $features ) {
+		if ( ! $this->is_license_expired() ) {
+			$features[] = 'wpr_insights';
+		}
+
+		// Nothing to report (expired licence and no other feature): do not output the tag.
+		if ( empty( $features ) ) {
 			return '';
 		}
 
@@ -132,6 +147,17 @@ class Meta {
 			$version,
 			implode( ' ', $features )
 		);
+	}
+
+	/**
+	 * Check whether the licence is known to be expired.
+	 *
+	 * An expiration of 0 means the customer data is unavailable, so the licence is treated as not expired.
+	 *
+	 * @return bool
+	 */
+	private function is_license_expired(): bool {
+		return 0 !== $this->user->get_license_expiration() && $this->user->is_license_expired();
 	}
 
 	/**

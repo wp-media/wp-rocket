@@ -8,6 +8,8 @@ use Mockery;
 use WPMedia\Mixpanel\Optin;
 use WPMedia\Mixpanel\TrackingPlugin as MixpanelTracking;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\ChannelDetector;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -20,6 +22,8 @@ class TrackRocketcdnNoticeViewedTest extends TestCase {
 	private $optin;
 	private $mixpanel;
 	private $options;
+	private $user;
+	private $channel_detector;
 	private $tracking;
 
 	protected function set_up(): void {
@@ -28,6 +32,7 @@ class TrackRocketcdnNoticeViewedTest extends TestCase {
 		$this->optin    = Mockery::mock( Optin::class );
 		$this->mixpanel = Mockery::mock( MixpanelTracking::class );
 		$this->options  = Mockery::mock( Options_Data::class );
+		$this->user     = Mockery::mock( User::class );
 
 		$this->options->shouldReceive( 'get' )
 			->with( 'consumer_email', '' )
@@ -35,11 +40,20 @@ class TrackRocketcdnNoticeViewedTest extends TestCase {
 		$this->mixpanel->shouldReceive( 'identify' )
 			->once()
 			->with( '' );
+		Functions\when( 'is_admin' )->justReturn( true );
+		$this->optin->shouldReceive( 'can_track' )
+			->once()
+			->andReturn( false );
+
+		$this->channel_detector = Mockery::mock( ChannelDetector::class );
+		$this->channel_detector->shouldReceive( 'detect' )->andReturn( ChannelDetector::CHANNEL_UI )->byDefault();
 
 		$this->tracking = new Tracking(
 			$this->options,
 			$this->optin,
 			$this->mixpanel,
+			$this->user,
+			$this->channel_detector,
 			'path/to/templates'
 		);
 
@@ -48,12 +62,16 @@ class TrackRocketcdnNoticeViewedTest extends TestCase {
 				return array_merge( (array) $defaults, (array) $args );
 			}
 		);
+		Functions\when( 'esc_url_raw' )->returnArg();
+		Functions\when( 'wp_unslash' )->returnArg();
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		unset( $_SERVER['REQUEST_URI'] );
+
 		$this->optin->shouldReceive( 'can_track' )
 			->times( $expected['can_track_count'] )
 			->andReturn( $config['can_track'] );
@@ -63,7 +81,7 @@ class TrackRocketcdnNoticeViewedTest extends TestCase {
 		} else {
 			$this->mixpanel->shouldReceive( 'track' )
 				->once()
-				->with( 'RocketCDN Notice Viewed', [ 'context' => 'wp_plugin' ] );
+				->with( 'RocketCDN Notice Viewed', [ 'context' => 'wp_plugin', 'interaction_channel' => ChannelDetector::CHANNEL_UI, 'path' => '' ] );
 		}
 
 		$this->tracking->track_rocketcdn_notice_viewed( $config['box'] );

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace WP_Rocket\Tests\Unit\inc\Engine\Abilities\Options\SetOption;
 
 use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Engine\Abilities\Options\AllowedOptions;
 use WP_Rocket\Engine\Abilities\Options\SetOption;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -13,6 +15,13 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group Abilities
  */
 class ExecuteTest extends TestCase {
+	/**
+	 * AllowedOptions mock.
+	 *
+	 * @var AllowedOptions|Mockery\MockInterface
+	 */
+	private $allowed_options;
+
 	/**
 	 * SetOption instance under test.
 	 *
@@ -28,7 +37,8 @@ class ExecuteTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->set_option = new SetOption();
+		$this->allowed_options = Mockery::mock( AllowedOptions::class );
+		$this->set_option      = new SetOption( $this->allowed_options );
 
 		$this->stubEscapeFunctions();
 		$this->stubTranslationFunctions();
@@ -51,27 +61,33 @@ class ExecuteTest extends TestCase {
 		$option_name    = $input['option_name'];
 		$previous_value = $config['previous_value'];
 
+		$this->allowed_options
+			->shouldReceive( 'get' )
+			->andReturn( $config['allowed_keys'] );
+
 		Functions\when( 'rocket_sanitize_textarea_field' )->returnArg( 2 );
 		Functions\when( 'sanitize_text_field' )->returnArg();
-		Functions\when( 'wp_strip_all_tags' )->alias( function ( $string, $remove_breaks ) {
-			$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
-			$string = strip_tags( $string );
+		Functions\when( 'wp_strip_all_tags' )->alias(
+				function ( $string, $remove_breaks ) {
+					$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
+					$string = strip_tags( $string );
 
-			if ( $remove_breaks ) {
-				$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
-			}
+					if ( $remove_breaks ) {
+							$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+					}
 
-			return trim( $string );
-		} );
+					return trim( $string );
+				}
+			);
 
 		if ( $expected['success'] ) {
-		Functions\expect( 'get_rocket_option' )
-			->with( $option_name )
-			->andReturn( $previous_value );
+			Functions\expect( 'get_rocket_option' )
+				->with( $option_name )
+				->andReturn( $previous_value );
 
-		Functions\expect( 'update_rocket_option' )
-			->once()
-			->with( $option_name, $expected['new_value'] );
+			Functions\expect( 'update_rocket_option' )
+				->once()
+				->with( $option_name, $expected['new_value'] );
 		}
 
 		$result = $this->set_option->execute( $input );

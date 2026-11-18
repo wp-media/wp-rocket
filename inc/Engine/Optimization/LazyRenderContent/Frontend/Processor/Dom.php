@@ -168,7 +168,7 @@ class Dom implements ProcessorInterface {
 			++$this->count;
 
 			// Inject the hash as an attribute in the opening tag.
-			$replace = preg_replace( '/' . $child->tagName . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $opening_tag_html, 1 ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			$replace = preg_replace( '/' . preg_quote( $child->tagName, '/' ) . '/is', '$0 data-rocket-location-hash="' . $hash . '"', $opening_tag_html, 1 ); // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( is_null( $replace ) ) {
 				continue;
 			}
@@ -176,7 +176,7 @@ class Dom implements ProcessorInterface {
 			// If DOMDocument automatically modified the original element, we might not find it in the HTML.
 			// Known issue: if there is an element with the exact same opening tag before in the HTML that did not receive a hash, it will replaced instead of the correct element in the HTML.
 			$element_replacements = 0;
-			$modified_html        = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', $replace, $html, 1, $element_replacements );
+			$modified_html        = preg_replace( '/' . preg_quote( $opening_tag_html, '/' ) . '/', addcslashes( $replace, '\\$' ), $html, 1, $element_replacements );
 			if ( $element_replacements < 1 ) {
 				Logger::warning( 'Opening tag from DOMDocument not found in original HTML.', [ 'LazyRenderContent' ] );
 			}

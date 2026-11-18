@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Recommendations\D
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as RocketInsightsQuery;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
 use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\APIClient;
@@ -58,6 +59,13 @@ class Test_FetchRecommendations extends TestCase {
 	private $metric_formatter;
 
 	/**
+	 * RocketInsights Query mock.
+	 *
+	 * @var \PHPUnit\Framework\MockObject\MockObject&RocketInsightsQuery
+	 */
+	private $ri_query;
+
+	/**
 	 * Set up test fixtures.
 	 */
 	protected function setUp(): void {
@@ -67,8 +75,10 @@ class Test_FetchRecommendations extends TestCase {
 		$this->options          = Mockery::mock( Options_Data::class );
 		$this->global_score     = Mockery::mock( GlobalScore::class );
 		$this->metric_formatter = Mockery::mock( MetricFormatter::class );
+		$this->ri_query = $this->createMock( RocketInsightsQuery::class );
+		$this->ri_query->method( 'get_last_completed_channel' )->willReturn( '' );
 
-		$this->data_manager = new DataManager( $this->api_client, $this->options, $this->global_score, $this->metric_formatter );
+		$this->data_manager = new DataManager( $this->api_client, $this->options, $this->global_score, $this->metric_formatter, $this->ri_query );
 		$this->set_logger( $this->data_manager );
 	}
 
@@ -81,8 +91,8 @@ class Test_FetchRecommendations extends TestCase {
 			->with( 'WP_ROCKET_VERSION' )
 			->andReturn( $config['version'] );
 
-		// Mock get_locale.
-		Functions\expect( 'get_locale' )
+		// Mock get_user_locale.
+		Functions\expect( 'get_user_locale' )
 			->andReturn( $config['locale'] );
 
 		// Mock Options_Data::get.
@@ -108,7 +118,8 @@ class Test_FetchRecommendations extends TestCase {
 			->with(
 				Mockery::on(
 					function ( $params ) use ( $config ) {
-						return $params['email'] === $config['expected_params']['email'];
+						return $params['email'] === $config['expected_params']['email']
+							&& $params['language'] === $config['expected_params']['language'];
 					}
 				)
 			)
@@ -119,8 +130,12 @@ class Test_FetchRecommendations extends TestCase {
 			->with(
 				'wpr_ri_recommendations',
 				Mockery::on(
-					function ( $data ) use ( $expected ) {
+					function ( $data ) use ( $config, $expected ) {
 						if ( ! isset( $data['status'] ) ) {
+							return false;
+						}
+						// Verify the payload is tagged with the user's language.
+						if ( $data['language'] !== $config['expected_params']['language'] ) {
 							return false;
 						}
 						// Verify status matches expected final status.

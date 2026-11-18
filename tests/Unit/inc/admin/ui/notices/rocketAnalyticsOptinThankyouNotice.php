@@ -53,7 +53,7 @@ class Test_RocketAnalyticsOptinThankyouNotice extends TestCase {
 				->andReturnUsing(
 					function ( $args ) {
 						$this->assertArrayHasKey( 'message', $args );
-						$this->assertStringContainsString( 'Thank you! The data you share helps us improve WP Rocket', $args['message'] );
+						$this->assertStringContainsString( '<strong>Thank you!</strong> The data you share helps us improve WP Rocket', $args['message'] );
 					}
 				);
 		} else {

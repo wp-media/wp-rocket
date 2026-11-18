@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
@@ -13,9 +14,9 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class UpdateItemTest extends RESTfulTestCase {
-	use DBTrait;
+	use DBTrait, HttpRequestTrait;
 
-	private $config;
+	protected $config = [];
 	private $hook_fired = false;
 	private $hook_fired_id = null;
 
@@ -52,6 +53,8 @@ class UpdateItemTest extends RESTfulTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		// Clean up data before each test
 		self::truncatePerformanceMonitoringTable();
 
@@ -78,6 +81,8 @@ class UpdateItemTest extends RESTfulTestCase {
 
 		wp_set_current_user( null );
 
+		$this->tear_down_http();
+
 		parent::tear_down();
 	}
 
@@ -85,6 +90,14 @@ class UpdateItemTest extends RESTfulTestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
+		// The API rejects the sync submission (as in production), so the async queue fallback runs.
+		$this->config['http'] = [
+			'https://saas.wp-rocket.me/performance/' => [
+				'response' => [ 'code' => 400, 'message' => 'Bad Request' ],
+				'body'     => '',
+			],
+		];
+
 		$this->setUpTest( $config );
 
 		$body = isset( $config['body'] ) ? $config['body'] : [ 'source' => 're-test add-on page' ];

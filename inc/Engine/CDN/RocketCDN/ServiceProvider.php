@@ -27,6 +27,7 @@ class ServiceProvider extends AbstractServiceProvider {
 		'rocketcdn_options_manager',
 		'rocketcdn_data_manager_subscriber',
 		'rocketcdn_frontend_subscriber',
+		'rocketcdn_recommendation_override',
 		'rocketcdn_rest',
 		'rocketcdn_rest_subscriber',
 		'rocketcdn_admin_subscriber',
@@ -79,6 +80,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'options_api',
 					'user_client',
 					'rocketcdn_subscription_controller',
+					'rocketcdn_query',
 				]
 			);
 		// RocketCDN Frontend subscriber.
@@ -87,6 +89,15 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'cdn_context',
 					'rocketcdn_subscription_controller',
+				]
+			);
+		// RocketCDN recommendation override.
+		$this->getContainer()->addShared( 'rocketcdn_recommendation_override', RecommendationOverride::class )
+			->addArguments(
+				[
+					'cdn_context',
+					'rocketcdn_subscription_controller',
+					'options',
 				]
 			);
 		// RocketCDN REST API pages controller.
@@ -105,8 +116,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
 			->addArguments(
 				[
-					'rocketcdn_options_manager',
-					'options',
 					'rocketcdn_rest',
 					'rocketcdn_subscription_controller',
 				]
@@ -117,11 +126,11 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'rocketcdn_api_client',
 					'beacon',
-					'user_client',
 					'tracking',
 					new StringArgument( __DIR__ . '/views' ),
 					'options',
 					'rocketcdn_subscription_controller',
+					'user',
 				]
 			);
 
@@ -139,6 +148,7 @@ class ServiceProvider extends AbstractServiceProvider {
 					'rocketcdn_check_status_api_client',
 					'user',
 					'rocketcdn_website_search_api_client',
+					'user_client',
 				]
 				);
 
@@ -148,6 +158,7 @@ class ServiceProvider extends AbstractServiceProvider {
 				[
 					'rocketcdn_api_client',
 					'user_client',
+					'user',
 					new StringArgument( __DIR__ . '/views' ),
 				]
 			);

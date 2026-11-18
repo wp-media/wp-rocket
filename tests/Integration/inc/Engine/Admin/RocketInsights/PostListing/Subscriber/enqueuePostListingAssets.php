@@ -40,6 +40,9 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 
 		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		delete_transient( $this->remote_settings_transient );
 		delete_transient( $this->remote_settings_transient . '_timeout' );
 		delete_transient( $this->remote_settings_transient . '_timeout_active' );
@@ -63,6 +66,8 @@ class Test_EnqueuePostListingAssets extends AdminTestCase {
 		delete_transient( $this->remote_settings_transient );
 		delete_transient( $this->remote_settings_transient . '_timeout' );
 		delete_transient( $this->remote_settings_transient . '_timeout_active' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

@@ -3,7 +3,6 @@ declare( strict_types=1 );
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Render\Controller;
 
-use ReflectionProperty;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\SubscriptionController\AbstractSubscriptionControllerTestCase;
 
 /**
@@ -21,9 +20,9 @@ class Test_ShouldDisableElementForRocketcdn extends AbstractSubscriptionControll
 		$container = apply_filters( 'rocket_container', null );
 		$this->render_controller = $container->get( 'cdn_render_controller' );
 
-		$prop = new ReflectionProperty( $this->render_controller, 'options' );
-		$prop->setAccessible( true );
-		$prop->getValue( $this->render_controller )->set_values( [ 
+		$prop = $this->get_reflective_property( 'options', $this->render_controller );
+
+		$prop->getValue( $this->render_controller )->set_values( [
 			'cdn'      => 1, 
 			'cdn_type' => 'rocketcdn' 
 			] 

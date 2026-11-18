@@ -12,7 +12,6 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group CloudflarePlugin
  */
 class Test_displayApoCookiesNotice extends AdminTestCase {
-
 	private static $admin_user_id = 0;
 	private static $contributer_user_id = 0;
 
@@ -29,6 +28,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 	public function set_up()
 	{
 		parent::set_up();
+
 		add_filter('pre_option_automatic_platform_optimization', [$this, 'automatic_platform_optimization']);
 		add_filter('rocket_cache_mandatory_cookies', [$this, 'mandatory_cookies']);
 		add_filter('rocket_cache_dynamic_cookies', [$this, 'dynamic_cookies']);
@@ -37,6 +37,9 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		add_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		add_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_apo_cookies_notice' );
 	}
 
 	public function tear_down()
@@ -48,6 +51,11 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
 		remove_filter('pre_option_cloudflare_api_email', [$this, 'cloudflare_api_email']);
 		remove_filter('pre_option_cloudflare_api_key', [$this, 'cloudflare_api_key']);
 		remove_filter('pre_option_cloudflare_cached_domain_name', [$this, 'cloudflare_cached_domain_name']);
+
+		// IsolateHookTrait keeps a single backup, so it now holds admin_notices; current_screen
+		// is restored by the WP test suite's own _restore_hooks() in parent::tear_down().
+		$this->restoreWpHook( 'admin_notices' );
+
 		parent::tear_down();
 	}
 
@@ -57,6 +65,7 @@ class Test_displayApoCookiesNotice extends AdminTestCase {
     public function testShouldDoAsExpected( $config, $expected )
     {
 		$this->config = $config;
+
 		set_current_screen( $config['screen']->id );
 
 		if ( $config['can'] ) {

@@ -58,8 +58,10 @@ class TestFetch extends TestCase {
 		Functions\expect( 'wp_remote_get' )
 			->with( $config['path'] )
 			->andReturn( $config['response'] );
-		Functions\expect( 'wp_remote_retrieve_body' )
+		Functions\expect( 'wp_remote_retrieve_response_code' )
 			->with( $config['response'] )
-			->andReturn( $config['body'] );
+			->andReturn( $config['code'] );
+		Functions\when( 'wp_remote_retrieve_header' )->justReturn( $config['content_type'] ?? '' );
+		Functions\when( 'wp_remote_retrieve_body' )->justReturn( $config['body'] );
 	}
 }

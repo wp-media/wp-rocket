@@ -30,11 +30,15 @@ class MaybeDisplayRevokedNotice extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_revoked_notice' );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		$this->original_user = $this->getNonPublicPropertyValue( 'user', self::$user, self::$user );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		$this->set_reflective_property( $this->original_user, 'user', self::$user );
 

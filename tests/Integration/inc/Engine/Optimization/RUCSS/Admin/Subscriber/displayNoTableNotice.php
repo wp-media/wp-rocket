@@ -16,12 +16,21 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
 class Test_DisplayNoTableNotice extends AdminTestCase {
 	protected $rucss;
 
+	public static function set_up_before_class() {
+		parent::set_up_before_class();
+
+		self::uninstallUsedCssTable();
+	}
+
 	public function set_up() {
 		parent::set_up();
 
 		$this->setRoleCap( 'administrator', 'rocket_manage_options' );
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'display_no_table_notice', 10 );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
@@ -29,6 +38,7 @@ class Test_DisplayNoTableNotice extends AdminTestCase {
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'rucss' ] );
 
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

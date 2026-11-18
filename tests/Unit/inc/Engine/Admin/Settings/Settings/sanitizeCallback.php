@@ -25,7 +25,8 @@ class Test_SanitizeCallback extends TestCase {
 
 		$this->options = Mockery::mock( Options_Data::class );
 		$this->options->shouldReceive( 'get' )
-		              ->withAnyArgs();
+		              ->withAnyArgs()
+		              ->byDefault();
 
 		$this->settings = new Settings( $this->options );
 	}
@@ -123,5 +124,85 @@ class Test_SanitizeCallback extends TestCase {
 
 	public function addCriticalCSSProvider() {
 		return $this->getTestData( __DIR__, 'sanitizeCallback' );
+	}
+
+	/**
+	 * Regression test: a caller that explicitly sets 'cdn' on the array passed to
+	 * update_option() (e.g. CDNOptionsManager::disable()/enable(), whose write triggers
+	 * this callback via register_setting()'s sanitize_option_wp_rocket_settings filter)
+	 * must have that value respected, not silently reverted to the stale Options_Data
+	 * snapshot's current value.
+	 */
+	public function testShouldPreserveExplicitlySubmittedCdnValue() {
+		// Stale snapshot deliberately disagrees with the submitted value, so the
+		// assertion can only pass if the submitted value actually wins.
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$output = $this->settings->sanitize_callback( [ 'cdn' => 0 ] );
+
+		$this->assertSame( 0, $output['cdn'] );
+	}
+
+	/**
+	 * When 'cdn' isn't part of the submitted array at all (e.g. a general settings-form
+	 * save, which has no 'cdn' field), the current stored value must be preserved.
+	 */
+	public function testShouldFallBackToStoredCdnValueWhenNotSubmitted() {
+		$this->options->shouldReceive( 'get' )
+			->with( 'cdn', 0 )
+			->andReturn( 1 );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+
+		$output = $this->settings->sanitize_callback( [] );
+
+		$this->assertSame( 1, $output['cdn'] );
+	}
+
+	/**
+	 * @dataProvider settingsSavedNoticeProvider
+	 */
+	public function testShouldAddSettingsSavedNoticeOnlyOnce( $global_errors, $transient_errors, $should_add ) {
+		global $wp_settings_errors;
+
+		$wp_settings_errors = $global_errors;
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		Functions\when( 'get_transient' )->justReturn( $transient_errors );
+		Functions\when( '__' )->returnArg();
+
+		if ( $should_add ) {
+			Functions\expect( 'add_settings_error' )
+				->once()
+				->with( 'general', 'settings_updated', 'Settings saved.', 'updated' );
+		} else {
+			Functions\expect( 'add_settings_error' )->never();
+		}
+
+		$this->settings->sanitize_callback( [ 'secret_key' => 'secret' ] );
+
+		$wp_settings_errors = [];
+	}
+
+	public function settingsSavedNoticeProvider() {
+		$wpr_notice  = [
+			'setting' => 'general',
+			'code'    => 'settings_updated',
+			'message' => 'Settings saved.',
+			'type'    => 'updated',
+		];
+		$core_notice = array_merge( $wpr_notice, [ 'type' => 'success' ] );
+
+		return [
+			'no notice queued yet'                    => [ [], false, true ],
+			'WP Rocket notice queued in this request' => [ [ $wpr_notice ], false, false ],
+			'WP Rocket notice persisted for redirect' => [ [], [ $wpr_notice ], false ],
+			'core notice persisted for redirect'      => [ [], [ $core_notice ], false ],
+			'core notice queued in this request'      => [ [ $core_notice ], false, false ],
+		];
 	}
 }

@@ -5,6 +5,7 @@ namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
 use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\DataManager;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Overrides\Overrides;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetRecommendations implements AbilitiesInterface {
@@ -60,12 +61,21 @@ class GetRecommendations implements AbilitiesInterface {
 	private $data_manager;
 
 	/**
+	 * Recommendation overrides registry.
+	 *
+	 * @var Overrides
+	 */
+	private $overrides;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param DataManager $data_manager The data manager for recommendations.
+	 * @param Overrides   $overrides    The recommendation overrides registry.
 	 */
-	public function __construct( DataManager $data_manager ) {
+	public function __construct( DataManager $data_manager, Overrides $overrides ) {
 		$this->data_manager = $data_manager;
+		$this->overrides    = $overrides;
 	}
 
 	/**
@@ -88,9 +98,7 @@ For each recommendation, mcp_actionable: true means it can be applied with set-o
 					'rocket'
 					),
 				'category'            => 'wp-rocket-insights',
-				'input_schema'        => [
-					'type' => 'null',
-				],
+				'input_schema'        => [],
 				'output_schema'       => [
 					'type'       => 'object',
 					'properties' => [
@@ -148,7 +156,13 @@ For each recommendation, mcp_actionable: true means it can be applied with set-o
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/get-recommendations' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/get-recommendations',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 		$data = $this->data_manager->get_recommendations();
 
 		if ( false === $data ) {
@@ -172,7 +186,8 @@ For each recommendation, mcp_actionable: true means it can be applied with set-o
 		}
 
 		$formatted = [];
-		foreach ( $data['recommendations'] ?? [] as $recommendation ) {
+		// Same removal rules as the UI, without the copy/CTA overrides.
+		foreach ( $this->overrides->remove_hidden( $data['recommendations'] ?? [] ) as $recommendation ) {
 			$slug        = $recommendation['option_slug'] ?? '';
 			$actionable  = in_array( $slug, self::MCP_ACTIONABLE_OPTION_SLUGS, true );
 			$formatted[] = [

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Cloudflare;
 
+use WP_Rocket\Addon\Cloudflare\API\Client;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -10,8 +11,11 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestGetCloudflareIps extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
 	private $cloudflare;
-	private $response;
 
 	public function set_up() {
 		parent::set_up();
@@ -21,19 +25,13 @@ class TestGetCloudflareIps extends TestCase {
 		$this->cloudflare = $container->get( 'cloudflare' );
 	}
 
-	public function tear_down() {
-		remove_filter( 'pre_http_request', [ $this, 'http_request'] );
-
-		parent::tear_down();
-	}
-
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnExpected( $config, $expected ) {
-		$this->response = $config['response'];
-
-		add_filter( 'pre_http_request', [ $this, 'http_request'] );
+		$this->config['http'] = [
+			Client::CLOUDFLARE_API . '/ips' => $config['response'],
+		];
 
 		if ( $config['transient'] ) {
 			set_transient( 'rocket_cloudflare_ips', $config['transient'] );
@@ -46,9 +44,5 @@ class TestGetCloudflareIps extends TestCase {
 			$expected,
 			$result
 		);
-	}
-
-	public function http_request() {
-		return $this->response;
 	}
 }

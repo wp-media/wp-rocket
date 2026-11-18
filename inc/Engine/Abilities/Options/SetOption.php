@@ -10,6 +10,13 @@ class SetOption implements AbilitiesInterface {
 	use TrackingTrait;
 
 	/**
+	 * Allowed options instance.
+	 *
+	 * @var AllowedOptions
+	 */
+	private $allowed_options;
+
+	/**
 	 * Options that accept boolean values (0 or 1).
 	 */
 	private const BOOLEAN_OPTIONS = [
@@ -18,6 +25,7 @@ class SetOption implements AbilitiesInterface {
 		'cache_logged_user',
 		// File optimization - CSS.
 		'minify_css',
+		'minify_google_fonts',
 		'async_css',
 		'async_css_mobile',
 		'remove_unused_css',
@@ -58,11 +66,33 @@ class SetOption implements AbilitiesInterface {
 		'cloudflare_auto_settings',
 		// Heartbeat.
 		'control_heartbeat',
+		// Performance monitoring.
+		'performance_monitoring',
 		// Add-ons.
 		'varnish_auto_purge',
 		'sucury_waf_cache_sync',
 		// Analytics.
 		'analytics_enabled',
+		// Misc.
+		'emoji',
+	];
+
+	/**
+	 * Options that are readable via get-options but cannot be written through this ability.
+	 *
+	 * The option - cdn_state has two internal writers, neither of which this ability should
+	 * bypass: CdnStateBridge derives it from the legacy cdn / cdn_type fields on settings
+	 * save, and CDNOptionsManager::set_cdn_state() writes it directly (via
+	 * DataManagerSubscriber::maybe_sync_cdn_state() and CdnStateBridge's own upgrade-time
+	 * backfill) when the RocketCDN subscription tier changes outside of a cdn / cdn_type
+	 * change. Neither writer syncs cdn_state back into the legacy fields. Setting it
+	 * directly here would let it disagree with both of its real sources of truth, not just
+	 * eventually but immediately - supporting that would mean reintroducing a state -> legacy
+	 * sync, the exact bidirectional complexity this bridge was deliberately simplified away
+	 * from.
+	 */
+	private const READ_ONLY_OPTIONS = [
+		'cdn_state',
 	];
 
 	/**
@@ -70,6 +100,7 @@ class SetOption implements AbilitiesInterface {
 	 */
 	private const INTEGER_OPTIONS = [
 		'purge_cron_interval',
+		'performance_monitoring_schedule_frequency',
 	];
 
 	/**
@@ -115,9 +146,22 @@ class SetOption implements AbilitiesInterface {
 	private const ARRAY_OPTIONS = [
 		'cdn_cnames',
 		'cdn_zone',
+		'preload_fonts',
+		'dns_prefetch',
+		'preload_excluded_uri',
+		'cdn_reject_pages',
 		'delay_js_exclusions_selected',
 		'delay_js_exclusions_selected_exclusions',
 	];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param AllowedOptions $allowed_options Allowed options instance.
+	 */
+	public function __construct( AllowedOptions $allowed_options ) {
+		$this->allowed_options = $allowed_options;
+	}
 
 	/**
 	 * Registers the set option ability.
@@ -148,6 +192,7 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 						'option_name'  => [
 							'type'        => 'string',
 							'description' => __( 'The name of the WP Rocket option to set', 'rocket' ),
+							'enum'        => $this->get_allowed_options(),
 						],
 						'option_value' => [
 							'anyOf'       => [
@@ -239,7 +284,13 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 	 * @return array Response with success status and option values.
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/set-option' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/set-option',
+				'context' => 'wp_plugin_mcp',
+			]
+		);
 		$option_name  = $input['option_name'];
 		$option_value = $input['option_value'];
 		$update_mode  = $input['update_mode'] ?? 'update';
@@ -268,19 +319,12 @@ A user request such as `enable it` or `disable it` is not enough confirmation. O
 	}
 
 	/**
-	 * Returns an array of all allowed option names.
+	 * Returns an array of all option names writable through this ability.
 	 *
-	 * @return array List of allowed option names.
+	 * @return array List of writable option names.
 	 */
 	private function get_allowed_options(): array {
-		return array_merge(
-			self::BOOLEAN_OPTIONS,
-			self::INTEGER_OPTIONS,
-			array_keys( self::ENUM_OPTIONS ),
-			self::STRING_OPTIONS,
-			self::TEXTAREA_FIELD_OPTIONS,
-			self::ARRAY_OPTIONS
-		);
+		return array_values( array_diff( $this->allowed_options->get(), self::READ_ONLY_OPTIONS ) );
 	}
 
 	/**

@@ -29,6 +29,7 @@ return [
 				'transient_data'    => [
 					'status'       => 'completed',
 					'timestamp'    => 1234567890,
+					'language'  => 'en',
 					'metrics_hash' => 'old_hash_value',
 				],
 				'calculate_hash'    => true,
@@ -54,6 +55,7 @@ return [
 				'transient_data'    => [
 					'status'       => 'completed',
 					'timestamp'    => 1234567890,
+					'language'  => 'en',
 					'metrics_hash' => md5(
 						(string) json_encode(
 							[
@@ -92,6 +94,7 @@ return [
 				'transient_data'    => [
 					'status'    => 'completed',
 					'timestamp' => 1234567890,
+					'language'  => 'en',
 					// No metrics_hash key
 				],
 				'calculate_hash'    => true,

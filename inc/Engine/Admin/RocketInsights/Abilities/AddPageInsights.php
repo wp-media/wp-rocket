@@ -162,7 +162,14 @@ On success, tell the user the first score may take a few minutes and offer to tr
 	 * @return array
 	 */
 	public function execute( $input = null ): array {
-		$this->track_event( 'MCP Ability Executed', [ 'ability' => 'wp-rocket/add-page-insights' ] );
+		$this->track_event(
+			'MCP Ability Executed',
+			[
+				'ability' => 'wp-rocket/add-page-insights',
+				'context' => 'wp_plugin_mcp',
+
+			]
+		);
 		$payload = $this->get_url_validation_payload( $input['url'] );
 
 		if ( $payload['error'] ) {
@@ -246,7 +253,6 @@ On success, tell the user the first score may take a few minutes and offer to tr
 	protected function get_url_validation_payload( string $url ): array {
 		$payload = [
 			'error'         => false,
-			'message'       => '',
 			'processed_url' => '',
 			'data'          => [
 				'status' => 400,

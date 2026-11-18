@@ -48,6 +48,10 @@ class Test_RocketCDNCta extends BaseTestCase {
 		self::truncateRocketCDNTable();
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'rocket_cdn_subscription_creation_in_progress' );
+
+		// User is a singleton wired at container boot; reset its data so stale
+		// transient state from prior tests doesn't bleed into is_reseller_account().
+		$container->get( 'user' )->set_user( new \stdClass() );
 	}
 
 	public function tear_down() {

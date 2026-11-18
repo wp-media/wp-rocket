@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\CSS\Admin\Subscriber;
 
+use WP_Rocket\Tests\Integration\CapTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -9,6 +10,7 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group AdminOnly
  */
 class Test_maybeAddErrorNotice extends FilesystemTestCase {
+	use CapTrait;
 
 	protected $path_to_test_data = '/inc/Engine/Media/Lazyload/CSS/Admin/Subscriber/maybeAddErrorNoticeIntegration.php';
 
@@ -18,11 +20,32 @@ class Test_maybeAddErrorNotice extends FilesystemTestCase {
 	public static function set_up_before_class()
 	{
 		parent::set_up_before_class();
+
+		// The notice requires rocket_manage_options; don't rely on an earlier test granting it.
+		self::hasAdminCapBeforeClass();
+		self::setAdminCap();
+
 		self::$user_id = static::factory()->user->create( [ 'role' => 'administrator' ] );
 	}
 
 	public static function tear_down_after_class() {
 		set_current_screen( 'front' );
+		self::resetAdminCap();
+	}
+
+	public function set_up() {
+		parent::set_up();
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+		// Keep only the notice under test: other notices, like ModPagespeed's, request the home page.
+		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_add_error_notice' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_notices' );
+
+		parent::tear_down();
 	}
 
 	/**

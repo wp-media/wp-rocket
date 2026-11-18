@@ -37,11 +37,15 @@ class Test_DisplayCpcssMobileSection extends TestCase {
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_cpcss_mobile_section', 10 );
 
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'settings_page_wprocket' );
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'current_screen' );
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setAsyncCssOption' ] );
 		remove_filter( 'pre_get_rocket_option_cache_mobile', [ $this, 'setCacheMobileOption' ] );
