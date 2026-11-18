@@ -11,6 +11,7 @@ use WP_Rocket\Engine\CDN\Render\Controller;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN as RocketCDNQuery;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -43,6 +44,13 @@ class Test_BuildPageRow extends TestCase {
 	 * @var Mockery\MockInterface|Options_Data
 	 */
 	private $options;
+
+	/**
+	 * Options mock instance.
+	 *
+	 * @var Mockery\MockInterface|Options
+	 */
+	private $options_api;
 
 	/**
 	 * RocketCDNQuery mock instance.
@@ -86,6 +94,7 @@ class Test_BuildPageRow extends TestCase {
 		$this->beacon                  = Mockery::mock( Beacon::class );
 		$this->context                 = Mockery::mock( Context::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
+		$this->options_api             = Mockery::mock( Options::class );
 		$this->cdn_query               = $this->createMock( RocketCDNQuery::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
 		$this->user                    = Mockery::mock( User::class );
@@ -103,6 +112,7 @@ class Test_BuildPageRow extends TestCase {
 			'',
 			$this->context,
 			$this->options,
+			$this->options_api,
 			$this->cdn_query,
 			$this->subscription_controller,
 			$this->user,
@@ -131,20 +141,25 @@ class Test_BuildPageRow extends TestCase {
 	 */
 	public function testShouldDisableDeleteButtonWhenExpected( array $config, bool $expected ): void {
 		$this->subscription_controller->shouldReceive( 'is_subscription_creation_loading' )
-			->andReturn( $config['is_subscription_loading'] );
+			->andReturn( $config['is_subscription_loading'] ?? false );
 
-		$this->options->shouldReceive( 'get' )
-			->with( 'cdn' )
-			->andReturn( $config['cdn'] );
+		$this->context->shouldReceive( 'get_applied_cdn_state' )
+			->andReturn( $config['applied_cdn_state'] );
 
-		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
-			->andReturn( $config['has_active_subscription'] );
+		$this->context->shouldReceive( 'is_rocketcdn' )
+			->andReturn( $config['is_rocketcdn'] ?? true );
 
 		$this->subscription_controller->shouldReceive( 'is_free' )
-			->andReturn( $config['is_free'] );
+			->andReturn( $config['is_free'] ?? false );
 
 		$this->subscription_controller->shouldReceive( 'is_license_invalid' )
-			->andReturn( $config['is_license_invalid'] );
+			->andReturn( $config['is_license_invalid'] ?? false );
+
+		$this->user->shouldReceive( 'is_reseller_license_banned' )
+			->andReturn( $config['is_reseller_license_banned'] ?? false );
+
+		$this->subscription_controller->shouldReceive( 'has_active_subscription' )
+			->andReturn( $config['has_active_subscription'] ?? true );
 
 		$page = (object) [
 			'id'    => 1,
@@ -152,18 +167,17 @@ class Test_BuildPageRow extends TestCase {
 			'title' => 'Page',
 		];
 
-		$controller = $this->get_controller();
-		$reflection = new \ReflectionClass( $controller );
-		$method     = $reflection->getMethod( 'build_page_row' );
-		$method->setAccessible( true );
-		$row = $method->invoke( $controller, $page );
+		$build_page_row = $this->get_reflective_method( 'build_page_row', Controller::class );
+		$row            = $build_page_row->invoke( $this->get_controller(), $page );
 
 		$delete_button = $row['columns'][1]['content'] ?? '';
 
 		if ( $expected ) {
 			$this->assertStringContainsString( 'wpr-cdn-disabled', $delete_button );
+			$this->assertStringContainsString( '" disabled>', $delete_button );
 		} else {
 			$this->assertStringNotContainsString( 'wpr-cdn-disabled', $delete_button );
+			$this->assertStringNotContainsString( ' disabled', $delete_button );
 		}
 	}
 }

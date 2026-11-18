@@ -1,37 +1,30 @@
 <?php
+declare(strict_types=1);
+
+use WP_Rocket\Engine\CDN\Context;
+
 return [
-	// Delete button is disabled while subscription is being created.
+	// Delete button is disabled while the subscription is being created.
 	'testShouldDisableDeleteButtonWhenSubscriptionLoading' => [
 		'config'   => [
 			'is_subscription_loading' => true,
-			'cdn'                     => true,
-			'has_active_subscription' => true,
-			'is_free'                 => true,
-			'is_license_invalid'      => false,
+			'applied_cdn_state'       => Context::ROCKETCDN_TYPE,
 		],
 		'expected' => true,
 	],
 
-	// Delete button is disabled when the CDN is paused.
+	// Delete button is disabled when the user paused RocketCDN.
 	'testShouldDisableDeleteButtonWhenCdnPaused'           => [
 		'config'   => [
-			'is_subscription_loading' => false,
-			'cdn'                     => false,
-			'has_active_subscription' => true,
-			'is_free'                 => true,
-			'is_license_invalid'      => false,
+			'applied_cdn_state' => Context::CDN_STATE_NOTHING,
 		],
 		'expected' => true,
 	],
 
-	// Delete button is disabled when the user has no active subscription.
-	'testShouldDisableDeleteButtonWhenNoActiveSubscription' => [
+	// Delete button is disabled when another CDN is active, which also pauses RocketCDN.
+	'testShouldDisableDeleteButtonWhenOtherCdnActive'      => [
 		'config'   => [
-			'is_subscription_loading' => false,
-			'cdn'                     => true,
-			'has_active_subscription' => false,
-			'is_free'                 => true,
-			'is_license_invalid'      => false,
+			'applied_cdn_state' => Context::BYOCDN_TYPE,
 		],
 		'expected' => true,
 	],
@@ -39,23 +32,31 @@ return [
 	// Delete button is disabled when the free plan has an invalid WP Rocket licence.
 	'testShouldDisableDeleteButtonWhenLicenseInvalid'      => [
 		'config'   => [
-			'is_subscription_loading' => false,
-			'cdn'                     => true,
-			'has_active_subscription' => true,
-			'is_free'                 => true,
-			'is_license_invalid'      => true,
+			'applied_cdn_state'  => Context::ROCKETCDN_TYPE,
+			'is_rocketcdn'       => true,
+			'is_free'            => true,
+			'is_license_invalid' => true,
 		],
 		'expected' => true,
 	],
 
-	// Delete button is enabled when the subscription is active and the CDN is not paused.
+	// Delete button is disabled when the user has no active subscription.
+	'testShouldDisableDeleteButtonWhenNoActiveSubscription' => [
+		'config'   => [
+			'applied_cdn_state'       => Context::ROCKETCDN_TYPE,
+			'has_active_subscription' => false,
+		],
+		'expected' => true,
+	],
+
+	// Delete button is enabled when RocketCDN is active and nothing blocks it.
 	'testShouldEnableDeleteButtonWhenActive'               => [
 		'config'   => [
-			'is_subscription_loading' => false,
-			'cdn'                     => true,
-			'has_active_subscription' => true,
-			'is_free'                 => false,
+			'applied_cdn_state'       => Context::ROCKETCDN_TYPE,
+			'is_rocketcdn'            => true,
+			'is_free'                 => true,
 			'is_license_invalid'      => false,
+			'has_active_subscription' => true,
 		],
 		'expected' => false,
 	],
