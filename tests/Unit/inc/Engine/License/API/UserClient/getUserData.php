@@ -4,9 +4,9 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\License\API\UserClient;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\UserClient;
+use WP_Rocket\Tests\TestCredentials;
 use WP_Rocket\Tests\Unit\TestCase;
 
 /**
@@ -15,18 +15,8 @@ use WP_Rocket\Tests\Unit\TestCase;
  * @group License
  */
 class GetUserData extends TestCase {
-	use ApiTrait;
-
-	protected static $api_credentials_config_file = 'license.php';
-
 	private $client;
 	private $options;
-
-	public static function setUpBeforeClass(): void {
-		parent::setUpBeforeClass();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
 
 	public function setUp(): void {
 		parent::setUp();
@@ -50,12 +40,12 @@ class GetUserData extends TestCase {
 			$this->options->shouldReceive( 'get' )
 			->atLeast()->once()
 			->with( 'consumer_key', '' )
-			->andReturn( self::getApiCredential( 'ROCKET_KEY' ) );
+			->andReturn( TestCredentials::KEY );
 
 			$this->options->shouldReceive( 'get' )
 				->atLeast()->once()
 				->with( 'consumer_email', '' )
-				->andReturn( self::getApiCredential( 'ROCKET_EMAIL' ) );
+				->andReturn( TestCredentials::EMAIL );
 
 			Functions\when( 'sanitize_key' )->returnArg();
 			Functions\expect( 'wp_safe_remote_post' )
@@ -63,7 +53,7 @@ class GetUserData extends TestCase {
 				->with(
 					UserClient::USER_ENDPOINT,
 					[
-						'body' => 'user_id=' . rawurlencode( self::getApiCredential( 'ROCKET_EMAIL' ) ) . '&consumer_key=' . self::getApiCredential( 'ROCKET_KEY' ),
+						'body' => 'user_id=' . rawurlencode( TestCredentials::EMAIL ) . '&consumer_key=' . TestCredentials::KEY,
 					]
 				)
 				->andReturn( $config['response'] );

@@ -15,6 +15,7 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group CDN
  */
 class Test_GetSubscriptionData extends TestCase {
+	const SUBSCRIPTION_ENDPOINT = 'https://rocketcdn.me/api/subscription/example.org/status';
 
 	protected static $use_settings_trait = true;
 
@@ -29,20 +30,11 @@ class Test_GetSubscriptionData extends TestCase {
 	 */
 	private $api_client;
 
-	/**
-	 * Number of times the mocked subscription endpoint was actually hit.
-	 *
-	 * @var int
-	 */
-	private $request_count = 0;
-
 	public function set_up() {
 		parent::set_up();
 
 		$container        = apply_filters( 'rocket_container', null );
 		$this->api_client = $container->get( 'rocketcdn_api_client' );
-
-		$this->request_count = 0;
 
 		add_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
@@ -52,7 +44,6 @@ class Test_GetSubscriptionData extends TestCase {
 	}
 
 	public function tear_down() {
-		remove_all_filters( 'pre_http_request' );
 		remove_filter( 'home_url', [ $this, 'home_url_cb' ] );
 
 		delete_transient( 'rocketcdn_status' );
@@ -71,31 +62,16 @@ class Test_GetSubscriptionData extends TestCase {
 	}
 
 	/**
-	 * Intercepts calls to the RocketCDN subscription status endpoint and counts
-	 * how many times it's actually hit, so tests can assert on duplicate-request
-	 * behavior. Any other outbound request is left untouched.
+	 * Registers the fixture response for the RocketCDN subscription status endpoint.
 	 *
 	 * @param int        $code HTTP response code to return.
 	 * @param array|null $body Response body to JSON-encode, or null for an empty body.
 	 */
 	private function mock_subscription_endpoint( int $code, $body = [] ): void {
-		add_filter(
-			'pre_http_request',
-			function ( $preempt, $_args, $url ) use ( $code, $body ) {
-				if ( false === strpos( $url, 'https://rocketcdn.me/api/subscription/example.org/status' ) ) {
-					return $preempt;
-				}
-
-				$this->request_count++;
-
-				return [
-					'response' => [ 'code' => $code ],
-					'body'     => null === $body ? '' : wp_json_encode( $body ),
-				];
-			},
-			10,
-			3
-		);
+		$this->config['http'][ self::SUBSCRIPTION_ENDPOINT ] = [
+			'response' => [ 'code' => $code ],
+			'body'     => null === $body ? '' : wp_json_encode( $body ),
+		];
 	}
 
 	/**
@@ -123,19 +99,19 @@ class Test_GetSubscriptionData extends TestCase {
 		];
 		set_transient( 'rocketcdn_status', $cached, DAY_IN_SECONDS );
 
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test, proving the transient
+		// short-circuits before any HTTP call is attempted.
 		$this->assertSame( $cached, $this->api_client->get_subscription_data() );
-		$this->assertSame( 0, $this->request_count, 'A populated transient must short-circuit the API call entirely.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ), 'A populated transient must short-circuit the API call entirely.' );
 	}
 
 	public function testShouldReturnDefaultWithoutApiCallWhenTokenMissing() {
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test, proving no call is made
+		// without a saved token.
 		$data = $this->api_client->get_subscription_data();
 
 		$this->assertFalse( $data['success'] );
-		$this->assertSame( 0, $this->request_count, 'No API request should be made without a saved token.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ), 'No API request should be made without a saved token.' );
 		$this->assertFalse( get_option( APIClient::SUBSCRIPTION_FETCH_LOCK ), 'No lock should be taken when the request never reaches the API.' );
 	}
 
@@ -146,7 +122,7 @@ class Test_GetSubscriptionData extends TestCase {
 		$data = $this->api_client->get_subscription_data();
 
 		$this->assertFalse( $data['success'] );
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ) );
 		$this->assertFalse( get_option( APIClient::SUBSCRIPTION_FETCH_LOCK ) );
 	}
 
@@ -163,25 +139,20 @@ class Test_GetSubscriptionData extends TestCase {
 			$this->assertSame( $value, $data[ $key ], "Unexpected value for '{$key}'." );
 		}
 
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ) );
 		$this->assertFalse( get_option( APIClient::SUBSCRIPTION_FETCH_LOCK ), 'The lock must be released once the fetch completes.' );
 
 		// A second call within the same request must reuse the transient it just set,
 		// not fire another request against the API.
 		$this->api_client->get_subscription_data();
-		$this->assertSame( 1, $this->request_count, 'A second call must reuse the freshly cached transient.' );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ), 'A second call must reuse the freshly cached transient.' );
 	}
 
 	public function testShouldNotFireDuplicateRequestWhenAnotherFetchIsInFlight() {
 		$this->set_token();
-		$this->mock_subscription_endpoint(
-			200,
-			[
-				'success' => true,
-				'status'  => 'running',
-			]
-		);
 
+		// No fixture entry: an unmocked request fails the test, proving a held lock
+		// prevents the duplicate outbound call.
 		// Simulate a concurrent request that is already fetching the same data.
 		// Deliberately a few seconds in the past (not time() exactly): a same-second
 		// value would mask the add_option()-based bug this guards against, since
@@ -192,7 +163,7 @@ class Test_GetSubscriptionData extends TestCase {
 
 		$data = $this->api_client->get_subscription_data();
 
-		$this->assertSame( 0, $this->request_count, 'A held lock must prevent firing a duplicate outbound API call.' );
+		$this->assertCount( 0, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ), 'A held lock must prevent firing a duplicate outbound API call.' );
 		$this->assertFalse( $data['success'], 'Without a populated transient, the loser falls back to the safe default.' );
 
 		// The loser must not touch a lock it doesn't own.
@@ -207,8 +178,7 @@ class Test_GetSubscriptionData extends TestCase {
 		];
 		set_transient( 'rocketcdn_status', $cached, DAY_IN_SECONDS );
 
-		$this->mock_subscription_endpoint( 200, [ 'success' => true ] );
-
+		// No fixture entry: an unmocked request fails the test.
 		// get_subscription_data() short-circuits on the transient before the lock is
 		// even considered, so call the fetch method directly to prove that the
 		// lock-held fallback itself prefers a freshly populated transient over the
@@ -217,7 +187,7 @@ class Test_GetSubscriptionData extends TestCase {
 		add_option( APIClient::SUBSCRIPTION_FETCH_LOCK, time() - 5, '', false );
 
 		$this->assertSame( $cached, $this->invoke_get_remote_subscription_data() );
-		$this->assertSame( 0, $this->request_count );
+		$this->assertCount( 0, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ) );
 	}
 
 	public function testShouldReclaimStaleLock() {
@@ -237,7 +207,7 @@ class Test_GetSubscriptionData extends TestCase {
 		$data = $this->api_client->get_subscription_data();
 
 		$this->assertTrue( $data['success'] );
-		$this->assertSame( 1, $this->request_count, 'A stale lock must be reclaimed so the fetch can proceed.' );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ), 'A stale lock must be reclaimed so the fetch can proceed.' );
 		$this->assertFalse( get_option( APIClient::SUBSCRIPTION_FETCH_LOCK ), 'The lock must be released once the reclaiming fetch completes.' );
 	}
 
@@ -247,7 +217,7 @@ class Test_GetSubscriptionData extends TestCase {
 
 		$this->api_client->get_subscription_data();
 
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ) );
 		$this->assertFalse( get_option( APIClient::SUBSCRIPTION_FETCH_LOCK ), 'The lock must be released even when the API call does not succeed.' );
 	}
 
@@ -272,7 +242,7 @@ class Test_GetSubscriptionData extends TestCase {
 		$second_client = $container->get( 'rocketcdn_api_client' );
 		$loser         = $second_client->get_subscription_data();
 
-		$this->assertSame( 1, $this->request_count );
+		$this->assertCount( 1, $this->get_http_requests( self::SUBSCRIPTION_ENDPOINT ) );
 		$this->assertTrue( $winner['success'] );
 		$this->assertSame( $winner, $loser );
 	}

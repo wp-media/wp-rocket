@@ -96,7 +96,7 @@ class Controller implements ControllerInterface {
 
 		$preload .= $this->preload_tag( $lcp );
 
-		$replace = preg_replace( '#' . $title . '#', $preload, $html, 1 );
+		$replace = preg_replace( '#' . preg_quote( $title, '#' ) . '#', addcslashes( $preload, '\\$' ), $html, 1 );
 
 		if ( null === $replace ) {
 			return $html;
@@ -164,7 +164,7 @@ class Controller implements ControllerInterface {
 			$pattern = '#<img(?:[^>]*?\s+)?src\s*=\s*["\'](?:https?:)?(?:\/\/(?:[^\/]+)\/?)?\/?' . $url . '["\'](?:\s+[^>]*?)?>#i';
 		}
 
-		$html = preg_replace_callback(
+		$replaced = preg_replace_callback(
 			$pattern,
 			function ( $matches ) {
 				// Check if the fetchpriority attribute already exists.
@@ -186,7 +186,11 @@ class Controller implements ControllerInterface {
 			1
 		);
 
-		return $this->restore_html_comments( $html );
+		if ( null === $replaced ) {
+			return $this->restore_html_comments( $html );
+		}
+
+		return $this->restore_html_comments( $replaced );
 	}
 
 	/**
@@ -313,11 +317,6 @@ class Controller implements ControllerInterface {
 	 * @return array
 	 */
 	private function generate_lcp_link_tag_with_sources( object $lcp ): array {
-		$pairs = [
-			'tags'    => '',
-			'sources' => [],
-		];
-
 		$tag       = '';
 		$start_tag = '<link rel="preload" data-rocket-preload as="image" ';
 		$end_tag   = ' fetchpriority="high">';
@@ -354,10 +353,10 @@ class Controller implements ControllerInterface {
 				break;
 		}
 
-		$pairs['tags']    = $tag;
-		$pairs['sources'] = $sources;
-
-		return $pairs;
+		return [
+			'tags'    => $tag,
+			'sources' => $sources,
+		];
 	}
 
 	/**
@@ -427,7 +426,7 @@ class Controller implements ControllerInterface {
 		$prev_type      = null;
 
 		// Iterate over the sources in the LCP object.
-		foreach ( $lcp->sources as $i => $source ) {
+		foreach ( $lcp->sources as $source ) {
 			// If the type of the previous source is not equal to the type of the current source, break the loop.
 			if ( ! empty( $source->type ) && $prev_type !== $source->type && null !== $prev_type ) {
 				break;

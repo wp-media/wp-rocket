@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\CDNOptionsManager;
 
+use WP_Error;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Settings\Settings;
@@ -16,6 +17,8 @@ use WP_Rocket\Engine\Admin\Settings\Settings;
  * @group  CDNOptionsManager
  */
 class Test_SetCdnState extends TestCase {
+	const VALID_KEY_ENDPOINT = 'https://api.wp-rocket.me/valid_key.php';
+
 	protected $path_to_test_data = '/inc/Engine/CDN/RocketCDN/CDNOptionsManager/setCdnState.php';
 
 	// Valid license triplet so rocket_valid_key() is satisfiable.
@@ -29,6 +32,12 @@ class Test_SetCdnState extends TestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		// R1: set_cdn_state() writes through Options::set(), which runs sanitize_callback(),
+		// which calls rocket_check_key() when rocket_valid_key() is false.
+		$this->config['http'] = [
+			self::VALID_KEY_ENDPOINT => new WP_Error( 'http_request_failed', 'Mocked license check.' ),
+		];
 
 		// add_settings_error() lives in wp-admin/includes/template.php, not auto-loaded here.
 		if ( ! function_exists( 'add_settings_error' ) ) {

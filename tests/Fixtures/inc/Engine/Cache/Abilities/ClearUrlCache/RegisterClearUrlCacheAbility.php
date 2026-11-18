@@ -135,6 +135,22 @@ return [
 			],
 		],
 
+		'testShouldReturnErrorForUrlWithoutScheme'          => [
+			'config'   => [
+				'has_permission' => true,
+				'input'          => [
+					'url' => 'example.org/lorem-ipsum/',
+				],
+			],
+			'expected' => [
+				'is_error' => false,
+				'success'  => false,
+				'error'    => [
+					'example.org/lorem-ipsum/' => 'URL format is invalid.',
+				],
+			],
+		],
+
 		'testShouldReturnMixedErrorsForInvalidAndUncachedUrls' => [
 			'config'   => [
 				'has_permission' => true,

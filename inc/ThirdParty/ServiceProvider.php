@@ -22,6 +22,13 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	private const STATIC_PROVIDES = [ 'ezoic', 'mod_pagespeed', 'cloudflare_plugin_facade' ];
 
 	/**
+	 * Gated ids kept fetchable from the container for external code; their subscription stays resolver-gated.
+	 *
+	 * @var array<string>
+	 */
+	private const ALWAYS_REGISTERED = [ 'elementor_subscriber' ];
+
+	/**
 	 * Array of services provided by this service provider
 	 *
 	 * @var array
@@ -40,13 +47,15 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 	}
 
 	/**
-	 * Builds the list of provided service ids from the static extras and the
-	 * resolver's active plugin ids.
+	 * Builds the list of provided service ids from the static extras, the
+	 * always-registered ids and the resolver's active plugin ids.
 	 *
 	 * @return void
 	 */
 	public function boot(): void {
-		$this->provides = array_merge( self::STATIC_PROVIDES, PluginResolver::get_active_plugins() );
+		$this->provides = array_values(
+			array_unique( array_merge( self::STATIC_PROVIDES, self::ALWAYS_REGISTERED, PluginResolver::get_active_plugins() ) )
+		);
 	}
 
 	/**
@@ -67,7 +76,9 @@ class ServiceProvider extends AbstractServiceProvider implements BootableService
 		$factory  = new SubscriberFactory();
 		$registry = $factory->get_registry();
 
-		foreach ( PluginResolver::get_active_plugins() as $id ) {
+		$ids = array_unique( array_merge( PluginResolver::get_active_plugins(), self::ALWAYS_REGISTERED ) );
+
+		foreach ( $ids as $id ) {
 			if ( ! isset( $registry[ $id ] ) ) {
 				continue;
 			}

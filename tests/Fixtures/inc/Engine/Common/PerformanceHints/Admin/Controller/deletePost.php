@@ -49,4 +49,14 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShouldNotDeletePostWithRevisionPostType' => [
+		'config' => [
+			'filter' => true,
+			'post_id' => 1,
+			'post_type' => 'revision',
+			'is_revision' => true,
+			'url' => 'http://example.org',
+		],
+		'expected' => false,
+	],
 ];

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Settings;
 
+use WP_Error;
 use WP_Rocket\Tests\Integration\AdminTestCase;
 
 /**
@@ -12,8 +13,16 @@ use WP_Rocket\Tests\Integration\AdminTestCase;
  * @group  Settings
  */
 class Test_SanitizeCallback extends AdminTestCase {
+	const VALID_KEY_ENDPOINT = 'https://api.wp-rocket.me/valid_key.php';
+
 	public function set_up() {
 		parent::set_up();
+
+		// The license check triggered by sanitize_callback() and rocket_upgrader() is not
+		// part of the behaviour under test.
+		$this->config['http'] = [
+			self::VALID_KEY_ENDPOINT => new WP_Error( 'http_request_failed', 'Mocked license check.' ),
+		];
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );

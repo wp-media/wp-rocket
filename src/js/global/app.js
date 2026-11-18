@@ -17,3 +17,4 @@ import '../global/rocketcdn.js';
 import '../global/rocketcdn-subscription-polling.js';
 import '../global/countdown.js';
 import '../global/mixpanel.js'
+import '../global/sidebar.js'

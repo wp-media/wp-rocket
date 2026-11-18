@@ -29,6 +29,8 @@ class TestGetSubscriber extends TestCase {
 	}
 
 	/**
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnSubscriber( $host, $expected ) {
@@ -43,6 +45,11 @@ class TestGetSubscriber extends TestCase {
 			}
 		);
 
+		// The siteground branch (rocket_is_plugin_active()) is reached, and evaluated, for every case
+		// that doesn't match an earlier branch; default it to "not active" unless overridden below.
+		Functions\when( 'get_option' )->justReturn( [] );
+		Functions\when( 'is_multisite' )->justReturn( false );
+
 		switch ( $host ) {
 			case 'cloudways':
 				$_SERVER['cw_allowed_ip'] = true;
@@ -56,6 +63,9 @@ class TestGetSubscriber extends TestCase {
 			case 'savvii':
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_FLUSH_NOW']       = true;
 				$this->constants['\Savvii\CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW'] = true;
+				break;
+			case 'siteground':
+				Functions\when( 'rocket_is_plugin_active' )->justReturn( true );
 				break;
 			default:
 				break;

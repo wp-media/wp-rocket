@@ -44,6 +44,17 @@ class User {
 	}
 
 	/**
+	 * Gets the user license type slug, e.g. single, plus, infinite or multi500
+	 *
+	 * Unlike the licence size, it tells apart the multi licenses, which report the same size as infinite.
+	 *
+	 * @return string
+	 */
+	public function get_license_type_slug(): string {
+		return (string) ( $this->user->licence->type ?? '' );
+	}
+
+	/**
 	 * Gets the user license expiration timestamp
 	 *
 	 * @return int
@@ -506,6 +517,15 @@ class User {
 		}
 
 		return (bool) $this->user->is_reseller;
+	}
+
+	/**
+	 * Checks if the customer is on a trial license (active, cancelled or expired, until converted to paid).
+	 *
+	 * @return bool
+	 */
+	public function is_trial_customer(): bool {
+		return ( $this->user->is_trial_cancelled ?? false ) || ( $this->user->is_trial_customer ?? false );
 	}
 
 	/**

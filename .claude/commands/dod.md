@@ -1,1 +1,0 @@
-../skills/dod/SKILL.md

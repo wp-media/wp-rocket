@@ -14,6 +14,10 @@
  *     @type string $icon_slug      Icon identifier for the recommendation.
  *     @type array  $impact_tags    Array of impact tags with values (e.g., ['LCP' => 100, 'TBT' => 25]).
  *     @type int    $priority       Priority order for the recommendation.
+ *     @type string $cta_label      Optional button label, defaults to "Activate".
+ *     @type string $cta_url        Optional button URL, replaces the section link. When empty, a <button> is rendered.
+ *     @type string $cta_class      Optional extra CSS classes of the button.
+ *     @type array  $cta_attributes Optional extra HTML attributes of the button, as attribute name => value.
  * }
  */
 
@@ -35,16 +39,26 @@ $rocket_impact_tags    = $data['impact_tags'];
 						<?php echo esc_html( $rocket_title ); ?>
 					</span>
 					<?php
+					$rocket_cta_url        = $data['cta_url'] ?? $data['section'];
+					$rocket_cta_attributes = array_merge(
+						[
+							'class'               => trim( 'wpr-recommendation-item__activate ' . ( $data['cta_class'] ?? '' ) ),
+							'data-recommendation' => $rocket_option_slug,
+						],
+						(array) ( $data['cta_attributes'] ?? [] )
+					);
+
+					if ( '' === $rocket_cta_url ) {
+						$rocket_cta_attributes['type'] = 'button';
+					}
+
 					$this->render_action_button(
-						'link',
+						'' === $rocket_cta_url ? 'button' : 'link',
 						'',
 						[
-							'label'      => __( 'Activate', 'rocket' ),
-							'url'        => esc_url( $data['section'] ),
-							'attributes' => [
-								'class'               => 'wpr-recommendation-item__activate',
-								'data-recommendation' => esc_attr( $rocket_option_slug ),
-							],
+							'label'      => ! empty( $data['cta_label'] ) ? $data['cta_label'] : __( 'Activate', 'rocket' ),
+							'url'        => esc_url( $rocket_cta_url ),
+							'attributes' => $rocket_cta_attributes,
 						]
 					);
 					?>

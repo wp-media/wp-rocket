@@ -44,7 +44,7 @@ $rocket_tutorials = [
 ?>
 <div id="tutorials" class="wpr-Page">
 	<div class="wpr-sectionHeader">
-		<h2 class="wpr-title1 wpr-icon-tutorial-hover"><?php esc_html_e( 'Tutorials', 'rocket' ); ?></h2>
+		<h2 class="wpr-title1 wpr-icon-book-open"><?php esc_html_e( 'Tutorials', 'rocket' ); ?></h2>
 	</div>
 	<div class="wpr-Page-row">
 		<div class="wpr-Page-col">

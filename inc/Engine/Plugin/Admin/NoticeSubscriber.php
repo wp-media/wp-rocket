@@ -45,7 +45,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Adds the homepage to Rocket Insights and dismisses the activation notice.
+	 * Adds the homepage to Rocket Insights and dismisses the activation notice, then redirects to the dashboard.
 	 *
 	 * @return void
 	 */
@@ -67,7 +67,7 @@ class NoticeSubscriber implements Subscriber_Interface {
 			update_user_meta( $user_id, 'rocket_boxes', $boxes );
 		}
 
-		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#rocket_insights' ) );
+		wp_safe_redirect( admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '#dashboard' ) );
 		exit;
 	}
 

@@ -3,10 +3,10 @@ return [
 	'rocketRucssAfterClearingUsedcssShouldCleanUrl' => [
 		'config' => [
 			'hook' => 'rocket_rucss_after_clearing_usedcss',
-			'url' => 'url',
+			'url' => 'http://example.org/about/',
 		],
 		'expected' => [
-			'url' => 'url/kinsta-clear-cache/',
+			'url' => 'http://example.org/about/kinsta-clear-cache/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
@@ -16,10 +16,10 @@ return [
 	'rocketRucssCompleteJobStatusSshouldCleanUrl' => [
 		'config' => [
 			'hook' => 'rocket_saas_complete_job_status',
-			'url' => 'url',
+			'url' => 'http://example.org/about/',
 		],
 		'expected' => [
-			'url' => 'url/kinsta-clear-cache/',
+			'url' => 'http://example.org/about/kinsta-clear-cache/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,
@@ -29,10 +29,10 @@ return [
 	'afterRocketCleanFileStatusSshouldCleanUrl' => [
 		'config' => [
 			'hook' => 'after_rocket_clean_file',
-			'url' => 'url',
+			'url' => 'http://example.org/about/',
 		],
 		'expected' => [
-			'url' => 'url/kinsta-clear-cache/',
+			'url' => 'http://example.org/about/kinsta-clear-cache/',
 			'config' => [
 				'blocking' => false,
 				'timeout'  => 0.01,

@@ -27,4 +27,26 @@ class TestAddHashes extends TestCase {
 			$this->format_the_html( $this->processor->add_hashes( $html ) )
 		);
 	}
+
+	/**
+	 * @dataProvider providerBackreferenceLikeValues
+	 */
+	public function testShouldKeepBackreferenceLikeAttributeValuesLiteral( $class ) {
+		$html   = '<html><body><div class="' . $class . '"><p>Content</p></div></body></html>';
+		$result = $this->processor->add_hashes( $html );
+
+		$this->assertSame( 1, substr_count( $result, 'data-rocket-location-hash=' ) );
+		$this->assertMatchesRegularExpression(
+			'/^<html><body><div data-rocket-location-hash="[a-f0-9]{32}" class="' . preg_quote( $class, '/' ) . '"><p>Content<\/p>/',
+			$result
+		);
+	}
+
+	public function providerBackreferenceLikeValues() {
+		return [
+			'dollar zero'  => [ '$0 foo' ],
+			'dollar brace' => [ '${0} foo' ],
+			'backslash'    => [ '\\0 foo' ],
+		];
+	}
 }

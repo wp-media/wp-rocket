@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\tests\Fixtures\inc\Engine\AJAX\Controller;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use Mockery;
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
@@ -63,29 +64,11 @@ class Test_AddData extends TestCase {
 			->once()
 			->andReturn( $config['filter'] );
 
-		$valid_source = $expected['valid_source'] ?? [];
-
-		if(empty($valid_source)) {
-			Functions\when( 'sanitize_text_field' )->alias(
-				function ( $value ) {
-					return is_string( $value ) ? strip_tags( $value ) : $value;
-				}
-			);
-		} else{
-			Functions\when('sanitize_text_field')->alias(
-				function ($value) use ($valid_source) {
-					$arr_value = [];
-					if (!is_string($value)) {
-						foreach ($valid_source as $key => $replacement) {
-							$arr_value[] = strip_tags($replacement);
-						}
-						return (object) $arr_value;
-					}
-
-					return strip_tags($value);
-				}
-			);
-		}
+		Functions\when( 'sanitize_text_field' )->alias(
+			function ( $value ) {
+				return is_string( $value ) ? strip_tags( $value ) : $value;
+			}
+		);
 
 		Functions\when( 'current_time' )
 			->justReturn( $expected['item']['last_accessed'] );
@@ -99,6 +82,12 @@ class Test_AddData extends TestCase {
 				return is_string( $value ) ? stripslashes( $value ) : $value;
 			}
 		);
+
+		if ( isset( $config['max_number'] ) ) {
+			Filters\expectApplied( 'rocket_lrc_hashes_number' )
+				->once()
+				->andReturn( $config['max_number'] );
+		}
 
 		$this->stubWpParseUrl();
 

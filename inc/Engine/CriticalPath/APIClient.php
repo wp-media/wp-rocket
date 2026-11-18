@@ -58,7 +58,7 @@ class APIClient {
 
 		if ( is_wp_error( $response ) ) {
 			return new WP_Error(
-				$this->get_response_code( $response ),
+				$this->get_response_code(),
 				sprintf(
 					// translators: %1$s = type of content, %2$s = error message.
 					__( 'Critical CSS for %1$s not generated. Error: %2$s', 'rocket' ),
@@ -86,7 +86,7 @@ class APIClient {
 		}
 
 		return new WP_Error(
-			$this->get_response_code( $response ),
+			$this->get_response_code(),
 			$response_message,
 			[
 				'status' => $response_status_code,
@@ -228,11 +228,9 @@ class APIClient {
 	 *
 	 * @since 3.6
 	 *
-	 * @param array|WP_Error $response The response or WP_Error on failure.
-	 *
 	 * @return string response code.
 	 */
-	private function get_response_code( $response ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found
+	private function get_response_code() {
 		// Todo: we can return code based on the response status number, for example 404 not_found.
 		return 'cpcss_generation_failed';
 	}

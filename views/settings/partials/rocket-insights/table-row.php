@@ -15,6 +15,9 @@ $rocket_img_url                    = esc_url( WP_ROCKET_ASSETS_IMG_URL );
 
 // Get pre-formatted metrics from Render class.
 $rocket_formatted_metrics = $data->formatted_metrics ?? [];
+
+// Metric labels and tooltips from the Calculator, set by the Render class.
+$rocket_metric_definitions = $data->metric_definitions ?? [];
 ?>
 <tr class="wpr-ri-item wpr-ri-item-result <?php echo esc_attr( $rocket_data_array['item_classes']['row'] ); ?>" data-rocket-insights-id="<?php echo esc_attr( $data->id ); ?>" >
 	<td class="wpr-ri-item-toggle <?php echo esc_attr( $rocket_data_array['item_classes']['td'] ); ?>">
@@ -127,50 +130,19 @@ $rocket_formatted_metrics = $data->formatted_metrics ?? [];
 			<div class="details-header">
 				<div>
 					<div class="metrics-header">
+						<?php foreach ( $rocket_metric_definitions as $rocket_metric ) : ?>
 						<div class="metric-label">
-							<p>LCP</p>
-							<div class="info-icon">
-								<img src="<?php echo $rocket_img_url;// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-								<div class="wpr-tooltip">
-									<div class="wpr-tooltip-content">
-										<?php echo esc_html__( 'Time until the largest visible content element renders and the main content becomes visible.', 'rocket' ); ?>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="metric-label">
-							<p>TBT</p>
+							<p><?php echo esc_html( $rocket_metric['label'] ); ?></p>
 							<div class="info-icon">
 								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
 								<div class="wpr-tooltip">
 									<div class="wpr-tooltip-content">
-										<?php echo esc_html__( 'Total time the main thread is blocked before the page becomes interactive during loading.', 'rocket' ); ?>
+										<?php echo esc_html( $rocket_metric['tooltip'] ); ?>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="metric-label">
-							<p>CLS</p>
-							<div class="info-icon">
-								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-								<div class="wpr-tooltip">
-									<div class="wpr-tooltip-content">
-										<?php echo esc_html__( 'Total amount of unexpected layout shifts during page loading, affecting visual stability.', 'rocket' ); ?>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="metric-label">
-							<p>TTFB</p>
-							<div class="info-icon">
-								<img src="<?php echo $rocket_img_url; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>ri-info.svg" alt="">
-								<div class="wpr-tooltip">
-									<div class="wpr-tooltip-content">
-										<?php echo esc_html__( 'Time from the request until the server responds, determining how soon the page starts loading.', 'rocket' ); ?>
-									</div>
-								</div>
-							</div>
-						</div>
+						<?php endforeach; ?>
 					</div>
 				</div>
 			</div>

@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\NoticesSubscriber;
 
+use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
 
 /**
@@ -11,6 +12,10 @@ use WP_Rocket\Tests\Integration\inc\Engine\CDN\RocketCDN\TestCase;
  * @group RocketCDN
  */
 class Test_ActivationFailedNotice extends TestCase {
+	/**
+	 * Exact URL of the RocketCDN website-search endpoint for the default test home host.
+	 */
+	const SEARCH_ENDPOINT = 'https://rocketcdn.me/api/website/search/?url=http://example.org';
 
 	/**
 	 * Original user ID.
@@ -54,11 +59,10 @@ class Test_ActivationFailedNotice extends TestCase {
 		delete_option( 'rocketcdn_user_token' );
 		delete_transient( 'rocketcdn_status' );
 		delete_transient( 'wp_rocket_customer_data' );
-		remove_all_filters( 'pre_http_request' );
 		remove_filter( 'pre_transient_rocketcdn_status', [ $this, 'mock_rocketcdn_status_transient' ] );
 
 		$this->restoreWpHook( 'current_screen' );
-		
+
 		parent::tear_down();
 	}
 
@@ -109,32 +113,20 @@ class Test_ActivationFailedNotice extends TestCase {
 			set_transient( 'wp_rocket_customer_data', $user_data, MINUTE_IN_SECONDS );
 		}
 
-		// Mock API responses if needed.
-		if ( isset( $config['mock_api'] ) && $config['mock_api'] ) {
-			add_filter(
-				'pre_http_request',
-				function ( $preempt, $args, $url ) use ( $config ) {
-					// Mock RocketCDN website search (subscription lookup) endpoint.
-					if ( false !== strpos( $url, 'https://rocketcdn.me/api/website/search/' ) && isset( $config['subscription_data'] ) ) {
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $config['subscription_data'] ),
-						];
-					}
+		// Fixtures for the endpoints the notice's checks may still reach past the
+		// `rocketcdn_status` transient short-circuit above.
+		if ( isset( $config['subscription_data'] ) ) {
+			$this->config['http'][ self::SEARCH_ENDPOINT ] = [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['subscription_data'] ),
+			];
+		}
 
-					// Mock user data endpoint.
-					if ( false !== strpos( $url, 'api.wp-rocket.me/stat/1.0/wp-rocket/user.php' ) && isset( $config['user_data'] ) ) {
-						return [
-							'response' => [ 'code' => 200 ],
-							'body'     => wp_json_encode( $config['user_data'] ),
-						];
-					}
-
-					return $preempt;
-				},
-				10,
-				3
-			);
+		if ( isset( $config['user_data'] ) ) {
+			$this->config['http'][ UserClient::USER_ENDPOINT ] = [
+				'response' => [ 'code' => 200 ],
+				'body'     => wp_json_encode( $config['user_data'] ),
+			];
 		}
 
 		$actual = $this->get_actual_notice();

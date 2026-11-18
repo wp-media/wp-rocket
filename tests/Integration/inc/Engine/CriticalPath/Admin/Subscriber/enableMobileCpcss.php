@@ -40,9 +40,13 @@ class Test_EnableMobileCpcss extends AjaxTestCase {
 
 		$this->action = 'rocket_enable_mobile_cpcss';
 		$this->unregisterAllCallbacks( 'admin_init' );
+
+		// The generation's loopback request is unrelated to the AJAX response under test.
+		add_filter( 'do_rocket_critical_css_generation', '__return_false' );
 	}
 
 	public function tear_down() {
+		remove_filter( 'do_rocket_critical_css_generation', '__return_false' );
 		$this->restoreWpHook( 'admin_init' );
 
 		parent::tear_down();

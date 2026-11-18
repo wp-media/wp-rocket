@@ -4,6 +4,7 @@ declare( strict_types=1 );
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Rest;
 
 use WP_Rocket\Tests\Integration\DBTrait;
+use WPMedia\PHPUnit\Integration\HttpRequestTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase;
 
 /**
@@ -13,11 +14,11 @@ use WPMedia\PHPUnit\Integration\RESTfulTestCase;
  * @group AdminOnly
  */
 class CreateItemTest extends RESTfulTestCase {
-	use DBTrait;
+	use DBTrait, HttpRequestTrait;
 
 	private $hook_fired = false;
 	private $container;
-	protected $config;
+	protected $config = [];
 
 	public function configTestData() {
 		if ( empty( $this->config ) ) {
@@ -52,6 +53,8 @@ class CreateItemTest extends RESTfulTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		$this->setup_http();
+
 		remove_all_actions( 'wp_rocket_first_install' );
 
 		// Clean up data before each test
@@ -81,10 +84,9 @@ class CreateItemTest extends RESTfulTestCase {
 		// Remove our test hook
 		remove_action( 'rocket_rocket_insights_job_added', [ $this, 'capture_hook_fired' ] );
 
-		// Remove mock HTTP filter
-		remove_filter( 'pre_http_request', [ $this, 'mock_http_request' ] );
-
 		wp_set_current_user( null );
+
+		$this->tear_down_http();
 
 		parent::tear_down();
 	}
@@ -115,10 +117,7 @@ class CreateItemTest extends RESTfulTestCase {
 
 		$this->container->get( 'user' )->set_user( $config['customer_data']->generate() );
 
-		// Mock HTTP requests if needed for URL validation
-		if ( isset( $config['mock_http'] ) && $config['mock_http'] ) {
-			add_filter( 'pre_http_request', [ $this, 'mock_http_request' ], 10, 3 );
-		}
+		$this->config['http'] = $config['http'] ?? [];
 
 		// Add a concurrent URL to simulate race condition
 		if ( isset( $config['add_concurrent_url'] ) && $config['add_concurrent_url'] ) {
@@ -209,57 +208,5 @@ class CreateItemTest extends RESTfulTestCase {
 	 */
 	public function capture_hook_fired( $url ) {
 		$this->hook_fired = true;
-	}
-
-	/**
-	 * Mock HTTP requests for URL validation.
-	 *
-	 * @param false|array|\WP_Error $preempt A preemptive return value of an HTTP request.
-	 * @param array                 $args HTTP request arguments.
-	 * @param string                $url The request URL.
-	 * @return array|false
-	 */
-	public function mock_http_request( $preempt, $args, $url ) {
-		// Mock successful response for Rocket Insights API requests
-		if ( strpos( $url, 'performance/' ) !== false ) {
-			return [
-				'response' => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'body'     => wp_json_encode( [ 'uuid' => 'test-uuid-' . time() ] ),
-			];
-		}
-
-		// Mock successful response for URLs on the test domain (example.org)
-		if ( strpos( $url, 'http://example.org' ) === 0 || strpos( $url, 'https://example.org' ) === 0 ) {
-			return [
-				'response' => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
-			];
-		}
-
-		// Mock successful response for external URLs (use a local test URL instead of Google)
-		if ( strpos( $url, 'http://example.org/test-external' ) === 0 ) {
-			return [
-				'response' => [
-					'code'    => 200,
-					'message' => 'OK',
-				],
-				'body'     => '<html><head><title>External Test Page</title></head><body>External test content</body></html>',
-			];
-		}
-
-		// Mock 404 for invalid URLs
-		return [
-			'response' => [
-				'code'    => 404,
-				'message' => 'Not Found',
-			],
-			'body'     => 'Not found',
-		];
 	}
 }

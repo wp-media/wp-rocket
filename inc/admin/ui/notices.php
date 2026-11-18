@@ -653,12 +653,6 @@ function rocket_notice_html( $args ) {
 		case 'stop_preload':
 			$args['action'] = '<a class="wp-core-ui button" href="' . wp_nonce_url( admin_url( 'admin-post.php?action=rocket_stop_preload&type=all' ), 'rocket_stop_preload' ) . '">' . __( 'Stop Preload', 'rocket' ) . '</a>';
 			break;
-		case 'switch_to_rucss':
-			$params         = [
-				'action' => 'switch_to_rucss',
-			];
-			$args['action'] = '<a class="wp-core-ui button" href="' . add_query_arg( $params, wp_nonce_url( admin_url( 'admin-post.php' ), 'rucss_switch' ) ) . '">' . __( 'Turn on Remove Unused CSS', 'rocket' ) . '</a>';
-			break;
 		case 'enable_separate_mobile_cache':
 			$params         = [
 				'action' => 'rocket_enable_separate_mobile_cache',

@@ -95,10 +95,7 @@ class RegisterAddPageInsightsAbilityTest extends TestCase {
 			}
 		}
 
-		// Mock HTTP response if needed.
-		if ( $config['mock_http'] ?? false ) {
-			add_filter( 'pre_http_request', [ $this, 'mock_http_response' ], 10, 3 );
-		}
+		$this->config['http'] = $config['http'] ?? [];
 
 		// Set URL limit if provided.
 		if ( isset( $config['url_limit'] ) ) {
@@ -114,11 +111,6 @@ class RegisterAddPageInsightsAbilityTest extends TestCase {
 
 		// Execute the ability with input.
 		$result = $ability->execute( $config['input'] ?? null );
-
-		// Remove HTTP mock.
-		if ( $config['mock_http'] ?? false ) {
-			remove_filter( 'pre_http_request', [ $this, 'mock_http_response' ] );
-		}
 
 		if ( $expected['is_error'] ) {
 			$this->assertInstanceOf( 'WP_Error', $result, 'Should return WP_Error when user lacks permission.' );
@@ -143,30 +135,6 @@ class RegisterAddPageInsightsAbilityTest extends TestCase {
 		if ( $expected['hook_fired'] ?? false ) {
 			$this->assertSame( 'mcp-ai', $this->hook_data['source'] );
 		}
-	}
-
-	/**
-	 * Mock HTTP response for testing.
-	 *
-	 * @param mixed  $preempt Whether to preempt the request.
-	 * @param array  $args    Request arguments.
-	 * @param string $url     Request URL.
-	 *
-	 * @return array|false Mock response or false.
-	 */
-	public function mock_http_response( $preempt, $args, $url ) {
-		return [
-			'response' => [
-				'code'    => 200,
-			],
-			'body'     => json_encode(
-				[
-					'success' => true,
-					'uuid'    => 'test-uuid',
-					'code'    => 200,
-				]
-			),
-		];
 	}
 
 	/**
