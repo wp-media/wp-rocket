@@ -54,90 +54,66 @@ class Test_RevokeAppPasswords extends TestCase {
 	}
 
 	/**
-	 * Only WP Rocket's chat password is revoked on deactivation.
+	 * Deactivation revokes WP Rocket's chat password and keeps every other one.
+	 *
+	 * @dataProvider configTestData
+	 *
+	 * @param array $config   Passwords to create, and the library version the case needs.
+	 * @param array $expected Exact names, and the passwords kept and revoked.
 	 *
 	 * @return void
 	 */
-	public function testShouldRevokeOnlyTheWpRocketChatPasswords() {
-		$manager = new AppPasswordManager();
-
-		$this->assertIsString( $manager->provision( $this->user_id, 'wprocket', 'wp-rocket-chat' ) );
-		$this->assertIsString( $manager->provision( $this->user_id, 'imagify', 'other-product-chat' ) );
-		$this->assertIsArray( WP_Application_Passwords::create_new_application_password( $this->user_id, [ 'name' => 'Created by the user' ] ) );
-
-		do_action( 'rocket_deactivation', 0 );
-
-		$names = implode( '|', wp_list_pluck( WP_Application_Passwords::get_user_application_passwords( $this->user_id ), 'name' ) );
-
-		$this->assertStringNotContainsString( 'wp-rocket-chat', $names );
-		$this->assertStringContainsString( 'other-product-chat', $names );
-		$this->assertStringContainsString( 'Created by the user', $names );
-	}
-
-	/**
-	 * Passwords the user created are kept, including one named like the chat's.
-	 *
-	 * @return void
-	 */
-	public function testShouldKeepTheUsersOwnPasswordsEvenWhenNamedLikeTheChatOnes() {
-		$this->skipBeforeOwnershipByAppId();
-
-		$manager = new AppPasswordManager();
-
-		$this->assertIsString( $manager->provision( $this->user_id, 'wprocket', 'WP Rocket AI Assistant' ) );
-		$own = WP_Application_Passwords::create_new_application_password( $this->user_id, [ 'name' => 'WAP – my staging deploy key' ] );
-		$this->assertIsArray( $own );
-		$plain = WP_Application_Passwords::create_new_application_password( $this->user_id, [ 'name' => 'plain key' ] );
-		$this->assertIsArray( $plain );
-
-		$this->backdate( $own[1]['uuid'] );
-		$this->backdate( $plain[1]['uuid'] );
-
-		do_action( 'rocket_deactivation', 0 );
-
-		$names = wp_list_pluck( WP_Application_Passwords::get_user_application_passwords( $this->user_id ), 'name', 'uuid' );
-
-		$this->assertSame( 'WAP – my staging deploy key', $names[ $own[1]['uuid'] ] ?? null, 'The user\'s own "WAP – " password must be kept.' );
-		$this->assertSame( 'plain key', $names[ $plain[1]['uuid'] ] ?? null );
-	}
-
-	/**
-	 * The chat password gets the configured name and is the only one of WP Rocket's revoked.
-	 *
-	 * @return void
-	 */
-	public function testShouldNameTheChatPasswordExactlyAndRevokeIt() {
-		$this->skipBeforeOwnershipByAppId();
-
-		$manager = new AppPasswordManager();
-
-		$this->assertIsString( $manager->provision( $this->user_id, 'wprocket', 'WP Rocket AI Assistant' ) );
-		$this->assertIsString( $manager->provision( $this->user_id, 'imagify', 'Imagify Assistant' ) );
-
-		$rocket_uuid = get_user_meta( $this->user_id, AppPasswordGuard::build_meta_key( 'wprocket' ), true );
-		$other_uuid  = get_user_meta( $this->user_id, AppPasswordGuard::build_meta_key( 'imagify' ), true );
-
-		$this->assertNotEmpty( $rocket_uuid );
-		$this->assertNotEmpty( $other_uuid );
-
-		$item = WP_Application_Passwords::get_user_application_password( $this->user_id, $rocket_uuid );
-		$this->assertSame( 'WP Rocket AI Assistant', $item['name'] );
-
-		do_action( 'rocket_deactivation', 0 );
-
-		$this->assertNull( WP_Application_Passwords::get_user_application_password( $this->user_id, $rocket_uuid ), 'WP Rocket\'s chat password must be revoked.' );
-		$this->assertNotNull( WP_Application_Passwords::get_user_application_password( $this->user_id, $other_uuid ), 'Another product\'s chat password must be kept.' );
-	}
-
-	/**
-	 * Skips on libraries older than the one deciding ownership by app_id.
-	 *
-	 * @return void
-	 */
-	private function skipBeforeOwnershipByAppId(): void {
-		if ( version_compare( Config::version(), '3.1.0', '<' ) ) {
-			$this->markTestSkipped( 'Needs wap-client 3.1.0, which decides ownership by app_id and names the password as given (wp-media/wp-rocket#9217).' );
+	public function testShouldRevokeOnlyTheWpRocketChatPassword( $config, $expected ) {
+		if ( '' !== $config['min_library_version'] && version_compare( Config::version(), $config['min_library_version'], '<' ) ) {
+			$this->markTestSkipped( "Needs wap-client {$config['min_library_version']}, which decides ownership by app_id and names the password as given (wp-media/wp-rocket#9217)." );
 		}
+
+		$uuids = $this->create_passwords( $config['passwords'] );
+
+		foreach ( $expected['names'] as $label => $name ) {
+			$this->assertSame( $name, WP_Application_Passwords::get_user_application_password( $this->user_id, $uuids[ $label ] )['name'] );
+		}
+
+		do_action( 'rocket_deactivation', 0 );
+
+		foreach ( $expected['kept'] as $label ) {
+			$this->assertNotNull( WP_Application_Passwords::get_user_application_password( $this->user_id, $uuids[ $label ] ), "The \"{$config['passwords'][ $label ]['name']}\" password must be kept." );
+		}
+
+		foreach ( $expected['revoked'] as $label ) {
+			$this->assertNull( WP_Application_Passwords::get_user_application_password( $this->user_id, $uuids[ $label ] ), "The \"{$config['passwords'][ $label ]['name']}\" password must be revoked." );
+		}
+	}
+
+	/**
+	 * Creates the case's passwords: chat passwords through the library, the others as the user would.
+	 *
+	 * @param array $passwords Passwords keyed by label.
+	 *
+	 * @return array<string, string> Uuids keyed by label.
+	 */
+	private function create_passwords( array $passwords ): array {
+		$manager = new AppPasswordManager();
+		$uuids   = [];
+
+		foreach ( $passwords as $label => $password ) {
+			if ( isset( $password['product'] ) ) {
+				$this->assertIsString( $manager->provision( $this->user_id, $password['product'], $password['name'] ) );
+				$uuids[ $label ] = get_user_meta( $this->user_id, AppPasswordGuard::build_meta_key( $password['product'] ), true );
+			} else {
+				$created = WP_Application_Passwords::create_new_application_password( $this->user_id, [ 'name' => $password['name'] ] );
+				$this->assertIsArray( $created );
+				$uuids[ $label ] = $created[1]['uuid'];
+			}
+
+			$this->assertNotEmpty( $uuids[ $label ] );
+
+			if ( ! empty( $password['backdate'] ) ) {
+				$this->backdate( $uuids[ $label ] );
+			}
+		}
+
+		return $uuids;
 	}
 
 	/**
