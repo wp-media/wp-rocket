@@ -53,8 +53,7 @@
 		"wp-media/apply-filters-typed": "^1.0",
 		"wp-media/mcp-oauth": "2.0",
 		"wp-media/plugin-family": "1.0.8",
-		"wp-media/wp-mixpanel": "^1.4.4",
-		"groupone/wap-client": "^2.6.0"
+		"wp-media/wp-mixpanel": "^1.4.4"
 	},
 	"require-dev": {
 		"php": "^7.4 || ^8",
@@ -62,6 +61,7 @@
 		"brain/monkey": "^2.0",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"groupone/wap-client": "^3.0",
 		"league/container": "^4.2",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^3.74",
@@ -97,7 +97,8 @@
 		"classmap": [
 			"inc/classes",
 			"inc/vendors/classes",
-			"inc/deprecated"
+			"inc/deprecated",
+			"inc/Dependencies/GroupOne/WapClient"
 		],
 		"exclude-from-classmap": [
 			"inc/vendors/classes/class-rocket-mobile-detect.php",
@@ -130,12 +131,18 @@
 				"wp-media/monolog",
 				"league/container",
 				"berlindb/core",
-				"wp-media/plugin-family"
+				"wp-media/plugin-family",
+				"groupone/wap-client"
 			],
 			"override_autoload": {
 				"mobiledetect/mobiledetectlib": {
 					"psr-4": {
 						"Detection\\": "src/"
+					}
+				},
+				"groupone/wap-client": {
+					"psr-4": {
+						"GroupOne\\WapClient\\": ""
 					}
 				}
 			}

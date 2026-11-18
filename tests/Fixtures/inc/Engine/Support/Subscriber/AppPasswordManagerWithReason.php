@@ -1,6 +1,6 @@
 <?php
 
-namespace GroupOne\WapClient;
+namespace WP_Rocket\Dependencies\GroupOne\WapClient;
 
 /**
  * Test double of the library class, with unavailable_reason() (library 2.6.0 and later).

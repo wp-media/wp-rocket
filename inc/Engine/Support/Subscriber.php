@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Engine\Support;
 
+use WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager;
+use WP_Rocket\Dependencies\GroupOne\WapClient\Bootstrap;
+use WP_Rocket\Dependencies\GroupOne\WapClient\WapClient;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\User;
@@ -84,6 +87,8 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events() {
 		return [
+			'plugins_loaded'                => [ 'boot_wap_client', 20 ],
+			'init'                          => 'load_wap_client_textdomain',
 			'rest_api_init'                 => 'register_support_route',
 			'rocket_buffer'                 => [ 'add_meta_generator', PHP_INT_MAX ],
 			'admin_init'                    => 'register_column',
@@ -116,19 +121,35 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
+	 * Boots the WAP chat library: registers its AJAX handlers.
+	 *
+	 * The library is bundled under WP Rocket's namespace prefix, so it does not boot itself.
+	 *
+	 * @return void
+	 */
+	public function boot_wap_client(): void {
+		Bootstrap::boot();
+	}
+
+	/**
+	 * Loads the WAP chat library's translations.
+	 *
+	 * @return void
+	 */
+	public function load_wap_client_textdomain(): void {
+		Bootstrap::load_textdomain();
+	}
+
+	/**
 	 * Registers the WAP support chat column on the WP Rocket settings screen.
 	 *
-	 * The column is registered only when the library is present, the configuration is available and WordPress
-	 * Application Passwords can be used. The menu and the floating link follow the result, see is_chat_registered().
+	 * The column is registered only when the configuration is available and WordPress Application Passwords can
+	 * be used. The menu and the floating link follow the result, see is_chat_registered().
 	 *
 	 * @return void
 	 */
 	public function register_column(): void {
 		$this->chat_registered = false;
-
-		if ( ! class_exists( 'WapClient' ) ) {
-			return;
-		}
 
 		$config = $this->get_column_config();
 
@@ -136,15 +157,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		// An older library copy may lack the manager: availability cannot be checked, so the column is registered.
-		if (
-			class_exists( '\GroupOne\WapClient\AppPasswordManager' )
-			&& ! \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available()
-		) {
+		if ( ! AppPasswordManager::are_app_passwords_available() ) {
 			return;
 		}
 
-		\WapClient::register_chat_column( $config );
+		WapClient::register_chat_column( $config );
 
 		$this->chat_registered = true;
 	}
@@ -161,7 +178,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Checks whether the customer can use the assistant, ignoring the chat library and the Application Passwords.
+	 * Checks whether the customer can use the assistant, ignoring the Application Passwords.
 	 *
 	 * For screens without the chat column, such as the admin bar. The licence key and the user data are
 	 * checked first and cannot be overridden by the filters.
@@ -199,11 +216,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function revoke_app_passwords(): void {
-		if ( ! class_exists( 'WapClient' ) ) {
-			return;
-		}
-
-		\WapClient::revoke_app_passwords( self::PRODUCT );
+		WapClient::revoke_app_passwords( self::PRODUCT );
 	}
 
 	/**
@@ -325,7 +338,7 @@ class Subscriber implements Subscriber_Interface {
 	 * @return void
 	 */
 	public function maybe_display_unavailable_notice(): void {
-		if ( ! class_exists( '\GroupOne\WapClient\AppPasswordManager' ) || ! current_user_can( 'rocket_manage_options' ) ) {
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
 			return;
 		}
 
@@ -335,16 +348,11 @@ class Subscriber implements Subscriber_Interface {
 			return;
 		}
 
-		if ( \GroupOne\WapClient\AppPasswordManager::are_app_passwords_available() ) {
+		if ( AppPasswordManager::are_app_passwords_available() ) {
 			return;
 		}
 
-		// An older library copy loaded by another plugin may lack unavailable_reason().
-		if ( method_exists( '\GroupOne\WapClient\AppPasswordManager', 'unavailable_reason' ) ) { // @phpstan-ignore-line
-			$reason_code = \GroupOne\WapClient\AppPasswordManager::unavailable_reason();
-		} else {
-			$reason_code = \GroupOne\WapClient\AppPasswordManager::is_https_missing() ? 'https' : 'disabled';
-		}
+		$reason_code = AppPasswordManager::unavailable_reason();
 
 		switch ( $reason_code ) {
 			case 'multisite':
