@@ -111,7 +111,6 @@ return [
 					'vfs://public/C:\\releases+ (site):\\wp-content/cache/wp-rocket/example.org',
 					'vfs://public/C:\\releases+ (site):\\wp-content/cache/wp-rocket/example.org-tester-987654',
 				],
-				'windows_fs' => true,
 			],
 
 			'shouldReturnSubDomainAndUserCaches'             => [

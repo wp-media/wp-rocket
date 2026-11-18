@@ -91,7 +91,6 @@ return [
 				],
 			],
 			'wp_content_dir' => 'vfs://public/C:\\releases+ (site):\\wp-content',
-			'windows_fs'     => true,
 		],
 		'shouldClean_js.gz'                       => [
 			'extensions' => 'js.gz',

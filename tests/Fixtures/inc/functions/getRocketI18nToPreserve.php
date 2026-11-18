@@ -492,7 +492,7 @@ return [
 			'data'            => $i18n_plugins['wpml'],
 		],
 		'expected'     => [
-			'C:\\\\releases\+ \(site\)\:\\wp\-content\\cache\\wp\-rocket\\example\.org(.*)\\en',
+			'C\:\\releases\+ \(site\)\:\\wp\-content\\cache\\wp\-rocket\\example\.org(.*)\\en',
 		],
 		'mocks'        => [
 			'get_rocket_i18n_code'     => [ 'en' ],

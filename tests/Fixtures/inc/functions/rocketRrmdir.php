@@ -156,6 +156,7 @@ return [
 				],
 				'before_rocket_rrmdir' => 2,
 				'after_rocket_rrmdir'  => 2,
+				'dump_results'         => true,
 			],
 		],
 		'example.org_shouldDeleteAllExceptFEandDE'           => [
@@ -255,8 +256,8 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip'  => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/' => null,
 				],
-				'before_rocket_rrmdir' => 37,
-				'after_rocket_rrmdir'  => 37,
+				'before_rocket_rrmdir' => 42,
+				'after_rocket_rrmdir'  => 42,
 			],
 		],
 	],

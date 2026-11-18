@@ -20,6 +20,7 @@ class Test_RocketRrmdir extends FilesystemTestCase {
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldRecursivelyRemoveFilesAndDirectories( $to_delete, $to_preserve, $expected ) {
+		$this->dumpResults = isset( $expected['dump_results'] );
 		$to_delete = $this->filesystem->getUrl( $to_delete );
 		$this->generateEntriesShouldExistAfter( $expected['removed'] );
 

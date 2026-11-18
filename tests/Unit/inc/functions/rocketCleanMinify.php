@@ -27,11 +27,7 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanMinified( $extensions, $expected, $wp_content_dir = null, $windows_fs = null ) {
-		if ( ! is_null( $windows_fs ) ) {
-			Functions\when( '_rocket_is_windows_fs' )->justReturn( $windows_fs );
-		}
-
+	public function testShouldCleanMinified( $extensions, $expected, $wp_content_dir = null ) {
 		if ( ! empty( $wp_content_dir ) ) {
 			$this->wp_content_dir = $wp_content_dir;
 		}
