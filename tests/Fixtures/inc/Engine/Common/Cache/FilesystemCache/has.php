@@ -34,5 +34,21 @@ return [
 			'output' => false
 		]
 	],
-
+	'unmappableKeyShouldReturnFalse' => [
+		'config' => [
+			'key' => 'http://../file.css',
+			'parsed_url' => [
+				'host' => '..',
+				'path' => '/file.css',
+			],
+			'home_url' => 'http://example.org',
+			'root' => '/var/html/wp-content/cache',
+			'exists' => true
+		],
+		'expected' => [
+			'url' => 'http://../file.css',
+			'path' => null,
+			'output' => false
+		]
+	],
 ];

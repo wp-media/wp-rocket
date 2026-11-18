@@ -6,6 +6,7 @@ use Mockery;
 use WP_Rocket\Engine\Common\Cache\FilesystemCache;
 use WP_Filesystem_Direct;
 
+use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -72,6 +73,10 @@ class Test_generateUrl extends TestCase {
 
 			return $default;
 		});
+
+		if ( '' === $expected['output'] ) {
+			Filters\expectApplied( 'rocket_css_url' )->never();
+		}
 
         $this->assertSame($expected['output'], $this->filesystemcache->generate_url($config['url']));
 

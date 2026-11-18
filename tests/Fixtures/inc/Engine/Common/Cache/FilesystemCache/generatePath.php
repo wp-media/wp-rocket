@@ -1,0 +1,88 @@
+<?php
+
+$root = '/var/html/wp-content/cache/background-css/1/';
+
+$mapped = function ( $url, $path, $home_url = 'http://example.org' ) {
+	return [
+		'config'   => [
+			'url'      => $url,
+			'home_url' => $home_url,
+		],
+		'expected' => $path,
+	];
+};
+
+$empty = function ( $url, $home_url = 'http://example.org' ) use ( $mapped ) {
+	return $mapped( $url, '', $home_url );
+};
+
+return [
+	'shouldMapAbsoluteUrl'                     => $mapped( 'http://example.org/blog/test/file.css', $root . 'example.org/blog/test/file.css' ),
+	'shouldMapRelativeUrlToHomeHost'           => $mapped( '/wp-content/x/style.css', $root . 'example.org/wp-content/x/style.css' ),
+	'shouldMapProtocolRelativeUrl'             => $mapped( '//cdn.example.com/a.css', $root . 'cdn.example.com/a.css' ),
+	'shouldDropQuery'                          => $mapped( 'http://example.org/a.css?ver=1', $root . 'example.org/a.css' ),
+	'shouldDropFragment'                       => $mapped( 'http://example.org/a.css#frag', $root . 'example.org/a.css' ),
+	'shouldMapMappingFile'                     => $mapped( 'http://example.org/blog/test/file.css.json', $root . 'example.org/blog/test/file.css.json' ),
+	'shouldMapUppercaseExtension'              => $mapped( 'http://example.org/STYLE.CSS', $root . 'example.org/STYLE.CSS' ),
+	'shouldMapPathWithDigits'                  => $mapped( 'http://example.org/wp-content/uploads/2020/a.css', $root . 'example.org/wp-content/uploads/2020/a.css' ),
+	'shouldMapNameWithNonExecutableInnerDot'   => $mapped( 'http://example.org/a.plugin.css', $root . 'example.org/a.plugin.css' ),
+	'shouldMapNameWithLongerInnerExtension'    => $mapped( 'http://example.org/a.perlite.css', $root . 'example.org/a.perlite.css' ),
+	'shouldMapNameStartingLikePhp'             => $mapped( 'http://example.org/style.phpbb.css', $root . 'example.org/style.phpbb.css' ),
+	'shouldMapNameStartingLikePhar'            => $mapped( 'http://example.org/theme.pharmacy.css', $root . 'example.org/theme.pharmacy.css' ),
+	'shouldMapNameStartingLikePhpWithSuffix'   => $mapped( 'http://example.org/x.phpx.css', $root . 'example.org/x.phpx.css' ),
+	'shouldMapNameWithPlLocaleSuffix'          => $mapped( 'http://example.org/a.pl-PL.css', $root . 'example.org/a.pl-PL.css' ),
+	'shouldMapIdnHost'                         => $mapped( 'http://exämple.de/a.css', $root . 'exämple.de/a.css' ),
+	'shouldResolveInnerDotSegments'            => $mapped( 'http://example.org/plugins/foo/inc/../css/a.css', $root . 'example.org/plugins/foo/css/a.css' ),
+	'shouldCollapseEmptyAndCurrentSegments'    => $mapped( 'http://example.org/a//./b.css', $root . 'example.org/a/b.css' ),
+	'shouldClampParentSegmentsToHostDir'       => $mapped( 'http://example.org/a/../../../../x.css', $root . 'example.org/x.css' ),
+	'shouldClampBackslashParentSegments'       => $mapped( 'http://example.org/a\..\..\x.css', $root . 'example.org/x.css' ),
+	'shouldKeepEncodedDotsLiteral'             => $mapped( 'http://example.org/%2e%2e/x.css', $root . 'example.org/%2e%2e/x.css' ),
+	'shouldReturnEmptyForColonInPath'          => $empty( 'http://example.org/foo://../../x.css' ),
+	'shouldReturnEmptyForParentHost'           => $empty( 'http://../x.css' ),
+	'shouldReturnEmptyForCurrentHost'          => $empty( 'http://./x.css' ),
+	'shouldReturnEmptyForDotPrefixedHost'      => $empty( 'http://.htaccess/x.css' ),
+	'shouldReturnEmptyForTrailingDotHost'      => $empty( 'http://example.org./x.css' ),
+	'shouldReturnEmptyForBackslashHost'        => $empty( 'http://exa\mple.org/x.css' ),
+	'shouldReturnEmptyForBracketedHost'        => $empty( 'http://[::1]/x.css' ),
+	'shouldReturnEmptyWithoutAnyHost'          => $empty( '/x.css', '' ),
+	'shouldReturnEmptyForParentHomeHost'       => $empty( '/x.css', 'http://..' ),
+	'shouldReturnEmptyForDisallowedExtension'  => $empty( 'http://example.org/x.php' ),
+	'shouldReturnEmptyForPhtml'                => $empty( 'http://example.org/x.phtml' ),
+	'shouldReturnEmptyForDotFile'              => $empty( 'http://example.org/.htaccess' ),
+	'shouldReturnEmptyForJsonOnly'             => $empty( 'http://example.org/x.json' ),
+	'shouldReturnEmptyForExtensionless'        => $empty( 'https://fonts.example.com/css2?family=Roboto' ),
+	'shouldReturnEmptyForCssInQuery'           => $empty( 'http://example.org/style.php?x=.css' ),
+	'shouldReturnEmptyForInnerPhp'             => $empty( 'http://example.org/x.php.css' ),
+	'shouldReturnEmptyForInnerPhtmlMapping'    => $empty( 'http://example.org/a.phtml.css.json' ),
+	'shouldReturnEmptyForInnerPhpVersion'      => $empty( 'http://example.org/x.php5.css' ),
+	'shouldReturnEmptyForInnerPhps'            => $empty( 'http://example.org/x.phps.css' ),
+	'shouldReturnEmptyForInnerPhar'            => $empty( 'http://example.org/x.phar.css' ),
+	'shouldReturnEmptyForInnerPl'              => $empty( 'http://example.org/datepicker.pl.css' ),
+	'shouldReturnEmptyForInnerPhpUnderscore'   => $empty( 'http://example.org/x.php_.css' ),
+	'shouldReturnEmptyForInnerPhpSpace'        => $empty( 'http://example.org/x.php .css' ),
+	'shouldReturnEmptyForInnerPhpPlus'         => $empty( 'http://example.org/x.php+.css' ),
+	'shouldReturnEmptyForInnerPhpSemicolon'    => $empty( 'http://example.org/x.php;.css' ),
+	'shouldReturnEmptyForInnerCgi'             => $empty( 'http://example.org/x.cgi.css' ),
+	'shouldReturnEmptyForInnerFcgi'            => $empty( 'http://example.org/x.fcgi.css' ),
+	'shouldReturnEmptyForInnerPlx'             => $empty( 'http://example.org/x.plx.css' ),
+	'shouldReturnEmptyForInnerPpl'             => $empty( 'http://example.org/x.ppl.css' ),
+	'shouldReturnEmptyForInnerPerl'            => $empty( 'http://example.org/x.perl.css' ),
+	'shouldReturnEmptyForInnerShtm'            => $empty( 'http://example.org/x.shtm.css' ),
+	'shouldReturnEmptyForTrailingDotName'      => $empty( 'http://example.org/x.php.' ),
+	'shouldReturnEmptyForStreamColon'          => $empty( 'http://example.org/x.php:.css' ),
+	'shouldReturnEmptyForNulByte'              => $empty( "http://example.org/a\0.css" ),
+	'shouldReturnEmptyForColonInSegment'       => $empty( 'http://example.org/c:/x.css' ),
+	'shouldReturnEmptyForAngleBracketSegments' => $empty( 'http://example.org/>>/>>/x.css' ),
+	'shouldReturnEmptyForLessThanInName'       => $empty( 'http://example.org/a<b.css' ),
+	'shouldReturnEmptyForDoubleQuoteInName'    => $empty( 'http://example.org/a"b.css' ),
+	'shouldReturnEmptyForPipeInName'           => $empty( 'http://example.org/a|b.css' ),
+	'shouldReturnEmptyForAsteriskInName'       => $empty( 'http://example.org/a*b.css' ),
+	'shouldReturnEmptyForReservedCharInHost'   => $empty( 'http://a<b/x.css' ),
+	'shouldReturnEmptyForControlChar'          => $empty( "http://example.org/a\x01b.css" ),
+	'shouldReturnEmptyForDotSpaceSegment'      => $empty( 'http://example.org/.. /x.css' ),
+	'shouldReturnEmptyForDotSpaceDotSegment'   => $empty( 'http://example.org/.. ./x.css' ),
+	'shouldReturnEmptyForDotPrefixedSegment'   => $empty( 'http://example.org/.htaccess/x.css' ),
+	'shouldReturnEmptyForEncodedSlashSegment'  => $empty( 'http://example.org/..%2fx.css' ),
+	'shouldReturnEmptyForHostOnly'             => $empty( 'https://cdn.example.com/' ),
+	'shouldReturnEmptyForDirectoryKey'         => $empty( '/blog/test/' ),
+];
