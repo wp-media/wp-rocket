@@ -33,7 +33,11 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 	/**
 	 * @dataProvider noncachedTestData
 	 */
-	public function testShouldGetDirs( $config, $expected ) {
+	public function testShouldGetDirs( $config, $expected, $windows_fs = null ) {
+		if ( ! is_null( $windows_fs ) ) {
+			Functions\when( '_rocket_is_windows_fs' )->justReturn( $windows_fs );
+		}
+
 		$url_host   = array_key_exists( 'url_host', $config ) ? $config['url_host'] : '';
 		$cache_path = array_key_exists( 'cache_path', $config ) ? $config['cache_path'] : '';
 		$hard_reset = array_key_exists( 'hard_reset', $config ) ? $config['hard_reset'] : '';

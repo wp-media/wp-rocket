@@ -73,6 +73,7 @@ return [
 				],
 			],
 			'wp_content_dir' => 'vfs://public/C:\\releases+ (site):\\wp-content',
+			'windows_fs'     => true,
 		],
 		'shouldCleanCssAndJs'                     => [
 			'extensions' => [ 'css', 'js' ],
