@@ -27,7 +27,10 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanMinified( $extensions, $expected ) {
+	public function testShouldCleanMinified( $extensions, $expected, $wp_content_dir = null ) {
+		if ( ! empty( $wp_content_dir ) ) {
+			$this->wp_content_dir = $wp_content_dir;
+		}
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
@@ -46,22 +49,4 @@ class Test_RocketCleanMinify extends FilesystemTestCase {
 		$this->checkShouldNotDeleteEntries();
 	}
 
-	/**
-	 * Minified files under a path with regex metacharacters (timestamped release folder) are cleaned.
-	 */
-	public function testShouldCleanMinifiedWhenPathContainsRegexCharacters() {
-		$this->wp_content_dir = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content';
-		$min_path             = "{$this->wp_content_dir}/cache/min/";
-
-		mkdir( $min_path . '1/', 0777, true );
-		$file = $min_path . '1/5c795b0e3a1884eec34a989485f863ff.js';
-		file_put_contents( $file, '' );
-
-		Actions\expectDone( 'before_rocket_clean_minify' )->once()->with( 'js' );
-		Actions\expectDone( 'after_rocket_clean_minify' )->once()->with( 'js' );
-
-		rocket_clean_minify( 'js' );
-
-		$this->assertFalse( file_exists( $file ) );
-	}
 }

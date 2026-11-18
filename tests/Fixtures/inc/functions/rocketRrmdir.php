@@ -1,8 +1,19 @@
 <?php
 
 $i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/pluginsData.php';
+$structure    = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+$structure['wp-content']['cache']['release+ (site):'] = [
+	'wp-rocket' => [
+		'example.org' => [
+			'index.html' => '',
+			'de'         => [ 'index.html' => '' ],
+			'fr'         => [ 'index.html' => '' ],
+		],
+	],
+];
 
 return [
+	'structure' => $structure,
 	'vfs_dir'   => 'wp-content/cache/',
 
 	// Test data.
@@ -130,6 +141,21 @@ return [
 				],
 				'before_rocket_rrmdir' => 9,
 				'after_rocket_rrmdir'  => 9,
+			],
+		],
+		'escapedCachePath_shouldPreserveFrenchDirectory' => [
+			'to_delete'   => 'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org',
+			'to_preserve' => [
+				'vfs\:\/\/public\/wp\-content\/cache\/release\+ \(site\)\:\/wp\-rocket\/example\.org(.*)\/fr',
+			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/index.html'      => null,
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/index.html' => null,
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/'           => null,
+				],
+				'before_rocket_rrmdir' => 2,
+				'after_rocket_rrmdir'  => 2,
 			],
 		],
 		'example.org_shouldDeleteAllExceptFEandDE'           => [

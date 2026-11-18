@@ -463,4 +463,46 @@ return [
 			],
 		],
 	],
+	'wpml_shouldEscapeRegexMetacharactersInPosixCachePath' => [
+		'current_lang' => 'fr',
+		'config'       => [
+			'i18n_plugin'     => 'wpml',
+			'rocket_has_i18n' => 'wpml',
+			'data'            => $i18n_plugins['wpml'],
+		],
+		'expected'     => [
+			'vfs\:\/\/public\/releases\+ \(site\)\:\/wp\-content\/cache\/wp\-rocket\/example\.org(.*)\/en',
+		],
+		'mocks'        => [
+			'get_rocket_i18n_code'     => [ 'en' ],
+			'get_rocket_i18n_home_url' => [ 'en' => 'https://example.org/en/' ],
+			'get_rocket_parse_url'     => [
+				'https://example.org/en/' => [ 'host' => 'example.org', 'path' => '/en/' ],
+			],
+		],
+		'cache_path'  => 'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/',
+		'windows_fs'  => false,
+		'subject'     => 'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/example.org/en',
+	],
+	'wpml_shouldEscapeRegexMetacharactersInWindowsCachePath' => [
+		'current_lang' => 'fr',
+		'config'       => [
+			'i18n_plugin'     => 'wpml',
+			'rocket_has_i18n' => 'wpml',
+			'data'            => $i18n_plugins['wpml'],
+		],
+		'expected'     => [
+			'C:\\\\releases\+ \(site\)\:\\wp\-content\\cache\\wp\-rocket\\example\.org(.*)\\en',
+		],
+		'mocks'        => [
+			'get_rocket_i18n_code'     => [ 'en' ],
+			'get_rocket_i18n_home_url' => [ 'en' => 'https://example.org/en/' ],
+			'get_rocket_parse_url'     => [
+				'https://example.org/en/' => [ 'host' => 'example.org', 'path' => '/en/' ],
+			],
+		],
+		'cache_path'  => 'C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\',
+		'windows_fs'  => true,
+		'subject'     => 'C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\example.org\\en',
+	],
 ];

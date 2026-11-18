@@ -358,7 +358,8 @@ function get_rocket_i18n_to_preserve( $current_lang, $cache_path = '' ) { // php
 		$cache_path = _rocket_get_wp_rocket_cache_path();
 	}
 
-	// Each literal part is escaped once with preg_quote(); separators keep the escaped form used before ("\/" or "\\" on Windows).
+	// Escape literal parts once; keep the public filter's separator representation.
+	// Keep slash escaped for backward compatibility with filter consumers; preg_quote() escapes Windows backslashes.
 	$escape_literal = static function ( $value ) {
 		return str_replace( '/', '\/', preg_quote( _rocket_normalize_path( $value ), '#' ) );
 	};

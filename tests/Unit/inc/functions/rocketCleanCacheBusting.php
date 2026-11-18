@@ -27,7 +27,10 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanBustingFiles( $extensions, $expected ) {
+	public function testShouldCleanBustingFiles( $extensions, $expected, $wp_content_dir = null ) {
+		if ( ! empty( $wp_content_dir ) ) {
+			$this->wp_content_dir = $wp_content_dir;
+		}
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
@@ -46,22 +49,4 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 		$this->checkShouldNotDeleteEntries();
 	}
 
-	/**
-	 * Busting files under a path with regex metacharacters (timestamped release folder) are cleaned.
-	 */
-	public function testShouldCleanBustingFilesWhenPathContainsRegexCharacters() {
-		$this->wp_content_dir = 'vfs://public/releases/2024-09-02T11:32:23+0000/wp-content';
-		$busting_path         = "{$this->wp_content_dir}/cache/busting/";
-
-		mkdir( $busting_path . '1/wp-content/', 0777, true );
-		$file = $busting_path . '1/wp-content/test.js';
-		file_put_contents( $file, '' );
-
-		Actions\expectDone( 'before_rocket_clean_busting' )->once()->with( 'js' );
-		Actions\expectDone( 'after_rocket_clean_cache_busting' )->once()->with( 'js' );
-
-		rocket_clean_cache_busting( 'js' );
-
-		$this->assertFalse( file_exists( $file ) );
-	}
 }
