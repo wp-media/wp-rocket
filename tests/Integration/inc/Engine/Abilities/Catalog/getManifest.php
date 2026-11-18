@@ -24,6 +24,31 @@ class Test_GetManifest extends TestCase {
 	private const READ_PREFIX = 'wp-rocket/get-';
 
 	/**
+	 * WP Rocket's read-only abilities. With WRITE_ABILITIES, every ability WP Rocket registers: a missing one,
+	 * or a new one nobody sorted into reads or writes, fails the test.
+	 */
+	private const READ_ABILITIES = [
+		'wp-rocket/get-cache-health',
+		'wp-rocket/get-cache-status',
+		'wp-rocket/get-insights-scores',
+		'wp-rocket/get-options',
+		'wp-rocket/get-page-insights-score',
+		'wp-rocket/get-recommendations',
+	];
+
+	/**
+	 * WP Rocket's other abilities, which change something.
+	 */
+	private const WRITE_ABILITIES = [
+		'wp-rocket/add-page-insights',
+		'wp-rocket/clear-url-cache',
+		'wp-rocket/clear-website-cache',
+		'wp-rocket/remove-page-insights',
+		'wp-rocket/retest-page-insights',
+		'wp-rocket/set-option',
+	];
+
+	/**
 	 * Set up the test.
 	 *
 	 * @return void
@@ -45,7 +70,19 @@ class Test_GetManifest extends TestCase {
 	public function testShouldNameExactlyTheReadOnlyAbilitiesGet(): void {
 		$manifest = ( new Catalog() )->get_manifest();
 
-		$this->assertNotEmpty( $manifest, 'WP Rocket abilities should be registered.' );
+		$this->assertEqualsCanonicalizing(
+			array_merge( self::READ_ABILITIES, self::WRITE_ABILITIES ),
+			array_column( $manifest, 'name' ),
+			'The registered abilities should be exactly the listed ones: add a new ability to READ_ABILITIES or WRITE_ABILITIES.'
+		);
+
+		foreach ( $manifest as $ability ) {
+			$this->assertSame(
+				in_array( $ability['name'], self::READ_ABILITIES, true ),
+				true === ( $ability['meta']['annotations']['readonly'] ?? null ),
+				"{$ability['name']} is listed on the wrong side of READ_ABILITIES / WRITE_ABILITIES."
+			);
+		}
 
 		foreach ( $manifest as $ability ) {
 			$is_readonly = true === ( $ability['meta']['annotations']['readonly'] ?? null );

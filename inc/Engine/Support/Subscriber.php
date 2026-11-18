@@ -224,8 +224,8 @@ class Subscriber implements Subscriber_Interface {
 	 *
 	 * WAP maps each ability to a row: `read-plugin` for WP Rocket's `get-` abilities, which are exactly its
 	 * read-only ones; `manage-plugin` for WP Rocket's other abilities; `manage-site` for every other ability,
-	 * from other plugins and core. The last two are coming later: they only offer Deny, so the library can
-	 * only store deny for them (locked server-side); `disabled` merely greys them out in the UI.
+	 * from other plugins and core. The last two only offer Deny, so the library can only store deny for
+	 * them (locked server-side); `disabled` merely greys them out in the UI.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
