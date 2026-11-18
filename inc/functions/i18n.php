@@ -359,7 +359,7 @@ function get_rocket_i18n_to_preserve( $current_lang, $cache_path = '' ) { // php
 	}
 
 	// Escape literal parts once; keep the public filter's separator representation.
-	// Keep slash escaped for backward compatibility with filter consumers; preg_quote() escapes Windows backslashes.
+	// Preserve Linux's escaped slash for filter compatibility; Windows keeps doubled backslashes.
 	$escape_literal = static function ( $value ) {
 		return str_replace( '/', '\/', preg_quote( _rocket_normalize_path( $value ), '#' ) );
 	};
