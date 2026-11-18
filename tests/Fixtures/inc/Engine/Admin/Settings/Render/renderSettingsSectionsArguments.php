@@ -6,33 +6,17 @@ $help = [
 ];
 
 return [
-	'fields_container_available'   => [
-		'config'   => [ 'type' => 'fields_container', 'available' => true ],
+	'fields_container_keeps_help' => [
+		'config'   => [ 'type' => 'fields_container' ],
 		'expected' => [
-			'help'               => $help,
-			'has_hide_need_help' => false,
-			'class'              => 'one two',
+			'help'  => $help,
+			'class' => 'one two',
 		],
 	],
-	'fields_container_not_available' => [
-		'config'   => [ 'type' => 'fields_container', 'available' => false ],
+	'purge_section_keeps_help'    => [
+		'config'   => [ 'type' => 'purge_cdn_cache_section' ],
 		'expected' => [
-			'help'               => '',
-			'has_hide_need_help' => false,
-		],
-	],
-	'purge_section_not_available'  => [
-		'config'   => [ 'type' => 'purge_cdn_cache_section', 'available' => false ],
-		'expected' => [
-			'help'               => $help,
-			'has_hide_need_help' => true,
-		],
-	],
-	'purge_section_available'      => [
-		'config'   => [ 'type' => 'purge_cdn_cache_section', 'available' => true ],
-		'expected' => [
-			'help'               => $help,
-			'has_hide_need_help' => false,
+			'help' => $help,
 		],
 	],
 ];

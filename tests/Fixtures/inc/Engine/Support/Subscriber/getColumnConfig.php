@@ -205,8 +205,27 @@ return [
 			'consumer_key'     => 'test-consumer-key',
 			'consumer_email'   => 'user@example.org',
 			'filter_available' => false,
-			'can_use_ai'       => null,
 		],
 		'expected' => [ 'is_empty' => true ],
+	],
+	'assistant_disabled_by_filter' => [
+		'config'   => [
+			'consumer_key'        => 'test-consumer-key',
+			'consumer_email'      => 'user@example.org',
+			'ai_filter_available' => false,
+		],
+		'expected' => [ 'is_empty' => true ],
+	],
+	'assistant_enabled_by_both_filters' => [
+		'config'   => [
+			'consumer_key'        => 'test-consumer-key',
+			'consumer_email'      => 'user@example.org',
+			'ai_filter_available' => true,
+			'filter_available'    => true,
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [ 'product' => 'wprocket' ],
+		],
 	],
 ];

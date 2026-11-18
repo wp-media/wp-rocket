@@ -48,7 +48,8 @@ class Test_RenderSettingsSections extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['available'] );
+		// The assistant filter does not decide whether "Need Help?" is printed.
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
 
 		$render = new Render( dirname( __DIR__, 7 ) . '/views/settings', Mockery::mock( PluginFamily::class ) );
 

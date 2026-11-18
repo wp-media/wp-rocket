@@ -54,7 +54,7 @@ class Test_TrackImagifyBannerInstall extends TestCase {
 			Actions\expectDone( 'rocket_mixpanel_track_event' )->never();
 		}
 
-		( new Subscriber( Mockery::mock( Page::class ), Mockery::mock( PluginFamily::class ) ) )->track_imagify_banner_install();
+		( new Subscriber( Mockery::mock( Page::class ), Mockery::mock( PluginFamily::class ), Mockery::mock( \WP_Rocket\Engine\Support\Subscriber::class ) ) )->track_imagify_banner_install();
 
 		unset( $_REQUEST['_wpnonce'] );
 	}

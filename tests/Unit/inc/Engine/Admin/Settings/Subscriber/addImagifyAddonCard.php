@@ -28,7 +28,7 @@ class Test_AddImagifyAddonCard extends TestCase {
 		$page = Mockery::mock( Page::class );
 		$page->shouldReceive( 'add_imagify_addon_card' )->once()->with( [ [ 'id' => 'a' ] ] )->andReturn( [ [ 'id' => 'a' ], [ 'id' => 'imagify' ] ] );
 
-		$subscriber = new Subscriber( $page, Mockery::mock( PluginFamily::class ) );
+		$subscriber = new Subscriber( $page, Mockery::mock( PluginFamily::class ), Mockery::mock( \WP_Rocket\Engine\Support\Subscriber::class ) );
 
 		$this->assertSame( [ [ 'id' => 'a' ], [ 'id' => 'imagify' ] ], $subscriber->add_imagify_addon_card( [ [ 'id' => 'a' ] ] ) );
 	}
