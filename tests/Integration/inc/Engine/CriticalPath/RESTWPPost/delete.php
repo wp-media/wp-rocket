@@ -2,6 +2,7 @@
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\CriticalPath\RESTWPPost;
 
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\RESTVfsTestCase;
 
 /**
@@ -15,6 +16,8 @@ use WP_Rocket\Tests\Integration\RESTVfsTestCase;
  * @group CriticalRest
  */
 class Test_Delete extends RESTVfsTestCase {
+	use IsolateHookTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/RESTWPPost/delete.php';
 
 	protected static $use_settings_trait = true;
@@ -49,6 +52,10 @@ class Test_Delete extends RESTVfsTestCase {
 		self::installLrcTable();
 		self::installPreloadFontsTable();
 		self::installPreconnectExternalDomainsTable();
+
+		// The page cache fixture is keyed by post slug. Skip the purges a permalink change triggers.
+		$this->unregisterAllCallbacks( 'permalink_structure_changed' );
+		$this->set_permalink_structure( '/%postname%/' );
 	}
 
 	public function tear_down() {
@@ -57,6 +64,8 @@ class Test_Delete extends RESTVfsTestCase {
 		self::uninstallPreloadFontsTable();
 		self::uninstallPreconnectDomainsTable();
 
+		$this->set_permalink_structure( '' );
+		$this->restoreWpHook( 'permalink_structure_changed' );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'async_css_mobile_cb' ] );
 
 		$admin = get_role( 'administrator' );
