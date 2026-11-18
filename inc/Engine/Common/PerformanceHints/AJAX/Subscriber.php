@@ -58,12 +58,7 @@ class Subscriber implements Subscriber_Interface {
 	}
 
 	/**
-	 * Callback for returning a fresh nonce to the beacon script.
-	 *
-	 * The nonce embedded in the cached page HTML is generated at page render time and
-	 * expires after 12-24 hours, while the page cache can live much longer. This lets
-	 * the beacon recover from a 403 on the check/save endpoints by fetching a fresh
-	 * nonce instead of failing for the whole lifetime of the cache file.
+	 * Returns a fresh rocket_beacon nonce for the beacon script.
 	 *
 	 * @return void
 	 */
