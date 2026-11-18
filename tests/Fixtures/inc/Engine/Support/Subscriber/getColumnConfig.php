@@ -131,12 +131,12 @@ return [
 		'expected' => [
 			'is_empty' => false,
 			'fields'   => [
-				// The WP Rocket row is a real choice, allowed by default.
-				// The whole-site row only offers Deny and is locked, so other plugins' and core abilities never run.
+				// Reading WP Rocket is a real choice, allowed by default.
+				// Changing WP Rocket and the whole site only offer Deny and are locked, so no write ability runs yet.
 				'permissions' => [
 					[
-						'id'           => 'manage-plugin',
-						'label'        => 'Manage your WP Rocket plugin',
+						'id'           => 'read-plugin',
+						'label'        => 'Read WP Rocket settings',
 						'options'      => [
 							[
 								'value' => 'allow',
@@ -154,8 +154,8 @@ return [
 						'defaultValue' => 'allow',
 					],
 					[
-						'id'           => 'manage-site',
-						'label'        => 'Manage your WordPress site',
+						'id'           => 'manage-plugin',
+						'label'        => 'Change WP Rocket settings',
 						'options'      => [
 							[
 								'value' => 'deny',
@@ -164,6 +164,20 @@ return [
 						],
 						'defaultValue' => 'deny',
 						'disabled'     => true,
+						'badge'        => 'Coming soon',
+					],
+					[
+						'id'           => 'manage-site',
+						'label'        => 'Read & Write WordPress configuration',
+						'options'      => [
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'deny',
+						'disabled'     => true,
+						'badge'        => 'Coming soon',
 					],
 				],
 			],
