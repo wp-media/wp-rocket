@@ -8,11 +8,13 @@ use WP_Rocket\Engine\Common\PerformanceHints\Frontend\ControllerInterface;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains as PreconnectDomains;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Row\PreconnectExternalDomains;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\OriginTrait;
 use WP_Rocket\Engine\Support\CommentTrait;
 
 class Controller implements ControllerInterface {
 	use CommentTrait;
 	use ElementTrait;
+	use OriginTrait;
 
 	/**
 	 * Used for debugging head elements.
@@ -124,8 +126,20 @@ class Controller implements ControllerInterface {
 		}
 
 		$domains = json_decode( $row->domains, true );
+		if ( ! is_array( $domains ) ) {
+			return $items;
+		}
+
+		$seen = [];
+
 		foreach ( $domains as $domain ) {
-			$domain_item = $this->get_domain_preconnect_item( $domain );
+			$origin = $this->get_origin( $domain );
+			if ( '' === $origin || isset( $seen[ $origin ] ) ) {
+				continue;
+			}
+
+			$seen[ $origin ] = true;
+			$domain_item     = $this->get_domain_preconnect_item( $origin );
 			if ( empty( $domain_item ) ) {
 				continue;
 			}

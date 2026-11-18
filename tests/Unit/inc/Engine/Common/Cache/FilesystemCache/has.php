@@ -33,7 +33,11 @@ class TestHas extends TestCase {
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_current_blog_id')->justReturn( 1 );
 
-		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+		if ( null === $expected['path'] ) {
+			$this->filesystem->shouldNotReceive('exists');
+		} else {
+			$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+		}
 
 		$this->assertSame($expected['output'], $this->filesystemcache->has($config['key']));
 	}

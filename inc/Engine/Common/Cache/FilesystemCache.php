@@ -8,6 +8,21 @@ use WP_Filesystem_Direct;
 class FilesystemCache implements CacheInterface {
 
 	/**
+	 * File names that can be cached: stylesheets and their mapping files.
+	 */
+	private const ALLOWED_FILE_PATTERN = '/\.css(?:\.json)?\z/i';
+
+	/**
+	 * Inner extensions a web server may run as scripts. The PHP family only needs to not be followed by a letter, so ".php5", ".php;" or ".php_" match but ".phpbb" or ".pharmacy" don't.
+	 */
+	private const EXECUTABLE_EXTENSION_PATTERN = '/\.ph(?:p\d*|t|tml|ar|ps)(?![a-z])|\.(?:shtml?|f?cgi|pl|plx|ppl|perl|py|aspx?|jsp)(?:\.|\z)/i';
+
+	/**
+	 * Names starting with a dot, or ending with a dot or a space (trimmed by some filesystems).
+	 */
+	private const UNSAFE_NAME_PATTERN = '/^\.|[. ]\z/';
+
+	/**
 	 * Root folder from the path.
 	 *
 	 * @var string
@@ -44,7 +59,7 @@ class FilesystemCache implements CacheInterface {
 	public function get( string $key, $default = null ) {
 		$path = $this->generate_path( $key );
 
-		if ( ! $this->filesystem->exists( $path ) ) {
+		if ( '' === $path || ! $this->filesystem->exists( $path ) ) {
 			return $default;
 		}
 
@@ -63,7 +78,12 @@ class FilesystemCache implements CacheInterface {
 	 * @return bool True on success and false on failure.
 	 */
 	public function set( string $key, $value, $ttl = null ): bool {
-		$path      = $this->generate_path( $key );
+		$path = $this->generate_path( $key );
+
+		if ( '' === $path ) {
+			return false;
+		}
+
 		$directory = dirname( $path );
 		rocket_mkdir_p( $directory, $this->filesystem );
 		return $this->filesystem->put_contents( $path, $value, rocket_get_filesystem_perms( 'file' ) );
@@ -78,7 +98,7 @@ class FilesystemCache implements CacheInterface {
 	 */
 	public function delete( string $key ): bool {
 		$path = $this->generate_path( $key );
-		if ( ! $this->filesystem->exists( $path ) ) {
+		if ( '' === $path || ! $this->filesystem->exists( $path ) ) {
 			return false;
 		}
 		if ( $this->filesystem->is_dir( $path ) ) {
@@ -193,17 +213,21 @@ class FilesystemCache implements CacheInterface {
 	public function has( string $key ): bool {
 		$path = $this->generate_path( $key );
 
-		return $this->filesystem->exists( $path );
+		return '' !== $path && $this->filesystem->exists( $path );
 	}
 
 	/**
 	 * Generate the real URL.
 	 *
 	 * @param string $url original URL.
-	 * @return string
+	 * @return string Cached file URL, or an empty string when the URL can't be mapped.
 	 */
 	public function generate_url( string $url ): string {
 		$path = $this->generate_path( $url );
+
+		if ( '' === $path ) {
+			return '';
+		}
 
 		$wp_content_dir = rocket_get_constant( 'WP_CONTENT_DIR' );
 
@@ -219,22 +243,94 @@ class FilesystemCache implements CacheInterface {
 	/**
 	 * Generate a path from the URL.
 	 *
+	 * Dot segments are resolved and the result is kept inside the host directory of the cache root.
+	 *
 	 * @param string $url URL to change to a path.
-	 * @return string
+	 * @return string Absolute file path, or an empty string when the URL can't be mapped to an allowed file inside the cache root.
 	 */
 	public function generate_path( string $url ): string {
-		$root_path       = $this->get_root_path();
-		$root_path       = rtrim( $root_path, '/' );
-		$parsed_url      = get_rocket_parse_url( $url );
-		$parsed_url_path = trim( $parsed_url['path'], '/' );
+		$root_path  = rtrim( $this->get_root_path(), '/' );
+		$parsed_url = (array) get_rocket_parse_url( $url );
+		$host       = (string) ( $parsed_url['host'] ?? '' );
 
-		$home_url        = home_url();
-		$home_parsed_url = get_rocket_parse_url( $home_url );
+		if ( '' === $host ) {
+			$home_parsed_url = (array) get_rocket_parse_url( home_url() );
+			$host            = (string) ( $home_parsed_url['host'] ?? '' );
+		}
 
-		$host            = '' === $parsed_url['host'] || null === $parsed_url['host'] ? $home_parsed_url['host'] : $parsed_url['host'];
-		$parsed_url_host = '/' . $host;
+		if ( ! $this->is_valid_host( $host ) ) {
+			return '';
+		}
 
-		return $root_path . $parsed_url_host . '/' . $parsed_url_path;
+		$path = str_replace( '\\', '/', (string) ( $parsed_url['path'] ?? '' ) );
+
+		// Control characters break file functions, the others are Windows-reserved (stream separator, wildcards).
+		if ( preg_match( '/[\x00-\x1f:<>"|?*]/', $path ) ) {
+			return '';
+		}
+
+		// The leading slash roots the normalization, so parent segments clamp at the host directory.
+		$path = ltrim( rocket_realpath( '/' . $path ), '/' );
+
+		if ( ! $this->is_valid_path( $path ) ) {
+			return '';
+		}
+
+		$file_path = $root_path . '/' . $host . '/' . $path;
+
+		if ( ! $this->is_inside_root( $file_path, $root_path . '/' . $host ) ) {
+			return '';
+		}
+
+		return $file_path;
+	}
+
+	/**
+	 * Checks the host can be used as a single directory name.
+	 *
+	 * @param string $host URL host.
+	 * @return bool
+	 */
+	private function is_valid_host( string $host ): bool {
+		return '' !== $host
+			&& ! preg_match( '#[/\\\\:<>"|?*\x00-\x1f]|\.\.#', $host )
+			&& ! preg_match( self::UNSAFE_NAME_PATTERN, $host );
+	}
+
+	/**
+	 * Checks a normalized relative path points to an allowed file name.
+	 *
+	 * @param string $path Normalized path, without leading slash.
+	 * @return bool
+	 */
+	private function is_valid_path( string $path ): bool {
+		$segments = explode( '/', $path );
+		$file     = (string) end( $segments );
+
+		if ( ! preg_match( self::ALLOWED_FILE_PATTERN, $file ) || preg_match( self::EXECUTABLE_EXTENSION_PATTERN, $file ) ) {
+			return false;
+		}
+
+		foreach ( $segments as $segment ) {
+			if ( preg_match( self::UNSAFE_NAME_PATTERN, $segment ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 * Checks the path resolves inside the root path.
+	 *
+	 * @param string $path      Path to check.
+	 * @param string $root_path Root path the path must stay in.
+	 * @return bool
+	 */
+	private function is_inside_root( string $path, string $root_path ): bool {
+		$root = _rocket_normalize_path( rocket_realpath( $root_path ) . '/' );
+
+		return 0 === strpos( _rocket_normalize_path( rocket_realpath( $path ) ), $root );
 	}
 
 	/**
