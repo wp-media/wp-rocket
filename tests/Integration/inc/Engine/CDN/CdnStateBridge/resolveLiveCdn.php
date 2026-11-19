@@ -41,6 +41,10 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 
+		// Keep only CdnStateBridge::reconcile on the settings hook: the other subscribers (CDN cache clear,
+		// preconnect truncate) query tables this test doesn't install.
+		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'reconcile', 5 );
+
 		// Explicitly pin admin context rather than depending on ambient screen state left
 		// over from whichever test ran previously - Subscriber::apply_pause_on_rocketcdn_only()
 		// (also hooked on this same 'cdn' read path) behaves differently in admin vs. front end.
@@ -64,6 +68,7 @@ class Test_ResolveLiveCdn extends AdminTestCase {
 		set_current_screen( 'front' );
 
 		$this->restoreWpHook( 'current_screen' );
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		parent::tear_down();
 	}
