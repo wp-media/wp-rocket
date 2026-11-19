@@ -619,6 +619,7 @@ a:focus, button:focus {
   background: #fff;
   padding: 32px 24px;
   flex: 1 1 auto;
+  min-width: 0;
   max-width: 1230px;
 }
 @media (max-width: 783px) {
