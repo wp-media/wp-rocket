@@ -561,6 +561,12 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$url_no_dots    = (bool) apply_filters( 'rocket_url_no_dots', false );
 	$cache_path     = _rocket_get_wp_rocket_cache_path();
 	$ignored_params = null;
+	$home_paths     = null;
+	$get_url_key    = function ( $url ) {
+		$parts = wp_parse_url( $url );
+
+		return strtolower( $parts['host'] ?? '' ) . rtrim( rawurldecode( $parts['path'] ?? '' ), '/' ) . '/';
+	};
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -622,6 +628,17 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 			}
 		}
 
+		// Only ignored parameters on the home page or a language home: its folder holds the whole site or language cache, so only the home page files are deleted.
+		$home_files_only = false;
+
+		if ( ! empty( $raw_query ) && '' === $query_dir ) {
+			if ( null === $home_paths ) {
+				$home_paths = array_map( $get_url_key, array_filter( array_merge( [ home_url() ], get_rocket_i18n_uri() ), 'is_string' ) );
+			}
+
+			$home_files_only = in_array( $get_url_key( $original_url ), $home_paths, true );
+		}
+
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
 				// Decode url path.
@@ -643,6 +660,15 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 
 				// Query string pages are cached in their own directory, where the question mark is replaced with a hash.
 				$entry = $dir . $parsed_url['path'] . $query_dir;
+
+				if ( $home_files_only ) {
+					foreach ( _rocket_get_dir_files_by_regex( rtrim( $entry, '/' ), '#[/\\\\]index(?:-.+\.|\.)html(?:_gzip)?$#' ) as $item ) {
+						$filesystem->delete( $item->getPathname() );
+						$cleared = true;
+					}
+
+					continue;
+				}
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
