@@ -34,6 +34,8 @@ class Subscriber implements Subscriber_Interface {
 			'wp_ajax_nopriv_rocket_beacon'       => 'add_data',
 			'wp_ajax_rocket_check_beacon'        => 'check_data',
 			'wp_ajax_nopriv_rocket_check_beacon' => 'check_data',
+			'wp_ajax_rocket_beacon_nonce'        => 'add_nonce',
+			'wp_ajax_nopriv_rocket_beacon_nonce' => 'add_nonce',
 		];
 	}
 
@@ -53,5 +55,18 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function check_data() {
 		$this->processor->check_data();
+	}
+
+	/**
+	 * Returns a fresh rocket_beacon nonce for the beacon script.
+	 *
+	 * @return void
+	 */
+	public function add_nonce() {
+		wp_send_json_success(
+			[
+				'nonce' => wp_create_nonce( 'rocket_beacon' ),
+			]
+		);
 	}
 }
