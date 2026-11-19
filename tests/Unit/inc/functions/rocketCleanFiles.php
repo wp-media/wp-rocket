@@ -52,10 +52,28 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 			$GLOBALS['debug_fs'] = true;
 		}
 
+		foreach ( $config['create'] ?? [] as $file ) {
+			$dir = dirname( $file );
+
+			if ( ! $this->filesystem->is_dir( $dir ) ) {
+				$this->filesystem->mkdir( $dir );
+			}
+
+			$this->filesystem->put_contents( $file, '' );
+		}
+
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+
+		if ( isset( $config['ignored_params'] ) ) {
+			Filters\expectApplied( 'rocket_cache_ignored_parameters' )
+				->once()
+				->andReturn( $config['ignored_params'] );
+		}
+
 		if ( empty( $urls ) ) {
 			$this->doBailOutTest();
 		} else {
-			$this->doCleanFilesTest( $urls, $config, $expected );
+			$this->doCleanFilesTest( $urls, $expected );
 		}
 
 		// Run it.
@@ -71,7 +89,7 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		Functions\expect( 'rocket_rrmdir' )->never();
 	}
 
-	private function doCleanFilesTest( $urls, $config, $expected ) {
+	private function doCleanFilesTest( $urls, $expected ) {
 		Filters\expectApplied( 'rocket_url_no_dots' )
 			->once()
 			->with( false )

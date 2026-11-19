@@ -17,6 +17,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 use WP_Rocket\Engine\Common\{
 	JobManager\JobProcessor,
 	JobManager\Queue\Queue,
+	Page\PageHandlerTrait,
 	Utils
 };
 use WP_Rocket\Logger\Logger;
@@ -445,7 +446,7 @@ class Rest extends WP_REST_Controller {
 		$payload['html']              = $this->render->get_performance_monitoring_list_row( $row_data );
 		$payload['global_score_data'] = $this->get_global_score_payload();
 		$payload['remaining_urls']    = $this->get_remaining_url_count();
-		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['has_credit']        = true;
 		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		// Add disabled button html data to payload.
@@ -454,12 +455,51 @@ class Rest extends WP_REST_Controller {
 			$data['reach_max_url'] = true;
 
 			$payload['global_score_data']['disabled_btn_html'] = [
-				'global_score_widget' => $this->render->get_add_page_btn( 'global-score-widget', $data ),
-				'rocket_insights'     => $this->render->get_add_page_btn( 'rocket-insights', $data ),
+				'rocket_insights' => $this->render->get_add_page_btn( 'rocket-insights', $data ),
 			];
 		}
 
 		return rest_ensure_response( $payload );
+	}
+
+	/**
+	 * Validate url
+	 *
+	 * @param string $url The URL to validate.
+	 *
+	 * @return array
+	 */
+	private function get_url_validation_payload( string $url ) {
+		// Validate that performance monitoring is not disabled.
+		if ( ! $this->context->is_allowed() ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Performance monitoring is disabled.';
+
+			return $payload;
+		}
+
+		if ( 'local' === wp_get_environment_type() ) {
+			$payload['error']   = true;
+			$payload['message'] = 'Performance monitoring is disabled for local environment';
+
+			return $payload;
+		}
+
+		$payload = $this->get_page_url_validation_payload( $url );
+
+		if ( $payload['error'] ) {
+			return $payload;
+		}
+
+		// Check if url has not been submited.
+		if ( false !== $this->manager->get_single_job( $url, true ) ) {
+			$payload['error']   = true;
+			$payload['message'] = '';
+
+			return $payload;
+		}
+
+		return $payload;
 	}
 
 	/**
@@ -542,21 +582,6 @@ class Rest extends WP_REST_Controller {
 			return rest_ensure_response( $error );
 		}
 
-		// Check if adding a page is allowed based on URL limits.
-		if ( ! $this->plan->has_credit() ) {
-			$error = new WP_Error(
-				'rest_forbidden',
-				esc_html__( 'Upgrade your plan to get access to re-test performance or run new tests', 'rocket' ),
-				[
-					'status'         => 403,
-					'remaining_urls' => 0,
-					'can_add_pages'  => false,
-				]
-			);
-
-			return rest_ensure_response( $error );
-		}
-
 		$source = $request->get_param( 'source' );
 
 		$additional_details = [
@@ -595,7 +620,7 @@ class Rest extends WP_REST_Controller {
 			'html'              => $this->render->get_performance_monitoring_list_row( $row ),
 			'global_score_data' => $this->get_global_score_payload(),
 			'remaining_urls'    => $this->get_remaining_url_count(),
-			'has_credit'        => $this->plan->has_credit(),
+			'has_credit'        => true,
 			'can_add_pages'     => $this->context->is_adding_page_allowed(),
 		];
 
@@ -746,7 +771,7 @@ class Rest extends WP_REST_Controller {
 		$payload['success']           = true;
 		$payload['results']           = $results;
 		$payload['global_score_data'] = $this->get_global_score_payload();
-		$payload['has_credit']        = $this->plan->has_credit();
+		$payload['has_credit']        = true;
 		$payload['can_add_pages']     = $this->context->is_adding_page_allowed();
 
 		return rest_ensure_response( $payload );
@@ -768,83 +793,6 @@ class Rest extends WP_REST_Controller {
 	}
 
 	/**
-	 * Validates a given URL for performance monitoring eligibility.
-	 *
-	 * @param string $url The URL to validate.
-	 *
-	 * @return array {
-	 *     @type bool   $error        Whether an error occurred during validation.
-	 *     @type string $message      The error message, or an empty string if no error.
-	 *     @type string $processed_url The URL with protocol added if validation passes.
-	 * }
-	 */
-	protected function get_url_validation_payload( string $url ): array {
-		$payload = [
-			'error'         => false,
-			'message'       => '',
-			'processed_url' => '',
-			'data'          => [
-				'status' => 400,
-			],
-		];
-
-		if ( 'local' === wp_get_environment_type() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled for local environment';
-
-			return $payload;
-		}
-
-		// Validate that performance monitoring is not disabled.
-		if ( ! $this->context->is_allowed() ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Performance monitoring is disabled.';
-
-			return $payload;
-		}
-		// Validate that url is not empty.
-		if ( '' === $url ) {
-			$payload['error']   = true;
-			$payload['message'] = 'No url provided.';
-
-			return $payload;
-		}
-
-		// Check if URL has protocol, add if needed.
-		$url                      = rocket_add_url_protocol( $url );
-		$payload['processed_url'] = $url;
-
-		$response = $this->get_page_content( $url );
-
-		if ( ! $response ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url does not resolve to a valid page.';
-
-			return $payload;
-		}
-
-		// check if url is not from admin.
-		if ( strpos( $url, admin_url() ) === 0 ) {
-			$payload['error']   = true;
-			$payload['message'] = 'Url is an admin page.';
-
-			return $payload;
-		}
-
-		// Check if url has not been submited.
-		if ( false !== $this->manager->get_single_job( $url, true ) ) {
-			$payload['error'] = true;
-
-			return $payload;
-		}
-
-		// Fetch url body and send to payload.
-		$payload['message'] = $response;
-
-		return $payload;
-	}
-
-	/**
 	 * Retrieves the global performance score payload for AJAX responses.
 	 *
 	 * Gets the global score data, determines the status color, and generates the HTML
@@ -861,9 +809,10 @@ class Rest extends WP_REST_Controller {
 		$payload['remaining_urls'] = $this->get_remaining_url_count();
 
 		return [
-			'data'     => $payload,
-			'html'     => $this->render->get_global_score_widget_content( $payload ),
-			'row_html' => $this->render->get_global_score_row( $payload ),
+			'data'           => $payload,
+			'html'           => $this->render->get_global_score_widget_content( $payload ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $payload ),
+			'row_html'       => $this->render->get_global_score_row( $payload ),
 		];
 	}
 
@@ -887,19 +836,6 @@ class Rest extends WP_REST_Controller {
 	 * @return string The formatted error message.
 	 */
 	private function get_page_limit_error_message(): string {
-		if ( $this->context->is_free_user() ) {
-			$upgrade_url = admin_url( 'options-general.php?page=' . WP_ROCKET_PLUGIN_SLUG . '&rocket_source=notice_free_page_limit_reached#rocket_insights' );
-
-			return sprintf(
-				/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag, %3$s: opening link tag, %4$s: closing link tag */
-				__( "You've %1\$sreached your free limit%2\$s. %3\$sUpgrade to continue%4\$s.", 'rocket' ),
-				'<strong>',
-				'</strong>',
-				'<a href="' . esc_url( $upgrade_url ) . '">',
-				'</a>'
-			);
-		}
-
 		return sprintf(
 			/* translators: %1$s: opening <strong> tag, %2$s: closing </strong> tag */
 			__( "You've %1\$sreached the page limit%2\$s. Please remove at least one page to continue.", 'rocket' ),

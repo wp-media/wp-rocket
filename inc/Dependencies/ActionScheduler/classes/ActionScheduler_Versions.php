@@ -19,6 +19,13 @@ class ActionScheduler_Versions {
 	private $versions = array();
 
 	/**
+	 * Registered sources.
+	 *
+	 * @var array<string, string>
+	 */
+	private $sources = array();
+
+	/**
 	 * Register version's callback.
 	 *
 	 * @param string   $version_string          Action Scheduler version.
@@ -28,7 +35,13 @@ class ActionScheduler_Versions {
 		if ( isset( $this->versions[ $version_string ] ) ) {
 			return false;
 		}
+
+		// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_debug_backtrace
+		$backtrace = debug_backtrace( DEBUG_BACKTRACE_IGNORE_ARGS );
+		$source    = $backtrace[0]['file'];
+
 		$this->versions[ $version_string ] = $initialization_callback;
+		$this->sources[ $source ]          = $version_string;
 		return true;
 	}
 
@@ -37,6 +50,21 @@ class ActionScheduler_Versions {
 	 */
 	public function get_versions() {
 		return $this->versions;
+	}
+
+	/**
+	 * Get registered sources.
+	 *
+	 * Use with caution: this method is only available as of Action Scheduler's 3.9.1
+	 * release and, owing to the way Action Scheduler is loaded, it's possible that the
+	 * class definition used at runtime will belong to an earlier version.
+	 *
+	 * @since 3.9.1
+	 *
+	 * @return array<string, string>
+	 */
+	public function get_sources() {
+		return $this->sources;
 	}
 
 	/**
@@ -85,5 +113,39 @@ class ActionScheduler_Versions {
 	public static function initialize_latest_version() {
 		$self = self::instance();
 		call_user_func( $self->latest_version_callback() );
+	}
+
+	/**
+	 * Returns information about the plugin or theme which contains the current active version
+	 * of Action Scheduler.
+	 *
+	 * If this cannot be determined, or if Action Scheduler is being loaded via some other
+	 * method, then it will return an empty array. Otherwise, if populated, the array will
+	 * look like the following:
+	 *
+	 *     [
+	 *         'type' => 'plugin', # or 'theme'
+	 *         'name' => 'Name',
+	 *     ]
+	 *
+	 * @deprecated 3.9.2 Use ActionScheduler_SystemInformation::active_source().
+	 *
+	 * @return array
+	 */
+	public function active_source(): array {
+		_deprecated_function( __METHOD__, '3.9.2', 'ActionScheduler_SystemInformation::active_source()' );
+		return ActionScheduler_SystemInformation::active_source();
+	}
+
+	/**
+	 * Returns the directory path for the currently active installation of Action Scheduler.
+	 *
+	 * @deprecated 3.9.2 Use ActionScheduler_SystemInformation::active_source_path().
+	 *
+	 * @return string
+	 */
+	public function active_source_path(): string {
+		_deprecated_function( __METHOD__, '3.9.2', 'ActionScheduler_SystemInformation::active_source_path()' );
+		return ActionScheduler_SystemInformation::active_source_path();
 	}
 }

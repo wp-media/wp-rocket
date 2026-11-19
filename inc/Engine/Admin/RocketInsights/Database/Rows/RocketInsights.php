@@ -215,7 +215,7 @@ class RocketInsights extends Row {
 	 * @return bool
 	 */
 	public function can_access_report(): bool {
-		return ! empty( $this->report_url ) && ! $this->is_blurred;
+		return ! empty( $this->report_url );
 	}
 
 	/**
@@ -224,7 +224,7 @@ class RocketInsights extends Row {
 	 * @return bool
 	 */
 	public function can_re_test(): bool {
-		return ! $this->is_running() && ! $this->is_blurred;
+		return ! $this->is_running();
 	}
 
 	/**

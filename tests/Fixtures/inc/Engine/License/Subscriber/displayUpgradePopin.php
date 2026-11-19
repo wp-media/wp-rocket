@@ -109,6 +109,8 @@ return [
 		Growth</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">50</span></div>
+<span class="price-tax__info">
+excl. taxes</span>
 		<div class="wpr-upgrade-websites
 			notstacked">
 		3 websites</div>
@@ -122,6 +124,8 @@ return [
 		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
 200</span>
 		</div>
+<span class="price-tax__info">
+excl. taxes</span>
 		<div class="wpr-upgrade-websites
 	">
 <div class="custom-select" id="rocket_stacked_select">
@@ -252,6 +256,8 @@ Unlimited Websites</label>
 		Growth</h3>
 		<div class="wpr-upgrade-prices">
 		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">50</span></div>
+<span class="price-tax__info">
+excl. taxes</span>
 		<div class="wpr-upgrade-websites
 			notstacked">
 		3 websites</div>
@@ -265,6 +271,8 @@ Unlimited Websites</label>
 		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
 200</span>
 		</div>
+<span class="price-tax__info">
+excl. taxes</span>
 		<div class="wpr-upgrade-websites
 	">
 <div class="custom-select" id="rocket_stacked_select">
@@ -379,6 +387,8 @@ Unlimited Websites</label>
 		<span class="wpr-upgrade-price-symbol">$</span> <span class="wpr-upgrade-price-value">
 200</span>
 		</div>
+<span class="price-tax__info">
+excl. taxes</span>
 		<div class="wpr-upgrade-websites
 	">
 Unlimited websites

@@ -1,0 +1,92 @@
+<?php
+
+return [
+	// Reseller + banned + free + active subscription → banned notice rendered.
+	'testRendersNoticeForResellerBannedFreeSubscription' => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => true,
+	],
+
+	// Paid tier reseller banned → notice still shown, plan tier no longer affects this check.
+	'testNoticeForResellerBannedPaidSubscription'        => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'paid',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => true,
+	],
+
+	// Non-reseller revoked (even with BANNED_WEBSITE reason) → no banned notice, is_reseller_account() is false.
+	'testNoNoticeForNonResellerRevoked'                  => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => false,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => false,
+	],
+
+	// Reseller not revoked → no banned notice.
+	'testNoNoticeForResellerNotRevoked'                  => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => false,
+			'is_reseller'         => true,
+		],
+		'expected' => false,
+	],
+
+	// Reseller revoked with unrecognized ban reason → no banned notice (falls back to expired notice instead).
+	'testNoNoticeForResellerRevokedUnrecognizedReason'   => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'running',
+			'plan_type'           => 'free',
+			'cdn_url'             => 'https://test.delivery.rocketcdn.me',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'NON_PAYMENT',
+		],
+		'expected' => false,
+	],
+
+	// Reseller banned even without an active subscription → notice still shown, subscription state no longer affects this check.
+	'testNoticeForResellerBannedNoActiveSubscription'    => [
+		'config'   => [
+			'cdn_type'            => 'rocketcdn',
+			'subscription_status' => 'cancelled',
+			'plan_type'           => 'free',
+			'cdn_url'             => '',
+			'license_expired'     => false,
+			'license_revoked'     => true,
+			'is_reseller'         => true,
+			'ban_reason'          => 'BANNED_WEBSITE',
+		],
+		'expected' => true,
+	],
+];

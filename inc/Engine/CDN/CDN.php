@@ -232,6 +232,7 @@ class CDN {
 		 */
 		$hosts = (array) apply_filters( 'rocket_cdn_cnames', $hosts, $zones );
 		$hosts = array_filter( $hosts );
+
 		$hosts = array_flip( array_flip( $hosts ) );
 		$hosts = array_values( $hosts );
 
@@ -281,6 +282,10 @@ class CDN {
 	public function is_excluded( $url ) {
 		$path = wp_parse_url( $url, PHP_URL_PATH );
 
+		if ( ! $path ) {
+			return true;
+		}
+
 		$excluded_extensions = [
 			'php',
 			'html',
@@ -289,10 +294,6 @@ class CDN {
 		];
 
 		if ( in_array( pathinfo( $path, PATHINFO_EXTENSION ), $excluded_extensions, true ) ) {
-			return true;
-		}
-
-		if ( ! $path ) {
 			return true;
 		}
 

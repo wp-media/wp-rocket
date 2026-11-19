@@ -5,8 +5,9 @@ namespace WP_Rocket\ThirdParty\Plugins\SEO;
 use The_SEO_Framework\Bridges\Sitemap;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class TheSEOFramework implements Subscriber_Interface {
+class TheSEOFramework implements Subscriber_Interface, PluginCompatibilityInterface {
 
 	/**
 	 * Option instance.
@@ -22,6 +23,21 @@ class TheSEOFramework implements Subscriber_Interface {
 	 */
 	public function __construct( Options_Data $option ) {
 		$this->option = $option;
+	}
+
+	/**
+	 * Whether The SEO Framework is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		if ( ! function_exists( 'the_seo_framework' ) ) {
+			return false;
+		}
+
+		$tsf = the_seo_framework();
+
+		return ! empty( $tsf->loaded );
 	}
 
 	/**

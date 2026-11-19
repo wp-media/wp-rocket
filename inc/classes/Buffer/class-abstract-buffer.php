@@ -103,10 +103,16 @@ abstract class Abstract_Buffer {
 	 * @param string $type    Event type to log. Possible values are 'info', 'error', and 'debug' (default).
 	 */
 	protected function log( $message, $data = [], $type = 'debug' ) {
+		$request_uri = $this->tests->get_raw_request_uri();
+
+		if ( '/' === $request_uri ) {
+			$request_uri = '/ Homepage';
+		}
+
 		$data = array_merge(
 			[
 				$this->get_process_id(),
-				'request_uri' => $this->tests->get_raw_request_uri(),
+				'request_uri' => $request_uri,
 			],
 			$data
 		);

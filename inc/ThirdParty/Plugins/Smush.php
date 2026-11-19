@@ -6,6 +6,7 @@ use Smush\Core\Settings;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\ReturnTypesTrait;
 
 /**
  * Subscriber for compatibility with Smush
@@ -14,6 +15,8 @@ use WP_Rocket\Event_Management\Subscriber_Interface;
  * @author Soponar Cristina
  */
 class Smush implements Subscriber_Interface {
+	use ReturnTypesTrait;
+
 	/**
 	 * WP Options API instance
 	 *
@@ -31,9 +34,9 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Subscribed events for Smush.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
-	 * @inheritDoc
+	 * @since 3.4.2
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		if ( ! rocket_has_constant( 'WP_SMUSH_VERSION' ) ) {
@@ -49,6 +52,7 @@ class Smush implements Subscriber_Interface {
 			'update_site_option_wp-smush-lazy_load'        => [ 'maybe_deactivate_rocket_lazyload', 11 ],
 			'rocket_maybe_disable_lazyload_helper'         => 'is_smush_lazyload_active',
 			'rocket_maybe_disable_iframes_lazyload_helper' => 'is_smush_iframes_lazyload_active',
+			'wpmedia_plugin_family_show_imagify_banner'    => 'return_false',
 		];
 	}
 
@@ -68,8 +72,7 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Disable WP Rocket lazyload when activating WP Smush and values are already in the database.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
+	 * @since 3.4.2
 	 */
 	public function maybe_deactivate_rocket_lazyload() {
 		$enabled = $this->is_smush_lazyload_enabled();
@@ -95,8 +98,7 @@ class Smush implements Subscriber_Interface {
 	/**
 	 * Add "Smush" to the provided array if WP Smush lazyload is enabled for images.
 	 *
-	 * @since  3.4.2
-	 * @author Soponar Cristina
+	 * @since 3.4.2
 	 *
 	 * @param  array $disable_images_lazyload Array with plugins which disable lazyload functionality.
 	 * @return array                          A list of plugin names.

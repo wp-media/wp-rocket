@@ -13,6 +13,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\Render;
 use WP_Rocket\Engine\Admin\RocketInsights\Rest;
 use WP_Rocket\Engine\Admin\RocketInsights\Controller;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalScore;
+use WP_Rocket\Engine\Admin\RocketInsights\Recommendations\Rest as RecommendationsRest;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -34,7 +35,7 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 			->willReturn( $config['score'] );
 
 		// Determine call counts based on user type
-		$remaining_url_calls = $config['is_free'] ? 2 : 1; // Free users call twice (main array + quota banner)
+		$remaining_url_calls = 1;
 
 		// Override with specific expectations if provided
 		if (isset($config['call_count_expectations'])) {
@@ -53,13 +54,6 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 			->method('get_license_data')
 			->willReturn( $config['license_data'] );
 
-		// Mock current credit for quota banner logic (only for free users)
-		if ($config['is_free'] && isset($config['has_credits'])) {
-			$mock_controller->expects($this->once())
-				->method('has_credit')
-				->willReturn( $config['has_credits'] ? 1 : 0 );
-		}
-
 		$mock_render->expects($this->once())
 			->method('render_rocket_insights_urls_table')
 			->with($expected);
@@ -70,9 +64,6 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 		$ri_context->expects($this->once())
 			->method('is_allowed')
 			->willReturn(true);
-		$ri_context->expects($this->exactly(2))
-			->method('is_free_user')
-			->willReturn($config['is_free']);
 		$ri_context->expects($this->any())
 			->method('is_adding_page_allowed')
 			->willReturn(count( $config['items'] ) < $config['rocket_insights_addon_limit']);
@@ -81,8 +72,9 @@ class RenderPerformanceUrlsTableTest extends TestCase {
 
 		$plan_mock = $this->createMock( Plan::class );
 		$renewal_mock = $this->createMock( Renewal::class );
+		$recommendations_rest_mock = $this->createMock( RecommendationsRest::class );
 
-		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock, $renewal_mock);
+		$subscriber = new Subscriber($mock_render, $mock_controller, $mock_rest, $mock_queue, $ri_context, $mock_global_score, $options, $manager, $plan_mock, $renewal_mock, $recommendations_rest_mock);
 		$subscriber->render_performance_urls_table();
 	}
 }

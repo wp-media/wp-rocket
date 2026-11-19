@@ -69,7 +69,7 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 
 		// Capture output
 		ob_start();
-		do_action( 'rocket_dashboard_sidebar' );
+		do_action( 'rocket_before_sidebar_content' );
 		$output = ob_get_clean();
 
 		$this->assertOutput( $output, $expected );
@@ -139,18 +139,6 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 		if ( isset( $expected['not_contains'] ) ) {
 			foreach ( $expected['not_contains'] as $string ) {
 				$this->assertStringNotContainsString( $string, $output );
-			}
-		}
-
-		// Check button state
-		if ( isset( $expected['button_enabled'] ) ) {
-			if ( $expected['button_enabled'] ) {
-				$this->assertStringNotContainsString( 'disabled', $output );
-				$this->assertStringNotContainsString( 'wpr-btn-with-tool-tip', $output );
-			} else {
-				$this->assertStringContainsString( 'disabled', $output );
-				$this->assertStringContainsString( 'wpr-btn-with-tool-tip', $output );
-				$this->assertStringContainsString( 'Maximum number of URLs reached', $output );
 			}
 		}
 	}

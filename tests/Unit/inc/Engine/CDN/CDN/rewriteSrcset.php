@@ -14,7 +14,7 @@ use WP_Rocket\Engine\CDN\CDN;
 class Test_RewriteSrcset extends TestCase {
 	private $options;
 	private $cdn;
-	private $config;
+	protected $config;
 
 	public function setUp() : void {
 		parent::setUp();
@@ -28,8 +28,8 @@ class Test_RewriteSrcset extends TestCase {
 			return 'http://' . $url;
 		} );
 
-		$this->options = Mockery::mock( Options_Data::class );
-		$this->cdn     = new CDN( $this->options );
+		$this->options   = Mockery::mock( Options_Data::class );
+		$this->cdn       = new CDN( $this->options );
 	}
 
 	/**

@@ -74,18 +74,6 @@ return [
 			'should_enqueue' => false,
 		],
 	],
-	'shouldNotEnqueueOnPostListingPageForReseller' => [
-		'config'   => [
-			'screen_id' => 'edit-post',
-			'post_type' => 'post',
-			'is_live_site' => 'example.org',
-			'customer_data' => (new UserDataGenerator())->with_reseller_status(1)->generate(),
-			'transient' => (object) [ 'rocket_insights_display_post_column' => true ],
-		],
-		'expected' => [
-			'should_enqueue' => false,
-		],
-	],
 	'shouldNotEnqueueOnPostListingWhenRemoteSettingIsDisabled' => [
 		'config'   => [
 			'screen_id' => 'edit-post',

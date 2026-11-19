@@ -22,6 +22,11 @@ abstract class TestCase extends BaseTestCase {
 		parent::set_up();
 
 		set_current_screen( 'settings_page_wprocket' );
+
+		// User is a singleton wired at container boot; reset its data so stale
+		// transient state from prior tests doesn't bleed into is_reseller_account().
+		$container = apply_filters( 'rocket_container', null );
+		$container->get( 'user' )->set_user( new \stdClass() );
 	}
 
 	public function tear_down() {

@@ -2,24 +2,30 @@
 namespace WP_Rocket\ThirdParty\Plugins;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
 /**
  * Subscriber for compatibility with PDF Embedder Free / Premium / Secure plugin.
  *
  * @since  3.6.2
  */
-class PDFEmbedder implements Subscriber_Interface {
+class PDFEmbedder implements Subscriber_Interface, PluginCompatibilityInterface {
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		// All 3 plugins use the same core class.
+		return class_exists( 'core_pdf_embedder' );
+	}
+
 	/**
 	 * Subscribed events.
 	 *
 	 * @since  3.6.2
 	 */
 	public static function get_subscribed_events() {
-		// All 3 plugins use the same core class.
-		if ( ! class_exists( 'core_pdf_embedder' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_exclude_js' => 'exclude_pdfembedder_scripts',
 		];

@@ -23,6 +23,12 @@ class Test_ExcludeJqueryCombine extends TestCase {
 		// Disable ATF optimization to prevent DB request (unrelated to the test).
 		add_filter( 'rocket_above_the_fold_optimization', '__return_false' );
 
+		// Prevent remote HTTP calls from the RocketCDN subscription check.
+		set_transient( 'rocketcdn_status', [ 'subscription_status' => 'cancelled', 'cdn_url' => '' ], MINUTE_IN_SECONDS );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+
 		set_current_screen( 'front' );
 		$this->setup_lists();
 
@@ -47,6 +53,9 @@ class Test_ExcludeJqueryCombine extends TestCase {
 		remove_filter( 'pre_get_rocket_option_minify_concatenate_js', [ $this, 'set_minify_concatenate_js' ] );
 		delete_post_meta( 100, '_rocket_exclude_defer_all_js' );
 		$this->teardown_lists();
+		delete_transient( 'rocketcdn_status' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

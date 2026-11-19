@@ -225,7 +225,7 @@ $(document).ready(function(){
      */
     $(document).on('click', '.wpr-multiple-close', function(e) {
 		e.preventDefault();
-		$(this).parent().slideUp( 'slow' , function(){$(this).remove(); } );
+		$(this).parent().remove();
 	} );
 
 	$('.wpr-button--addMulti').on('click', function(e) {

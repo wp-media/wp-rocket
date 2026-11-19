@@ -4,10 +4,12 @@ namespace WP_Rocket\Engine\Media\Lazyload\CSS\Front;
 
 use WP_Filesystem_Direct;
 use WP_Rocket\Engine\Optimization\CSSTrait;
+use WP_Rocket\Engine\Optimization\RemoteAssetTrait;
 
 class ContentFetcher {
 
 	use CSSTrait;
+	use RemoteAssetTrait;
 
 	/**
 	 * WordPress filesystem.
@@ -63,6 +65,6 @@ class ContentFetcher {
 				return $this->filesystem->get_contents( $path );
 			}
 		}
-		return wp_remote_retrieve_body( wp_remote_get( $path ) );
+		return $this->get_remote_asset_content( $path );
 	}
 }

@@ -40,7 +40,23 @@
 	min-width: 18px;
 	height: 18px;
 	border-radius: 9px;
-	background-color: red;
+	background-color: #d63638;
 	color: #fff;
 	z-index: 26;
+}
+
+.rocket-red-bubble {
+	background-color: #d63638;
+	color: #fff;
+	display: inline-block;
+	box-sizing: border-box;
+	min-width: 18px;
+	height: 18px;
+	font-size: 13px;
+	text-align: center;
+	border-radius: 9px;
+}
+#wp-admin-bar-wp-rocket .rocket-red-bubble {
+	line-height: 18px;
+	border-radius: 9px;
 }

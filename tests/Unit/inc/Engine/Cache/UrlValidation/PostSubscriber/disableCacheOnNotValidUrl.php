@@ -11,7 +11,7 @@ use WP_Rocket\Tests\Unit\TestCase;
  * Test class covering PostSubscriber::disable_cache_on_not_valid_url
  * @covers \WP_Rocket\Engine\Cache\UrlValidation\PostSubscriber::disable_cache_on_not_valid_url
  *
- * @uses PostSubscriber::is_not_valid_url
+ * @uses \WP_Rocket\Engine\Cache\UrlValidation\PostSubscriber::is_not_valid_url
  *
  * @group Cache
  */

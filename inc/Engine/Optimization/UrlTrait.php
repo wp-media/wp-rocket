@@ -34,7 +34,7 @@ trait UrlTrait {
 		 * @param array $hosts Allowed hosts.
 		 * @param array $zones Zones to check available hosts.
 		 */
-		$hosts   = (array) apply_filters( 'rocket_cdn_hosts', [], [ 'all' ] );
+		$hosts   = (array) wpm_apply_filters_typed( 'string[]', 'rocket_cdn_hosts', [], [ 'all' ] );
 		$hosts[] = $parsed_site_url['host'];
 		$langs   = get_rocket_i18n_uri();
 
@@ -134,5 +134,21 @@ trait UrlTrait {
 	 */
 	protected function is_relative( string $url ): bool {
 		return ! empty( preg_match( '/^\./', $url ) ) || empty( wp_parse_url( $url, PHP_URL_HOST ) );
+	}
+
+	/**
+	 * Retrieves the current URL for validation purposes.
+	 *
+	 * @return string The current URL.
+	 */
+	protected function get_current_url(): string {
+		global $wp;
+		$current_url = home_url( add_query_arg( [], $wp->request ?? '' ) );
+		/**
+		 * Filters the current URL used for validation.
+		 *
+		 * @param string $current_url The current URL.
+		 */
+		return wpm_apply_filters_typed( 'string', 'rocket_current_url', $current_url );
 	}
 }

@@ -1,0 +1,724 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Engine\CDN\RocketCDN;
+
+use WP_Error;
+use WP_Rocket\Engine\CDN\Context;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CheckStatusAPIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\CreateAPIClient;
+use WP_Rocket\Engine\CDN\RocketCDN\APIHandler\WebsiteSearch;
+use WP_Rocket\Engine\License\API\{
+	User,
+	UserClient
+};
+use WP_Rocket\Engine\Tracking\TrackingTrait;
+use WP_Rocket\Logger\LoggerAware;
+use WP_Rocket\Logger\LoggerAwareInterface;
+
+class SubscriptionController implements LoggerAwareInterface {
+	use LoggerAware;
+	use TrackingTrait;
+
+	/**
+	 * Option name used to store the cumulative count of manual Pro-detection retry attempts.
+	 *
+	 * @var string
+	 */
+	private const RETRY_PRO_DETECTION_ATTEMPTS_OPTION = 'rocket_cdn_retry_pro_detection_attempts';
+
+	/**
+	 * API Client instance.
+	 *
+	 * @var APIClient
+	 */
+	private $api_client;
+
+	/**
+	 * Create API Client instance.
+	 *
+	 * @var CreateAPIClient
+	 */
+	private $create_api_client;
+
+	/**
+	 * Options Manager instance.
+	 *
+	 * @var CDNOptionsManager
+	 */
+	private $options_manager;
+
+	/**
+	 * Queue instance.
+	 *
+	 * @var Queue
+	 */
+	private $queue;
+
+	/**
+	 * Check Status API Client instance.
+	 *
+	 * @var CheckStatusAPIClient
+	 */
+	private $check_status_api_client;
+
+	/**
+	 * License User instance.
+	 *
+	 * @var User
+	 */
+	private $user;
+
+	/**
+	 * License UserClient instance.
+	 *
+	 * @var UserClient
+	 */
+	private $user_client;
+
+	/**
+	 * Subscription creation loading state transient name.
+	 *
+	 * @var string
+	 */
+	private $subscription_loading_transient = 'rocket_cdn_subscription_creation_in_progress';
+
+	/**
+	 * Subscription local cache.
+	 *
+	 * @var array
+	 */
+	private $subscription;
+
+	/**
+	 * Website Search API Client instance.
+	 *
+	 * @var WebsiteSearch
+	 */
+	private $website_search_api_client;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param APIClient            $api_client API Client instance.
+	 * @param CreateAPIClient      $create_api_client Create API Client instance.
+	 * @param CDNOptionsManager    $options_manager Options Manager instance.
+	 * @param Queue                $queue Queue instance.
+	 * @param CheckStatusAPIClient $check_status_api_client Check Status API Client instance.
+	 * @param User                 $user  License User instance.
+	 * @param WebsiteSearch        $website_search_api_client Website Search API Client instance.
+	 * @param UserClient           $user_client License UserClient instance.
+	 */
+	public function __construct(
+		APIClient $api_client,
+		CreateAPIClient $create_api_client,
+		CDNOptionsManager $options_manager,
+		Queue $queue,
+		CheckStatusAPIClient $check_status_api_client,
+		User $user,
+		WebsiteSearch $website_search_api_client,
+		UserClient $user_client
+	) {
+		$this->api_client                = $api_client;
+		$this->create_api_client         = $create_api_client;
+		$this->options_manager           = $options_manager;
+		$this->queue                     = $queue;
+		$this->check_status_api_client   = $check_status_api_client;
+		$this->user                      = $user;
+		$this->website_search_api_client = $website_search_api_client;
+		$this->user_client               = $user_client;
+	}
+
+	/**
+	 * Whether a RocketCDN user token has been saved.
+	 *
+	 * @return bool
+	 */
+	public function has_token(): bool {
+		return $this->options_manager->has_token();
+	}
+
+	/**
+	 * Get subscription data.
+	 *
+	 * @return array
+	 */
+	public function get_subscription_data() {
+		if ( $this->is_subscription_creation_loading() ) {
+			return [];
+		}
+
+		if ( ! rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) && ! empty( $this->subscription ) ) {
+			return $this->subscription;
+		}
+
+		$this->subscription = $this->fetch_subscription_data_with_fallback();
+
+		return $this->subscription;
+	}
+
+	/**
+	 * Fetches subscription data from the primary status endpoint, falling back to the
+	 * website search endpoint when the account is valid but this domain isn't registered
+	 * as a website under it yet (a 404 from the status endpoint).
+	 *
+	 * @return array
+	 */
+	private function fetch_subscription_data_with_fallback(): array {
+		$subscription = $this->api_client->get_subscription_data();
+
+		if ( 404 !== ( $subscription['status_code'] ?? null ) ) {
+			return $subscription;
+		}
+
+		$this->website_search_api_client->set_site_url( home_url() );
+		$website = $this->website_search_api_client->find();
+
+		if ( empty( $website ) ) {
+			return $subscription;
+		}
+
+		// The primary status endpoint 404'd (site unrecognized for this token), but the search
+		// endpoint gave a parseable answer for this domain — whether it returned 200 or its own
+		// 404, that answer is resolved. Mark it as such so it's treated the same as a 200 from
+		// the primary endpoint, distinct from the unresolved case just above where find() came
+		// back empty and $subscription's original 404 is left untouched.
+		$website['status_code'] = 200;
+
+		return array_merge( $subscription, $website );
+	}
+
+	/**
+	 * Check if it has active RocketCDN subscription.
+	 *
+	 * @return bool
+	 */
+	public function has_active_subscription(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['subscription_status'] ) && 'running' === $subscription['subscription_status'];
+	}
+
+	/**
+	 * Check if it has WP Rocket license is expired or revoked, regardless of RocketCDN subscription status.
+	 *
+	 * @return bool
+	 */
+	public function is_license_invalid(): bool {
+		return $this->user->is_license_expired() || $this->user->is_revoked();
+	}
+
+
+	/**
+	 * Check if it has inactive RocketCDN subscription.
+	 * We are checking the transient since the get_subscription_data will return default value until we add a page to rocketcdn.
+	 *
+	 * @return bool
+	 */
+	public function has_inactive_subscription() {
+		$transient = get_transient( 'rocketcdn_status' );
+		if ( false === $transient ) {
+			return false;
+		}
+
+		return ! $this->has_active_subscription();
+	}
+
+	/**
+	 * Create RocketCDN subscription if it doesn't have an active one, and handle the response.
+	 *
+	 * @param bool $skip_active_check Skip checking if the website has active subscription or not, default is false.
+	 *
+	 * @return bool|WP_Error
+	 */
+	public function create_subscription( bool $skip_active_check = false ) {
+		if ( ! $skip_active_check && $this->has_active_subscription() ) {
+			return false;
+		}
+
+		$this->start_subscription_creation_loader();
+
+		$created = $this->create_api_client->create();
+		if ( ! $created || ! $created['success'] ) {
+			$this->logger::error(
+				'RocketCDN: Failed to create subscription.',
+				[
+					'code'    => $created['data']['code'] ?? 'Unknown',
+					'message' => $created['data']['message'] ?? 'Unknown',
+				]
+			);
+
+			$this->stop_subscription_creation_loader();
+
+			$reason = sprintf( '%s: %s', $created['data']['code'] ?? 'Unknown', $created['data']['message'] ?? 'Unknown' );
+			$this->track_event(
+				'RocketCDN Free Activation Failed',
+				[ 'reason' => $reason ]
+			);
+
+			return new WP_Error( $created['data']['code'] ?? 'rocketcdn_account_notcreated', $created['data']['message'] ?? 'Unknown' );
+		}
+
+		switch ( $created['data']['code'] ) {
+			case 'cdn_task_enqueued':
+				// Save CDN token.
+				$this->options_manager->save_token( $created['data']['cdn_token'] );
+
+				// Enqueue AS single task after 30 seconds from now to check the status.
+				$this->queue->schedule_create_status_job( $created['data']['task_id'] );
+
+				/**
+				 * Fires when rocketcdn subscription is created.
+				 *
+				 * @param string $task_id Enqueued task ID.
+				 * @param string $token CDN Subscription token.
+				 */
+				do_action( 'rocket_cdn_subscription_created', $created['data']['task_id'], $created['data']['cdn_token'] );
+				break;
+
+			case 'already_free_subscribed':
+				// Clear subscription cache so it can get the final state, and save the token before if it's not saved before.
+				if ( ! $this->options_manager->has_token() ) {
+					$this->options_manager->save_token( $created['data']['cdn_token'] );
+				}
+
+				$this->stop_subscription_creation_loader();
+
+				$this->options_manager->flush_subscription_cache();
+				break;
+			default:
+				// Log this not known code.
+				$this->logger::error(
+					'RocketCDN: Received not known response code when creating subscription.',
+					[
+						'code'    => $created['data']['code'],
+						'message' => $created['data']['message'],
+					]
+				);
+				$this->stop_subscription_creation_loader();
+
+				return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Check subscription's creation status.
+	 *
+	 * @param string $task_id Task ID.
+	 * @return void
+	 */
+	public function check_status( string $task_id ) {
+		if ( $this->has_active_subscription() ) {
+			$this->stop_subscription_creation_loader();
+			return;
+		}
+
+		$this->check_status_api_client->set_task_id( $task_id );
+		$status = $this->check_status_api_client->check();
+		if ( ! $status ) {
+			$this->trigger_creation_failed();
+			$this->stop_subscription_creation_loader();
+			return;
+		}
+
+		if ( ! $status['success'] ) {
+			$this->trigger_creation_failed();
+			$this->stop_subscription_creation_loader();
+			$this->logger::error(
+				'RocketCDN: Failed to check creation status.',
+				$status
+			);
+			return;
+		}
+
+		switch ( $status['status'] ) {
+			case 'PENDING':
+				// Re-add the action scheduler task to check status again after 30 seconds.
+				$this->queue->schedule_create_status_job( $task_id );
+				break;
+			case 'SUCCESS':
+				$this->options_manager->enable( false );
+
+				$this->stop_subscription_creation_loader();
+
+				/**
+				 * Fires when rocketcdn subscription's creation is finished successfully.
+				 */
+				do_action( 'rocket_cdnfree_website_created' );
+				break;
+			default:
+				$this->trigger_creation_failed();
+				$this->stop_subscription_creation_loader();
+
+				$reason = 'RocketCDN: Received not known response code when check subscription\'s status.';
+
+				$this->logger::error(
+					$reason,
+					$status
+				);
+
+				$this->track_event(
+					'RocketCDN Free Activation Failed',
+					[ 'reason' => $reason ]
+				);
+		}
+	}
+
+	/**
+	 * Fires the subscription-creation-failed action.
+	 *
+	 * @return void
+	 */
+	private function trigger_creation_failed(): void {
+		/**
+		 * Fires when async RocketCDN subscription creation definitively fails.
+		 */
+		do_action( 'rocket_cdnfree_subscription_creation_failed' );
+	}
+
+	/**
+	 * If current subscription is free.
+	 *
+	 * @return bool
+	 */
+	public function is_free(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['plan_type'] ) && 'free' === $subscription['plan_type'];
+	}
+
+	/**
+	 * If current subscription is paid.
+	 *
+	 * @return bool
+	 */
+	public function is_paid(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['plan_type'] ) && 'paid' === $subscription['plan_type'];
+	}
+
+	/**
+	 * Check if website is attached to the subscription correctly or not.
+	 *
+	 * @return bool
+	 */
+	public function is_website_attached(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['website_attached'] );
+	}
+
+	/**
+	 * Set subscription creation process transient.
+	 * Its value can be used to track creation process time.
+	 *
+	 * @return void
+	 */
+	private function start_subscription_creation_loader() {
+		set_transient( $this->subscription_loading_transient, time(), HOUR_IN_SECONDS );
+	}
+
+	/**
+	 * Delete subscription creation process transient.
+	 *
+	 * @return void
+	 */
+	private function stop_subscription_creation_loader() {
+		delete_transient( $this->subscription_loading_transient );
+	}
+
+	/**
+	 * Check if subscription creation process is in-progress state.
+	 *
+	 * @return bool
+	 */
+	public function is_subscription_creation_loading(): bool {
+		if ( ! $this->options_manager->has_token() ) {
+			return false;
+		}
+
+		return false !== get_transient( $this->subscription_loading_transient );
+	}
+
+	/**
+	 * Get subscription details, mainly for the rest API endpoint.
+	 *
+	 * @return array
+	 */
+	public function get_subscription() {
+		return [
+			'is_loading'              => $this->is_subscription_creation_loading(),
+			'has_active_subscription' => $this->has_active_subscription(),
+		];
+	}
+
+	/**
+	 * Get rocketcdn from the subscription.
+	 *
+	 * @return string
+	 */
+	public function get_rocketcdn_url() {
+		$subscription = $this->get_subscription_data();
+		return $subscription['cdn_url'] ?? '';
+	}
+
+	/**
+	 * Returns the express-checkout URL for upgrading to RocketCDN Pro.
+	 *
+	 * Reads the button URL from the user data returned by the RocketCDN API and
+	 * appends a dashboard_url query arg so the checkout flow can redirect back to the
+	 * WP Rocket settings page on completion. Returns an empty string when the API
+	 * data is unavailable or the URL is not set.
+	 *
+	 * @return string Express-checkout URL, or empty string when not available.
+	 */
+	public function get_express_checkout_url(): string {
+		$user_data = $this->user_client->get_user_data();
+
+		if ( false === $user_data || ! isset( $user_data->rocketcdn->button->url ) || empty( $user_data->rocketcdn->button->url ) ) {
+			return '';
+		}
+
+		return add_query_arg(
+			[
+				'dashboard_url' => rawurlencode(
+					add_query_arg(
+						[
+							'page'               => WP_ROCKET_PLUGIN_SLUG,
+							'rocketcdn_checkout' => 'true',
+						],
+						admin_url( 'options-general.php' )
+					)
+				),
+			],
+			esc_url_raw( $user_data->rocketcdn->button->url )
+		);
+	}
+
+	/**
+	 * Get rocketcdn transient status
+	 *
+	 * @return mixed
+	 */
+	public function get_rocketcdn_status() {
+		return get_transient( 'rocketcdn_status' );
+	}
+
+	/**
+	 * Checks whether the subscription has been cancelled or refunded.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the subscription status is 'cancelled' or 'refunded', false otherwise.
+	 */
+	public function is_cancelled(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['subscription_status'] ) && in_array( $subscription['subscription_status'], [ 'cancelled', 'refunded' ], true );
+	}
+
+	/**
+	 * Checks whether the website is pending deletion on the RocketCDN side.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the website status is 'pending_deletion', false otherwise.
+	 */
+	public function is_website_pending_deletion(): bool {
+		$subscription = $this->get_subscription_data();
+		return ! empty( $subscription['website_status'] ) && 'pending_deletion' === $subscription['website_status'];
+	}
+
+	/**
+	 * Checks whether the subscription is within the cancellation grace period.
+	 *
+	 * The grace period is active when the subscription is cancelled but the website
+	 * is still pending deletion, meaning it has not yet been fully removed.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if the subscription is cancelled and the website is pending deletion, false otherwise.
+	 */
+	public function is_in_grace_period(): bool {
+		return $this->is_cancelled() && $this->is_website_pending_deletion();
+	}
+
+	/**
+	 * Checks whether the subscription is cancelled and the grace period has elapsed.
+	 *
+	 * Returns true when the subscription is cancelled and the website is no longer
+	 * pending deletion, indicating the grace period has fully passed.
+	 *
+	 * @since 3.22.0.2
+	 *
+	 * @return bool True if cancelled and outside the grace period, false otherwise.
+	 */
+	public function is_cancelled_outside_grace_period(): bool {
+		return $this->is_cancelled() && ! $this->is_website_pending_deletion();
+	}
+
+	/**
+	 * Runs the initial fresh-install Pro subscription detection.
+	 *
+	 * Fired synchronously on `wp_rocket_first_install`. If the API doesn't give a conclusive
+	 * answer right away, schedules the Action Scheduler job to keep retrying in the background.
+	 *
+	 * @return void
+	 */
+	public function auto_detect_pro_subscription(): void {
+		$user_data = $this->refresh_user_data();
+
+		// Bail out if user account has no RocketCDN token, which conclusively means no Pro subscription.
+		if ( $this->has_no_rocketcdn_token( $user_data ) ) {
+			return;
+		}
+
+		$subscription_data = $this->fetch_subscription_data_with_fallback();
+
+		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
+			$this->track_fresh_install_resolution();
+
+			return;
+		}
+
+		$this->queue->schedule_pro_detection_job();
+	}
+
+	/**
+	 * Action Scheduler callback that retries the fresh-install Pro subscription detection.
+	 *
+	 * A conclusive answer (HTTP 200) clears the failure transient and cancels any further
+	 * pending detection job. An inconclusive answer (no token yet, network error, empty
+	 * response) is retried until the attempt budget runs out, at which point the failure
+	 * transient is set instead.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 *
+	 * @return void
+	 */
+	public function scheduled_auto_detect_pro_subscription( int $attempt ): void {
+		$user_data = $this->refresh_user_data();
+
+		// Bail out if user account has no RocketCDN token, which conclusively means no Pro subscription.
+		if ( $this->has_no_rocketcdn_token( $user_data ) ) {
+			$this->resolve_conclusive_detection();
+
+			return;
+		}
+
+		$subscription_data = $this->fetch_subscription_data_with_fallback();
+
+		if ( 200 === ( $subscription_data['status_code'] ?? null ) ) {
+			$this->resolve_conclusive_detection();
+			$this->track_fresh_install_resolution();
+
+			return;
+		}
+
+		$this->retry_or_fail_detection( $attempt );
+	}
+
+	/**
+	 * Clears the failure transient and cancels any pending retry job.
+	 *
+	 * Called once the scheduled retry job reaches a conclusive answer — whether that's a
+	 * real API response, or the conclusive "no Pro" implied by there being no token at all.
+	 *
+	 * @return void
+	 */
+	private function resolve_conclusive_detection(): void {
+		delete_transient( 'rocket_cdn_pro_detection_failed' );
+		$this->queue->cancel_pro_detection_job();
+	}
+
+	/**
+	 * Tracks the fresh-install resolution.
+	 *
+	 * @return void
+	 */
+	private function track_fresh_install_resolution(): void {
+		$this->track_event(
+			'RocketCDN Mode Changed',
+			[
+				'cdn_mode'   => Context::CDN_STATE_NOTHING,
+				'cdn_status' => 'inactive',
+				'trigger'    => 'fresh_install_resolution',
+			]
+		);
+	}
+
+	/**
+	 * Handles the manual retry of the fresh-install Pro subscription detection from admin notice.
+	 *
+	 * @return void
+	 */
+	public function handle_manual_retry_pro_detection(): void {
+		if ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_key( $_GET['_wpnonce'] ), 'rocket_retry_pro_detection' ) ) {
+			wp_nonce_ays( '' );
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			wp_die();
+		}
+
+		delete_transient( 'rocket_cdn_pro_detection_failed' );
+		$this->queue->schedule_pro_detection_job( 3 );
+
+		$attempts_used = (int) get_option( self::RETRY_PRO_DETECTION_ATTEMPTS_OPTION, 0 ) + 3;
+		update_option( self::RETRY_PRO_DETECTION_ATTEMPTS_OPTION, $attempts_used, false );
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button'        => 'rocket cdn retry pro detection',
+				'attempts_used' => $attempts_used,
+			]
+		);
+
+		wp_safe_redirect( esc_url_raw( wp_get_referer() ) );
+		rocket_get_constant( 'WP_ROCKET_IS_TESTING', false ) ? wp_die() : exit;
+	}
+
+	/**
+	 * Reschedules the Pro detection job, or marks it failed once attempts are exhausted.
+	 *
+	 * @param int $attempt Number of remaining detection attempts.
+	 *
+	 * @return void
+	 */
+	private function retry_or_fail_detection( int $attempt ): void {
+		if ( $attempt > 1 ) {
+			$this->queue->schedule_pro_detection_job( $attempt - 1 );
+			return;
+		}
+
+		set_transient( 'rocket_cdn_pro_detection_failed', true, WEEK_IN_SECONDS );
+	}
+
+	/**
+	 * Flushes the cached user data and fetches it fresh from the user endpoint.
+	 *
+	 * Also triggers cache clearing of rocketcdn_status via the
+	 * `set_transient_wp_rocket_customer_data` hook, and saves the RocketCDN token
+	 * if the account now has one.
+	 *
+	 * @return bool|object Fresh user data, or false on API failure.
+	 */
+	private function refresh_user_data() {
+		$this->user_client->flush_cache();
+
+		return $this->user_client->get_user_data();
+	}
+
+	/**
+	 * Checks whether the account's own user data conclusively has no RocketCDN token.
+	 *
+	 * A `false` $user_data means the user endpoint call itself failed — that's an
+	 * inconclusive result, not proof of "no token", so it isn't treated as one here.
+	 *
+	 * @param bool|object $user_data User data, as returned by UserClient::get_user_data().
+	 *
+	 * @return bool
+	 */
+	private function has_no_rocketcdn_token( $user_data ): bool {
+		return false !== $user_data && empty( $user_data->rocketcdn->cdn_token );
+	}
+}

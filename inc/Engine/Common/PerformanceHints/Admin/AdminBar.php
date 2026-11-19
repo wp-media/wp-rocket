@@ -86,21 +86,4 @@ class AdminBar extends Abstract_Render {
 			! empty( $this->factories )
 		);
 	}
-
-	/**
-	 * Display the dashboard button to clear performance hints data
-	 *
-	 * @return void
-	 */
-	public function display_dashboard_button() {
-		$context = ! empty( $this->factories );
-
-		$this->dashboard_button(
-			$context,
-			__( 'Priority Elements', 'rocket' ),
-			esc_html__( 'Clear', 'rocket' ),
-			'rocket_clean_performance_hints',
-			__( 'Reset stored optimizations related to Automatic Lazy Rendering, Critical Images, Preconnect to External Domains, and Preload Fonts.', 'rocket' )
-		);
-	}
 }

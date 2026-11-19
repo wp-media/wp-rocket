@@ -23,8 +23,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 	 * @return string
 	 */
 	public function optimize( $html ) {
-		Logger::info( 'JS MINIFICATION PROCESS STARTED.', [ 'js minification process' ] );
-
 		$scripts = $this->get_scripts( $html );
 
 		if ( empty( $scripts ) ) {
@@ -131,14 +129,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			Logger::debug( 'No `<script>` tags found.', [ 'js minification process' ] );
 			return [];
 		}
-
-		Logger::debug(
-			'Found ' . count( $scripts ) . ' <link> tags.',
-			[
-				'js minification process',
-				'tags' => $scripts,
-			]
-		);
 
 		return $scripts;
 	}
@@ -276,14 +266,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 		$replace_script = str_replace( '<script', '<script data-minify="1"', $replace_script );
 		$html           = str_replace( $script[0], $replace_script, $html );
 
-		Logger::info(
-			'Script minification succeeded.',
-			[
-				'js minification process',
-				'url' => $minify_url,
-			]
-		);
-
 		return $html;
 	}
 
@@ -310,14 +292,6 @@ class Minify extends AbstractJSOptimization implements ProcessorInterface {
 			);
 			return false;
 		}
-
-		Logger::debug(
-			'Minified JS file successfully created.',
-			[
-				'js minification process',
-				'path' => $minified_file,
-			]
-		);
 
 		return true;
 	}

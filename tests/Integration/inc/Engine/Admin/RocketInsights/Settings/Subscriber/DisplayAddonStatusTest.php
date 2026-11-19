@@ -40,7 +40,7 @@ class DisplayAddonStatusTest extends TestCase {
 		}
 
         ob_start();
-        do_action( 'rocket_dashboard_after_account_data' );
+        do_action( 'rocket_account_after_license_info' );
         $actual = ob_get_clean();
 
         $this->assertStringContainsString(

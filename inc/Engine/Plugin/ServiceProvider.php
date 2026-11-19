@@ -6,6 +6,7 @@ namespace WP_Rocket\Engine\Plugin;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\ArrayArgument;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\AbstractServiceProvider;
+use WP_Rocket\Engine\Plugin\Admin\NoticeSubscriber;
 
 /**
  * Service provider for the WP Rocket updates.
@@ -21,6 +22,9 @@ class ServiceProvider extends AbstractServiceProvider {
 		'plugin_updater_common_subscriber',
 		'plugin_information_subscriber',
 		'plugin_updater_subscriber',
+		'plugin_notice_subscriber',
+		'options_backup',
+		'options_backup_subscriber',
 	];
 
 	/**
@@ -84,5 +88,15 @@ class ServiceProvider extends AbstractServiceProvider {
 					),
 				]
 			);
+		$this->getContainer()->addShared( 'plugin_notice_subscriber', NoticeSubscriber::class );
+		$this->getContainer()->addShared( 'options_backup', OptionsBackup::class )
+			->addArguments(
+				[
+					new StringArgument( WP_ROCKET_CONFIG_PATH ),
+					'options',
+				]
+			);
+		$this->getContainer()->addShared( 'options_backup_subscriber', OptionsBackupSubscriber::class )
+			->addArgument( 'options_backup' );
 	}
 }

@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Activation;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Common\PerformanceHints\Activation\ServiceProvider as PerformanceHintsActivationServiceProvider;
@@ -42,7 +43,11 @@ class Activation {
 	 * @return void
 	 */
 	public static function activate_plugin() {
-		$container     = new Container();
+		// Must load before any service provider: the Hostings provider's boot() resolves the host, and the
+		// SiteGround check uses rocket_is_plugin_active(). rocket_init() doesn't run on activation (#8768).
+		require_once WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+
+		$container     = new Container( new IndexedDefinitionAggregate() );
 		$event_manager = new Event_Manager();
 
 		$container->add( 'template_path', new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views' ) );
@@ -80,7 +85,7 @@ class Activation {
 			require WP_ROCKET_INC_PATH . 'domain-mapping.php';
 		}
 
-		require WP_ROCKET_FUNCTIONS_PATH . 'options.php';
+		// options.php is required at the top of this method; see the note there (#8768).
 		require WP_ROCKET_FUNCTIONS_PATH . 'formatting.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'i18n.php';
 		require WP_ROCKET_FUNCTIONS_PATH . 'htaccess.php';
@@ -93,6 +98,9 @@ class Activation {
 		 * @since  3.1.5
 		 */
 		do_action( 'rocket_activation' );
+
+		// Flush once, after every activator has registered its rewrite rules.
+		flush_rewrite_rules();
 
 		if ( rocket_valid_key() ) {
 			// Add All WP Rocket rules of the .htaccess file.

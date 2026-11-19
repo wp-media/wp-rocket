@@ -1,6 +1,7 @@
 <?php
 
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Plugin;
 
@@ -23,6 +24,19 @@ require_once WP_ROCKET_INC_PATH . 'Dependencies' . DIRECTORY_SEPARATOR . 'Action
  * @since 1.0
  */
 function rocket_init() {
+	// Boot MCP OAuth once all plugins are loaded, so the standalone MCP Adapter plugin is detected whatever the load order.
+	if (
+		class_exists( 'WP\MCP\Core\McpAdapter' )
+		&& class_exists( \WPMedia\MCP\OAuth\Bootstrap::class )
+		&& version_compare( $GLOBALS['wp_version'] ?? '0', '6.9', '>=' )
+		&& function_exists( 'wp_register_ability' )
+		&& function_exists( 'wp_get_ability' )
+		&& function_exists( 'wp_get_abilities' )
+		&& function_exists( 'wp_register_ability_category' )
+	) {
+		\WPMedia\MCP\OAuth\Bootstrap::instance();
+	}
+
 	// Nothing to do if autosave.
 	if ( defined( 'DOING_AUTOSAVE' ) ) {
 		return;
@@ -48,7 +62,7 @@ function rocket_init() {
 
 	$wp_rocket = new Plugin(
 		WP_ROCKET_PATH . 'views',
-		new Container()
+		new Container( new IndexedDefinitionAggregate() )
 	);
 	$wp_rocket->load();
 
@@ -75,6 +89,7 @@ function rocket_init() {
 	require WP_ROCKET_DEPRECATED_PATH . '3.14.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.15.php';
 	require WP_ROCKET_DEPRECATED_PATH . '3.20.php';
+	require WP_ROCKET_DEPRECATED_PATH . '3.24.php';
 	require WP_ROCKET_3RD_PARTY_PATH . '3rd-party.php';
 	require WP_ROCKET_COMMON_PATH . 'admin-bar.php';
 
@@ -85,10 +100,10 @@ function rocket_init() {
 			require WP_ROCKET_INC_PATH . '/domain-mapping.php';
 		}
 	}
+	require WP_ROCKET_ADMIN_PATH . 'options.php';
 
 	if ( is_admin() ) {
 		require WP_ROCKET_ADMIN_PATH . 'upgrader.php';
-		require WP_ROCKET_ADMIN_PATH . 'options.php';
 		require WP_ROCKET_ADMIN_PATH . 'admin.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'enqueue.php';
 		require WP_ROCKET_ADMIN_UI_PATH . 'notices.php';

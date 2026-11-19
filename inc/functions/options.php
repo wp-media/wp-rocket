@@ -334,6 +334,9 @@ function get_rocket_cache_mandatory_cookies() { // phpcs:ignore WordPress.Naming
 /**
  * Get list of dynamic cookies.
  *
+ * An entry is either a cookie name, or a cookie name mapped to the parts of that cookie the cache
+ * varies by ( 'parent' => [ 'child' ] ). Both shapes reach the cache file name.
+ *
  * @since 2.7
  *
  * @return array List of dynamic cookies.
@@ -350,7 +353,17 @@ function get_rocket_cache_dynamic_cookies() { // phpcs:ignore WordPress.NamingCo
 	 */
 	$cookies = (array) apply_filters( 'rocket_cache_dynamic_cookies', $cookies );
 	$cookies = array_filter( $cookies );
-	$cookies = array_unique( $cookies );
+	$tokens  = [];
+
+	foreach ( $cookies as $key => $cookie ) {
+		if ( is_scalar( $cookie ) ) {
+			$tokens[ $key ] = 'name:' . $cookie;
+		} elseif ( is_array( $cookie ) ) {
+			$tokens[ $key ] = 'key:' . $key;
+		}
+	}
+
+	$cookies = array_intersect_key( $cookies, array_unique( $tokens ) );
 
 	return $cookies;
 }
@@ -457,8 +470,6 @@ function rocket_check_key() {
 
 		return $return;
 	}
-
-	Logger::info( 'LICENSE VALIDATION PROCESS STARTED.', [ 'license validation process' ] );
 
 	$response = wp_remote_get(
 		'https://api.wp-rocket.me/valid_key.php',
@@ -578,8 +589,6 @@ function rocket_check_key() {
 	if ( ! get_rocket_option( 'license' ) ) {
 		$rocket_options['license'] = '1';
 	}
-
-	Logger::info( 'License validation successful.', [ 'license validation process' ] );
 
 	set_transient( rocket_get_constant( 'WP_ROCKET_SLUG' ), $rocket_options );
 	delete_transient( 'rocket_check_key_errors' );

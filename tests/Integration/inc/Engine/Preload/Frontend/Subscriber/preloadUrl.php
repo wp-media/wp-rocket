@@ -24,13 +24,11 @@ class Test_PreloadUrl extends AdminTestCase {
 		self::installPreloadCacheTable();
 
 		add_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
-		add_filter('pre_http_request', [$this, 'request']);
 	}
 
 	public function tear_down() {
 		self::uninstallPreloadCacheTable();
 
-		remove_filter('pre_http_request', [$this, 'request']);
 		remove_filter('pre_get_rocket_option_do_caching_mobile_files', [$this, 'mobile_cache']);
 
 		parent::tear_down();
@@ -42,6 +40,8 @@ class Test_PreloadUrl extends AdminTestCase {
 	public function testShouldReturnAsExpected($config, $expected) {
 
 		$this->config = $config;
+		// One response answers both the desktop and the mobile preload requests.
+		$this->config['http'] = [ user_trailingslashit( $config['url'] ) => $this->preload_response() ];
 
 		$this->mobile_cache = $config['mobile_cache'];
 
@@ -61,7 +61,12 @@ class Test_PreloadUrl extends AdminTestCase {
 		return $this->mobile_cache;
 	}
 
-	public function request() {
+	/**
+	 * Builds the preload response from the data set.
+	 *
+	 * @return array|WP_Error
+	 */
+	private function preload_response() {
 		if ( ! empty( $this->config['process_generate']['is_wp_error'] ) ) {
 			return new WP_Error( 'error', 'error_data' );
 		} else {

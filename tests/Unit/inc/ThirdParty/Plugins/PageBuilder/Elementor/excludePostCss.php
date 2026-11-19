@@ -39,6 +39,14 @@ class Test_ExcludePostCss extends TestCase {
 			]
 		);
 
+		$uploads_path = wp_parse_url( wp_get_upload_dir()['baseurl'], PHP_URL_PATH );
+		$expected     = array_map(
+			function ( $pattern ) use ( $uploads_path ) {
+				return str_replace( '{{uploads}}', $uploads_path, $pattern );
+			},
+			$expected
+		);
+
 		$this->assertSame(
 			$expected,
 			$this->elementor->exclude_post_css( $excluded )

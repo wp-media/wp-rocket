@@ -126,6 +126,7 @@ function rocket_first_install() {
 				'cdn_cnames'                  => [],
 				'cdn_zone'                    => [],
 				'cdn_reject_files'            => [],
+				'cdn_state'                   => 'nothing',
 				'do_cloudflare'               => 0,
 				'cloudflare_email'            => '',
 				'cloudflare_api_key'          => '',
@@ -142,6 +143,7 @@ function rocket_first_install() {
 				'analytics_enabled'           => 0,
 				'sucury_waf_cache_sync'       => 0,
 				'sucury_waf_api_key'          => '',
+				'wpr-js-tips'                 => 1,
 			]
 		)
 	);
@@ -220,7 +222,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 
 		update_option( WP_ROCKET_SLUG, $options );
-		rocket_generate_config_file();
 
 		// Create a .htaccess file in the log folder.
 		$handler = Logger::get_stream_handler();
@@ -270,7 +271,6 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 
 	if ( version_compare( $actual_version, '3.6', '<' ) ) {
 		rocket_clean_cache_busting();
-		rocket_clean_domain();
 	}
 
 	if ( version_compare( $actual_version, '3.7', '<' ) ) {
@@ -306,12 +306,32 @@ function rocket_new_upgrade( $wp_rocket_version, $actual_version ) {
 		}
 	}
 
-	if ( version_compare( $actual_version, '3.11.1', '<' ) ) {
-		rocket_generate_config_file();
-	}
-
 	if ( version_compare( $actual_version, '3.12.4', '<' ) ) {
 		delete_transient( 'wp_rocket_pricing' );
+	}
+
+	if ( version_compare( $actual_version, '3.23', '<' ) ) {
+		flush_rewrite_rules();
+	}
+
+	if ( version_compare( $actual_version, '3.24', '<' ) ) {
+		rocket_generate_config_file();
+		rocket_clean_domain();
+
+		// The activation banner is only for new installs: mark it as seen for existing administrators.
+		$admin_ids = get_users(
+			[
+				'role'   => 'administrator',
+				'fields' => 'ID',
+			]
+		);
+
+		foreach ( $admin_ids as $admin_id ) {
+			$boxes   = (array) get_user_meta( $admin_id, 'rocket_boxes', true );
+			$boxes[] = 'rocket_activation_notice';
+
+			update_user_meta( $admin_id, 'rocket_boxes', array_values( array_unique( array_filter( $boxes ) ) ) );
+		}
 	}
 }
 add_action( 'wp_rocket_upgrade', 'rocket_new_upgrade', 10, 2 );

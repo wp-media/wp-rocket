@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 
+use WP_Rocket\Tests\Integration\DBTrait;
 use WP_Rocket\Tests\Integration\TestCase;
 
 /**
@@ -11,13 +12,16 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Settings
  */
 class Test_EnableSeparateCacheFilesMobile extends TestCase {
+	use DBTrait;
 	public function set_up() {
 		parent::set_up();
+		self::installPerformanceMonitoringTable();
 
 		$this->unregisterAllCallbacksExcept( 'wp_rocket_upgrade', 'enable_separate_cache_files_mobile', 10 );
 	}
 
 	public function tear_down() {
+		self::uninstallPerformanceMonitoringTable();
 		parent::tear_down();
 		$this->restoreWpHook( 'wp_rocket_upgrade' );
 	}

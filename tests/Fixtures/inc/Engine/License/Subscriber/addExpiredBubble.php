@@ -52,7 +52,7 @@ return [
 			'transient' => false,
 		],
 		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
+		'expected' => 'WP Rocket <span class="rocket-red-bubble">!</span>'
 	],
 	'shouldReturnUpdatedTitleWhenOCDEnabledAndExpiredSinceMoreThan15Days' => [
 		'config' => [
@@ -65,7 +65,7 @@ return [
 			'transient' => false,
 		],
 		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
+		'expected' => 'WP Rocket <span class="rocket-red-bubble">!</span>'
 	],
 	'shouldReturnSameWhenOCDEnabledAndAutoRenewAndExpiredSinceLessThan4Days' => [
 		'config' => [
@@ -91,7 +91,7 @@ return [
 			'transient' => false,
 		],
 		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
+		'expected' => 'WP Rocket <span class="rocket-red-bubble">!</span>'
 	],
 	'shouldReturnUpdatedTitleWhenOCDDisabledAndExpiredSinceLessThan4Days' => [
 		'config' => [
@@ -104,7 +104,7 @@ return [
 			'transient' => false,
 		],
 		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
+		'expected' => 'WP Rocket <span class="rocket-red-bubble">!</span>'
 	],
 	'shouldReturnSameWhenOCDDisabledAndExpiredSinceMoreThan4Days' => [
 		'config' => [
@@ -143,7 +143,7 @@ return [
 			'transient' => false,
 		],
 		'title' => 'WP Rocket',
-		'expected' => 'WP Rocket <span class="awaiting-mod">!</span>'
+		'expected' => 'WP Rocket <span class="rocket-red-bubble">!</span>'
 	],
 	'shouldReturnSameWhenOCDDisabledAndAutoRenewEnabledAndExpiredSinceMoreThan15Days' => [
 		'config' => [

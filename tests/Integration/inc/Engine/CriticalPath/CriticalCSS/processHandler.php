@@ -8,6 +8,7 @@ use WP_Rocket\Engine\CriticalPath\CriticalCSS;
 use WP_Rocket\Engine\CriticalPath\CriticalCSSGeneration;
 use WP_Rocket\Engine\CriticalPath\DataManager;
 use WP_Rocket\Engine\CriticalPath\ProcessorService;
+use WP_Rocket\Tests\Integration\CriticalCssLoopbackTrait;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;
 
 /**
@@ -22,6 +23,8 @@ use WP_Rocket\Tests\Integration\FilesystemTestCase;
  * @group CriticalPath
  */
 class Test_ProcessHandler extends FilesystemTestCase {
+	use CriticalCssLoopbackTrait;
+
 	protected $path_to_test_data = '/inc/Engine/CriticalPath/CriticalCSS/processHandler.php';
 
 	private $critical_css;
@@ -133,6 +136,8 @@ class Test_ProcessHandler extends FilesystemTestCase {
 		if ( $expected['generated'] ) {
 			$this->prepareSetItems( $config );
 		}
+
+		$this->config['http'] = $this->critical_css_loopback_fixture();
 
 		$this->critical_css->process_handler( $version );
 

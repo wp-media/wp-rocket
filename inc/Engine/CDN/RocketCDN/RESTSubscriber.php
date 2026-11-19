@@ -2,7 +2,6 @@
 namespace WP_Rocket\Engine\CDN\RocketCDN;
 
 use WP_Rocket\Event_Management\Subscriber_Interface;
-use WP_Rocket\Admin\Options_Data;
 
 /**
  * Subscriber for RocketCDN REST API Integration
@@ -10,185 +9,77 @@ use WP_Rocket\Admin\Options_Data;
  * @since 3.5
  */
 class RESTSubscriber implements Subscriber_Interface {
-	const ROUTE_NAMESPACE = 'wp-rocket/v1';
+	/**
+	 * Rest controller instance.
+	 *
+	 * @var Rest
+	 */
+	private $rest;
 
 	/**
-	 * CDNOptionsManager instance
+	 * Subscription controller instance.
 	 *
-	 * @var CDNOptionsManager
+	 * @var SubscriptionController
 	 */
-	private $cdn_options;
-
-	/**
-	 * WP Rocket Options instance
-	 *
-	 * @var Options_Data
-	 */
-	private $options;
+	private $subscription_controller;
 
 	/**
 	 * Constructor
 	 *
-	 * @param CDNOptionsManager $cdn_options CDNOptionsManager instance.
-	 * @param Options_Data      $options     WP Rocket Options instance.
+	 * @param Rest                   $rest                    Rest controller instance.
+	 * @param SubscriptionController $subscription_controller Subscription controller.
 	 */
-	public function __construct( CDNOptionsManager $cdn_options, Options_Data $options ) {
-		$this->cdn_options = $cdn_options;
-		$this->options     = $options;
+	public function __construct( Rest $rest, SubscriptionController $subscription_controller ) {
+		$this->rest                    = $rest;
+		$this->subscription_controller = $subscription_controller;
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * Return an array of events that this subscriber wants to listen to.
+	 *
+	 * @return array
 	 */
 	public static function get_subscribed_events() {
 		return [
-			'rest_api_init' => [
-				[ 'register_enable_route' ],
-				[ 'register_disable_route' ],
-			],
+			'rest_api_init'                               => 'register_routes',
+			'rocket_cdnfree_website_create_status'        => 'check_status',
+			'rocket_cdnfree_subscription_creation_failed' => 'handle_subscription_creation_failed',
 		];
 	}
 
 	/**
-	 * Register Enable route in the WP REST API
+	 * Registers RocketCDN pages and state REST routes.
 	 *
-	 * @since 3.5
+	 * @since 3.22
 	 *
 	 * @return void
 	 */
-	public function register_enable_route() {
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
-			'rocketcdn/enable',
-			[
-				'methods'             => 'PUT',
-				'callback'            => [ $this, 'enable' ],
-				'args'                => [
-					'email' => [
-						'required'          => true,
-						'validate_callback' => [ $this, 'validate_email' ],
-					],
-					'key'   => [
-						'required'          => true,
-						'validate_callback' => [ $this, 'validate_key' ],
-					],
-					'url'   => [
-						'required'          => true,
-						'validate_callback' => function ( $param ) {
-							$url = esc_url_raw( $param );
-
-							return ! empty( $url );
-						},
-						'sanitize_callback' => function ( $param ) {
-							return esc_url_raw( $param );
-						},
-					],
-				],
-				'permission_callback' => '__return_true',
-			]
-		);
+	public function register_routes(): void {
+		$this->rest->register_routes();
 	}
 
 	/**
-	 * Register Disable route in the WP REST API
+	 * Rolls back a failed CDN provisioning attempt.
 	 *
-	 * @since 3.5
+	 * Fired by rocket_cdnfree_subscription_creation_failed, which SubscriptionController
+	 * triggers when check_status() receives a non-success response from the CDN API.
 	 *
 	 * @return void
 	 */
-	public function register_disable_route() {
-		register_rest_route(
-			self::ROUTE_NAMESPACE,
-			'rocketcdn/disable',
-			[
-				'methods'             => 'PUT',
-				'callback'            => [ $this, 'disable' ],
-				'args'                => [
-					'email' => [
-						'required'          => true,
-						'validate_callback' => [ $this, 'validate_email' ],
-					],
-					'key'   => [
-						'required'          => true,
-						'validate_callback' => [ $this, 'validate_key' ],
-					],
-				],
-				'permission_callback' => '__return_true',
-			]
-		);
+	public function handle_subscription_creation_failed(): void {
+		$this->rest->rollback_failed_subscription();
 	}
 
 	/**
-	 * Enable CDN and add RocketCDN URL to WP Rocket options
+	 * Check subscription creation status.
 	 *
-	 * @since 3.5
-	 *
-	 * @param \WP_REST_Request $request the WP REST Request object.
-	 *
-	 * @return \WP_REST_Response|\WP_Error
+	 * @param string $task_id Task ID to check.
+	 * @return void
 	 */
-	public function enable( \WP_REST_Request $request ) {
-		$params = $request->get_body_params();
-
-		$this->cdn_options->enable( $params['url'] );
-
-		$response = [
-			'code'    => 'success',
-			'message' => __( 'RocketCDN enabled', 'rocket' ),
-			'data'    => [
-				'status' => 200,
-			],
-		];
-
-		return rest_ensure_response( $response );
-	}
-
-	/**
-	 * Disable the CDN and remove the RocketCDN URL from WP Rocket options
-	 *
-	 * @since 3.5
-	 *
-	 * @param \WP_REST_Request $request the WP Rest Request object.
-	 *
-	 * @return \WP_REST_Response|\WP_Error
-	 */
-	public function disable( \WP_REST_Request $request ) {
-		$this->cdn_options->disable();
-
-		$response = [
-			'code'    => 'success',
-			'message' => __( 'RocketCDN disabled', 'rocket' ),
-			'data'    => [
-				'status' => 200,
-			],
-		];
-
-		return rest_ensure_response( $response );
-	}
-
-	/**
-	 * Checks that the email sent along the request corresponds to the one saved in the DB
-	 *
-	 * @since 3.5
-	 *
-	 * @param string $param Parameter value to validate.
-	 *
-	 * @return bool
-	 */
-	public function validate_email( $param ) {
-		return ! empty( $param ) && $param === $this->options->get( 'consumer_email' );
-	}
-
-	/**
-	 * Checks that the key sent along the request corresponds to the one saved in the DB
-	 *
-	 * @since 3.5
-	 *
-	 * @param string $param Parameter value to validate.
-	 *
-	 * @return bool
-	 */
-	public function validate_key( $param ) {
-		return ! empty( $param ) && $param === $this->options->get( 'consumer_key' );
+	public function check_status( string $task_id ) {
+		if ( empty( $task_id ) ) {
+			return;
+		}
+		$this->subscription_controller->check_status( $task_id );
 	}
 }

@@ -37,11 +37,24 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	private $rocketCleanDomainShouldNotClean;
 	private $rocketCleanMinifyShouldNotClean;
 	private $dicontainer;
+	private $shouldForceCdnOption;
+
 
 	public function set_up() {
 		self::installPreconnectExternalDomainsTable();
 
 		parent::set_up();
+
+		// RocketCDN state left by earlier tests makes the settings save check the subscription; answer it like the
+		// wp_remote_get() stub this test used to have, so the check is a no-op.
+		$this->config['http'] = [
+			'https://rocketcdn.me/api/subscription/example.org/status' => [
+				'headers'  => [],
+				'body'     => '',
+				'response' => [ 'code' => '', 'message' => '' ],
+				'cookies'  => [],
+			],
+		];
 
 		// Unhook to avoid triggering when storing the configured settings.
 		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options' );
@@ -54,13 +67,12 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->rocketCleanMinifyEntriesBefore  = [];
 		$this->rocketCleanDomainShouldNotClean = [];
 		$this->rocketCleanMinifyShouldNotClean = [];
+		$this->shouldForceCdnOption            = false;
 		$GLOBALS['is_apache'] = true;
 
 		// Set up the container.
 		$this->dicontainer = new DIContainer();
 		$this->dicontainer->setUp();
-
-		Functions\when( 'wp_remote_get' )->justReturn();
 
 		// Hook it back up as we're ready to test.
 		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
@@ -68,6 +80,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 	public function tear_down() {
 		parent::tear_down();
+		if ( $this->shouldForceCdnOption ) {
+			remove_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
+
 		self::uninstallPreconnectDomainsTable();
 
 		$this->dicontainer->tearDown();
@@ -83,7 +99,7 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected ) {
+	public function testShouldTriggerCleaningsWhenOptionsChange( $settings, $expected, array $config = [] ) {
 		// Skip the "not an array" test as it fails in other hooked callbacks that are not checking for array.
 		if ( ! is_array( $settings ) ) {
 			$this->assertTrue( true ); // @phpstan-ignore-line
@@ -93,6 +109,11 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 
 		$this->expected    = $expected;
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
+		$this->shouldForceCdnOption = ! empty( $config['force_pre_get_cdn'] );
+
+		if ( $this->shouldForceCdnOption ) {
+			add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true' ] );
+		}
 
 		$this->rocket_clean_domain( true );
 		$this->rocket_clean_minify( true );
@@ -108,6 +129,10 @@ class Test_RocketAfterSaveOptions extends FilesystemTestCase {
 		$this->flush_rocket_htaccess();
 		$this->rocket_generate_config_file();
 		$this->set_transient();
+	}
+
+	public function return_true() {
+		return true;
 	}
 
 	private function rocket_clean_domain( $before_updating = false ) {

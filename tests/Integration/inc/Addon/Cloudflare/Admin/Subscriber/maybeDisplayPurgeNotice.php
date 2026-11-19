@@ -14,10 +14,14 @@ class TestMaybeDisplayPurgeNotice extends TestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'admin_notices', 'maybe_display_purge_notice', 10 );
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
+		
 	}
 
 	public function tear_down() {
 		$this->restoreWpHook( 'admin_notices' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

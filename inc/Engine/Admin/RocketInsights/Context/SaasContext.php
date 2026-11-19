@@ -11,23 +11,6 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
  * Provides context for Rocket Insights SaaS operations.
  */
 class SaasContext implements ContextInterface {
-
-	/**
-	 * Context instance.
-	 *
-	 * @var Context
-	 */
-	private $context;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param Context $context Context instance.
-	 */
-	public function __construct( Context $context ) {
-		$this->context = $context;
-	}
-
 	/**
 	 * Check if Rocket Insights is enabled.
 	 *
@@ -39,8 +22,8 @@ class SaasContext implements ContextInterface {
 		// This filter is documented in inc/Engine/Admin/RocketInsights/Context/Context.php.
 		$enabled = wpm_apply_filters_typed( 'boolean', 'rocket_rocket_insights_enabled', true );
 
-		// Block for reseller accounts and non-live installations.
-		if ( $enabled && $this->context->is_reseller_or_non_live() ) {
+		// Block for non-live installations.
+		if ( $enabled && ! rocket_is_live_site() ) {
 			return false;
 		}
 

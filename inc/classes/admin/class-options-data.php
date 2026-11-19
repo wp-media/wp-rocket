@@ -119,6 +119,18 @@ class Options_Data {
 	 * @return array
 	 */
 	public function get_options() {
+		/**
+		 * Pre-filters the WP Rocket options array
+		 *
+		 * @param mixed $value   The value to return. Default null.
+		 * @param array $options The options array.
+		 */
+		$value = wpm_apply_filters_typed( '?array', 'pre_get_rocket_options', null, $this->options ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound
+
+		if ( null !== $value ) {
+			return $value;
+		}
+
 		return $this->options;
 	}
 }

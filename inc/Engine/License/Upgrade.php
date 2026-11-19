@@ -3,10 +3,14 @@
 namespace WP_Rocket\Engine\License;
 
 use WP_Rocket\Abstract_Render;
+use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class Upgrade extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Pricing instance
 	 *
@@ -45,6 +49,10 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
@@ -66,6 +74,10 @@ class Upgrade extends Abstract_Render {
 			return;
 		}
 
+		if ( $this->user->is_trial_customer() ) {
+			return;
+		}
+
 		if ( ! $this->can_upgrade() ) {
 			return;
 		}
@@ -82,9 +94,14 @@ class Upgrade extends Abstract_Render {
 	 * Adds the notification bubble to WP Rocket menu item when a promo is active
 	 *
 	 * @param string $menu_title Menu title.
+	 * @param string $context Filter context.
 	 * @return string
 	 */
-	public function add_notification_bubble( $menu_title ) {
+	public function add_notification_bubble( $menu_title, $context = 'adminmenu' ) {
+		if ( 'adminmenu' !== $context ) {
+			return $menu_title;
+		}
+
 		if ( ! $this->can_use_promo() ) {
 			return $menu_title;
 		}
@@ -116,17 +133,19 @@ class Upgrade extends Abstract_Render {
 	}
 
 	/**
-	 * Displays the promotion banner
+	 * Returns the promotion banner HTML
 	 *
-	 * @return void
+	 * @since 3.24
+	 *
+	 * @return string
 	 */
-	public function display_promo_banner() {
+	public function get_promo_banner(): string {
 		if ( ! $this->can_use_promo() ) {
-			return;
+			return '';
 		}
 
 		if ( false !== get_transient( 'rocket_promo_banner_' . get_current_user_id() ) ) {
-			return;
+			return '';
 		}
 
 		$promo          = $this->pricing->get_promo_data();
@@ -140,7 +159,7 @@ class Upgrade extends Abstract_Render {
 			'message'          => $this->get_promo_message( $promo_name, $promo_discount ),
 		];
 
-		echo $this->generate( 'promo-banner', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return (string) $this->generate( 'promo-banner', $data );
 	}
 
 	/**
@@ -162,6 +181,8 @@ class Upgrade extends Abstract_Render {
 		}
 
 		set_transient( "rocket_promo_banner_{$user}", 1, 2 * WEEK_IN_SECONDS );
+
+		$this->track_event( 'Dashboard Banner Dismissed', [ 'banner' => 'promo' ] );
 
 		wp_send_json_success();
 	}
@@ -255,7 +276,7 @@ class Upgrade extends Abstract_Render {
 		return sprintf(
 		// translators: %1$s = promotion name, %2$s = <br>, %3$s = <strong>, %4$s = promotion discount percentage, %5$s = </strong>, %6$s = Growth or Multi.
 			esc_html__(
-				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s',
+				'Take advantage of %1$s to speed up more websites:%2$s get a %3$s%4$s off%5$s for %3$supgrading your license to %6$s!%5$s Hurry up, deal ends in:',
 				'rocket'
 			),
 			$promo_name,
@@ -276,6 +297,10 @@ class Upgrade extends Abstract_Render {
 	 */
 	private function can_use_promo() {
 		if ( rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' ) ) {
+			return false;
+		}
+
+		if ( $this->user->is_trial_customer() ) {
 			return false;
 		}
 
@@ -363,11 +388,24 @@ class Upgrade extends Abstract_Render {
 	 * @return array
 	 */
 	private function get_generic_upgrade_data( $upgrade_item ) {
+		$currency = $this->user->get_currency();
+
+		$prices_classes = [];
+		if ( Currency::is_euro( $currency ) ) {
+			$prices_classes[] = 'wpr-with-euro';
+		}
+		if ( $this->pricing->is_promo_active() ) {
+			$prices_classes[] = 'wpr-with-promo';
+		}
+
 		$data = [
-			'name'        => $upgrade_item->name,
-			'price'       => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
-			'websites'    => $upgrade_item->websites,
-			'upgrade_url' => $upgrade_item->upgrade_url,
+			'name'            => $upgrade_item->name,
+			'price'           => $this->pricing->is_promo_active() ? $upgrade_item->saving : $upgrade_item->regular_price,
+			'websites'        => $upgrade_item->websites,
+			'upgrade_url'     => $upgrade_item->upgrade_url,
+			'currency'        => $currency,
+			'currency_symbol' => Currency::get_symbol( $currency ),
+			'prices_classes'  => ! empty( $prices_classes ) ? ' ' . implode( ' ', $prices_classes ) : '',
 		];
 
 		if ( $this->pricing->is_promo_active() ) {

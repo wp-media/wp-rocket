@@ -68,6 +68,10 @@ class Controller {
 			return;
 		}
 
+		if ( wp_is_post_revision( $post_id ) ) {
+			return;
+		}
+
 		if ( 'attachment' === get_post_type( $post_id ) ) {
 			return;
 		}
@@ -204,5 +208,27 @@ class Controller {
 		foreach ( $this->factories as $factory ) {
 			$factory->queries()->delete_by_url( untrailingslashit( $url ) );
 		}
+	}
+
+	/**
+	 * Clean performance hints when changing the logo.
+	 *
+	 * @param mixed $value The new value of the theme modification.
+	 * @param mixed $old_value The old value of the theme modification.
+	 *
+	 * @return mixed
+	 */
+	public function clean_on_logo_change( $value, $old_value ) {
+		if ( ! $this->is_allowed() ) {
+			return $value;
+		}
+
+		if ( $value === $old_value ) {
+			return $value;
+		}
+
+		$this->truncate_tables();
+
+		return $value;
 	}
 }

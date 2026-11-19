@@ -224,10 +224,10 @@ class HTML {
 			}
 		}
 
-		if ( empty( $matches['attr'] ) ) {
-			// This filter is documented in inc/Engine/Optimization/DelayJS/Subscriber.php.
-			$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
+		// This filter is documented in inc/Engine/Optimization/DelayJS/Subscriber.php.
+		$version = wpm_apply_filters_typesafe( 'rocket_delay_js_version_js_script', '' );
 
+		if ( empty( $matches['attr'] ) ) {
 			if ( ! empty( $version ) ) {
 				return '<script type="rocketlazyloadscript">' . $matches['content'] . '</script>';
 			}
@@ -255,6 +255,10 @@ class HTML {
 		$src_regex       = '/src\s*=\s*(["\'])(.*)\1/i';
 		$matches['attr'] = preg_replace( $src_regex, 'data-rocket-src=$1$2$1', $matches['attr'] );
 
+		if ( ! empty( $version ) ) {
+			return '<script type="rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
+		}
+
 		return '<script type="text/rocketlazyloadscript" ' . trim( $matches['attr'] ) . '>' . $matches['content'] . '</script>';
 	}
 
@@ -276,13 +280,14 @@ class HTML {
 		}
 
 		$replaced_html = preg_replace( "$meta_pattern", '', $html );
+		$meta_tag      = addcslashes( $matches[0], '\\$' );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;
 		}
 
 		if ( preg_match( '/<head\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<head\b[^>]*?>)/i', "\${1}{$meta_tag}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -292,7 +297,7 @@ class HTML {
 		}
 
 		if ( preg_match( '/<html\b/i', $replaced_html ) ) {
-			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}{$matches[0]}", $replaced_html, 1 );
+			$replaced_html = preg_replace( '/(<html\b[^>]*?>)/i', "\${1}{$meta_tag}", $replaced_html, 1 );
 
 			if ( empty( $replaced_html ) ) {
 				return $html;
@@ -301,7 +306,7 @@ class HTML {
 			return $replaced_html;
 		}
 
-		$replaced_html = preg_replace( '/(<\w+)/', "{$matches[0]}\${1}", $replaced_html, 1 );
+		$replaced_html = preg_replace( '/(<\w+)/', "{$meta_tag}\${1}", $replaced_html, 1 );
 
 		if ( empty( $replaced_html ) ) {
 			return $html;

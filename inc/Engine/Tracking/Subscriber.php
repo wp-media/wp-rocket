@@ -32,7 +32,7 @@ class Subscriber implements Subscriber_Interface {
 		return [
 			'update_option_wp_rocket_settings'     => [ 'track_option_change', 10, 2 ],
 			'wp_rocket_upgrade'                    => [ 'migrate_optin', 10, 2 ],
-			'rocket_dashboard_after_account_data'  => [ 'render_optin', 8 ],
+			'rocket_account_after_license_info'    => [ 'render_optin', 20 ],
 			'wp_ajax_rocket_toggle_optin'          => [ 'ajax_toggle_optin' ],
 			'admin_enqueue_scripts'                => [ 'localize_optin_status', 15 ],
 			'admin_print_scripts'                  => [ 'inject_mixpanel_script' ],
@@ -40,6 +40,10 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_rocket_insights_job_added'     => [ 'track_rocket_insights_url_added', 10, 4 ],
 			'rocket_rocket_insights_job_failed'    => [ 'track_rocket_insights_test', 10, 3 ],
 			'rocket_rocket_insights_job_completed' => [ 'track_rocket_insights_test', 10, 3 ],
+			'rocket_mixpanel_track_event'          => [ 'track_event', 10, 2 ],
+			'rocket_rocketcdn_add_homepage'        => [ 'track_add_rocket_cdn_homepage', 10, 1 ],
+			'rocket_cdnfree_website_created'       => 'track_rocketcdn_free_activated',
+			'rocket_notice_displayed'              => [ 'track_rocketcdn_notice_viewed', 10, 1 ],
 		];
 	}
 
@@ -140,5 +144,47 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function track_rocket_insights_test( $row_details, $job_details, $plan ): void {
 		$this->tracking->track_rocket_insights_test( $row_details, $job_details, $plan );
+	}
+
+	/**
+	 * Track generic event with Mixpanel.
+	 *
+	 * @param string $event_name Event name to track.
+	 * @param array  $event_data Additional data to send with the event.
+	 *
+	 * @return void
+	 */
+	public function track_event( string $event_name, array $event_data = [] ): void {
+		$this->tracking->track_event( $event_name, $event_data );
+	}
+
+	/**
+	 * Track RocketCDN add homepage button click.
+	 *
+	 * @param string $source Either 'add_homepage_button' or 'admin_notices'.
+	 * @return void
+	 */
+	public function track_add_rocket_cdn_homepage( string $source ): void {
+		$this->tracking->track_add_rocket_cdn_homepage( $source );
+	}
+
+	/**
+	 * Track when RocketCDN free-tier is activated.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_free_activated(): void {
+		$this->tracking->track_rocketcdn_free_activated();
+	}
+
+	/**
+	 * Track when a RocketCDN notice is viewed.
+	 *
+	 * @param string $box The notice box identifier.
+	 *
+	 * @return void
+	 */
+	public function track_rocketcdn_notice_viewed( string $box ): void {
+		$this->tracking->track_rocketcdn_notice_viewed( $box );
 	}
 }

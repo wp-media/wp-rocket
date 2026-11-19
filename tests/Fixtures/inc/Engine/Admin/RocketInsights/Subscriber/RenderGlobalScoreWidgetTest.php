@@ -83,13 +83,12 @@ return [
 			],
 		],
 		'expected' => [
-			'button_enabled' => true,
 			'contains' => [
 				'Monitored Pages:',
-				'Add Pages',
-				'wpr-ri-global-score-add-url-button',
 			],
 			'not_contains' => [
+				'Add Pages',
+				'wpr-ri-global-score-add-url-button',
 				'disabled',
 				'wpr-btn-with-tool-tip',
 				'Maximum number of URLs reached',

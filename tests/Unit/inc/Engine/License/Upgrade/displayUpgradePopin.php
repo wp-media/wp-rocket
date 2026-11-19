@@ -50,6 +50,11 @@ class DisplayUpgradePopin extends TestCase {
 			->times( 1 )
 			->andReturn( $config['is_revoked'] ?? false );
 
+		$this->user->shouldReceive( 'is_trial_customer' )
+			->atMost()
+			->times( 1 )
+			->andReturn( $config['is_trial_customer'] ?? false );
+
 		$this->user->shouldReceive( 'is_license_expired' )
 			->atMost()
 			->once()
@@ -64,6 +69,9 @@ class DisplayUpgradePopin extends TestCase {
 			$this->pricing->shouldReceive( 'is_promo_active' )
 				->andReturn( $config['promo_active'] );
 
+			$this->user->shouldReceive( 'get_currency' )
+				->andReturn( $config['currency'] ?? 'USD' );
+
 			$this->upgrade->shouldReceive( 'generate' )
 				->once()
 				->with(
@@ -71,6 +79,7 @@ class DisplayUpgradePopin extends TestCase {
 					$expected
 				)
 				->andReturn( '' );
+
 			$this->expectOutputString( '' );
 		} else {
 			$this->upgrade->shouldReceive( 'generate' )

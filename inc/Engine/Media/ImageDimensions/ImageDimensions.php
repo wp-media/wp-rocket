@@ -82,10 +82,7 @@ class ImageDimensions {
 	 * @return string Buffer Page HTML contents after inserting dimensions into images.
 	 */
 	public function specify_image_dimensions( $html ) {
-		Logger::debug( 'Start Specify Image Dimensions.' );
-
 		if ( ! $this->can_specify_dimensions_images() ) {
-			Logger::debug( 'Specify Image Dimensions failed because option is not enabled from admin or by filter (rocket_specify_image_dimensions).' );
 			return $html;
 		}
 
@@ -123,8 +120,6 @@ class ImageDimensions {
 		 * @param array $images Page images.
 		 */
 		$images = apply_filters( 'rocket_specify_dimension_images', $images_match[0] );
-
-		Logger::debug( 'Specify Image Dimensions found ( ' . count( $images ) . ' ).', $images );
 
 		foreach ( $images as $image ) {
 			$image_url = $this->can_specify_dimensions_one_image( $image );

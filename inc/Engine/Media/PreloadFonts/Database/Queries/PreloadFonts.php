@@ -63,6 +63,14 @@ class PreloadFonts extends AbstractQuery {
 	 */
 	protected $item_shape = PreloadFontsRows::class;
 
+	/** Cache *****************************************************************/
+
+	/**
+	 * Group to cache queries and queried items in.
+	 *
+	 * @var   string
+	 */
+	protected $cache_group = 'wpr_preload_fonts';
 
 	/**
 	 * Deletes old rows from the database.
