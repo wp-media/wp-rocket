@@ -48,7 +48,8 @@ class Test_ServeCacheFile extends TestCase {
 		file_put_contents( $file, 'content' );
 		chmod( $file, 0000 );
 
-		if ( is_readable( $file ) ) {
+		// Not is_readable(): under Patchwork's stream wrapper it reports false for root, who can still read the file and reach exit.
+		if ( false !== @file_get_contents( $file ) ) { // phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged, WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 			unlink( $file );
 			$this->cleanUpBase( $base, $file );
 			$this->markTestSkipped( 'Permissions are not enforced for this user.' );
