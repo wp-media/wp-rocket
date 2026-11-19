@@ -11,6 +11,8 @@
     background: #fff;
     padding: $space*4 $space*3;
     flex: 1 1 auto;
+    // Lets the column shrink below its nowrap content (CDN tab), so the sidebar stays visible when the support chat pushes the page.
+    min-width: 0;
     max-width: calc(960px + 270px);
 
     @include respond-to('xs') {
