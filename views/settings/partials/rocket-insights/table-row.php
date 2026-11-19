@@ -94,6 +94,10 @@ $rocket_metric_definitions = $data->metric_definitions ?? [];
 				'class'                       => 'wpr-ri-action wpr-ri-report',
 				'data-rocket-insights-row-id' => $data->id,
 			],
+			'icon'       => [
+				'data'   => '<span class="icon-frame"></span>',
+				'before' => false,
+			],
 		];
 		$rocket_report_url_icon_state         = '';
 		if ( empty( $data->report_url ) ) {
@@ -170,38 +174,10 @@ $rocket_metric_definitions = $data->metric_definitions ?? [];
 			<div class="row-left">
 				<div class="report-link <?php echo esc_attr( $rocket_report_url_icon_state ); ?>">
 					<?php
-					$rocket_link_tag   = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'a' : 'span';
-					$rocket_link_href  = ! empty( $rocket_insights_show_report_btn_args['url'] ) ? 'href="' . esc_url( $rocket_insights_show_report_btn_args['url'] ) . '" ' : '';
-					$rocket_attributes = '';
-					foreach ( $rocket_insights_show_report_btn_args['attributes'] as $rocket_attr_key => $rocket_attr_value ) {
-						$rocket_attributes .= ' ' . esc_attr( $rocket_attr_key ) . ( true === $rocket_attr_value ? '' : '="' . esc_attr( $rocket_attr_value ) . '"' );
-					}
-
-					$rocket_link_html = sprintf(
-						'<%1$s %2$s%3$s>%4$s<div class="icon-frame"></div></%1$s>',
-						$rocket_link_tag,
-						$rocket_link_href,
-						$rocket_attributes,
-						esc_html( $rocket_insights_show_report_btn_args['label'] )
-					);
-
-					echo wp_kses(
-						$rocket_link_html,
-						[
-							'a'    => [
-								'href'   => true,
-								'target' => true,
-								'class'  => true,
-								'data-*' => true,
-							],
-							'span' => [
-								'class'  => true,
-								'data-*' => true,
-							],
-							'div'  => [
-								'class' => true,
-							],
-						]
+					$this->render_action_button(
+						'link',
+						'gtmetrix_open',
+						$rocket_insights_show_report_btn_args
 					);
 					?>
 				</div>
