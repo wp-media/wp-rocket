@@ -72,11 +72,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 
 		foreach ( $link_styles as $style ) {
 			if (
-				(
-					! (bool) preg_match( '/rel=[\'"]?stylesheet[\'"]?/is', $style[0] )
-					&&
-					! ( (bool) preg_match( '/rel=[\'"]?preload[\'"]?/is', $style[0] ) && (bool) preg_match( '/as=[\'"]?style[\'"]?/is', $style[0] ) )
-				)
+				! $this->is_stylesheet_link( $this->get_link_attributes( $style[0] ) )
 				||
 				strstr( $style['url'], '//fonts.googleapis.com/css' )
 			) {
@@ -103,6 +99,62 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$data['css_files'] = array_merge( $data['css_files'], $css_links );
 
 		return $data;
+	}
+
+	/**
+	 * Parses the attributes of a link tag.
+	 *
+	 * @param string $tag Link tag.
+	 * @return array<string, string> Lowercased attribute names => raw values.
+	 */
+	private function get_link_attributes( string $tag ): array {
+		$inner = preg_replace( '/^<link\b|\/?>$/i', '', $tag );
+
+		if ( null === $inner ) {
+			return [];
+		}
+
+		preg_match_all(
+			'/([^\s"\'>\/=]+)(?:\s*=\s*(?:"([^"]*)"|\'([^\']*)\'|([^\s>]+)))?/',
+			$inner,
+			$matches,
+			PREG_SET_ORDER | PREG_UNMATCHED_AS_NULL
+		);
+
+		$attributes = [];
+
+		foreach ( $matches as $match ) {
+			$name = strtolower( $match[1] );
+
+			// Browsers ignore repeated attributes, so the first occurrence wins.
+			if ( isset( $attributes[ $name ] ) ) {
+				continue;
+			}
+
+			$attributes[ $name ] = $match[2] ?? $match[3] ?? $match[4] ?? '';
+		}
+
+		return $attributes;
+	}
+
+	/**
+	 * Checks if the link attributes describe a stylesheet.
+	 *
+	 * @param array<string, string> $attributes Link attributes.
+	 * @return bool
+	 */
+	private function is_stylesheet_link( array $attributes ): bool {
+		$rel = preg_split( '/\s+/', strtolower( trim( $attributes['rel'] ?? '' ) ), -1, PREG_SPLIT_NO_EMPTY );
+
+		if ( false === $rel ) {
+			$rel = [];
+		}
+
+		if ( in_array( 'stylesheet', $rel, true ) ) {
+			return ! in_array( 'alternate', $rel, true );
+		}
+
+		return in_array( 'preload', $rel, true ) && 'style' === strtolower( trim( $attributes['as'] ?? '' ) );
 	}
 
 	/**

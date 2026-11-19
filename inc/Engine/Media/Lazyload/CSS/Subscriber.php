@@ -361,13 +361,23 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 * @return array
 	 */
 	protected function generate_css_file( string $url ) {
+		$destination = $this->cache->generate_path( $url );
+
+		if ( '' === $destination ) {
+			$this->logger::debug(
+				"Lazy CSS file $url can't be mapped to the cache",
+				$this->generate_log_context()
+			);
+			return [];
+		}
+
 		$path = $this->file_resolver->resolve( $url );
 
 		if ( ! $path ) {
 			$path = $url;
 		}
 
-		$content = $this->fetcher->fetch( $path, $this->cache->generate_path( $url ) );
+		$content = $this->fetcher->fetch( $path, $destination );
 
 		if ( ! $content ) {
 			return [];
