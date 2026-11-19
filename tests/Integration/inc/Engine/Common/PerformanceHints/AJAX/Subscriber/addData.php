@@ -12,21 +12,12 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
 class Test_AddData extends AjaxTestCase {
 	private $allowed;
 
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// Install in set_up_before_class because of exists().
-		self::installAtfTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAtfTable();
-
-		parent::tear_down_after_class();
-	}
-
 	public function set_up() {
 		parent::set_up();
+
+		// Install per test, after WordPress snapshots the hooks in parent::set_up(): installed in
+		// set_up_before_class, the table's "exists" filter leaked into later test classes.
+		self::installAtfTable();
 
 		$this->action = 'rocket_beacon';
 	}
@@ -40,6 +31,9 @@ class Test_AddData extends AjaxTestCase {
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
 		parent::tear_down();
+
+		// After parent::tear_down(), once the transaction is rolled back.
+		self::uninstallAtfTable();
 	}
 
 	/**
