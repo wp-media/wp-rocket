@@ -15,7 +15,8 @@ use WP_Rocket\Engine\License\API\RemoteSettingsClient;
  * keys at once. Whether the owner allows a command arrives with the command.
  *
  * Two issuers, because there are two things to verify: Fleet's key proves a
- * command came from Fleet, wp-rocket.me's proves the owner allows it.
+ * command came from Fleet, wp-rocket.me's proves the owner allows it. And the
+ * licence this install runs under, so only its own owner's consent counts.
  *
  * @since 3.23.4
  */
@@ -68,6 +69,20 @@ class TrustStore implements TrustStoreContract {
 	 */
 	public function keySetUrl( string $role ): string {
 		return $this->value( self::CONSENT === $role ? 'crm_jwks_url' : 'jwks_url' );
+	}
+
+	/**
+	 * The licence this install runs under, as wp-rocket.me knows it.
+	 *
+	 * Read from the response wp-rocket.me answers to this install's own key, so
+	 * a grant from another licence listing this domain can be refused.
+	 *
+	 * @since 3.24.1
+	 *
+	 * @return string Empty when this install has not been told.
+	 */
+	public function licence(): string {
+		return $this->value( 'licence_id' );
 	}
 
 	/**
