@@ -3494,7 +3494,7 @@ msgstr "La URL no pertenece a este sitio."
 
 #: inc/Engine/Cache/Abilities/ClearUrlCache.php:133
 msgid "URL is an admin page."
-msgstr "La URL corresponde a una página de administración."
+msgstr "La URL es una página de administración."
 
 #: inc/Engine/Cache/Abilities/ClearUrlCache.php:151
 msgid ""
