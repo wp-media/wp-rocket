@@ -32,7 +32,13 @@ class TestDelete extends TestCase {
 		Functions\when('get_current_blog_id')->justReturn( 1 );
 		Functions\expect('get_rocket_parse_url')->with($config['key'])->andReturn($config['parsed_url']);
 		Functions\when('home_url')->justReturn($config['home_url']);
-		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+
+		if ( null === $expected['path'] ) {
+			$this->filesystem->shouldNotReceive('exists', 'is_dir', 'delete');
+			Functions\expect('rocket_rrmdir')->never();
+		} else {
+			$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+		}
 		$this->configureIsDir($config, $expected);
 		$this->configureDirDelete($config, $expected);
 		$this->configureFileDelete($config, $expected);
@@ -40,23 +46,23 @@ class TestDelete extends TestCase {
 	}
 
 	protected function configureIsDir( $config, $expected ) {
-		if(! $config['exists']) {
+		if(! $config['exists'] || null === $expected['path']) {
 			return;
 		}
 		$this->filesystem->shouldReceive('is_dir')->with($expected['path'])->andReturn($config['is_dir']);
 	}
 
 	protected function configureFileDelete( $config, $expected ) {
-		if(! $config['exists'] || $config['is_dir']) {
+		if(! $config['exists'] || $config['is_dir'] || null === $expected['path']) {
 			return;
 		}
 		$this->filesystem->shouldReceive('delete')->with($expected['path'])->andReturn(true);
 	}
 
 	protected function configureDirDelete( $config, $expected ) {
-		if(! $config['exists'] || ! $config['is_dir'] ) {
+		if(! $config['exists'] || ! $config['is_dir'] || null === $expected['path'] ) {
 			return;
 		}
-		Functions\expect('rocket_rrmdir')->andReturn($expected['path'], [], $this->filesystem);
+		Functions\expect('rocket_rrmdir')->once()->with($expected['path'], [], $this->filesystem);
 	}
 }

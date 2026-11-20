@@ -352,6 +352,25 @@
     }
 }
 
+// New-tab indicator, drawn in the link colour.
+.wpr-menuItem-external {
+    display: inline-block;
+    flex: 0 0 auto;
+    width: 12px;
+    height: 12px;
+    margin-inline-start: 4px;
+    vertical-align: -1px;
+    background-color: currentColor;
+    -webkit-mask-image: url("../img/ri-report-url.svg");
+    mask-image: url("../img/ri-report-url.svg");
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
+
 // For each menu entry, its ID tells which icon is used.
 @mixin wpr-nav-icon($file) {
     .wpr-menuItem-icon {

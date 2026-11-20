@@ -8,8 +8,11 @@ use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Currency;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class Renewal extends Abstract_Render {
+	use TrackingTrait;
+
 	/**
 	 * Pricing instance
 	 *
@@ -244,6 +247,11 @@ class Renewal extends Abstract_Render {
 		}
 
 		set_transient( $transient, 1, MONTH_IN_SECONDS );
+
+		$this->track_event(
+			'Dashboard Banner Dismissed',
+			[ 'banner' => $this->user->is_trial_customer() ? 'trial_expired' : 'license_expired' ]
+		);
 
 		wp_send_json_success();
 	}
@@ -708,15 +716,7 @@ class Renewal extends Abstract_Render {
 
 		$expired_since = ( time() - $this->user->get_license_expiration() ) / DAY_IN_SECONDS;
 
-		if (
-			15 > $expired_since
-			||
-			(
-				$this->user->is_auto_renew()
-				&&
-				4 > $expired_since
-			)
-		) {
+		if ( 15 > $expired_since ) {
 			return $args;
 		}
 

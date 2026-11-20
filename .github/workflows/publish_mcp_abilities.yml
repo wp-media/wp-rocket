@@ -19,6 +19,19 @@ jobs:
       DB_HOST: "127.0.0.1"
       DB_PORT: "3306"
 
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
     steps:
     - name: Checkout WP Rocket
       uses: actions/checkout@v7
@@ -31,12 +44,6 @@ jobs:
         php-version: '8.2'
         coverage: none
         tools: composer:v2, wp-cli
-
-    - name: Start mysql service
-      run: sudo /etc/init.d/mysql start
-
-    - name: Mysql8 auth plugin workaround
-      run: sudo mysql -u root -proot -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'root';"
 
     - name: Get composer cache directory
       id: composercache

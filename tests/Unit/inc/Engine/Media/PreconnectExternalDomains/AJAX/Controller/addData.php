@@ -64,10 +64,6 @@ class Test_AddData extends TestCase {
 			->once()
 			->andReturn( $config['filter'] );
 
-		Functions\when('sanitize_url')->alias(function($url) {
-			return filter_var($url, FILTER_SANITIZE_URL) ?: '';
-		});
-
 		Functions\when( 'sanitize_text_field' )->alias(
 			function ( $value ) {
 				return is_string( $value ) ? strip_tags( $value ) : $value;

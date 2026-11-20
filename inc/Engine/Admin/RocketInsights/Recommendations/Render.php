@@ -129,7 +129,7 @@ class Render extends Abstract_Render {
 		if ( false !== $cached_data ) {
 			$widget_data['state']           = $this->map_status_to_state( $cached_data['status'] );
 			$widget_data['recommendations'] = $this->format_recommendations( $cached_data['recommendations'] );
-			$widget_data['show_load_more']  = count( $cached_data['recommendations'] ) > 3;
+			$widget_data['show_load_more']  = count( $widget_data['recommendations'] ) > 3;
 		}
 
 		// Without tracked pages, DataManager::save_empty_recommendations() caches a 'failed' status: override it so it isn't shown as an error.

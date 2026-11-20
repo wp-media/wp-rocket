@@ -211,4 +211,38 @@ return [
 			],
 		],
 	],
+	'testShouldOmitRecommendationsRemovedByOverrides' => [
+		'config'   => [
+			'removed'              => [ 'plugin_rocketcdn' ],
+			'recommendations_data' => [
+				'status'          => 'completed',
+				'recommendations' => [
+					[
+						'option_slug' => 'plugin_rocketcdn',
+						'title'       => 'RocketCDN',
+						'description' => 'Use RocketCDN.',
+					],
+					[
+						'option_slug' => 'minify_css',
+						'title'       => 'Minify CSS',
+						'description' => 'Minify your CSS.',
+					],
+				],
+			],
+		],
+		'expected' => [
+			'result' => [
+				'status'          => 'completed',
+				'recommendations' => [
+					[
+						'option_slug'    => 'minify_css',
+						'title'          => 'Minify CSS',
+						'description'    => 'Minify your CSS.',
+						'mcp_actionable' => true,
+						'mcp_ability'    => 'wp-rocket/set-option',
+					],
+				],
+			],
+		],
+	],
 ];

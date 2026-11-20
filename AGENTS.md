@@ -39,7 +39,7 @@ Locally, run every PHP command inside the wp-env tests container, never with a l
 | Lint — auto-fix | `composer phpcs:fix` | implementer, dod |
 | Static analysis | `composer run-stan` | dod |
 | Build command | `npm run build:js && npm run build:css` (no JS lint script exists) | implementer |
-| Install command | `composer install --no-scripts` and `npm install` | setup |
+| Install command | `composer install --no-scripts` and `npm ci` (Node 22.18+ or 24.11+, see `.nvmrc`) | setup |
 
 **Local run:**
 

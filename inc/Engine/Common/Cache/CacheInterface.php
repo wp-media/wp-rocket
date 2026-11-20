@@ -8,7 +8,7 @@ interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheIn
 	 * Generate the real URL.
 	 *
 	 * @param string $url original URL.
-	 * @return string
+	 * @return string Cached file URL, or an empty string when the URL can't be mapped.
 	 */
 	public function generate_url( string $url ): string;
 
@@ -30,7 +30,7 @@ interface CacheInterface extends \WP_Rocket\Dependencies\Psr\SimpleCache\CacheIn
 	 * Generate a path from the URL.
 	 *
 	 * @param string $url URL to change to a path.
-	 * @return string
+	 * @return string Absolute file path, or an empty string when the URL can't be mapped to an allowed file inside the cache root.
 	 */
 	public function generate_path( string $url ): string;
 
