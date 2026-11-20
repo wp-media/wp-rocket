@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Addon\Varnish\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addon\Varnish\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

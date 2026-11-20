@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Admin\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\Admin\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Addon\Cloudflare\Admin\Subscriber;

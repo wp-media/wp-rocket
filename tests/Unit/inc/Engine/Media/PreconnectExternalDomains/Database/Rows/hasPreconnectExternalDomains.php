@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Database\Rows\PreconnectExternalDomains;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Database\Rows;
 
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Row\PreconnectExternalDomains;
 use WP_Rocket\Tests\Unit\TestCase;

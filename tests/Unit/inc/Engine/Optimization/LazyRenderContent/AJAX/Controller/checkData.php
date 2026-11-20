@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Optimization\LazyRenderContent\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\LazyRenderContent\AJAX\Controller;
 
 use WP_Rocket\Engine\Media\AboveTheFold\Context\Context;
 use WP_Rocket\Engine\Optimization\LazyRenderContent\AJAX\Controller;

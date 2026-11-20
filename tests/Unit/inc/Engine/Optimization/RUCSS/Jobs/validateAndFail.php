@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Optimization\RUCSS\Jobs;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Jobs;
 
 use Mockery;
 use WP_Rocket\Admin\Options_Data;

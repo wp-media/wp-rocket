@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
 
 use Mockery;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
