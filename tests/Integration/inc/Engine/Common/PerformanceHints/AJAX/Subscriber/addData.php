@@ -30,10 +30,10 @@ class Test_AddData extends AjaxTestCase {
 	public function tear_down() {
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
-		parent::tear_down();
+		// Drop the temporary table set_up() may have created, but never a real one (kept at plugin load on CI).
+		self::dropTemporaryAtfTable();
 
-		// After parent::tear_down(), once the transaction is rolled back.
-		self::uninstallAtfTable();
+		parent::tear_down();
 	}
 
 	/**
