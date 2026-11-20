@@ -107,11 +107,10 @@ class CDN {
 	/**
 	 * Rewrites the URLs of the image preload links using the CDN URL
 	 *
-	 * Targets <link data-rocket-preload as="image"> tags. The href goes through the same
-	 * allowed-path gate as rewrite(). Each imagesrcset candidate behaves as in rewrite_srcset():
-	 * home host URLs are rewritten, other hosts are left alone. Candidates are independent, as
-	 * browsers pick by descriptor whatever the host, so unrewritable ones stay on the origin.
-	 * A comma inside an absolute URL stays part of it, except before "http(s)://" or "//".
+	 * Targets <link data-rocket-preload as="image"> tags: href goes through the allowed-path gate,
+	 * imagesrcset candidates are rewritten independently like rewrite_srcset() does.
+	 *
+	 * @since 3.24.3
 	 *
 	 * @param string $html HTML content.
 	 * @return string
@@ -132,16 +131,6 @@ class CDN {
 		);
 
 		return null === $result ? $html : $result;
-	}
-
-	/**
-	 * Rewrites a URL with the CDN URL only if the rewrite() pattern would match it
-	 *
-	 * @param string $url URL to rewrite.
-	 * @return string
-	 */
-	public function rewrite_url_if_allowed( string $url ): string {
-		return $this->rewrite_gated_url( $url, $this->get_gate_pattern() );
 	}
 
 	/**
@@ -434,6 +423,15 @@ class CDN {
 	private function rewrite_home_host_url( string $url ): string {
 		if ( 1 !== preg_match( '#^(?:(?:https?:)?//|/)#i', $url ) ) {
 			return $url;
+		}
+
+		// Skip candidates already on a CDN URL, e.g. a path-prefixed CNAME on the home host.
+		$bare_url = strtolower( rocket_remove_url_protocol( $url ) );
+
+		foreach ( $this->get_cdn_urls( [ 'all', 'images', 'css_and_js', 'css', 'js' ] ) as $cdn_url ) {
+			if ( 0 === strpos( $bare_url, strtolower( rocket_remove_url_protocol( untrailingslashit( $cdn_url ) ) ) . '/' ) ) {
+				return $url;
+			}
 		}
 
 		$host = wp_parse_url( $url, PHP_URL_HOST );

@@ -120,6 +120,11 @@ return [
 		'html'     => $tag . 'href="http://example.org/wp-content/uploads/a.jpg"' . $end . $tag . 'href="http://example.org/wp-content/uploads/b.jpg"' . $end,
 		'expected' => $tag . 'href="https://cdn.example.org/wp-content/uploads/a.jpg"' . $end . $tag . 'href="https://cdn.example.org/wp-content/uploads/b.jpg"' . $end,
 	],
+	'shouldNotPrefixSrcsetCandidatesAlreadyOnPathPrefixedHomeHostCname' => [
+		'config'   => array_merge( $single_cname, [ 'cnames' => [ 'http://example.org/cdn' ] ] ),
+		'html'     => $tag . 'imagesrcset="http://example.org/cdn/wp-content/uploads/a.jpg 300w, http://example.org/wp-content/uploads/b.jpg 600w"' . $end,
+		'expected' => $tag . 'imagesrcset="http://example.org/cdn/wp-content/uploads/a.jpg 300w, http://example.org/cdn/wp-content/uploads/b.jpg 600w"' . $end,
+	],
 	'shouldReturnOriginalHtmlWhenRegexFails'          => [
 		'config'   => array_merge( $single_cname, [ 'backtrack_limit' => 1 ] ),
 		'html'     => str_repeat( '<div class="x">', 200 ) . $tag . 'href="http://example.org/wp-content/uploads/a.jpg"' . $end,

@@ -135,6 +135,7 @@ class Subscriber implements Subscriber_Interface {
 			'rocket_buffer'                            => [
 				[ 'rewrite', 2 ],
 				[ 'rewrite_srcset', 3 ],
+				// After the OCI preload injection (17) and lazyload (18) so the added tags are rewritten.
 				[ 'rewrite_preload_links', 19 ],
 			],
 			'rocket_css_content'                       => 'rewrite_css_properties',
@@ -193,6 +194,8 @@ class Subscriber implements Subscriber_Interface {
 
 	/**
 	 * Rewrites the URLs of the image preload links to the CDN URLs if allowed
+	 *
+	 * @since 3.24.3
 	 *
 	 * @param string $html HTML content.
 	 *
