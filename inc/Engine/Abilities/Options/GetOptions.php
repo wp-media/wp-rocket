@@ -42,7 +42,7 @@ class GetOptions implements AbilitiesInterface {
 	 * can learn each option's type instead of inferring it from a stored value.
 	 * Intersected with the allowlist.
 	 *
-	 * @since 3.24.2
+	 * @since 3.24.3
 	 *
 	 * @return array
 	 */
