@@ -47,5 +47,9 @@ class PluginResolverGatedIds {
 		'jetpack',
 		'seopress',
 		'the_seo_framework',
+		'revolution_slider_subscriber',
+		'optimus_webp_subscriber',
+		'rapidload',
+		'all_in_one_seo_pack',
 	];
 }

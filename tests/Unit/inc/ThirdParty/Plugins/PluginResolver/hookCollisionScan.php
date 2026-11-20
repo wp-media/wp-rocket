@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\PluginResolver;
 
 use Brain\Monkey\Functions;
+use WP_Rocket\Subscriber\Third_Party\Plugins\Images\Webp\Optimus_Subscriber;
 use WP_Rocket\Tests\Fixtures\classes\PluginResolverGatedIds;
 use WP_Rocket\Tests\Unit\TestCase;
 use WP_Rocket\ThirdParty\Plugins\ConvertPlug;
@@ -14,13 +15,16 @@ use WP_Rocket\ThirdParty\Plugins\Jetpack;
 use WP_Rocket\ThirdParty\Plugins\NGG;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Autoptimize;
 use WP_Rocket\ThirdParty\Plugins\Optimization\Perfmatters;
+use WP_Rocket\ThirdParty\Plugins\Optimization\RapidLoad;
 use WP_Rocket\ThirdParty\Plugins\Optimization\RocketLazyLoad;
 use WP_Rocket\ThirdParty\Plugins\Optimole;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\BeaverBuilder;
 use WP_Rocket\ThirdParty\Plugins\PageBuilder\Elementor;
 use WP_Rocket\ThirdParty\Plugins\PDFEmbedder;
 use WP_Rocket\ThirdParty\Plugins\PWA;
+use WP_Rocket\ThirdParty\Plugins\RevolutionSlider;
 use WP_Rocket\ThirdParty\Plugins\Security\WordFenceCompatibility;
+use WP_Rocket\ThirdParty\Plugins\SEO\AllInOneSEOPack;
 use WP_Rocket\ThirdParty\Plugins\SEO\RankMathSEO;
 use WP_Rocket\ThirdParty\Plugins\SEO\SEOPress;
 use WP_Rocket\ThirdParty\Plugins\SEO\TheSEOFramework;
@@ -32,15 +36,16 @@ use WP_Rocket\ThirdParty\Plugins\ThirstyAffiliates;
 use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
 
 /**
- * Verifies that none of the Easy-25 plugin-compat classes accidentally clash
- * on the same WordPress hook + priority.
+ * Verifies that none of the plugin-compat classes gated behind
+ * PluginCompatibilityInterface accidentally clash on the same WordPress hook +
+ * priority.
  *
  * `get_subscribed_events()` is a static method with no WordPress/container
  * dependency, so it is called directly (`Class::get_subscribed_events()`) with
- * no instantiation involved. Most of the 25 classes return their hook map
- * unconditionally. Only 3 deviation classes still guard their hook map with a
- * business/feature-toggle check *inside* `get_subscribed_events()` itself, so
- * only these 3 need their "target plugin present" markers simulated to reveal
+ * no instantiation involved. Most of the classes return their hook map
+ * unconditionally. Only a few deviation classes still guard their hook map with
+ * a business/feature-toggle check *inside* `get_subscribed_events()` itself, so
+ * only these need their "target plugin present" markers simulated to reveal
  * their real (maximal) hook set:
  * - SEOPress: needs `seopress_get_toggle_option('xml-sitemap')` and
  *   `seopress_get_service('SitemapOption')->isEnabled()` to both return 1,
@@ -53,34 +58,36 @@ use WP_Rocket\ThirdParty\Plugins\UnlimitedElements;
  *   global class requires `@runInSeparateProcess` isolation so it doesn't leak
  *   into the rest of the Unit suite; the Unit bootstrap has no WordPress
  *   DB/options layer for a forked process to corrupt.
+ * - RevolutionSlider, Optimus_Subscriber, RapidLoad and AllInOneSEOPack: need
+ *   their marker constant defined (`RS_REVISION` >= '6.5.5', `OPTIMUS_FILE`,
+ *   `UUCSS_VERSION`, `AIOSEOP_VERSION`), which the same isolation contains.
  *
- * All 25 classes are otherwise driven with zero stubbing beyond the above — a
+ * All classes are otherwise driven with zero stubbing beyond the above — a
  * genuine capture of their real, unconditional hook maps, not a guess.
  *
  * @group ThirdParty
  * @group Plugins
  */
-class Test_Easy25HookCollisionScan extends TestCase {
+class Test_HookCollisionScan extends TestCase {
 
 	/**
-	 * (hook, priority) pairs registered by 2+ of the Easy-25 classes, reviewed
+	 * (hook, priority) pairs registered by 2+ of the gated classes, reviewed
 	 * and accepted as intentional. Keyed by "hook:priority".
 	 *
 	 * Only the `rocket_exclude_js:10` pair (elementor_subscriber vs
 	 * syntaxhighlighter_subscriber) is documented elsewhere, by the
-	 * `SubscriberFactory` registry-order comment. The remaining pairs are all
+	 * `SubscriberFactory` registry-order comment. Most remaining pairs are
 	 * instances of the same benign pattern: a WP Rocket "collector" filter (an
 	 * exclusions or preload-list array that callbacks *append* to) that
-	 * several plugin-compat classes legitimately contribute to. None of them
-	 * mutate shared state in a way where registration order matters, unlike
-	 * the documented pair.
+	 * several plugin-compat classes legitimately contribute to. The RUCSS
+	 * pairs are commented individually, as one of them is order-dependent.
 	 *
 	 * @var array<string,array<string>>
 	 */
 	private const ACCEPTED_COLLISIONS = [
 		// Documented by SubscriberFactory's registry-order comment; this scan
 		// also found pdfembedder on the same hook + priority (not mentioned there).
-		'rocket_exclude_js:10'                      => [
+		'rocket_exclude_js:10'                       => [
 			'elementor_subscriber',
 			'pdfembedder',
 			'syntaxhighlighter_subscriber',
@@ -89,7 +96,8 @@ class Test_Easy25HookCollisionScan extends TestCase {
 		// preload; every SEO-plugin compat class appends its own entry at
 		// priority 15 (jetpack uses the default priority 10 instead, so it
 		// does not collide with this group).
-		'rocket_sitemap_preload_list:15'            => [
+		'rocket_sitemap_preload_list:15'             => [
+			'all_in_one_seo_pack',
 			'rank_math_seo',
 			'seopress',
 			'the_seo_framework',
@@ -97,31 +105,44 @@ class Test_Easy25HookCollisionScan extends TestCase {
 		],
 		// rocket_rucss_inline_content_exclusions is a collector array of RUCSS
 		// inline-content exclusion patterns.
-		'rocket_rucss_inline_content_exclusions:10' => [
+		'rocket_rucss_inline_content_exclusions:10'  => [
 			'inline_related_posts',
 			'unlimited_elements',
 		],
 		// rocket_delay_js_exclusions is a collector array of delay-JS
 		// exclusion patterns.
-		'rocket_delay_js_exclusions:10'             => [
+		'rocket_delay_js_exclusions:10'              => [
 			'rocket_lazy_load',
 			'termly_subscriber',
 		],
 		// rocket_exclude_defer_js is a collector array of defer-JS exclusion
 		// patterns.
-		'rocket_exclude_defer_js:10'                => [
+		'rocket_exclude_defer_js:10'                 => [
+			'revolution_slider_subscriber',
 			'syntaxhighlighter_subscriber',
 			'termly_subscriber',
+		],
+		// Each callback passes $status through unless its own plugin's RUCSS is
+		// active, so only the notice text depends on order when both are.
+		'rocket_disable_rucss_setting:10'            => [
+			'perfmatters',
+			'rapidload',
+		],
+		// Order-dependent: both callbacks ignore the incoming value, so rapidload's
+		// null can override perfmatters' false when only Perfmatters' RUCSS is on.
+		'pre_get_rocket_option_remove_unused_css:10' => [
+			'perfmatters',
+			'rapidload',
 		],
 	];
 
 	/**
-	 * Simulates the markers needed by the 3 deviation classes whose
+	 * Simulates the markers needed by the deviation classes whose
 	 * `get_subscribed_events()` still has its own internal guard.
 	 *
 	 * Only called from inside `@runInSeparateProcess` test methods: the
-	 * Jetpack class declaration below is a real global that PHP can never
-	 * "undeclare", so it must stay contained to its own forked, throwaway
+	 * Jetpack class declaration and the marker constants below are real
+	 * globals that PHP can never "undeclare", so they must stay contained to its own forked, throwaway
 	 * process rather than leaking into the rest of the Unit suite.
 	 */
 	private static function load_deviation_marker_stubs(): void {
@@ -135,16 +156,21 @@ class Test_Easy25HookCollisionScan extends TestCase {
 		);
 
 		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/classes/Jetpack.php';
+
+		define( 'RS_REVISION', '6.5.5' );
+		define( 'OPTIMUS_FILE', '/plugins/optimus/optimus.php' );
+		define( 'UUCSS_VERSION', '1.0' );
+		define( 'AIOSEOP_VERSION', '3.0' );
 	}
 
 	/**
-	 * Authoritative id => FQCN map for the Easy-25 batch, reconciled against
+	 * Authoritative id => FQCN map for the gated classes, reconciled against
 	 * PluginResolverGatedIds::IDS (the single source of truth for the gated
 	 * ids, shared with the baseline equivalence test).
 	 *
 	 * @return array<string,string>
 	 */
-	private function easy_25_classes(): array {
+	private function gated_classes(): array {
 		return [
 			'elementor_subscriber'         => Elementor::class,
 			'beaverbuilder_subscriber'     => BeaverBuilder::class,
@@ -171,6 +197,10 @@ class Test_Easy25HookCollisionScan extends TestCase {
 			'syntaxhighlighter_subscriber' => SyntaxHighlighter::class,
 			'ngg_subscriber'               => NGG::class,
 			'autoptimize'                  => Autoptimize::class,
+			'revolution_slider_subscriber' => RevolutionSlider::class,
+			'optimus_webp_subscriber'      => Optimus_Subscriber::class,
+			'rapidload'                    => RapidLoad::class,
+			'all_in_one_seo_pack'          => AllInOneSEOPack::class,
 		];
 	}
 
@@ -179,14 +209,14 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	 * ids gated behind PluginCompatibilityInterface, no more, no less, so it
 	 * can't silently drift out of sync with PluginResolverGatedIds::IDS.
 	 */
-	public function testShouldEnumerateExactlyTheEasy25GatedIds() {
-		$ids = array_keys( $this->easy_25_classes() );
+	public function testShouldEnumerateExactlyTheGatedIds() {
+		$ids = array_keys( $this->gated_classes() );
 
 		sort( $ids );
 		$expected = PluginResolverGatedIds::IDS;
 		sort( $expected );
 
-		$this->assertSame( $expected, $ids, 'The collision scan must cover exactly the Easy-25 gated ids, no more, no less.' );
+		$this->assertSame( $expected, $ids, 'The collision scan must cover exactly the gated ids, no more, no less.' );
 	}
 
 	/**
@@ -207,7 +237,7 @@ class Test_Easy25HookCollisionScan extends TestCase {
 	}
 
 	/**
-	 * The core assertion: no WordPress hook is registered by 2+ of the Easy-25
+	 * The core assertion: no WordPress hook is registered by 2+ of the gated
 	 * classes at the same priority, except the reviewed, documented pairs in
 	 * self::ACCEPTED_COLLISIONS.
 	 *
@@ -223,7 +253,7 @@ class Test_Easy25HookCollisionScan extends TestCase {
 
 		$hook_priority_to_ids = [];
 
-		foreach ( $this->easy_25_classes() as $id => $class ) {
+		foreach ( $this->gated_classes() as $id => $class ) {
 			$events = $class::get_subscribed_events();
 
 			foreach ( $events as $hook => $callback ) {
@@ -265,7 +295,7 @@ class Test_Easy25HookCollisionScan extends TestCase {
 		$this->assertSame(
 			[],
 			$unexpected,
-			"Unexpected hook/priority collision(s) among the Easy-25 batch (format 'hook:priority registered by: id1, id2'):\n" . implode( "\n", $unexpected )
+			"Unexpected hook/priority collision(s) among the gated classes (format 'hook:priority registered by: id1, id2'):\n" . implode( "\n", $unexpected )
 		);
 	}
 
