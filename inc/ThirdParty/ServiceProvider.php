@@ -6,7 +6,6 @@ namespace WP_Rocket\ThirdParty;
 use WP_Rocket\Dependencies\League\Container\ServiceProvider\{AbstractServiceProvider, BootableServiceProviderInterface};
 use WP_Rocket\ThirdParty\Plugins\CDN\CloudflareFacade;
 use WP_Rocket\ThirdParty\Plugins\ModPagespeed;
-use WP_Rocket\ThirdParty\Plugins\Optimization\Ezoic;
 use WP_Rocket\ThirdParty\Plugins\PluginResolver;
 use WP_Rocket\ThirdParty\Plugins\SubscriberFactory;
 
