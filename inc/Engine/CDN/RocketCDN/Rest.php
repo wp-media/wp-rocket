@@ -645,6 +645,8 @@ class Rest extends WP_REST_Controller {
 		$settings['cdn_type']  = Context::BYOCDN_TYPE === $mode ? 'byocdn' : 'rocketcdn';
 		$settings['cdn_state'] = $mode;
 		$this->options_api->set( 'settings', $settings );
+		// Keep the in-memory options in sync, so the response is rendered from the new mode.
+		$this->options->set_values( $settings );
 
 		if ( null === $trigger ) {
 			return;

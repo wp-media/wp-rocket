@@ -82,6 +82,16 @@ class Test_SaveCdnMode extends TestCase {
 	private function setup_apply_cdn_mode_mocks(): void {
 		$this->options_api->shouldReceive( 'get' )->with( 'settings', [] )->andReturn( [] );
 		$this->options_api->shouldReceive( 'set' )->with( 'settings', Mockery::type( 'array' ) );
+		// The in-memory options must follow the saved mode, so the response is rendered from it.
+		$this->options->shouldReceive( 'set_values' )
+			->atLeast()->once()
+			->with(
+				Mockery::on(
+					function ( $settings ) {
+						return isset( $settings['cdn_state'] );
+					}
+				)
+			);
 		$this->context->shouldReceive( 'get_cdn_state' )->andReturn( Context::ROCKETCDN_FREE_TYPE );
 		$this->context->shouldReceive( 'get_cdn_status' )->andReturn( 'active' );
 	}

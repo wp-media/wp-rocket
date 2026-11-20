@@ -467,6 +467,15 @@
 				);
 				syncCdnHiddenInputs( requestedMode );
 
+				// Swap in the page rows rendered from the new state, so the delete buttons
+				// follow the pause/resume without a page reload.
+				const pageList = document.querySelector( '.wpr-cdn-built-in .wpr-table-list' );
+
+				if ( pageList && response.items_html ) {
+					pageList.insertAdjacentHTML( 'beforebegin', response.items_html );
+					pageList.remove();
+				}
+
 				// Enabling either driver changes the other's paused/active status too - e.g.
 				// switching to Other CDN pauses RocketCDN, and vice versa - so refresh both
 				// status indicators regardless of which toggle was just flipped, instead of
@@ -861,7 +870,7 @@
 		container.parentElement.addEventListener( 'click', ( e ) => {
 			const button = e.target.closest( '.wpr-table-list__delete' );
 
-			if ( ! button ) {
+			if ( ! button || button.disabled || button.classList.contains( 'wpr-cdn-disabled' ) ) {
 				return;
 			}
 

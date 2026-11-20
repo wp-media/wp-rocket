@@ -778,9 +778,10 @@ class Controller extends Abstract_Render {
 	/**
 	 * Determines whether a UI element should be disabled for RocketCDN.
 	 *
-	 * Returns true only when all of the following are true: the current context
-	 * is RocketCDN, the CDN is paused, the user has an active subscription,
-	 * the license is invalid, and the subscription is in a loading state.
+	 * Returns true when any of the following is true: the subscription is in a
+	 * loading state, the CDN is paused (RocketCDN is not the applied CDN state),
+	 * the expired licence notice applies to a free RocketCDN subscriber, or the
+	 * user has no active subscription.
 	 *
 	 * @return bool True if the element should be disabled, false otherwise.
 	 */
@@ -1164,8 +1165,9 @@ class Controller extends Abstract_Render {
 	 * @return array Row data for the table-list-row partial.
 	 */
 	private function build_page_row( object $page ): array {
-		$disable_class = $this->is_subscription_loading() ? 'wpr-cdn-disabled' : '';
-		$delete_button = '<button type="button" class="wpr-table-list__delete ' . esc_attr( $disable_class ) . '" data-id="' . esc_attr( $page->id ) . '" aria-label="' . esc_attr__( 'Remove page', 'rocket' ) . '">'
+		$is_disabled   = $this->should_disable_element_for_rocketcdn();
+		$disable_class = $is_disabled ? 'wpr-cdn-disabled' : '';
+		$delete_button = '<button type="button" class="wpr-table-list__delete ' . esc_attr( $disable_class ) . '" data-id="' . esc_attr( $page->id ) . '" aria-label="' . esc_attr__( 'Remove page', 'rocket' ) . '"' . ( $is_disabled ? ' disabled' : '' ) . '>'
 			. '<span class="wpr-icon-trash"></span>'
 			. '</button>';
 
