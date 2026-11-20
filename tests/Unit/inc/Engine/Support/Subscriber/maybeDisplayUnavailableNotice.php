@@ -39,6 +39,8 @@ class TestMaybeDisplayUnavailableNotice extends TestCase {
 		Functions\when( 'current_user_can' )->justReturn( true );
 		Functions\when( '__' )->returnArg();
 		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
 	}
 
 	/**
