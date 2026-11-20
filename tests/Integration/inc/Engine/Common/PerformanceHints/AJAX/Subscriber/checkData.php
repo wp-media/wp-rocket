@@ -15,8 +15,6 @@ class Test_CheckData extends AjaxTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		// Install per test, after WordPress snapshots the hooks in parent::set_up(): installed in
-		// set_up_before_class, the table's "exists" filter leaked into later test classes.
 		self::installAtfTable();
 
 		$this->action = 'rocket_check_beacon';
@@ -30,8 +28,7 @@ class Test_CheckData extends AjaxTestCase {
 	public function tear_down() {
 		remove_filter( 'rocket_above_the_fold_optimization', [ $this, 'set_allowed' ] );
 
-		// Drop the temporary table set_up() may have created, but never a real one (kept at plugin load on CI).
-		self::dropTemporaryAtfTable();
+		self::uninstallAtfTable();
 
 		parent::tear_down();
 	}

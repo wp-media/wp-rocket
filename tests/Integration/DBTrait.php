@@ -132,17 +132,6 @@ trait DBTrait {
 		self::uninstallTable( 'atf_table' );
 	}
 
-	/**
-	 * Drops the ATF table only if it is a temporary one, leaving a real table untouched.
-	 *
-	 * @return void
-	 */
-	public static function dropTemporaryAtfTable() {
-		global $wpdb;
-
-		$wpdb->query( "DROP TEMPORARY TABLE IF EXISTS {$wpdb->prefix}wpr_above_the_fold" ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery
-	}
-
 	public static function uninstallLrcTable() {
 		self::uninstallTable( 'lrc_table' );
 	}
