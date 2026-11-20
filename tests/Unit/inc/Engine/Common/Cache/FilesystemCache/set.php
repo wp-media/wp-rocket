@@ -32,11 +32,16 @@ class TestSet extends TestCase {
 	Functions\when('rocket_get_filesystem_perms')->justReturn($config['rights']);
 	Functions\expect('get_rocket_parse_url')->with($expected['url'])->andReturn($config['parsed_url']);
 	Functions\when('rocket_get_constant')->justReturn($config['root']);
-	Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
 	Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_current_blog_id')->justReturn( 1 );
 
-	$this->filesystem->shouldReceive('put_contents')->with($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
+		if ( null === $expected['path'] ) {
+			Functions\expect('rocket_mkdir_p')->never();
+			$this->filesystem->shouldNotReceive('put_contents');
+		} else {
+			Functions\expect('rocket_mkdir_p')->with( dirname($expected['path']), $this->filesystem );
+			$this->filesystem->shouldReceive('put_contents')->with($expected['path'], $expected['content'], $config['rights'])->andReturn($config['saved']);
+		}
 
 	$this->assertSame($expected['output'], $this->filesystemcache->set($config['key'], $config['value'], $config['ttl']));
 	}
