@@ -276,7 +276,7 @@ class Subscriber implements Subscriber_Interface {
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,
 			'site_access_url' => self::SITE_ACCESS_URL,
-			// Fill the {contact} and {docs} links of the messages above (wap-client 3.2.0 and later; older libraries ignore them).
+			// Fill the {contact} and {docs} links of the messages above. A library without link support shows the raw markers.
 			'contact_url'     => rocket_get_external_url( 'contact' ),
 			'docs_url'        => get_rocket_documentation_url(),
 			'screens'         => [ 'settings_page_wprocket' ],
