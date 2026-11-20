@@ -34,6 +34,9 @@ return [
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
 					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+					'consentRequired'   => 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorUnavailable'  => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorAuthFailed'   => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 				],
 				'page_context'     => 'support',
 				'capability'       => 'rocket_manage_options',
@@ -41,6 +44,8 @@ return [
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
 				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
+				'contact_url'      => 'https://wp-rocket.me/contact/',
+				'docs_url'         => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'screens'          => [ 'settings_page_wprocket' ],
 				'column'           => [
 					'side'        => 'right',
