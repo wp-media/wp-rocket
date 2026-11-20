@@ -27,7 +27,10 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldCleanBustingFiles( $extensions, $expected ) {
+	public function testShouldCleanBustingFiles( $extensions, $expected, $wp_content_dir = null ) {
+		if ( ! empty( $wp_content_dir ) ) {
+			$this->wp_content_dir = $wp_content_dir;
+		}
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;
 		$this->generateEntriesShouldExistAfter( $expected['cleaned'] );
 
@@ -45,4 +48,5 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();
 	}
+
 }

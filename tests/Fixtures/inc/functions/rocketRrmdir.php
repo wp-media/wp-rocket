@@ -1,8 +1,19 @@
 <?php
 
 $i18n_plugins = require WP_ROCKET_TESTS_FIXTURES_DIR . '/i18n/pluginsData.php';
+$structure    = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+$structure['wp-content']['cache']['release+ (site):'] = [
+	'wp-rocket' => [
+		'example.org' => [
+			'index.html' => '',
+			'de'         => [ 'index.html' => '' ],
+			'fr'         => [ 'index.html' => '' ],
+		],
+	],
+];
 
 return [
+	'structure' => $structure,
 	'vfs_dir'   => 'wp-content/cache/',
 
 	// Test data.
@@ -132,6 +143,22 @@ return [
 				'after_rocket_rrmdir'  => 9,
 			],
 		],
+		'escapedCachePath_shouldPreserveFrenchDirectory' => [
+			'to_delete'   => 'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org',
+			'to_preserve' => [
+				'vfs\:\/\/public\/wp\-content\/cache\/release\+ \(site\)\:\/wp\-rocket\/example\.org(.*)\/fr',
+			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/index.html'      => null,
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/index.html' => null,
+					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/'           => null,
+				],
+				'before_rocket_rrmdir' => 2,
+				'after_rocket_rrmdir'  => 2,
+				'dump_results'         => true,
+			],
+		],
 		'example.org_shouldDeleteAllExceptFEandDE'           => [
 			'to_delete'   => 'vfs://public/wp-content/cache/wp-rocket/example.org',
 			'to_preserve' => [
@@ -229,8 +256,8 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip'  => null,
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/nec-ullamcorper/' => null,
 				],
-				'before_rocket_rrmdir' => 37,
-				'after_rocket_rrmdir'  => 37,
+				'before_rocket_rrmdir' => 42,
+				'after_rocket_rrmdir'  => 42,
 			],
 		],
 	],

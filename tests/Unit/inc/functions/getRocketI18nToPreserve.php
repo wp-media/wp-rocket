@@ -28,7 +28,18 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 	/**
 	 * @dataProvider providerTestData
 	 */
-	public function testShouldReturnExpected( $current_lang, $config, $expected, $mocks ) {
+	public function testShouldReturnExpected(
+		$current_lang,
+		$config,
+		$expected,
+		$mocks,
+		$cache_path = '',
+		$windows_fs = null,
+		$subject = null
+	) {
+		if ( ! is_null( $windows_fs ) ) {
+			Functions\when( '_rocket_is_windows_fs' )->justReturn( $windows_fs );
+		}
 		if ( array_key_exists( 'rocket_has_i18n', $mocks ) && is_null( $mocks['rocket_has_i18n'] ) ) {
 			Functions\expect( 'rocket_has_i18n' )->never();
 		} else {
@@ -59,15 +70,24 @@ class Test_GetRocketI18nToPreserve extends TestCase {
 					->andReturn( $parse_url );
 			}
 
-			Functions\expect( 'rocket_get_constant' )
-				->atLeast()
-				->with( 'WP_ROCKET_CACHE_PATH' )
-				->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
+			if ( '' === $cache_path ) {
+				Functions\expect( 'rocket_get_constant' )
+					->atLeast()
+					->with( 'WP_ROCKET_CACHE_PATH' )
+					->andReturn( 'vfs://public/wp-content/cache/wp-rocket/' );
+			} else {
+				Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_CACHE_PATH' )->never();
+			}
 
 			Filters\expectApplied( 'rocket_langs_to_preserve' )->once()->with( $expected );
 		}
 
-		$this->assertSame( $expected, get_rocket_i18n_to_preserve( $current_lang ) );
+		$patterns = get_rocket_i18n_to_preserve( $current_lang, $cache_path );
+		$this->assertSame( $expected, $patterns );
+
+		if ( ! is_null( $subject ) ) {
+			$this->assertSame( 1, preg_match( '#^' . $patterns[0] . '$#', $subject ) );
+		}
 	}
 
 	public function providerTestData() {

@@ -5,6 +5,26 @@ return [
 	'vfs_dir' => 'wp-content/cache/wp-rocket/',
 
 	'structure' => [
+		'releases+ (site):' => [
+			'wp-content' => [
+				'cache' => [
+					'wp-rocket' => [
+						'example.org'               => [],
+						'example.org-tester-987654' => [],
+						'exampleXorg'               => [],
+					],
+				],
+			],
+		],
+		'C:\\releases+ (site):\\wp-content' => [
+			'cache' => [
+				'wp-rocket' => [
+					'example.org'               => [],
+					'example.org-tester-987654' => [],
+					'exampleXorg'               => [],
+				],
+			],
+		],
 		'wp-content' => [
 			'cache' => [
 				'wp-rocket' => [
@@ -70,6 +90,26 @@ return [
 					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456',
 					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654',
 					'vfs://public/wp-content/cache/wp-rocket/example.org#fr',
+				],
+			],
+			'shouldReturnDomainAndUserCaches_whenCachePathContainsRegexCharacters' => [
+				'config'   => [
+					'url_host'   => 'example.org',
+					'cache_path' => 'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/',
+				],
+				'expected' => [
+					'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/example.org',
+					'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/example.org-tester-987654',
+				],
+			],
+			'shouldReturnDomainAndUserCaches_whenCachePathContainsWindowsSeparators' => [
+				'config'   => [
+					'url_host'   => 'example.org',
+					'cache_path' => 'vfs://public/C:\\releases+ (site):\\wp-content/cache/wp-rocket/',
+				],
+				'expected' => [
+					'vfs://public/C:\\releases+ (site):\\wp-content/cache/wp-rocket/example.org',
+					'vfs://public/C:\\releases+ (site):\\wp-content/cache/wp-rocket/example.org-tester-987654',
 				],
 			],
 
