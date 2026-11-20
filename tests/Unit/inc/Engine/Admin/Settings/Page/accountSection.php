@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use ReflectionMethod;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Database\Optimization;
@@ -62,8 +61,6 @@ class Test_AccountSection extends TestCase {
 			->once()
 			->with( 'account', $expected );
 
-		$method = new ReflectionMethod( Page::class, 'account_section' );
-		$method->setAccessible( true );
-		$method->invoke( $this->page );
+		$this->get_reflective_method( 'account_section', Page::class )->invoke( $this->page );
 	}
 }

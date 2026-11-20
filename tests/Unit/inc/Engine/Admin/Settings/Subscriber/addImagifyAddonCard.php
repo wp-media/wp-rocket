@@ -47,11 +47,8 @@ class Test_AddImagifyAddonCard extends TestCase {
 		$render = Mockery::mock( Render::class );
 		$render->shouldReceive( 'get_imagify_addon_card_data' )->once()->andReturn( $card );
 
-		$reflection = new ReflectionClass( Page::class );
-		$page       = $reflection->newInstanceWithoutConstructor();
-		$property   = $reflection->getProperty( 'render' );
-		$property->setAccessible( true );
-		$property->setValue( $page, $render );
+		$page = ( new ReflectionClass( Page::class ) )->newInstanceWithoutConstructor();
+		$this->set_reflective_property( $render, 'render', $page );
 
 		$this->assertSame( $expected, $page->add_imagify_addon_card( [ [ 'id' => 'a' ] ] ) );
 	}
