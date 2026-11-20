@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\PreloadFonts\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreloadFonts\AJAX\Controller;
 
 use Mockery;
 use WP_Rocket\Engine\Media\PreloadFonts\AJAX\Controller;

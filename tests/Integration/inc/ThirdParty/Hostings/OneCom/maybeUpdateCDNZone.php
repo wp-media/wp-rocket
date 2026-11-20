@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\OneCom;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Hostings\OneCom;
 
 use WP_Rocket\Tests\Integration\TestCase;
 use Brain\Monkey\Functions;

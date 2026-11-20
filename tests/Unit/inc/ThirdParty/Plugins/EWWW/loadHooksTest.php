@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\ThirdParty\Plugins\EWWW;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\EWWW;
 
 use Brain\Monkey\{Actions, Filters, Functions};
 use Mockery;

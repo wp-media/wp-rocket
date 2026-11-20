@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\tests\Integration\inc\Engine\Common\PerformanceHints\Cron\Controller;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\Cron\Controller;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\DynamicLists\Subscriber;
 
 use Mockery;
 use WP_Rocket\Engine\Optimization\DynamicLists\DynamicLists;

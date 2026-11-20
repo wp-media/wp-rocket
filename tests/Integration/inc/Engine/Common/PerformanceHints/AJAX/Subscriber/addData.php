@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\AJAX\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
