@@ -63,6 +63,10 @@ class Post extends Abstract_Render {
 			return;
 		}
 
+		if ( ! $this->is_section_available() ) {
+			return;
+		}
+
 		$data = [
 			'disabled_description' => $this->get_disabled_description(),
 		];
@@ -120,6 +124,10 @@ class Post extends Abstract_Render {
 			return;
 		}
 
+		if ( ! $this->is_section_available() ) {
+			return;
+		}
+
 		// Bailout if the CPCSS is not enabled for this Post / Page.
 		if ( $this->is_enabled() ) {
 			return;
@@ -149,6 +157,15 @@ class Post extends Abstract_Render {
 	}
 
 	/**
+	 * Checks if the CPCSS section applies: LCA is enabled and RUCSS is not.
+	 *
+	 * @return bool
+	 */
+	private function is_section_available(): bool {
+		return (bool) $this->options->get( 'async_css', 0 ) && ! $this->options->get( 'remove_unused_css', 0 );
+	}
+
+	/**
 	 * Gets data for the disabled checks.
 	 *
 	 * @since 3.6
@@ -168,10 +185,6 @@ class Post extends Abstract_Render {
 
 		if ( 'publish' !== $post->post_status ) {
 			$this->disabled_data['not_published'] = 1;
-		}
-
-		if ( ! $this->options->get( 'async_css', 0 ) ) {
-			$this->disabled_data['option_disabled'] = 1;
 		}
 
 		if ( get_post_meta( $post->ID, '_rocket_exclude_async_css', true ) ) {
@@ -220,7 +233,6 @@ class Post extends Abstract_Render {
 		$list   = [
 			// translators: %s = post type.
 			'not_published'   => sprintf( __( 'Publish the %s', 'rocket' ), $post->post_type ),
-			'option_disabled' => __( 'Enable Load CSS asynchronously in WP Rocket settings', 'rocket' ),
 			'option_excluded' => __( 'Enable Load CSS asynchronously in the options above', 'rocket' ),
 		];
 

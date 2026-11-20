@@ -54,7 +54,7 @@ HTML
 
 return [
 
-	'testShouldDisplayAllWarnings' => [
+	'testShouldNotDisplaySectionWhenLCADisabled' => [
 		'config' => [
 			'options'            => [
 				'async_css' => 0,
@@ -67,28 +67,29 @@ return [
 			],
 			'is_option_excluded' => true,
 		],
-
 		'expected' => [
-			// For Unit Test: the data the "generate" method should receive.
-			'data'               => [
-				'disabled_description' => 'Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.',
-			],
+			'data' => null,
+			'html' => '',
+		],
+	],
 
-			// For the integration test.
-			'html' => <<<HTML
- <div class="inside">
-	<h3>Critical Path CSS</h3>
-	<div id="rocket-metabox-cpcss-content">
-		{$cpcss_content}
-	</div>
-</div>
-<div id="cpcss_response_notice" class="components-notice is-notice is-warning">
-	<div class="components-notice__content">
-		<p>Publish the post, Enable Load CSS asynchronously in WP Rocket settings, and Enable Load CSS asynchronously in the options above to use this feature.</p>
-	</div>
-</div>
-HTML
-			,
+	'testShouldNotDisplaySectionWhenRUCSSEnabled' => [
+		'config' => [
+			'options'            => [
+				'async_css' => 1,
+				'async_css_mobile' => 1,
+				'remove_unused_css' => 1,
+			],
+			'post'               => (object) [
+				'ID'          => 1,
+				'post_status' => 'publish',
+				'post_type'   => 'post',
+			],
+			'is_option_excluded' => false,
+		],
+		'expected' => [
+			'data' => null,
+			'html' => '',
 		],
 	],
 
