@@ -40,7 +40,7 @@ return [
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
-				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
+				'site_access_url'  => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'screens'          => [ 'settings_page_wprocket' ],
 				'column'           => [
 					'side'        => 'right',
