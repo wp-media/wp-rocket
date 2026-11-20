@@ -95,9 +95,16 @@ abstract class AjaxTestCase extends WPMediaAjaxTestCase {
 			$this->loadTestDataConfig();
 		}
 
-		return isset( $this->config['test_data'] )
+		$data = isset( $this->config['test_data'] )
 			? $this->config['test_data']
 			: $this->config;
+
+		// An empty provider makes PHPUnit skip the test silently: fail instead, so a missing or misnamed fixture is noticed.
+		if ( empty( $data ) ) {
+			throw new \RuntimeException( sprintf( 'No test data for %s: its fixture under tests/Fixtures is missing or empty.', static::class ) );
+		}
+
+		return $data;
 	}
 
 	protected function loadTestDataConfig() {

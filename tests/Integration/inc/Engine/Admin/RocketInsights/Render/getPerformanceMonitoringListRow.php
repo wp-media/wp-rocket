@@ -45,7 +45,7 @@ class Test_GetPerformanceMonitoringListRow extends TestCase {
 
 		// Get container and render instance
 		self::$container = apply_filters( 'rocket_container', null );
-		$this->render = self::$container->get( 'pm_render' );
+		$this->render = self::$container->get( 'ri_render' );
 	}
 
 	public function tear_down() {

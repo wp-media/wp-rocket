@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Context\Context;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\Fonts\Context\OptimizationContext;
 
 use Brain\Monkey\Functions;
 use Mockery;
