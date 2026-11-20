@@ -63,6 +63,11 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 		}
 
 		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+		Functions\when( 'home_url' )->justReturn( 'http://example.org' );
+
+		if ( isset( $config['i18n_uri'] ) ) {
+			Filters\expectApplied( 'rocket_get_i18n_uri' )->andReturn( $config['i18n_uri'] );
+		}
 
 		if ( isset( $config['ignored_params'] ) ) {
 			Filters\expectApplied( 'rocket_cache_ignored_parameters' )
