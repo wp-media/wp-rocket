@@ -15,7 +15,7 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Live URLs. Define WP_ROCKET_WAP_SERVER_URL and WP_ROCKET_WAP_ISSUER_URL to use another environment, for example staging.
 	 */
-	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+	private const WAP_SERVER_URL = 'https://wap.wp-rocket.me';
 	private const WAP_ISSUER_URL = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 	private const TERMS_URL       = 'https://wp-rocket.me/terms/';
@@ -247,8 +247,8 @@ class Subscriber implements Subscriber_Interface {
 				'columnLabel'       => __( 'Ask Support', 'rocket' ),
 				'settings'          => __( 'Settings', 'rocket' ),
 				'closeAssistant'    => __( 'Close', 'rocket' ),
-				'consentText'       => __( 'Please review and accept the {terms} for the AI Assistant.', 'rocket' ),
-				'consentAccessText' => __( 'The AI Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
+				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
+				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
@@ -379,13 +379,13 @@ class Subscriber implements Subscriber_Interface {
 
 		switch ( $reason_code ) {
 			case 'multisite':
-				$reason = __( 'The AI Assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
+				$reason = __( 'The support assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
 				break;
 			case 'https':
-				$reason = __( 'The AI Assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
+				$reason = __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
 				break;
 			default:
-				$reason = __( 'The AI Assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+				$reason = __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
 		}
 
 		rocket_notice_html(
