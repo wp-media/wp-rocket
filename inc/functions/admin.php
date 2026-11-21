@@ -11,6 +11,14 @@ function rocket_need_api_key() {
 	$errors  = (array) get_transient( 'rocket_check_key_errors' );
 
 	foreach ( $errors as $error ) {
+		// Sentinel set by rocket_valid_key() before the textdomain loads; translate at render time.
+		if ( 'invalid_license_data' === $error ) {
+			$error = __( 'The provided license data are not valid.', 'rocket' ) .
+				' <br>' .
+				// Translators: %1$s = opening link tag, %2$s = closing link tag.
+				sprintf( __( 'To resolve, please %1$scontact support%2$s.', 'rocket' ), '<a href="https://wp-rocket.me/support/" rel="noopener noreferrer" target=_"blank">', '</a>' );
+		}
+
 		$message .= '<p>' . $error . '</p>';
 	}
 
