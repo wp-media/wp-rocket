@@ -37,6 +37,25 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 		$url_host   = array_key_exists( 'url_host', $config ) ? $config['url_host'] : '';
 		$cache_path = array_key_exists( 'cache_path', $config ) ? $config['cache_path'] : '';
 		$hard_reset = array_key_exists( 'hard_reset', $config ) ? $config['hard_reset'] : '';
+		if ( array_key_exists( 'windows_fs', $config ) ) {
+			Functions\when( '_rocket_is_windows_fs' )->justReturn( $config['windows_fs'] );
+		}
+
+		if ( ! empty( $config['windows_regex_subject'] ) ) {
+			// Windows normalization invalidates VFS URLs, so exercise the regex directly.
+			$normalized_cache_path = _rocket_normalize_path( $cache_path );
+			$this->assertSame( $config['normalized_cache_path'], $normalized_cache_path );
+
+			$regex = sprintf(
+				'/%1$s%2$s(.*)/i',
+				preg_quote( $normalized_cache_path, '/' ),
+				preg_quote( $url_host, '/' )
+			);
+			$this->assertSame( 1, preg_match( $regex, $config['windows_regex_subject'] ) );
+			$this->assertSame( 0, preg_match( $regex, $config['windows_nonmatching_subject'] ) );
+
+			return;
+		}
 
 		if ( empty( $cache_path ) ) {
 			$this->expectRocketGetConstant();
