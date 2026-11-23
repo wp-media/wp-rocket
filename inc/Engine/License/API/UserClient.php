@@ -123,15 +123,6 @@ class UserClient extends AbstractSafeAPIClient {
 	}
 
 	/**
-	 * Checks whether the licence server rejected the licence on its last answer.
-	 *
-	 * @return bool
-	 */
-	public function is_licence_rejected(): bool {
-		return (bool) get_transient( self::LICENCE_REJECTED_TRANSIENT );
-	}
-
-	/**
 	 * Validate response code, and record whether the licence server rejected the licence.
 	 *
 	 * The result is the parent's: a rejection stays an invalid answer, so the request backoff applies as before.

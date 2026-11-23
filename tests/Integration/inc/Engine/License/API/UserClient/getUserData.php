@@ -63,7 +63,7 @@ class Test_GetUserData extends TestCase {
 			$expected,
 			self::$client->get_user_data()
 		);
-		$this->assertSame( $rejected, self::$client->is_licence_rejected() );
+		$this->assertSame( $rejected, (bool) get_transient( UserClient::LICENCE_REJECTED_TRANSIENT ) );
 	}
 
 	public function set_consumer_email() {
