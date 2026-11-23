@@ -41,6 +41,10 @@ return [
 		'config'   => [ 'response' => $response( 404, '{"detail":"x"}' ) ],
 		'expected' => $no_decision,
 	],
+	'testShouldNotFlagA404JsonScalar' => [
+		'config'   => [ 'response' => $response( 404, 'false' ) ],
+		'expected' => $no_decision,
+	],
 	'testShouldNotFlagA500' => [
 		'config'   => [ 'response' => $response( 500, $error_404 ) ],
 		'expected' => $no_decision,

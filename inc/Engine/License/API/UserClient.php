@@ -141,15 +141,17 @@ class UserClient extends AbstractSafeAPIClient {
 	 * @return bool
 	 */
 	protected function valid_response_code( $response ) {
-		$valid = parent::valid_response_code( $response );
-
-		if ( $valid ) {
+		if ( parent::valid_response_code( $response ) ) {
 			delete_transient( self::LICENCE_REJECTED_TRANSIENT );
-		} elseif ( $this->is_licence_rejection( $response ) ) {
+
+			return true;
+		}
+
+		if ( $this->is_licence_rejection( $response ) ) {
 			set_transient( self::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
 		}
 
-		return $valid;
+		return false;
 	}
 
 	/**
@@ -168,12 +170,6 @@ class UserClient extends AbstractSafeAPIClient {
 			return true;
 		}
 
-		if ( 404 !== $code ) {
-			return false;
-		}
-
-		$data = json_decode( wp_remote_retrieve_body( $response ) );
-
-		return is_object( $data ) && isset( $data->success ) && false === $data->success;
+		return 404 === $code && false === ( json_decode( wp_remote_retrieve_body( $response ) )->success ?? null );
 	}
 }
