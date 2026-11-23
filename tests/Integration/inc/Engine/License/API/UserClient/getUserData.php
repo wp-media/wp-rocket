@@ -29,6 +29,7 @@ class Test_GetUserData extends TestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		delete_transient( UserClient::LICENCE_REJECTED_TRANSIENT );
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 	}
@@ -37,6 +38,7 @@ class Test_GetUserData extends TestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		delete_transient( UserClient::LICENCE_REJECTED_TRANSIENT );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
 
@@ -46,9 +48,13 @@ class Test_GetUserData extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $config, $expected ) {
+	public function testShouldReturnExpected( $config, $expected, $rejected = false ) {
 		if ( true === $config['transient'] ) {
 			set_transient( 'wp_rocket_customer_data', $expected );
+		}
+
+		if ( ! empty( $config['flagged'] ) ) {
+			set_transient( UserClient::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
 		}
 
 		$this->config['http'] = [ UserClient::USER_ENDPOINT => $config['response'] ];
@@ -57,6 +63,7 @@ class Test_GetUserData extends TestCase {
 			$expected,
 			self::$client->get_user_data()
 		);
+		$this->assertSame( $rejected, self::$client->is_licence_rejected() );
 	}
 
 	public function set_consumer_email() {
