@@ -229,6 +229,10 @@ class Route {
 				// The version running here, so Fleet can ask for
 				// recommendations this install actually supports.
 				'plugin_version' => (string) rocket_get_constant( 'WP_ROCKET_VERSION', '' ),
+				// What the plugin runs on, so Fleet can show an agency which
+				// sites need WordPress or PHP updated.
+				'wp_version'     => (string) get_bloginfo( 'version' ),
+				'php_version'    => PHP_VERSION,
 			],
 			200
 		);

@@ -30,7 +30,7 @@ class ReadTest extends TestCase {
 		$data = $this->read();
 
 		$this->assertSame(
-			[ 'site', 'settings', 'schema', 'unset', 'writable', 'plugin_version' ],
+			[ 'site', 'settings', 'schema', 'unset', 'writable', 'plugin_version', 'wp_version', 'php_version' ],
 			array_keys( $data )
 		);
 	}
@@ -68,6 +68,19 @@ class ReadTest extends TestCase {
 	}
 
 	/**
+	 * Test the WordPress and PHP versions are reported, so Fleet can show
+	 * which sites run on an outdated stack.
+	 *
+	 * @return void
+	 */
+	public function testShouldReportTheWordPressAndPhpVersions(): void {
+		$data = $this->read();
+
+		$this->assertSame( '6.7.1', $data['wp_version'] );
+		$this->assertSame( PHP_VERSION, $data['php_version'] );
+	}
+
+	/**
 	 * The response data of a read on a site that saved `cache_mobile` only.
 	 *
 	 * @return array
@@ -88,6 +101,7 @@ class ReadTest extends TestCase {
 		Functions\when( 'home_url' )->justReturn( 'https://example.com' );
 		Functions\when( 'wp_parse_url' )->justReturn( 'example.com' );
 		Functions\when( 'get_rocket_option' )->justReturn( 0 );
+		Functions\when( 'get_bloginfo' )->justReturn( '6.7.1' );
 
 		$route = new Route(
 			Mockery::mock( Verifier::class ),
