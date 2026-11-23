@@ -1,6 +1,6 @@
 <?php
 
-$live_server_url = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+$live_server_url = 'https://wap.wp-rocket.me';
 $live_issuer_url = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 return [
