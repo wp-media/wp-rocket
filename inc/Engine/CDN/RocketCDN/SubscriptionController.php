@@ -711,14 +711,19 @@ class SubscriptionController implements LoggerAwareInterface {
 	/**
 	 * Checks whether the account's own user data conclusively has no RocketCDN token.
 	 *
-	 * A `false` $user_data means the user endpoint call itself failed — that's an
-	 * inconclusive result, not proof of "no token", so it isn't treated as one here.
+	 * A `false` $user_data means the user endpoint call itself failed, and an object with `success` false
+	 * is an error answer of the licence server: both are inconclusive results, not proof of "no token",
+	 * so they aren't treated as one here.
 	 *
 	 * @param bool|object $user_data User data, as returned by UserClient::get_user_data().
 	 *
 	 * @return bool
 	 */
 	private function has_no_rocketcdn_token( $user_data ): bool {
-		return false !== $user_data && empty( $user_data->rocketcdn->cdn_token );
+		if ( false === $user_data || ( isset( $user_data->success ) && false === $user_data->success ) ) {
+			return false;
+		}
+
+		return empty( $user_data->rocketcdn->cdn_token );
 	}
 }
