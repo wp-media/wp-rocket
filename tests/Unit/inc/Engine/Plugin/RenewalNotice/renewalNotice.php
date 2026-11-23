@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Plugin\RenewalNotice;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Plugin\RenewalNotice;
 
 use Mockery;
 use WP_Rocket\Engine\License\API\User;

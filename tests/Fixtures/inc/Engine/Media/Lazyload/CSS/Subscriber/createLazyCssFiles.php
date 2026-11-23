@@ -13,6 +13,15 @@ $html = <<<HTML
 </html>
 HTML;
 
+$html_unmapped = <<<HTML
+<html>
+<head>
+	<link rel="stylesheet" href="https://cdn.example.com/wp-content/style.php">
+</head>
+<body></body>
+</html>
+HTML;
+
 $html_filtered = <<<HTML
 <html>
 <head>
@@ -225,6 +234,48 @@ return [
 				]
 			]
 		]
+	],
+
+	'unmappableUrlShouldKeepOriginalHref' => [
+		'config' => [
+			'data' => [
+				'html' => $html_unmapped,
+				'css_files' => [
+					'https://cdn.example.com/wp-content/style.php',
+				],
+				'lazyloaded_images' => [
+					'formatted_urls1',
+				],
+			],
+			'home_url' => 'https://new.rocketlabsqa.ovh',
+			'parse_url_query' => [],
+			'parse_url' => [
+				'https://cdn.example.com/wp-content/style.php' => 'cdn.example.com',
+			],
+			'has' => [
+				'https://cdn.example.com/wp-content/style.php' => false,
+			],
+			'resolve' => [],
+			'content' => [],
+			'extract' => [],
+			'rule_format' => [],
+			'cache_set' => [],
+			'cache_get' => [],
+			'generate_url' => [],
+			'json_set' => [],
+			'generate_path' => [
+				'https://cdn.example.com/wp-content/style.php' => '',
+			],
+		],
+		'expected' => [
+			'html' => $html_unmapped,
+			'css_files' => [
+				'https://cdn.example.com/wp-content/style.php',
+			],
+			'lazyloaded_images' => [
+				'formatted_urls1',
+			],
+		],
 	],
 
 ];

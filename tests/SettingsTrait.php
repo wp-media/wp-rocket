@@ -39,16 +39,24 @@ trait SettingsTrait {
 	 * isn't simulating a real wp-admin settings save, so it shouldn't pick up either side effect
 	 * just because inc/admin/options.php is no longer gated behind is_admin() (see inc/main.php).
 	 *
+	 * The whole update_option_wp_rocket_settings hook is detached, so no subscriber queries tables the test didn't install.
+	 *
 	 * @param array $settings Settings array to persist.
 	 * @return void
 	 */
 	private static function updateSettingsWithoutSaveSideEffects( array $settings ) {
+		global $wp_filter;
+
+		$after_save_hook = $wp_filter['update_option_wp_rocket_settings'] ?? null;
+		unset( $wp_filter['update_option_wp_rocket_settings'] );
 		remove_filter( 'pre_update_option_wp_rocket_settings', 'rocket_pre_main_option', 10 );
-		remove_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10 );
 
 		update_option( 'wp_rocket_settings', $settings );
 
 		add_filter( 'pre_update_option_wp_rocket_settings', 'rocket_pre_main_option', 10, 2 );
-		add_action( 'update_option_wp_rocket_settings', 'rocket_after_save_options', 10, 2 );
+
+		if ( null !== $after_save_hook ) {
+			$wp_filter['update_option_wp_rocket_settings'] = $after_save_hook; // phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited
+		}
 	}
 }

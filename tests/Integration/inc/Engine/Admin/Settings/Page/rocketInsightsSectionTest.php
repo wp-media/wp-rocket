@@ -75,14 +75,6 @@ class RocketInsightsSectionTest extends TestCase {
 		$all_settings = $settings->get_settings();
 		$has_rocket_insights = isset( $all_settings['rocket_insights'] );
 
-		// Special handling for the "should show" test case in Docker environment
-		if ( $expected === true && $has_rocket_insights === false ) {
-			// This is likely the "should show on live site" test failing due to Docker localhost detection
-			if ( isset( $config['is_live_site'] ) && $config['is_live_site'] === true && $config['customer_data']->is_reseller === 0 ) {
-				$this->markTestSkipped( 'Cannot properly mock live site detection in Docker localhost environment. Feature works correctly - hiding content on localhost as expected.' );
-			}
-		}
-
 		$this->assertEquals( $expected, $has_rocket_insights );
 	}
 

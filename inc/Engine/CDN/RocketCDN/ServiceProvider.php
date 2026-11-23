@@ -116,8 +116,6 @@ class ServiceProvider extends AbstractServiceProvider {
 		$this->getContainer()->addShared( 'rocketcdn_rest_subscriber', RESTSubscriber::class )
 			->addArguments(
 				[
-					'rocketcdn_options_manager',
-					'options',
 					'rocketcdn_rest',
 					'rocketcdn_subscription_controller',
 				]

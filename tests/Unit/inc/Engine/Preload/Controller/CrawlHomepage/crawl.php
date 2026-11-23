@@ -1,5 +1,7 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Controller\CrawlHomepage;
+
 use WP_Rocket\Engine\Preload\Controller\CrawlHomepage;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Functions;

@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\GoDaddy;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Hostings\Godaddy;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;
