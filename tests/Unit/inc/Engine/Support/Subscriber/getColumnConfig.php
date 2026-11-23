@@ -32,6 +32,8 @@ class TestGetColumnConfig extends TestCase {
 
 		Functions\when( '__' )->returnArg();
 		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
@@ -102,6 +104,9 @@ class TestGetColumnConfig extends TestCase {
 					break;
 				case 'column_start_on_open':
 					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
+					break;
+				case 'column_persist':
+					$this->assertFalse( $result['column']['persist'], 'column.persist' );
 					break;
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );

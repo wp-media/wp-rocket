@@ -111,7 +111,8 @@ class ChatWidget
      *     capability?:  string,
      *     product:      string,
      *     server_url:   string,
-     *     grnd?:        array{issuer_url?: string, license_key?: string},
+     *     grnd?:        array{issuer_url?: string, license_key?: string,
+     *                         send_user_ref?: bool, password_label?: string},
      *     grnd_provider?: callable,
      *     mode?:        string,
      *     mcp_endpoint?: string,
@@ -120,13 +121,15 @@ class ChatWidget
      *     terms_url?:   string,
      *     privacy_url?: string,
      *     site_access_url?: string,
+     *     contact_url?: string,
+     *     docs_url?: string,
      *     custom_css_url?: string,
      *     brand?:       string,
      *     layout?:      array{width?: string, innerWidth?: string, align?: string,
      *                         expandToggle?: string, height?: string, chrome?: string,
      *                         accent?: string, keepScrollbar?: bool, showHeader?: bool,
      *                         showNewChat?: bool, showSettings?: bool, showDeleteData?: bool,
-     *                         showAgentSelector?: bool},
+     *                         showAgentSelector?: bool, showVersion?: bool},
      *     i18n?:        array<string, string> UI string overrides, merged with the
      *                         built-in defaults (caller keys win). See the
      *                         $i18n_defaults array for the full key list, e.g.
@@ -198,7 +201,9 @@ class ChatWidget
 
         $product       = sanitize_text_field($args['product'] ?? '');
         $send_user_ref = filter_var($args['grnd']['send_user_ref'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $password_label = sanitize_text_field($args['grnd']['password_label'] ?? '');
         self::warn_on_user_ref_mismatch($menu_slug, $product, $send_user_ref, $context);
+        self::warn_on_password_label_mismatch($menu_slug, $product, $password_label, $context);
 
         // Normalise and store.
         self::$pages[$menu_slug] = [
@@ -224,6 +229,8 @@ class ChatWidget
             'grnd_issuer_url'    => esc_url_raw($args['grnd']['issuer_url'] ?? ''),
             'grnd_license_key'   => sanitize_text_field($args['grnd']['license_key'] ?? ''),
             'grnd_send_user_ref' => $send_user_ref,
+            // Full Application Password name; '' keeps the library default.
+            'grnd_password_label' => $password_label,
             'grnd_provider'      => is_callable($args['grnd_provider'] ?? null) ? $args['grnd_provider'] : null,
             'mode'               => in_array($args['mode'] ?? 'product', ['product', 'orchestrator'], true)
                                         ? ($args['mode'] ?? 'product')
@@ -234,6 +241,8 @@ class ChatWidget
             'terms_url'          => esc_url_raw($args['terms_url'] ?? ''),
             'privacy_url'        => esc_url_raw($args['privacy_url'] ?? ''),
             'site_access_url'    => esc_url_raw($args['site_access_url'] ?? ''),
+            'contact_url'        => esc_url_raw($args['contact_url'] ?? ''),
+            'docs_url'           => esc_url_raw($args['docs_url'] ?? ''),
             // Optional per-tenant brand stylesheet, injected client-side as the
             // last <link> so its rules layer on top of ours (see the widget's
             // injectCustomCss()). Sites can also set it via the
@@ -287,6 +296,45 @@ class ChatWidget
                     $product
                 ),
                 '2.7.0'
+            );
+
+            return;
+        }
+    }
+
+    /**
+     * Warn a developer when two surfaces of one product disagree on `grnd.password_label`.
+     *
+     * The Application Password is minted per user and product, so the name is effectively per
+     * product: whichever surface mints first names it.
+     *
+     * @param string $menu_slug      Slug of the surface being registered.
+     * @param string $product        Its product slug.
+     * @param string $password_label Its sanitised `grnd.password_label`.
+     * @param string $context        Registering function, for the notice.
+     *
+     * @return void
+     */
+    private static function warn_on_password_label_mismatch(string $menu_slug, string $product, string $password_label, string $context): void
+    {
+        if (!defined('WP_DEBUG') || !WP_DEBUG || '' === $product) {
+            return;
+        }
+
+        foreach (self::$pages as $slug => $page) {
+            if ($slug === $menu_slug || ($page['product'] ?? '') !== $product || (string) ($page['grnd_password_label'] ?? '') === $password_label) {
+                continue;
+            }
+
+            _doing_it_wrong(
+                $context,
+                sprintf(
+                    'grnd.password_label is effectively per product, but surfaces "%1$s" and "%2$s" of product "%3$s" disagree. Set the same value on every surface of the product.',
+                    (string) $slug,
+                    $menu_slug,
+                    $product
+                ),
+                '3.1.0'
             );
 
             return;
@@ -663,7 +711,7 @@ class ChatWidget
             data-product="<?php echo esc_attr($page['product']); ?>"
         >
             <div class="gv-loader-container" aria-live="polite">
-                <gv-loader src="https://gravity.group-cdn.one/v5.52.4/loaders/spinner.svg"></gv-loader>
+                <gv-loader src="https://gravity.group-cdn.one/v5.53.2/loaders/spinner.svg"></gv-loader>
                 <p><?php esc_html_e('Connecting to the assistant…', 'wap-client'); ?></p>
             </div>
         </div>
@@ -930,14 +978,14 @@ class ChatWidget
 
         wp_enqueue_style(
             'gravity-design-system',
-            'https://gravity.group-cdn.one/v5.52.4/css/brands/' . $brand . '.min.css',
+            'https://gravity.group-cdn.one/v5.53.2/css/brands/' . $brand . '.min.css',
             [],
             null
         );
 
         wp_enqueue_script(
             'gravity-design-system-js',
-            'https://gravity.group-cdn.one/v5.52.4/index.umd.js',
+            'https://gravity.group-cdn.one/v5.53.2/index.umd.js',
             [],
             null,
             true
@@ -1028,6 +1076,8 @@ class ChatWidget
             'analyzing'      => __('Analyzing the website…', 'wap-client'),
             'retrieving'     => __('Retrieving configuration…', 'wap-client'),
             'applying'       => __('Interacting with WordPress…', 'wap-client'),
+            /* translators: {product} is a plugin's name, e.g. "WP Rocket". Keep {product} as is. */
+            'applyingProduct' => __('Interacting with {product}…', 'wap-client'),
             'searching'      => __('Searching the web…', 'wap-client'),
             'reading'        => __('Reading a page…', 'wap-client'),
             'consulting'     => __('Consulting multiple specialists…', 'wap-client'),
@@ -1051,7 +1101,8 @@ class ChatWidget
             'hideDetails'    => __('Hide details', 'wap-client'),
             'otherPlaceholder' => __('Type something else…', 'wap-client'),
             'skipQuestion'   => __('Skip', 'wap-client'),
-            'closeQuestion'  => __('Close', 'wap-client'),
+            'minimizeQuestion' => __('Hide options', 'wap-client'),
+            'expandQuestion'   => __('Show options', 'wap-client'),
             'confirmAnswer'  => __('Confirm', 'wap-client'),
             'selectOne'      => __('Select one', 'wap-client'),
             'nSelected'      => __('{n} selected.', 'wap-client'),
@@ -1074,12 +1125,15 @@ class ChatWidget
             // Shown after MAX_REAUTH_ATTEMPTS instead of looping on rejected GRNDs.
             'errorAuthFailed'=> __('Could not connect to the assistant. Please reload the page, or contact support if this continues.', 'wap-client'),
             'errorRetry'     => __('Try again', 'wap-client'),
+            // Empty keeps the server's own connection-error text; a product sets it to add links.
+            'errorUnavailable' => '',
             'errorQuota'     => __('You have reached your monthly message limit. It resets at the start of next month.', 'wap-client'),
             'errorReference' => __('Reference:', 'wap-client'),
             // Keep the {placeholders} — the widget fills them in.
             'quotaLow'       => __('Only {remaining} of {total} messages left this month. Your quota renews on {date} at {time}.', 'wap-client'),
             'quotaExhausted' => __('Limit reached. Your quota will renew on {date} at {time}.', 'wap-client'),
             'quotaBlocked'   => __('Message limit reached', 'wap-client'),
+            'messageTooLong' => __('Messages can be up to {max} characters. Shorten this one or split it into several.', 'wap-client'),
             'consentTitle'   => __('Before you start', 'wap-client'),
             // {terms} is replaced with the Terms & Conditions link, {learnMore} with
             // a "Learn more" link to site_access_url (dropped when that is unset).
@@ -1158,6 +1212,8 @@ class ChatWidget
                 'termsUrl'        => esc_url_raw($page['terms_url']),
                 'privacyUrl'      => esc_url_raw($page['privacy_url']),
                 'siteAccessUrl'   => esc_url_raw($page['site_access_url']),
+                'contactUrl'      => esc_url_raw($page['contact_url']),
+                'docsUrl'         => esc_url_raw($page['docs_url']),
                 // Mixpanel client-side analytics. All optional; the widget is
                 // inert without mixpanelToken. Governed mandatory props are sent
                 // as super-properties: application, page (derived), and brand
@@ -1322,6 +1378,7 @@ class ChatWidget
             'showSettings',
             'showDeleteData',
             'showAgentSelector',
+            'showVersion',
         ];
         foreach ($flags as $flag) {
             if (isset($raw[$flag])) {
@@ -1696,6 +1753,7 @@ class ChatWidget
             'grnd_provider' => is_callable($page['grnd_provider'] ?? null) ? $page['grnd_provider'] : null,
             'force_new'     => $force_new,
             'send_user_ref' => !empty($page['grnd_send_user_ref']),
+            'password_label' => (string) ($page['grnd_password_label'] ?? ''),
         ]);
 
         if (is_wp_error($grnd)) {
@@ -1711,7 +1769,10 @@ class ChatWidget
             // exchange HTTP failure, …) is for the integrator, not the end
             // user — log it and reply with a generic message.
             self::log_auth_failure('GRND acquisition failed', $grnd);
-            wp_send_json_error(['message' => self::unavailable_message()], 403);
+            wp_send_json_error([
+                'code'    => 'wap_client_unavailable',
+                'message' => self::unavailable_message(),
+            ], 403);
         }
 
         // Per-call GRND transport (no session exchange): the GRND itself is

@@ -729,9 +729,11 @@ the same call, since a GRND issued over a revoked credential must never be reuse
 once the host plugin is deactivated, the WAP Application Password left on each user is an ordinary,
 unrestricted one again. Revoke them from your deactivation and uninstall hooks with
 `\WapClient::revoke_app_passwords('your-product')`: it deletes your product's passwords and uuid meta
-for every user on every site, plus any WAP password no site has on record, and works without a
-logged-in user. Don't delete every password tagged with `AppPasswordManager::APP_ID` yourself: every
-host shares that tag, so you would revoke another plugin's live credential (and reset its consent).
+for every user on every site, plus any password tagged with the library's `app_id` that no site has
+on record, and works without a logged-in user. A user's own Application Password is never touched,
+whatever its name, including one named `WAP – …`. Don't delete every password tagged with
+`AppPasswordManager::APP_ID` yourself: every host shares that tag, so you would revoke another
+plugin's live credential (and reset its consent).
 
 Configure one of:
 
@@ -755,6 +757,16 @@ Configure one of:
 
   When the host sets `grnd.send_user_ref` the body also carries an optional `user_ref` (see
   *Per-user chat reference* below). `get_grnd_token()` takes the matching `send_user_ref` argument.
+
+  `grnd.password_label` is the full name of the Application Password the chat mints, shown on the
+  user's profile and used as is (sanitised as WordPress sanitises application names), e.g.
+  `'password_label' => 'WP Rocket AI Assistant'`. It is a plain string, not translated. Default:
+  `WAP – <product>`. `get_grnd_token()` takes the matching `password_label` argument. The name is
+  only a display name: the library recognises its passwords by their `app_id`, never by name. It is
+  effectively per product, as the password is rotated per user and product: with `WP_DEBUG` on,
+  registering two surfaces of one product with different labels raises a `_doing_it_wrong()` notice
+  (as for `send_user_ref`), and the name follows whichever surface rotated the password last
+  (about every 50 minutes).
 
 - **`grnd_provider`** — escape hatch for brands whose backends cannot conform. A callable returning
   the raw GRND string (or `['grnd' => ..., 'expires_at' => ...]`, or a `WP_Error` when the customer
@@ -1029,6 +1041,20 @@ your provider function.
   acknowledge Privacy Policy."_ — with the two links inline; each falls back to plain text when its
   URL is unset. The bottom-right of the bar shows the running `wap-client` version.
 
+- `contact_url` / `docs_url` — the host's support-contact page and documentation page. They fill
+  the `{contact}…{/contact}` and `{docs}…{/docs}` placeholders in the `i18n` strings
+  `consentRequired` (the reminder shown after the consent prompt is dismissed), `errorAuthFailed`
+  (the "could not connect" notice) and `errorUnavailable` (see below), e.g.
+  `'You can {contact}contact support{/contact} or read {docs}the documentation{/docs}.'`. Only
+  `http:`, `https:` and `mailto:` URLs become links (new tab); when the URL is unset or any other
+  scheme, the wrapped words show as plain text. A bare `{contact}` with no closing tag is dropped, and the pairs do not nest: in
+  `{contact}a {docs}b{/docs}{/contact}` the inner markers show as text.
+  Both default to empty, and texts without placeholders are shown unchanged.
+- `i18n.errorUnavailable` — text shown instead of the server's generic connection-error message
+  when the session request fails with the response code `wap_client_unavailable` (sent by the
+  `wap_client_auth` action next to the unchanged `message`). Empty by default, which keeps the
+  server's message. It accepts the `{contact}` and `{docs}` placeholders.
+
 ## UI, timestamps & localisation
 
 The widget is built entirely from the [Gravity design system](https://gravity.group.one/) (group.one
@@ -1140,6 +1166,41 @@ Those are examples: run all of them (`for f in tests/test-*.php; do php "$f" || 
 
 The npm half has its own standalone suite: `npm test` (builds `dist/` and runs
 `npm/test-server.mjs`; also wired into `prepack`).
+
+## Changelog
+
+### 3.1.0
+
+- The message box text is 14px for mouse users at any window width (Gravity only did so from 1024px).
+  Touch devices keep 16px, because iOS zooms into a smaller field.
+- New `layout.showVersion` flag, default true; false hides the library version line in the settings
+  panel. The version remains in the asset `?ver=`.
+- The status line names the plugin whose ability the agent runs: "Interacting with WP Rocket…" or
+  "Interacting with Rank Math…" (new `applyingProduct` string, with a `{product}` placeholder). WAP
+  picks the product from the ability's prefix and sends only its name, as `product` on the
+  `applying` status. Any other ability, a WAP without this change, or an older library (which
+  ignores `product`) keeps "Interacting with WordPress…".
+- `grnd.password_label` / `get_grnd_token()`'s `password_label` is now the full Application Password
+  name, used as is. Without it the name stays `WAP – <product>`. The chat surfaces (column, embed,
+  page) forward `grnd.password_label` when minting.
+- Ownership of an Application Password is decided by the library's `app_id` only; the `WAP – ` name
+  prefix no longer counts. Visible effects: an untracked password named `WAP – …` without the
+  `app_id` (a user's own, or one minted by a release before 2.6.0) is no longer deleted by
+  `revoke_app_passwords()` (deactivation) or by a rotation, by GDPR erasure, or by the multisite
+  `revoke_unenforceable()` sweep, and `AppPasswordScopeEnforcer` no longer refuses it with
+  `wap_app_password_revoked`.
+- Upgrade note: releases 2.2.2 to 2.5.3 created their passwords without the `app_id` (it was first
+  sent in 2.6.0). Those the library still tracks (by the per-product uuid meta) are enforced and
+  revoked as before. An untracked leftover from those releases, which 2.6.0 and 3.0.0 refused and
+  swept by name, is now an ordinary Application Password: the library leaves it alone, and an admin
+  can delete it by hand from the user's profile. Sweeping by name is the bug this release fixes.
+- A site that also loads an older copy of the library (another plugin bundling a release before
+  3.1.0, for example) still applies the name rule through that copy, on its rotations and logins.
+- Gravity is loaded from `v5.53.2` (was `v5.52.4`). The `wp-rocket` brand now uses orange
+  (`#d0431a`) as its primary colour and navy as its secondary, so the widget's primary-coloured
+  elements (the selected-reply badge, focus rings, the empty-state icon) turn orange too. In every
+  brand the chat's padding (message list, footer, start screen) drops from `--size-lg` to
+  `--size-md`, as compact and side-panel chats already had. Other brands' colours are unchanged.
 
 ## License
 

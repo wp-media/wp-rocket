@@ -15,13 +15,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Live URLs. Define WP_ROCKET_WAP_SERVER_URL and WP_ROCKET_WAP_ISSUER_URL to use another environment, for example staging.
 	 */
-	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+	private const WAP_SERVER_URL = 'https://wap.wp-rocket.me';
 	private const WAP_ISSUER_URL = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
-	private const TERMS_URL   = 'https://wp-rocket.me/terms/';
-	private const PRIVACY_URL = 'https://wp-rocket.me/privacy-policy/';
-	// The privacy policy stands in until there is a page explaining the assistant's access to the site.
-	private const SITE_ACCESS_URL = self::PRIVACY_URL;
+	private const TERMS_URL       = 'https://wp-rocket.me/terms/';
+	private const PRIVACY_URL     = 'https://wp-rocket.me/privacy-policy/';
+	private const SITE_ACCESS_URL = 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket';
 
 	// The chat library product the column is registered under, and whose Application Passwords are revoked.
 	private const PRODUCT = 'wprocket';
@@ -237,6 +236,9 @@ class Subscriber implements Subscriber_Interface {
 			return [];
 		}
 
+		// translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
+		$connection_error = __( 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.', 'rocket' );
+
 		return [
 			'id'              => 'wp-rocket-support',
 			'product'         => self::PRODUCT,
@@ -246,10 +248,16 @@ class Subscriber implements Subscriber_Interface {
 			'i18n'            => [
 				// translators: Text of the floating button that opens the support chat.
 				'columnLabel'       => __( 'Ask Support', 'rocket' ),
+				// translators: Title of the support chat panel.
+				'headerTitle'       => __( 'AI Assistant', 'rocket' ),
 				'settings'          => __( 'Settings', 'rocket' ),
 				'closeAssistant'    => __( 'Close', 'rocket' ),
 				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
 				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
+				// translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
+				'consentRequired'   => __( 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.', 'rocket' ),
+				'errorUnavailable'  => $connection_error,
+				'errorAuthFailed'   => $connection_error,
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
@@ -269,11 +277,16 @@ class Subscriber implements Subscriber_Interface {
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,
 			'site_access_url' => self::SITE_ACCESS_URL,
+			// Fill the {contact} and {docs} links of the messages above. A library without link support shows the raw markers.
+			'contact_url'     => rocket_get_external_url( 'contact' ),
+			'docs_url'        => get_rocket_documentation_url(),
 			'screens'         => [ 'settings_page_wprocket' ],
 			// The chat connects only when the column is opened; older libraries silently drop the unknown startOnOpen key.
 			'column'          => [
 				'side'        => 'right',
 				'startOnOpen' => true,
+				// Every page load starts with the assistant closed: the library neither restores nor saves its open state.
+				'persist'     => false,
 			],
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.

@@ -1,6 +1,6 @@
 <?php
 
-$live_server_url = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+$live_server_url = 'https://wap.wp-rocket.me';
 $live_issuer_url = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 return [
@@ -30,23 +30,31 @@ return [
 				'brand'            => 'wp-rocket',
 				'i18n'             => [
 					'columnLabel'       => 'Ask Support',
+					'headerTitle'       => 'AI Assistant',
 					'settings'          => 'Settings',
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
 					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+					'consentRequired'   => 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorUnavailable'  => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorAuthFailed'   => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 				],
 				'page_context'     => 'support',
 				'capability'       => 'rocket_manage_options',
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
-				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
+				'site_access_url'  => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'contact_url'      => 'https://wp-rocket.me/contact/',
+				'docs_url'         => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'screens'          => [ 'settings_page_wprocket' ],
 				'column'           => [
 					'side'        => 'right',
 					'startOnOpen' => true,
+					'persist'     => false,
 				],
 				'column_start_on_open' => true,
+				'column_persist'       => false,
 				'show_agent_selector'  => false,
 				'show_version'         => false,
 			],
