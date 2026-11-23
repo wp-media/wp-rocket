@@ -26,9 +26,9 @@ return [
 		'expected' => [
 			'is_empty' => false,
 			'fields'   => [
-				'product'          => 'wprocket',
-				'brand'            => 'wp-rocket',
-				'i18n'             => [
+				'product'              => 'wprocket',
+				'brand'                => 'wp-rocket',
+				'i18n'                 => [
 					'columnLabel'       => 'Ask Support',
 					'headerTitle'       => 'AI Assistant',
 					'settings'          => 'Settings',
@@ -39,16 +39,17 @@ return [
 					'errorUnavailable'  => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 					'errorAuthFailed'   => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 				],
-				'page_context'     => 'support',
-				'capability'       => 'rocket_manage_options',
-				'grnd_license_key' => 'test-consumer-key|user@example.org',
-				'terms_url'        => 'https://wp-rocket.me/terms/',
-				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
-				'site_access_url'  => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
-				'contact_url'      => 'https://wp-rocket.me/contact/',
-				'docs_url'         => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
-				'screens'          => [ 'settings_page_wprocket' ],
-				'column'           => [
+				'page_context'         => 'support',
+				'capability'           => 'rocket_manage_options',
+				'grnd_license_key'     => 'test-consumer-key|user@example.org',
+				'grnd_password_label'  => 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities',
+				'terms_url'            => 'https://wp-rocket.me/terms/',
+				'privacy_url'          => 'https://wp-rocket.me/privacy-policy/',
+				'site_access_url'      => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'contact_url'          => 'https://wp-rocket.me/contact/',
+				'docs_url'             => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'screens'              => [ 'settings_page_wprocket' ],
+				'column'               => [
 					'side'        => 'right',
 					'startOnOpen' => true,
 					'persist'     => false,
