@@ -14,7 +14,10 @@ class UserClient extends AbstractSafeAPIClient {
 	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
-	 * Status codes of the user endpoint's answers about the licence itself, such as an unknown user. Their body is JSON with `success` false.
+	 * Status codes of the answers that report a licence error, such as an unknown user.
+	 *
+	 * The endpoint answers 404 or 403 with a JSON body whose `success` is false. For a licence it does not know,
+	 * the edge in front of it answers 403 with an HTML page instead, so a 403 is a definitive answer whatever its body.
 	 */
 	const LICENCE_ERROR_CODES = [ 403, 404 ];
 
@@ -123,12 +126,22 @@ class UserClient extends AbstractSafeAPIClient {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
+		$data = json_decode( $body );
+
+		// An edge 403 carries an HTML page or nothing: report it as the licence error it is.
+		if ( 403 === (int) wp_remote_retrieve_response_code( $response ) && ! $this->is_licence_error_data( $data ) ) {
+			return (object) [
+				'code'    => 403,
+				'detail'  => 'Forbidden',
+				'success' => false,
+			];
+		}
 
 		if ( empty( $body ) ) {
 			return false;
 		}
 
-		return json_decode( $body );
+		return $data;
 	}
 
 	/**
@@ -143,17 +156,23 @@ class UserClient extends AbstractSafeAPIClient {
 	}
 
 	/**
-	 * Validate response body: a licence error answer must carry the JSON of an error, anything else is not an answer of the endpoint.
+	 * Validate response body: a 403 is valid whatever its body, a 404 must carry the JSON of an error, anything else is not an answer of the endpoint.
 	 *
 	 * @param array $response Response object.
 	 * @return bool
 	 */
 	protected function valid_response_body( $response ) {
+		$code = $response['response']['code'] ?? 0;
+
+		if ( 403 === $code ) {
+			return true;
+		}
+
 		if ( ! parent::valid_response_body( $response ) ) {
 			return false;
 		}
 
-		if ( ! in_array( $response['response']['code'] ?? 0, self::LICENCE_ERROR_CODES, true ) ) {
+		if ( 404 !== $code ) {
 			return true;
 		}
 

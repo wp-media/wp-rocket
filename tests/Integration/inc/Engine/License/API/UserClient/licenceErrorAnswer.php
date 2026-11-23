@@ -40,17 +40,28 @@ class Test_LicenceErrorAnswer extends TestCase {
 		parent::tear_down();
 	}
 
-	public function testShouldReturnTheErrorAnswerWithoutArmingTheBackoff() {
-		$body                 = '{"code":404,"detail":"User not found.","success":false}';
+	public function testShouldReturnAnErrorForTheEdgeForbiddenPage() {
 		$this->config['http'] = [
-			UserClient::USER_ENDPOINT => [
-				'headers'  => [],
-				'body'     => $body,
-				'response' => [ 'code' => 404 ],
-				'cookies'  => [],
-				'filename' => '',
-			],
+			UserClient::USER_ENDPOINT => $this->response( 403, '<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx</center></body></html>' ),
 		];
+
+		$data     = self::$client->get_user_data();
+		$expected = (object) [
+			'code'    => 403,
+			'detail'  => 'Forbidden',
+			'success' => false,
+		];
+
+		$this->assertEquals( $expected, $data );
+		$this->assertEquals( $expected, get_transient( 'wp_rocket_customer_data' ) );
+		$this->assertFalse( get_transient( 'wpr_user_information_timeout_active' ) );
+		$this->assertFalse( get_transient( 'wpr_user_information_timeout' ) );
+		$this->assertFalse( ( new User( $data ) )->can_use_ai() );
+	}
+
+	public function testShouldReturnTheJsonErrorAnswerWithoutArmingTheBackoff() {
+		$body                 = '{"code":404,"detail":"User not found.","success":false}';
+		$this->config['http'] = [ UserClient::USER_ENDPOINT => $this->response( 404, $body ) ];
 
 		$data = self::$client->get_user_data();
 
@@ -59,6 +70,16 @@ class Test_LicenceErrorAnswer extends TestCase {
 		$this->assertFalse( get_transient( 'wpr_user_information_timeout' ) );
 		$this->assertEquals( json_decode( $body ), get_transient( 'wp_rocket_customer_data' ) );
 		$this->assertFalse( ( new User( $data ) )->can_use_ai() );
+	}
+
+	private function response( int $code, string $body ): array {
+		return [
+			'headers'  => [],
+			'body'     => $body,
+			'response' => [ 'code' => $code ],
+			'cookies'  => [],
+			'filename' => '',
+		];
 	}
 
 	public function set_consumer_email() {

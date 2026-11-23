@@ -48,6 +48,11 @@ class LicenceErrorAnswer extends TestCase {
 				return true;
 			}
 		);
+		Functions\when( 'wp_remote_retrieve_response_code' )->alias(
+			function ( $response ) {
+				return $response['response']['code'];
+			}
+		);
 		Functions\when( 'wp_remote_retrieve_body' )->alias(
 			function ( $response ) {
 				return $response['body'];
@@ -101,6 +106,30 @@ class LicenceErrorAnswer extends TestCase {
 		$this->assertContains( 'wpr_user_information_timeout_active', $this->deleted );
 	}
 
+	/**
+	 * @dataProvider providerEdgeForbidden
+	 */
+	public function testShouldReturnASyntheticErrorForAnEdge403( $body ) {
+		$this->answer( 403, $body );
+
+		$data = $this->client->get_user_data();
+
+		$this->assertEquals( (object) [ 'code' => 403, 'detail' => 'Forbidden', 'success' => false ], $data );
+		$this->assertFalse( ( new User( $data ) )->can_use_ai() );
+		$this->assertSame( 5 * MINUTE_IN_SECONDS, $this->transients['wp_rocket_customer_data'][1] );
+		$this->assertArrayNotHasKey( 'wpr_user_information_timeout', $this->transients );
+		$this->assertArrayNotHasKey( 'wpr_user_information_timeout_active', $this->transients );
+		$this->assertContains( 'wpr_user_information_timeout_active', $this->deleted );
+	}
+
+	public function providerEdgeForbidden() {
+		return [
+			'nginx page'           => [ '<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx</center></body></html>' ],
+			'empty body'           => [ '' ],
+			'JSON without success' => [ '{"detail":"x"}' ],
+		];
+	}
+
 	public function testShouldReturnTheErrorAnswerOf403() {
 		$this->answer( 403, '{"code":403,"detail":"You do not have permission.","success":false}' );
 
@@ -138,6 +167,7 @@ class LicenceErrorAnswer extends TestCase {
 	public function providerFailures() {
 		return [
 			'404 not JSON'             => [ 404, 'error 404' ],
+			'404 HTML page'            => [ 404, '<html><title>404</title></html>' ],
 			'404 JSON without success' => [ 404, '{"detail":"x"}' ],
 			'404 empty body'           => [ 404, '' ],
 			'500 with an error body'   => [ 500, self::ERROR_BODY ],
