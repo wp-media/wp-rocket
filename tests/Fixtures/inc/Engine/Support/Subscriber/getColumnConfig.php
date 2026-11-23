@@ -45,8 +45,10 @@ return [
 				'column'           => [
 					'side'        => 'right',
 					'startOnOpen' => true,
+					'persist'     => false,
 				],
 				'column_start_on_open' => true,
+				'column_persist'       => false,
 				'show_agent_selector' => false,
 			],
 		],
