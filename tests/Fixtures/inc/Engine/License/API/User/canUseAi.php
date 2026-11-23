@@ -79,29 +79,17 @@ return [
 		] ) ),
 		'expected' => true,
 	],
-	'testShouldReturnFalseWhenServerAnswersAnError' => [
-		'data'     => json_decode( json_encode( [
-			'code'    => 404,
-			'detail'  => 'User not found.',
-			'success' => false,
-		] ) ),
+	'testShouldReturnFalseWhenLicenceRejectedAndNoData' => [
+		'data'     => false,
 		'expected' => false,
+		'rejected' => true,
 	],
-	'testShouldReturnFalseWhenErrorAnswerAndCanUseAiTrue' => [
+	'testShouldReturnFalseWhenLicenceRejectedAndFlagTrue' => [
 		'data'     => json_decode( json_encode( [
-			'success'    => false,
+			'ID'         => 1,
 			'can_use_ai' => true,
 		] ) ),
 		'expected' => false,
-	],
-	'testShouldReturnTrueWhenSuccessTrueAndFlagMissing' => [
-		'data'     => json_decode( json_encode( [
-			'success' => true,
-		] ) ),
-		'expected' => true,
-	],
-	'testShouldReturnTrueWhenEmptyObject' => [
-		'data'     => new stdClass(),
-		'expected' => true,
+		'rejected' => true,
 	],
 ];

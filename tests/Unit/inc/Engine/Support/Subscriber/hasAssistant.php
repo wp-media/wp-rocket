@@ -62,17 +62,6 @@ class TestHasAssistant extends TestCase {
 		$this->assertSame( $expected['result'], $this->subscriber->has_assistant() );
 	}
 
-	public function testShouldBeFalseWhenTheLicenceServerAnsweredAnError() {
-		Functions\when( 'rocket_valid_key' )->justReturn( true );
-		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
-		Filters\expectApplied( 'rocket_support_chat_available' )->never();
-
-		$user       = new User( (object) [ 'code' => 404, 'detail' => 'User not found.', 'success' => false ] );
-		$subscriber = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), Mockery::mock( Options_Data::class ), $user );
-
-		$this->assertFalse( $subscriber->has_assistant() );
-	}
-
 	public function testChatIsNotRegisteredBeforeAdminInit() {
 		$this->assertFalse( $this->subscriber->is_chat_registered() );
 	}

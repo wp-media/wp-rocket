@@ -14,17 +14,9 @@ class UserClient extends AbstractSafeAPIClient {
 	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
-	 * Status codes of the answers that report a licence error, such as an unknown user.
-	 *
-	 * The endpoint answers 404 or 403 with a JSON body whose `success` is false. For a licence it does not know,
-	 * the edge in front of it answers 403 with an HTML page instead, so a 403 is a definitive answer whatever its body.
+	 * Transient set while the licence server rejects the licence, such as an unknown or nulled one.
 	 */
-	const LICENCE_ERROR_CODES = [ 403, 404 ];
-
-	/**
-	 * Cache duration, in seconds, of an answer that reports a licence error.
-	 */
-	const LICENCE_ERROR_CACHE_DURATION = 5 * MINUTE_IN_SECONDS;
+	const LICENCE_REJECTED_TRANSIENT = 'wp_rocket_licence_rejected';
 
 	/**
 	 * WP Rocket options instance
@@ -67,7 +59,7 @@ class UserClient extends AbstractSafeAPIClient {
 	/**
 	 * Gets user data from cache if it exists, else gets it from the user endpoint
 	 *
-	 * Cache the user data for 24 hours in a transient, and an answer that reports a licence error for a few minutes
+	 * Cache the user data for 24 hours in a transient
 	 *
 	 * @since 3.7.3
 	 *
@@ -86,11 +78,7 @@ class UserClient extends AbstractSafeAPIClient {
 			return false;
 		}
 
-		set_transient(
-			'wp_rocket_customer_data',
-			$data,
-			$this->is_licence_error_data( $data ) ? self::LICENCE_ERROR_CACHE_DURATION : DAY_IN_SECONDS
-		);
+		set_transient( 'wp_rocket_customer_data', $data, DAY_IN_SECONDS );
 
 		return $data;
 	}
@@ -126,66 +114,66 @@ class UserClient extends AbstractSafeAPIClient {
 		}
 
 		$body = wp_remote_retrieve_body( $response );
-		$data = json_decode( $body );
-
-		// An edge 403 carries an HTML page or nothing: report it as the licence error it is.
-		if ( 403 === (int) wp_remote_retrieve_response_code( $response ) && ! $this->is_licence_error_data( $data ) ) {
-			return (object) [
-				'code'    => 403,
-				'detail'  => 'Forbidden',
-				'success' => false,
-			];
-		}
 
 		if ( empty( $body ) ) {
 			return false;
 		}
 
-		return $data;
+		return json_decode( $body );
 	}
 
 	/**
-	 * Validate response code: the licence error answers of the user endpoint are valid too.
+	 * Checks whether the licence server rejected the licence on its last answer.
+	 *
+	 * @return bool
+	 */
+	public function is_licence_rejected(): bool {
+		return (bool) get_transient( self::LICENCE_REJECTED_TRANSIENT );
+	}
+
+	/**
+	 * Validate response code, and record whether the licence server rejected the licence.
+	 *
+	 * The result is the parent's: a rejection stays an invalid answer, so the request backoff applies as before.
+	 * The rejection flag lasts as long as the longest backoff, and the next valid answer clears it.
 	 *
 	 * @param array $response Response object.
 	 * @return bool
 	 */
 	protected function valid_response_code( $response ) {
-		return parent::valid_response_code( $response )
-			|| in_array( $response['response']['code'] ?? 0, self::LICENCE_ERROR_CODES, true );
+		$valid = parent::valid_response_code( $response );
+
+		if ( $valid ) {
+			delete_transient( self::LICENCE_REJECTED_TRANSIENT );
+		} elseif ( $this->is_licence_rejection( $response ) ) {
+			set_transient( self::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
+		}
+
+		return $valid;
 	}
 
 	/**
-	 * Validate response body: a 403 is valid whatever its body, a 404 must carry the JSON of an error, anything else is not an answer of the endpoint.
+	 * Checks whether a response is the licence server rejecting the licence.
+	 *
+	 * The endpoint answers 403 or 404 with a JSON body whose `success` is false. For a licence it does not know,
+	 * the edge in front of it answers 403 with an HTML page instead, so a 403 is a rejection whatever its body.
 	 *
 	 * @param array $response Response object.
 	 * @return bool
 	 */
-	protected function valid_response_body( $response ) {
-		$code = $response['response']['code'] ?? 0;
+	private function is_licence_rejection( $response ): bool {
+		$code = (int) wp_remote_retrieve_response_code( $response );
 
 		if ( 403 === $code ) {
 			return true;
 		}
 
-		if ( ! parent::valid_response_body( $response ) ) {
+		if ( 404 !== $code ) {
 			return false;
 		}
 
-		if ( 404 !== $code ) {
-			return true;
-		}
+		$data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		return $this->is_licence_error_data( json_decode( wp_remote_retrieve_body( $response ) ) );
-	}
-
-	/**
-	 * Checks whether decoded user data is the answer to a licence error.
-	 *
-	 * @param mixed $data Decoded user data.
-	 * @return bool
-	 */
-	private function is_licence_error_data( $data ): bool {
 		return is_object( $data ) && isset( $data->success ) && false === $data->success;
 	}
 }

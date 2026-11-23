@@ -90,6 +90,8 @@ class GetUserData extends TestCase {
 		if ( ! $expected ) {
 			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
 			Functions\expect( 'set_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);
+			// A valid code with an empty body still clears the licence rejection flag.
+			Functions\expect( 'delete_transient' )->zeroOrMoreTimes()->with( UserClient::LICENCE_REJECTED_TRANSIENT );
 		} else {
 			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout' )->andReturn(null);
 			Functions\expect( 'delete_transient' )->with( 'wpr_user_information_timeout_active' )->andReturn(null);

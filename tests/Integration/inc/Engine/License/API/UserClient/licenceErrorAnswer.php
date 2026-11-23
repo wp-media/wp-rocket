@@ -8,7 +8,7 @@ use WP_Rocket\Tests\Integration\TestCase;
 use WP_Rocket\Tests\TestCredentials;
 
 /**
- * Test class covering the licence error answers of \WP_Rocket\Engine\License\API\UserClient::get_user_data
+ * Test class covering the licence rejection flag of \WP_Rocket\Engine\License\API\UserClient::get_user_data
  *
  * @group License
  * @group AdminOnly
@@ -40,36 +40,33 @@ class Test_LicenceErrorAnswer extends TestCase {
 		parent::tear_down();
 	}
 
-	public function testShouldReturnAnErrorForTheEdgeForbiddenPage() {
-		$this->config['http'] = [
-			UserClient::USER_ENDPOINT => $this->response( 403, '<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx</center></body></html>' ),
-		];
+	/**
+	 * @dataProvider providerRejections
+	 */
+	public function testShouldFlagTheRejectionAndKeepTheBackoff( $code, $body ) {
+		$this->config['http'] = [ UserClient::USER_ENDPOINT => $this->response( $code, $body ) ];
 
-		$data     = self::$client->get_user_data();
-		$expected = (object) [
-			'code'    => 403,
-			'detail'  => 'Forbidden',
-			'success' => false,
-		];
-
-		$this->assertEquals( $expected, $data );
-		$this->assertEquals( $expected, get_transient( 'wp_rocket_customer_data' ) );
-		$this->assertFalse( get_transient( 'wpr_user_information_timeout_active' ) );
-		$this->assertFalse( get_transient( 'wpr_user_information_timeout' ) );
-		$this->assertFalse( ( new User( $data ) )->can_use_ai() );
+		$this->assertFalse( self::$client->get_user_data() );
+		$this->assertFalse( get_transient( 'wp_rocket_customer_data' ) );
+		$this->assertNotFalse( get_transient( 'wpr_user_information_timeout_active' ) );
+		$this->assertTrue( self::$client->is_licence_rejected() );
+		$this->assertFalse( ( new User( false ) )->can_use_ai() );
 	}
 
-	public function testShouldReturnTheJsonErrorAnswerWithoutArmingTheBackoff() {
-		$body                 = '{"code":404,"detail":"User not found.","success":false}';
-		$this->config['http'] = [ UserClient::USER_ENDPOINT => $this->response( 404, $body ) ];
+	public function providerRejections() {
+		return [
+			'edge 403 page'   => [ 403, '<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx</center></body></html>' ],
+			'JSON 404 answer' => [ 404, '{"code":404,"detail":"User not found.","success":false}' ],
+		];
+	}
 
-		$data = self::$client->get_user_data();
+	public function testShouldClearTheFlagOnAValidAnswer() {
+		set_transient( UserClient::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
+		$this->config['http'] = [ UserClient::USER_ENDPOINT => $this->response( 200, '{"ID":"1","status":"active"}' ) ];
 
-		$this->assertEquals( json_decode( $body ), $data );
-		$this->assertFalse( get_transient( 'wpr_user_information_timeout_active' ) );
-		$this->assertFalse( get_transient( 'wpr_user_information_timeout' ) );
-		$this->assertEquals( json_decode( $body ), get_transient( 'wp_rocket_customer_data' ) );
-		$this->assertFalse( ( new User( $data ) )->can_use_ai() );
+		$this->assertIsObject( self::$client->get_user_data() );
+		$this->assertFalse( self::$client->is_licence_rejected() );
+		$this->assertTrue( ( new User( false ) )->can_use_ai() );
 	}
 
 	private function response( int $code, string $body ): array {
@@ -94,5 +91,6 @@ class Test_LicenceErrorAnswer extends TestCase {
 		delete_transient( 'wp_rocket_customer_data' );
 		delete_transient( 'wpr_user_information_timeout_active' );
 		delete_transient( 'wpr_user_information_timeout' );
+		delete_transient( UserClient::LICENCE_REJECTED_TRANSIENT );
 	}
 }
