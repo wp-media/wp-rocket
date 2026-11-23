@@ -285,6 +285,8 @@ class Subscriber implements Subscriber_Interface {
 			'column'          => [
 				'side'        => 'right',
 				'startOnOpen' => true,
+				// Every page load starts with the assistant closed: the library neither restores nor saves its open state.
+				'persist'     => false,
 			],
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.

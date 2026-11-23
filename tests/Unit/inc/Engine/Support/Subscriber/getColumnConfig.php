@@ -105,6 +105,9 @@ class TestGetColumnConfig extends TestCase {
 				case 'column_start_on_open':
 					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
 					break;
+				case 'column_persist':
+					$this->assertFalse( $result['column']['persist'], 'column.persist' );
+					break;
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
 					break;
