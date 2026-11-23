@@ -30,6 +30,7 @@ return [
 				'brand'            => 'wp-rocket',
 				'i18n'             => [
 					'columnLabel'       => 'Ask Support',
+					'headerTitle'       => 'AI Assistant',
 					'settings'          => 'Settings',
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',

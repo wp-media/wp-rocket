@@ -245,6 +245,8 @@ class Subscriber implements Subscriber_Interface {
 			'i18n'            => [
 				// translators: Text of the floating button that opens the support chat.
 				'columnLabel'       => __( 'Ask Support', 'rocket' ),
+				// translators: Title of the support chat panel.
+				'headerTitle'       => __( 'AI Assistant', 'rocket' ),
 				'settings'          => __( 'Settings', 'rocket' ),
 				'closeAssistant'    => __( 'Close', 'rocket' ),
 				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
