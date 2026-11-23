@@ -278,6 +278,8 @@ class Subscriber implements Subscriber_Interface {
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
+				// The version shown is the chat library's, which users may read as WP Rocket's; older libraries drop the unknown key.
+				'showVersion'       => false,
 			],
 			// The ids are bare: the wp-rocket.me token issuer adds the `wprocket:` namespace and drops ids it doesn't allow.
 			'permissions'     => $this->get_permission_rows(),
