@@ -111,6 +111,9 @@ class TestGetColumnConfig extends TestCase {
 				case 'show_agent_selector':
 					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
 					break;
+				case 'show_version':
+					$this->assertSame( $value, $result['layout']['showVersion'], 'layout.showVersion' );
+					break;
 				default:
 					$this->assertSame( $value, $result[ $key ], $key );
 			}

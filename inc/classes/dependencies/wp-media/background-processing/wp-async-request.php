@@ -157,7 +157,7 @@ abstract class WP_Rocket_WP_Async_Request {
 	/**
 	 * Maybe handle
 	 *
-	 * Check for correct nonce and pass to handler.
+	 * Check WP_Rocket_for correct nonce and pass to handler.
 	 */
 	public function maybe_handle() {
 		// Don't lock up other requests while processing
