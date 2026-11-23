@@ -46,11 +46,7 @@ class Test__RocketGetCacheDirs extends FilesystemTestCase {
 			$normalized_cache_path = _rocket_normalize_path( $cache_path );
 			$this->assertSame( $config['normalized_cache_path'], $normalized_cache_path );
 
-			$regex = sprintf(
-				'/%1$s%2$s(.*)/i',
-				preg_quote( $normalized_cache_path, '/' ),
-				preg_quote( $url_host, '/' )
-			);
+			$regex = _rocket_get_cache_dir_regex( $cache_path, $url_host );
 			$this->assertSame( 1, preg_match( $regex, $config['windows_regex_subject'] ) );
 			$this->assertSame( 0, preg_match( $regex, $config['windows_nonmatching_subject'] ) );
 
