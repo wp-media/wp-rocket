@@ -42,20 +42,12 @@ class AppPasswordManager
     public const APP_ID = 'bce5143f-4c09-4737-b5a4-ada947c2e7ec';
 
     /**
-     * WP Application Password label prefix, visible to site admins.
+     * Default Application Password name prefix, visible to site admins, used
+     * when the host passes no label. It is a display name, never proof of ownership.
      *
      * @var string
      */
     private const APP_PASSWORD_LABEL_PREFIX = 'WAP – ';
-
-    /**
-     * Minimum age, in seconds, of an untagged "WAP – " password before the
-     * sweep deletes it: a release without APP_ID records the uuid of the
-     * password it creates moments after creating it, without the lock.
-     *
-     * @var int
-     */
-    private const UNTAGGED_SWEEP_MIN_AGE = 60;
 
     /**
      * Network option set once revoke_unenforceable() has swept every user.
@@ -278,10 +270,9 @@ class AppPasswordManager
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
         $user_ids = $wpdb->get_col(
             $wpdb->prepare(
-                "SELECT DISTINCT user_id FROM {$wpdb->usermeta} WHERE (meta_key = %s AND (meta_value LIKE %s OR meta_value LIKE %s)) OR meta_key LIKE %s",
+                "SELECT DISTINCT user_id FROM {$wpdb->usermeta} WHERE (meta_key = %s AND meta_value LIKE %s) OR meta_key LIKE %s",
                 \WP_Application_Passwords::USERMETA_KEY_APPLICATION_PASSWORDS,
                 '%' . $wpdb->esc_like(self::APP_ID) . '%',
-                '%' . $wpdb->esc_like(self::APP_PASSWORD_LABEL_PREFIX) . '%',
                 $wpdb->esc_like(AppPasswordGuard::META_KEY_PREFIX) . '%'
             )
         );
@@ -290,8 +281,9 @@ class AppPasswordManager
     }
 
     /**
-     * Whether an Application Password record is one this library minted:
-     * created with APP_ID, or, for releases before it, labelled "WAP – …".
+     * Whether an Application Password record is one this library minted: it
+     * was created with APP_ID. The name never counts, so a user's own
+     * password is not WAP's whatever it is called.
      *
      * @param array $item Application Password record, as core stores it.
      *
@@ -299,13 +291,7 @@ class AppPasswordManager
      */
     public static function is_wap_password(array $item): bool
     {
-        if (self::APP_ID === ($item['app_id'] ?? '')) {
-            return true;
-        }
-
-        $name = $item['name'] ?? '';
-
-        return is_string($name) && 0 === strpos($name, self::APP_PASSWORD_LABEL_PREFIX);
+        return self::APP_ID === ($item['app_id'] ?? '');
     }
 
     // -------------------------------------------------------------------------
@@ -317,6 +303,9 @@ class AppPasswordManager
      *
      * The single consent enforcement point (see ConsentGate). Revokes the
      * previous password first; the plaintext returned must not be stored by the caller.
+     *
+     * @param string $product_label Full Application Password name, used as is
+     *                              (sanitised as core does). Empty: "WAP – <product>".
      */
     public function provision(int $wp_user_id, string $product, string $product_label = '')
     {
@@ -499,7 +488,8 @@ class AppPasswordManager
             $this->revoke_network_wide_password($wp_user_id, $product);
         }
 
-        $label   = self::APP_PASSWORD_LABEL_PREFIX . ($product_label ?: $product);
+        $label   = sanitize_text_field($product_label);
+        $label   = '' !== $label ? $label : self::APP_PASSWORD_LABEL_PREFIX . $product;
         $request = new \WP_REST_Request('POST', "/wp/v2/users/{$wp_user_id}/application-passwords");
         $request->set_body_params(['name' => $label, 'app_id' => self::APP_ID]);
         $response = rest_do_request($request);
@@ -603,7 +593,7 @@ class AppPasswordManager
     }
 
     /**
-     * Delete the user's WAP passwords that no site has on record any more.
+     * Delete the user's WAP passwords (tagged with APP_ID) that no site has on record any more.
      *
      * The lock keeps WAP's own rotations from undoing each other, but core
      * also rewrites the passwords from outside it (e.g. recording a
@@ -623,11 +613,6 @@ class AppPasswordManager
         foreach (\WP_Application_Passwords::get_user_application_passwords($wp_user_id) as $item) {
             $uuid = (string) ($item['uuid'] ?? '');
             if ('' === $uuid || in_array($uuid, $tracked, true) || !self::is_wap_password($item)) {
-                continue;
-            }
-
-            $untagged = self::APP_ID !== ($item['app_id'] ?? '');
-            if ($untagged && time() - (int) ($item['created'] ?? 0) < self::UNTAGGED_SWEEP_MIN_AGE) {
                 continue;
             }
 

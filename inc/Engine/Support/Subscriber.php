@@ -15,13 +15,12 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Live URLs. Define WP_ROCKET_WAP_SERVER_URL and WP_ROCKET_WAP_ISSUER_URL to use another environment, for example staging.
 	 */
-	private const WAP_SERVER_URL = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+	private const WAP_SERVER_URL = 'https://wap.wp-rocket.me';
 	private const WAP_ISSUER_URL = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
-	private const TERMS_URL   = 'https://wp-rocket.me/terms/';
-	private const PRIVACY_URL = 'https://wp-rocket.me/privacy-policy/';
-	// The privacy policy stands in until there is a page explaining the assistant's access to the site.
-	private const SITE_ACCESS_URL = self::PRIVACY_URL;
+	private const TERMS_URL       = 'https://wp-rocket.me/terms/';
+	private const PRIVACY_URL     = 'https://wp-rocket.me/privacy-policy/';
+	private const SITE_ACCESS_URL = 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket';
 
 	// The chat library product the column is registered under, and whose Application Passwords are revoked.
 	private const PRODUCT = 'wprocket';
@@ -34,6 +33,7 @@ class Subscriber implements Subscriber_Interface {
 	private const APP_PASSWORD_NAME = 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities';
 
 	// Permission ids. WPRocketUninstall deletes the user meta the chat library stores them under.
+	private const PERMISSION_READ_PLUGIN   = 'read-plugin';
 	private const PERMISSION_MANAGE_PLUGIN = 'manage-plugin';
 	private const PERMISSION_MANAGE_SITE   = 'manage-site';
 
@@ -64,6 +64,13 @@ class Subscriber implements Subscriber_Interface {
 	 * @var User
 	 */
 	private $user;
+
+	/**
+	 * Whether the chat column was registered in this request.
+	 *
+	 * @var bool
+	 */
+	private $chat_registered = false;
 
 	/**
 	 * Instantiate the class
@@ -143,16 +150,71 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Registers the WAP support chat column on the WP Rocket settings screen.
 	 *
+	 * The column is registered only when the configuration is available and WordPress Application Passwords can
+	 * be used. The menu and the floating link follow the result, see is_chat_registered().
+	 *
 	 * @return void
 	 */
 	public function register_column(): void {
+		$this->chat_registered = false;
+
 		$config = $this->get_column_config();
 
 		if ( empty( $config ) ) {
 			return;
 		}
 
+		if ( ! AppPasswordManager::are_app_passwords_available() ) {
+			return;
+		}
+
 		WapClient::register_chat_column( $config );
+
+		$this->chat_registered = true;
+	}
+
+	/**
+	 * Checks whether the support chat column was registered in this request.
+	 *
+	 * Only meaningful after the `admin_init` action, which registers it.
+	 *
+	 * @return bool
+	 */
+	public function is_chat_registered(): bool {
+		return $this->chat_registered;
+	}
+
+	/**
+	 * Checks whether the customer can use the assistant, ignoring the Application Passwords.
+	 *
+	 * For screens without the chat column, such as the admin bar. The licence key and the user data are
+	 * checked first and cannot be overridden by the filters.
+	 *
+	 * @return bool
+	 */
+	public function has_assistant(): bool {
+		if ( ! $this->can_use_assistant() ) {
+			return false;
+		}
+
+		/**
+		 * Filters whether the WP Rocket support assistant is available.
+		 *
+		 * True opens the support chat from the Support menu, the "Need Help?" controls and the floating
+		 * button. False replaces them with links to the contact page and the documentation: the Support menu,
+		 * the admin bar and the floating "Ask Support" button open the contact page, and "Need Help?" opens
+		 * its article. A licence key that fails the local check or user data that does not allow the assistant
+		 * make it false whatever the filters return. The same value is passed to the admin script.
+		 *
+		 * @param bool $available True when the assistant is available. Default true.
+		 *
+		 * @return bool
+		 */
+		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true ) ) {
+			return false;
+		}
+
+		return $this->is_chat_filter_on();
 	}
 
 	/**
@@ -167,20 +229,10 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the configuration of the WAP support chat column.
 	 *
-	 * @return array<string, mixed> The column configuration, or an empty array when the support chat is disabled by the filter, the licence data is missing or the assistant is not available.
+	 * @return array<string, mixed> The column configuration, or an empty array when the assistant is not available or the licence data is missing.
 	 */
 	public function get_column_config(): array {
-		/**
-		 * Filters whether the WAP support chat is available on the WP Rocket settings screen.
-		 *
-		 * Returning false removes the chat column and the notice about unavailable Application Passwords.
-		 * The "Need Help?" controls are not affected: they are governed by `rocket_ai_assistant_available`.
-		 *
-		 * @param bool $available True to make the support chat available. Default true.
-		 *
-		 * @return bool
-		 */
-		if ( ! wpm_apply_filters_typed( 'boolean', 'rocket_support_chat_available', true ) ) {
+		if ( ! $this->has_assistant() ) {
 			return [];
 		}
 
@@ -191,9 +243,8 @@ class Subscriber implements Subscriber_Interface {
 			return [];
 		}
 
-		if ( ! $this->can_use_assistant() ) {
-			return [];
-		}
+		// translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
+		$connection_error = __( 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.', 'rocket' );
 
 		return [
 			'id'              => 'wp-rocket-support',
@@ -204,10 +255,16 @@ class Subscriber implements Subscriber_Interface {
 			'i18n'            => [
 				// translators: Text of the floating button that opens the support chat.
 				'columnLabel'       => __( 'Ask Support', 'rocket' ),
+				// translators: Title of the support chat panel.
+				'headerTitle'       => __( 'AI Assistant', 'rocket' ),
 				'settings'          => __( 'Settings', 'rocket' ),
 				'closeAssistant'    => __( 'Close', 'rocket' ),
 				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
 				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
+				// translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
+				'consentRequired'   => __( 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.', 'rocket' ),
+				'errorUnavailable'  => $connection_error,
+				'errorAuthFailed'   => $connection_error,
 			],
 			// WAP selects the agent role `wprocket:support`. For an expired license the token does not list that role,
 			// so WAP keeps the customer on its fallback agent (see the premium_roles claim of the token issuer).
@@ -228,15 +285,22 @@ class Subscriber implements Subscriber_Interface {
 			'terms_url'       => self::TERMS_URL,
 			'privacy_url'     => self::PRIVACY_URL,
 			'site_access_url' => self::SITE_ACCESS_URL,
+			// Fill the {contact} and {docs} links of the messages above. A library without link support shows the raw markers.
+			'contact_url'     => rocket_get_external_url( 'contact' ),
+			'docs_url'        => get_rocket_documentation_url(),
 			'screens'         => [ 'settings_page_wprocket' ],
 			// The chat connects only when the column is opened; older libraries silently drop the unknown startOnOpen key.
 			'column'          => [
 				'side'        => 'right',
 				'startOnOpen' => true,
+				// Every page load starts with the assistant closed: the library neither restores nor saves its open state.
+				'persist'     => false,
 			],
 			'layout'          => [
 				// WAP picks the agent from the license through the token, so customers don't pick one.
 				'showAgentSelector' => false,
+				// The version shown is the chat library's, which users may read as WP Rocket's; older libraries drop the unknown key.
+				'showVersion'       => false,
 			],
 			// The ids are bare: the wp-rocket.me token issuer adds the `wprocket:` namespace and drops ids it doesn't allow.
 			'permissions'     => $this->get_permission_rows(),
@@ -246,18 +310,19 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Gets the permission rows shown in the support chat's settings.
 	 *
-	 * `manage-plugin` governs WP Rocket's own abilities. `manage-site` governs every other ability,
-	 * from other plugins and core. It only offers Deny, so the library can only store deny for it (locked
-	 * server-side); `disabled` merely greys it out in the UI.
+	 * WAP maps each ability to a row: `read-plugin` for WP Rocket's `get-` abilities, which are exactly its
+	 * read-only ones; `manage-plugin` for WP Rocket's other abilities; `manage-site` for every other ability,
+	 * from other plugins and core. The last two only offer Deny, so the library can only store deny for
+	 * them (locked server-side); `disabled` merely greys them out in the UI.
 	 *
 	 * @return array<int, array<string, mixed>>
 	 */
 	private function get_permission_rows(): array {
 		return [
 			[
-				'id'           => self::PERMISSION_MANAGE_PLUGIN,
-				// translators: Label of the support chat setting deciding whether the assistant may act on WP Rocket.
-				'label'        => __( 'Manage your WP Rocket plugin', 'rocket' ),
+				'id'           => self::PERMISSION_READ_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may read WP Rocket's settings.
+				'label'        => __( 'Read WP Rocket settings', 'rocket' ),
 				'options'      => [
 					[
 						'value' => 'allow',
@@ -274,19 +339,41 @@ class Subscriber implements Subscriber_Interface {
 				],
 				'defaultValue' => 'allow',
 			],
-			[
-				'id'           => self::PERMISSION_MANAGE_SITE,
-				// translators: Label of the support chat setting deciding whether the assistant may act on the rest of the site.
-				'label'        => __( 'Manage your WordPress site', 'rocket' ),
-				'options'      => [
-					[
-						'value' => 'deny',
-						'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
-					],
+			$this->get_locked_permission_row(
+				self::PERMISSION_MANAGE_PLUGIN,
+				// translators: Label of the support chat setting deciding whether the assistant may change WP Rocket's settings.
+				__( 'Change WP Rocket settings', 'rocket' )
+			),
+			$this->get_locked_permission_row(
+				self::PERMISSION_MANAGE_SITE,
+				// translators: Label of the support chat setting deciding whether the assistant may read and change the rest of the WordPress site.
+				__( 'Read & Write WordPress configuration', 'rocket' )
+			),
+		];
+	}
+
+	/**
+	 * Gets a permission row that is not available yet: locked to Deny and marked as coming soon.
+	 *
+	 * @param string $id    Permission id.
+	 * @param string $label Row label.
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function get_locked_permission_row( string $id, string $label ): array {
+		return [
+			'id'           => $id,
+			'label'        => $label,
+			'options'      => [
+				[
+					'value' => 'deny',
+					'label' => _x( 'Deny', 'support chat permission option', 'rocket' ),
 				],
-				'defaultValue' => 'deny',
-				'disabled'     => true,
 			],
+			'defaultValue' => 'deny',
+			'disabled'     => true,
+			// translators: Badge on a support chat setting that cannot be changed yet.
+			'badge'        => __( 'Coming soon', 'rocket' ),
 		];
 	}
 
@@ -341,16 +428,15 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Callback of the `rocket_ai_assistant_available` filter.
 	 *
-	 * The filter controls the "Need Help?" controls and the value passed to the admin script. It is true by default
-	 * and false when the licence key fails the local check or the user data does not allow the assistant. The chat
-	 * column is decided by the same check in get_column_config() and does not apply this filter.
+	 * Makes the value false when the licence key fails the local check, the user data does not allow the
+	 * assistant or the `rocket_support_chat_available` filter is false. The value is passed to the admin script.
 	 *
-	 * @param bool $available True when the assistant entries should be shown.
+	 * @param bool $available True when the assistant is available.
 	 *
 	 * @return bool
 	 */
 	public function filter_assistant_available( $available ): bool {
-		return (bool) $available && $this->can_use_assistant();
+		return (bool) $available && $this->can_use_assistant() && $this->is_chat_filter_on();
 	}
 
 	/**
@@ -365,7 +451,7 @@ class Subscriber implements Subscriber_Interface {
 	public function add_localize_script_data( $data ): array {
 		$data = (array) $data;
 
-		/** This filter is documented in inc/Engine/Admin/Settings/Render.php */
+		/** This filter is documented in inc/Engine/Support/Subscriber.php */
 		$data['assistant_available'] = wpm_apply_filters_typed( 'boolean', 'rocket_ai_assistant_available', true );
 
 		return $data;
@@ -384,5 +470,25 @@ class Subscriber implements Subscriber_Interface {
 		}
 
 		return $this->user->can_use_ai();
+	}
+
+	/**
+	 * Applies the `rocket_support_chat_available` filter.
+	 *
+	 * @return bool
+	 */
+	private function is_chat_filter_on(): bool {
+		/**
+		 * Filters whether the WAP support chat is part of the assistant.
+		 *
+		 * Returning false behaves like `rocket_ai_assistant_available` returning false: the chat column and
+		 * the notice about unavailable Application Passwords are removed and the contact page and documentation
+		 * links take over.
+		 *
+		 * @param bool $available True to make the support chat available. Default true.
+		 *
+		 * @return bool
+		 */
+		return wpm_apply_filters_typed( 'boolean', 'rocket_support_chat_available', true );
 	}
 }

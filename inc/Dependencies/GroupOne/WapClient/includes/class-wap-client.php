@@ -227,12 +227,14 @@ final class WapClient
      *     terms_url?:   string,
      *     privacy_url?: string,
      *     site_access_url?: string,
+     *     contact_url?: string,
+     *     docs_url?: string,
      *     custom_css_url?: string,
      *     layout?:      array{width?: string, innerWidth?: string, align?: string,
      *                         expandToggle?: string, height?: string, chrome?: string,
      *                         accent?: string, keepScrollbar?: bool, showHeader?: bool,
      *                         showNewChat?: bool, showSettings?: bool, showDeleteData?: bool,
-     *                         showAgentSelector?: bool},
+     *                         showAgentSelector?: bool, showVersion?: bool},
      *     i18n?:        array<string, string> UI string overrides, merged with the
      *                         built-in defaults (caller keys win), e.g. 'consentText'
      *                         to customize the T&C consent modal copy.
@@ -353,6 +355,8 @@ final class WapClient
      *     terms_url?:      string,
      *     privacy_url?:    string,
      *     site_access_url?: string,
+     *     contact_url?: string,
+     *     docs_url?: string,
      *     custom_css_url?: string,
      *     title?:          string,
      *     layout?:         array<string, mixed>,

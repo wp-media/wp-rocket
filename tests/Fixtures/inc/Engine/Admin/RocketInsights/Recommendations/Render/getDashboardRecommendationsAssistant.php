@@ -1,22 +1,11 @@
 <?php
 
 return [
-	'assistant_available'     => [
-		'config'   => [
-			'available' => true,
-		],
+	'need_help_is_always_printed' => [
+		'config'   => [],
 		'expected' => [
-			'contains'     => [ 'wpr-dash-section-header__actions', 'data-wap-prompt', 'wpr-infoAction--help' ],
+			'contains'     => [ 'wpr-dash-section-header__actions', 'data-wap-prompt', 'wpr-infoAction--help', 'Need Help?' ],
 			'not_contains' => [],
-		],
-	],
-	'assistant_not_available' => [
-		'config'   => [
-			'available' => false,
-		],
-		'expected' => [
-			'contains'     => [ 'wpr-dash-section-header__title' ],
-			'not_contains' => [ 'wpr-dash-section-header__actions', 'data-wap-prompt', 'wpr-infoAction--help' ],
 		],
 	],
 ];

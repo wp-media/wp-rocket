@@ -2656,9 +2656,11 @@ div.wpr-upgrade-websites.notstacked {
 }
 
 /*-----------------------------------------------*\
-    WAP support chat launcher button
+    WAP support chat launcher button, and the
+    link to the contact page that replaces it
 \*-----------------------------------------------*/
-.wap-chat-column__launcher {
+.wap-chat-column__launcher,
+.wpr-support-launcher {
   padding: 10px 16px 10px 12px !important;
   width: auto !important;
   background-color: rgb(64, 186, 203) !important;
@@ -2670,36 +2672,77 @@ div.wpr-upgrade-websites.notstacked {
   inset-block-end: 40px !important;
   inset-inline-end: 40px !important;
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+  font-family: PlusJakartaSans, Arial, Verdana, sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
 }
+.wap-chat-column__launcher:focus,
+.wpr-support-launcher:focus {
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+}
+.wap-chat-column__launcher:hover,
+.wpr-support-launcher:hover {
+  transform: scale(1.125);
+  opacity: 1 !important;
+  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+}
+.wap-chat-column__launcher:active,
+.wpr-support-launcher:active {
+  box-shadow: none;
+}
+@media (max-height: 740px) {
+  .wap-chat-column__launcher,
+  .wpr-support-launcher {
+    inset-block-end: 10px !important;
+    inset-inline-end: 20px !important;
+  }
+}
+@supports (corner-shape: squircle) {
+  .wap-chat-column__launcher,
+  .wpr-support-launcher {
+    border-radius: 30px !important;
+    corner-shape: superellipse(1.4);
+  }
+}
+
 .wap-chat-column__launcher::after {
   content: attr(title);
+}
+
+.wap-chat-column__launcher::after {
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
   text-overflow: ellipsis;
   line-height: 14px;
 }
-.wap-chat-column__launcher:focus {
-  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+
+.wpr-support-launcher__label {
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.wap-chat-column__launcher:hover {
-  transform: scale(1.125);
-  opacity: 1 !important;
-  box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+
+.wpr-support-launcher {
+  position: fixed;
+  z-index: 9988;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  border: 1px solid;
+  text-decoration: none;
 }
-.wap-chat-column__launcher:active {
-  box-shadow: none;
+.wpr-support-launcher:hover, .wpr-support-launcher:focus, .wpr-support-launcher:active {
+  text-decoration: none;
 }
-@media (max-height: 740px) {
-  .wap-chat-column__launcher {
-    inset-block-end: 10px !important;
-    inset-inline-end: 20px !important;
-  }
+.wpr-support-launcher:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -4px;
 }
-@supports (corner-shape: squircle) {
-  .wap-chat-column__launcher {
-    border-radius: 30px !important;
-    corner-shape: superellipse(1.4);
+@media print {
+  .wpr-support-launcher {
+    display: none;
   }
 }
 

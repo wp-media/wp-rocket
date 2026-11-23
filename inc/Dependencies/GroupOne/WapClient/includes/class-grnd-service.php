@@ -76,7 +76,9 @@ class GrndService
      *                     `wap_user_ref_unavailable` when it cannot be read or
      *                     created. Default false: the request body is then
      *                     exactly what it was without this option.
-     *   - password_label  Label for the minted App Password. Default product.
+     *   - password_label  Full name of the minted App Password, used as is
+     *                     (e.g. 'WP Rocket AI Assistant'). Default
+     *                     'WAP – <product>'. Ownership never depends on it.
      *   - extra_headers   Optional associative array of HTTP headers to
      *                     forward verbatim to the brand issuer on every
      *                     exchange (e.g. ['X-TOTP' => '123456',
@@ -130,7 +132,7 @@ class GrndService
         // inside the provider — i.e. only on a GRND cache miss — so a valid
         // cached GRND never triggers a credential rotation. The plaintext
         // password lives only in this closure and never leaves the site.
-        $label       = (string) ($args['password_label'] ?? $product);
+        $label       = (string) ($args['password_label'] ?? '');
         $credentials = static function () use ($user_id, $user_login, $product, $label, $wrap_key_client) {
             $app_password = (new AppPasswordManager())->provision($user_id, $product, $label);
             if (is_wp_error($app_password)) {

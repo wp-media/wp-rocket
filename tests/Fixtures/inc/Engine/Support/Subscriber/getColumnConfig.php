@@ -1,6 +1,6 @@
 <?php
 
-$live_server_url = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+$live_server_url = 'https://wap.wp-rocket.me';
 $live_issuer_url = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 return [
@@ -30,10 +30,14 @@ return [
 				'brand'                => 'wp-rocket',
 				'i18n'                 => [
 					'columnLabel'       => 'Ask Support',
+					'headerTitle'       => 'AI Assistant',
 					'settings'          => 'Settings',
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
 					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+					'consentRequired'   => 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorUnavailable'  => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
+					'errorAuthFailed'   => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 				],
 				'page_context'         => 'support',
 				'capability'           => 'rocket_manage_options',
@@ -41,14 +45,19 @@ return [
 				'grnd_password_label'  => 'WP Rocket AI Assistant - 1h access to WP Rocket MCP abilities',
 				'terms_url'            => 'https://wp-rocket.me/terms/',
 				'privacy_url'          => 'https://wp-rocket.me/privacy-policy/',
-				'site_access_url'      => 'https://wp-rocket.me/privacy-policy/',
+				'site_access_url'      => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
+				'contact_url'          => 'https://wp-rocket.me/contact/',
+				'docs_url'             => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'screens'              => [ 'settings_page_wprocket' ],
 				'column'               => [
 					'side'        => 'right',
 					'startOnOpen' => true,
+					'persist'     => false,
 				],
 				'column_start_on_open' => true,
+				'column_persist'       => false,
 				'show_agent_selector'  => false,
+				'show_version'         => false,
 			],
 		],
 	],
@@ -132,12 +141,12 @@ return [
 		'expected' => [
 			'is_empty' => false,
 			'fields'   => [
-				// The WP Rocket row is a real choice, allowed by default.
-				// The whole-site row only offers Deny and is locked, so other plugins' and core abilities never run.
+				// Reading WP Rocket is a real choice, allowed by default.
+				// Changing WP Rocket and the whole site only offer Deny and are locked, so no write ability runs yet.
 				'permissions' => [
 					[
-						'id'           => 'manage-plugin',
-						'label'        => 'Manage your WP Rocket plugin',
+						'id'           => 'read-plugin',
+						'label'        => 'Read WP Rocket settings',
 						'options'      => [
 							[
 								'value' => 'allow',
@@ -155,8 +164,8 @@ return [
 						'defaultValue' => 'allow',
 					],
 					[
-						'id'           => 'manage-site',
-						'label'        => 'Manage your WordPress site',
+						'id'           => 'manage-plugin',
+						'label'        => 'Change WP Rocket settings',
 						'options'      => [
 							[
 								'value' => 'deny',
@@ -165,6 +174,20 @@ return [
 						],
 						'defaultValue' => 'deny',
 						'disabled'     => true,
+						'badge'        => 'Coming soon',
+					],
+					[
+						'id'           => 'manage-site',
+						'label'        => 'Read & Write WordPress configuration',
+						'options'      => [
+							[
+								'value' => 'deny',
+								'label' => 'Deny',
+							],
+						],
+						'defaultValue' => 'deny',
+						'disabled'     => true,
+						'badge'        => 'Coming soon',
 					],
 				],
 			],
@@ -206,8 +229,27 @@ return [
 			'consumer_key'     => 'test-consumer-key',
 			'consumer_email'   => 'user@example.org',
 			'filter_available' => false,
-			'can_use_ai'       => null,
 		],
 		'expected' => [ 'is_empty' => true ],
+	],
+	'assistant_disabled_by_filter' => [
+		'config'   => [
+			'consumer_key'        => 'test-consumer-key',
+			'consumer_email'      => 'user@example.org',
+			'ai_filter_available' => false,
+		],
+		'expected' => [ 'is_empty' => true ],
+	],
+	'assistant_enabled_by_both_filters' => [
+		'config'   => [
+			'consumer_key'        => 'test-consumer-key',
+			'consumer_email'      => 'user@example.org',
+			'ai_filter_available' => true,
+			'filter_available'    => true,
+		],
+		'expected' => [
+			'is_empty' => false,
+			'fields'   => [ 'product' => 'wprocket' ],
+		],
 	],
 ];
