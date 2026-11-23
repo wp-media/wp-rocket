@@ -32,6 +32,8 @@ class TestRegisterColumn extends TestCase {
 
 		Functions\when( '__' )->returnArg();
 		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
 		Functions\when( 'rocket_valid_key' )->justReturn( true );
 		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
 	}
