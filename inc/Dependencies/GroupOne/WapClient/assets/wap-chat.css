@@ -66,6 +66,7 @@
 .wap-chat-root .gv-chat {
     flex: 1 1 auto;
     min-height: 0;
+    min-width: 0;
     width: 100%;
 }
 
@@ -101,7 +102,7 @@
 }
 
 /* ask_user response selector (RKM-2088): a card docked right above the
-   composer — question + close, numbered quick replies, then a "Type something
+   composer — question + minimize, numbered quick replies, then a "Type something
    else…" row with Skip. Multi-select adds a Confirm bar. */
 .wap-chat-root .wap-reply-dock:empty {
     display: none;
@@ -154,8 +155,19 @@
     margin-bottom: 0;
 }
 
-.wap-chat-root .wap-reply__close {
+.wap-chat-root .wap-reply__toggle {
     flex: 0 0 auto;
+}
+
+/* Minimized (RKM-2241): only the question and its toggle stay. */
+.wap-chat-root .wap-reply--minimized .wap-reply__options,
+.wap-chat-root .wap-reply--minimized .wap-reply__bottom {
+    display: none;
+}
+
+.wap-chat-root .wap-reply--minimized .wap-reply__head {
+    align-items: center;
+    padding-bottom: var(--size-xs, 4px);
 }
 
 .wap-chat-root .wap-reply__options {
@@ -1311,6 +1323,15 @@
     min-height: 0;
     resize: none;
     overflow-y: hidden;
+}
+
+/* Message box text: 14px on mouse-and-keyboard devices. Gravity lowers the form
+   font token to 14px only from 1024px wide; this applies it at any width. The
+   touch rule above keeps 16px (iOS zooms into anything smaller). */
+@media (hover: hover) and (pointer: fine) {
+    .wap-chat-root.gv-activated .gv-input-ai .gv-input {
+        --font-size-text-form: var(--font-size-text-sm);
+    }
 }
 
 /* ---------------------------------------------------------------------------

@@ -108,6 +108,7 @@
         quotaLow:        'Only {remaining} of {total} messages left this month. Your quota renews on {date} at {time}.',
         quotaExhausted:  'Limit reached. Your quota will renew on {date} at {time}.',
         quotaBlocked:    'Message limit reached',
+        messageTooLong:  'Messages can be up to {max} characters. Shorten this one or split it into several.',
         errorReference:  'Reference:',
         consentTitle:    'Before you start',
         // {terms} is replaced with the Terms & Conditions link (see openConsentModal()).
@@ -173,6 +174,7 @@
             showSettings:       l.showSettings !== false,
             showDeleteData:     l.showDeleteData !== false,
             showAgentSelector:  l.showAgentSelector !== false,
+            showVersion:        l.showVersion !== false,
         };
     }
 
@@ -259,7 +261,7 @@
         return rows;
     }
 
-    const GRAVITY_VERSION = 'v5.52.4';
+    const GRAVITY_VERSION = 'v5.53.2';
     const GRAVITY_CDN_BASE = 'https://gravity.group-cdn.one/' + GRAVITY_VERSION + '/';
     // Gravity brand stylesheet; cfg.brand picks it (e.g. 'rankmath').
     function gravityStylesheetUrl() {
@@ -304,6 +306,7 @@
         back:       ICON_BASE + 'arrow_back.svg',
         edit:       ICON_BASE + 'edit.svg',
         expand:     ICON_BASE + 'expand_more.svg',
+        collapse:   ICON_BASE + 'expand_less.svg',
         // Gravity's fixed conversational-button icons: send + stop-generating.
         stop:       ICON_BASE + 'stop_fill.svg',
     };
@@ -324,7 +327,7 @@
     let accCounter = 0;
     let hasMessages = false;
     // Set while an ask_user question card is on screen and unanswered; called to
-    // dismiss that card when the user answers or types a normal message instead.
+    // drop that card when the user types a normal message instead.
     let pendingQuestionCleanup = null;
     // Monotonic id source so each rendered question's radio/checkbox group gets a
     // unique `name` (multiple questions can coexist in one thread's history).
@@ -355,6 +358,11 @@
     let quota = null;
     // Warn once the remaining share drops to this fraction of the allowance.
     const QUOTA_LOW_RATIO = 0.1;
+    // ChatBody.message's max_length; UTF-16 units here, code points there, so never looser.
+    const MAX_MESSAGE_LENGTH = 16000;
+    // ResumeBody.answer's max_length, for an ask_user card's typed answer.
+    const MAX_ANSWER_LENGTH = 8192;
+    let messageAtLimit = false;
 
     // Mixpanel client-side analytics state. Inert unless cfg.mixpanelToken is
     // set; the SDK is loaded lazily on the first (consented) track call.
@@ -1063,6 +1071,7 @@
 
         inputEl = el('textarea', '');
         inputEl.setAttribute('rows', '1');
+        inputEl.maxLength = MAX_MESSAGE_LENGTH;
         inputEl.setAttribute('placeholder', i18n.placeholder || 'Ask the assistant…');
         inputEl.setAttribute('aria-label', i18n.placeholder || 'Ask the assistant…');
 
@@ -1255,6 +1264,24 @@
         appendText(template.slice(last));
     }
 
+    // A host-configured support link for appendMessage(): plain text unless the
+    // URL is http(s) or mailto, so a bad value never becomes a dead '#' link.
+    function messageLink(url, label) {
+        if (!label) return null;
+        return isSafeUrl(url)
+            ? linkOrText(url, label)
+            : document.createTextNode(label);
+    }
+
+    // Append a host-supplied message whose {contact}…{/contact} and
+    // {docs}…{/docs} pairs become links to cfg.contactUrl and cfg.docsUrl.
+    function appendMessage(parent, template) {
+        appendTemplate(parent, template, {
+            contact: function (label) { return messageLink(cfg.contactUrl, label); },
+            docs:    function (label) { return messageLink(cfg.docsUrl, label); },
+        });
+    }
+
     // AI + legal notice under the composer (Gravity's input disclaimer line),
     // with inline Terms of Use / Privacy Policy links. The notice is one i18n
     // template with {terms}/{privacy} slots so translations can reorder them.
@@ -1340,6 +1367,7 @@
         });
 
         inputEl.addEventListener('input', autoGrow);
+        inputEl.addEventListener('input', syncMessageLimit);
         // Header actions are optional — wire only what was built.
         if (deleteDataBtn) deleteDataBtn.addEventListener('click', function () { trackButtonClick('delete_data'); handleDeleteData(); });
         if (newChatBtn) newChatBtn.addEventListener('click', function () { trackButtonClick('new_chat'); handleNewChat(); });
@@ -2272,6 +2300,15 @@
     const MAX_REAUTH_ATTEMPTS = 2;
     let reauthAttempts = 0;
 
+    // The terminal "could not connect" text, with its {contact}/{docs} links.
+    function appendAuthFailedText(parent) {
+        appendMessage(
+            parent,
+            i18n.errorAuthFailed
+                || 'Could not connect to the assistant. Please reload the page, or contact support if this continues.'
+        );
+    }
+
     /**
      * The error raised once the re-auth budget is spent. The flag lets callers
      * tell a dead credential apart from a transient failure, so only this case
@@ -2355,7 +2392,11 @@
                     showConsentGate();
                 } else {
                     setStatus('error');
-                    appendErrorMessage(err.message || (i18n.errorGeneric || 'Could not connect.'));
+                    if (err && err.wapUnavailable && i18n.errorUnavailable) {
+                        appendErrorMessage(function (content) { appendMessage(content, i18n.errorUnavailable); });
+                    } else {
+                        appendErrorMessage(err.message || (i18n.errorGeneric || 'Could not connect.'));
+                    }
                 }
                 throw err;
             })
@@ -2373,6 +2414,10 @@
         // Actionable state, not a failure to report — lets callers show the consent gate.
         if (json.data && json.data.code === 'wap_client_consent_required') {
             err.wapConsentRequired = true;
+        }
+        // The generic connection failure: lets the host's errorUnavailable text replace the server's.
+        if (json.data && json.data.code === 'wap_client_unavailable') {
+            err.wapUnavailable = true;
         }
         throw err;
     }
@@ -2481,6 +2526,12 @@
         // First boot showed the gate without ever calling authenticateAndLoad();
         // run it now so the widget doesn't sit stuck on "Connecting…".
         if (!sessionToken) {
+            // The welcome behind the gate is the host default: the agent's own
+            // needs a session to fetch, and showWelcome() never repaints an
+            // existing one. Clear it and load as a page load does, so
+            // finishInitialLoad() paints the agent's.
+            clearWelcome();
+            showLoading();
             authenticateAndLoad();
         }
     }
@@ -2643,7 +2694,7 @@
         const row = el('li', 'gv-chat-message gv-chat-incoming wap-consent-gate');
         const notice = el('div', 'gv-notice gv-notice-info gv-mode-condensed');
         const content = el('p', 'gv-notice-content');
-        content.textContent = i18n.consentRequired || 'You need to accept the Terms & Conditions to use the assistant.';
+        appendMessage(content, i18n.consentRequired || 'You need to accept the Terms & Conditions to use the assistant.');
         notice.appendChild(gvIcon(ICON.info, 'gv-notice-icon'));
         notice.appendChild(content);
 
@@ -2914,8 +2965,7 @@
 
         const notice = el('div', 'gv-notice gv-notice-alert gv-mode-condensed');
         const content = el('p', 'gv-notice-content');
-        content.textContent = i18n.errorAuthFailed
-            || 'Could not connect to the assistant. Please reload the page, or contact support if this continues.';
+        appendAuthFailedText(content);
         notice.appendChild(gvIcon(ICON.error, 'gv-notice-icon'));
         notice.appendChild(content);
 
@@ -3107,6 +3157,15 @@
             quota.remaining <= Math.max(1, Math.ceil(quota.total * QUOTA_LOW_RATIO));
     }
 
+    // Re-renders the composer notice only when the composer reaches or leaves the cap.
+    function syncMessageLimit() {
+        const atLimit = !!inputEl && inputEl.value.length >= MAX_MESSAGE_LENGTH;
+        if (atLimit === messageAtLimit) return;
+        messageAtLimit = atLimit;
+        renderQuota();
+    }
+
+    // Also carries the message-length notice, which ranks between a spent and a low quota.
     function renderQuota() {
         if (!quotaNoticeEl) return;
 
@@ -3118,18 +3177,18 @@
             time: at ? formatTime(at) : '',
         };
         const spent = isQuotaExhausted();
+        const tooLong = !spent && messageAtLimit;
 
         // The notice interrupts only when there is something to act on.
-        quotaNoticeEl.hidden = !spent && !isQuotaLow();
+        quotaNoticeEl.hidden = !spent && !tooLong && !isQuotaLow();
         if (!quotaNoticeEl.hidden) {
             quotaNoticeEl.classList.toggle('gv-notice-alert', spent);
             quotaNoticeEl.classList.toggle('gv-notice-warning', !spent);
             quotaNoticeEl.setAttribute('aria-live', spent ? 'assertive' : 'polite');
             quotaNoticeIconEl.setAttribute('src', spent ? ICON.error : ICON.warning);
-            quotaNoticeTextEl.textContent = interpolate(
-                spent ? (vars.date ? i18n.quotaExhausted : i18n.errorQuota) : i18n.quotaLow,
-                vars
-            );
+            quotaNoticeTextEl.textContent = tooLong
+                ? interpolate(i18n.messageTooLong, { max: formatCount(MAX_MESSAGE_LENGTH) })
+                : interpolate(spent ? (vars.date ? i18n.quotaExhausted : i18n.errorQuota) : i18n.quotaLow, vars);
         }
 
         applyCredentialGate();
@@ -3315,6 +3374,8 @@
 
         const message = inputEl.value.trim();
         if (!message || isStreaming || newChatPending || !isConsentGranted() || isQuotaExhausted()) return;
+        // maxlength stops typing and pasting, but not a value set from script.
+        if (message.length > MAX_MESSAGE_LENGTH) return syncMessageLimit();
 
         // Fired here, past the guards, rather than on the button's click: Enter is
         // the primary send path and bypasses the button entirely (undercount),
@@ -3324,6 +3385,7 @@
 
         inputEl.value = '';
         autoGrow();
+        syncMessageLimit();
 
         clearWelcome();
         // Drop any transient notice (e.g. the delete confirmation) on first send.
@@ -3686,7 +3748,7 @@
                     // name); we localize it and add it as a new checklist row.
                     // The previously-active row flips to "done" and stays
                     // visible.
-                    appendStepRow(assistantEl, statusText(event.key));
+                    appendStepRow(assistantEl, statusText(event.key, event.product));
                     break;
 
                 case 'text_delta':
@@ -3952,7 +4014,16 @@
     }
 
     // Resolve a coarse status key from the backend to a localized label.
-    function statusText(key) {
+    // `product` names the plugin whose ability runs, sent with `applying`
+    // (applyingProduct: "Interacting with WP Rocket…"). Without a product, or a
+    // host without that string, it stays the applying label ("Interacting with
+    // WordPress…"), which is all an older widget shows.
+    function statusText(key, product) {
+        if (key === 'applying') {
+            const name = typeof product === 'string' ? product.trim() : '';
+            const label = i18n.applyingProduct || '';
+            if (name && label.indexOf('{product}') !== -1) return label.split('{product}').join(name);
+        }
         return (key && i18n[key]) || i18n.working || i18n.thinking || 'Working…';
     }
 
@@ -4101,6 +4172,8 @@
         bodyEl.appendChild(notice);
     }
 
+    // errorMessage is plain text, or a function that fills the notice's content
+    // element (for a message with links).
     function appendErrorMessage(errorMessage) {
         clearWelcome();
         const msg = el('li', 'gv-chat-message gv-chat-incoming');
@@ -4108,7 +4181,11 @@
 
         const notice = el('div', 'gv-notice gv-notice-alert gv-mode-condensed');
         const content = el('p', 'gv-notice-content');
-        content.textContent = errorMessage;
+        if (typeof errorMessage === 'function') {
+            errorMessage(content);
+        } else {
+            content.textContent = errorMessage;
+        }
         notice.appendChild(gvIcon(ICON_BASE + 'error.svg', 'gv-notice-icon'));
         notice.appendChild(content);
         msg.appendChild(notice);
@@ -4271,8 +4348,8 @@
         const groupName = 'wap-q-' + (++questionSeq);
 
         let card = null;
-        // Settle the card once answered/dismissed so a late click can't answer
-        // twice, and leave the question in the bubble as history.
+        // Settle the card once answered or typed past so a late click can't
+        // answer twice, and leave the question in the bubble as history.
         let answered = false;
         function neutralize() {
             answered = true;
@@ -4346,11 +4423,6 @@
             // is the only way to answer whatever allow_free_text says (WPIN-8940).
             allowFreeText: allowFreeText || choices.length < 2,
             answer:        answer,
-            dismiss:       function () {
-                removeOauthListener();
-                neutralize();
-                if (inputEl) inputEl.focus();
-            },
         });
         replyDockEl.appendChild(card);
         // The card itself takes focus, so the keys work at once without a
@@ -4371,7 +4443,7 @@
     const SKIP_ANSWER = 'The user skipped this question.';
 
     // The response selector card (RKM-2088).
-    // opts: { id, questionEl, questionText, choices, multi, allowFreeText, answer(label, value), dismiss() }
+    // opts: { id, questionEl, questionText, choices, multi, allowFreeText, answer(label, value) }
     function buildReplyCard(opts) {
         const card = el('div', 'wap-reply');
         card.setAttribute('role', 'group');
@@ -4386,17 +4458,37 @@
         } else {
             card.setAttribute('aria-label', i18n.selectOne || 'Select one');
         }
-        const closeBtn = el('button', 'wap-icon-btn wap-reply__close');
-        closeBtn.type = 'button';
-        closeBtn.setAttribute('aria-label', i18n.closeQuestion || 'Close');
-        closeBtn.title = i18n.closeQuestion || 'Close';
-        closeBtn.appendChild(gvIcon(ICON.close));
-        closeBtn.addEventListener('click', opts.dismiss);
-        head.appendChild(closeBtn);
+        const toggleBtn = el('button', 'wap-icon-btn wap-reply__toggle');
+        toggleBtn.type = 'button';
+        toggleBtn.setAttribute('aria-controls', opts.id + '-options');
+        head.appendChild(toggleBtn);
         card.appendChild(head);
 
         const list = el('div', 'wap-reply__options');
+        list.id = opts.id + '-options';
         card.appendChild(list);
+
+        // Minimized, only the question shows (RKM-2241); the card stays open.
+        let minimized = false;
+        function setMinimized(next) {
+            minimized = next;
+            card.classList.toggle('wap-reply--minimized', minimized);
+            const label = minimized
+                ? (i18n.expandQuestion || 'Show options')
+                : (i18n.minimizeQuestion || 'Hide options');
+            toggleBtn.setAttribute('aria-expanded', minimized ? 'false' : 'true');
+            toggleBtn.setAttribute('aria-label', label);
+            toggleBtn.title = label;
+            toggleBtn.textContent = '';
+            toggleBtn.appendChild(gvIcon(minimized ? ICON.collapse : ICON.expand));
+        }
+        setMinimized(false);
+        toggleBtn.addEventListener('click', function () { setMinimized(!minimized); });
+        // Focus must not stay on a row that is no longer displayed.
+        function minimizeFromKeyboard() {
+            setMinimized(true);
+            toggleBtn.focus();
+        }
 
         const selected = [];
         let info = null;
@@ -4436,6 +4528,7 @@
             row.appendChild(icon);
             const input = elseInput = el('input', '');
             input.type = 'text';
+            input.maxLength = MAX_ANSWER_LENGTH;
             input.setAttribute('placeholder', i18n.otherPlaceholder || 'Type something else…');
             input.setAttribute('aria-label', i18n.otherPlaceholder || 'Type something else…');
             function submitText() {
@@ -4507,22 +4600,21 @@
             navItems[next].focus();
         }
 
-        // 1–9 pick a row and Escape closes, unless the user is typing.
+        // 1–9 pick a row unless the user is typing; Escape minimizes. Minimized,
+        // the hidden rows take no keys.
         card.addEventListener('keydown', function (e) {
+            if (minimized) return;
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                minimizeFromKeyboard();
+                return;
+            }
             if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
                 e.preventDefault();
                 stepFocus(e.target, e.key === 'ArrowDown' ? 1 : -1);
                 return;
             }
-            if (e.target && e.target.tagName === 'INPUT') {
-                if (e.key === 'Escape') { e.preventDefault(); opts.dismiss(); }
-                return;
-            }
-            if (e.key === 'Escape') {
-                e.preventDefault();
-                opts.dismiss();
-                return;
-            }
+            if (e.target && e.target.tagName === 'INPUT') return;
             const n = /^[1-9]$/.test(e.key) ? parseInt(e.key, 10) - 1 : -1;
             if (n >= 0 && optionBtns[n]) {
                 e.preventDefault();
@@ -4666,6 +4758,11 @@
                 reauthenticateAfterErasure();
             })
             .catch(function (err) {
+                // The exhausted-budget message may carry {contact}/{docs} markers, so it is never shown as raw text.
+                if (err && err.wapAuthExhausted) {
+                    appendErrorMessage(appendAuthFailedText);
+                    return;
+                }
                 appendErrorMessage(err.message || (i18n.errorGeneric || 'Error deleting data.'));
             });
     }
@@ -5607,8 +5704,12 @@
             .replace(/'/g, '&#39;');
     }
 
+    function isSafeUrl(url) {
+        return /^(https?:|mailto:)/i.test(url || '');
+    }
+
     function safeHref(url) {
-        return /^(https?:|mailto:)/i.test(url) ? url : '#';
+        return isSafeUrl(url) ? url : '#';
     }
 
     // Private-use sentinels bracketing a code-span's index while we run the
@@ -6218,6 +6319,15 @@
         }
     }
 
+    function formatCount(n) {
+        const locale = (cfg.locale || '').replace('_', '-');
+        try {
+            return new Intl.NumberFormat(locale || undefined).format(n);
+        } catch (e) {
+            return String(n);
+        }
+    }
+
     function interpolate(template, vars) {
         return String(template).replace(/\{(\w+)\}/g, function (match, key) {
             return Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : match;
@@ -6477,7 +6587,7 @@
             body.appendChild(buildDeleteDataRow(function () { cleanup(); }));
         }
 
-        if (cfg.version) {
+        if (layout.showVersion && cfg.version) {
             body.appendChild(elText('p', (i18n.versionLabel || 'Version') + ' ' + cfg.version, 'wap-settings__note'));
         }
 

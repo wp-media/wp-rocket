@@ -19,7 +19,7 @@ namespace WP_Rocket\Dependencies\GroupOne\WapClient;
 final class Config
 {
     /** The library version; also the `?ver=` cache-buster on the bundled assets. Bumped by scripts/bump-version.sh. */
-    public const VERSION = '3.0.0';
+    public const VERSION = '3.1.0';
 
     /** @var string|null */
     private static $url = null;
