@@ -1,6 +1,6 @@
 <?php
 
-$live_server_url = 'https://wordpress-agentic-platform-production.public-default.k8spod4-cph3.ingress.k8s.g1i.one';
+$live_server_url = 'https://wap.wp-rocket.me';
 $live_issuer_url = 'https://wp-rocket.me/wp-json/grnd/v1/token';
 
 return [
@@ -30,6 +30,7 @@ return [
 				'brand'            => 'wp-rocket',
 				'i18n'             => [
 					'columnLabel'       => 'Ask Support',
+					'headerTitle'       => 'AI Assistant',
 					'settings'          => 'Settings',
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the WP Rocket Assistant.',
@@ -43,7 +44,7 @@ return [
 				'grnd_license_key' => 'test-consumer-key|user@example.org',
 				'terms_url'        => 'https://wp-rocket.me/terms/',
 				'privacy_url'      => 'https://wp-rocket.me/privacy-policy/',
-				'site_access_url'  => 'https://wp-rocket.me/privacy-policy/',
+				'site_access_url'  => 'https://docs.wp-rocket.me/article/1936-ai-assistant-access-and-limitations?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'contact_url'      => 'https://wp-rocket.me/contact/',
 				'docs_url'         => 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket',
 				'screens'          => [ 'settings_page_wprocket' ],
