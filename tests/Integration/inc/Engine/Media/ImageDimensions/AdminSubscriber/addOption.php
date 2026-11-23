@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Media\ImageDimensions\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Media\ImageDimensions\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

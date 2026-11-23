@@ -5,7 +5,6 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use ReflectionClass;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Database\Optimization;
@@ -72,12 +71,8 @@ class Test_CacheRulesSection extends TestCase {
 			Mockery::mock( Context::class )
 		);
 
-		$class = new ReflectionClass( Page::class );
-
 		foreach ( [ 'advanced_cache_section', 'addons_section' ] as $method ) {
-			$reflection = $class->getMethod( $method );
-			$reflection->setAccessible( true );
-			$reflection->invoke( $page );
+			$this->get_reflective_method( $method, Page::class )->invoke( $page );
 		}
 
 		$registered = $settings->get_settings()[ $config['page'] ];

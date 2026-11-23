@@ -1,29 +1,19 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Engine\Common\Performance\AJAX\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\AJAX\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
 
 /**
+ * Uses the ATF table the bootstrap keeps for this group: installing it here would leak its
+ * "exists" filter into the hook snapshot and later test classes.
+ *
  * @covers WP_Rocket\Engine\Common\PerformanceHints\AJAX\Subscriber::check_data
  *
  * @group PerformanceHints
  */
 class Test_CheckData extends AjaxTestCase {
 	private $allowed;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		// Install in set_up_before_class because of exists().
-		self::installAtfTable();
-	}
-
-	public static function tear_down_after_class() {
-		self::uninstallAtfTable();
-
-		parent::tear_down_after_class();
-	}
 
 	public function set_up() {
 		parent::set_up();

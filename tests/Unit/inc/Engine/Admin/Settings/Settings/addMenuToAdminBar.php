@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Admin\Settings\Settings;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Settings;
 
 use WP_Admin_Bar;
 use WP_Rocket\Engine\Admin\Settings\AdminBarMenuTrait;

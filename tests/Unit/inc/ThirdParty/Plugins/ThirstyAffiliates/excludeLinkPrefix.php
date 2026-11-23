@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\ThirstyAffiliates;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;

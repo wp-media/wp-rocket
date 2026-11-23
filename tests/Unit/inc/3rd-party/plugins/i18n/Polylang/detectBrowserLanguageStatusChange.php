@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\plugins\i18n\Polylang;
+namespace WP_Rocket\Tests\Unit\inc\_3rd_party\plugins\i18n\Polylang;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminBar;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Admin\AdminBar;
 
 use Mockery;
 use WP_Admin_Bar;

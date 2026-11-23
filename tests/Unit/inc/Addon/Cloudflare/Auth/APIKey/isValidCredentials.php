@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Auth\APIKey;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\Auth\APIKey;
 
 use WP_Error;
 use WP_Rocket\Addon\Cloudflare\Auth\APIKey;
