@@ -79,4 +79,29 @@ return [
 		] ) ),
 		'expected' => true,
 	],
+	'testShouldReturnFalseWhenServerAnswersAnError' => [
+		'data'     => json_decode( json_encode( [
+			'code'    => 404,
+			'detail'  => 'User not found.',
+			'success' => false,
+		] ) ),
+		'expected' => false,
+	],
+	'testShouldReturnFalseWhenErrorAnswerAndCanUseAiTrue' => [
+		'data'     => json_decode( json_encode( [
+			'success'    => false,
+			'can_use_ai' => true,
+		] ) ),
+		'expected' => false,
+	],
+	'testShouldReturnTrueWhenSuccessTrueAndFlagMissing' => [
+		'data'     => json_decode( json_encode( [
+			'success' => true,
+		] ) ),
+		'expected' => true,
+	],
+	'testShouldReturnTrueWhenEmptyObject' => [
+		'data'     => new stdClass(),
+		'expected' => true,
+	],
 ];
