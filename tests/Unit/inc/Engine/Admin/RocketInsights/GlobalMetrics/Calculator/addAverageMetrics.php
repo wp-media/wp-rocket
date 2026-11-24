@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\GlobalMetrics\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
 use Mockery;
 use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;

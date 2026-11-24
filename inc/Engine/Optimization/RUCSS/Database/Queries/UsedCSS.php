@@ -125,4 +125,64 @@ class UsedCSS extends AbstractQuery {
 			]
 		);
 	}
+
+	/**
+	 * Add a row, storing the md5 of its exact url to back the (url_hash, is_mobile) unique key.
+	 *
+	 * @param array $data Row data.
+	 *
+	 * @return int|false Inserted row ID, false on failure (including a duplicate url and is_mobile pair).
+	 */
+	public function add_item( $data = [] ) {
+		if ( isset( $data['url'] ) ) {
+			$data['url_hash'] = md5( (string) $data['url'] );
+		}
+
+		return parent::add_item( $data );
+	}
+
+	/**
+	 * Delete the oldest row of each (url, is_mobile) group having several rows.
+	 *
+	 * Repeated calls leave only the newest row of each group, the one url-keyed writes target.
+	 * Groups are formed with the column collation, like get_row() matches urls.
+	 *
+	 * @param int $limit Maximum number of groups handled, so of rows deleted.
+	 *
+	 * @return int|false Number of rows found (a full batch means more may remain), false on a database error or when no row of a non-empty batch could be deleted.
+	 */
+	public function delete_older_duplicates( int $limit ) {
+		$db = $this->get_db();
+
+		if ( ! $db ) {
+			return false;
+		}
+
+		$table = $db->{$this->table_name};
+
+		$ids = $db->get_col(
+			$db->prepare(
+				"SELECT MIN(id) FROM `{$table}` GROUP BY url, is_mobile HAVING COUNT(*) > 1 LIMIT %d",
+				$limit
+			)
+		);
+
+		if ( ! empty( $db->last_error ) ) {
+			return false;
+		}
+
+		$deleted = 0;
+
+		foreach ( $ids as $id ) {
+			if ( false !== $this->delete_item( (int) $id ) ) {
+				++$deleted;
+			}
+		}
+
+		if ( ! empty( $ids ) && 0 === $deleted ) {
+			return false;
+		}
+
+		return count( $ids );
+	}
 }

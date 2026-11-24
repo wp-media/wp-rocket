@@ -132,6 +132,10 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 		};
 		add_action( 'wp_rocket_upgrade', $restore_transient, 10, 0 );
 
+		// Keep only CdnStateBridge::reconcile on the settings hook: its writes are part of the count below,
+		// while the other subscribers (CDN cache clear, preconnect truncate) query tables this test doesn't install.
+		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'reconcile', 5 );
+
 		// Count every update_option_wp_rocket_settings call triggered by wp_rocket_upgrade.
 		$write_count = 0;
 		$counter     = static function () use ( &$write_count ) {
@@ -143,6 +147,7 @@ class Test_OnUpdateAddCdnStateOption extends AdminTestCase {
 
 		remove_action( 'wp_rocket_upgrade', $restore_transient, 10 );
 		remove_action( 'update_option_wp_rocket_settings', $counter, PHP_INT_MAX );
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		$final = $this->options->get( 'settings', [] );
 

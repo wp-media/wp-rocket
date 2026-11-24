@@ -1,6 +1,7 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
+use WP_Rocket\Engine\Support\Subscriber as Support_Subscriber;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
@@ -31,14 +32,23 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	protected $plugin_family;
 
 	/**
+	 * Support subscriber, which knows whether the support chat is registered.
+	 *
+	 * @var Support_Subscriber
+	 */
+	private $support;
+
+	/**
 	 * Creates an instance of the object.
 	 *
-	 * @param Page         $page Page instance.
-	 * @param PluginFamily $plugin_family Plugin Family Instance.
+	 * @param Page               $page Page instance.
+	 * @param PluginFamily       $plugin_family Plugin Family Instance.
+	 * @param Support_Subscriber $support Support subscriber.
 	 */
-	public function __construct( Page $page, PluginFamily $plugin_family ) {
+	public function __construct( Page $page, PluginFamily $plugin_family, Support_Subscriber $support ) {
 		$this->page          = $page;
 		$this->plugin_family = $plugin_family;
+		$this->support       = $support;
 	}
 
 	/**
@@ -72,6 +82,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
 			'rocket_dashboard_sidebar_addons'      => 'add_imagify_addon_card',
+			'admin_footer-settings_page_wprocket'  => 'print_support_link',
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -268,7 +279,9 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	/**
 	 * Add the Support and Documentation links to navigation.
 	 *
-	 * They have no page of their own: they open the external resource in a new tab.
+	 * Support links to the contact page. When the support chat is registered, a click opens the chat instead
+	 * and the link only opens the contact page in the same tab if the chat is not there. Documentation opens
+	 * in a new tab.
 	 *
 	 * @since 3.24
 	 *
@@ -281,15 +294,12 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'title'            => __( 'Support', 'rocket' ),
 			'menu_description' => __( 'Get help from our team', 'rocket' ),
 			'group'            => 'help',
-			'url'              => rocket_get_external_url(
-				'support',
-				[
-					'utm_source' => 'wp_plugin',
-					'utm_medium' => 'wp_rocket',
-				]
-			),
-			'target'           => '_blank',
+			'url'              => $this->get_contact_url(),
 		];
+
+		if ( $this->support->is_chat_registered() ) {
+			$navigation['support']['open_chat'] = true;
+		}
 
 		$navigation['documentation'] = [
 			'id'               => 'documentation',
@@ -301,6 +311,34 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Prints the floating "Ask Support" link on the settings page when the support chat is not registered.
+	 *
+	 * @return void
+	 */
+	public function print_support_link(): void {
+		if ( $this->support->is_chat_registered() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$this->page->render_support_launcher( $this->get_contact_url() );
+	}
+
+	/**
+	 * Gets the URL of the contact page.
+	 *
+	 * @return string
+	 */
+	private function get_contact_url(): string {
+		return rocket_get_external_url(
+			'contact',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			]
+		);
 	}
 
 	/**

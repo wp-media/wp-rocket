@@ -38,6 +38,18 @@ class TestCreateLazyCssFiles extends TestCase {
 			$this->filesystem_cache->shouldReceive('has')->with($url)->andReturn($output);
 		}
 
+		if ( empty( $config['resolve'] ) ) {
+			$this->file_resolver->shouldNotReceive('resolve');
+		}
+
+		if ( empty( $config['content'] ) ) {
+			$this->fetcher->shouldNotReceive('fetch');
+		}
+
+		if ( empty( $config['cache_set'] ) && empty( $config['json_set'] ) ) {
+			$this->filesystem_cache->shouldNotReceive('set');
+		}
+
 		foreach ($config['resolve'] as $url => $path) {
 			$this->file_resolver->shouldReceive('resolve')->with($url)->andReturn($path);
 		}

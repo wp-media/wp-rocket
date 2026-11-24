@@ -14,21 +14,23 @@
  *     @type string $badge            Badge label. Optional.
  *     @type string $url              External URL. When set, the item opens it instead of switching page. Optional.
  *     @type string $target           Link target, used with `url`. Optional.
+ *     @type bool   $open_chat        Whether a click opens the support chat. Optional.
  *     @type bool   $is_sub           Whether the item is nested in a group. Optional.
  * }
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$rocket_is_sub   = ! empty( $data['is_sub'] );
-$rocket_is_link  = ! empty( $data['url'] );
-$rocket_href     = $rocket_is_link ? $data['url'] : '#' . $data['id'];
-$rocket_classes  = 'wpr-menuItem' . ( $rocket_is_sub ? ' wpr-menuItem--sub' : '' ) . ( ! empty( $data['class'] ) ? ' ' . $data['class'] : '' );
-$rocket_new_tab  = $rocket_is_link && '_blank' === ( $data['target'] ?? '' );
-$rocket_rel_attr = $rocket_new_tab ? ' rel="noopener noreferrer"' : '';
+$rocket_is_sub    = ! empty( $data['is_sub'] );
+$rocket_is_link   = ! empty( $data['url'] );
+$rocket_href      = $rocket_is_link ? $data['url'] : '#' . $data['id'];
+$rocket_classes   = 'wpr-menuItem' . ( $rocket_is_sub ? ' wpr-menuItem--sub' : '' ) . ( ! empty( $data['class'] ) ? ' ' . $data['class'] : '' );
+$rocket_new_tab   = $rocket_is_link && '_blank' === ( $data['target'] ?? '' );
+$rocket_rel_attr  = $rocket_new_tab ? ' rel="noopener noreferrer"' : '';
+$rocket_chat_attr = $rocket_is_link && ! empty( $data['open_chat'] ) ? ' data-wap-open-chat="1"' : '';
 
 ?>
-<a href="<?php echo esc_url( $rocket_href ); ?>" id="wpr-nav-<?php echo esc_attr( $data['id'] ); ?>" class="<?php echo esc_attr( $rocket_classes ); ?>"<?php echo $rocket_is_link && ! empty( $data['target'] ) ? ' target="' . esc_attr( $data['target'] ) . '"' : ''; ?><?php echo $rocket_rel_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static string. ?>>
+<a href="<?php echo esc_url( $rocket_href ); ?>" id="wpr-nav-<?php echo esc_attr( $data['id'] ); ?>" class="<?php echo esc_attr( $rocket_classes ); ?>"<?php echo $rocket_is_link && ! empty( $data['target'] ) ? ' target="' . esc_attr( $data['target'] ) . '"' : ''; ?><?php echo $rocket_rel_attr . $rocket_chat_attr; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static strings. ?>>
 	<?php if ( $rocket_is_sub ) : ?>
 		<?php echo esc_html( $data['title'] ); ?>
 		<?php if ( $rocket_new_tab ) : ?>

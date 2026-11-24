@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\tests\Unit\inc\ThirdParty\Themes\Divi;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Themes\Divi;
 
 use Mockery;
 use WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS;

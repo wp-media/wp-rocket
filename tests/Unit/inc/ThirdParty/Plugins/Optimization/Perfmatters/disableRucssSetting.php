@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\Perfmatters;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Unit\TestCase;

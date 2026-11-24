@@ -46,9 +46,19 @@ $rocket_rocketcdn_paid_active = $data['is_active'];
 		);
 		?>
 	</div>
-	<?php if ( ! empty( $data['help'] ) ) : ?>
-	<a href="<?php echo esc_url( $data['help']['url'] ); ?>" data-beacon-id="<?php echo esc_attr( $data['help']['id'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Content Delivery" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
-	<?php endif; ?>
+	<?php
+	if ( ! empty( $data['help'] ) ) {
+		$this->render_parts_with_data(
+			'need-help',
+			[
+				'url'     => $data['help']['url'],
+				'context' => 'Content Delivery',
+				'page'    => $data['page_title'],
+				'section' => $data['title'],
+			]
+		);
+	}
+	?>
 </div>
 
 <div class="<?php echo esc_attr( $data['class'] ); ?>">

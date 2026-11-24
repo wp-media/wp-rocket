@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc;
+namespace WP_Rocket\Tests\Unit\inc;
 
 use Brain\Monkey;
 use WPMedia\PHPUnit\Unit\TestCase;

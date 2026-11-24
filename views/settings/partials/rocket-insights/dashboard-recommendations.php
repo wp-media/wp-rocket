@@ -20,9 +20,21 @@ defined( 'ABSPATH' ) || exit;
 		<div class="wpr-dash-section-header__heading">
 			<h3 class="wpr-dash-section-header__title"><?php esc_html_e( 'Recommendations', 'rocket' ); ?></h3>
 		</div>
+		<?php if ( ! empty( $data['help'] ) ) : ?>
 		<div class="wpr-dash-section-header__actions">
-			<a href="<?php echo esc_url( $data['help']['url'] ?? '' ); ?>"<?php echo ! empty( $data['help']['id'] ) ? ' data-beacon-id="' . esc_attr( $data['help']['id'] ) . '"' : ''; ?> data-wpr_track_button="Need Help" data-wpr_track_context="Recommendations" class="wpr-infoAction wpr-infoAction--help wpr-icon-help" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></a>
+			<?php
+			$this->render_parts_with_data(
+				'need-help',
+				[
+					'url'     => $data['help']['url'] ?? '',
+					'context' => 'Recommendations',
+					'page'    => $data['page_title'] ?? '',
+					'section' => $data['section_title'] ?? '',
+				]
+			);
+			?>
 		</div>
+		<?php endif; ?>
 	</div>
 
 	<?php
