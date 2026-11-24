@@ -513,7 +513,7 @@
 	}
 
 	/**
-	 * Updates all .rocketcdn-driver-js spans to reflect the active driver label.
+	 * Updates all .rocketcdn-driver-js spans, and the "Need Help?" prompts of their sections, to the active driver label.
 	 *
 	 * @param {string} driver Active CDN driver slug ('rocketcdn' or 'your-own-cdn').
 	 */
@@ -530,8 +530,22 @@
 			return;
 		}
 
+		// The "Need Help?" prompts repeat these section titles, so they follow the label too.
+		const prompts = [ ...document.querySelectorAll( '.wpr-optionHeader' ) ]
+			.map( ( header ) => ( {
+				title: header.querySelector( '.wpr-title2' ),
+				help: header.querySelector( '[data-wap-prompt]' ),
+			} ) )
+			.filter( ( item ) => item.title && item.help && item.title.querySelector( '.rocketcdn-driver-js' ) )
+			.map( ( item ) => ( { ...item, before: item.title.textContent.trim() } ) );
+
 		document.querySelectorAll( '.rocketcdn-driver-js' ).forEach( ( span ) => {
 			span.textContent = label;
+		} );
+
+		prompts.forEach( ( { title, help, before } ) => {
+			const after = title.textContent.trim();
+			help.setAttribute( 'data-wap-prompt', help.getAttribute( 'data-wap-prompt' ).replace( before, () => after ) );
 		} );
 	}
 
