@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'testShouldReturnTrueWhenNoExcludedPages'               => [
+	'testShouldReturnTrueWhenNoExcludedPages'              => [
 		'config'   => [
 			'url'            => 'https://example.com/page/',
 			'excluded_pages' => [],
@@ -15,18 +15,39 @@ return [
 		],
 		'expected' => true,
 	],
-	'testShouldReturnFalseWhenUrlMatchesExactExcludedPage'  => [
+	'testShouldReturnFalseWhenUrlMatchesExactExcludedPage' => [
 		'config'   => [
 			'url'            => 'https://example.com/shop',
 			'excluded_pages' => [ '/shop' ],
 		],
 		'expected' => false,
 	],
-	'testShouldReturnFalseWhenUrlMatchesSubstringPattern'   => [
+	'testShouldReturnFalseWhenUrlMatchesSubstringPattern'  => [
 		'config'   => [
 			'url'            => 'https://example.com/product/item',
 			'excluded_pages' => [ '/product' ],
 		],
 		'expected' => false,
+	],
+	'testShouldReturnFalseWhenHomeUrlIsExcluded'           => [
+		'config'   => [
+			'url'            => 'https://example.com',
+			'excluded_pages' => [ '/' ],
+		],
+		'expected' => false,
+	],
+	'testShouldReturnFalseWhenHomeUrlWithTrailingSlashIsExcluded' => [
+		'config'   => [
+			'url'            => 'https://example.com/',
+			'excluded_pages' => [ '/' ],
+		],
+		'expected' => false,
+	],
+	'testShouldReturnTrueForOtherPagesWhenOnlyHomeIsExcluded' => [
+		'config'   => [
+			'url'            => 'https://example.com/page/',
+			'excluded_pages' => [ '/' ],
+		],
+		'expected' => true,
 	],
 ];
