@@ -58,7 +58,7 @@
 	"require-dev": {
 		"php": "^7.4 || ^8",
 		"berlindb/core": "2.0.2",
-		"brain/monkey": "^2.0",
+		"brain/monkey": "^2.8",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
 		"groupone/wap-client": "^3.1.0",

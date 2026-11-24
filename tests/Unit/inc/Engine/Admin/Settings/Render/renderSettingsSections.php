@@ -51,11 +51,17 @@ class Test_RenderSettingsSections extends TestCase {
 		// The assistant filter does not decide whether "Need Help?" is printed.
 		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
 
+		$page = $config['page'] ?? 'page_slug';
+		$help = [
+			'id'  => 'abc',
+			'url' => 'https://docs.example.org/help',
+		];
+
 		$render = new Render( dirname( __DIR__, 7 ) . '/views/settings', Mockery::mock( PluginFamily::class ) );
 
 		$render->set_settings(
 			[
-				'page_slug' => [
+				$page => [
 					'title'    => 'Page title',
 					'sections' => [
 						'section_id' => [
@@ -63,7 +69,7 @@ class Test_RenderSettingsSections extends TestCase {
 							'type'             => $config['type'],
 							'title'            => 'Section title',
 							'description'      => 'Section description',
-							'page'             => 'page_slug',
+							'page'             => $page,
 							'purge_url'        => 'https://example.org/purge',
 							'is_active'        => false,
 							'is_forced_off'    => false,
@@ -75,10 +81,7 @@ class Test_RenderSettingsSections extends TestCase {
 								'no_status_indicator' => true,
 								'pages_count'         => 0,
 							],
-							'help'             => [
-								'id'  => 'abc',
-								'url' => 'https://docs.example.org/help',
-							],
+							'help'             => $config['help'] ?? $help,
 						],
 					],
 				],
@@ -86,7 +89,7 @@ class Test_RenderSettingsSections extends TestCase {
 		);
 
 		ob_start();
-		$render->render_settings_sections( 'page_slug' );
+		$render->render_settings_sections( $page );
 		$html = (string) ob_get_clean();
 
 		foreach ( $expected['contains'] as $string ) {
