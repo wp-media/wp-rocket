@@ -47,41 +47,31 @@ class Test_AddToQueue extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
-		$blocked = isset( $config['blocked_offset'] );
+		$sent  = $config['request_count'] ?? 1;
+		$until = isset( $config['blocked_offset'] ) ? time() + $config['blocked_offset'] : false;
 
-		if ( $blocked ) {
-			$until = time() + $config['blocked_offset'];
-			Functions\when( 'get_transient' )->alias( fn( $key ) => 'wp_rocket_rocket_insights_feature_disabled' === $key ? $until : false );
-			Functions\expect( 'user_trailingslashit' )->with( $config['url'] )->andReturn( $config['url_trailing'] );
-			Functions\expect( 'apply_filters' )->with( 'rocket_saas_api_queued_url', $config['url_trailing'], 'rocket_insights' )->andReturn( $config['url_filtered'] );
-			Functions\expect( 'wp_remote_request' )->never();
-			Functions\expect( 'set_transient' )->never();
-			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['email'] );
-			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['key'] );
-			$this->assertEquals( $expected, $this->api_client->add_to_queue( $config['url'], $config['options'], $config['custom_args'] ) );
-			return;
-		}
-
+		Functions\when( 'get_transient' )->alias( fn( $key ) => 'wp_rocket_rocket_insights_feature_disabled' === $key ? $until : false );
 		Functions\expect( 'user_trailingslashit' )->with( $config['url'] )->andReturn( $config['url_trailing'] );
-		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_SAAS_API_URL', false )->andReturn( $config['api_url'] );
+		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_SAAS_API_URL', false )->zeroOrMoreTimes()->andReturn( $config['api_url'] ?? '' );
 		Functions\expect( 'apply_filters' )->with( 'rocket_saas_api_queued_url', $config['url_trailing'], 'rocket_insights' )->andReturn( $config['url_filtered'] );
-		
-		// Options->get() is called twice: once for email, once for key, plus twice more in handle_request for credentials
+
 		$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['email'] );
 		$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['key'] );
-		
-		Functions\expect( 'wp_json_encode' )->andReturn( $config['request_body_json'] );
-		Functions\expect( 'wp_remote_request' )->with( $config['request_uri'], $config['args'] )->andReturn( $config['response'] );
-		Functions\expect( 'wp_remote_retrieve_body' )->with( $config['response'] )->andReturn( $config['body'] ?? '' );
 
-		if ( isset( $config['feature_disabled'] ) ) {
+		Functions\expect( 'wp_json_encode' )->zeroOrMoreTimes()->andReturn( $config['request_body_json'] ?? '' );
+		Functions\expect( 'wp_remote_request' )->with( $config['request_uri'] ?? '', $config['args'] ?? [] )->times( $sent )->andReturn( $config['response'] ?? [] );
+		Functions\expect( 'wp_remote_retrieve_body' )->with( $config['response'] ?? [] )->zeroOrMoreTimes()->andReturn( $config['body'] ?? '' );
+
+		if ( ! $sent ) {
+			Functions\expect( 'set_transient' )->never();
+		} elseif ( isset( $config['feature_disabled'] ) ) {
 			$this->configure_feature_disabled( $config );
 		} else {
 			$this->configure_check_response( $config );
 		}
-		
+
 		$result = $this->api_client->add_to_queue( $config['url'], $config['options'], $config['custom_args'] );
-		
+
 		$this->assertEquals( $expected, $result );
 	}
 

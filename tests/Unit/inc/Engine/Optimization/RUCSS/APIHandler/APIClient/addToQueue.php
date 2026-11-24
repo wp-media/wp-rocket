@@ -31,31 +31,24 @@ class Test_AddToQueue extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		$blocked = isset($config['blocked_offset']);
+		$sent = $config['request_count'] ?? 1;
 
 		$transients = [
-			'wp_rocket_rucss_feature_disabled' => $blocked ? time() + $config['blocked_offset'] : false,
+			'wp_rocket_rucss_feature_disabled' => isset($config['blocked_offset']) ? time() + $config['blocked_offset'] : false,
 			'wp_rocket_rucss_errors_count'     => $config['errors_count'] ?? false,
 		];
 		Functions\when('get_transient')->alias(fn($key) => $transients[$key] ?? false);
 
-		if ($blocked) {
-			Functions\expect('wp_remote_request')->never();
-			Functions\expect('set_transient')->never();
-			$this->options->shouldReceive('get')->never();
-			Functions\expect('add_query_arg')->with([ 'nowprocket' => 1 ], $config['url'])->andReturn($config['url']);
-			$this->assertEquals($expected, $this->client->add_to_queue($config['url'], $config['options']));
-			return;
-		}
-
 		Functions\expect('add_query_arg')->with([ 'nowprocket' => 1 ], $config['url'])->andReturn($config['url']);
-		Functions\expect('rocket_get_constant')->with('WP_ROCKET_SAAS_API_URL', false)->andReturn($config['api_url']);
-		$this->options->expects()->get('consumer_email', '')->andReturn($config['email']);
-		$this->options->expects()->get('consumer_key', '')->andReturn($config['key']);
-		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->andReturn($config['response']);
-		Functions\expect('wp_remote_retrieve_body')->with($config['response'])->andReturn($config['body']);
+		Functions\expect('rocket_get_constant')->with('WP_ROCKET_SAAS_API_URL', false)->zeroOrMoreTimes()->andReturn($config['api_url']);
+		$this->options->shouldReceive('get')->with('consumer_email', '')->times($sent)->andReturn($config['email']);
+		$this->options->shouldReceive('get')->with('consumer_key', '')->times($sent)->andReturn($config['key']);
+		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->times( $sent )->andReturn($config['response'] ?? []);
+		Functions\expect('wp_remote_retrieve_body')->with($config['response'] ?? [])->zeroOrMoreTimes()->andReturn($config['body'] ?? '');
 
-		if (isset($config['feature_disabled'])) {
+		if (! $sent) {
+			Functions\expect('set_transient')->never();
+		} elseif (isset($config['feature_disabled'])) {
 			$this->configureFeatureDisabled($config);
 		} else {
 			$this->configureCheckResponse($config);

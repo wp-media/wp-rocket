@@ -230,6 +230,7 @@ return [
 				'options'        => [],
 				'custom_args'    => [],
 				'blocked_offset' => 120,
+				'request_count'  => 0,
 			],
 			'expected' => [
 				'code'    => 503,

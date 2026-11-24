@@ -339,7 +339,7 @@ $scenarios['testFeatureDisabledHttp503ShouldBackOff'] = [
 ];
 
 $scenarios['testBackOffActiveShouldNotSendRequest'] = [
-	'config'   => $base_config( [ 'blocked_offset' => 120 ] ),
+	'config'   => $base_config( [ 'blocked_offset' => 120, 'request_count' => 0 ] ),
 	'expected' => $disabled_result,
 ];
 
