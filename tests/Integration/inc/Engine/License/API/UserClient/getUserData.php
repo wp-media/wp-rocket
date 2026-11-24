@@ -32,6 +32,10 @@ class Test_GetUserData extends TestCase {
 		delete_transient( UserClient::LICENCE_REJECTED_TRANSIENT );
 		add_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		add_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
+
+		// A customer-data transient write can cascade into a settings save (licence expiry disables RocketCDN):
+		// keep its subscribers, which query tables this test doesn't install, out of the method under test.
+		$this->unregisterAllCallbacks( 'update_option_wp_rocket_settings' );
 	}
 
 	public function tear_down() {
@@ -41,6 +45,7 @@ class Test_GetUserData extends TestCase {
 		delete_transient( UserClient::LICENCE_REJECTED_TRANSIENT );
 		remove_filter( 'pre_get_rocket_option_consumer_email', [ $this, 'set_consumer_email' ] );
 		remove_filter( 'pre_get_rocket_option_consumer_key', [ $this, 'set_consumer_key' ] );
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		parent::tear_down();
 	}

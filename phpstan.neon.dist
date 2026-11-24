@@ -67,4 +67,5 @@ rules:
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
 	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
 	- WP_Rocket\Tests\phpstan\Rules\NoHooksInORM
+	- WP_Rocket\Tests\phpstan\Rules\TestNamespaceMatchesPath
 

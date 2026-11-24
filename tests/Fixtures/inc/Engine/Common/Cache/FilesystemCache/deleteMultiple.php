@@ -4,7 +4,7 @@ return [
         'config' => [
               'keys' => [
 				  '/blog/test/file.css',
-				  '/blog/test/',
+				  '/blog/test/dir.css',
 			  ],
 			'home_url' => 'http://example.org',
 			'root' => '/cache',
@@ -13,18 +13,18 @@ return [
 					'host' => 'example.org',
 					'path' => '/blog/test/file.css',
 				],
-				'/blog/test/' =>  [
+				'/blog/test/dir.css' =>  [
 					'host' => 'example.org',
-					'path' => '/blog/test/',
+					'path' => '/blog/test/dir.css',
 				],
 			],
 			'is_dir' => [
 				'/cache/background-css/1/example.org/blog/test/file.css' => false,
-				'/cache/background-css/1/example.org/blog/test' => true,
+				'/cache/background-css/1/example.org/blog/test/dir.css' => true,
 			],
 			'exists' => [
 				'/cache/background-css/1/example.org/blog/test/file.css' => true,
-				'/cache/background-css/1/example.org/blog/test' => true,
+				'/cache/background-css/1/example.org/blog/test/dir.css' => true,
 			],
 		],
         'expected' => [
@@ -32,6 +32,36 @@ return [
 		]
     ],
 	'shouldReturnFalseOnOneFail' => [
+		'config' => [
+			'keys' => [
+				'/blog/test/file.css',
+				'/blog/test/file2.css',
+			],
+			'home_url' => 'http://example.org',
+			'root' => '/cache',
+			'parsed_url' => [
+				'/blog/test/file.css' =>  [
+					'host' => 'example.org',
+					'path' => '/blog/test/file.css',
+				],
+				'/blog/test/file2.css' =>  [
+					'host' => 'example.org',
+					'path' => '/blog/test/file2.css',
+				],
+			],
+			'is_dir' => [
+				'/cache/background-css/1/example.org/blog/test/file.css' => false,
+			],
+			'exists' => [
+				'/cache/background-css/1/example.org/blog/test/file.css' => true,
+				'/cache/background-css/1/example.org/blog/test/file2.css' => false,
+			],
+		],
+		'expected' => [
+			'output' => false
+		]
+	],
+	'directoryKeyShouldReturnFalse' => [
 		'config' => [
 			'keys' => [
 				'/blog/test/file.css',
@@ -54,11 +84,10 @@ return [
 			],
 			'exists' => [
 				'/cache/background-css/1/example.org/blog/test/file.css' => true,
-				'/cache/background-css/1/example.org/blog/test' => false,
 			],
 		],
 		'expected' => [
 			'output' => false
 		]
-	]
+	],
 ];

@@ -7,9 +7,11 @@ use WP_Rocket\Engine\Common\Context\ContextInterface;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\AJAXControllerTrait;
 use WP_Rocket\Engine\Common\PerformanceHints\AJAX\ControllerInterface;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Database\Queries\PreconnectExternalDomains as PreconnectQuery;
+use WP_Rocket\Engine\Media\PreconnectExternalDomains\OriginTrait;
 
 class Controller implements ControllerInterface {
 	use AJAXControllerTrait;
+	use OriginTrait;
 
 	/**
 	 * Preconnect external domain instance
@@ -70,12 +72,21 @@ class Controller implements ControllerInterface {
 			$max_preconnect_domains_number = 1;
 		}
 
-		foreach ( (array) $domains as $index => $domain ) {
+		$seen = [];
+
+		foreach ( (array) $domains as $domain ) {
 			if ( 0 >= $max_preconnect_domains_number ) {
 				break;
 			}
 
-			$preconnect_domains[ $index ] = sanitize_url( wp_unslash( $domain ) );
+			$origin = $this->get_origin( $domain );
+
+			if ( '' === $origin || isset( $seen[ $origin ] ) ) {
+				continue;
+			}
+
+			$seen[ $origin ]      = true;
+			$preconnect_domains[] = $origin;
 			--$max_preconnect_domains_number;
 		}
 

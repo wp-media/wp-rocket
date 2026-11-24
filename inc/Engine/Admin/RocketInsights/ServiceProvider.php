@@ -352,7 +352,12 @@ class ServiceProvider extends AbstractServiceProvider {
 			);
 
 		$this->getContainer()->add( 'ri_get_recommendations_ability', GetRecommendations::class )
-			->addArgument( 'ri_recommendations_data_manager' );
+			->addArguments(
+				[
+					'ri_recommendations_data_manager',
+					'ri_recommendation_overrides',
+				]
+			);
 
 		$this->getContainer()->add( 'ri_get_page_insights_score_ability', GetPageInsightsScore::class )
 			->addArguments(
