@@ -23,7 +23,7 @@ $rocket_need_help_tag     = null === $rocket_need_help_url ? 'button' : 'a';
 $rocket_need_help_classes = trim( 'wpr-infoAction wpr-infoAction--help wpr-icon-help ' . ( $data['class'] ?? '' ) );
 $rocket_need_help_prompt  = sprintf(
 	// translators: 1: settings tab name, 2: settings section name.
-	__( "I need help with '%1\$s' > '%2\$s'", 'rocket' ),
+	__( 'I need help with \'%1$s\' > \'%2$s\'', 'rocket' ),
 	$data['page'] ?? '',
 	$data['section'] ?? ''
 );
