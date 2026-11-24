@@ -289,19 +289,4 @@ class Filesystem extends AbstractFileSystem {
 
 		return $provider . '/';
 	}
-
-	/**
-	 * Deletes the locally stored fonts for the corresponding url
-	 *
-	 * @since 3.18
-	 *
-	 * @param string $url The url of the page to be deleted.
-	 *
-	 * @return bool
-	 */
-	public function delete_font_css( string $url ): bool {
-		$dir = $this->get_absolute_path( $this->get_font_provider_path( $url ), $url );
-
-		return $this->delete_file( $dir );
-	}
 }
