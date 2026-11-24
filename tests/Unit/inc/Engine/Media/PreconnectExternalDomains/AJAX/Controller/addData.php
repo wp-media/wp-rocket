@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
 
 use Mockery;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
@@ -63,10 +63,6 @@ class Test_AddData extends TestCase {
 			->atMost()
 			->once()
 			->andReturn( $config['filter'] );
-
-		Functions\when('sanitize_url')->alias(function($url) {
-			return filter_var($url, FILTER_SANITIZE_URL) ?: '';
-		});
 
 		Functions\when( 'sanitize_text_field' )->alias(
 			function ( $value ) {

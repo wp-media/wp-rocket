@@ -1,26 +1,26 @@
 <?php
 
 return [
-	'testShouldReturntrueWhenBypass' => [
+	'testShouldReturnFalseWhenBypass' => [
 		'config' => [
 			'bypass' => true,
 			'do_not_optimize' => false,
 			'option' => true,
 		],
-		'expected' => true,
+		'expected' => false,
 	],
-	'testShouldReturnTrueWhenDoNotOptimize' => [
+	'testShouldReturnFalseWhenDoNotOptimize' => [
 		'config' => [
 			'bypass' => false,
 			'do_not_optimize' => true,
 			'option' => true,
 		],
-		'expected' => true,
+		'expected' => false,
 	],
 	'testShouldReturnFalseWhenOptionDisabled' => [
 		'config' => [
 			'bypass' => false,
-			'do_not_optimize' => true,
+			'do_not_optimize' => false,
 			'option' => false,
 		],
 		'expected' => false,

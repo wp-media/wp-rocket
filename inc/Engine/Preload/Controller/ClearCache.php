@@ -26,10 +26,11 @@ class ClearCache {
 	/**
 	 * Clear urls listed.
 	 *
-	 * @param array $urls urls to clean.
+	 * @param array $urls         urls to clean.
+	 * @param bool  $release_lock Whether to also release the lock held on each url.
 	 * @return void
 	 */
-	public function partial_clean( array $urls ) {
+	public function partial_clean( array $urls, bool $release_lock = false ) {
 		foreach ( $urls as $url ) {
 			// if it has a regex, remove the regex part completely.
 			if ( str_contains( $url, '*' ) ) {
@@ -37,12 +38,16 @@ class ClearCache {
 				$url        = str_replace( $regex_part, '', $url );
 			}
 			if ( ! $this->is_excluded_by_filter( $url ) ) {
-				$this->query->create_or_update(
-					[
-						'url'    => $url,
-						'status' => 'pending',
-					]
-				);
+				$data = [
+					'url'    => $url,
+					'status' => 'pending',
+				];
+
+				if ( $release_lock ) {
+					$data['is_locked'] = false;
+				}
+
+				$this->query->create_or_update( $data );
 			} else {
 				$this->query->delete_by_url( $url );
 			}

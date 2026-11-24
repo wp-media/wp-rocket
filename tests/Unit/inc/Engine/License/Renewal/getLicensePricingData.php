@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\Engine\License\Renewal;
 
 use Mockery;
-use ReflectionMethod;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\License\API\Pricing;
 use WP_Rocket\Engine\License\API\User;
@@ -34,9 +33,6 @@ class GetLicensePricingData extends TestCase {
 		$pricing->shouldReceive( 'get_plus_pricing' )->andReturn( (object) [ 'name' => 'plus' ] );
 		$pricing->shouldReceive( 'get_infinite_pricing' )->andReturn( (object) [ 'name' => 'infinite' ] );
 
-		$method = new ReflectionMethod( Renewal::class, 'get_license_pricing_data' );
-		$method->setAccessible( true );
-
-		$this->assertEquals( $expected, $method->invoke( $renewal ) );
+		$this->assertEquals( $expected, $this->get_reflective_method( 'get_license_pricing_data', Renewal::class )->invoke( $renewal ) );
 	}
 }

@@ -10,11 +10,11 @@ namespace WP_Rocket\Tests\Integration\inc\Engine\CDN\Subscriber;
 class Test_MaybeReplaceUrl extends TestCase {
 
 	/**
-	 * @dataProvider providerTestData
+	 * @dataProvider configTestData
 	 */
-	public function testShouldMaybeReplaceURL( $original, $zones, $cdn_urls, $home_url, $expected ) {
-		$this->cnames   = $cdn_urls;
-		$this->home_url = $home_url;
+	public function testShouldMaybeReplaceURL( $config, $expected ) {
+		$this->cnames   = $config['cdn_urls'];
+		$this->home_url = $config['site_url'];
 
 		add_filter( 'pre_get_rocket_option_cdn', [ $this, 'return_true'] );
 		add_filter( 'rocket_cdn_cnames', [ $this, 'setCnames' ] );
@@ -22,11 +22,7 @@ class Test_MaybeReplaceUrl extends TestCase {
 
 		$this->assertSame(
 			$expected,
-			apply_filters( 'rocket_asset_url', $original, $zones )
+			apply_filters( 'rocket_asset_url', $config['original'], $config['zones'] )
 		);
-	}
-
-	public function providerTestData() {
-		return $this->getTestData( __DIR__, 'maybe-replace-url' );
 	}
 }

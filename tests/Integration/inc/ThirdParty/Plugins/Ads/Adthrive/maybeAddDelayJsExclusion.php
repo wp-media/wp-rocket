@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Ads\Adthrive;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Ads\Adthrive;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

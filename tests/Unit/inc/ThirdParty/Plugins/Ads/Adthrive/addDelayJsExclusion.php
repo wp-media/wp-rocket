@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\ThirdParty\Plugins\Ads\Adthrive;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Ads\Adthrive;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Plugins\Ads\Adthrive;

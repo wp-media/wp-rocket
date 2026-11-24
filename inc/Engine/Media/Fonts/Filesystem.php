@@ -9,6 +9,21 @@ use WP_Rocket\Logger\Logger;
 
 class Filesystem extends AbstractFileSystem {
 	/**
+	 * Characters allowed in a remote font path.
+	 */
+	private const FONT_PATH_CHARS = '#^[A-Za-z0-9._/-]+\z#';
+
+	/**
+	 * Normalized local font path: dot-free directory names, an optional numeric slice index and a font extension.
+	 */
+	private const LOCAL_FONT_PATH = '#^(?:/[a-z0-9_-]+)*/[a-z0-9_-]+(?:\.[0-9]+)?\.(?:woff2|woff|ttf|otf|eot)\z#i';
+
+	/**
+	 * Leading bytes of WOFF2, WOFF, TrueType, OpenType and font collection files.
+	 */
+	private const FONT_SIGNATURES = [ 'wOF2', 'wOFF', "\x00\x01\x00\x00", 'true', 'OTTO', 'ttcf' ];
+
+	/**
 	 * WP Filesystem instance
 	 *
 	 * @var WP_Filesystem_Direct
@@ -88,18 +103,14 @@ class Filesystem extends AbstractFileSystem {
 		$download_average = 0;
 
 		foreach ( $font_urls as $font_url ) {
-			$font_path = wp_parse_url( $font_url, PHP_URL_PATH );
+			$font_path = $this->get_local_font_path( $font_url, $fonts_basepath );
 
-			if ( ! $font_path ) {
+			if ( '' === $font_path ) {
+				Logger::debug( "Font $font_url kept remote", [ 'Host Fonts Locally' ] );
 				continue;
 			}
 
 			$local_path = $fonts_basepath . $font_path;
-			$local_dir  = dirname( $local_path );
-
-			if ( ! rocket_mkdir_p( $local_dir ) ) {
-				continue;
-			}
 
 			if ( ! $this->filesystem->exists( $local_path ) ) {
 				$download_start = microtime( true );
@@ -108,6 +119,15 @@ class Filesystem extends AbstractFileSystem {
 
 				if ( ! $font_content ) {
 					Logger::debug( 'Font download was not successful', [ 'Host Fonts Locally' ] );
+					continue;
+				}
+
+				if ( ! $this->is_font_content( $font_content, $font_path ) ) {
+					Logger::debug( "Font $font_url kept remote, its content is not a font file", [ 'Host Fonts Locally' ] );
+					continue;
+				}
+
+				if ( ! rocket_mkdir_p( dirname( $local_path ) ) ) {
 					continue;
 				}
 
@@ -139,6 +159,71 @@ class Filesystem extends AbstractFileSystem {
 		Logger::debug( 'Average download time per font -- ' . ( $count_fonts ? $download_average / $count_fonts : 0 ), [ 'Host Fonts Locally' ] );
 
 		return $this->write_file( $css_filepath, $local_css );
+	}
+
+	/**
+	 * Gets the normalized path of a font file relative to the fonts directory.
+	 *
+	 * @param string $font_url       Remote font URL.
+	 * @param string $fonts_basepath Absolute path to the fonts directory.
+	 *
+	 * @return string Path starting with "/", or an empty string when the font can't be stored locally.
+	 */
+	private function get_local_font_path( string $font_url, string $fonts_basepath ): string {
+		$path = wp_parse_url( $font_url, PHP_URL_PATH );
+
+		if ( ! is_string( $path ) || '' === $path ) {
+			return '';
+		}
+
+		$path = str_replace( '\\', '/', $path );
+
+		if ( ! preg_match( self::FONT_PATH_CHARS, $path ) ) {
+			return '';
+		}
+
+		// Rooting at "/" clamps leading ".." segments at the fonts directory, on POSIX and Windows alike.
+		$path = '/' . ltrim( rocket_realpath( '/' . $path ), '/' );
+
+		if ( ! preg_match( self::LOCAL_FONT_PATH, $path ) ) {
+			return '';
+		}
+
+		if ( 0 !== strpos( rocket_realpath( $fonts_basepath . $path ), rocket_realpath( $fonts_basepath ) . '/' ) ) {
+			return '';
+		}
+
+		return $path;
+	}
+
+	/**
+	 * Checks if the content starts with a known font file signature.
+	 *
+	 * Embedded OpenType has no leading signature: it needs an .eot path, the "LP" magic number at byte 34
+	 * and a little-endian size header matching the content length, and must not start like markup.
+	 *
+	 * @param string $content File content.
+	 * @param string $path    Local font path.
+	 *
+	 * @return bool
+	 */
+	private function is_font_content( string $content, string $path ): bool {
+		if ( in_array( substr( $content, 0, 4 ), self::FONT_SIGNATURES, true ) ) {
+			return true;
+		}
+
+		if (
+			'.eot' !== strtolower( substr( $path, -4 ) )
+			|| strlen( $content ) < 36
+			|| 'LP' !== substr( $content, 34, 2 )
+			|| preg_match( '/^[\x09\x0A\x0C\x0D\x20<]/', $content )
+		) {
+			return false;
+		}
+
+		$size = unpack( 'V', $content );
+
+		return is_array( $size ) && strlen( $content ) === $size[1];
 	}
 
 	/**
