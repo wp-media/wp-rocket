@@ -98,6 +98,7 @@ class WPRocketUninstall {
 		'rocket_preload_check_duration',
 		'wpr_user_information_timeout_active',
 		'wpr_user_information_timeout',
+		'wp_rocket_licence_rejected',
 		'rocket_fonts_data_collection',
 		'wpr_global_score_data',
 		'wp_rocket_log_file_size_check',

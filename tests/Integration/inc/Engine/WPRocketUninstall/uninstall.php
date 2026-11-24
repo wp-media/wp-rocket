@@ -69,6 +69,7 @@ class Test_Uninstall extends FilesystemTestCase {
 		'rocket_get_refreshed_fragments_cache'            => null,
 		'wpr_user_information_timeout_active'             => null,
 		'wpr_user_information_timeout'                    => null,
+		'wp_rocket_licence_rejected'                      => null,
 		'rocket_mixpanel_reseller_synced'                 => null,
 		'wpr_rucss_used_css_upgrade_retry'                => null,
 		'rocket_rucss_delete_duplicate_rows_lock'         => null,
