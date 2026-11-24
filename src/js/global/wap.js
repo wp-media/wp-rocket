@@ -11,6 +11,11 @@ document.addEventListener( 'click', function( e ) {
         return;
     }
 
+    // Stopping the click below keeps main.js from tracking it, so track it here, as main.js does.
+    if ( typeof window.wprTrackHelpButton === 'function' ) {
+        window.wprTrackHelpButton( 'Need Help', btn.getAttribute( 'data-wpr_track_context' ) || 'General' );
+    }
+
     e.preventDefault();
     e.stopImmediatePropagation();
 
