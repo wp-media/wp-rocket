@@ -1169,6 +1169,10 @@ The npm half has its own standalone suite: `npm test` (builds `dist/` and runs
 
 ## Changelog
 
+### 3.1.1
+
+- The user's sent questions are 14px, like the assistant's answers (they were 16px).
+
 ### 3.1.0
 
 - The message box text is 14px for mouse users at any window width (Gravity only did so from 1024px).

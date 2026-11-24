@@ -3,7 +3,7 @@
  * Plugin Name:       WAP Client
  * Plugin URI:        https://github.com/group-one/wap-client
  * Description:       WordPress AI Platform (WAP) client library. Integrates the WAP AI chat assistant into any WordPress plugin via a single static method call.
- * Version:           3.1.0
+ * Version:           3.1.1
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            Group.one

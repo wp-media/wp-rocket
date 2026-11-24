@@ -61,7 +61,7 @@
 		"brain/monkey": "^2.8",
 		"coenjacobs/mozart": "^0.7",
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
-		"groupone/wap-client": "^3.1.0",
+		"groupone/wap-client": "^3.1.1",
 		"league/container": "^4.2",
 		"mnsami/composer-custom-directory-installer": "^2.0",
 		"mobiledetect/mobiledetectlib": "^3.74",

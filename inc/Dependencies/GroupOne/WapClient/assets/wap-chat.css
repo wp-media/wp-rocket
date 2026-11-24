@@ -409,23 +409,20 @@
    Kerning + ligatures on, contextuals off so AI output never breaks
    unexpectedly.
 
+   Message text is 14px, for the assistant's answers and the user's questions.
+
    Streamed replies render into a .wap-chat-message-text wrapper while history
    replies render straight into the body, so the block-level rules below match
    both as the parent. */
 .wap-chat-root .gv-chat-message-body {
     --wap-measure: 68ch;
     font-family: inherit;
-    font-size: 1rem;
+    font-size: .875rem;
     line-height: var(--line-height-body, 1.5);
     color: var(--color-body-on-default, #1e1d1f);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-}
-
-/* Assistant answers are 14px; the user's own question bubbles keep 1rem. */
-.wap-chat-root .gv-chat-message.gv-chat-incoming .gv-chat-message-body {
-    font-size: .875rem;
 }
 
 .wap-chat-root :is(.gv-chat-message-body, .wap-chat-message-text)>*:first-child {
