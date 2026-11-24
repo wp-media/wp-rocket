@@ -24,40 +24,137 @@ document.addEventListener( 'click', function( e ) {
         return;
     }
 
-    var launcher    = columnEl.querySelector( '.wap-chat-column__launcher' );
-    var isCollapsed = launcher && ! launcher.hidden;
-
-    if ( isCollapsed ) {
+    var launcher = columnEl.querySelector( '.wap-chat-column__launcher' );
+    if ( launcher && ! launcher.hidden ) {
         launcher.click();
-        // Wait for the column open transition before filling the composer.
-        setTimeout( function() {
-            wprFillWapPrompt( columnEl, prompt );
-        }, 300 );
-    } else {
-        wprFillWapPrompt( columnEl, prompt );
     }
+
+    wprSendWapPrompt( columnEl, prompt );
 }, true );
 
-function wprFillWapPrompt( columnEl, prompt ) {
-    var textarea = columnEl.querySelector( 'textarea' );
-    if ( ! textarea ) {
+// The prompt waiting to be sent, and the last one sent.
+var wprWapPending  = null;
+var wprWapLastSent = { prompt: '', time: 0 };
+
+// Once sent, the send button is a Stop button for the answer, so a second click would queue the
+// same prompt again. Clicks on the same prompt within this window are ignored.
+var WPR_WAP_RESEND_MS = 2000;
+// How long to wait for the chat to take the prompt, not counting the consent popup or a streaming answer.
+var WPR_WAP_WAIT_MS = 30000;
+
+/**
+ * Puts the prompt in the message box and sends it once the chat can take a message.
+ *
+ * The box is disabled while the chat connects, until the consent is accepted and when the quota is
+ * used up, and the send button is a Stop button while an answer streams. The prompt stays in the box
+ * unsent when the chat is closed, the consent is declined, another prompt is requested, or the wait times out.
+ *
+ * @param {Element} columnEl The chat column.
+ * @param {string}  prompt   The prompt to send.
+ */
+function wprSendWapPrompt( columnEl, prompt ) {
+    // A second click on the same "Need Help?" doesn't send its prompt twice.
+    if ( wprWapPending && wprWapPending.prompt === prompt ) {
+        return;
+    }
+    if ( wprWapLastSent.prompt === prompt && Date.now() - wprWapLastSent.time < WPR_WAP_RESEND_MS ) {
         return;
     }
 
-    textarea.value = prompt;
+    wprCancelWapPrompt();
 
-    if ( ! textarea.disabled ) {
-        // Dispatch 'input' so WAP's autoGrow listener resizes the composer.
-        textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
-        textarea.focus();
+    var pending = {
+        prompt: prompt,
+        opened: false,
+        // A "consent required" notice already in the chat doesn't cancel the prompt; a new one does.
+        consentGate: columnEl.querySelector( '.wap-consent-gate' ),
+        observer: null,
+        timer: null
+    };
+    wprWapPending = pending;
+
+    var textarea = columnEl.querySelector( 'textarea' );
+    if ( textarea ) {
+        textarea.value = prompt;
+    }
+
+    pending.observer = new MutationObserver( function() {
+        wprTrySendWapPrompt( columnEl, pending );
+    } );
+    pending.observer.observe( columnEl, {
+        subtree: true,
+        childList: true,
+        attributes: true,
+        attributeFilter: [ 'disabled', 'class', 'hidden' ]
+    } );
+    wprWaitWapPrompt( columnEl, pending );
+
+    wprTrySendWapPrompt( columnEl, pending );
+}
+
+function wprWaitWapPrompt( columnEl, pending ) {
+    pending.timer = setTimeout( function() {
+        if ( wprWapPending !== pending ) {
+            return;
+        }
 
         var sendBtn = columnEl.querySelector( '.gv-input-ai .gv-button-primary' );
-        if ( sendBtn ) {
-            setTimeout( function() {
-                sendBtn.click();
-            }, 50 );
+        if ( columnEl.querySelector( '.wap-consent-modal' ) || ( sendBtn && sendBtn.classList.contains( 'wap-stop' ) ) ) {
+            wprWaitWapPrompt( columnEl, pending );
+            return;
         }
+
+        wprCancelWapPrompt();
+    }, WPR_WAP_WAIT_MS );
+}
+
+function wprTrySendWapPrompt( columnEl, pending ) {
+    if ( wprWapPending !== pending ) {
+        return;
     }
+
+    // The launcher shows only while the chat is closed. Closing it after it opened cancels the prompt.
+    var launcher = columnEl.querySelector( '.wap-chat-column__launcher' );
+    if ( launcher && ! launcher.hidden ) {
+        if ( pending.opened ) {
+            wprCancelWapPrompt();
+        }
+        return;
+    }
+    pending.opened = true;
+
+    // The chat adds this notice when the consent popup is dismissed without accepting.
+    var consentGate = columnEl.querySelector( '.wap-consent-gate' );
+    if ( consentGate && consentGate !== pending.consentGate ) {
+        wprCancelWapPrompt();
+        return;
+    }
+
+    var textarea = columnEl.querySelector( 'textarea' );
+    var sendBtn  = columnEl.querySelector( '.gv-input-ai .gv-button-primary' );
+    if ( ! textarea || ! sendBtn || textarea.disabled || sendBtn.disabled || sendBtn.classList.contains( 'wap-stop' ) ) {
+        return;
+    }
+
+    wprCancelWapPrompt();
+
+    textarea.value = pending.prompt;
+    // Dispatch 'input' so WAP's autoGrow listener resizes the composer.
+    textarea.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+    textarea.focus();
+
+    wprWapLastSent = { prompt: pending.prompt, time: Date.now() };
+    sendBtn.click();
+}
+
+function wprCancelWapPrompt() {
+    if ( ! wprWapPending ) {
+        return;
+    }
+
+    wprWapPending.observer.disconnect();
+    clearTimeout( wprWapPending.timer );
+    wprWapPending = null;
 }
 
 // Support menu item: open the chat column instead of following the link to the contact page.
