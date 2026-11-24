@@ -2,7 +2,7 @@
 
 return [
 	'testShouldReturnSupportData' => [
-		'options' => [
+		'config' => [
 			'secret_cache_key'            => null,
 			'cache_mobile'                => 1,
 			'do_caching_mobile_files'     => 0,

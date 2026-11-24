@@ -122,4 +122,19 @@ return [
 			[ 'type' => 'item' ] + $rocket_item( 'dashboard' ),
 		],
 	],
+	'shouldKeepTheOpenChatFlagOfAnItem'                  => [
+		'config'   => [
+			'navigation' => [
+				'support' => [
+					'id'        => 'support',
+					'title'     => 'support',
+					'url'       => 'https://wp-rocket.me/contact/',
+					'open_chat' => true,
+				],
+			],
+		],
+		'expected' => [
+			[ 'type' => 'item' ] + [ 'url' => 'https://wp-rocket.me/contact/', 'open_chat' => true ] + $rocket_item( 'support' ),
+		],
+	],
 ];
