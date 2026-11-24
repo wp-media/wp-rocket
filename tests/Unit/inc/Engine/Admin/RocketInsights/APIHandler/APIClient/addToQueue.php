@@ -40,12 +40,28 @@ class Test_AddToQueue extends TestCase {
 		$this->options    = Mockery::mock( Options_Data::class );
 		$this->api_client = new APIClient( $this->options );
 		$this->set_logger( $this->api_client );
+		Functions\when( 'get_transient' )->justReturn( false );
 	}
 
 	/**
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected( $config, $expected ) {
+		$blocked = isset( $config['blocked_offset'] );
+
+		if ( $blocked ) {
+			$until = time() + $config['blocked_offset'];
+			Functions\when( 'get_transient' )->alias( fn( $key ) => 'wp_rocket_rocket_insights_feature_disabled' === $key ? $until : false );
+			Functions\expect( 'user_trailingslashit' )->with( $config['url'] )->andReturn( $config['url_trailing'] );
+			Functions\expect( 'apply_filters' )->with( 'rocket_saas_api_queued_url', $config['url_trailing'], 'rocket_insights' )->andReturn( $config['url_filtered'] );
+			Functions\expect( 'wp_remote_request' )->never();
+			Functions\expect( 'set_transient' )->never();
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['email'] );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['key'] );
+			$this->assertEquals( $expected, $this->api_client->add_to_queue( $config['url'], $config['options'], $config['custom_args'] ) );
+			return;
+		}
+
 		Functions\expect( 'user_trailingslashit' )->with( $config['url'] )->andReturn( $config['url_trailing'] );
 		Functions\expect( 'rocket_get_constant' )->with( 'WP_ROCKET_SAAS_API_URL', false )->andReturn( $config['api_url'] );
 		Functions\expect( 'apply_filters' )->with( 'rocket_saas_api_queued_url', $config['url_trailing'], 'rocket_insights' )->andReturn( $config['url_filtered'] );
@@ -56,8 +72,13 @@ class Test_AddToQueue extends TestCase {
 		
 		Functions\expect( 'wp_json_encode' )->andReturn( $config['request_body_json'] );
 		Functions\expect( 'wp_remote_request' )->with( $config['request_uri'], $config['args'] )->andReturn( $config['response'] );
+		Functions\expect( 'wp_remote_retrieve_body' )->with( $config['response'] )->andReturn( $config['body'] ?? '' );
 
-		$this->configure_check_response( $config );
+		if ( isset( $config['feature_disabled'] ) ) {
+			$this->configure_feature_disabled( $config );
+		} else {
+			$this->configure_check_response( $config );
+		}
 		
 		$result = $this->api_client->add_to_queue( $config['url'], $config['options'], $config['custom_args'] );
 		
@@ -163,18 +184,35 @@ class Test_AddToQueue extends TestCase {
 	}
 
 	/**
+	 * Configure the expectations of a response checked for the "Feature Disabled" marker.
+	 *
+	 * @param array $config Configuration array.
+	 */
+	protected function configure_feature_disabled( $config ) {
+		Functions\expect( 'wp_remote_retrieve_header' )->with( $config['response'], 'retry-after' )->andReturn( $config['retry_after'] ?? '' );
+		Functions\expect( 'wp_remote_retrieve_response_code' )->never();
+
+		$delay = $config['expected_delay'];
+
+		Functions\expect( 'set_transient' )->once()->with(
+			'wp_rocket_rocket_insights_feature_disabled',
+			Mockery::on( fn( $value ) => abs( $value - ( time() + $delay ) ) <= 2 ),
+			$delay
+		);
+	}
+
+	/**
 	 * Configure check response expectations.
 	 *
 	 * @param array $config Configuration array.
 	 */
 	protected function configure_check_response( $config ) {
+		Functions\expect( 'wp_remote_retrieve_header' )->never();
+		Functions\expect( 'set_transient' )->never();
 		Functions\expect( 'wp_remote_retrieve_response_code' )->with( $config['response'] )->andReturn( $config['code'] );
-		
+
 		if ( ! $config['is_succeed'] ) {
 			Functions\expect( 'wp_remote_retrieve_response_message' )->with( $config['response'] )->andReturn( $config['message'] );
-			return;
 		}
-		
-		Functions\expect( 'wp_remote_retrieve_body' )->with( $config['response'] )->andReturn( $config['body'] );
 	}
 }

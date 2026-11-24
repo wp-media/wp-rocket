@@ -59,6 +59,8 @@ class Test_Uninstall extends FilesystemTestCase {
 		'wpr_dynamic_lists_delayjs'                       => null,
 		'rocket_domain_changed'                           => null,
 		'wp_rocket_rucss_errors_count'                    => null,
+		'wp_rocket_rucss_feature_disabled'                => null,
+		'wp_rocket_rocket_insights_feature_disabled'      => null,
 		'wpr_dynamic_lists_incompatible_plugins'          => null,
 		'rocket_divi_notice'                              => null,
 		'rocket_saas_processing'                          => null,

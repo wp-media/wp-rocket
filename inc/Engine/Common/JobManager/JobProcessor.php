@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Common\JobManager;
 
 use WP_Rocket\Engine\Common\Clock\WPRClock;
+use WP_Rocket\Engine\Common\JobManager\AbstractFactory\SaasFactory;
 use WP_Rocket\Engine\Common\JobManager\Queue\Queue;
 use WP_Rocket\Engine\Common\JobManager\Strategy\Factory\StrategyFactory;
 use WP_Rocket\Engine\Common\Utils;
@@ -268,10 +269,20 @@ class JobProcessor implements LoggerAwareInterface {
 
 		foreach ( $rows as $row ) {
 			$optimization_type = $this->get_optimization_type( $row );
-			$response          = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
 			$job_factory       = $this->factories[ $optimization_type ] ?? $this->factories['rucss'];
 
+			if ( $this->is_feature_disabled( $job_factory ) ) {
+				continue;
+			}
+
+			$response = $this->send_api( $row->url, (bool) $row->is_mobile, $optimization_type );
+
 			if ( ! $response || ! $job_factory->api()->validate_add_to_queue_response( $response ) ) {
+				if ( $this->is_feature_disabled( $job_factory ) ) {
+					$this->logger::debug( 'SaaS feature disabled, keeping job to-submit: ' . $row->url );
+					continue;
+				}
+
 				$job_factory->manager()->validate_and_fail(
 					[
 						'status'  => 'failed',
@@ -309,6 +320,18 @@ class JobProcessor implements LoggerAwareInterface {
 			'3.16',
 			'rocket_rucss_process_on_submit_jobs_end'
 		);
+	}
+
+	/**
+	 * Whether the SaaS feature of a factory is currently backed off.
+	 *
+	 * @param SaasFactory $factory Job factory.
+	 * @return bool
+	 *
+	 * @phpstan-impure The back-off can be set by a request sent in between two calls.
+	 */
+	private function is_feature_disabled( SaasFactory $factory ): bool {
+		return $factory->api()->is_feature_disabled();
 	}
 
 	/**
@@ -454,6 +477,11 @@ class JobProcessor implements LoggerAwareInterface {
 			if ( ! $factory->manager()->is_allowed() ) {
 				continue;
 			}
+
+			if ( 'submit' === $type && $factory->api()->is_feature_disabled() ) {
+				continue;
+			}
+
 			switch ( $type ) {
 				case 'pending':
 					$rows = array_merge( $rows, $factory->manager()->get_pending_jobs( $num_rows ) );

@@ -469,4 +469,115 @@ return [
 			]
 		]
 	],
+	'FeatureDisabledShouldKeepRowsToSubmitAndSendOnce' => [
+		'config' => [
+			'rucss_enabled' => true,
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/3',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			],
+			'max_rows' => 100,
+			'http' => [
+				'https://saas.wp-rocket.me/rucss-job' => [
+					'body' => json_encode([
+						'code'    => 403,
+						'error'   => 'Feature Disabled',
+						'message' => 'RUCSS job submission is temporarily disabled. Please retry later.',
+					]),
+					'headers'  => [ 'retry-after' => '120' ],
+					'response' => [ 'code' => 200 ],
+				]
+			],
+		],
+		'expected' => [
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/3',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			],
+			'requests'         => 1,
+			'transient_set'    => true,
+		]
+	],
+	'ActiveBackOffShouldNotSendAnyRequest' => [
+		'config' => [
+			'rucss_enabled' => true,
+			'transient_offset' => 120,
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'job_id' => '',
+					'queue_name' => '',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			],
+			'max_rows' => 100,
+			'http' => [],
+		],
+		'expected' => [
+			'rows' => [
+				[
+					'url' => 'http://example.org',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				],
+				[
+					'url' => 'http://example.org/2',
+					'is_mobile' => false,
+					'status'        => 'to-submit',
+					'retries'       => 0,
+				]
+			],
+			'requests'         => 0,
+			'transient_set'    => true,
+		]
+	],
 ];

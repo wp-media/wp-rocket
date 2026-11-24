@@ -57,6 +57,7 @@ class HandleSyncSubmissionTest extends TestCase {
 		// Clean up data after each test
 		self::truncatePerformanceMonitoringTable();
 
+		delete_transient( 'wp_rocket_rocket_insights_feature_disabled' );
 		remove_filter( 'rocket_rocket_insights_enabled', [ $this, 'return_true' ] );
 		remove_filter( 'rocket_rocket_insights_enabled', [ $this, 'return_false' ] );
 
@@ -68,6 +69,10 @@ class HandleSyncSubmissionTest extends TestCase {
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
 		add_filter( 'rocket_rocket_insights_enabled', [ $this, $config['enabled'] ? 'return_true' : 'return_false' ], PHP_INT_MAX );
+
+		if ( isset( $config['http'] ) ) {
+			$this->config['http'] = $config['http'];
+		}
 
 		// Use reflection to access the private method
 		$method = $this->get_reflective_method( 'handle_sync_submission', Rest::class );
@@ -89,6 +94,10 @@ class HandleSyncSubmissionTest extends TestCase {
 			$this->assertNull( $result );
 		}
 
+		if ( isset( $expected['feature_disabled'] ) ) {
+			$this->assertFeatureDisabledBackOff( $config, $expected['feature_disabled'], $method );
+		}
+
 		// Check database state if specified
 		if ( isset( $expected['db_check'] ) ) {
 			$query = $this->container->get( 'ri_query' );
@@ -103,6 +112,32 @@ class HandleSyncSubmissionTest extends TestCase {
 			} else {
 				$this->assertEmpty( $items );
 			}
+		}
+	}
+
+	/**
+	 * Asserts the back-off is stored and that a second submission sends no request.
+	 *
+	 * @param array             $config   Test config.
+	 * @param array             $expected Expected back-off.
+	 * @param \ReflectionMethod $method   handle_sync_submission().
+	 */
+	private function assertFeatureDisabledBackOff( array $config, array $expected, \ReflectionMethod $method ) {
+		$until = get_transient( 'wp_rocket_rocket_insights_feature_disabled' );
+
+		$this->assertEqualsWithDelta( time() + $expected['delay'], $until, 2 );
+
+		$method->invoke( $this->controller, $expected['second_url'], $config['is_mobile'], $config['additional_details'] );
+
+		$this->assertCount( 1, $this->get_http_requests( 'https://saas.wp-rocket.me/performance/' ) );
+
+		$query = $this->container->get( 'ri_query' );
+
+		foreach ( [ $config['url'], $expected['second_url'] ] as $url ) {
+			$items = $query->query( [ 'url' => $url ] );
+
+			$this->assertNotEmpty( $items );
+			$this->assertSame( 'to-submit', $items[0]->status );
 		}
 	}
 }
