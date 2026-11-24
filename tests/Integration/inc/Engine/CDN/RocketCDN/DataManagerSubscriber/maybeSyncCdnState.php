@@ -35,6 +35,10 @@ class Test_MaybeSyncCdnState extends RocketCDNTestCase {
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
 
+		// Keep only CdnStateBridge::reconcile on the settings hook: the other subscribers (CDN cache clear,
+		// preconnect truncate) query tables this test doesn't install.
+		$this->unregisterAllCallbacksExcept( 'update_option_wp_rocket_settings', 'reconcile', 5 );
+
 		$container        = apply_filters( 'rocket_container', null );
 		$this->subscriber = $container->get( 'rocketcdn_data_manager_subscriber' );
 
@@ -44,6 +48,7 @@ class Test_MaybeSyncCdnState extends RocketCDNTestCase {
 
 	public function tear_down() {
 		$this->restoreWpHook( 'current_screen' );
+		$this->restoreWpHook( 'update_option_wp_rocket_settings' );
 
 		parent::tear_down();
 	}

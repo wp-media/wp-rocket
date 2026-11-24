@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
@@ -31,7 +32,8 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		global $wp_version;
 
-		$this->wp_version = $wp_version;
+		$this->rocket_version = '3.7.5';
+		$this->wp_version     = $wp_version;
 	}
 
 	public function tear_down() {
@@ -54,15 +56,14 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $params, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		global $wp_version;
 
-		$this->rocket_version = '3.7.5';
-		$wp_version           = '5.5';
+		$wp_version = '5.5';
 
 		$body = [
-			'email' => $params['email'] ? TestCredentials::EMAIL : '',
-			'key'   => $params['key'] ? TestCredentials::KEY : '',
+			'email' => $config['email'] ? TestCredentials::EMAIL : '',
+			'key'   => $config['key'] ? TestCredentials::KEY : '',
 		];
 
 		$actual = $this->requestSupportEndpoint( $body );
@@ -76,12 +77,12 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
 				}
 			} else {
-				$this->assertSame( $value, $actual[ $key] );
+				$this->assertSame( $value, $actual[ $key ] );
 			}
 		}
 	}
 
-	protected function requestSupportEndpoint(  array $body_params = [] ) {
+	protected function requestSupportEndpoint( array $body_params = [] ): array {
 		if ( empty( $body_params ) ) {
 			$body_params = [
 				'email' => '',
@@ -92,15 +93,15 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		return $this->doRestRequest( 'POST', '/wp-rocket/v1/support', $body_params );
 	}
 
-	public function set_consumer_key() {
+	public function set_consumer_key(): string {
 		return TestCredentials::KEY;
 	}
 
-	public function set_consumer_email() {
+	public function set_consumer_email(): string {
 		return TestCredentials::EMAIL;
 	}
 
-	public function configTestData() {
+	public function configTestData(): array {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
@@ -110,7 +111,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 			: $this->config;
 	}
 
-	protected function loadTestDataConfig() {
+	protected function loadTestDataConfig(): void {
 		$obj      = new \ReflectionObject( $this );
 		$filename = $obj->getFileName();
 

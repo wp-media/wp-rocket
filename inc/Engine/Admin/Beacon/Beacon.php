@@ -193,6 +193,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	private function config_data(): array {
 		return [
 			'display' => [
+				'style'    => 'manual',
 				'position' => is_rtl() ? 'left' : 'right',
 			],
 		];

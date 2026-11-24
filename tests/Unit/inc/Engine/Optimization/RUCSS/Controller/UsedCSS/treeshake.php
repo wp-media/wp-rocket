@@ -1,5 +1,7 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\RUCSS\Controller\UsedCSS;
+
 use Brain\Monkey\{Filters, Functions};
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Common\Clock\WPRClock;
@@ -12,6 +14,8 @@ use WP_Rocket\Engine\Optimization\RUCSS\Database\Queries\UsedCSS as UsedCSS_Quer
 use WP_Rocket\Engine\Optimization\RUCSS\Database\Row\UsedCSS as UsedCSS_Row;
 use WP_Rocket\Engine\Optimization\RUCSS\Jobs\Manager;
 use WP_Rocket\Tests\Unit\TestCase;
+use Mockery;
+use WP;
 
 /**
  * Test class covering \WP_Rocket\Engine\Optimization\RUCSS\Controller\UsedCSS::treeshake

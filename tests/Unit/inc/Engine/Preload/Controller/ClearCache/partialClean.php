@@ -29,7 +29,7 @@ class Test_PartialClean extends TestCase
 	 */
 	public function testShouldDoAsExpected($config, $expected) {
 
-		foreach ($config['urls'] as $url) {
+		foreach ($config['checked_urls'] ?? $config['urls'] as $url) {
 			$this->controller->expects()->is_excluded_by_filter($url)->andReturn($config['is_excluded']);
 			$this->controller->shouldReceive('is_excluded_by_filter')->with($url)->andReturn($config['is_excluded_by_filter']);
 		}
@@ -41,6 +41,6 @@ class Test_PartialClean extends TestCase
 			}
 		}
 
-		$this->controller->partial_clean($config['urls']);
+		$this->controller->partial_clean($config['urls'], $config['release_lock'] ?? false);
 	}
 }

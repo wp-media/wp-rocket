@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Admin\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addon\Cloudflare\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
 use Mockery;
 use WP_Rocket\Engine\Common\Context\ContextInterface;

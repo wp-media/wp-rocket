@@ -51,6 +51,18 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 	}
 
 	/**
+	 * The fixture is shared with the unit test: only the cases expecting a notice run here.
+	 */
+	public function providerTestData() {
+		return array_filter(
+			parent::providerTestData(),
+			static function ( $data ) {
+				return ! empty( $data['expected'] );
+			}
+		);
+	}
+
+	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
@@ -80,14 +92,6 @@ class Test_NoticeWpConfigPermissions extends FilesystemTestCase {
 
 		// Run it.
 		$wp_cache = new WPCache( $this->filesystem );
-
-		if ( empty( $expected ) ) {
-			$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
-
-//			$wp_cache->notice_wp_config_permissions();
-//
-//			return;
-		}
 
 		ob_start();
 		$wp_cache->notice_wp_config_permissions();

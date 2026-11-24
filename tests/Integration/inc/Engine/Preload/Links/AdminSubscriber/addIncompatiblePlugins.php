@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Links\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Links\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
