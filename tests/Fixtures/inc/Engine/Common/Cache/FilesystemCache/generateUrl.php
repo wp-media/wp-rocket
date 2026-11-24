@@ -72,5 +72,28 @@ return [
 			'home_url' => 'http://example.org',
 		]
 	],
-
+	'unmappableUrlShouldReturnEmpty' => [
+		'config' => [
+			'url' => 'http://example.org/blog/test/file.php',
+			'parsed_url' => [
+				'host' => 'example.org',
+				'path' => '/blog/test/file.php',
+			],
+			'home_parsed_url' => [
+				'host' => 'example.org',
+				'path' => '/',
+			],
+			'home_url' => 'http://example.org',
+			'root' => '/var/html/wp-content/cache',
+			'WP_CONTENT_URL' => 'http://example.org/wp-content',
+			'WP_CONTENT_DIR' => '/var/html/wp-content',
+			'exists' => false
+		],
+		'expected' => [
+			'url' => 'http://example.org/blog/test/file.php',
+			'path' => '',
+			'output' => '',
+			'home_url' => 'http://example.org',
+		]
+	],
 ];

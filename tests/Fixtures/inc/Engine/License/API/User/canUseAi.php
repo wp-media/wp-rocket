@@ -79,4 +79,17 @@ return [
 		] ) ),
 		'expected' => true,
 	],
+	'testShouldReturnFalseWhenLicenceRejectedAndNoData' => [
+		'data'     => false,
+		'expected' => false,
+		'rejected' => true,
+	],
+	'testShouldReturnFalseWhenLicenceRejectedAndFlagTrue' => [
+		'data'     => json_decode( json_encode( [
+			'ID'         => 1,
+			'can_use_ai' => true,
+		] ) ),
+		'expected' => false,
+		'rejected' => true,
+	],
 ];

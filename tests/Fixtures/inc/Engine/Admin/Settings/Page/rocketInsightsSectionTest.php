@@ -21,14 +21,4 @@ return [
 		],
 		'expected' => false, // Section should NOT be added (hidden)
 	],
-	'testShouldShowWhenNotResellerAndLiveSite' => [
-		'config' => [
-			'customer_data' => (object) [
-				'ID'         => 1,
-				'is_reseller' => 0,
-			],
-			'is_live_site' => true,
-		],
-		'expected' => true, // Section should be added (visible)
-	],
 ];

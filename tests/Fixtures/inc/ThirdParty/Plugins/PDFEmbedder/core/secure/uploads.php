@@ -109,7 +109,7 @@ class pdfemb_SecureUploader {
 	
 	protected $myrc4;
 	
-	protected function readfile_chunked( $file, $retbytes=true, $myrc4, $cache_to_file='' ) {
+	protected function readfile_chunked( $file, $retbytes, $myrc4, $cache_to_file='' ) {
 	
 		$chunksize = 1024 * 1024;
 		$buffer    = '';

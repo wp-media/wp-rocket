@@ -6,6 +6,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\RocketCDN\RecommendationOverride;
 use Brain\Monkey\Functions;
 use Mockery;
 use Mockery\MockInterface;
+use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\CDN\Context;
 use WP_Rocket\Engine\CDN\RocketCDN\RecommendationOverride;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
@@ -50,7 +51,7 @@ class Test_Apply extends TestCase {
 
 		$this->context                 = Mockery::mock( Context::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
-		$this->override                = new RecommendationOverride( $this->context, $this->subscription_controller );
+		$this->override                = new RecommendationOverride( $this->context, $this->subscription_controller, Mockery::mock( Options_Data::class ) );
 	}
 
 	/**

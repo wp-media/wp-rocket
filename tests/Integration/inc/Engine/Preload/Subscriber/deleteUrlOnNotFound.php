@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Preload\Subscriber;
 
 use WP_Rocket\Tests\Integration\AdminTestCase;
 use WP_Rocket\Tests\Integration\IsolateHookTrait;

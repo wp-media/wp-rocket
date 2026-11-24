@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Unit\inc\Addon\Webp\AdminSubscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\WebP\AdminSubscriber;
 
 use Mockery;
 use Brain\Monkey\Filters;

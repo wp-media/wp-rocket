@@ -44,5 +44,35 @@ return [
 				],
 			],
 		],
+		'shouldDropRemovedAndReindex'          => [
+			'config'   => [
+				'overrides'       => [ 'plugin_rocketcdn' => '!' ],
+				'removed'         => [ 'plugin_rocketcdn' ],
+				'recommendations' => [
+					[
+						'option_slug' => 'minify_css',
+						'title'       => 'Minify',
+					],
+					[
+						'option_slug' => 'plugin_rocketcdn',
+						'title'       => 'CDN',
+					],
+					[
+						'option_slug' => 'lazyload',
+						'title'       => 'Lazyload',
+					],
+				],
+			],
+			'expected' => [
+				[
+					'option_slug' => 'minify_css',
+					'title'       => 'Minify',
+				],
+				[
+					'option_slug' => 'lazyload',
+					'title'       => 'Lazyload',
+				],
+			],
+		],
 	],
 ];

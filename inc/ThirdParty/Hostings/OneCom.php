@@ -32,6 +32,7 @@ class OneCom implements Subscriber_Interface {
 			'rocket_display_input_varnish_auto_purge' => 'should_display_varnish_auto_purge_input',
 			'rocket_display_rocketcdn_cta'            => 'return_false',
 			'rocket_display_rocketcdn_status'         => 'return_false',
+			'rocket_display_rocketcdn_recommendation' => 'return_false',
 			'rocket_cdn_driver_sections'              => [ 'disable_cdn_mode_toggle', PHP_INT_MAX ],
 			'rocket_hide_rocketcdn_notices'           => 'return_true',
 			'pre_get_rocket_option_cdn_type'          => 'disable_rocketcdn_tab',

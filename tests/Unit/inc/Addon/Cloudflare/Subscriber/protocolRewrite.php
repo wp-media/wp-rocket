@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\Subscriber;
 
 use Brain\Monkey\Filters;
 use Mockery;

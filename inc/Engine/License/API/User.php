@@ -70,11 +70,17 @@ class User {
 	/**
 	 * Checks if the support assistant is allowed for this user
 	 *
-	 * Only an explicit answer that is not boolean true turns it off, so a missing or null field keeps it allowed.
+	 * A licence the licence server rejected turns it off, whatever the user data says: the rejection is read from
+	 * the transient UserClient sets, not from the user data. Otherwise, only an explicit answer that is not
+	 * boolean true turns it off, so a missing or null field keeps it allowed.
 	 *
 	 * @return bool
 	 */
 	public function can_use_ai(): bool {
+		if ( get_transient( UserClient::LICENCE_REJECTED_TRANSIENT ) ) {
+			return false;
+		}
+
 		if ( ! isset( $this->user->can_use_ai ) ) {
 			return true;
 		}

@@ -49,6 +49,8 @@ class WPRocketUninstall {
 		'rocketcdn_status_fetch_lock',
 		'rocket_cdn_website_search_fetch_lock',
 		'rocket_cdn_retry_pro_detection_attempts',
+		'wp_rocket_rucss_used_css_deduped',
+		'wpr_rucss_used_css_upgrade_lock',
 	];
 
 	/**
@@ -96,6 +98,7 @@ class WPRocketUninstall {
 		'rocket_preload_check_duration',
 		'wpr_user_information_timeout_active',
 		'wpr_user_information_timeout',
+		'wp_rocket_licence_rejected',
 		'rocket_fonts_data_collection',
 		'wpr_global_score_data',
 		'wp_rocket_log_file_size_check',
@@ -105,6 +108,8 @@ class WPRocketUninstall {
 		'rocket_cdn_pro_detection_failed',
 		'rocket_cdn_check_status_request_timeout',
 		'rocket_cdn_check_status_request_timeout_active',
+		'wpr_rucss_used_css_upgrade_retry',
+		'rocket_rucss_delete_duplicate_rows_lock',
 	];
 
 	/**
@@ -140,6 +145,7 @@ class WPRocketUninstall {
 		'rocket_cdn_create_request_timeout',
 		'rocket_cdn_create_request_timeout_active',
 		'rocket_cron_refresh_trial_customer_data',
+		'rocket_rucss_delete_duplicate_rows',
 	];
 
 	/**
