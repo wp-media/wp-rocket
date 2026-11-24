@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\AboveTheFold\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\AboveTheFold\AJAX\Controller;
 
 use Brain\Monkey\Functions;
 use Mockery;

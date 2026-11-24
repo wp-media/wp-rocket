@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Context\Context;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Context;
 
 use Brain\Monkey\{Filters, Functions};
 use Mockery;

@@ -14,6 +14,11 @@ class UserClient extends AbstractSafeAPIClient {
 	const USER_ENDPOINT = 'https://api.wp-rocket.me/stat/1.0/wp-rocket/user.php';
 
 	/**
+	 * Transient set while the licence server rejects the licence, such as an unknown or nulled one.
+	 */
+	const LICENCE_REJECTED_TRANSIENT = 'wp_rocket_licence_rejected';
+
+	/**
 	 * WP Rocket options instance
 	 *
 	 * @var Options_Data
@@ -115,5 +120,47 @@ class UserClient extends AbstractSafeAPIClient {
 		}
 
 		return json_decode( $body );
+	}
+
+	/**
+	 * Validate response code, and record whether the licence server rejected the licence.
+	 *
+	 * The result is the parent's: a rejection stays an invalid answer, so the request backoff applies as before.
+	 * The rejection flag lasts as long as the longest backoff, and the next valid answer clears it.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
+	protected function valid_response_code( $response ) {
+		if ( parent::valid_response_code( $response ) ) {
+			delete_transient( self::LICENCE_REJECTED_TRANSIENT );
+
+			return true;
+		}
+
+		if ( $this->is_licence_rejection( $response ) ) {
+			set_transient( self::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
+		}
+
+		return false;
+	}
+
+	/**
+	 * Checks whether a response is the licence server rejecting the licence.
+	 *
+	 * The endpoint answers 403 or 404 with a JSON body whose `success` is false. For a licence it does not know,
+	 * the edge in front of it answers 403 with an HTML page instead, so a 403 is a rejection whatever its body.
+	 *
+	 * @param array $response Response object.
+	 * @return bool
+	 */
+	private function is_licence_rejection( $response ): bool {
+		$code = (int) wp_remote_retrieve_response_code( $response );
+
+		if ( 403 === $code ) {
+			return true;
+		}
+
+		return 404 === $code && false === ( json_decode( wp_remote_retrieve_body( $response ) )->success ?? null );
 	}
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\PreconnectExternalDomains\OriginTrait;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\OriginTrait;
 
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\OriginTrait;
 use WP_Rocket\Tests\Unit\TestCase;

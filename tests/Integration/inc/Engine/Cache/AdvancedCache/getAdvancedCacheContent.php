@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Cache\AdvancedCache;
 
 use WP_Rocket\Engine\Cache\AdvancedCache;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;

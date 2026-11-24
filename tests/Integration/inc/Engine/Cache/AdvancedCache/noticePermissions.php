@@ -44,6 +44,18 @@ class Test_NoticePermissions extends FilesystemTestCase {
 	}
 
 	/**
+	 * The fixture is shared with the unit test: only the cases expecting a notice run here.
+	 */
+	public function providerTestData() {
+		return array_filter(
+			parent::providerTestData(),
+			static function ( $data ) {
+				return ! empty( $data['expected'] );
+			}
+		);
+	}
+
+	/**
 	 * @dataProvider providerTestData
 	 */
 	public function testShouldEchoNotice( $config, $expected ) {
@@ -67,14 +79,6 @@ class Test_NoticePermissions extends FilesystemTestCase {
 
 		// Run it.
 		$advanced_cache = new AdvancedCache( WP_ROCKET_PLUGIN_ROOT . 'views/cache/', $this->filesystem );
-
-		if ( empty( $expected ) ) {
-			$this->markTestSkipped( 'Test doest not perform assertion, need to revisit' );
-
-//			$advanced_cache->notice_permissions();
-//
-//			return;
-		}
 
 		ob_start();
 		$advanced_cache->notice_permissions();

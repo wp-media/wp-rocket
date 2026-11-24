@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\ThirdParty\Plugins\Optimization\WPMeteor;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\WPMeteor;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

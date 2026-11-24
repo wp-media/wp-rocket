@@ -26,6 +26,38 @@ return [
 		],
 		'expected' => false,
 	],
+	'testShouldReturnFalseAndFlagRejectionWhenEdge403Page' => [
+		'config'   => [
+			'transient' => false,
+			'response'  => [
+				'headers' => [],
+				'body' => '<html><head><title>403 Forbidden</title></head><body><center><h1>403 Forbidden</h1></center><hr><center>nginx</center></body></html>',
+				'response' => [
+					'code' => 403,
+				],
+				'cookies' => [],
+				'filename' => '',
+			],
+		],
+		'expected' => false,
+		'rejected' => true,
+	],
+	'testShouldReturnFalseAndFlagRejectionWhenJson404Error' => [
+		'config'   => [
+			'transient' => false,
+			'response'  => [
+				'headers' => [],
+				'body' => '{"code":404,"detail":"User not found.","success":false}',
+				'response' => [
+					'code' => 404,
+				],
+				'cookies' => [],
+				'filename' => '',
+			],
+		],
+		'expected' => false,
+		'rejected' => true,
+	],
 	'testShouldReturnFalseWhenNoBody'  => [
 		'config'   => [
 			'transient' => false,
@@ -56,9 +88,10 @@ return [
 		],
 		'expected' => $data,
 	],
-	'testShouldReturnDataWhenSuccess'  => [
+	'testShouldReturnDataAndClearRejectionWhenSuccess'  => [
 		'config'   => [
 			'transient' => false,
+			'flagged'   => true,
 			'response'  => [
 				'headers' => [],
 				'body' => $json,

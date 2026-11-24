@@ -1,9 +1,12 @@
 <?php
 
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
+
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Engine\Preload\Database\Queries\RocketCache;
 use WP_Rocket\Tests\Unit\TestCase;
 use Brain\Monkey\Filters;
+use SplQueue;
 
 /**
  * Test class covering \WP_Rocket\Engine\Preload\Database\Queries\RocketCache::get_pending_jobs

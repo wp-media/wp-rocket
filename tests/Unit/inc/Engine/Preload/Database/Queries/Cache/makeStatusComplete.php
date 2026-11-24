@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\RocketCache;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Preload\Database\Queries\Cache;
 
 use WP_Rocket\Engine\Preload\Database\Queries\Cache;
 use WP_Rocket\Tests\Unit\TestCase;

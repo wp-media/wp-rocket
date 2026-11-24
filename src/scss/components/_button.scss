@@ -150,3 +150,98 @@
 		}
 	}
 }
+
+/*-----------------------------------------------*\
+    WAP support chat launcher button, and the
+    link to the contact page that replaces it
+\*-----------------------------------------------*/
+.wap-chat-column__launcher,
+.wpr-support-launcher {
+    padding: 10px 16px 10px 12px !important;
+    width: auto !important;
+    background-color: rgb(64, 186, 203) !important;
+    border-color: rgb(64, 186, 203) !important;
+    color: $cWhite !important;
+    transition: transform 125ms ease-in-out, box-shadow 250ms ease;
+    height: 60px !important;
+    border-radius: 24px !important;
+    inset-block-end: 40px !important;
+    inset-inline-end: 40px !important;
+    box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    font-family: PlusJakartaSans, Arial, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 21px;
+
+    // The base `button:focus` rule removes the shadow, and the launcher keeps focus after the chat closes.
+    &:focus {
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    }
+
+    // Grow on hover only: focus stays on the launcher after the chat closes, so it must look like the rest state.
+    &:hover {
+        transform: scale(1.125);
+        opacity: 1 !important;
+        box-shadow: 0 4px 7px rgba(0, 0, 0, 0.1);
+    }
+
+    // Keep last so it wins over the hover and focus shadows.
+    &:active {
+        box-shadow: none;
+    }
+
+    @media (max-height: 740px) {
+        inset-block-end: 10px !important;
+        inset-inline-end: 20px !important;
+    }
+
+    // The previous button had squircle corners. Browsers without corner-shape keep the rounded corners above.
+    @supports (corner-shape: squircle) {
+        border-radius: 30px !important;
+        corner-shape: superellipse(1.4);
+    }
+}
+
+// The launcher shows its title through a pseudo-element, the link through its label.
+.wap-chat-column__launcher::after {
+    content: attr(title);
+}
+
+.wap-chat-column__launcher::after {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 14px;
+}
+
+.wpr-support-launcher__label {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.wpr-support-launcher {
+    position: fixed;
+    z-index: 9988;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    box-sizing: border-box;
+    border: 1px solid;
+    text-decoration: none;
+
+    &:hover,
+    &:focus,
+    &:active {
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $cWhite;
+        outline-offset: -4px;
+    }
+
+    @media print {
+        display: none;
+    }
+}

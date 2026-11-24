@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\AJAX\Controller;
 
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\Context\Context;
 use WP_Rocket\Engine\Media\PreconnectExternalDomains\AJAX\Controller;

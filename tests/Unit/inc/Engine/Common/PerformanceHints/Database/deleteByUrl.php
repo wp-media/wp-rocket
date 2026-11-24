@@ -1,6 +1,6 @@
 <?php
 
-namespace Engine\Common\PerformanceHints\Database;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Database;
 
 use WP_Rocket\Engine\Common\Database\Queries\AbstractQuery;
 use WP_Rocket\Tests\Unit\TestCase;

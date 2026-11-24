@@ -265,15 +265,18 @@ function rocket_admin_bar( $wp_admin_bar ) {
 		);
 
 		/**
-		 * Go to WP Rocket Support.
+		 * Go to WP Rocket Support, or to the contact page when the assistant is not available.
 		 */
+		$container    = apply_filters( 'rocket_container', null );
+		$no_assistant = $container && ! $container->get( 'support_subscriber' )->has_assistant();
+
 		$wp_admin_bar->add_menu(
 			[
 				'parent' => 'wp-rocket',
 				'id'     => 'support',
 				'title'  => __( 'Support', 'rocket' ),
 				'href'   => rocket_get_external_url(
-					'support',
+					$no_assistant ? 'contact' : 'support',
 					[
 						'utm_source' => 'wp_plugin',
 						'utm_medium' => 'wp_rocket',

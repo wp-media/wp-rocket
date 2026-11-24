@@ -48,6 +48,7 @@ parameters:
 		- %currentWorkingDirectory%/inc/3rd-party/plugins/i18n/polylang.php
 		- %currentWorkingDirectory%/inc/admin/upgrader.php
 		- %currentWorkingDirectory%/inc/admin/options.php
+		- %currentWorkingDirectory%/inc/common/admin-bar.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-stubs/wordpress-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 		- %currentWorkingDirectory%/vendor/php-stubs/wp-cli-stubs/wp-cli-stubs.php
@@ -66,4 +67,5 @@ rules:
 	- WP_Rocket\Tests\phpstan\Rules\DiscourageApplyFilters
 	- WP_Rocket\Tests\phpstan\Rules\EnsureCallbackMethodsExistsInSubscribedEvents
 	- WP_Rocket\Tests\phpstan\Rules\NoHooksInORM
+	- WP_Rocket\Tests\phpstan\Rules\TestNamespaceMatchesPath
 

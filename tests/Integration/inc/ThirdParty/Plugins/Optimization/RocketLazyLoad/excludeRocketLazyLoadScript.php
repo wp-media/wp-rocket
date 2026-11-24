@@ -1,5 +1,5 @@
 <?php
-namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization;
+namespace WP_Rocket\Tests\Integration\inc\ThirdParty\Plugins\Optimization\RocketLazyLoad;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

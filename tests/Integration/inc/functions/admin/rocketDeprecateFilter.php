@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\functions;
+namespace WP_Rocket\Tests\Integration\inc\functions\admin;
 
 use WP_Rocket\Tests\Integration\IsolateHookTrait;
 use WP_Rocket\Tests\Integration\TestCase;

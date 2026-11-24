@@ -57,6 +57,9 @@ class HandleSyncSubmissionTest extends TestCase {
 		// Clean up data after each test
 		self::truncatePerformanceMonitoringTable();
 
+		remove_filter( 'rocket_rocket_insights_enabled', [ $this, 'return_true' ] );
+		remove_filter( 'rocket_rocket_insights_enabled', [ $this, 'return_false' ] );
+
 		parent::tear_down();
 	}
 
@@ -64,6 +67,8 @@ class HandleSyncSubmissionTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
+		add_filter( 'rocket_rocket_insights_enabled', [ $this, $config['enabled'] ? 'return_true' : 'return_false' ], PHP_INT_MAX );
+
 		// Use reflection to access the private method
 		$method = $this->get_reflective_method( 'handle_sync_submission', Rest::class );
 
