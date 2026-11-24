@@ -14,7 +14,7 @@ return [
 	],
 	[
 		' ',
-		' ',
+		'',
 	],
 	[
 		'http://external.org/style.css',

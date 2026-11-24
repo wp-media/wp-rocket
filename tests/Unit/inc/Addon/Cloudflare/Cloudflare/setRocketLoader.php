@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Cloudflare;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\Cloudflare;
 
 use Brain\Monkey\Functions;
 use Mockery;

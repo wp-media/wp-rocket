@@ -1,0 +1,113 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
+
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Support\Meta;
+use WP_Rocket\Engine\Support\Rest;
+use WP_Rocket\Engine\Support\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
+
+/**
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_column
+ *
+ * @group Support
+ */
+class TestRegisterColumn extends TestCase {
+	private $options;
+	private $user;
+	private $subscriber;
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
+
+		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		/** @var \Mockery\MockInterface $wap_client The class is aliased, so PHPStan cannot resolve it. */
+		$wap_client = Mockery::mock( 'alias:WP_Rocket\Dependencies\GroupOne\WapClient\WapClient' );
+
+		if ( $expected['registered'] ) {
+			$expectation = $wap_client->shouldReceive( 'register_chat_column' )->once();
+
+			if ( ! empty( $expected['config_check'] ) ) {
+				$check = $expected['config_check'];
+				$expectation->with(
+					Mockery::on(
+						function ( $cfg ) use ( $check ) {
+							return ( ! isset( $check['product'] ) || $check['product'] === $cfg['product'] )
+								&& ( ! isset( $check['page_context'] ) || $check['page_context'] === $cfg['page_context'] )
+								&& ( ! isset( $check['grnd_license_key'] ) || $check['grnd_license_key'] === $cfg['grnd']['license_key'] )
+								&& ( ! isset( $check['screens'] ) || $check['screens'] === $cfg['screens'] );
+						}
+					)
+				);
+			}
+		} else {
+			$wap_client->shouldNotReceive( 'register_chat_column' );
+		}
+
+		$stub = 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManagerWithReason';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/AppPasswordManagerWithReason.php';
+		class_alias( $stub, 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager' );
+		$stub::$available = $config['app_passwords_available'] ?? true;
+
+		if ( false === ( $config['filter_available'] ?? true ) || false === ( $config['ai_filter_available'] ?? true ) || false === ( $config['valid_key'] ?? true ) ) {
+			// The assistant check comes first, so no option is read when it fails.
+			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] ?? '' );
+		}
+
+		if ( array_key_exists( 'can_use_ai', $config ) ) {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		if ( isset( $config['valid_key'] ) ) {
+			Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		}
+
+		if ( isset( $config['ai_filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['ai_filter_available'] );
+		}
+
+		if ( ! empty( $config['filter_false_late'] ) ) {
+			// True while the column is registered, false afterwards.
+			Filters\expectApplied( 'rocket_support_chat_available' )->twice()->with( true )->andReturn( true, false );
+		} elseif ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
+		}
+
+		$this->assertFalse( $this->subscriber->is_chat_registered(), 'Nothing is registered before admin_init.' );
+
+		$this->subscriber->register_column();
+
+		$this->assertSame( $expected['registered'], $this->subscriber->is_chat_registered() );
+
+		if ( ! empty( $config['filter_false_late'] ) ) {
+			$this->assertFalse( $this->subscriber->has_assistant(), 'The filter now says no.' );
+			$this->assertTrue( $this->subscriber->is_chat_registered(), 'The registered column stays the source of truth.' );
+		}
+	}
+}

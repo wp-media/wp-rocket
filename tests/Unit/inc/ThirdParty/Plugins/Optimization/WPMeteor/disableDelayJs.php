@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\ThirdParty\Plugins\Optimization\WPMeteor;
+namespace WP_Rocket\Tests\Unit\inc\ThirdParty\Plugins\Optimization\WPMeteor;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\ThirdParty\Plugins\Optimization\WPMeteor;

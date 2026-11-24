@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Media\Lazyload\AdminSubscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Media\Lazyload\AdminSubscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

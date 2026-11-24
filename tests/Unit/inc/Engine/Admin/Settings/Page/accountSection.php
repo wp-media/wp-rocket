@@ -5,12 +5,12 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Settings\Page;
 
 use Brain\Monkey\Functions;
 use Mockery;
-use ReflectionMethod;
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\Database\Optimization;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\Settings\{Page, Render, Settings};
+use WP_Rocket\Engine\License\API\User;
 use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Optimization\DelayJS\Admin\SiteList;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -45,7 +45,8 @@ class Test_AccountSection extends TestCase {
 			Mockery::mock( SiteList::class ),
 			'vfs://public/wp-content/plugins/wp-rocket/views',
 			Mockery::mock( Options_Data::class ),
-			Mockery::mock( Context::class )
+			Mockery::mock( Context::class ),
+			Mockery::mock( User::class )
 		);
 
 		Functions\when( '__' )->returnArg();
@@ -62,8 +63,6 @@ class Test_AccountSection extends TestCase {
 			->once()
 			->with( 'account', $expected );
 
-		$method = new ReflectionMethod( Page::class, 'account_section' );
-		$method->setAccessible( true );
-		$method->invoke( $this->page );
+		$this->get_reflective_method( 'account_section', Page::class )->invoke( $this->page );
 	}
 }

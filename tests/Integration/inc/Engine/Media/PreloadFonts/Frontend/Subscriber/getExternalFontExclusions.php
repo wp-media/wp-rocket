@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Media\PreloadFonts\Frontend\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Media\PreloadFonts\Frontend\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
