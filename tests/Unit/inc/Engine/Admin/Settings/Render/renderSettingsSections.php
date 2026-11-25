@@ -35,6 +35,11 @@ class Test_RenderSettingsSections extends TestCase {
 			}
 		);
 		Functions\when( 'sanitize_html_class' )->returnArg();
+		Functions\when( 'wp_strip_all_tags' )->alias(
+			function ( $text ) {
+				return trim( strip_tags( $text ) );
+			}
+		);
 		Functions\when( 'esc_url' )->returnArg();
 		Functions\when( 'checked' )->justReturn( '' );
 		Functions\when( 'disabled' )->justReturn( '' );
@@ -67,7 +72,7 @@ class Test_RenderSettingsSections extends TestCase {
 						'section_id' => [
 							'id'               => 'section_id',
 							'type'             => $config['type'],
-							'title'            => 'Section title',
+							'title'            => $config['title'] ?? 'Section title',
 							'description'      => 'Section description',
 							'page'             => $page,
 							'purge_url'        => 'https://example.org/purge',
