@@ -82,7 +82,7 @@ return [
 		'expected' => [
 			'notice_called'    => true,
 			'status'           => 'warning',
-			'message_contains' => 'network-activated',
+			'message_contains' => 'used in a multisite network',
 		],
 	],
 	'reason_https' => [

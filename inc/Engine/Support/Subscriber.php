@@ -412,7 +412,7 @@ class Subscriber implements Subscriber_Interface {
 
 		switch ( $reason_code ) {
 			case 'multisite':
-				$reason = __( 'The AI assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
+				$reason = __( 'The AI assistant is not available when WP Rocket is used in a multisite network.', 'rocket' );
 				break;
 			case 'https':
 				$reason = __( 'The AI assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
