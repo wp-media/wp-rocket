@@ -259,8 +259,8 @@ class Subscriber implements Subscriber_Interface {
 				'headerTitle'       => __( 'AI Assistant', 'rocket' ),
 				'settings'          => __( 'Settings', 'rocket' ),
 				'closeAssistant'    => __( 'Close', 'rocket' ),
-				'consentText'       => __( 'Please review and accept the {terms} for the WP Rocket Assistant.', 'rocket' ),
-				'consentAccessText' => __( 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
+				'consentText'       => __( 'Please review and accept the {terms} for the AI Assistant.', 'rocket' ),
+				'consentAccessText' => __( 'The AI Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.', 'rocket' ),
 				// translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
 				'consentRequired'   => __( 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.', 'rocket' ),
 				'errorUnavailable'  => $connection_error,
@@ -403,13 +403,13 @@ class Subscriber implements Subscriber_Interface {
 
 		switch ( $reason_code ) {
 			case 'multisite':
-				$reason = __( 'The support assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
+				$reason = __( 'The AI assistant is only available when WP Rocket is network-activated on this multisite network.', 'rocket' );
 				break;
 			case 'https':
-				$reason = __( 'The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
+				$reason = __( 'The AI assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS.', 'rocket' );
 				break;
 			default:
-				$reason = __( 'The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
+				$reason = __( 'The AI assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it.', 'rocket' );
 		}
 
 		rocket_notice_html(
