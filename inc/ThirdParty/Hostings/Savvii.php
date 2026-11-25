@@ -61,13 +61,15 @@ class Savvii implements Subscriber_Interface {
 	 * @since 2.6.5
 	 */
 	public function clear_cache_after_savvii() {
-		if ( isset( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] ) ) {
-			check_admin_referer( CacheFlusherPlugin::NAME_FLUSH_NOW );
-		} elseif ( isset( $_REQUEST[ CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] ) ) {
-			check_admin_referer( CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW );
-		} else {
+		if (
+			! isset( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] )
+			&&
+			! isset( $_REQUEST[ CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW ] )
+		) {
 			return;
 		}
+
+		check_admin_referer( isset( $_REQUEST[ CacheFlusherPlugin::NAME_FLUSH_NOW ] ) ? CacheFlusherPlugin::NAME_FLUSH_NOW : CacheFlusherPlugin::NAME_DOMAINFLUSH_NOW );
 
 		if ( ! current_user_can( 'rocket_purge_cache' ) ) {
 			return;
