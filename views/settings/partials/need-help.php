@@ -10,7 +10,7 @@
  *     @type string|null $url        Help URL. Without one, a button is printed instead of a link.
  *     @type string      $context    Tracking context sent with the "Need Help" event.
  *     @type string      $page       Settings tab name, used in the chat prompt.
- *     @type string      $section    Settings section name, used in the chat prompt.
+ *     @type string      $section    Settings section name, used in the chat prompt. HTML tags are removed.
  *     @type string      $class      Optional. Extra CSS classes.
  *     @type array       $attributes Optional. Extra attributes, as name => value.
  * }
@@ -25,7 +25,8 @@ $rocket_need_help_prompt  = sprintf(
 	// translators: 1: settings tab name, 2: settings section name.
 	__( 'I need help with \'%1$s\' > \'%2$s\'', 'rocket' ),
 	$data['page'] ?? '',
-	$data['section'] ?? ''
+	// Some section titles hold markup, such as the CDN name span the CDN tabs update.
+	wp_strip_all_tags( $data['section'] ?? '' )
 );
 ?>
 <<?php echo $rocket_need_help_tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Fixed tag name. ?>

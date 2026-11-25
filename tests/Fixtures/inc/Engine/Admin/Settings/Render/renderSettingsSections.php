@@ -3,6 +3,7 @@
 $contains = [ 'data-wap-prompt="I need help with &#039;Page title&#039; &gt; &#039;Section title&#039;"', 'wpr-infoAction--help', 'Need Help?' ];
 $as_link  = [ 'href="https://docs.example.org/help"', 'target="_blank"', 'rel="noopener noreferrer"' ];
 $cdn_ctx  = 'data-wpr_track_context="Content Delivery"';
+$driver   = '<span class="rocketcdn-driver-js">RocketCDN</span>';
 
 return [
 	'fields_container_keeps_need_help' => [
@@ -56,6 +57,20 @@ return [
 	'purge_cdn_cache_section_keeps_need_help' => [
 		'config'   => [ 'type' => 'purge_cdn_cache_section' ],
 		'expected' => [ 'contains' => array_merge( $contains, $as_link, [ $cdn_ctx, 'wpr-cdn-purge__learn-more', 'Learn more about Purge' ] ), 'not_contains' => [] ],
+	],
+	'nocontainer_with_title_prompt_has_no_markup' => [
+		'config'   => [ 'type' => 'nocontainer_with_title', 'page' => 'page_cdn', 'title' => "Manage {$driver} Exclusions" ],
+		'expected' => [
+			'contains'     => [ "<h3 class=\"wpr-title2\">Manage {$driver} Exclusions</h3>", 'data-wap-prompt="I need help with &#039;Page title&#039; &gt; &#039;Manage RocketCDN Exclusions&#039;"' ],
+			'not_contains' => [ 'data-wap-prompt="I need help with &#039;Page title&#039; &gt; &#039;Manage &lt;span' ],
+		],
+	],
+	'purge_cdn_cache_section_prompt_has_no_markup' => [
+		'config'   => [ 'type' => 'purge_cdn_cache_section', 'title' => "Purge {$driver} Cache" ],
+		'expected' => [
+			'contains'     => [ "<h3 class=\"wpr-title2\">Purge {$driver} Cache</h3>", 'data-wap-prompt="I need help with &#039;Page title&#039; &gt; &#039;Purge RocketCDN Cache&#039;"' ],
+			'not_contains' => [ 'data-wap-prompt="I need help with &#039;Page title&#039; &gt; &#039;Purge &lt;span' ],
+		],
 	],
 	'your_own_cdn_keeps_need_help' => [
 		'config'   => [ 'type' => 'your_own_cdn' ],
