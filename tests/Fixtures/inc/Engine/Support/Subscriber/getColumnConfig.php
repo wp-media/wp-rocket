@@ -34,7 +34,7 @@ return [
 					'settings'          => 'Settings',
 					'closeAssistant'    => 'Close',
 					'consentText'       => 'Please review and accept the {terms} for the AI Assistant.',
-					'consentAccessText' => 'The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
+					'consentAccessText' => 'The AI Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time.',
 					'consentRequired'   => 'You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 					'errorUnavailable'  => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
 					'errorAuthFailed'   => 'The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}.',
