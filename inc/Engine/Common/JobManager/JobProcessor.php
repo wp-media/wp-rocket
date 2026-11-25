@@ -323,12 +323,12 @@ class JobProcessor implements LoggerAwareInterface {
 	}
 
 	/**
-	 * Whether the SaaS feature of a factory is currently backed off.
+	 * Whether the SaaS feature of a factory is currently paused.
 	 *
 	 * @param SaasFactory $factory Job factory.
 	 * @return bool
 	 *
-	 * @phpstan-impure The back-off can be set by a request sent in between two calls.
+	 * @phpstan-impure The pause can be set by a request sent in between two calls.
 	 */
 	private function is_feature_disabled( SaasFactory $factory ): bool {
 		return $factory->api()->is_feature_disabled();

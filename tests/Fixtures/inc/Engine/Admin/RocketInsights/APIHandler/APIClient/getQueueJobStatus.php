@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'shouldReturnStatusWhenNoBackOff'         => [
+	'shouldReturnStatusWhenNotPaused'  => [
 		'config'   => [
 			'test_id'     => 'test-uuid-123',
 			'queue_name'  => 'EU',
@@ -36,7 +36,7 @@ return [
 			'data'   => [ 'score' => 90 ],
 		],
 	],
-	'shouldStillSendRequestWhenBackOffActive' => [
+	'shouldStillSendRequestWhenPaused' => [
 		'config'   => [
 			'test_id'        => 'test-uuid-123',
 			'queue_name'     => 'EU',

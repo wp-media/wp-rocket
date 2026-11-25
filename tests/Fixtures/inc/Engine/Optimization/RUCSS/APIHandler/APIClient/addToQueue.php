@@ -327,18 +327,18 @@ $retry_after_cases = [
 ];
 
 foreach ( $retry_after_cases as $name => $case ) {
-	$scenarios[ 'testFeatureDisabledHttp200' . $name . 'ShouldBackOff' ] = [
+	$scenarios[ 'testFeatureDisabledHttp200' . $name . 'ShouldPause' ] = [
 		'config'   => $feature_disabled( 200, $case[0], $case[1] ),
 		'expected' => $disabled_result,
 	];
 }
 
-$scenarios['testFeatureDisabledHttp503ShouldBackOff'] = [
+$scenarios['testFeatureDisabledHttp503ShouldPause'] = [
 	'config'   => $feature_disabled( 503, '120', 120 ),
 	'expected' => $disabled_result,
 ];
 
-$scenarios['testBackOffActiveShouldNotSendRequest'] = [
+$scenarios['testPauseActiveShouldNotSendRequest'] = [
 	'config'   => $base_config( [ 'blocked_offset' => 120, 'request_count' => 0 ] ),
 	'expected' => $disabled_result,
 ];

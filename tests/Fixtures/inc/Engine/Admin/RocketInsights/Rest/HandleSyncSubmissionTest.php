@@ -45,7 +45,7 @@ return [
 			],
 		],
 	],
-	'shouldBackOffWhenFeatureDisabled'             => [
+	'shouldPauseWhenFeatureDisabled'               => [
 		'config'   => [
 			'enabled'            => true,
 			'url'                => 'http://example.org/sync-feature-disabled',

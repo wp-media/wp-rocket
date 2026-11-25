@@ -536,7 +536,7 @@ return [
 			'transient_set'    => true,
 		]
 	],
-	'ActiveBackOffShouldNotSendAnyRequest' => [
+	'ActivePauseShouldNotSendAnyRequest' => [
 		'config' => [
 			'rucss_enabled' => true,
 			'transient_offset' => 120,

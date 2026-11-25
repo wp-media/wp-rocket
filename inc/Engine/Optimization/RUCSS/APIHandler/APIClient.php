@@ -11,7 +11,7 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	use LoggerAware;
 
 	/**
-	 * Transient key storing the end of the "Feature Disabled" back-off.
+	 * Transient key storing the end of the "Feature Disabled" pause.
 	 *
 	 * @return string
 	 */

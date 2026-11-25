@@ -95,7 +95,7 @@ class HandleSyncSubmissionTest extends TestCase {
 		}
 
 		if ( isset( $expected['feature_disabled'] ) ) {
-			$this->assertFeatureDisabledBackOff( $config, $expected['feature_disabled'], $method );
+			$this->assertFeatureDisabledPause( $config, $expected['feature_disabled'], $method );
 		}
 
 		// Check database state if specified
@@ -116,13 +116,13 @@ class HandleSyncSubmissionTest extends TestCase {
 	}
 
 	/**
-	 * Asserts the back-off is stored and that a second submission sends no request.
+	 * Asserts the pause is stored and that a second submission sends no request.
 	 *
 	 * @param array             $config   Test config.
-	 * @param array             $expected Expected back-off.
+	 * @param array             $expected Expected pause.
 	 * @param \ReflectionMethod $method   handle_sync_submission().
 	 */
-	private function assertFeatureDisabledBackOff( array $config, array $expected, \ReflectionMethod $method ) {
+	private function assertFeatureDisabledPause( array $config, array $expected, \ReflectionMethod $method ) {
 		$until = get_transient( 'wp_rocket_rocket_insights_feature_disabled' );
 
 		$this->assertEqualsWithDelta( time() + $expected['delay'], $until, 2 );

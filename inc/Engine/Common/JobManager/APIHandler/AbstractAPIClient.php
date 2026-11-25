@@ -124,7 +124,7 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Transient key storing the end of the "Feature Disabled" back-off. Empty disables the feature.
+	 * Transient key storing the end of the "Feature Disabled" pause. Empty disables the feature.
 	 *
 	 * @return string
 	 */
@@ -133,7 +133,7 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Whether the SaaS feature behind this client is currently backed off.
+	 * Whether the SaaS feature behind this client is currently paused.
 	 *
 	 * @return bool
 	 */
@@ -171,7 +171,7 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Get the back-off delay in seconds from the Retry-After header.
+	 * Get the pause delay in seconds from the Retry-After header.
 	 *
 	 * @param array $response WP Remote response.
 	 *
@@ -191,11 +191,11 @@ abstract class AbstractAPIClient {
 	}
 
 	/**
-	 * Store the back-off when the response is a "Feature Disabled" one.
+	 * Store the pause when the response is a "Feature Disabled" one.
 	 *
 	 * @param array|WP_Error $response WP Remote response.
 	 *
-	 * @return bool True when the back-off was set.
+	 * @return bool True when the pause was set.
 	 */
 	private function maybe_set_feature_disabled( $response ): bool {
 		$key = $this->get_feature_disabled_transient_key();

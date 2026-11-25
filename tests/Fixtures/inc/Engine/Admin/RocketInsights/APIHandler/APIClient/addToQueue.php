@@ -184,7 +184,7 @@ return [
 				'code' => 200,
 			],
 		],
-		'shouldBackOffWhenFeatureDisabled' => [
+		'shouldPauseWhenFeatureDisabled' => [
 			'config' => [
 				'url'                           => 'https://example.com',
 				'url_trailing'                  => 'https://example.com/',
@@ -220,7 +220,7 @@ return [
 				'message' => 'Feature Disabled',
 			],
 		],
-		'shouldNotSendRequestWhenBackOffActive' => [
+		'shouldNotSendRequestWhenPaused' => [
 			'config' => [
 				'url'            => 'https://example.com',
 				'url_trailing'   => 'https://example.com/',
