@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the WP Rocket plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP Rocket 3.24.3-alpha1\n"
+"Project-Id-Version: WP Rocket 3.24.3-alpha2\n"
 "Report-Msgid-Bugs-To: http://wp-rocket.me/\n"
 "Last-Translator: WP Media (http://wp-rocket.me/)\n"
 "Language-Team: WP Media (http://www.transifex.com/projects/p/wp-media/) <contact@wp-media.me>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-24T16:20:32+00:00\n"
+"POT-Creation-Date: 2026-11-25T12:42:20+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: rocket\n"
@@ -333,7 +333,7 @@ msgstr ""
 #: inc/admin/admin.php:24
 #: inc/common/admin-bar.php:71
 #: inc/Engine/Admin/Settings/Page.php:1811
-#: inc/Engine/Support/Subscriber.php:260
+#: inc/Engine/Support/Subscriber.php:262
 msgid "Settings"
 msgstr ""
 
@@ -1161,11 +1161,11 @@ msgstr ""
 msgid "WP Rocket no longer bundles the MCP Adapter, which is now available as a standalone plugin on WordPress.org. To keep using MCP with WP Rocket, please install and activate the %1$sMCP Adapter plugin%2$s."
 msgstr ""
 
-#: inc/Engine/Abilities/Options/GetOptions.php:426
+#: inc/Engine/Abilities/Options/GetOptions.php:441
 msgid "Get WP Rocket options"
 msgstr ""
 
-#: inc/Engine/Abilities/Options/GetOptions.php:427
+#: inc/Engine/Abilities/Options/GetOptions.php:442
 msgctxt "Ability description"
 msgid ""
 "Retrieves current WP Rocket settings as a flat key-value object, including toggles and array-type options.\n"
@@ -1410,6 +1410,7 @@ msgstr ""
 #: inc/Engine/Admin/RocketInsights/Abilities/Subscriber.php:125
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:256
 #: inc/Engine/Admin/RocketInsights/PostListing/Subscriber.php:264
+#: inc/Engine/Admin/RocketInsights/Render.php:139
 #: inc/Engine/Admin/RocketInsights/Settings/Controller.php:58
 #: inc/Engine/Admin/Settings/Page.php:1803
 msgid "Rocket Insights"
@@ -1475,13 +1476,6 @@ msgstr ""
 #: views/settings/partials/rocket-insights/dashboard-recommendations.php:21
 #: views/settings/partials/rocket-insights/recommendations/widget.php:27
 msgid "Recommendations"
-msgstr ""
-
-#: inc/Engine/Admin/RocketInsights/Render.php:139
-#: inc/Engine/Admin/Settings/Page.php:1885
-#: inc/Engine/Admin/Settings/Render.php:382
-#: views/settings/page-sections/tutorials.php:38
-msgid "Add-ons"
 msgstr ""
 
 #: inc/Engine/Admin/RocketInsights/Render.php:140
@@ -2436,6 +2430,12 @@ msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1846
 msgid "Upgrade your plan to get access to automatic performance tests"
+msgstr ""
+
+#: inc/Engine/Admin/Settings/Page.php:1885
+#: inc/Engine/Admin/Settings/Render.php:382
+#: views/settings/page-sections/tutorials.php:38
+msgid "Add-ons"
 msgstr ""
 
 #: inc/Engine/Admin/Settings/Page.php:1886
@@ -3992,7 +3992,7 @@ msgstr ""
 
 #. translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
 #: inc/Engine/Support/Subscriber.php:247
-msgid "The AI Assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}."
+msgid "The AI assistant is temporarily unavailable. Please try again in a few minutes. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}."
 msgstr ""
 
 #. translators: Text of the floating button that opens the support chat.
@@ -4002,73 +4002,100 @@ msgid "Ask Support"
 msgstr ""
 
 #. translators: Title of the support chat panel.
+#. translators: Name shown on the assistant's messages.
 #: inc/Engine/Support/Subscriber.php:259
+#: inc/Engine/Support/Subscriber.php:261
 msgid "AI Assistant"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:261
+#: inc/Engine/Support/Subscriber.php:263
 msgid "Close"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:262
-msgid "Please review and accept the {terms} for the WP Rocket Assistant."
+#: inc/Engine/Support/Subscriber.php:264
+msgid "Open the AI assistant"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:263
-msgid "The Assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time."
+#: inc/Engine/Support/Subscriber.php:265
+msgid "Ask the AI assistant…"
+msgstr ""
+
+#: inc/Engine/Support/Subscriber.php:266
+msgid "This will permanently delete all your conversation history with the AI assistant. This action cannot be undone."
+msgstr ""
+
+#: inc/Engine/Support/Subscriber.php:267
+msgid "Permanently delete your conversation history with the AI assistant."
+msgstr ""
+
+#. translators: Keep {action} as it is: it is replaced by the name of the action the assistant wants to run.
+#: inc/Engine/Support/Subscriber.php:269
+msgid "The AI assistant wants to run {action}. Allow it?"
+msgstr ""
+
+#: inc/Engine/Support/Subscriber.php:270
+msgid "The AI assistant wants to run these actions:"
+msgstr ""
+
+#: inc/Engine/Support/Subscriber.php:271
+msgid "Please review and accept the {terms} for the AI assistant."
+msgstr ""
+
+#: inc/Engine/Support/Subscriber.php:272
+msgid "The AI assistant uses a safe {link}WordPress Application Password{/link} with limited permissions, which you can remove at any time."
 msgstr ""
 
 #. translators: Keep {contact}…{/contact} and {docs}…{/docs} as they are: they mark the words that become links.
-#: inc/Engine/Support/Subscriber.php:265
-msgid "You need to accept the Terms & Conditions to use the AI Assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}."
+#: inc/Engine/Support/Subscriber.php:274
+msgid "You need to accept the Terms & Conditions to use the AI assistant. You can alternatively {contact}contact the support team{/contact} or access {docs}the documentation{/docs}."
 msgstr ""
 
 #. translators: Label of the support chat setting deciding whether the assistant may read WP Rocket's settings.
-#: inc/Engine/Support/Subscriber.php:325
+#: inc/Engine/Support/Subscriber.php:334
 msgid "Read WP Rocket settings"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:329
+#: inc/Engine/Support/Subscriber.php:338
 msgctxt "support chat permission option"
 msgid "Allow"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:333
+#: inc/Engine/Support/Subscriber.php:342
 msgctxt "support chat permission option"
 msgid "Ask permission"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:337
-#: inc/Engine/Support/Subscriber.php:370
+#: inc/Engine/Support/Subscriber.php:346
+#: inc/Engine/Support/Subscriber.php:379
 msgctxt "support chat permission option"
 msgid "Deny"
 msgstr ""
 
 #. translators: Label of the support chat setting deciding whether the assistant may change WP Rocket's settings.
-#: inc/Engine/Support/Subscriber.php:345
+#: inc/Engine/Support/Subscriber.php:354
 msgid "Change WP Rocket settings"
 msgstr ""
 
 #. translators: Label of the support chat setting deciding whether the assistant may read and change the rest of the WordPress site.
-#: inc/Engine/Support/Subscriber.php:350
+#: inc/Engine/Support/Subscriber.php:359
 msgid "Read & Write WordPress configuration"
 msgstr ""
 
 #. translators: Badge on a support chat setting that cannot be changed yet.
-#: inc/Engine/Support/Subscriber.php:376
+#: inc/Engine/Support/Subscriber.php:385
 msgid "Coming soon"
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:406
-msgid "The support assistant is only available when WP Rocket is network-activated on this multisite network."
+#: inc/Engine/Support/Subscriber.php:415
+msgid "The AI assistant is only available when WP Rocket is network-activated on this multisite network."
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:409
-msgid "The support assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS."
+#: inc/Engine/Support/Subscriber.php:418
+msgid "The AI assistant requires HTTPS to use WordPress Application Passwords. It will be available once this site is served over HTTPS."
 msgstr ""
 
-#: inc/Engine/Support/Subscriber.php:412
-msgid "The support assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it."
+#: inc/Engine/Support/Subscriber.php:421
+msgid "The AI assistant is unavailable because WordPress Application Passwords have been disabled on this site, for example by a security plugin. Enable Application Passwords to use it."
 msgstr ""
 
 #: inc/functions/admin.php:21
@@ -5043,7 +5070,7 @@ msgstr ""
 msgid "I need help with '%1$s' > '%2$s'"
 msgstr ""
 
-#: views/settings/partials/need-help.php:43
+#: views/settings/partials/need-help.php:44
 msgid "Need Help?"
 msgstr ""
 
