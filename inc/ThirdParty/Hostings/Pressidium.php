@@ -60,10 +60,14 @@ class Pressidium extends AbstractNoCacheHost {
 	 * @return void
 	 */
 	public function clear_cache_after_pressidium() {
-		if ( isset( $_POST['purge-all'] ) && current_user_can( 'manage_options' ) && check_admin_referer( WP_NINUKIS_WP_NAME . '-caching' ) ) {
-			// Clear all caching files.
-			rocket_clean_domain();
+		if ( ! isset( $_POST['purge-all'] ) || ! current_user_can( 'manage_options' ) ) {
+			return;
 		}
+
+		check_admin_referer( WP_NINUKIS_WP_NAME . '-caching' );
+
+		// Clear all caching files.
+		rocket_clean_domain();
 	}
 
 	/**
