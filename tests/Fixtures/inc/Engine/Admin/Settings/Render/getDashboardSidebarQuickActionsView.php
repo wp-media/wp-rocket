@@ -24,6 +24,7 @@ return [
 			'contains'     => [
 				'Quick Actions',
 				'wpr-Dashboard-sidebar-category wpr-Dashboard-sidebar-category--quickActions',
+				'<div class="wpr-quickAction">',
 				'class="wpr-quickAction-title">First action</h4>',
 				'First &lt;b&gt;description&lt;/b&gt;',
 				'class="wpr-quickAction-actions"',
@@ -48,6 +49,7 @@ return [
 		],
 		'expected' => [
 			'contains'     => [
+				'<div class="wpr-quickAction wpr-quickAction--disabled">',
 				'class="wpr-quickAction-title">Used CSS</h4>',
 				'<button type="button" class="wpr-quickAction-button" disabled>Clear used CSS</button>',
 			],
@@ -65,7 +67,7 @@ return [
 		],
 		'expected' => [
 			'contains'     => [ 'class="wpr-quickAction-title">Valid</h4>' ],
-			'not_contains' => [ 'No url', 'Bad url', 'javascript:' ],
+			'not_contains' => [ 'No url', 'Bad url', 'javascript:', 'wpr-quickAction--disabled' ],
 		],
 	],
 ];

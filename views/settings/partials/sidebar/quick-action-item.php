@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 ?>
-<div class="wpr-quickAction">
+<div class="wpr-quickAction<?php echo ! empty( $data['disabled'] ) ? ' wpr-quickAction--disabled' : ''; ?>">
 	<h4 class="wpr-quickAction-title"><?php echo esc_html( $data['title'] ); ?></h4>
 	<?php if ( '' !== $data['description'] ) : ?>
 		<p class="wpr-quickAction-description"><?php echo esc_html( $data['description'] ); ?></p>

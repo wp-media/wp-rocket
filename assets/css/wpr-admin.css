@@ -7219,6 +7219,10 @@ div.wpr-tutorial-item {
   margin: 0;
   color: #0C0F1F;
 }
+.wpr-Dashboard-sidebar .wpr-quickAction--disabled .wpr-quickAction-title,
+.wpr-Dashboard-sidebar .wpr-quickAction--disabled .wpr-quickAction-description {
+  opacity: 0.5;
+}
 .wpr-Dashboard-sidebar .wpr-quickAction + .wpr-quickAction {
   padding-top: 16px;
   border-top: 1px solid #E2E5E9;

@@ -378,6 +378,14 @@
         }
     }
 
+    // Disabled action: the title and description are greyed out like the button.
+    .wpr-quickAction--disabled{
+        .wpr-quickAction-title,
+        .wpr-quickAction-description{
+            opacity: .5;
+        }
+    }
+
     .wpr-quickAction + .wpr-quickAction{
         padding-top: $space*2;
         border-top: 1px solid $cGreyLighter1;
