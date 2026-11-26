@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Abilities\NormalizeUrlTrait;
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
 	Context\Context
@@ -16,6 +17,7 @@ use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Logger\Logger;
 
 class RetestPageInsights implements AbilitiesInterface {
+	use NormalizeUrlTrait;
 	use TrackingTrait;
 
 	/**
@@ -171,7 +173,7 @@ If the user wants results, wait and check every minute with get-page-insights-sc
 		}
 
 		// Normalize URL — add protocol if missing.
-		$url = rocket_add_url_protocol( $input['url'] );
+		$url = $this->normalize_url_scheme( rocket_add_url_protocol( $input['url'] ) );
 
 		// Look up the existing DB row for this URL. get_single_job() returns bool|object.
 		$row = $this->manager->get_single_job( $url, true );
