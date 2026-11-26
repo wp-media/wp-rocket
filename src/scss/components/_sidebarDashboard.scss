@@ -404,7 +404,8 @@
         }
 
         &-title{
-            font-weight: 590;
+            // Figma: SF Pro Semibold (590). Chrome renders 501-599 close to bold with the system font; 600 picks the real Semibold.
+            font-weight: 600;
         }
 
         &-description{
@@ -434,7 +435,7 @@
             white-space: nowrap;
             cursor: pointer;
             @include font-size(14,21);
-            font-weight: 590;
+            font-weight: 600;
             @include transition(background-color, 200ms);
 
             &:hover,

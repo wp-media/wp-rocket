@@ -7239,7 +7239,7 @@ div.wpr-tutorial-item {
   line-height: 1.5;
 }
 .wpr-Dashboard-sidebar .wpr-quickAction-title {
-  font-weight: 590;
+  font-weight: 600;
 }
 .wpr-Dashboard-sidebar .wpr-quickAction-description {
   font-weight: 400;
@@ -7266,7 +7266,7 @@ div.wpr-tutorial-item {
   cursor: pointer;
   font-size: 0.875rem;
   line-height: 1.5;
-  font-weight: 590;
+  font-weight: 600;
   transition: background-color 200ms ease-out;
   -webkit-transition: background-color 200ms ease-out;
 }
