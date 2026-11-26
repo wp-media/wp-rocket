@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Cloudflare;
+namespace WP_Rocket\Tests\Integration\inc\Addon\Cloudflare\Cloudflare;
 
 use WP_Rocket\Addon\Cloudflare\API\Client;
 use WP_Rocket\Tests\Integration\TestCase;

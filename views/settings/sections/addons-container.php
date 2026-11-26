@@ -20,9 +20,18 @@ defined( 'ABSPATH' ) || exit;
 
 <div class="wpr-optionHeader">
 	<h3 class="wpr-title2"><?php echo esc_html( $data['title'] ); ?></h3>
-	<?php if ( ! empty( $data['help'] ) ) : ?>
-	<button data-beacon-id="<?php echo esc_attr( $data['help'] ); ?>" data-wpr_track_button="Need Help" data-wpr_track_context="Addons" class="wpr-infoAction wpr-infoAction--help wpr-icon-help"><?php esc_html_e( 'Need Help?', 'rocket' ); ?></button>
-	<?php endif; ?>
+	<?php
+	if ( ! empty( $data['help'] ) ) {
+		$this->render_parts_with_data(
+			'need-help',
+			[
+				'context' => 'Addons',
+				'page'    => $data['page_title'],
+				'section' => $data['title'],
+			]
+		);
+	}
+	?>
 </div>
 
 <div class="wpr-fieldsContainer">

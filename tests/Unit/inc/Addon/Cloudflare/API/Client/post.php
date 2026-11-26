@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\API\Client;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\API\Client;
 
 use Brain\Monkey\Functions;
 use Exception;

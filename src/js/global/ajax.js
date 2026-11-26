@@ -37,6 +37,11 @@ $(document).ready(function(){
                             button.removeClass('wpr-icon-refresh wpr-isHidden');
                             button.addClass('wpr-icon-check');
                         }, 250);
+
+                        // PHP renders the assistant entries and localized values are strings ('1' or ''), so compare numbers.
+                        if ( typeof response.data.assistant_available !== 'undefined' && typeof rocket_ajax_data.assistant_available !== 'undefined' && Number( response.data.assistant_available ) !== Number( rocket_ajax_data.assistant_available ) ) {
+                            window.location.reload();
+                        }
                     }
                     else{
                         setTimeout(function() {

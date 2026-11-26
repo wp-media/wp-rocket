@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Media\PreconnectExternalDomains\Frontend\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Media\PreconnectExternalDomains\Frontend\Controller;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;

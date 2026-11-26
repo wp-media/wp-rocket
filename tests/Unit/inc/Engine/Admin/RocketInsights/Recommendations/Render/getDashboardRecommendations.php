@@ -28,6 +28,11 @@ class Test_GetDashboardRecommendations extends TestCase {
 		Functions\stubEscapeFunctions();
 		Functions\stubTranslationFunctions();
 		Functions\when( 'esc_url' )->returnArg();
+		Functions\when( 'wp_strip_all_tags' )->alias(
+			function ( $text ) {
+				return trim( strip_tags( $text ) );
+			}
+		);
 
 		$filesystem = Mockery::mock();
 		$filesystem->shouldReceive( 'is_readable' )->andReturn( true );
@@ -51,9 +56,9 @@ class Test_GetDashboardRecommendations extends TestCase {
 	}
 
 	/**
-	 * Renders the Beacon id and uses the language-aware Beacon article URL as the href.
+	 * Uses the language-aware Beacon article URL as the href.
 	 */
-	public function testShouldRenderBeaconIdAndBeaconUrlHref() {
+	public function testShouldRenderBeaconUrlHref() {
 		$render = $this->get_render(
 			[
 				'id'  => '68beeaab7f1dbe419d37a71c',
@@ -63,7 +68,6 @@ class Test_GetDashboardRecommendations extends TestCase {
 
 		$html = $render->get_dashboard_recommendations( false );
 
-		$this->assertStringContainsString( 'data-beacon-id="68beeaab7f1dbe419d37a71c"', $html );
 		$this->assertStringContainsString( 'href="https://docs.wp-rocket.me/article/1876-rocket-insights?utm_source=wp_plugin"', $html );
 		$this->assertStringContainsString( 'wpr-infoAction--help', $html );
 	}

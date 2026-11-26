@@ -96,6 +96,7 @@ class Render extends Abstract_Render {
 		 *     @type string $group            Identifier of the navigation group the item belongs to. Optional.
 		 *     @type string $url              External URL. When set, the item is a link instead of a page. Optional.
 		 *     @type string $target           Link target, used with `url`. Optional.
+		 *     @type bool   $open_chat        Whether a click opens the support chat when it is registered. Optional.
 		 * }
 		 */
 		$navigation = (array) apply_filters( 'rocket_settings_menu_navigation', $this->settings );
@@ -577,6 +578,7 @@ class Render extends Abstract_Render {
 				'help'        => '',
 				'helper'      => '',
 				'page'        => '',
+				'page_title'  => $this->settings[ $page ]['title'] ?? '',
 			];
 
 			$args = wp_parse_args( $args, $default );

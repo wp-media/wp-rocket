@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Engine\Common\PerformanceHints\WarmUp\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\WarmUp\Controller;
 
 use Brain\Monkey\{Filters, Functions};
 use Mockery;

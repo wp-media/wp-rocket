@@ -1,0 +1,104 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
+
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Support\Meta;
+use WP_Rocket\Engine\Support\Rest;
+use WP_Rocket\Engine\Support\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
+
+/**
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::maybe_display_unavailable_notice
+ *
+ * @group Support
+ */
+class TestMaybeDisplayUnavailableNotice extends TestCase {
+	private $options;
+	private $user;
+	private $subscriber;
+
+	public function set_up() {
+		parent::set_up();
+
+		if ( ! defined( 'WP_ROCKET_PLUGIN_NAME' ) ) {
+			define( 'WP_ROCKET_PLUGIN_NAME', 'WP Rocket' );
+		}
+
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
+
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
+		Functions\when( 'current_user_can' )->justReturn( true );
+		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 * @runInSeparateProcess
+	 * @preserveGlobalState disabled
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		$stub = 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManagerWithReason';
+		require_once WP_ROCKET_TESTS_FIXTURES_DIR . '/inc/Engine/Support/Subscriber/AppPasswordManagerWithReason.php';
+		class_alias( $stub, 'WP_Rocket\Dependencies\GroupOne\WapClient\AppPasswordManager' );
+
+		$stub::$available = $config['app_passwords_available'] ?? false;
+		$stub::$reason    = $config['unavailable_reason'] ?? '';
+
+		if ( isset( $config['filter_available'] ) && ! $config['filter_available'] ) {
+			// The filter is checked first, so no option is read when the chat is disabled.
+			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_key', '' )
+						  ->andReturn( $config['consumer_key'] ?? '' );
+			$this->options->shouldReceive( 'get' )
+						  ->with( 'consumer_email', '' )
+						  ->andReturn( $config['consumer_email'] ?? '' );
+		}
+
+		if ( isset( $config['current_user_can'] ) ) {
+			Functions\when( 'current_user_can' )->justReturn( $config['current_user_can'] );
+		}
+
+		if ( isset( $config['can_use_ai'] ) ) {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		Functions\when( 'get_current_screen' )->justReturn(
+			null !== $config['screen_id'] ? (object) [ 'id' => $config['screen_id'] ] : null
+		);
+
+		if ( $expected['notice_called'] ) {
+			Functions\expect( 'rocket_notice_html' )
+				->once()
+				->with(
+					Mockery::on(
+						function ( $args ) use ( $expected ) {
+							return $expected['status'] === $args['status']
+								&& false !== strpos( $args['message'], $expected['message_contains'] );
+						}
+					)
+				);
+		} else {
+			Functions\expect( 'rocket_notice_html' )->never();
+		}
+
+		if ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
+		}
+
+		$this->subscriber->maybe_display_unavailable_notice();
+	}
+}
