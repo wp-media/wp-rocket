@@ -52,7 +52,7 @@ Method : SUITCSS (modified)
         }
     }
 
-    &-sidebar:before{
+    &-sidebar-section--ribbon:before{
         right: auto;
         left: $space*2;
     }

@@ -815,14 +815,19 @@ a:focus, button:focus {
   }
 }
 .wpr-Dashboard-sidebar {
-  position: relative;
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
   flex: 0 0 346px;
   align-self: flex-start;
+}
+.wpr-Dashboard-sidebar-section {
+  position: relative;
   padding: 24px;
   background: #fff;
   border-radius: 4px;
 }
-.wpr-Dashboard-sidebar:before {
+.wpr-Dashboard-sidebar-section--ribbon:before {
   content: "";
   position: absolute;
   top: 0;
@@ -7202,17 +7207,13 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .wpr-addonCard-list[hidden] + .wpr-addonCard-button {
   margin-top: 4px;
 }
-.wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-category + .wpr-Dashboard-sidebar-category--quickActions {
-  margin-top: 16px;
+.wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-section--quickActions {
+  overflow: hidden;
 }
 .wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-category--quickActions {
   display: flex;
   flex-flow: column;
   gap: 16px;
-  overflow: hidden;
-  padding: 24px;
-  border-radius: 4px;
-  background: #fff;
 }
 .wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-category--quickActions .wpr-Dashboard-sidebar-title {
   margin: 0;

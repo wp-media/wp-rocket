@@ -362,19 +362,15 @@
         margin-top: $space/2;
     }
 
-    // Quick actions: its own white card below the Add-ons card, items separated by a thin line.
-    .wpr-Dashboard-sidebar-category + .wpr-Dashboard-sidebar-category--quickActions{
-        margin-top: $space*2;
+    // Quick actions: in its own sidebar section (card), items separated by a thin line.
+    .wpr-Dashboard-sidebar-section--quickActions{
+        overflow: hidden;
     }
 
     .wpr-Dashboard-sidebar-category--quickActions{
         display: flex;
         flex-flow: column;
         gap: $space*2;
-        overflow: hidden;
-        padding: $space*3;
-        border-radius: 4px;
-        background: $cWhite;
 
         .wpr-Dashboard-sidebar-title{
             margin: 0;

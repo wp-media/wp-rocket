@@ -37,6 +37,16 @@ class Test_GetDashboardSidebarQuickActions extends TestCase {
 		if ( empty( $expected['items'] ) ) {
 			$render->shouldReceive( 'generate' )->never();
 		} else {
+			// The Quick Actions section (card) is rendered around the category: pass the content through.
+			$render->shouldReceive( 'generate' )
+				->with( 'partials/sidebar/section', [ 'class' => 'wpr-Dashboard-sidebar-section--quickActions', 'content' => $expected['html'] ] )
+				->once()
+				->andReturnUsing(
+					function ( $template, $data ) {
+						return $data['content'];
+					}
+				);
+
 			$contents = '';
 
 			foreach ( $expected['items'] as $item ) {

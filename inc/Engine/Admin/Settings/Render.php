@@ -411,34 +411,60 @@ class Render extends Abstract_Render {
 		}
 
 		$categories = [
-			__( 'License', 'rocket' )       => $license,
-			__( 'Promos', 'rocket' )        => $promos,
-			__( 'Add-ons', 'rocket' )       => $addons,
-			__( 'Quick Actions', 'rocket' ) => $quick_actions,
+			__( 'License', 'rocket' ) => $license,
+			__( 'Promos', 'rocket' )  => $promos,
+			__( 'Add-ons', 'rocket' ) => $addons,
 		];
 
-		// The Quick Actions get their own card, the other categories hold their own cards.
-		$classes = [
-			__( 'Quick Actions', 'rocket' ) => 'wpr-Dashboard-sidebar-category--quickActions',
-		];
-
-		$html = '';
+		$offers = '';
 
 		foreach ( $categories as $title => $content ) {
 			if ( '' === trim( $content ) ) {
 				continue;
 			}
 
-			$category = [
-				'title'   => $title,
-				'content' => $content,
-			];
+			$offers .= (string) $this->generate(
+				'partials/sidebar/category',
+				[
+					'title'   => $title,
+					'content' => $content,
+				]
+			);
+		}
 
-			if ( isset( $classes[ $title ] ) ) {
-				$category['class'] = $classes[ $title ];
+		$actions_category = '';
+
+		if ( '' !== trim( $quick_actions ) ) {
+			$actions_category = (string) $this->generate(
+				'partials/sidebar/category',
+				[
+					'title'   => __( 'Quick Actions', 'rocket' ),
+					'content' => $quick_actions,
+					'class'   => 'wpr-Dashboard-sidebar-category--quickActions',
+				]
+			);
+		}
+
+		// Each group is its own card in the sidebar column: the offers with the ribbon, then the Quick Actions.
+		$sections = [
+			'wpr-Dashboard-sidebar-section--ribbon'       => $offers,
+			'wpr-Dashboard-sidebar-section--quickActions' => $actions_category,
+		];
+
+		$html = '';
+
+		foreach ( $sections as $class => $content ) {
+			if ( '' === trim( $content ) ) {
+				continue;
 			}
 
-			$html .= (string) $this->generate( 'partials/sidebar/category', $category );
+			$html .= (string) $this->generate(
+				'partials/sidebar/section',
+				[
+					'class'   => $class,
+					'content' => $content,
+				]
+			);
 		}
 
 		return $html;

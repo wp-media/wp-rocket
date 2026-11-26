@@ -185,17 +185,24 @@
         }
     }
 
+    // Sidebar column: a stack of white cards (sections).
     &-sidebar{
-        position: relative;
+        display: flex;
+        flex-flow: column;
+        gap: $space*2;
         flex: 0 0 $sidebarWidth + $space*7;
-        // The card hugs its content instead of stretching to the height of the main column.
+        // The column hugs its content instead of stretching to the height of the main column.
         align-self: flex-start;
-        padding: $space*3;
-        background: #fff;
-        border-radius: 4px;
 
-        // Orange ribbon, top right corner.
-        &:before{
+        &-section{
+            position: relative;
+            padding: $space*3;
+            background: #fff;
+            border-radius: 4px;
+        }
+
+        // Orange ribbon, top right corner of the offers card.
+        &-section--ribbon:before{
             content: "";
             position: absolute;
             top: 0;
