@@ -47,7 +47,7 @@ class Test_GetDashboardSidebarQuickActions extends TestCase {
 			$render->shouldReceive( 'generate' )
 				->once()
 				->ordered()
-				->with( 'partials/sidebar/category', [ 'title' => 'Quick Actions', 'content' => $contents ] )
+				->with( 'partials/sidebar/category', [ 'title' => 'Quick Actions', 'content' => $contents, 'class' => 'wpr-Dashboard-sidebar-category--quickActions' ] )
 				->andReturn( $expected['html'] );
 		}
 

@@ -362,59 +362,79 @@
         margin-top: $space/2;
     }
 
-    // Quick actions: title, description and a secondary button, separated by a thin line.
+    // Quick actions: its own white card below the Add-ons card, items separated by a thin line.
+    .wpr-Dashboard-sidebar-category + .wpr-Dashboard-sidebar-category--quickActions{
+        margin-top: $space*2;
+    }
+
+    .wpr-Dashboard-sidebar-category--quickActions{
+        display: flex;
+        flex-flow: column;
+        gap: $space*2;
+        overflow: hidden;
+        padding: $space*3;
+        border-radius: 4px;
+        background: $cWhite;
+
+        .wpr-Dashboard-sidebar-title{
+            margin: 0;
+            color: $cTextPrimary;
+        }
+    }
+
+    .wpr-quickAction + .wpr-quickAction{
+        padding-top: $space*2;
+        border-top: 1px solid $cGreyLighter1;
+    }
+
     .wpr-quickAction{
         display: flex;
         flex-flow: column;
-        align-items: flex-start;
-        gap: $space;
-        padding: $space*2 0;
-        border-top: 1px solid $cGrey;
+        gap: $space/2;
 
-        &:first-of-type{
-            padding-top: 0;
-            border-top: 0;
-        }
-
-        &:last-child{
-            padding-bottom: 0;
+        &-title,
+        &-description{
+            margin: 0;
+            color: $cTextPrimary;
+            @include font-size(14,21);
         }
 
         &-title{
-            margin: 0;
-            color: $cBlack;
-            @include font-size(14,21);
             font-weight: 590;
         }
 
         &-description{
-            margin: 0;
-            color: $cGreyDark3;
-            @include font-size(14,21);
+            font-weight: 400;
         }
 
-        &-button{
+        &-actions{
             display: flex;
+            align-items: flex-start;
+            padding-top: $space;
+        }
+
+        // Neutral button: white, thin grey border, label in the text colour.
+        &-button{
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             box-sizing: border-box;
-            width: 100%;
-            height: $space*5;
-            padding: $space*.75 $space*1.5;
-            border: 1px solid $cActionPrimary;
+            height: $space*4;
+            padding: 6px $space*1.5;
+            border: 1px solid $cGreyLighter2;
             border-radius: 4px;
-            background: transparent;
-            color: $cActionPrimary;
-            text-align: center;
+            background: $cWhite;
+            color: $cTextPrimary;
             text-decoration: none;
+            white-space: nowrap;
             @include font-size(14,21);
             font-weight: 590;
-            @include transition(all, 200ms);
+            @include transition(background-color, 200ms);
 
             &:hover,
             &:focus{
-                background: $cActionPrimary;
-                color: $cWhite;
+                background: $cGreyLight3;
+                color: $cTextPrimary;
             }
 
             &:focus-visible{

@@ -22,5 +22,7 @@ defined( 'ABSPATH' ) || exit;
 	<?php if ( '' !== $data['description'] ) : ?>
 		<p class="wpr-quickAction-description"><?php echo esc_html( $data['description'] ); ?></p>
 	<?php endif; ?>
-	<a class="wpr-quickAction-button" href="<?php echo esc_url( $data['button_url'] ); ?>"><?php echo esc_html( $data['button_label'] ); ?></a>
+	<div class="wpr-quickAction-actions">
+		<a class="wpr-quickAction-button" href="<?php echo esc_url( $data['button_url'] ); ?>"><?php echo esc_html( $data['button_label'] ); ?></a>
+	</div>
 </div>

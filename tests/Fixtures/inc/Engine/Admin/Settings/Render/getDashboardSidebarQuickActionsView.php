@@ -23,8 +23,10 @@ return [
 		'expected' => [
 			'contains'     => [
 				'Quick Actions',
+				'wpr-Dashboard-sidebar-category wpr-Dashboard-sidebar-category--quickActions',
 				'class="wpr-quickAction-title">First action</h4>',
 				'First &lt;b&gt;description&lt;/b&gt;',
+				'class="wpr-quickAction-actions"',
 				'class="wpr-quickAction-button" href="http://example.org/wp-admin/admin-post.php?action=first&#038;_wpnonce=abc">Go first</a>',
 				'class="wpr-quickAction-button" href="http://example.org/second">Go second</a>',
 			],

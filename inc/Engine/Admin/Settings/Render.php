@@ -417,6 +417,11 @@ class Render extends Abstract_Render {
 			__( 'Quick Actions', 'rocket' ) => $quick_actions,
 		];
 
+		// The Quick Actions get their own card, the other categories hold their own cards.
+		$classes = [
+			__( 'Quick Actions', 'rocket' ) => 'wpr-Dashboard-sidebar-category--quickActions',
+		];
+
 		$html = '';
 
 		foreach ( $categories as $title => $content ) {
@@ -424,13 +429,16 @@ class Render extends Abstract_Render {
 				continue;
 			}
 
-			$html .= (string) $this->generate(
-				'partials/sidebar/category',
-				[
-					'title'   => $title,
-					'content' => $content,
-				]
-			);
+			$category = [
+				'title'   => $title,
+				'content' => $content,
+			];
+
+			if ( isset( $classes[ $title ] ) ) {
+				$category['class'] = $classes[ $title ];
+			}
+
+			$html .= (string) $this->generate( 'partials/sidebar/category', $category );
 		}
 
 		return $html;
