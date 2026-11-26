@@ -78,7 +78,7 @@ class AdminBar extends Abstract_Render {
 	/**
 	 * Appends the "Used CSS" action to the quick actions of the Dashboard sidebar.
 	 *
-	 * The action is disabled, not hidden, when Remove Unused CSS is off.
+	 * The action is disabled, not hidden, when Remove Unused CSS is off or on a local environment.
 	 *
 	 * @since 3.24
 	 *
@@ -88,8 +88,6 @@ class AdminBar extends Abstract_Render {
 	 */
 	public function add_clean_saas_quick_action( array $actions ): array {
 		if (
-			'local' === wp_get_environment_type()
-			||
 			! rocket_valid_key()
 			||
 			! current_user_can( 'rocket_remove_unused_css' )
@@ -106,7 +104,11 @@ class AdminBar extends Abstract_Render {
 			'button_label' => __( 'Clear used CSS', 'rocket' ),
 		];
 
-		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+		if (
+			! (bool) $this->options->get( 'remove_unused_css', 0 )
+			||
+			'local' === wp_get_environment_type()
+		) {
 			$actions[] = array_merge(
 				$action,
 				[
