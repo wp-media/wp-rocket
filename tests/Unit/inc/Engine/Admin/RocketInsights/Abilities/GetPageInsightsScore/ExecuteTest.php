@@ -31,6 +31,12 @@ class ExecuteTest extends TestCase {
 			return $url;
 		} );
 
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+
+		Functions\when( 'set_url_scheme' )->alias( function ( $url, $scheme = null ) {
+			return empty( $scheme ) ? $url : preg_replace( '#^\w+://#', $scheme . '://', $url );
+		} );
+
 		Functions\when( 'untrailingslashit' )->alias( function ( $string ) {
 			return rtrim( $string, '/\\' );
 		} );
@@ -40,6 +46,8 @@ class ExecuteTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		Functions\when( 'home_url' )->justReturn( $config['home_url'] ?? 'https://example.com' );
+
 		$mock_query = $this->createMock( Query::class );
 		$mock_plan  = $this->createMock( Plan::class );
 

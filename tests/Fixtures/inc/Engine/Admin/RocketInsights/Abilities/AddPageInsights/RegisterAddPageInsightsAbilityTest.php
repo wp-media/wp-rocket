@@ -104,11 +104,11 @@ return [
 		'config'   => [
 			'has_permission' => true,
 			'input'          => [
-				'url' => 'https://example.org/',
+				'url' => 'http://example.org/',
 			],
 			'existing_items' => [],
 			'http'           => [
-				'https://example.org/' => $ok,
+				'http://example.org/' => $ok,
 				$saas_url              => $ok,
 			],
 			'url_limit'      => 10,

@@ -82,4 +82,99 @@ return [
 			],
 		],
 	],
+
+	'testShouldQueryHttpsWhenSchemeIsHttpOnHttpsHome' => [
+		'config'   => [
+			'home_url'           => 'https://example.com',
+			'input'              => [
+				'url' => 'http://example.com/page',
+			],
+			'context_is_allowed' => true,
+			'query_rows'         => [ 5 ],
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'deleted_ids' => [ 5 ],
+			'result'      => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldQueryHttpsWhenUrlHasNoSchemeOnHttpsHome' => [
+		'config'   => [
+			'home_url'           => 'https://example.com',
+			'input'              => [
+				'url' => 'example.com/page',
+			],
+			'context_is_allowed' => true,
+			'query_rows'         => [ 5 ],
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'deleted_ids' => [ 5 ],
+			'result'      => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpsUrlOnHttpsHome' => [
+		'config'   => [
+			'home_url'           => 'https://example.com',
+			'input'              => [
+				'url' => 'https://example.com/page',
+			],
+			'context_is_allowed' => true,
+			'query_rows'         => [ 5 ],
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'deleted_ids' => [ 5 ],
+			'result'      => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOnHttpHome' => [
+		'config'   => [
+			'home_url'           => 'http://example.com',
+			'input'              => [
+				'url' => 'http://example.com/page',
+			],
+			'context_is_allowed' => true,
+			'query_rows'         => [ 5 ],
+		],
+		'expected' => [
+			'queried_url' => 'http://example.com/page',
+			'deleted_ids' => [ 5 ],
+			'result'      => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOfOtherHost' => [
+		'config'   => [
+			'home_url'           => 'https://example.com',
+			'input'              => [
+				'url' => 'http://other.com/page',
+			],
+			'context_is_allowed' => true,
+			'query_rows'         => [ 5 ],
+		],
+		'expected' => [
+			'queried_url' => 'http://other.com/page',
+			'deleted_ids' => [ 5 ],
+			'result'      => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
 ];
