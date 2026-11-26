@@ -54,6 +54,15 @@ class RegisterGetPageInsightsScoreAbilityTest extends TestCase {
 	public function testShouldReturnExpectedOutput( $config, $expected ) {
 		$this->set_up_user( $config['has_permission'] );
 
+		if ( isset( $config['home'] ) ) {
+			add_filter(
+				'pre_option_home',
+				static function () use ( $config ) {
+					return $config['home'];
+				}
+			);
+		}
+
 		// Add each item individually if provided.
 		if ( ! empty( $config['items'] ) ) {
 			foreach ( $config['items'] as $item ) {
