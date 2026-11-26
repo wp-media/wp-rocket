@@ -12,13 +12,7 @@ trait NormalizeUrlTrait {
 	 * @return string
 	 */
 	protected function normalize_url_scheme( string $url ): string {
-		$home_scheme = (string) wp_parse_url( home_url(), PHP_URL_SCHEME );
-
-		if ( '' === $home_scheme || ! $this->is_same_site_host( $url ) ) {
-			return $url;
-		}
-
-		return set_url_scheme( $url, $home_scheme );
+		return $this->normalize_url( $url, false );
 	}
 
 	/**
@@ -29,41 +23,44 @@ trait NormalizeUrlTrait {
 	 * @return string
 	 */
 	protected function normalize_url_scheme_and_host( string $url ): string {
-		$url_host  = (string) wp_parse_url( $url, PHP_URL_HOST );
-		$home_host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
-
-		if ( ! $this->is_same_site_host( $url ) ) {
-			return $url;
-		}
-
-		$url = $this->normalize_url_scheme( $url );
-
-		if ( $url_host !== $home_host ) {
-			$url = str_replace( '://' . $url_host, '://' . $home_host, $url );
-		}
-
-		return $url;
+		return $this->normalize_url( $url, true );
 	}
 
 	/**
-	 * Checks whether the URL host matches the home_url() host, ignoring a leading www.
+	 * Aligns the URL scheme, and optionally the host, with home_url()'s when the URL belongs to the same site.
 	 *
-	 * @param string $url URL to check.
+	 * @param string $url       URL to normalize.
+	 * @param bool   $with_host Whether to also replace the host with home_url()'s.
 	 *
-	 * @return bool
+	 * @return string
 	 */
-	private function is_same_site_host( string $url ): bool {
+	private function normalize_url( string $url, bool $with_host ): string {
+		$home_url  = home_url();
+		$home_host = (string) wp_parse_url( $home_url, PHP_URL_HOST );
 		$url_host  = (string) wp_parse_url( $url, PHP_URL_HOST );
-		$home_host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
 
 		if ( '' === $url_host || '' === $home_host ) {
-			return false;
+			return $url;
 		}
 
 		$strip_www = static function ( string $host ): string {
 			return preg_replace( '/^www\./i', '', $host ) ?? $host;
 		};
 
-		return $strip_www( $url_host ) === $strip_www( $home_host );
+		if ( $strip_www( $url_host ) !== $strip_www( $home_host ) ) {
+			return $url;
+		}
+
+		$home_scheme = (string) wp_parse_url( $home_url, PHP_URL_SCHEME );
+
+		if ( '' !== $home_scheme ) {
+			$url = set_url_scheme( $url, $home_scheme );
+		}
+
+		if ( $with_host && $url_host !== $home_host ) {
+			$url = str_replace( '://' . $url_host, '://' . $home_host, $url );
+		}
+
+		return $url;
 	}
 }
