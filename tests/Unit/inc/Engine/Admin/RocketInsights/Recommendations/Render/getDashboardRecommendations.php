@@ -28,6 +28,11 @@ class Test_GetDashboardRecommendations extends TestCase {
 		Functions\stubEscapeFunctions();
 		Functions\stubTranslationFunctions();
 		Functions\when( 'esc_url' )->returnArg();
+		Functions\when( 'wp_strip_all_tags' )->alias(
+			function ( $text ) {
+				return trim( strip_tags( $text ) );
+			}
+		);
 
 		$filesystem = Mockery::mock();
 		$filesystem->shouldReceive( 'is_readable' )->andReturn( true );
