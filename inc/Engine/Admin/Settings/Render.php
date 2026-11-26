@@ -380,7 +380,7 @@ class Render extends Abstract_Render {
 		 * Filters the quick actions of the dashboard sidebar.
 		 *
 		 * Each callback appends the data of its action, without any HTML: the action is rendered by WP Rocket.
-		 * An action without a title or with an invalid button URL is not rendered.
+		 * An action without a title, or enabled with an invalid button URL, is not rendered.
 		 *
 		 * @since 3.24
 		 *
@@ -392,7 +392,8 @@ class Render extends Abstract_Render {
 		 *         @type string $title        Action title.
 		 *         @type string $description  Short description displayed under the title.
 		 *         @type string $button_label Button label, defaults to the title.
-		 *         @type string $button_url   Button URL.
+		 *         @type string $button_url   Button URL, not needed when the action is disabled.
+		 *         @type bool   $disabled     Whether the button is shown disabled. Default false.
 		 *     }
 		 * }
 		 */
@@ -484,10 +485,12 @@ class Render extends Abstract_Render {
 			return [];
 		}
 
-		$title = trim( (string) ( $action['title'] ?? '' ) );
-		$url   = trim( (string) ( $action['button_url'] ?? '' ) );
+		$title    = trim( (string) ( $action['title'] ?? '' ) );
+		$disabled = ! empty( $action['disabled'] );
+		// A disabled button has no link.
+		$url = $disabled ? '' : trim( (string) ( $action['button_url'] ?? '' ) );
 
-		if ( '' === $title || '' === esc_url( $url ) ) {
+		if ( '' === $title || ( ! $disabled && '' === esc_url( $url ) ) ) {
 			return [];
 		}
 
@@ -499,6 +502,7 @@ class Render extends Abstract_Render {
 			'description'  => (string) ( $action['description'] ?? '' ),
 			'button_label' => '' === $label ? $title : $label,
 			'button_url'   => $url,
+			'disabled'     => $disabled,
 		];
 	}
 

@@ -78,6 +78,8 @@ class AdminBar extends Abstract_Render {
 	/**
 	 * Appends the "Used CSS" action to the quick actions of the Dashboard sidebar.
 	 *
+	 * The action is disabled, not hidden, when Remove Unused CSS is off.
+	 *
 	 * @since 3.24
 	 *
 	 * @param array $actions Quick actions data.
@@ -86,8 +88,6 @@ class AdminBar extends Abstract_Render {
 	 */
 	public function add_clean_saas_quick_action( array $actions ): array {
 		if (
-			! (bool) $this->options->get( 'remove_unused_css', 0 )
-			||
 			'local' === wp_get_environment_type()
 			||
 			! rocket_valid_key()
@@ -99,15 +99,30 @@ class AdminBar extends Abstract_Render {
 			return $actions;
 		}
 
-		$referer = rawurlencode( admin_url( 'options-general.php?page=wprocket' ) . '#dashboard' );
-
-		$actions[] = [
+		$action = [
 			'id'           => 'rocket_clean_saas',
 			'title'        => __( 'Used CSS', 'rocket' ),
 			'description'  => __( 'Clear the used CSS files.', 'rocket' ),
 			'button_label' => __( 'Clear used CSS', 'rocket' ),
-			'button_url'   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_clean_saas&_wp_http_referer=' . $referer ), 'rocket_clean_saas' ),
 		];
+
+		if ( ! (bool) $this->options->get( 'remove_unused_css', 0 ) ) {
+			$actions[] = array_merge(
+				$action,
+				[
+					'button_url' => '',
+					'disabled'   => true,
+				]
+			);
+
+			return $actions;
+		}
+
+		$referer = rawurlencode( admin_url( 'options-general.php?page=wprocket' ) . '#dashboard' );
+
+		$action['button_url'] = wp_nonce_url( admin_url( 'admin-post.php?action=rocket_clean_saas&_wp_http_referer=' . $referer ), 'rocket_clean_saas' );
+
+		$actions[] = $action;
 
 		return $actions;
 	}

@@ -421,8 +421,10 @@
             border-radius: 4px;
             background: $cWhite;
             color: $cTextPrimary;
+            font-family: inherit;
             text-decoration: none;
             white-space: nowrap;
+            cursor: pointer;
             @include font-size(14,21);
             font-weight: 590;
             @include transition(background-color, 200ms);
@@ -436,6 +438,13 @@
             &:focus-visible{
                 outline: 2px solid $cActionPrimary;
                 outline-offset: 2px;
+            }
+
+            // Disabled (e.g. Used CSS while Remove Unused CSS is off), as the other disabled buttons of the plugin.
+            &:disabled{
+                opacity: .5;
+                background: $cWhite;
+                cursor: not-allowed;
             }
         }
     }

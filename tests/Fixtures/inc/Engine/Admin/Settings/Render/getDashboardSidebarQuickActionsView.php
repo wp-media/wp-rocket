@@ -33,6 +33,27 @@ return [
 			'not_contains' => [],
 		],
 	],
+	'testShouldRenderADisabledActionAsADisabledButton' => [
+		'config'   => [
+			'actions' => [
+				[
+					'id'           => 'rocket_clean_saas',
+					'title'        => 'Used CSS',
+					'description'  => 'Clear the used CSS files.',
+					'button_label' => 'Clear used CSS',
+					'button_url'   => '',
+					'disabled'     => true,
+				],
+			],
+		],
+		'expected' => [
+			'contains'     => [
+				'class="wpr-quickAction-title">Used CSS</h4>',
+				'<button type="button" class="wpr-quickAction-button" disabled>Clear used CSS</button>',
+			],
+			'not_contains' => [ 'href=' ],
+		],
+	],
 	'testShouldSkipMalformedActions' => [
 		'config'   => [
 			'actions' => [

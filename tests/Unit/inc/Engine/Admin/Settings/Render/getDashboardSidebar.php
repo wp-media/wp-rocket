@@ -78,7 +78,7 @@ class Test_GetDashboardSidebar extends TestCase {
 
 		$render = Mockery::mock( Render::class, [ 'vfs://views', Mockery::mock( PluginFamily::class ) ] )->makePartial();
 
-		$render->shouldReceive( 'generate' )->once()->ordered()->with( 'partials/sidebar/quick-action-item', $action )->andReturn( '<i>action</i>' );
+		$render->shouldReceive( 'generate' )->once()->ordered()->with( 'partials/sidebar/quick-action-item', array_merge( $action, [ 'disabled' => false ] ) )->andReturn( '<i>action</i>' );
 		$render->shouldReceive( 'generate' )
 			->once()
 			->ordered()

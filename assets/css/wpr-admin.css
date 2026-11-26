@@ -7256,8 +7256,10 @@ div.wpr-tutorial-item {
   border-radius: 4px;
   background: #fff;
   color: #0C0F1F;
+  font-family: inherit;
   text-decoration: none;
   white-space: nowrap;
+  cursor: pointer;
   font-size: 0.875rem;
   line-height: 1.5;
   font-weight: 590;
@@ -7271,6 +7273,11 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .wpr-quickAction-button:focus-visible {
   outline: 2px solid #182352;
   outline-offset: 2px;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:disabled {
+  opacity: 0.5;
+  background: #fff;
+  cursor: not-allowed;
 }
 
 /*-----------------------------------------------*\
