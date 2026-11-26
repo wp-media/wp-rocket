@@ -7202,6 +7202,62 @@ div.wpr-tutorial-item {
 .wpr-Dashboard-sidebar .wpr-addonCard-list[hidden] + .wpr-addonCard-button {
   margin-top: 4px;
 }
+.wpr-Dashboard-sidebar .wpr-quickAction {
+  display: flex;
+  flex-flow: column;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 16px 0;
+  border-top: 1px solid #E0E4E9;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction:first-of-type {
+  padding-top: 0;
+  border-top: 0;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction:last-child {
+  padding-bottom: 0;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-title {
+  margin: 0;
+  color: #121116;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 590;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-description {
+  margin: 0;
+  color: #72777C;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 40px;
+  padding: 6px 12px;
+  border: 1px solid #182352;
+  border-radius: 4px;
+  background: transparent;
+  color: #182352;
+  text-align: center;
+  text-decoration: none;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 590;
+  transition: all 200ms ease-out;
+  -webkit-transition: all 200ms ease-out;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:hover, .wpr-Dashboard-sidebar .wpr-quickAction-button:focus {
+  background: #182352;
+  color: #fff;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:focus-visible {
+  outline: 2px solid #182352;
+  outline-offset: 2px;
+}
 
 /*-----------------------------------------------*\
 

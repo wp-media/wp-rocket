@@ -361,4 +361,66 @@
     .wpr-addonCard-list[hidden] + .wpr-addonCard-button{
         margin-top: $space/2;
     }
+
+    // Quick actions: title, description and a secondary button, separated by a thin line.
+    .wpr-quickAction{
+        display: flex;
+        flex-flow: column;
+        align-items: flex-start;
+        gap: $space;
+        padding: $space*2 0;
+        border-top: 1px solid $cGrey;
+
+        &:first-of-type{
+            padding-top: 0;
+            border-top: 0;
+        }
+
+        &:last-child{
+            padding-bottom: 0;
+        }
+
+        &-title{
+            margin: 0;
+            color: $cBlack;
+            @include font-size(14,21);
+            font-weight: 590;
+        }
+
+        &-description{
+            margin: 0;
+            color: $cGreyDark3;
+            @include font-size(14,21);
+        }
+
+        &-button{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            width: 100%;
+            height: $space*5;
+            padding: $space*.75 $space*1.5;
+            border: 1px solid $cActionPrimary;
+            border-radius: 4px;
+            background: transparent;
+            color: $cActionPrimary;
+            text-align: center;
+            text-decoration: none;
+            @include font-size(14,21);
+            font-weight: 590;
+            @include transition(all, 200ms);
+
+            &:hover,
+            &:focus{
+                background: $cActionPrimary;
+                color: $cWhite;
+            }
+
+            &:focus-visible{
+                outline: 2px solid $cActionPrimary;
+                outline-offset: 2px;
+            }
+        }
+    }
 }
