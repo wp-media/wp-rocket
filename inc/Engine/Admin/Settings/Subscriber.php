@@ -60,29 +60,30 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 */
 	public static function get_subscribed_events() {
 		$events = [
-			'admin_menu'                           => 'add_admin_page',
-			'admin_init'                           => 'configure',
-			'wp_ajax_rocket_refresh_customer_data' => 'refresh_customer_data',
-			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
-			'rocket_settings_menu_navigation'      => [
+			'admin_menu'                             => 'add_admin_page',
+			'admin_init'                             => 'configure',
+			'wp_ajax_rocket_refresh_customer_data'   => 'refresh_customer_data',
+			'wp_ajax_rocket_toggle_option'           => 'toggle_option',
+			'rocket_settings_menu_navigation'        => [
 				[ 'add_menu_tools_page' ],
 				[ 'add_help_links' ],
 				[ 'add_tutorials_page', 11 ],
 				[ 'add_plugins_page', 12 ],
 			],
-			'admin_enqueue_scripts'                => [
+			'admin_enqueue_scripts'                  => [
 				[ 'enqueue_rocket_scripts' ],
 				[ 'enqueue_url' ],
 			],
-			'script_loader_tag'                    => [ 'async_wistia_script', 10, 2 ],
-			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
-			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
-			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
-			'wp_ajax_rocket_dismiss_addon_card'    => 'dismiss_addon_card',
-			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
+			'script_loader_tag'                      => [ 'async_wistia_script', 10, 2 ],
+			'rocket_after_settings_radio_options'    => [ 'display_radio_options_sub_fields', 11 ],
+			'rocket_settings_tools_content'          => 'display_mobile_cache_option',
+			'wp_ajax_rocket_enable_mobile_cache'     => 'enable_mobile_cache',
+			'wp_ajax_rocket_dismiss_addon_card'      => 'dismiss_addon_card',
+			'wp_rocket_upgrade'                      => [ 'enable_separate_cache_files_mobile', 9, 2 ],
 			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
-			'rocket_dashboard_sidebar_addons'      => 'add_imagify_addon_card',
-			'admin_footer-settings_page_wprocket'  => 'print_support_link',
+			'rocket_dashboard_sidebar_addons'        => 'add_imagify_addon_card',
+			'rocket_dashboard_sidebar_quick_actions' => [ 'add_cache_quick_action', 10 ],
+			'admin_footer-settings_page_wprocket'    => 'print_support_link',
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -142,6 +143,19 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	 */
 	public function add_imagify_addon_card( $cards ): array {
 		return $this->page->add_imagify_addon_card( (array) $cards );
+	}
+
+	/**
+	 * Appends the "Cache files" action to the quick actions of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $actions Quick actions data.
+	 *
+	 * @return array
+	 */
+	public function add_cache_quick_action( $actions ): array {
+		return $this->page->add_cache_quick_action( (array) $actions );
 	}
 
 	/**

@@ -48,20 +48,21 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public static function get_subscribed_events(): array {
 		return [
-			'rocket_admin_bar_items'           => [
+			'rocket_admin_bar_items'                 => [
 				[ 'add_clean_saas_menu_item' ],
 				[ 'add_clean_url_menu_item' ],
 			],
-			'admin_post_rocket_clean_saas'     => 'clean_saas',
-			'admin_post_rocket_clean_saas_url' => 'clean_url_saas',
-			'admin_notices'                    => [
+			'rocket_dashboard_sidebar_quick_actions' => [ 'add_clean_saas_quick_action', 20 ],
+			'admin_post_rocket_clean_saas'           => 'clean_saas',
+			'admin_post_rocket_clean_saas_url'       => 'clean_url_saas',
+			'admin_notices'                          => [
 				[ 'clean_saas_result' ],
 				[ 'display_processing_notice' ],
 				[ 'display_success_notice' ],
 				[ 'display_wrong_license_notice' ],
 				[ 'display_saas_error_notice' ],
 			],
-			'rocket_localize_admin_script'     => 'add_localize_script_data',
+			'rocket_localize_admin_script'           => 'add_localize_script_data',
 		];
 	}
 
@@ -74,6 +75,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clean_saas_menu_item( WP_Admin_Bar $wp_admin_bar ) {
 		$this->admin_bar->add_clean_saas_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Appends the "Used CSS" action to the quick actions of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $actions Quick actions data.
+	 *
+	 * @return array
+	 */
+	public function add_clean_saas_quick_action( $actions ): array {
+		return $this->admin_bar->add_clean_saas_quick_action( (array) $actions );
 	}
 
 	/**

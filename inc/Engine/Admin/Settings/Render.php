@@ -376,10 +376,45 @@ class Render extends Abstract_Render {
 			$addons .= (string) $this->generate( 'partials/sidebar/addon-card', $card );
 		}
 
+		/**
+		 * Filters the quick actions of the dashboard sidebar.
+		 *
+		 * Each callback appends the data of its action, without any HTML: the action is rendered by WP Rocket.
+		 * An action without a title or with an invalid button URL is not rendered.
+		 *
+		 * @since 3.24
+		 *
+		 * @param array $actions {
+		 *     Quick actions data, one array per action.
+		 *
+		 *     @type array $action {
+		 *         @type string $id           Unique action identifier.
+		 *         @type string $title        Action title.
+		 *         @type string $description  Short description displayed under the title.
+		 *         @type string $button_label Button label, defaults to the title.
+		 *         @type string $button_url   Button URL.
+		 *     }
+		 * }
+		 */
+		$actions = wpm_apply_filters_typed( 'array', 'rocket_dashboard_sidebar_quick_actions', [] );
+
+		$quick_actions = '';
+
+		foreach ( $actions as $action ) {
+			$action = $this->normalize_quick_action( $action );
+
+			if ( empty( $action ) ) {
+				continue;
+			}
+
+			$quick_actions .= (string) $this->generate( 'partials/sidebar/quick-action-item', $action );
+		}
+
 		$categories = [
-			__( 'License', 'rocket' ) => $license,
-			__( 'Promos', 'rocket' )  => $promos,
-			__( 'Add-ons', 'rocket' ) => $addons,
+			__( 'License', 'rocket' )       => $license,
+			__( 'Promos', 'rocket' )        => $promos,
+			__( 'Add-ons', 'rocket' )       => $addons,
+			__( 'Quick Actions', 'rocket' ) => $quick_actions,
 		];
 
 		$html = '';
@@ -399,6 +434,38 @@ class Render extends Abstract_Render {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Normalizes the data of a quick action of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param mixed $action Quick action data.
+	 *
+	 * @return array Normalized data, empty when the action cannot be rendered.
+	 */
+	private function normalize_quick_action( $action ): array {
+		if ( ! is_array( $action ) ) {
+			return [];
+		}
+
+		$title = trim( (string) ( $action['title'] ?? '' ) );
+		$url   = trim( (string) ( $action['button_url'] ?? '' ) );
+
+		if ( '' === $title || '' === esc_url( $url ) ) {
+			return [];
+		}
+
+		$label = trim( (string) ( $action['button_label'] ?? '' ) );
+
+		return [
+			'id'           => (string) ( $action['id'] ?? '' ),
+			'title'        => $title,
+			'description'  => (string) ( $action['description'] ?? '' ),
+			'button_label' => '' === $label ? $title : $label,
+			'button_url'   => $url,
+		];
 	}
 
 	/**

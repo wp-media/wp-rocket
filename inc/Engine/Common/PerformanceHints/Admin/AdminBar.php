@@ -53,6 +53,48 @@ class AdminBar extends Abstract_Render {
 	}
 
 	/**
+	 * Appends the "Priority elements" action to the quick actions of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $actions Quick actions data.
+	 *
+	 * @return array
+	 */
+	public function add_clear_performance_hints_quick_action( array $actions ): array {
+		if ( ! rocket_valid_key() || ! current_user_can( 'rocket_manage_options' ) || ! $this->is_allowed() ) {
+			return $actions;
+		}
+
+		$referer = rawurlencode( admin_url( 'options-general.php?page=wprocket' ) . '#dashboard' );
+
+		$actions[] = [
+			'id'           => 'rocket_clean_performance_hints',
+			'title'        => __( 'Priority elements', 'rocket' ),
+			'description'  => __( 'Reset stored optimizations related to Automatic Lazy Rendering, Critical Images, Preconnect to External Domains, and Preload Fonts.', 'rocket' ),
+			'button_label' => __( 'Reset', 'rocket' ),
+			'button_url'   => wp_nonce_url( admin_url( 'admin-post.php?action=rocket_clean_performance_hints&_wp_http_referer=' . $referer ), 'rocket_clean_performance_hints' ),
+		];
+
+		return $actions;
+	}
+
+	/**
+	 * Checks if at least one performance hints factory is allowed.
+	 *
+	 * @return bool
+	 */
+	private function is_allowed(): bool {
+		foreach ( $this->factories as $factory ) {
+			if ( $factory->get_context()->is_allowed() ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Add clear performance hints URL data to WP Rocket admin bar menu
 	 *
 	 * @param WP_Admin_Bar $wp_admin_bar WP_Admin_Bar instance, passed by reference.
