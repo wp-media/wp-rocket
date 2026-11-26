@@ -564,14 +564,9 @@
 
 		const isRocketCdn = 'rocketcdn' === driver;
 		const url = isRocketCdn ? link.dataset.rocketcdnUrl : link.dataset.otherCdnUrl;
-		const id  = isRocketCdn ? link.dataset.rocketcdnId  : link.dataset.otherCdnId;
 
 		if ( url ) {
 			link.href = url;
-		}
-
-		if ( id ) {
-			link.dataset.beaconId = id;
 		}
 	}
 
