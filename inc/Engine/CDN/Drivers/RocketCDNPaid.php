@@ -38,6 +38,15 @@ class RocketCDNPaid implements DriverInterface {
 		// Check if URL is in excluded list.
 		foreach ( $excluded_pages as $excluded_pattern ) {
 			$normalized_pattern = $this->normalize_pattern( $excluded_pattern );
+			if ( '' !== $excluded_pattern && '' === $normalized_pattern ) {
+				$path = wp_parse_url( $url, PHP_URL_PATH );
+				if ( null === $path || ( is_string( $path ) && '' === untrailingslashit( $path ) ) ) {
+					return false;
+				}
+
+				continue;
+			}
+
 			if ( $this->matches_pattern( $url, $normalized_pattern ) ) {
 				return false;  // This page is excluded, don't rewrite.
 			}

@@ -28,6 +28,8 @@ class Test_ShouldRewriteUrl extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+
 		Functions\when( 'untrailingslashit' )->alias(
 			function ( $url ) {
 				return rtrim( $url, '/' );
