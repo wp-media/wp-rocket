@@ -358,14 +358,24 @@ function get_rocket_i18n_to_preserve( $current_lang, $cache_path = '' ) { // php
 		$cache_path = _rocket_get_wp_rocket_cache_path();
 	}
 
-	// Stock all URLs of langs to preserve.
+	// Escape literal parts once; keep the public filter's separator representation.
+	// Preserve Linux's escaped slash for filter compatibility; Windows keeps doubled backslashes.
+	$escape_literal = static function ( $value ) {
+		return str_replace( '/', '\/', preg_quote( _rocket_normalize_path( $value ), '#' ) );
+	};
+	$separator      = _rocket_normalize_path( '/', true );
+
+	// Stock all URLs of langs to preserve. The (.*) wildcard is kept.
+	$cache_path_regex = $escape_literal( $cache_path );
+
 	$langs_to_preserve = [];
 	foreach ( $langs as $lang ) {
 		$parse_url           = get_rocket_parse_url( get_rocket_i18n_home_url( $lang ) );
-		$langs_to_preserve[] = _rocket_normalize_path(
-			"{$cache_path}{$parse_url['host']}(.*)/" . trim( $parse_url['path'], '/' ),
-			true // escape directory separators for regex.
-		);
+		$langs_to_preserve[] = $cache_path_regex
+			. $escape_literal( $parse_url['host'] )
+			. '(.*)'
+			. $separator
+			. $escape_literal( trim( $parse_url['path'], '/' ) );
 	}
 
 	/**

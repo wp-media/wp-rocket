@@ -1,6 +1,25 @@
 <?php
 
+$structure = require WP_ROCKET_TESTS_FIXTURES_DIR . '/vfs-structure/default.php';
+$structure['releases+ (site):'] = [
+	'wp-content' => [
+		'cache' => [
+			'min' => [
+				'1' => [ '5c795b0e3a1884eec34a989485f863ff.js' => '' ],
+			],
+		],
+	],
+];
+$structure['C:\\releases+ (site):\\wp-content'] = [
+	'cache' => [
+		'min' => [
+			'1' => [ '5c795b0e3a1884eec34a989485f863ff.js' => '' ],
+		],
+	],
+];
+
 return [
+	'structure' => $structure,
 	'vfs_dir'   => 'wp-content/cache/min/',
 
 	// Test data.
@@ -54,6 +73,24 @@ return [
 					'vfs://public/wp-content/cache/min/3rd-party/bt937b0e3a1884eec34a989485f863ff.js.gz' => null,
 				],
 			],
+		],
+		'shouldClean_js_fromTimestampedPath'      => [
+			'extensions'    => 'js',
+			'expected'      => [
+				'cleaned' => [
+					'vfs://public/releases+ (site):/wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js' => null,
+				],
+			],
+			'wp_content_dir' => 'vfs://public/releases+ (site):/wp-content',
+		],
+		'shouldClean_js_fromWindowsStylePath'     => [
+			'extensions'    => 'js',
+			'expected'      => [
+				'cleaned' => [
+					'vfs://public/C:\\releases+ (site):\\wp-content/cache/min/1/5c795b0e3a1884eec34a989485f863ff.js' => null,
+				],
+			],
+			'wp_content_dir' => 'vfs://public/C:\\releases+ (site):\\wp-content',
 		],
 		'shouldClean_js.gz'                       => [
 			'extensions' => 'js.gz',
