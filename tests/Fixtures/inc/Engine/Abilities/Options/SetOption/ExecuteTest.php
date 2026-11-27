@@ -31,6 +31,21 @@ return [
 		],
 	],
 
+	'testShouldReturnErrorWhenOptionIsReadOnly'            => [
+		'config'   => [
+			'input'          => [
+				'option_name'  => 'cdn_state',
+				'option_value' => 'byocdn',
+			],
+			'previous_value' => null,
+			'allowed_keys'   => [ 'cache_webp', 'cdn_state' ],
+		],
+		'expected' => [
+			'success' => false,
+			'error'   => 'Invalid option name: cdn_state. This option cannot be set via the ability.',
+		],
+	],
+
 	'testShouldSanitizeBooleanOptionToOneWhenTruthy'       => [
 		'config'   => [
 			'input'          => [

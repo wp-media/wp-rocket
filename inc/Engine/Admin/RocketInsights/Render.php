@@ -7,6 +7,7 @@ use WP_Rocket\Abstract_Render;
 use WP_Rocket\Engine\Admin\Beacon\Beacon;
 use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
+use WP_Rocket\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
 class Render extends Abstract_Render {
 	/**
@@ -135,6 +136,8 @@ class Render extends Abstract_Render {
 		$data['can_add_url']   = $this->context->is_adding_page_allowed();
 		$data['reach_max_url'] = ! $data['can_add_url'];
 		$data['help']          = $rocket_insights_beacon;
+		$data['page_title']    = __( 'Rocket Insights', 'rocket' );
+		$data['section_title'] = __( 'Performance Summary', 'rocket' );
 
 		echo $this->generate( 'partials/rocket-insights/urls-table', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
@@ -159,6 +162,51 @@ class Render extends Abstract_Render {
 	 */
 	public function render_global_score_widget( array $data ) {
 		echo $this->get_global_score_widget( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Render the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return void
+	 */
+	public function render_dashboard_global_score( array $data ): void {
+		echo $this->get_dashboard_global_score( $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Render the dashboard state displayed when Rocket Insights is disabled or unavailable.
+	 *
+	 * @param bool $is_local Whether the site is a local (non-live) site.
+	 * @return void
+	 */
+	public function render_dashboard_disabled_state( bool $is_local ): void {
+		$data = [
+			'title'       => $is_local
+				? __( 'Rocket Insights is unavailable', 'rocket' )
+				: __( 'Rocket Insights is disabled', 'rocket' ),
+			'description' => $is_local
+				? __( 'Performance scores are not available on local sites.', 'rocket' )
+				: __( 'Performance scores are not available for this site.', 'rocket' ),
+		];
+
+		echo $this->generate( 'partials/rocket-insights/dashboard-global-score-disabled', $data ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Dynamic content is escaped in the view.
+	}
+
+	/**
+	 * Generate the HTML of the redesigned global score component displayed on the dashboard.
+	 *
+	 * @param array $data Global score data.
+	 * @return string
+	 */
+	public function get_dashboard_global_score( array $data ): string {
+		return $this->generate(
+			'partials/rocket-insights/dashboard-global-score',
+			array_merge(
+				$this->prepare_global_score_widget_data( $data ),
+				[ 'metric_definitions' => Calculator::get_metric_definitions() ]
+			)
+		);
 	}
 
 	/**
@@ -229,6 +277,7 @@ class Render extends Abstract_Render {
 	public function get_performance_monitoring_list_row( object $data, bool $is_ajax = true ): string {
 		$data->has_credit                          = true;
 		$data->formatted_metrics                   = $this->metric_formatter->get_formatted_metrics( $data->metric_data );
+		$data->metric_definitions                  = Calculator::get_metric_definitions();
 		$data->rocket_can_show_advanced_indicators = ! $data->is_running() && 'failed' !== $data->status;
 		if ( $data->rocket_can_show_advanced_indicators ) {
 			++$this->rows_counter;
@@ -364,17 +413,13 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return string The generated HTML for the "Add Page" button.
 	 */
 	public function get_add_page_btn( string $type, array $data ) {
 		switch ( $type ) {
-			case 'global-score-widget':
-				$button = $this->generate( 'partials/rocket-insights/buttons/global-score-widget', $data );
-				break;
-
 			case 'rocket-insights':
 			default:
 				$button = $this->generate( 'partials/rocket-insights/buttons/rocket-insights-panel', $data );
@@ -389,7 +434,7 @@ class Render extends Abstract_Render {
 	 *
 	 * @since 3.20
 	 *
-	 * @param string $type The context in which the button is used. Accepts 'rocket-insights' or 'global-score-widget'.
+	 * @param string $type The context in which the button is used. Accepts 'rocket-insights'.
 	 * @param array  $data Data to be passed to the button template.
 	 *
 	 * @return void

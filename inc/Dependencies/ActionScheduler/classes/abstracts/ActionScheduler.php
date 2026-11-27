@@ -184,10 +184,11 @@ abstract class ActionScheduler {
 		require_once self::plugin_path( 'functions.php' );
 		ActionScheduler_DataController::init();
 
-		$store      = self::store();
-		$logger     = self::logger();
-		$runner     = self::runner();
-		$admin_view = self::admin_view();
+		$store                      = self::store();
+		$logger                     = self::logger();
+		$runner                     = self::runner();
+		$admin_view                 = self::admin_view();
+		$recurring_action_scheduler = new ActionScheduler_RecurringActionScheduler();
 
 		// Ensure initialization on plugin activation.
 		if ( ! did_action( 'init' ) ) {
@@ -196,6 +197,7 @@ abstract class ActionScheduler {
 			add_action( 'init', array( $store, 'init' ), 1, 0 );
 			add_action( 'init', array( $logger, 'init' ), 1, 0 );
 			add_action( 'init', array( $runner, 'init' ), 1, 0 );
+			add_action( 'init', array( $recurring_action_scheduler, 'init' ), 1, 0 );
 
 			add_action(
 				'init',
@@ -223,6 +225,7 @@ abstract class ActionScheduler {
 			$store->init();
 			$logger->init();
 			$runner->init();
+			$recurring_action_scheduler->init();
 			self::$data_store_initialized = true;
 
 			/**
@@ -240,6 +243,8 @@ abstract class ActionScheduler {
 		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Scheduler_command' );
 			WP_CLI::add_command( 'action-scheduler', 'ActionScheduler_WPCLI_Clean_Command' );
+			WP_CLI::add_command( 'action-scheduler action', '\Action_Scheduler\WP_CLI\Action_Command' );
+			WP_CLI::add_command( 'action-scheduler', '\Action_Scheduler\WP_CLI\System_Command' );
 			if ( ! ActionScheduler_DataController::is_migration_complete() && Controller::instance()->allow_migration() ) {
 				$command = new Migration_Command();
 				$command->register();
@@ -296,6 +301,7 @@ abstract class ActionScheduler {
 			'ActionScheduler_Abstract_Schema'            => true,
 			'ActionScheduler_Store'                      => true,
 			'ActionScheduler_TimezoneHelper'             => true,
+			'ActionScheduler_WPCLI_Command'              => true,
 		);
 
 		return isset( $abstracts[ $class ] ) && $abstracts[ $class ];
@@ -340,9 +346,11 @@ abstract class ActionScheduler {
 	 */
 	protected static function is_class_cli( $class ) {
 		static $cli_segments = array(
-			'QueueRunner' => true,
-			'Command'     => true,
-			'ProgressBar' => true,
+			'QueueRunner'                             => true,
+			'Command'                                 => true,
+			'ProgressBar'                             => true,
+			'\Action_Scheduler\WP_CLI\Action_Command' => true,
+			'\Action_Scheduler\WP_CLI\System_Command' => true,
 		);
 
 		$segments = explode( '_', $class );

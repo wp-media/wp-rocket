@@ -11,9 +11,11 @@ import '../global/pageManager.js';
 import '../global/main.js';
 import '../global/fields.js';
 import '../global/beacon.js';
+import '../global/wap.js';
 import '../global/ajax.js';
 import '../global/recommendations-widget.js';
 import '../global/rocketcdn.js';
 import '../global/rocketcdn-subscription-polling.js';
 import '../global/countdown.js';
 import '../global/mixpanel.js'
+import '../global/sidebar.js'

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Integration\inc\Engine\Common\PerformanceHints\WarmUp\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Common\PerformanceHints\WarmUp\Subscriber;
 
 use Mockery;
 use Brain\Monkey\Functions;

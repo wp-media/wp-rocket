@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Optimization\GoogleFonts\Admin\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -16,12 +16,16 @@ class Test_DisplayGoogleFontsEnabler extends TestCase {
 		parent::set_up();
 
 		$this->unregisterAllCallbacksExcept( 'rocket_settings_tools_content', 'display_google_fonts_enabler' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
 	}
 
 	public function tear_down() {
 		remove_filter( 'pre_get_rocket_option_minify_google_fonts', [ $this, 'setGoogleFontsOption' ] );
 
 		$this->restoreWpHook( 'rocket_settings_tools_content' );
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
 	}

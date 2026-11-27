@@ -36,15 +36,17 @@ class GetOptions implements AbilitiesInterface {
 	}
 
 	/**
-	 * Registers the ability to get WP Rocket options.
+	 * Returns the type schema of every readable option, keyed by option name.
 	 *
-	 * @return void
+	 * Used by register() as the ability output schema, and public so other code
+	 * can learn each option's type instead of inferring it from a stored value.
+	 * Intersected with the allowlist.
+	 *
+	 * @since 3.24.3
+	 *
+	 * @return array
 	 */
-	public function register(): void {
-		if ( ! function_exists( 'wp_register_ability' ) ) {
-			return;
-		}
-
+	public function schema(): array {
 		$schema_definitions = [
 			// Cache settings.
 			'cache_logged_user'                         => [
@@ -329,6 +331,11 @@ class GetOptions implements AbilitiesInterface {
 				'items'       => [ 'type' => 'string' ],
 				'description' => 'Pages to exclude from CDN.',
 			],
+			'cdn_state'                                 => [
+				'type'        => 'string',
+				'description' => 'Currently applied CDN state.',
+				'enum'        => [ 'nothing', 'rocketcdn_free', 'rocketcdn_paid', 'byocdn' ],
+			],
 
 			// Cloudflare.
 			'do_cloudflare'                             => [
@@ -413,7 +420,20 @@ class GetOptions implements AbilitiesInterface {
 			],
 		];
 
-		$properties = array_intersect_key( $schema_definitions, array_flip( $this->allowed_options->get() ) );
+		return array_intersect_key( $schema_definitions, array_flip( $this->allowed_options->get() ) );
+	}
+
+	/**
+	 * Registers the ability to get WP Rocket options.
+	 *
+	 * @return void
+	 */
+	public function register(): void {
+		if ( ! function_exists( 'wp_register_ability' ) ) {
+			return;
+		}
+
+		$properties = $this->schema();
 
 		wp_register_ability(
 			'wp-rocket/get-options',

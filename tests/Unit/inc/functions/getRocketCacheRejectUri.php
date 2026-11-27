@@ -44,9 +44,7 @@ class Test_GetRocketCacheRejectUri extends TestCase {
 	}
 	public function sanitizeURL( $url) {
 
-		$protocols = null;
 		$_context = 'db';
-		$original_url = $url;
 
 		if ( '' === $url ) {
 			return $url;

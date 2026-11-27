@@ -41,18 +41,29 @@ class Subscriber implements Subscriber_Interface {
 	/**
 	 * Add CDN to the list of hidden settings fields.
 	 *
+	 * `cdn` is included alongside `cdn_type`/`cdn_state` so a hidden
+	 * `wp_rocket_settings[cdn]` field mirroring the live value is always
+	 * rendered on the classic settings form. Without it, `Settings::sanitize_callback()`
+	 * unconditionally resets `cdn` to 0 on every classic "Save Changes" click on
+	 * any tab, since the mode-toggle checkboxes are AJAX/REST-only and never
+	 * submit a `cdn` value themselves (see issue #8707).
+	 *
 	 * @param string[] $fields Hidden settings fields.
 	 *
 	 * @return string[]
 	 */
 	public function add_cdn_type( array $fields ) {
 		$fields[] = 'cdn_type';
+		$fields[] = 'cdn_state';
+		$fields[] = 'cdn';
 
 		return $fields;
 	}
 
 	/**
 	 * Sanitize the CDN type option.
+	 *
+	 * Ensure a form save doesn't overwrite toggle REST API.
 	 *
 	 * @param array $input Input array.
 	 *
@@ -73,6 +84,21 @@ class Subscriber implements Subscriber_Interface {
 
 		// Sanitize the value.
 		$input['cdn_type'] = sanitize_text_field( $input['cdn_type'] );
+
+		if ( isset( $input['cdn_state'] ) ) {
+			$allowed_states = [
+				Context::CDN_STATE_NOTHING,
+				Context::ROCKETCDN_FREE_TYPE,
+				Context::ROCKETCDN_PAID_TYPE,
+				Context::BYOCDN_TYPE,
+			];
+
+			if ( ! in_array( $input['cdn_state'], $allowed_states, true ) ) {
+				$input['cdn_state'] = Context::CDN_STATE_NOTHING;
+			}
+
+			$input['cdn_state'] = sanitize_text_field( $input['cdn_state'] );
+		}
 
 		return $input;
 	}

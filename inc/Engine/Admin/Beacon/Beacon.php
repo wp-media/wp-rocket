@@ -193,6 +193,7 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 	private function config_data(): array {
 		return [
 			'display' => [
+				'style'    => 'manual',
 				'position' => is_rtl() ? 'left' : 'right',
 			],
 		];
@@ -454,10 +455,6 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 			'lazyload_section'           => [
 				'en' => '5c884cf80428633d2cf38314,54b85754e4b0512429883a86,5418c792e4b0e7b8127bed99,569ec4a69033603f7da32c93,5419e246e4b099def9b5561e',
 				'fr' => '56967a859033603f7da30858,56967952c69791436155e60a,56cb9c9d90336008e9e9e3dc,569676ea9033603f7da3083d',
-			],
-			'fonts_section'              => [
-				'en' => '5eab7729042863474d19f647,673358b02ddbd952f6241b38',
-				'fr' => '5eb3add02c7d3a5ea54aa66d,675ab51d46b8d26833b2af82',
 			],
 			'sitemap_preload'            => [
 				'en' => '541780fde4b005ed2d11784c,5a71c8ab2c7d3a4a4198a9b3,55b282ede4b0b0593824f852',
@@ -883,6 +880,16 @@ class Beacon extends Abstract_Render implements Subscriber_Interface {
 				'fr' => [
 					'id'  => '68dfaa989cf81238fa93c753',
 					'url' => 'https://fr.docs.wp-rocket.me/article/1878-rocket-insights?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+			],
+			'mcp_server'                 => [
+				'en' => [
+					'id'  => '6a5a7a2d8609704abe640d81',
+					'url' => 'https://docs.wp-rocket.me/article/1922-wp-rocket-mcp?utm_source=wp_plugin&utm_medium=wp_rocket',
+				],
+				'fr' => [
+					'id'  => '6a635ff8a20e9375e2188b72',
+					'url' => 'https://fr.docs.wp-rocket.me/article/1923-mcp-wp-rocket?utm_source=wp_plugin&utm_medium=wp_rocket',
 				],
 			],
 		];

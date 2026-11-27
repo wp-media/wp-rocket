@@ -27,6 +27,7 @@ return [
 			'transient'      => [
 				'status'          => 'pending',
 				'timestamp'       => 1700000000,
+				'language'        => 'en',
 				'recommendations' => [],
 			],
 		],
@@ -42,6 +43,7 @@ return [
 			'transient'      => [
 				'status'          => 'completed',
 				'timestamp'       => 1700000000,
+				'language'        => 'en',
 				'recommendations' => [
 					[
 						'option_slug' => 'lazyload',

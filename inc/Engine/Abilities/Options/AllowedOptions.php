@@ -69,6 +69,7 @@ class AllowedOptions {
 			'cdn_zone',
 			'cdn_reject_files',
 			'cdn_reject_pages',
+			'cdn_state',
 			// Cloudflare.
 			'do_cloudflare',
 			'cloudflare_devmode',

@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Inc\Addon\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addon\Cloudflare\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 
@@ -10,6 +10,10 @@ use WP_Rocket\Tests\Integration\TestCase;
  * @group Cloudflare
  */
 class TestProtocolRewriteSrcset extends TestCase {
+	// Not needed here: the settings trait's set_up() write to wp_rocket_settings triggers the
+	// Cloudflare Subscriber's own real zone lookup before this test gets a chance to mock it.
+	protected static $use_settings_trait = false;
+
 	private $cf_option;
 	private $cf_rewrite;
 	private $filter;

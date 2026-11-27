@@ -5,8 +5,18 @@ namespace WP_Rocket\ThirdParty\Plugins\I18n;
 
 use TRP_Translate_Press;
 use WP_Rocket\Event_Management\Subscriber_Interface;
+use WP_Rocket\ThirdParty\PluginCompatibilityInterface;
 
-class TranslatePress implements Subscriber_Interface {
+class TranslatePress implements Subscriber_Interface, PluginCompatibilityInterface {
+
+	/**
+	 * Whether the target third-party plugin is active.
+	 *
+	 * @return bool
+	 */
+	public static function is_activated(): bool {
+		return class_exists( 'TRP_Translate_Press' );
+	}
 
 	/**
 	 * Returns an array of events that this subscriber wants to listen to.
@@ -14,10 +24,6 @@ class TranslatePress implements Subscriber_Interface {
 	 * @return array
 	 */
 	public static function get_subscribed_events() {
-		if ( ! class_exists( 'TRP_Translate_Press' ) ) {
-			return [];
-		}
-
 		return [
 			'rocket_saas_is_home_url'                      => [ 'detect_homepage', 10, 2 ],
 			'rocket_has_i18n'                              => 'is_translatepress',

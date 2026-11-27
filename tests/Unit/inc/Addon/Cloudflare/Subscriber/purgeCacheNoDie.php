@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\Inc\Addon\Cloudflare\Subscriber;
+namespace WP_Rocket\Tests\Unit\inc\Addon\Cloudflare\Subscriber;
 
 use Brain\Monkey\Functions;
 use Mockery;
@@ -8,7 +8,7 @@ use WP_Rocket\Addon\Cloudflare\Subscriber;
 use WP_Rocket\Addon\Cloudflare\Cloudflare;
 use WP_Rocket\Admin\{Options, Options_Data};
 use WP_Rocket\Tests\Unit\TestCase;
-use WPMedia\Cloudflare\Auth\AuthFactoryInterface;
+use WP_Rocket\Addon\Cloudflare\Auth\AuthFactoryInterface;
 
 /**
  * Test class covering WP_Rocket\Addon\Cloudflare\Subscriber::purge_cache_no_die

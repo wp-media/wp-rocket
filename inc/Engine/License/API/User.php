@@ -44,6 +44,17 @@ class User {
 	}
 
 	/**
+	 * Gets the user license type slug, e.g. single, plus, infinite or multi500
+	 *
+	 * Unlike the licence size, it tells apart the multi licenses, which report the same size as infinite.
+	 *
+	 * @return string
+	 */
+	public function get_license_type_slug(): string {
+		return (string) ( $this->user->licence->type ?? '' );
+	}
+
+	/**
 	 * Gets the user license expiration timestamp
 	 *
 	 * @return int
@@ -54,6 +65,27 @@ class User {
 		}
 
 		return (int) $this->user->licence_expiration;
+	}
+
+	/**
+	 * Checks if the support assistant is allowed for this user
+	 *
+	 * A licence the licence server rejected turns it off, whatever the user data says: the rejection is read from
+	 * the transient UserClient sets, not from the user data. Otherwise, only an explicit answer that is not
+	 * boolean true turns it off, so a missing or null field keeps it allowed.
+	 *
+	 * @return bool
+	 */
+	public function can_use_ai(): bool {
+		if ( get_transient( UserClient::LICENCE_REJECTED_TRANSIENT ) ) {
+			return false;
+		}
+
+		if ( ! isset( $this->user->can_use_ai ) ) {
+			return true;
+		}
+
+		return true === $this->user->can_use_ai;
 	}
 
 	/**
@@ -506,6 +538,15 @@ class User {
 		}
 
 		return (bool) $this->user->is_reseller;
+	}
+
+	/**
+	 * Checks if the customer is on a trial license (active, cancelled or expired, until converted to paid).
+	 *
+	 * @return bool
+	 */
+	public function is_trial_customer(): bool {
+		return ( $this->user->is_trial_cancelled ?? false ) || ( $this->user->is_trial_customer ?? false );
 	}
 
 	/**

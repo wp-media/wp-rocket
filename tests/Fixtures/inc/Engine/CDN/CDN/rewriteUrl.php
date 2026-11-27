@@ -9,6 +9,10 @@ return [
 		'url' => 'http://example.org/',
 		'expected' => 'http://example.org/',
 	],
+	'testNoPathDomainOnly' => [
+		'url' => 'https://only-domain-no-image.com',
+		'expected' => 'https://only-domain-no-image.com',
+	],
 	'testExcludedFile' => [
 		'url' =>'http://example.org/wp-content/uploads/post.css',
 		'expected' => 'http://example.org/wp-content/uploads/post.css',

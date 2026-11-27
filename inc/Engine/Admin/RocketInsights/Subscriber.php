@@ -12,6 +12,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 	Recommendations\Rest as RecommendationsRest,
 };
 use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\Common\Utils;
 use WP_Rocket\Engine\License\Renewal;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Logger\LoggerAware;
@@ -164,7 +165,7 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 			'rocket_rocket_insights_job_retest'           => 'reset_global_score',
 			'rocket_rocket_insights_job_deleted'          => 'reset_global_score',
 			'rocket_before_sidebar_content'               => 'render_global_score_widget_sidebar',
-			'rocket_dashboard_sidebar'                    => 'render_global_score_widget_dashboard',
+			'rocket_dashboard_content'                    => 'render_dashboard_global_score',
 			'rocket_insights_tab_content'                 => [
 				[ 'maybe_show_paid_reach_limits_notice', 17 ],
 				[ 'render_performance_urls_table', 20 ],
@@ -175,6 +176,9 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 				[ 'schedule_jobs', 11 ],
 			],
 			'admin_post_rocket_rocket_insights_add_homepage' => 'add_homepage_from_widget',
+			'rocket_insights_add_homepage_notice'         => 'notice_add_homepage',
+			'rocket_display_activation_notice'            => [ 'maybe_display_activation_notice', 10, 2 ],
+			'rocket_display_default_notice'               => 'maybe_display_default_notice',
 			'rocket_deactivation'                         => [
 				[ 'cancel_scheduled_jobs' ],
 				[ 'remove_current_plan' ],
@@ -227,12 +231,11 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 		$global_score_data['remaining_urls'] = $this->controller->get_remaining_url_count();
 
 		$data['global_score_data'] = [
-			'data'     => $global_score_data,
-			'html'     => $this->render->get_global_score_widget_content( $global_score_data ),
-			'row_html' => $this->render->get_global_score_row( $global_score_data ),
+			'data'           => $global_score_data,
+			'html'           => $this->render->get_global_score_widget_content( $global_score_data ),
+			'dashboard_html' => $this->render->get_dashboard_global_score( $global_score_data ),
+			'row_html'       => $this->render->get_global_score_row( $global_score_data ),
 		];
-
-		$data['assets_img_url'] = WP_ROCKET_ASSETS_IMG_URL;
 
 		return $data;
 	}
@@ -393,18 +396,19 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	}
 
 	/**
-	 * Render the global performance score widget in the dashboard sidebar.
+	 * Render the redesigned global score component in the dashboard content.
 	 *
 	 * @return void
 	 */
-	public function render_global_score_widget_dashboard(): void {
+	public function render_dashboard_global_score(): void {
 		if ( ! $this->context->is_allowed() ) {
+			$this->render->render_dashboard_disabled_state( $this->context->is_reseller_or_non_live() );
 			return;
 		}
 		$data                   = $this->controller->get_global_score();
 		$data['remaining_urls'] = $this->controller->get_remaining_url_count();
 		$data['context']        = 'dashboard';
-		$this->render->render_global_score_widget( $data );
+		$this->render->render_dashboard_global_score( $data );
 	}
 
 	/**
@@ -414,6 +418,73 @@ class Subscriber implements Subscriber_Interface, LoggerAwareInterface {
 	 */
 	public function add_homepage_from_widget(): void {
 		$this->controller->add_homepage_from_widget();
+	}
+
+	/**
+	 * Filters whether to display the default activation notice.
+	 *
+	 * Returns false when Rocket Insights is enabled and will render its own notice.
+	 *
+	 * @param bool $display Whether to display the default notice.
+	 *
+	 * @return bool
+	 */
+	public function maybe_display_default_notice( bool $display ): bool {
+		return $display && ! $this->context->is_allowed();
+	}
+
+	/**
+	 * Renders the new-user activation notice.
+	 *
+	 * @param string $message Default notice message.
+	 * @param string $dismiss_key Dismiss key.
+	 *
+	 * @return void
+	 */
+	public function maybe_display_activation_notice( string $message, string $dismiss_key ): void {
+		if ( ! $this->context->is_allowed() ) {
+			return;
+		}
+
+		$message = sprintf(
+			// translators: %1$s = opening strong tag, %2$s = plugin name, %3$s = closing strong tag.
+			esc_html__( '%1$s%2$s is good to go!%3$s Your website is already faster. Visit %4$s dashboard to check your performance, get recommendations, and keep your site fast.', 'rocket' ),
+			'<strong>',
+			WP_ROCKET_PLUGIN_NAME,
+			'</strong>',
+			WP_ROCKET_PLUGIN_NAME,
+		);
+
+		$action_url = wp_nonce_url(
+			admin_url( 'admin-post.php?action=rocket_insights_add_homepage_notice' ),
+			'rocket_insights_add_homepage_notice'
+		);
+
+		$notice_info = [
+			'dismiss_button'  => $dismiss_key,
+			'dismiss_message' => __( 'Dismiss', 'rocket' ),
+			'message'         => $message,
+			'action'          => '<a class="button button-primary" href="' . esc_url( $action_url ) . '">' . esc_html__( 'Visit WP Rocket dashboard', 'rocket' ) . '</a>',
+			'status'          => 'success',
+		];
+
+		Utils::display_update_notice( $notice_info, true );
+	}
+
+	/**
+	 * Add homepage from the notice action.
+	 *
+	 * @return void
+	 */
+	public function notice_add_homepage(): void {
+		if (
+			! isset( $_GET['_wpnonce'] ) // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			|| ! wp_verify_nonce( sanitize_key( wp_unslash( $_GET['_wpnonce'] ) ), 'rocket_insights_add_homepage_notice' )
+		) {
+			wp_nonce_ays( 'rocket_insights_add_homepage_notice' );
+		}
+
+		$this->controller->add_homepage( 'activation_notice' );
 	}
 
 	/**

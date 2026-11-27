@@ -15,6 +15,9 @@ class Test_EnqueueRocketScripts extends AdminTestCase {
 		add_filter( 'rocket_rocket_insights_enabled', '__return_false' );
 
         $this->setRoleCap( 'administrator', 'rocket_manage_options' );
+
+		// Don't trigger modules that depend on the current_screen hook.
+		$this->unregisterAllCallbacks( 'current_screen' );
     }
 
     public function tear_down() {
@@ -22,6 +25,8 @@ class Test_EnqueueRocketScripts extends AdminTestCase {
         set_current_screen( 'front' );
 
         $this->removeRoleCap( 'administrator', 'rocket_manage_options' );
+
+		$this->restoreWpHook( 'current_screen' );
 
 		parent::tear_down();
     }

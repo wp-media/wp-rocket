@@ -71,6 +71,27 @@ class Pricing {
 	}
 
 	/**
+	 * Gets the pricing data of the license with the given type (e.g. multi500)
+	 *
+	 * @param string $type License type, as in the keys of the licenses pricing data.
+	 *
+	 * @return null|object
+	 */
+	public function get_pricing_by_type( string $type ) {
+		if (
+			'' === $type
+			||
+			! isset( $this->pricing->licenses->$type )
+			||
+			! is_object( $this->pricing->licenses->$type )
+		) {
+			return null;
+		}
+
+		return $this->pricing->licenses->$type;
+	}
+
+	/**
 	 * Gets the license renewal pricing data
 	 *
 	 * @return null|object

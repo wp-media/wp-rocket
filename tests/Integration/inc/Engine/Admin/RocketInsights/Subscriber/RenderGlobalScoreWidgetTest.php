@@ -141,18 +141,6 @@ class RenderGlobalScoreWidgetTest extends TestCase {
 				$this->assertStringNotContainsString( $string, $output );
 			}
 		}
-
-		// Check button state
-		if ( isset( $expected['button_enabled'] ) ) {
-			if ( $expected['button_enabled'] ) {
-				$this->assertStringNotContainsString( 'disabled', $output );
-				$this->assertStringNotContainsString( 'wpr-btn-with-tool-tip', $output );
-			} else {
-				$this->assertStringContainsString( 'disabled', $output );
-				$this->assertStringContainsString( 'wpr-btn-with-tool-tip', $output );
-				$this->assertStringContainsString( 'Maximum number of URLs reached', $output );
-			}
-		}
 	}
 
 	/**

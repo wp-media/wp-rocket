@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
 use Brain\Monkey\Functions;
 use Mockery;
@@ -46,6 +46,9 @@ class Test_DeletePost extends TestCase {
 				->method('is_allowed')
 				->willReturn(true);
 		}
+
+		Functions\when( 'wp_is_post_revision' )
+			->justReturn( $config['is_revision'] ?? false );
 
 		Functions\when( 'get_permalink' )->justReturn( $config['url'] );
 		Functions\when( 'get_post_type' )

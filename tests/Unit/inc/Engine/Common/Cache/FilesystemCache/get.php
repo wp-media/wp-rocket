@@ -33,7 +33,12 @@ class TestGet extends TestCase {
 		Functions\when('home_url')->justReturn($config['home_url']);
 		Functions\when('get_current_blog_id')->justReturn( 1 );
 
-		$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+		if ( null === $expected['path'] ) {
+			$this->filesystem->shouldNotReceive('exists');
+			$this->filesystem->shouldNotReceive('get_contents');
+		} else {
+			$this->filesystem->shouldReceive('exists')->with($expected['path'])->andReturn($config['exists']);
+		}
 
 		if($config['exists']) {
 			$this->filesystem->shouldReceive('get_contents')->with($expected['path'])->andReturn($config['content']);

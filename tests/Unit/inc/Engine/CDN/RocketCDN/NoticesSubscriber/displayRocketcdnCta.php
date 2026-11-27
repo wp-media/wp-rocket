@@ -11,7 +11,6 @@ use WP_Rocket\Engine\CDN\RocketCDN\APIClient;
 use WP_Rocket\Engine\CDN\RocketCDN\NoticesSubscriber;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Engine\License\API\User;
-use WP_Rocket\Engine\License\API\UserClient;
 use WP_Rocket\Engine\Tracking\Tracking;
 use WP_Rocket\Tests\Unit\TestCase;
 
@@ -33,11 +32,6 @@ class Test_DisplayRocketcdnCta extends TestCase {
 	 * @var Mockery\MockInterface|Beacon
 	 */
 	private $beacon;
-
-	/**
-	 * @var Mockery\MockInterface|UserClient
-	 */
-	private $user_client;
 
 	/**
 	 * @var Mockery\MockInterface|Tracking
@@ -76,7 +70,6 @@ class Test_DisplayRocketcdnCta extends TestCase {
 
 		$this->api_client              = Mockery::mock( APIClient::class );
 		$this->beacon                  = Mockery::mock( Beacon::class );
-		$this->user_client             = Mockery::mock( UserClient::class );
 		$this->tracking                = Mockery::mock( Tracking::class );
 		$this->options                 = Mockery::mock( Options_Data::class );
 		$this->subscription_controller = Mockery::mock( SubscriptionController::class );
@@ -87,7 +80,6 @@ class Test_DisplayRocketcdnCta extends TestCase {
 			[
 				$this->api_client,
 				$this->beacon,
-				$this->user_client,
 				$this->tracking,
 				'',
 				$this->options,
@@ -149,8 +141,7 @@ class Test_DisplayRocketcdnCta extends TestCase {
 		Functions\when( 'get_current_user_id' )->justReturn( 1 );
 		Functions\when( 'get_user_meta' )->justReturn( $cta_hidden );
 
-		// get_express_checkout_url() returns '' immediately when user data is false.
-		$this->user_client->shouldReceive( 'get_user_data' )->andReturn( false );
+		$this->subscription_controller->shouldReceive( 'get_express_checkout_url' )->andReturn( '' );
 
 		Functions\when( 'is_wp_error' )->justReturn( $pricing_is_error );
 

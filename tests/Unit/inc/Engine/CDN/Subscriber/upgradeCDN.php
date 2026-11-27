@@ -5,6 +5,7 @@ namespace WP_Rocket\Tests\Unit\inc\Engine\CDN\Subscriber;
 use Mockery;
 use WP_Rocket\Admin\Options;
 use WP_Rocket\Engine\CDN\Cache;
+use WP_Rocket\Engine\CDN\CdnStateBridge;
 use WP_Rocket\Engine\CDN\RocketCDN\Database\Queries\RocketCDN;
 use WP_Rocket\Engine\CDN\RocketCDN\SubscriptionController;
 use WP_Rocket\Tests\Unit\TestCase;
@@ -21,7 +22,6 @@ use WP_Rocket\Engine\CDN\Subscriber;
 class Test_UpgradeCDN extends TestCase {
 	private $cdn;
 	private $options;
-
 	private $options_api;
 	private $subscriber;
 	private $subscription_controller;
@@ -40,10 +40,10 @@ class Test_UpgradeCDN extends TestCase {
 			$this->options_api,
 			$this->subscription_controller,
 			Mockery::mock( Cache::class ),
-			$this->createMock( RocketCDN::class )
+			$this->createMock( RocketCDN::class ),
+			Mockery::mock( CdnStateBridge::class )
 		);
 	}
-
 
 	/**
 	 * @dataProvider configTestData
@@ -51,39 +51,29 @@ class Test_UpgradeCDN extends TestCase {
 	public function testShouldSetExpectedCdnType( array $config, array $expected ) {
 		Functions\when( 'rocket_get_constant' )
 			->alias(
-					function ( $constant ) {
-						if ( 'WP_ROCKET_SLUG' === $constant ) {
-								return 'wp_rocket_settings';
-						}
-						return null;
+				function ( $constant ) {
+					if ( 'WP_ROCKET_SLUG' === $constant ) {
+						return 'wp_rocket_settings';
 					}
-				);
+					return null;
+				}
+			);
 
-		$this->subscription_controller->expects()->has_active_subscription()
-			->andReturn( $config['has_active_subscription'] ?? false );
+		$has_active = $config['has_active_subscription'] ?? false;
+		$this->subscription_controller->expects()->has_active_subscription()->andReturn( $has_active );
 
-		if ( ! ( $config['has_active_subscription'] ?? false ) ) {
-			$this->options
-				->expects()
-				->get( 'cdn_cnames', [] )
-				->andReturn( $config['cdn_cnames'] ?? [] );
+		if ( ! $has_active ) {
+			$cdn_cnames = $config['cdn_cnames'] ?? [];
+			$this->options->expects()->get( 'cdn_cnames', [] )->andReturn( $cdn_cnames );
+
+			// is_cdn_enabled() is called only when cnames are present (&&-short-circuit).
+			if ( ! empty( $cdn_cnames ) ) {
+				$this->options->expects()->get( 'cdn', 0 )->andReturn( $config['cdn_enabled'] ?? 0 );
+			}
 		}
 
-		if ( ! ( $config['has_active_subscription'] ?? false ) && ! empty( $config['cdn_cnames'] ?? [] ) ) {
-			$this->options
-				->expects()
-				->get( 'cdn', 0 )
-				->andReturn( $config['cdn_enabled'] );
-		}
-
-		$this->options_api
-			->expects()
-			->get( 'settings', [] )
-			->andReturn( $config['current_options'] );
-
-		$this->options_api
-			->expects()
-			->set( 'settings', $expected['options'] );
+		$this->options_api->expects()->get( 'settings', [] )->andReturn( $config['current_options'] );
+		$this->options_api->expects()->set( 'settings', $expected['options'] );
 
 		$this->subscriber->on_update_add_cdn_type_option( $config['new_version'], $config['old_version'] );
 	}

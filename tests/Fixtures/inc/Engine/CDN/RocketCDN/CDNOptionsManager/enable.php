@@ -15,6 +15,7 @@ return [
 				],
 				'settings'     => [
 					'cdn'        => 1,
+					'cdn_type'   => 'rocketcdn',
 				],
 			],
 		],

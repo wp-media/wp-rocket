@@ -1,10 +1,11 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Subscriber;
 
-use WPMedia\PHPUnit\Integration\ApiTrait;
 use WPMedia\PHPUnit\Integration\RESTfulTestCase as WPMediaRESTfulTestCase;
 use WP_Rocket\Tests\StubTrait;
+use WP_Rocket\Tests\TestCredentials;
 
 /**
  * Test class covering \WP_Rocket\Engine\Support\Subscriber::register_support_route
@@ -12,18 +13,10 @@ use WP_Rocket\Tests\StubTrait;
  * @group Support
  */
 class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
-	use ApiTrait;
 	use StubTrait;
 
-	protected static $api_credentials_config_file = 'license.php';
 	protected $config;
 	private $wp_version;
-
-	public static function set_up_before_class() {
-		parent::set_up_before_class();
-
-		self::pathToApiCredentialsConfigFile( WP_ROCKET_TESTS_DIR . '/../env/local/' );
-	}
 
 	public function set_up() {
 		parent::set_up();
@@ -39,7 +32,8 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 
 		global $wp_version;
 
-		$this->wp_version = $wp_version;
+		$this->rocket_version = '3.7.5';
+		$this->wp_version     = $wp_version;
 	}
 
 	public function tear_down() {
@@ -62,15 +56,14 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $params, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		global $wp_version;
 
-		$this->rocket_version = '3.7.5';
-		$wp_version           = '5.5';
+		$wp_version = '5.5';
 
 		$body = [
-			'email' => $params['email'] ? self::getApiCredential( 'ROCKET_EMAIL' ) : '',
-			'key'   => $params['key'] ? self::getApiCredential( 'ROCKET_KEY' ) : '',
+			'email' => $config['email'] ? TestCredentials::EMAIL : '',
+			'key'   => $config['key'] ? TestCredentials::KEY : '',
 		];
 
 		$actual = $this->requestSupportEndpoint( $body );
@@ -84,12 +77,12 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 					$this->assertSame( $sub_value, $actual[ $key ][ $sub_key ] );
 				}
 			} else {
-				$this->assertSame( $value, $actual[ $key] );
+				$this->assertSame( $value, $actual[ $key ] );
 			}
 		}
 	}
 
-	protected function requestSupportEndpoint(  array $body_params = [] ) {
+	protected function requestSupportEndpoint( array $body_params = [] ): array {
 		if ( empty( $body_params ) ) {
 			$body_params = [
 				'email' => '',
@@ -100,15 +93,15 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 		return $this->doRestRequest( 'POST', '/wp-rocket/v1/support', $body_params );
 	}
 
-	public function set_consumer_key() {
-		return self::getApiCredential( 'ROCKET_KEY' );
+	public function set_consumer_key(): string {
+		return TestCredentials::KEY;
 	}
 
-	public function set_consumer_email() {
-		return self::getApiCredential( 'ROCKET_EMAIL' );
+	public function set_consumer_email(): string {
+		return TestCredentials::EMAIL;
 	}
 
-	public function configTestData() {
+	public function configTestData(): array {
 		if ( empty( $this->config ) ) {
 			$this->loadTestDataConfig();
 		}
@@ -118,7 +111,7 @@ class Test_RegisterSupportRoute extends WPMediaRESTfulTestCase {
 			: $this->config;
 	}
 
-	protected function loadTestDataConfig() {
+	protected function loadTestDataConfig(): void {
 		$obj      = new \ReflectionObject( $this );
 		$filename = $obj->getFileName();
 

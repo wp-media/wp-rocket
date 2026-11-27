@@ -168,7 +168,7 @@ abstract class ActionScheduler_Logger {
 	 */
 	public function log_timed_out_action( $action_id, $timeout ) {
 		/* translators: %s: amount of time */
-		$this->log( $action_id, sprintf( __( 'action marked as failed after %s seconds. Unknown error occurred. Check server, PHP and database error logs to diagnose cause.', 'action-scheduler' ), $timeout ) );
+		$this->log( $action_id, sprintf( __( 'action was in-progress for at least %s seconds without completing and has been marked as failed. Check server, PHP and database error logs to diagnose cause.', 'action-scheduler' ), $timeout ) );
 	}
 
 	/**

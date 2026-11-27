@@ -75,6 +75,10 @@ class Controller implements ControllerInterface {
 		$fonts = $this->filter_fonts( $fonts, $this->context->get_exclusions() );
 
 		foreach ( (array) $fonts as $index => $font ) {
+			if ( 0 >= $max_preload_fonts_number ) {
+				break;
+			}
+
 			$preload_fonts[ $index ] = sanitize_url( wp_unslash( $font ) );
 			--$max_preload_fonts_number;
 		}

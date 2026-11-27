@@ -3,6 +3,7 @@
 namespace WP_Rocket\Engine\Deactivation;
 
 use WP_Rocket\Admin\Options;
+use WP_Rocket\Engine\Container\IndexedDefinitionAggregate;
 use WP_Rocket\Dependencies\League\Container\Argument\Literal\StringArgument;
 use WP_Rocket\Dependencies\League\Container\Container;
 use WP_Rocket\Engine\Admin\Beacon\ServiceProvider as BeaconServiceProvider;
@@ -34,7 +35,7 @@ class Deactivation {
 	public static function deactivate_plugin() {
 		global $is_apache;
 
-		$container = new Container();
+		$container = new Container( new IndexedDefinitionAggregate() );
 
 		$container->add( 'options_api', new Options( 'wp_rocket_' ) );
 		$container->add( 'template_path', new StringArgument( rocket_get_constant( 'WP_ROCKET_PATH', '' ) . 'views' ) );

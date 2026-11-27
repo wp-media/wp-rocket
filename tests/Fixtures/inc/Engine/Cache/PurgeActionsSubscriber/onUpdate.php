@@ -10,7 +10,7 @@ return [
 	'SuperiorShouldNotGenerate' => [
 		'config' => [
 			'new_version' => '3.17',
-			'old_version' => '3.16',
+			'old_version' => '3.24',
 			'is_superior' => true
 		],
 	],

@@ -5,6 +5,8 @@ on:
 
 jobs:
   task-check:
+    # Dependabot does not fill the PR template, and its runs get no PR_TEMPLATE_TOKEN.
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     steps:
       - uses: wp-media/pr-checklist-action@master

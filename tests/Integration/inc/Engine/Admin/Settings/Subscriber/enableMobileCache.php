@@ -3,6 +3,7 @@
 namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Settings\Subscriber;
 
 use WP_Rocket\Tests\Integration\AjaxTestCase;
+use WP_Rocket\Tests\Integration\IsolateHookTrait;
 
 /**
  * @covers \WP_Rocket\Engine\Admin\Settings\Subscriber::enable_mobile_cache
@@ -10,7 +11,8 @@ use WP_Rocket\Tests\Integration\AjaxTestCase;
  *
  * @group  AdminOnly
  */
-class Test_EnableMobileCache extends AjaxTestCase {
+class EnableMobileCacheTest extends AjaxTestCase {
+	use IsolateHookTrait;
 
 	public function set_up() {
 		parent::set_up();
@@ -21,6 +23,14 @@ class Test_EnableMobileCache extends AjaxTestCase {
 		update_option( 'wp_rocket_settings', $options );
 
 		$this->action = 'rocket_enable_mobile_cache';
+
+		$this->unregisterAllCallbacks( 'admin_init' );
+	}
+
+	public function tear_down() {
+		$this->restoreWpHook( 'admin_init' );
+
+		parent::tear_down();
 	}
 
 	public function testCallbackIsRegistered() {
@@ -40,9 +50,9 @@ class Test_EnableMobileCache extends AjaxTestCase {
 			$role = get_role( 'administrator' );
 			$role->add_cap( 'rocket_manage_options' );
 
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'administrator' ] ) );
+			$this->_setRole( 'administrator' );
 		} else {
-			wp_set_current_user( static::factory()->user->create( [ 'role' => 'editor' ] ) );
+			$this->_setRole( 'editor' );
 		}
 
 		$_POST['nonce'] = wp_create_nonce( 'rocket-ajax' );

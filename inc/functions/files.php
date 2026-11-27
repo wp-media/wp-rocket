@@ -543,21 +543,24 @@ function rocket_maybe_find_right_trash_url( array $parsed_url, int $post_id ) {
  * @param string|array              $urls       URLs of cache files to be deleted.
  * @param WP_Filesystem_Direct|null $filesystem Optional. Instance of filesystem handler.
  * @param bool                      $run_actions Run actions.
+ *
+ * @return array Associative array of the given URLs and whether their cache was actually cleared.
  */
 function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	$urls = (array) $urls;
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	$urls = array_filter( $urls );
 	if ( empty( $urls ) ) {
-		return;
+		return [];
 	}
 
 	/** This filter is documented in inc/front/htaccess.php */
-	$url_no_dots = (bool) apply_filters( 'rocket_url_no_dots', false );
-	$cache_path  = _rocket_get_wp_rocket_cache_path();
+	$url_no_dots    = (bool) apply_filters( 'rocket_url_no_dots', false );
+	$cache_path     = _rocket_get_wp_rocket_cache_path();
+	$ignored_params = null;
 
 	if ( empty( $filesystem ) ) {
 		$filesystem = rocket_direct_filesystem();
@@ -574,7 +577,12 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		do_action( 'before_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
 	}
 
+	$results = [];
+
 	foreach ( $urls as $url_key => $url ) {
+		$original_url = $url;
+		$cleared      = false;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires before the cache file is deleted.
@@ -590,6 +598,29 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 		}
 
 		$parsed_url = get_rocket_parse_url( $url );
+		$query_dir  = '';
+		$raw_query  = wp_parse_url( $original_url, PHP_URL_QUERY );
+
+		// Name the query string directory like the cache does: ignored parameters removed, the others sorted and encoded.
+		if ( ! empty( $raw_query ) ) {
+			if ( null === $ignored_params ) {
+				$ignored_params = rocket_get_ignored_parameters();
+			}
+
+			parse_str( $raw_query, $query_params );
+			$query_params = array_diff_key( $query_params, $ignored_params );
+
+			if ( ! empty( $query_params ) ) {
+				ksort( $query_params );
+				$query_dir = '#' . preg_replace_callback(
+					'/%[0-9A-F]{2}/',
+					function ( $matches ) {
+						return strtolower( $matches[0] );
+					},
+					http_build_query( $query_params )
+				);
+			}
+		}
 
 		if ( ! empty( $parsed_url['host'] ) ) {
 			foreach ( _rocket_get_cache_dirs( $parsed_url['host'], $cache_path ) as $dir ) {
@@ -610,7 +641,8 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 					$parsed_url['path'] = str_replace( $matches['non_latin'], array_map( $cb_encode_non_latin, $matches['non_latin'] ), $parsed_url['path'] );
 				}
 
-				$entry = $dir . $parsed_url['path'];
+				// Query string pages are cached in their own directory, where the question mark is replaced with a hash.
+				$entry = $dir . $parsed_url['path'] . $query_dir;
 
 				// For regex we use it for file names only, and it should include the * character.
 				if ( str_contains( $entry, '*' ) ) {
@@ -621,6 +653,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 						$current_file = $item->getPath() . DIRECTORY_SEPARATOR . $item->getFilename();
 						if ( $filesystem->exists( $current_file ) ) {
 							$filesystem->delete( $current_file );
+							$cleared = true;
 						}
 					}
 					// Remove the regex part from the url.
@@ -638,8 +671,13 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 				} else {
 					$filesystem->delete( $entry );
 				}
+
+				$cleared = true;
 			}
 		}
+
+		$results[ $original_url ] = $cleared;
+
 		if ( $run_actions ) {
 			/**
 			 * Fires after the cache file is deleted.
@@ -652,7 +690,7 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	}
 
 	if ( ! $run_actions ) {
-		return;
+		return $results;
 	}
 
 	/**
@@ -663,6 +701,8 @@ function rocket_clean_files( $urls, $filesystem = null, $run_actions = true ) {
 	 * @param array $urls The URLs corresponding to the deleted cache files.
 	 */
 	do_action( 'after_rocket_clean_files', $urls ); // phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals
+
+	return $results;
 }
 
 /**

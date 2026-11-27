@@ -553,6 +553,9 @@ function rocket_get_external_url( $target, $query_args = [] ) {
 			$url = isset( $paths[ $locale ] ) ? $paths[ $locale ] : $paths['default'];
 			$url = $site_url . $url . '/';
 			break;
+		case 'contact':
+			$url = $site_url . 'contact/';
+			break;
 		case 'account':
 			$locale = function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale();
 			$paths  = [

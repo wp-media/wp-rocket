@@ -1,7 +1,8 @@
 <?php
 namespace WP_Rocket\Engine\Admin\Settings;
 
-use Imagify_Partner;
+use WP_Rocket\Engine\Support\Subscriber as Support_Subscriber;
+use WP_Rocket\Engine\Tracking\TrackingTrait;
 use WP_Rocket\Event_Management\Subscriber_Interface;
 use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, PluginFamilyInterface };
 
@@ -12,6 +13,8 @@ use WP_Rocket\Dependencies\WPMedia\PluginFamily\Controller\{ PluginFamily, Plugi
  * @since 3.3
  */
 class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
+	use TrackingTrait;
+
 	/**
 	 * Page instance
 	 *
@@ -29,14 +32,23 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	protected $plugin_family;
 
 	/**
+	 * Support subscriber, which knows whether the support chat is registered.
+	 *
+	 * @var Support_Subscriber
+	 */
+	private $support;
+
+	/**
 	 * Creates an instance of the object.
 	 *
-	 * @param Page         $page Page instance.
-	 * @param PluginFamily $plugin_family Plugin Family Instance.
+	 * @param Page               $page Page instance.
+	 * @param PluginFamily       $plugin_family Plugin Family Instance.
+	 * @param Support_Subscriber $support Support subscriber.
 	 */
-	public function __construct( Page $page, PluginFamily $plugin_family ) {
+	public function __construct( Page $page, PluginFamily $plugin_family, Support_Subscriber $support ) {
 		$this->page          = $page;
 		$this->plugin_family = $plugin_family;
+		$this->support       = $support;
 	}
 
 	/**
@@ -54,7 +66,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'wp_ajax_rocket_toggle_option'         => 'toggle_option',
 			'rocket_settings_menu_navigation'      => [
 				[ 'add_menu_tools_page' ],
-				[ 'add_imagify_page', 9 ],
+				[ 'add_help_links' ],
 				[ 'add_tutorials_page', 11 ],
 				[ 'add_plugins_page', 12 ],
 			],
@@ -66,7 +78,11 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'rocket_after_settings_radio_options'  => [ 'display_radio_options_sub_fields', 11 ],
 			'rocket_settings_tools_content'        => 'display_mobile_cache_option',
 			'wp_ajax_rocket_enable_mobile_cache'   => 'enable_mobile_cache',
+			'wp_ajax_rocket_dismiss_addon_card'    => 'dismiss_addon_card',
 			'wp_rocket_upgrade'                    => [ 'enable_separate_cache_files_mobile', 9, 2 ],
+			'admin_post_install_imagify_from_partner_wp-rocket' => [ 'track_imagify_banner_install', 5 ],
+			'rocket_dashboard_sidebar_addons'      => 'add_imagify_addon_card',
+			'admin_footer-settings_page_wprocket'  => 'print_support_link',
 		];
 
 		foreach ( PluginFamily::get_subscribed_events() as $hook => $callback ) {
@@ -84,6 +100,59 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		}
 
 		return $events;
+	}
+
+	/**
+	 * Tracks a click on the Imagify banner install/activate CTA.
+	 *
+	 * The CTA is shared: the button is 'activate' when Imagify is already installed, 'install' otherwise.
+	 *
+	 * Runs before Imagify_Partner::post_callback(), which redirects and exits.
+	 *
+	 * @return void
+	 */
+	public function track_imagify_banner_install(): void {
+		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
+
+		if ( ! wp_verify_nonce( $nonce, \Imagify_Partner::NONCE_NAME ) ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$this->track_event(
+			'Button Clicked',
+			[
+				'button' => \Imagify_Partner::is_imagify_installed() ? 'imagify banner activate' : 'imagify banner install',
+				'source' => 'image & media',
+			]
+		);
+	}
+
+	/**
+	 * Appends the Imagify card to the add-on cards of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $cards Add-on cards data.
+	 *
+	 * @return array
+	 */
+	public function add_imagify_addon_card( $cards ): array {
+		return $this->page->add_imagify_addon_card( (array) $cards );
+	}
+
+	/**
+	 * Dismisses an add-on card of the Dashboard sidebar for the current user.
+	 *
+	 * @since 3.24
+	 *
+	 * @return void
+	 */
+	public function dismiss_addon_card(): void {
+		$this->page->dismiss_addon_card();
 	}
 
 	/**
@@ -200,36 +269,76 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 		$navigation['tools'] = [
 			'id'               => 'tools',
 			'title'            => __( 'Tools', 'rocket' ),
-			'menu_description' => __( 'Import, Export, Rollback', 'rocket' ),
+			'menu_description' => __( 'Export, import, rollback, and set up MCP', 'rocket' ),
+			'group'            => 'tools',
 		];
 
 		return $navigation;
 	}
 
 	/**
-	 * Add Imagify section to navigation.
+	 * Add the Support and Documentation links to navigation.
 	 *
-	 * @since 3.2
+	 * Support links to the contact page. When the support chat is registered, a click opens the chat instead
+	 * and the link only opens the contact page in the same tab if the chat is not there. Documentation opens
+	 * in a new tab.
+	 *
+	 * @since 3.24
 	 *
 	 * @param array $navigation Array of menu items.
 	 * @return array
 	 */
-	public function add_imagify_page( $navigation ) {
-		if (
-			rocket_get_constant( 'WP_ROCKET_WHITE_LABEL_ACCOUNT' )
-			||
-			Imagify_Partner::has_imagify_api_key()
-		) {
-			return $navigation;
+	public function add_help_links( $navigation ) {
+		$navigation['support'] = [
+			'id'               => 'support',
+			'title'            => __( 'Support', 'rocket' ),
+			'menu_description' => __( 'Get help from our team', 'rocket' ),
+			'group'            => 'help',
+			'url'              => $this->get_contact_url(),
+		];
+
+		if ( $this->support->is_chat_registered() ) {
+			$navigation['support']['open_chat'] = true;
 		}
 
-		$navigation['imagify'] = [
-			'id'               => 'imagify',
-			'title'            => __( 'Image Optimization', 'rocket' ),
-			'menu_description' => __( 'Compress your images', 'rocket' ),
+		$navigation['documentation'] = [
+			'id'               => 'documentation',
+			'title'            => __( 'Documentation', 'rocket' ),
+			'menu_description' => __( 'Read the documentation', 'rocket' ),
+			'group'            => 'help',
+			'url'              => get_rocket_documentation_url(),
+			'target'           => '_blank',
 		];
 
 		return $navigation;
+	}
+
+	/**
+	 * Prints the floating "Ask Support" link on the settings page when the support chat is not registered.
+	 *
+	 * @return void
+	 */
+	public function print_support_link(): void {
+		if ( $this->support->is_chat_registered() || ! current_user_can( 'rocket_manage_options' ) ) {
+			return;
+		}
+
+		$this->page->render_support_launcher( $this->get_contact_url() );
+	}
+
+	/**
+	 * Gets the URL of the contact page.
+	 *
+	 * @return string
+	 */
+	private function get_contact_url(): string {
+		return rocket_get_external_url(
+			'contact',
+			[
+				'utm_source' => 'wp_plugin',
+				'utm_medium' => 'wp_rocket',
+			]
+		);
 	}
 
 	/**
@@ -245,6 +354,7 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 			'id'               => 'tutorials',
 			'title'            => __( 'Tutorials', 'rocket' ),
 			'menu_description' => __( 'Getting started and how to videos', 'rocket' ),
+			'group'            => 'help',
 		];
 
 		return $navigation;
@@ -310,8 +420,9 @@ class Subscriber implements Subscriber_Interface, PluginFamilyInterface {
 	public function add_plugins_page( $navigation ) {
 		$navigation['plugins'] = [
 			'id'               => 'plugins',
-			'title'            => __( 'Our Plugins', 'rocket' ),
+			'title'            => __( 'Our plugins', 'rocket' ),
 			'menu_description' => __( 'Build Better, Faster, Safer', 'rocket' ),
+			'group'            => 'help',
 		];
 
 		return $navigation;

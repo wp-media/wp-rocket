@@ -4,7 +4,7 @@ return [
 		'shouldFetchSuccessfully' => [
 			'config'   => [
 				'version'             => '3.20.5',
-				'locale'              => 'en_US',
+				'locale'              => 'fr_FR',
 				'options'             => [
 					'consumer_email' => 'user@example.com',
 					'delay_js'       => 1,
@@ -46,7 +46,8 @@ return [
 					'total_blocking_time'     => 0,
 				],
 				'expected_params'     => [
-					'email' => 'user@example.com',
+					'email'    => 'user@example.com',
+					'language' => 'fr',
 				],
 				'api_response'        => [
 					'code' => 200,
@@ -82,7 +83,8 @@ return [
 					'score' => 75,
 				],
 				'expected_params'     => [
-					'email' => 'user@example.com',
+					'email'    => 'user@example.com',
+					'language' => 'en',
 				],
 				'api_response'        => new WP_Error( 'api_error', 'API request failed' ),
 				'transient_set_times' => 2, // loading + failed
@@ -104,7 +106,8 @@ return [
 					'score' => 75,
 				],
 				'expected_params'     => [
-					'email' => 'user@example.com',
+					'email'    => 'user@example.com',
+					'language' => 'en',
 				],
 				'api_response'        => [
 					'some_key' => 'some_value', // Missing 'code' and 'data'
@@ -129,7 +132,8 @@ return [
 					// No average_metrics
 				],
 				'expected_params'     => [
-					'email' => 'user@example.com',
+					'email'    => 'user@example.com',
+					'language' => 'fr',
 				],
 				'api_response'        => [
 					'code' => 200,

@@ -1,6 +1,21 @@
 <?php
 use WP_Rocket\Tests\Fixtures\Generators\UserDataGenerator;
 
+// Responses the mocked requests return: the SaaS submission, a reachable page and an unreachable one.
+$saas_url  = 'https://saas.wp-rocket.me/performance/';
+$saas_ok   = [
+	'response' => [ 'code' => 200, 'message' => 'OK' ],
+	'body'     => wp_json_encode( [ 'uuid' => 'test-uuid' ] ),
+];
+$page_ok   = [
+	'response' => [ 'code' => 200, 'message' => 'OK' ],
+	'body'     => '<html><head><title>Test Page Title</title></head><body>Test content</body></html>',
+];
+$page_404  = [
+	'response' => [ 'code' => 404, 'message' => 'Not Found' ],
+	'body'     => 'Not found',
+];
+
 return [
 	'testShouldAddPageSuccessfully'                      => [
 		'config'   => [
@@ -16,7 +31,10 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/test-page' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'             => 200,
@@ -46,7 +64,6 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => false,
 		],
 		'expected' => [
 			'code'          => 400,
@@ -67,7 +84,6 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => false,
 		],
 		'expected' => [
 			'code'          => 400,
@@ -98,7 +114,6 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => false,
 		],
 		'expected' => [
 			'code' => 403,
@@ -119,7 +134,9 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				'https://external-site.com/page' => $page_404,
+			],
 		],
 		'expected' => [
 			'code'          => 400,
@@ -134,7 +151,10 @@ return [
 			],
 			'rows'          => [],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'https://example.org' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'             => 200,
@@ -158,7 +178,10 @@ return [
 			],
 			'rows'          => [],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/new-page-with-special-char-%d0%bf%d1%80%d0%be%d0%b4%d1%83%d0%ba%d1%82%d0%be%d0%b2%d0%b0-%d0%ba%d0%b0%d1%82%d0%b5%d0%b3%d0%be%d1%80%d0%b8%d1%8f' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'                 => 200,
@@ -184,7 +207,10 @@ return [
 			],
 			'rows'          => [],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/category/%d8%ba%d9%8a%d8%b1-%d9%85%d8%b5%d9%86%d9%81' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'                 => 200,
@@ -210,7 +236,10 @@ return [
 			],
 			'rows'          => [],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/%D0%BF%D1%80%D0%BE%D0%B4%D1%83%D0%BA%D1%82%D0%BE%D0%B2%D0%B0/3' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'                 => 200,
@@ -236,7 +265,10 @@ return [
 			],
 			'rows'          => [],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/page-%E4%B8%AD%E6%96%87-test' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'                 => 200,
@@ -278,7 +310,10 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/test-page-4' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'             => 403,
@@ -305,7 +340,10 @@ return [
 				],
 			],
 			'customer_data' => ( new UserDataGenerator() ),
-			'mock_http'     => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/third-page' => $page_ok,
+			],
 		],
 		'expected' => [
 			'code'             => 200,
@@ -335,7 +373,10 @@ return [
 				],
 			],
 			'customer_data'      => ( new UserDataGenerator() )->with_custom_limit( 2 ),
-			'mock_http'          => true,
+			'http'          => [
+				$saas_url => $saas_ok,
+				'http://example.org/page-over-limit' => $page_ok,
+			],
 			'add_concurrent_url' => true, // Will add another URL mid-request to simulate race condition
 		],
 		'expected' => [

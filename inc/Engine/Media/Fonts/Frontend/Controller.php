@@ -350,13 +350,28 @@ class Controller {
 	}
 
 	/**
-	 * Is this a url of google font or not.
+	 * Checks the URL is a Google Fonts CSS API URL (fonts.googleapis.com/css or /css2).
 	 *
 	 * @param string $url Font url to test.
 	 * @return bool
 	 */
 	private function is_google_font_url( string $url ): bool {
-		return ! empty( $this->find( '(?:https?:)?\/\/fonts\.googleapis\.com\/css.+', $url ) );
+		$parsed = wp_parse_url( html_entity_decode( $url, ENT_QUOTES ) );
+
+		if ( ! is_array( $parsed ) || empty( $parsed['host'] ) || empty( $parsed['path'] ) || empty( $parsed['query'] ) ) {
+			return false;
+		}
+
+		if ( isset( $parsed['scheme'] ) && ! in_array( strtolower( $parsed['scheme'] ), [ 'http', 'https' ], true ) ) {
+			return false;
+		}
+
+		if ( isset( $parsed['user'] ) || isset( $parsed['pass'] ) || isset( $parsed['port'] ) ) {
+			return false;
+		}
+
+		return 'fonts.googleapis.com' === strtolower( $parsed['host'] )
+			&& in_array( strtolower( $parsed['path'] ), [ '/css', '/css2' ], true );
 	}
 
 	/**
@@ -398,7 +413,7 @@ class Controller {
 
 		$exclusions = $this->get_exclusions();
 		foreach ( $items as $key => &$item ) {
-			if ( empty( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
+			if ( empty( $item['href'] ) || ! is_string( $item['href'] ) || ! $this->is_google_font_url( $item['href'] ) ) {
 				continue;
 			}
 

@@ -56,14 +56,14 @@ class ResetGlobalScoreTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoAsExpected( $config, $expected ) {
-		$this->setUpTest( $config );
+		$this->setUpTest();
 
 		$this->executeTest( $config );
 
 		$this->assertResult( $expected );
 	}
 
-	private function setUpTest( $config ) {
+	private function setUpTest() {
 		// Reset the flag for each test
 		$this->reset_called = false;
 	}

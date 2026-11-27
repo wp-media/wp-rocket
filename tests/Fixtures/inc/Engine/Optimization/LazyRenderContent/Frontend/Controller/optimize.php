@@ -54,4 +54,17 @@ return [
 		'html'     => '<html><head></head><body><div data-rocket-location-hash="adc285f638b63c4110da1d803b711c40">hello here</div></body></html>',
 		'expected' => '<html><head></head><body><div >hello here</div></body></html>',
 	],
+	// Defense-in-depth: a row poisoned with a regex-metacharacter payload (e.g. before this fix
+	// shipped, or bypassing AJAX validation some other way) must not corrupt rendering.
+	// preg_quote() neutralizes the stored payload into an unmatchable literal, so $count stays 0
+	// and the method falls back to remove_hashes() - only the hash attribute is stripped, the
+	// rest of the page content is left completely intact.
+	'testShouldNeutralizePoisonedRegexPayload' => [
+		'config'   => [
+			'has_lrc' => true,
+			'below_the_fold' => json_encode( [ '(?s:.*)' ] ),
+		],
+		'html'     => '<html><head></head><body><div data-rocket-location-hash="adc285f638b63c4110da1d803b711c40">hello here</div><p>more content that must survive</p></body></html>',
+		'expected' => '<html><head></head><body><div >hello here</div><p>more content that must survive</p></body></html>',
+	],
 ];

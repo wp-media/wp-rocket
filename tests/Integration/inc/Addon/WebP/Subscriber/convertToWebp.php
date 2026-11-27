@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\Addon\WebP\Subscriber;
+namespace WP_Rocket\Tests\Integration\inc\Addon\WebP\Subscriber;
 
 use Brain\Monkey\Functions;
 use WP_Rocket\Tests\Integration\FilesystemTestCase;

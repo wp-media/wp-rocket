@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Notices;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Notices;
 
 use Mockery;
 use Brain\Monkey\Functions;

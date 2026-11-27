@@ -112,7 +112,7 @@ class ExecuteTest extends TestCase {
 		$this->setupJobProcessorMock( $config, $expected );
 
 		// Set up Queue mock.
-		$this->setupQueueMock( $config, $expected );
+		$this->setupQueueMock( $expected );
 
 		// Set up action expectations.
 		if ( $expected['action_fired'] ?? false ) {
@@ -218,10 +218,9 @@ class ExecuteTest extends TestCase {
 	/**
 	 * Set up Queue mock expectations.
 	 *
-	 * @param array $config   Test configuration.
 	 * @param array $expected Expected results.
 	 */
-	private function setupQueueMock( array $config, array $expected ): void {
+	private function setupQueueMock( array $expected ): void {
 		if ( $expected['queue_schedule_called'] ?? false ) {
 			$this->queue
 				->expects( $this->once() )
