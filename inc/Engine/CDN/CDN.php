@@ -46,8 +46,6 @@ class CDN {
 	 * @return string
 	 */
 	public function rewrite( $html ) {
-		$relative_path_pattern = '';
-
 		$buffer = $html;
 
 		/**
@@ -61,18 +59,7 @@ class CDN {
 			$buffer = $this->remove_inline_scripts( $html );
 		}
 
-		/**
-		 * Filters the CDN rewriting of relative paths
-		 *
-		 * @since 3.10.5
-		 *
-		 * @param bool $enable True to enable, false otherwise.
-		 */
-		if ( apply_filters( 'rocket_cdn_relative_paths', true ) ) {
-			$relative_path_pattern = '|\/[^/](?:[^"\')\s>]+\.[[:alnum:]]+)';
-		}
-
-		$pattern = '#[("\']\s*(?<url>(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+))' . $relative_path_pattern . ')\s*["\')]#i';
+		$pattern = '#[("\']\s*(?<url>' . $this->get_url_pattern() . ')\s*["\')]#i';
 
 		if ( ! preg_match_all( $pattern, $buffer, $matches, PREG_SET_ORDER ) ) {
 			return $html;
@@ -115,6 +102,35 @@ class CDN {
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Rewrites the URLs of the image preload links using the CDN URL
+	 *
+	 * Targets <link data-rocket-preload as="image"> tags: href goes through the allowed-path gate,
+	 * imagesrcset candidates are rewritten independently like rewrite_srcset() does.
+	 *
+	 * @since 3.24.3
+	 *
+	 * @param string $html HTML content.
+	 * @return string
+	 */
+	public function rewrite_preload_links( string $html ): string {
+		if ( false === stripos( $html, 'data-rocket-preload' ) ) {
+			return $html;
+		}
+
+		$gate = $this->get_gate_pattern();
+
+		$result = preg_replace_callback(
+			'#<link\b(?=[^>]*\sdata-rocket-preload(?=[\s=/>]))(?=[^>]*\sas\s*=\s*(["\'])image\1)[^>]*>#i',
+			function ( $tag ) use ( $gate ) {
+				return $this->rewrite_preload_tag( $tag[0], $gate );
+			},
+			$html
+		);
+
+		return null === $result ? $html : $result;
 	}
 
 	/**
@@ -248,6 +264,183 @@ class CDN {
 	 */
 	private function get_base_url() {
 		return '//' . $this->get_home_host();
+	}
+
+	/**
+	 * Gets the regex matching the URLs eligible for the CDN rewrite
+	 *
+	 * @return string
+	 */
+	private function get_url_pattern(): string {
+		$relative_path_pattern = '';
+
+		/**
+		 * Filters the CDN rewriting of relative paths
+		 *
+		 * @since 3.10.5
+		 *
+		 * @param bool $enable True to enable, false otherwise.
+		 */
+		if ( apply_filters( 'rocket_cdn_relative_paths', true ) ) {
+			$relative_path_pattern = '|\/[^/](?:[^"\')\s>]+\.[[:alnum:]]+)';
+		}
+
+		return '(?:(?:(?:https?:|)' . preg_quote( $this->get_base_url(), '#' ) . ')\/(?:(?:(?:' . $this->get_allowed_paths() . ')[^"\',)]+))' . $relative_path_pattern . ')';
+	}
+
+	/**
+	 * Gets the regex matching a whole URL eligible for the CDN rewrite
+	 *
+	 * @return string
+	 */
+	private function get_gate_pattern(): string {
+		return '#^' . $this->get_url_pattern() . '$#i';
+	}
+
+	/**
+	 * Rewrites a URL when it fully matches the gate pattern
+	 *
+	 * @param string $url          URL to rewrite.
+	 * @param string $gate_pattern Pattern from get_gate_pattern().
+	 * @return string
+	 */
+	private function rewrite_gated_url( string $url, string $gate_pattern ): string {
+		if ( 1 !== preg_match( $gate_pattern, $url ) ) {
+			return $url;
+		}
+
+		return $this->rewrite_url( $url );
+	}
+
+	/**
+	 * Rewrites the href and imagesrcset attributes of one preload link tag
+	 *
+	 * @param string $tag          Link tag HTML.
+	 * @param string $gate_pattern Pattern from get_gate_pattern().
+	 * @return string
+	 */
+	private function rewrite_preload_tag( string $tag, string $gate_pattern ): string {
+		$href = preg_replace_callback(
+			'#(\shref\s*=\s*)(["\'])((?:(?!\2).)*)\2#is',
+			function ( $found ) use ( $gate_pattern ) {
+				// Split the picture variant descriptor ("url 2x") off before the gate.
+				preg_match( '#^(\s*)(\S*)(.*)$#s', $found[3], $parts );
+
+				return $found[1] . $found[2] . $parts[1] . $this->rewrite_gated_url( $parts[2], $gate_pattern ) . $parts[3] . $found[2];
+			},
+			$tag,
+			1
+		);
+
+		if ( null === $href ) {
+			$href = $tag;
+		}
+
+		$srcset = preg_replace_callback(
+			'#(\simagesrcset\s*=\s*)(["\'])((?:(?!\2).)*)\2#is',
+			function ( $found ) {
+				return $found[1] . $found[2] . $this->rewrite_preload_srcset( $found[3] ) . $found[2];
+			},
+			$href,
+			1
+		);
+
+		return null === $srcset ? $href : $srcset;
+	}
+
+	/**
+	 * Rewrites the candidate URLs of an imagesrcset value, keeping descriptors and separators
+	 *
+	 * @param string $value imagesrcset attribute value.
+	 * @return string
+	 */
+	private function rewrite_preload_srcset( string $value ): string {
+		$tokens = preg_split( '#(\s+)#', $value, -1, PREG_SPLIT_DELIM_CAPTURE );
+
+		if ( false === $tokens ) {
+			return $value;
+		}
+
+		$output        = '';
+		$expecting_url = true;
+
+		foreach ( $tokens as $token ) {
+			if ( '' === trim( $token ) ) {
+				$output .= $token;
+				continue;
+			}
+
+			while ( '' !== $token ) {
+				if ( $expecting_url ) {
+					$trimmed       = rtrim( $token, ',' );
+					$trailing      = substr( $token, strlen( $trimmed ) );
+					$output       .= $this->rewrite_preload_candidate( $trimmed ) . $trailing;
+					$expecting_url = '' !== $trailing;
+					break;
+				}
+
+				$comma = strpos( $token, ',' );
+
+				if ( false === $comma ) {
+					$output .= $token;
+					break;
+				}
+
+				$output       .= substr( $token, 0, $comma + 1 );
+				$token         = substr( $token, $comma + 1 );
+				$expecting_url = true;
+			}
+		}
+
+		return $output;
+	}
+
+	/**
+	 * Rewrites one srcset candidate token, which may hold several comma-joined URLs
+	 *
+	 * @param string $token Candidate URL token.
+	 * @return string
+	 */
+	private function rewrite_preload_candidate( string $token ): string {
+		$leading = strlen( $token ) - strlen( ltrim( $token, ',' ) );
+		$urls    = preg_split( '#,(?=(?:https?:)?//)#i', substr( $token, $leading ) );
+
+		if ( false === $urls ) {
+			return $token;
+		}
+
+		$urls = array_map( [ $this, 'rewrite_home_host_url' ], $urls );
+
+		return substr( $token, 0, $leading ) . implode( ',', $urls );
+	}
+
+	/**
+	 * Rewrites a home host or root-relative URL, leaving any other host untouched
+	 *
+	 * @param string $url URL to rewrite.
+	 * @return string
+	 */
+	private function rewrite_home_host_url( string $url ): string {
+		if ( 1 !== preg_match( '#^(?:(?:https?:)?//|/)#i', $url ) ) {
+			return $url;
+		}
+
+		// Skip candidates already on a CDN URL, e.g. a path-prefixed CNAME on the home host.
+		$bare_url = strtolower( rocket_remove_url_protocol( $url ) );
+
+		foreach ( $this->get_cdn_urls( [ 'all', 'images', 'css_and_js', 'css', 'js' ] ) as $cdn_url ) {
+			if ( 0 === strpos( $bare_url, strtolower( rocket_remove_url_protocol( untrailingslashit( $cdn_url ) ) ) . '/' ) ) {
+				return $url;
+			}
+		}
+
+		$host = wp_parse_url( $url, PHP_URL_HOST );
+
+		if ( $host && strtolower( (string) $host ) !== strtolower( (string) $this->get_home_host() ) ) {
+			return $url;
+		}
+
+		return $this->rewrite_url( $url );
 	}
 
 	/**
