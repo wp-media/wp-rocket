@@ -64,22 +64,27 @@ class Test_CpcssSection extends TestCase {
 			->once()
 			->andReturn( true );
 
-		$this->post->shouldReceive( 'generate' )
-				   ->with( 'metabox/container', $expected['data'] )
-				   ->andReturn( '' );
+		if ( null === $expected['data'] ) {
+			$this->post->shouldReceive( 'generate' )->never();
+		} else {
+			$this->post->shouldReceive( 'generate' )
+					   ->once()
+					   ->with( 'metabox/container', $expected['data'] )
+					   ->andReturn( '' );
 
-		Functions\expect( 'get_post_type' )
-			->once()
-			->andReturn( $config['post']->post_type );
+			Functions\expect( 'get_post_type' )
+				->once()
+				->andReturn( $config['post']->post_type );
 
-		Functions\expect( 'is_post_type_viewable' )
-			->once()
-			->with( $config['post']->post_type )
-			->andReturn( true );
+			Functions\expect( 'is_post_type_viewable' )
+				->once()
+				->with( $config['post']->post_type )
+				->andReturn( true );
+		}
 
 		ob_start();
 		$this->post->cpcss_section();
-		ob_get_clean();
+		$this->assertSame( '', ob_get_clean() );
 	}
 
 	public function wp_sprintf_l( $pattern, $args ) {

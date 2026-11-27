@@ -20,6 +20,7 @@ class Test_CpcssSection extends TestCase {
 	protected static $provider_class = 'Post';
 	private $async_css_mobile;
 	private $async_css;
+	private $remove_unused_css;
 	private $post_id;
 	private static $user_id;
 
@@ -35,6 +36,7 @@ class Test_CpcssSection extends TestCase {
 
 		add_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		add_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
+		add_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 
 		// Don't trigger modules that depend on the current_screen hook.
 		$this->unregisterAllCallbacks( 'current_screen' );
@@ -47,6 +49,7 @@ class Test_CpcssSection extends TestCase {
 
 		remove_filter( 'pre_get_rocket_option_async_css', [ $this, 'setCPCSSOption' ] );
 		remove_filter( 'pre_get_rocket_option_async_css_mobile', [ $this, 'setCPCSSMobileOption' ] );
+		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'setRemoveUnusedCSSOption' ] );
 		delete_post_meta( $this->post_id, '_rocket_exclude_async_css' );
 
 		$this->restoreWpHook( 'current_screen' );
@@ -62,6 +65,7 @@ class Test_CpcssSection extends TestCase {
 
 		$this->async_css_mobile = $config['options']['async_css_mobile'];
 		$this->async_css        = $config['options']['async_css'];
+		$this->remove_unused_css = $config['options']['remove_unused_css'] ?? 0;
 		$this->post_id          = $config['post']->ID;
 		$GLOBALS['post']        = $config['post'];
 
@@ -81,6 +85,10 @@ class Test_CpcssSection extends TestCase {
 
 	public function setCPCSSOption() {
 		return $this->async_css;
+	}
+
+	public function setRemoveUnusedCSSOption() {
+		return $this->remove_unused_css;
 	}
 
 	private function get_actual_html() {
