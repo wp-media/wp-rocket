@@ -295,6 +295,33 @@ class Page extends Abstract_Render {
 	}
 
 	/**
+	 * Appends the "Cache files" action to the quick actions of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $actions Quick actions data.
+	 *
+	 * @return array
+	 */
+	public function add_cache_quick_action( array $actions ): array {
+		if ( ! current_user_can( 'rocket_purge_cache' ) || ! rocket_valid_key() ) {
+			return $actions;
+		}
+
+		$referer = rawurlencode( admin_url( 'options-general.php?page=' . $this->slug ) . '#dashboard' );
+
+		$actions[] = [
+			'id'           => 'purge_cache',
+			'title'        => __( 'Cache files', 'rocket' ),
+			'description'  => __( 'Clear and preload all the cache files.', 'rocket' ),
+			'button_label' => __( 'Clear and preload', 'rocket' ),
+			'button_url'   => wp_nonce_url( admin_url( 'admin-post.php?action=purge_cache&type=all&_wp_http_referer=' . $referer ), 'purge_cache_all' ),
+		];
+
+		return $actions;
+	}
+
+	/**
 	 * Adds the async attribute to the Wistia script
 	 *
 	 * @since 3.6.1

@@ -30,6 +30,16 @@ class Test_GetDashboardSidebar extends TestCase {
 		Functions\when( 'get_user_meta' )->justReturn( '' );
 
 		$this->render = Mockery::mock( Render::class, [ 'vfs://views', Mockery::mock( PluginFamily::class ) ] )->makePartial();
+
+		// Each sidebar section (card) is rendered around its content: pass the content through.
+		$this->render->shouldReceive( 'generate' )
+			->with( 'partials/sidebar/section', Mockery::type( 'array' ) )
+			->zeroOrMoreTimes()
+			->andReturnUsing(
+				function ( $template, $data ) {
+					return $data['content'];
+				}
+			);
 	}
 
 	public function testShouldReturnEmptyStringWhenNothingIsHooked() {
@@ -48,6 +58,49 @@ class Test_GetDashboardSidebar extends TestCase {
 		$this->render->shouldReceive( 'generate' )->never();
 
 		$this->assertSame( '', $this->render->get_dashboard_sidebar() );
+	}
+
+	public function testShouldRenderTheOffersAndTheQuickActionsInSeparateSections() {
+		$action = [
+			'id'           => 'cache',
+			'title'        => 'Cache files',
+			'description'  => 'Clear',
+			'button_label' => 'Clear',
+			'button_url'   => 'http://example.org/',
+		];
+
+		Functions\when( 'esc_url' )->returnArg();
+
+		Filters\expectApplied( 'rocket_dashboard_sidebar_license' )->once()->andReturn( '' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_promos' )->once()->andReturn( '<p>promo</p>' );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_addons' )->once()->andReturn( [] );
+		Filters\expectApplied( 'rocket_dashboard_sidebar_quick_actions' )->once()->andReturn( [ $action ] );
+
+		$render = Mockery::mock( Render::class, [ 'vfs://views', Mockery::mock( PluginFamily::class ) ] )->makePartial();
+
+		$render->shouldReceive( 'generate' )->once()->ordered()->with( 'partials/sidebar/quick-action-item', array_merge( $action, [ 'disabled' => false ] ) )->andReturn( '<i>action</i>' );
+		$render->shouldReceive( 'generate' )
+			->once()
+			->ordered()
+			->with( 'partials/sidebar/category', [ 'title' => 'Promos', 'content' => '<p>promo</p>' ] )
+			->andReturn( '<div>Promos</div>' );
+		$render->shouldReceive( 'generate' )
+			->once()
+			->ordered()
+			->with( 'partials/sidebar/category', [ 'title' => 'Quick Actions', 'content' => '<i>action</i>', 'class' => 'wpr-Dashboard-sidebar-category--quickActions' ] )
+			->andReturn( '<div>Quick Actions</div>' );
+		$render->shouldReceive( 'generate' )
+			->once()
+			->ordered()
+			->with( 'partials/sidebar/section', [ 'class' => 'wpr-Dashboard-sidebar-section--ribbon', 'content' => '<div>Promos</div>' ] )
+			->andReturn( '<section-ribbon>' );
+		$render->shouldReceive( 'generate' )
+			->once()
+			->ordered()
+			->with( 'partials/sidebar/section', [ 'class' => 'wpr-Dashboard-sidebar-section--quickActions', 'content' => '<div>Quick Actions</div>' ] )
+			->andReturn( '<section-actions>' );
+
+		$this->assertSame( '<section-ribbon><section-actions>', $render->get_dashboard_sidebar() );
 	}
 
 	public function testShouldRenderOnlyTheCategoryWithContent() {

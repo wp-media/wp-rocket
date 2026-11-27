@@ -376,20 +376,55 @@ class Render extends Abstract_Render {
 			$addons .= (string) $this->generate( 'partials/sidebar/addon-card', $card );
 		}
 
+		/**
+		 * Filters the quick actions of the dashboard sidebar.
+		 *
+		 * Each callback appends the data of its action, without any HTML: the action is rendered by WP Rocket.
+		 * An action without a title, or enabled with an invalid button URL, is not rendered.
+		 *
+		 * @since 3.24
+		 *
+		 * @param array $actions {
+		 *     Quick actions data, one array per action.
+		 *
+		 *     @type array $action {
+		 *         @type string $id           Unique action identifier.
+		 *         @type string $title        Action title.
+		 *         @type string $description  Short description displayed under the title.
+		 *         @type string $button_label Button label, defaults to the title.
+		 *         @type string $button_url   Button URL, not needed when the action is disabled.
+		 *         @type bool   $disabled     Whether the button is shown disabled. Default false.
+		 *     }
+		 * }
+		 */
+		$actions = wpm_apply_filters_typed( 'array', 'rocket_dashboard_sidebar_quick_actions', [] );
+
+		$quick_actions = '';
+
+		foreach ( $actions as $action ) {
+			$action = $this->normalize_quick_action( $action );
+
+			if ( empty( $action ) ) {
+				continue;
+			}
+
+			$quick_actions .= (string) $this->generate( 'partials/sidebar/quick-action-item', $action );
+		}
+
 		$categories = [
 			__( 'License', 'rocket' ) => $license,
 			__( 'Promos', 'rocket' )  => $promos,
 			__( 'Add-ons', 'rocket' ) => $addons,
 		];
 
-		$html = '';
+		$offers = '';
 
 		foreach ( $categories as $title => $content ) {
 			if ( '' === trim( $content ) ) {
 				continue;
 			}
 
-			$html .= (string) $this->generate(
+			$offers .= (string) $this->generate(
 				'partials/sidebar/category',
 				[
 					'title'   => $title,
@@ -398,7 +433,77 @@ class Render extends Abstract_Render {
 			);
 		}
 
+		$actions_category = '';
+
+		if ( '' !== trim( $quick_actions ) ) {
+			$actions_category = (string) $this->generate(
+				'partials/sidebar/category',
+				[
+					'title'   => __( 'Quick Actions', 'rocket' ),
+					'content' => $quick_actions,
+					'class'   => 'wpr-Dashboard-sidebar-category--quickActions',
+				]
+			);
+		}
+
+		// Each group is its own card in the sidebar column: the offers with the ribbon, then the Quick Actions.
+		$sections = [
+			'wpr-Dashboard-sidebar-section--ribbon'       => $offers,
+			'wpr-Dashboard-sidebar-section--quickActions' => $actions_category,
+		];
+
+		$html = '';
+
+		foreach ( $sections as $class => $content ) {
+			if ( '' === trim( $content ) ) {
+				continue;
+			}
+
+			$html .= (string) $this->generate(
+				'partials/sidebar/section',
+				[
+					'class'   => $class,
+					'content' => $content,
+				]
+			);
+		}
+
 		return $html;
+	}
+
+	/**
+	 * Normalizes the data of a quick action of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param mixed $action Quick action data.
+	 *
+	 * @return array Normalized data, empty when the action cannot be rendered.
+	 */
+	private function normalize_quick_action( $action ): array {
+		if ( ! is_array( $action ) ) {
+			return [];
+		}
+
+		$title    = trim( (string) ( $action['title'] ?? '' ) );
+		$disabled = ! empty( $action['disabled'] );
+		// A disabled button has no link.
+		$url = $disabled ? '' : trim( (string) ( $action['button_url'] ?? '' ) );
+
+		if ( '' === $title || ( ! $disabled && '' === esc_url( $url ) ) ) {
+			return [];
+		}
+
+		$label = trim( (string) ( $action['button_label'] ?? '' ) );
+
+		return [
+			'id'           => (string) ( $action['id'] ?? '' ),
+			'title'        => $title,
+			'description'  => (string) ( $action['description'] ?? '' ),
+			'button_label' => '' === $label ? $title : $label,
+			'button_url'   => $url,
+			'disabled'     => $disabled,
+		];
 	}
 
 	/**

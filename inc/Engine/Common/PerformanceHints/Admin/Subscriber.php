@@ -73,6 +73,7 @@ class Subscriber implements Subscriber_Interface {
 				[ 'add_clear_performance_hints_menu_item' ],
 				[ 'add_clear_url_performance_hints_menu_item' ],
 			],
+			'rocket_dashboard_sidebar_quick_actions'    => [ 'add_clear_performance_hints_quick_action', 30 ],
 			'admin_notices'                             => [
 				[ 'clean_performance_hint_result' ],
 			],
@@ -155,6 +156,19 @@ class Subscriber implements Subscriber_Interface {
 	 */
 	public function add_clear_performance_hints_menu_item( WP_Admin_Bar $wp_admin_bar ): void {
 		$this->admin_bar->add_clear_performance_menu_item( $wp_admin_bar );
+	}
+
+	/**
+	 * Appends the "Priority elements" action to the quick actions of the Dashboard sidebar.
+	 *
+	 * @since 3.24
+	 *
+	 * @param array $actions Quick actions data.
+	 *
+	 * @return array
+	 */
+	public function add_clear_performance_hints_quick_action( $actions ): array {
+		return $this->admin_bar->add_clear_performance_hints_quick_action( (array) $actions );
 	}
 
 	/**

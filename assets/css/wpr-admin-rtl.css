@@ -35,7 +35,7 @@ Method : SUITCSS (modified)
     border-radius: 4px;
   }
 }
-.wpr-Dashboard-sidebar:before {
+.wpr-Dashboard-sidebar-section--ribbon:before {
   right: auto;
   left: 16px;
 }

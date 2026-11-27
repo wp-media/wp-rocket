@@ -156,18 +156,23 @@ $(document).ready(function(){
 
     /**
      * Hides the Dashboard sidebar category holding a dismissed banner once it has no visible content left,
-     * then the whole sidebar (card and ribbon) once no category is left.
+     * then its section (card and ribbon) once no category is left in it, then the whole sidebar.
      *
      * @param {jQuery} $banner Dismissed banner.
      */
     function wprHideEmptiedSidebarCategory( $banner ) {
         var $category = $banner.closest( '.wpr-Dashboard-sidebar-category' );
+        var $section = $banner.closest( '.wpr-Dashboard-sidebar-section' );
         var $sidebar = $banner.closest( 'aside.wpr-Dashboard-sidebar' );
 
         // The banner is hidden with an animation: wait for it to end before counting what is visible.
         $banner.promise().done( function() {
             if ( $category.length && ! $category.find( ':visible' ).not( '.wpr-Dashboard-sidebar-title' ).length ) {
                 $category.hide();
+            }
+
+            if ( $section.length && ! $section.find( '.wpr-Dashboard-sidebar-category:visible' ).length ) {
+                $section.hide();
             }
 
             if ( $sidebar.length && ! $sidebar.find( '.wpr-Dashboard-sidebar-category:visible' ).length ) {

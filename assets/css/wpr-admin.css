@@ -815,14 +815,19 @@ a:focus, button:focus {
   }
 }
 .wpr-Dashboard-sidebar {
-  position: relative;
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
   flex: 0 0 346px;
   align-self: flex-start;
+}
+.wpr-Dashboard-sidebar-section {
+  position: relative;
   padding: 24px;
   background: #fff;
   border-radius: 4px;
 }
-.wpr-Dashboard-sidebar:before {
+.wpr-Dashboard-sidebar-section--ribbon:before {
   content: "";
   position: absolute;
   top: 0;
@@ -7201,6 +7206,82 @@ div.wpr-tutorial-item {
 }
 .wpr-Dashboard-sidebar .wpr-addonCard-list[hidden] + .wpr-addonCard-button {
   margin-top: 4px;
+}
+.wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-section--quickActions {
+  overflow: hidden;
+}
+.wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-category--quickActions {
+  display: flex;
+  flex-flow: column;
+  gap: 16px;
+}
+.wpr-Dashboard-sidebar .wpr-Dashboard-sidebar-category--quickActions .wpr-Dashboard-sidebar-title {
+  margin: 0;
+  color: #0C0F1F;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction--disabled .wpr-quickAction-title,
+.wpr-Dashboard-sidebar .wpr-quickAction--disabled .wpr-quickAction-description {
+  opacity: 0.5;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction + .wpr-quickAction {
+  padding-top: 16px;
+  border-top: 1px solid #E2E5E9;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction {
+  display: flex;
+  flex-flow: column;
+  gap: 4px;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-title, .wpr-Dashboard-sidebar .wpr-quickAction-description {
+  margin: 0;
+  color: #0C0F1F;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-title {
+  font-weight: 600;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-description {
+  font-weight: 400;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-actions {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 6px 12px;
+  border: 1px solid #D4D9DD;
+  border-radius: 4px;
+  background: #fff;
+  color: #0C0F1F;
+  font-family: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-weight: 600;
+  transition: background-color 200ms ease-out;
+  -webkit-transition: background-color 200ms ease-out;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:hover, .wpr-Dashboard-sidebar .wpr-quickAction-button:focus {
+  background: #F9FAFB;
+  color: #0C0F1F;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:focus-visible {
+  outline: 2px solid #182352;
+  outline-offset: 2px;
+}
+.wpr-Dashboard-sidebar .wpr-quickAction-button:disabled {
+  opacity: 0.5;
+  background: #fff;
+  cursor: not-allowed;
 }
 
 /*-----------------------------------------------*\

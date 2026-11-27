@@ -361,4 +361,100 @@
     .wpr-addonCard-list[hidden] + .wpr-addonCard-button{
         margin-top: $space/2;
     }
+
+    // Quick actions: in its own sidebar section (card), items separated by a thin line.
+    .wpr-Dashboard-sidebar-section--quickActions{
+        overflow: hidden;
+    }
+
+    .wpr-Dashboard-sidebar-category--quickActions{
+        display: flex;
+        flex-flow: column;
+        gap: $space*2;
+
+        .wpr-Dashboard-sidebar-title{
+            margin: 0;
+            color: $cTextPrimary;
+        }
+    }
+
+    // Disabled action: the title and description are greyed out like the button.
+    .wpr-quickAction--disabled{
+        .wpr-quickAction-title,
+        .wpr-quickAction-description{
+            opacity: .5;
+        }
+    }
+
+    .wpr-quickAction + .wpr-quickAction{
+        padding-top: $space*2;
+        border-top: 1px solid $cGreyLighter1;
+    }
+
+    .wpr-quickAction{
+        display: flex;
+        flex-flow: column;
+        gap: $space/2;
+
+        &-title,
+        &-description{
+            margin: 0;
+            color: $cTextPrimary;
+            @include font-size(14,21);
+        }
+
+        &-title{
+            // Figma: SF Pro Semibold (590). Chrome renders 501-599 close to bold with the system font; 600 picks the real Semibold.
+            font-weight: 600;
+        }
+
+        &-description{
+            font-weight: 400;
+        }
+
+        &-actions{
+            display: flex;
+            align-items: flex-start;
+            padding-top: $space;
+        }
+
+        // Neutral button: white, thin grey border, label in the text colour.
+        &-button{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            height: $space*4;
+            padding: 6px $space*1.5;
+            border: 1px solid $cGreyLighter2;
+            border-radius: 4px;
+            background: $cWhite;
+            color: $cTextPrimary;
+            font-family: inherit;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+            @include font-size(14,21);
+            font-weight: 600;
+            @include transition(background-color, 200ms);
+
+            &:hover,
+            &:focus{
+                background: $cGreyLight3;
+                color: $cTextPrimary;
+            }
+
+            &:focus-visible{
+                outline: 2px solid $cActionPrimary;
+                outline-offset: 2px;
+            }
+
+            // Disabled (e.g. Used CSS while Remove Unused CSS is off), as the other disabled buttons of the plugin.
+            &:disabled{
+                opacity: .5;
+                background: $cWhite;
+                cursor: not-allowed;
+            }
+        }
+    }
 }
