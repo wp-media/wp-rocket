@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Fixtures\inc\Engine\AJAX\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Optimization\LazyRenderContent\AJAX\Controller;
 
 use Brain\Monkey\Filters;
 use Brain\Monkey\Functions;

@@ -6,17 +6,27 @@ use ReflectionException;
 
 Trait IsolateHookTrait {
 
-	protected $original_wp_filter;
+	/**
+	 * Callbacks captured per hook name, so a test can isolate several hooks at once.
+	 *
+	 * @var array
+	 */
+	protected $original_wp_filter = [];
 
-	protected $original_wp_priorities;
+	/**
+	 * Priorities captured per hook name.
+	 *
+	 * @var array
+	 */
+	protected $original_wp_priorities = [];
 
 	protected function unregisterAllCallbacksExceptMulti( $event_name, $methods = [] ) {
 		global $wp_filter;
-		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
+		$this->original_wp_filter[ $event_name ] = $wp_filter[ $event_name ]->callbacks;
 		$wp_filter[ $event_name ]->callbacks = [];
 
 		foreach ( $methods as $priority => $method_name ) {
-			foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
+			foreach ( $this->original_wp_filter[ $event_name ][ $priority ] as $key => $config ) {
 
 				// Skip if not this tests callback.
 				if ( substr( $key, - strlen( $method_name ) ) !== $method_name ) {
@@ -34,13 +44,13 @@ Trait IsolateHookTrait {
 			$wp_hooks = $wp_filter[ $event_name ];
 			$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
 
-			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
+			$this->original_wp_priorities[ $event_name ] = $priorities_property->getValue($wp_hooks);
 			$priorities = $priorities_property->getValue($wp_hooks);
 		} catch (ReflectionException $e) {
 			return;
 		}
 
-		foreach ($this->original_wp_priorities as $priority) {
+		foreach ($this->original_wp_priorities[ $event_name ] as $priority) {
 			if ( key_exists($priority, $wp_filter[ $event_name ]->callbacks)) {
 				continue;
 			}
@@ -71,20 +81,19 @@ Trait IsolateHookTrait {
 		global $wp_filter;
 
 		if ( ! isset( $wp_filter[ $event_name ] ) ) {
-			$this->original_wp_filter     = null;
-			$this->original_wp_priorities = null;
+			unset( $this->original_wp_filter[ $event_name ], $this->original_wp_priorities[ $event_name ] );
 
 			return;
 		}
 
 		$wp_hooks                 = $wp_filter[ $event_name ];
-		$this->original_wp_filter = $wp_hooks->callbacks;
+		$this->original_wp_filter[ $event_name ] = $wp_hooks->callbacks;
 		$wp_hooks->callbacks      = [];
 
 		try {
 			$priorities_property = $this->get_reflective_property( 'priorities', $wp_hooks );
 
-			$this->original_wp_priorities = $priorities_property->getValue( $wp_hooks );
+			$this->original_wp_priorities[ $event_name ] = $priorities_property->getValue( $wp_hooks );
 			$priorities_property->setValue( $wp_hooks, [] );
 		} catch ( ReflectionException $e ) {
 			return;
@@ -93,10 +102,10 @@ Trait IsolateHookTrait {
 
 	protected function unregisterAllCallbacksExcept( $event_name, $method_name, $priority = 10 ) {
 		global $wp_filter;
-		$this->original_wp_filter = $wp_filter[ $event_name ]->callbacks;
+		$this->original_wp_filter[ $event_name ] = $wp_filter[ $event_name ]->callbacks;
 
 		$kept = [];
-		foreach ( $this->original_wp_filter[ $priority ] as $key => $config ) {
+		foreach ( $this->original_wp_filter[ $event_name ][ $priority ] as $key => $config ) {
 
 			// Skip if not this tests callback.
 			if ( substr( $key, - strlen( $method_name ) ) !== $method_name ) {
@@ -117,13 +126,13 @@ Trait IsolateHookTrait {
 			$wp_hooks = $wp_filter[ $event_name ];
 			$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
 
-			$this->original_wp_priorities = $priorities_property->getValue($wp_hooks);
+			$this->original_wp_priorities[ $event_name ] = $priorities_property->getValue($wp_hooks);
 			$priorities = $priorities_property->getValue($wp_hooks);
 		} catch (ReflectionException $e) {
 			return;
 		}
 
-		foreach ($this->original_wp_priorities as $priority) {
+		foreach ($this->original_wp_priorities[ $event_name ] as $priority) {
 			if ( key_exists($priority, $wp_filter[ $event_name ]->callbacks)) {
 				continue;
 			}
@@ -140,18 +149,23 @@ Trait IsolateHookTrait {
 	protected function restoreWpHook($event_name ) {
 		global $wp_filter;
 
-		// Nothing was captured (hook was not registered when isolated): nothing to restore.
-		if ( null === $this->original_wp_filter || ! isset( $wp_filter[ $event_name ] ) ) {
+		// Nothing was captured (hook was not registered when isolated, or already restored): nothing to restore.
+		if ( ! isset( $this->original_wp_filter[ $event_name ] ) || ! isset( $wp_filter[ $event_name ] ) ) {
 			return;
 		}
 
-		$wp_filter[ $event_name ]->callbacks = $this->original_wp_filter;
-		if (! $this->original_wp_priorities) {
+		$wp_filter[ $event_name ]->callbacks = $this->original_wp_filter[ $event_name ];
+		$priorities                          = $this->original_wp_priorities[ $event_name ] ?? null;
+
+		// Forget the snapshot once restored, so a later safety-net restore can't re-apply stale callbacks.
+		unset( $this->original_wp_filter[ $event_name ], $this->original_wp_priorities[ $event_name ] );
+
+		if ( ! $priorities ) {
 			return;
 		}
 		$wp_hooks = $wp_filter[ $event_name ];
 		$priorities_property = $this->get_reflective_property('priorities', $wp_hooks);
 
-		$priorities_property->setValue($wp_hooks, $this->original_wp_priorities);
+		$priorities_property->setValue($wp_hooks, $priorities);
 	}
 }

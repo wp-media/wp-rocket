@@ -29,11 +29,12 @@ class Test_CronCleanRows extends TestCase {
 	public function set_up() {
 		parent::set_up();
 
-		self::installPreloadCacheTable();
+		// Isolate the permalink change from unrelated subscribers querying uninstalled tables.
+		$this->unregisterAllCallbacks( 'permalink_structure_changed' );
 	}
 
 	public function tear_down() {
-		self::uninstallPreloadCacheTable();
+		$this->restoreWpHook( 'permalink_structure_changed' );
 
 		remove_filter( 'rocket_saas_delete_interval', [ $this, 'set_rucss_delay' ] );
 		remove_filter( 'pre_get_rocket_option_remove_unused_css', [ $this, 'set_rucss_option' ] );

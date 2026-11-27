@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\Beacon\Beacon;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\ActionSchedulerSubscriber;
 
 use WP_Rocket\Engine\Admin\ActionSchedulerSubscriber;
 use WP_Rocket\Tests\Unit\TestCase;

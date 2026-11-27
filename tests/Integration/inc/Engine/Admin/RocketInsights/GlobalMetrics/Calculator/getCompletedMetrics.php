@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\Database\Queries\RocketInsights;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\RocketInsights\GlobalMetrics\Calculator;
 
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Tests\Integration\DBTrait;

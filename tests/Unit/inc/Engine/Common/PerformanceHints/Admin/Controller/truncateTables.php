@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
+namespace WP_Rocket\Tests\Unit\inc\Engine\Common\PerformanceHints\Admin\Controller;
 
 use Mockery;
 use WP_Rocket\Tests\Unit\TestCase;

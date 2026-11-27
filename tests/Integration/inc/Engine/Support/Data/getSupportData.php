@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace WP_Rocket\Tests\Integration\inc\Engine\Support\Data;
 
@@ -18,6 +19,8 @@ class Test_GetSupportData extends TestCase {
 		parent::set_up();
 
 		global $wp_version;
+
+		$this->rocket_version = '3.7.5';
 
 		add_filter( 'rocket_above_the_fold_optimization', '__return_true' );
 		add_filter( 'rocket_lrc_optimization', '__return_true' );
@@ -43,19 +46,15 @@ class Test_GetSupportData extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $options_array, $expected ) {
+	public function testShouldReturnExpected( $config, $expected ) {
 		global $wp_version;
 
-		$this->rocket_version = '3.7.5';
-
-		$data       = new Data( new Options_Data( $options_array ) );
 		$wp_version = '5.5';
 
 		activate_plugin( 'hello.php' );
 
-		$this->assertSame(
-			$expected,
-			$data->get_support_data()
-		);
+		$data = new Data( new Options_Data( $config ) );
+
+		$this->assertSame( $expected, $data->get_support_data() );
 	}
 }

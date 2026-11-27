@@ -1,0 +1,125 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\Support\Subscriber;
+
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Admin\Options_Data;
+use WP_Rocket\Engine\License\API\User;
+use WP_Rocket\Engine\Support\Meta;
+use WP_Rocket\Engine\Support\Rest;
+use WP_Rocket\Engine\Support\Subscriber;
+use WP_Rocket\Tests\Unit\TestCase;
+
+/**
+ * Test class covering \WP_Rocket\Engine\Support\Subscriber::get_column_config
+ *
+ * @group Support
+ */
+class TestGetColumnConfig extends TestCase {
+	private $options;
+	private $user;
+	private $subscriber;
+
+	public function set_up() {
+		parent::set_up();
+
+		$this->options     = Mockery::mock( Options_Data::class );
+		$this->user    = Mockery::mock( User::class );
+		$this->subscriber  = new Subscriber( Mockery::mock( Rest::class ), Mockery::mock( Meta::class ), $this->options, $this->user );
+
+		Functions\when( '__' )->returnArg();
+		Functions\when( '_x' )->returnArg();
+		Functions\when( 'rocket_get_external_url' )->justReturn( 'https://wp-rocket.me/contact/' );
+		Functions\when( 'get_rocket_documentation_url' )->justReturn( 'https://docs.wp-rocket.me/?utm_source=wp_plugin&utm_medium=wp_rocket' );
+		Functions\when( 'rocket_valid_key' )->justReturn( true );
+		$this->user->shouldReceive( 'can_use_ai' )->andReturn( true )->byDefault();
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		$blocked = false === ( $config['valid_key'] ?? true )
+			|| false === ( $config['can_use_ai'] ?? true )
+			|| false === ( $config['ai_filter_available'] ?? true )
+			|| false === ( $config['filter_available'] ?? true );
+
+		if ( $blocked ) {
+			// The assistant check comes first, so no option is read when it fails.
+			$this->options->shouldNotReceive( 'get' );
+		} else {
+			$this->options->shouldReceive( 'get' )->with( 'consumer_key', '' )->andReturn( $config['consumer_key'] );
+			$this->options->shouldReceive( 'get' )->with( 'consumer_email', '' )->andReturn( $config['consumer_email'] );
+		}
+
+		if ( ! array_key_exists( 'can_use_ai', $config ) ) {
+			// byDefault from set_up applies.
+		} elseif ( null === $config['can_use_ai'] ) {
+			$this->user->shouldNotReceive( 'can_use_ai' );
+		} else {
+			$this->user->shouldReceive( 'can_use_ai' )->andReturn( $config['can_use_ai'] );
+		}
+
+		if ( isset( $config['ai_filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_ai_assistant_available' )->once()->with( true )->andReturn( $config['ai_filter_available'] );
+		}
+
+		if ( isset( $config['filter_available'] ) ) {
+			Filters\expectApplied( 'rocket_support_chat_available' )->once()->with( true )->andReturn( $config['filter_available'] );
+		}
+
+		if ( isset( $config['valid_key'] ) ) {
+			Functions\when( 'rocket_valid_key' )->justReturn( $config['valid_key'] );
+		}
+
+		if ( isset( $config['constants'] ) ) {
+			$constants = $config['constants'];
+			Functions\when( 'rocket_get_constant' )->alias(
+				function ( $name, $default = null ) use ( $constants ) {
+					return array_key_exists( $name, $constants ) ? $constants[ $name ] : $default;
+				}
+			);
+		}
+
+		$result = $this->subscriber->get_column_config();
+
+		if ( $expected['is_empty'] ) {
+			$this->assertSame( [], $result );
+			return;
+		}
+
+		foreach ( $expected['fields'] as $key => $value ) {
+			switch ( $key ) {
+				case 'grnd_license_key':
+					$this->assertSame( $value, $result['grnd']['license_key'], 'grnd.license_key' );
+					break;
+				case 'grnd_issuer_url':
+					$this->assertSame( $value, $result['grnd']['issuer_url'], 'grnd.issuer_url' );
+					break;
+				case 'grnd_password_label':
+					$this->assertSame( $value, $result['grnd']['password_label'], 'grnd.password_label' );
+					break;
+				case 'grnd_send_user_ref':
+					$this->assertTrue( $result['grnd']['send_user_ref'], 'grnd.send_user_ref' );
+					break;
+				case 'column_start_on_open':
+					$this->assertTrue( $result['column']['startOnOpen'], 'column.startOnOpen' );
+					break;
+				case 'column_persist':
+					$this->assertFalse( $result['column']['persist'], 'column.persist' );
+					break;
+				case 'show_agent_selector':
+					$this->assertSame( $value, $result['layout']['showAgentSelector'], 'layout.showAgentSelector' );
+					break;
+				case 'show_version':
+					$this->assertSame( $value, $result['layout']['showVersion'], 'layout.showVersion' );
+					break;
+				default:
+					$this->assertSame( $value, $result[ $key ], $key );
+			}
+		}
+	}
+}

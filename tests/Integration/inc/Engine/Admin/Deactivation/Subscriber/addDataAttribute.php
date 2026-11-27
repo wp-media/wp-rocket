@@ -1,6 +1,6 @@
 <?php
 
-namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Deactivation\DeactivationIntent;
+namespace WP_Rocket\Tests\Integration\inc\Engine\Admin\Deactivation\Subscriber;
 
 use WP_Rocket\Tests\Integration\TestCase;
 

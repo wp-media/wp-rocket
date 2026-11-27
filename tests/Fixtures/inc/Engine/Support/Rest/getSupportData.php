@@ -2,7 +2,7 @@
 
 return [
 	'testShouldReturnSupportArrayWhenCorrectReferer' => [
-		'support_data' => [
+		'config' => [
 			'Website'                  => 'http://example.org',
 			'WordPress Version'        => '5.5',
 			'WP Rocket Version'        => '3.7.5',

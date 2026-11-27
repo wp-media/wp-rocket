@@ -1,0 +1,87 @@
+<?php
+declare(strict_types=1);
+
+namespace WP_Rocket\Tests\Unit\inc\Engine\Admin\RocketInsights\Render;
+
+use Brain\Monkey\Filters;
+use Brain\Monkey\Functions;
+use Mockery;
+use WP_Rocket\Engine\Admin\Beacon\Beacon;
+use WP_Rocket\Engine\Admin\RocketInsights\Context\Context;
+use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
+use WP_Rocket\Engine\Admin\RocketInsights\MetricFormatter;
+use WP_Rocket\Engine\Admin\RocketInsights\Render;
+use WP_Rocket\Tests\Unit\TestCase;
+
+/**
+ * Renders the real urls-table template through Render::render_rocket_insights_urls_table().
+ *
+ * @covers \WP_Rocket\Engine\Admin\RocketInsights\Render::render_rocket_insights_urls_table
+ *
+ * @group RocketInsights
+ * @runTestsInSeparateProcesses
+ * @preserveGlobalState disabled
+ */
+class Test_RenderRocketInsightsUrlsTable extends TestCase {
+	protected function setUp(): void {
+		parent::setUp();
+
+		Functions\stubEscapeFunctions();
+		Functions\stubTranslationFunctions();
+		Functions\when( 'esc_url' )->returnArg();
+		Functions\when( 'wp_strip_all_tags' )->alias(
+			function ( $text ) {
+				return trim( strip_tags( $text ) );
+			}
+		);
+
+		$filesystem = Mockery::mock();
+		$filesystem->shouldReceive( 'is_readable' )->andReturn( true );
+		Functions\when( 'rocket_direct_filesystem' )->justReturn( $filesystem );
+	}
+
+	/**
+	 * @dataProvider configTestData
+	 */
+	public function testShouldDoExpected( $config, $expected ): void {
+		// The assistant filter does not decide whether "Need Help?" is printed.
+		Filters\expectApplied( 'rocket_ai_assistant_available' )->never();
+
+		$context = Mockery::mock( Context::class );
+		$beacon  = Mockery::mock( Beacon::class );
+
+		$context->shouldReceive( 'is_adding_page_allowed' )->andReturn( true );
+		$beacon->shouldReceive( 'get_suggest' )->with( 'rocket_insights' )->andReturn(
+			[
+				'id'  => 'abc',
+				'url' => 'https://docs.example.org/help',
+			]
+		);
+
+		/** @var \Mockery\MockInterface&Render $render The add button template is not part of this test. */
+		$render = Mockery::mock(
+			Render::class,
+			[ dirname( __DIR__, 7 ) . '/views/settings', $context, $beacon, $this->createMock( Query::class ), $this->createMock( MetricFormatter::class ) ]
+		)->makePartial();
+		$render->shouldReceive( 'render_add_page_btn' )->andReturnNull();
+
+		ob_start();
+		$render->render_rocket_insights_urls_table(
+			[
+				'items'             => [],
+				'upgrade_url'       => 'https://example.org/upgrade',
+				'show_quota_banner' => false,
+			]
+		);
+
+		$html = (string) ob_get_clean();
+
+		foreach ( $expected['contains'] as $string ) {
+			$this->assertStringContainsString( $string, $html );
+		}
+
+		foreach ( $expected['not_contains'] as $string ) {
+			$this->assertStringNotContainsString( $string, $html );
+		}
+	}
+}

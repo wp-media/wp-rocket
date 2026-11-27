@@ -28,8 +28,21 @@ class GetUserData extends TestCase {
 	/**
 	 * @dataProvider configTestData
 	 */
-	public function testShouldReturnExpected( $config, $expected ) {
+	public function testShouldReturnExpected( $config, $expected, $rejected = false ) {
 		$this->stubTranslationFunctions();
+
+		// Declared first: the broader set_transient / delete_transient expectations below would match these calls otherwise.
+		$valid_code = false === $config['transient']
+			&& is_array( $config['response'] )
+			&& in_array( $config['response']['response']['code'], [ 200, 202 ], true );
+
+		if ( $valid_code ) {
+			Functions\expect( 'delete_transient' )->once()->with( UserClient::LICENCE_REJECTED_TRANSIENT );
+		}
+
+		if ( $rejected ) {
+			Functions\expect( 'set_transient' )->once()->with( UserClient::LICENCE_REJECTED_TRANSIENT, 1, DAY_IN_SECONDS );
+		}
 
 		Functions\expect( 'get_transient' )
 			->atLeast()->once()

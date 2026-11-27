@@ -3,7 +3,6 @@
 namespace WP_Rocket\Tests\Unit\inc\classes\Buffer\Cache;
 
 use Mockery;
-use ReflectionMethod;
 use WP_Rocket\Buffer\Cache;
 use WP_Rocket\Buffer\Config;
 use WP_Rocket\Buffer\Tests;
@@ -52,10 +51,7 @@ class Test_GetRequestCachePath extends TestCase {
 	}
 
 	protected function callGetRequestCachePath( array $cookies ) {
-		$method = new ReflectionMethod( Cache::class, 'get_request_cache_path' );
-		$method->setAccessible( true );
-
-		return $method->invoke( $this->cache, $cookies );
+		return $this->get_reflective_method( 'get_request_cache_path', Cache::class )->invoke( $this->cache, $cookies );
 	}
 
 	protected function companionCookieValue( string $username, int $expiration, string $secret = self::SECRET ): string {
