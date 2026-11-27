@@ -386,7 +386,7 @@ class Subscriber extends AbstractWebp implements Subscriber_Interface {
 			$hosts = array_flip( $hosts );
 		}
 
-		if ( isset( $hosts[ $url_host ] ) ) {
+		if ( null !== $url_host && isset( $hosts[ $url_host ] ) ) {
 			if ( ! isset( $site_host ) ) {
 				$site_host = wp_parse_url( site_url( '/' ), PHP_URL_HOST );
 			}
