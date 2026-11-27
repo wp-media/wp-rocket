@@ -45,6 +45,11 @@ class PluginResolver {
 	 * @return array<string>
 	 */
 	private static function filter_active_registry( array $registry ): array {
+		// is_plugin_active() isn't loaded on the frontend before WP 6.8, but WP Rocket supports 5.8+.
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php'; // @phpstan-ignore-line
+		}
+
 		$active = [];
 
 		foreach ( $registry as $id => $class ) {
