@@ -184,5 +184,94 @@ return [
 				'code' => 200,
 			],
 		],
+		'shouldPauseWhenFeatureDisabled' => [
+			'config' => [
+				'url'                           => 'https://example.com',
+				'url_trailing'                  => 'https://example.com/',
+				'url_filtered'                  => 'https://example.com/',
+				'api_url'                       => 'https://api.example.com/',
+				'email'                         => 'test@example.com',
+				'key'                           => 'test-key-123',
+				'options'                       => [],
+				'custom_args'                   => [],
+				'response'                      => [
+					'response' => [
+						'code'    => 503,
+						'message' => 'Service Unavailable',
+					],
+					'body'     => '{"code":503,"error":"Feature Disabled","message":"Rocket Insights submissions are temporarily disabled. Please retry later."}',
+				],
+				'request_uri'                   => 'https://api.example.com/performance/',
+				'request_body_json'             => '{"email":"test@example.com","key":"test-key-123","url":"https:\/\/example.com\/","is_priority":false,"credentials":{"wpr_email":"test@example.com","wpr_key":"test-key-123"}}',
+				'args'                          => [
+					'body'    => '{"email":"test@example.com","key":"test-key-123","url":"https:\/\/example.com\/","is_priority":false,"credentials":{"wpr_email":"test@example.com","wpr_key":"test-key-123"}}',
+					'headers' => [
+						'Content-Type' => 'application/json',
+					],
+					'method'  => 'POST',
+				],
+				'body'                          => '{"code":503,"error":"Feature Disabled","message":"Rocket Insights submissions are temporarily disabled. Please retry later."}',
+				'feature_disabled'              => true,
+				'retry_after'                   => '120',
+				'expected_delay'                => 120,
+			],
+			'expected' => [
+				'code'    => 503,
+				'message' => 'Feature Disabled',
+			],
+		],
+		'shouldNotSendRequestWhenPaused' => [
+			'config' => [
+				'url'            => 'https://example.com',
+				'url_trailing'   => 'https://example.com/',
+				'url_filtered'   => 'https://example.com/',
+				'email'          => 'test@example.com',
+				'key'            => 'test-key-123',
+				'options'        => [],
+				'custom_args'    => [],
+				'blocked_offset' => 120,
+				'request_count'  => 0,
+			],
+			'expected' => [
+				'code'    => 503,
+				'message' => 'Feature Disabled',
+			],
+		],
+		'shouldKeepFailurePathWhenPlain503' => [
+			'config' => [
+				'url'                           => 'https://example.com',
+				'url_trailing'                  => 'https://example.com/',
+				'url_filtered'                  => 'https://example.com/',
+				'api_url'                       => 'https://api.example.com/',
+				'email'                         => 'test@example.com',
+				'key'                           => 'test-key-123',
+				'options'                       => [],
+				'custom_args'                   => [],
+				'response'                      => [
+					'response' => [
+						'code'    => 503,
+						'message' => 'Service Unavailable',
+					],
+					'body'     => '{"code":503,"error":"Service Unavailable"}',
+				],
+				'request_uri'                   => 'https://api.example.com/performance/',
+				'request_body_json'             => '{"email":"test@example.com","key":"test-key-123","url":"https:\/\/example.com\/","is_priority":false,"credentials":{"wpr_email":"test@example.com","wpr_key":"test-key-123"}}',
+				'args'                          => [
+					'body'    => '{"email":"test@example.com","key":"test-key-123","url":"https:\/\/example.com\/","is_priority":false,"credentials":{"wpr_email":"test@example.com","wpr_key":"test-key-123"}}',
+					'headers' => [
+						'Content-Type' => 'application/json',
+					],
+					'method'  => 'POST',
+				],
+				'body'                          => '{"code":503,"error":"Service Unavailable"}',
+				'is_succeed'                    => false,
+				'code'                          => 503,
+				'message'                       => 'Service Unavailable',
+			],
+			'expected' => [
+				'code'    => 503,
+				'message' => 'Service Unavailable',
+			],
+		],
 	],
 ];

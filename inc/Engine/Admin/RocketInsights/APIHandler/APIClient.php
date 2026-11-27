@@ -16,6 +16,15 @@ class APIClient extends AbstractAPIClient implements LoggerAwareInterface {
 	use LoggerAware;
 
 	/**
+	 * Transient key storing the end of the "Feature Disabled" pause.
+	 *
+	 * @return string
+	 */
+	protected function get_feature_disabled_transient_key(): string {
+		return 'wp_rocket_rocket_insights_feature_disabled';
+	}
+
+	/**
 	 * SaaS Director API path for performance tests.
 	 *
 	 * @var string

@@ -45,4 +45,33 @@ return [
 			],
 		],
 	],
+	'shouldPauseWhenFeatureDisabled'               => [
+		'config'   => [
+			'enabled'            => true,
+			'url'                => 'http://example.org/sync-feature-disabled',
+			'is_mobile'          => false,
+			'additional_details' => [],
+			'http'               => [
+				'https://saas.wp-rocket.me/performance/' => [
+					'response' => [
+						'code'    => 503,
+						'message' => 'Service Unavailable',
+					],
+					'headers'  => [ 'retry-after' => '120' ],
+					'body'     => '{"code":503,"error":"Feature Disabled","message":"Rocket Insights submissions are temporarily disabled. Please retry later."}',
+				],
+			],
+		],
+		'expected' => [
+			'result_type'      => 'int',
+			'feature_disabled' => [
+				'delay'      => 120,
+				'second_url' => 'http://example.org/sync-feature-disabled-second',
+			],
+			'db_check'         => [
+				'exists' => true,
+				'status' => 'to-submit',
+			],
+		],
+	],
 ];

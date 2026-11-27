@@ -31,15 +31,50 @@ class Test_AddToQueue extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldReturnAsExpected($config, $expected) {
-		Functions\expect('add_query_arg')->with([ 'nowprocket' => 1 ], $config['url'])->andReturn($config['url']);
-		Functions\expect('rocket_get_constant')->with('WP_ROCKET_SAAS_API_URL', false)->andReturn($config['api_url']);
-		$this->options->expects()->get('consumer_email', '')->andReturn($config['email']);
-		$this->options->expects()->get('consumer_key', '')->andReturn($config['key']);
-		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->andReturn($config['response']);
+		$sent = $config['request_count'] ?? 1;
 
-		$this->configureCheckResponse($config);
-		$this->configeAuthorized($config);
+		$transients = [
+			'wp_rocket_rucss_feature_disabled' => isset($config['blocked_offset']) ? time() + $config['blocked_offset'] : false,
+			'wp_rocket_rucss_errors_count'     => $config['errors_count'] ?? false,
+		];
+		Functions\when('get_transient')->alias(fn($key) => $transients[$key] ?? false);
+
+		Functions\expect('add_query_arg')->with([ 'nowprocket' => 1 ], $config['url'])->andReturn($config['url']);
+		Functions\expect('rocket_get_constant')->with('WP_ROCKET_SAAS_API_URL', false)->zeroOrMoreTimes()->andReturn($config['api_url']);
+		$this->options->shouldReceive('get')->with('consumer_email', '')->times($sent)->andReturn($config['email']);
+		$this->options->shouldReceive('get')->with('consumer_key', '')->times($sent)->andReturn($config['key']);
+		Functions\expect('wp_remote_request')->with($config['request_uri'], $config['args'])->times( $sent )->andReturn($config['response'] ?? []);
+		Functions\expect('wp_remote_retrieve_body')->with($config['response'] ?? [])->zeroOrMoreTimes()->andReturn($config['body'] ?? '');
+
+		if (! $sent) {
+			Functions\expect('set_transient')->never();
+		} elseif (isset($config['feature_disabled'])) {
+			$this->configureFeatureDisabled($config);
+		} else {
+			$this->configureCheckResponse($config);
+			$this->configeAuthorized($config);
+		}
+
 		$this->assertEquals($expected, $this->client->add_to_queue($config['url'], $config['options']));
+	}
+
+	protected function configureFeatureDisabled($config) {
+		Functions\expect('wp_remote_retrieve_header')->with($config['response'], 'retry-after')->andReturn($config['retry_after'] ?? '');
+		Functions\expect('wp_remote_retrieve_response_code')->never();
+
+		if (! $config['feature_disabled']) {
+			Functions\expect('set_transient')->never();
+			return;
+		}
+
+		$delay = $config['expected_delay'];
+		Functions\expect('set_transient')->once()->with(
+			'wp_rocket_rucss_feature_disabled',
+			Mockery::on(function ($value) use ($delay) {
+				return abs($value - (time() + $delay)) <= 2;
+			}),
+			$delay
+		);
 	}
 
 	protected function configeAuthorized($config) {
@@ -51,15 +86,15 @@ class Test_AddToQueue extends TestCase {
 	}
 
 	protected function configureCheckResponse($config) {
+		Functions\expect('wp_remote_retrieve_header')->never();
 		Functions\expect('wp_remote_retrieve_response_code')->with($config['response'])->andReturn($config['code']);
 		if(! $config['is_succeed']) {
-			Functions\expect('get_transient')->with('wp_rocket_rucss_errors_count')->andReturn($config['errors_count']);
 			Functions\expect('set_transient')->with('wp_rocket_rucss_errors_count', $config['errors_count'] + 1, 5 * MINUTE_IN_SECONDS);
 			Functions\expect('wp_remote_retrieve_response_message')->with($config['response'])->andReturn($config['message']);
 			return;
 		}
 		Functions\expect('delete_transient')->with('wp_rocket_rucss_errors_count');
-		Functions\expect('wp_remote_retrieve_body')->with($config['response'])->andReturn($config['body']);
+		Functions\expect('set_transient')->never();
 		Functions\expect('wp_parse_args')->with($config['to_merge'], $config['default'])->andReturn($config['merged']);
 	}
 }
