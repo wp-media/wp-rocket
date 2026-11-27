@@ -94,6 +94,10 @@ $rocket_metric_definitions = $data->metric_definitions ?? [];
 				'class'                       => 'wpr-ri-action wpr-ri-report',
 				'data-rocket-insights-row-id' => $data->id,
 			],
+			'icon'       => [
+				'data'   => '<span class="icon-frame"></span>',
+				'before' => false,
+			],
 		];
 		$rocket_report_url_icon_state         = '';
 		if ( empty( $data->report_url ) ) {
@@ -176,7 +180,6 @@ $rocket_metric_definitions = $data->metric_definitions ?? [];
 						$rocket_insights_show_report_btn_args
 					);
 					?>
-					<div class="icon-frame"></div>
 				</div>
 			</div>
 		</div>
