@@ -19,8 +19,16 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 
 	private $ignored_params = [];
 
+	/**
+	 * Language home URLs returned by the rocket_get_i18n_uri filter.
+	 *
+	 * @var array
+	 */
+	private $i18n_uri = [];
+
 	public function tear_down() {
 		remove_filter( 'rocket_cache_ignored_parameters', [ $this, 'set_ignored_params' ], PHP_INT_MAX );
+		remove_filter( 'rocket_get_i18n_uri', [ $this, 'set_i18n_uri' ], PHP_INT_MAX );
 
 		parent::tear_down();
 	}
@@ -35,6 +43,9 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 
 		$this->ignored_params = $config['ignored_params'] ?? [];
 		add_filter( 'rocket_cache_ignored_parameters', [ $this, 'set_ignored_params' ], PHP_INT_MAX );
+
+		$this->i18n_uri = $config['i18n_uri'] ?? [];
+		add_filter( 'rocket_get_i18n_uri', [ $this, 'set_i18n_uri' ], PHP_INT_MAX );
 
 		foreach ( $config['create'] ?? [] as $file ) {
 			$dir = dirname( $file );
@@ -58,9 +69,22 @@ class Test_RocketCleanFiles extends FilesystemTestCase {
 
 		$this->checkEntriesDeleted( $expected['cleaned'] );
 		$this->checkShouldNotDeleteEntries();
+
+		foreach ( $expected['kept'] ?? [] as $entry ) {
+			$this->assertTrue( $this->filesystem->exists( $entry ), "{$entry} should not be deleted." );
+		}
 	}
 
 	public function set_ignored_params() {
 		return $this->ignored_params;
+	}
+
+	/**
+	 * Returns the language home URLs for the test.
+	 *
+	 * @return array
+	 */
+	public function set_i18n_uri() {
+		return $this->i18n_uri;
 	}
 }

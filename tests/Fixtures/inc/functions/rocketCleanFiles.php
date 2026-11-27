@@ -199,6 +199,120 @@ return [
 				],
 			],
 		],
+		'shouldDeleteOnlyHomeFilesWhenOnlyIgnoredParameters' => [
+			'urls'     => [
+				'http://example.org/?utm_source=test',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [ 'utm_source' => 1 ],
+				'i18n_uri'       => [ 'http://example.org/' ],
+			],
+			'expected' => [
+				'kept'    => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/de/index.html',
+				],
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip' => null,
+				],
+			],
+		],
+		'shouldDeleteOnlyHomeFilesWhenSeveralIgnoredParameters' => [
+			'urls'     => [
+				'http://example.org/?utm_source=test&fbclid=abc&gclid=xyz',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [
+					'utm_source' => 1,
+					'fbclid'     => 1,
+					'gclid'      => 1,
+				],
+				'i18n_uri'       => [ 'http://example.org/' ],
+			],
+			'expected' => [
+				'kept'    => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/blog/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/lorem-ipsum/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/de/index.html',
+				],
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/index.html_gzip' => null,
+				],
+			],
+		],
+		'shouldDeleteOnlyLanguageHomeFilesWhenOnlyIgnoredParameters' => [
+			'urls'     => [
+				'http://example.org/fr/?fbclid=abc',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [ 'fbclid' => 1 ],
+				'i18n_uri'       => [ 'http://example.org/', 'http://example.org/fr/' ],
+			],
+			'expected' => [
+				'kept'    => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/lorem-ipsum/index.html',
+				],
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index-mobile.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/fr/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/index.html_gzip' => null,
+				],
+			],
+		],
+		'shouldDeleteOnlyLanguageHomeFilesWhenEncodedPathAndIgnoredParameters' => [
+			'urls'     => [
+				'http://example.org/%66r/?fbclid=abc',
+			],
+			'configs'  => [
+				'post_id'        => 0,
+				'ignored_params' => [ 'fbclid' => 1 ],
+				'i18n_uri'       => [ 'http://example.org/', 'http://example.org/fr/' ],
+			],
+			'expected' => [
+				'kept'    => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org/de/index.html',
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/lorem-ipsum/index.html',
+				],
+				'cleaned' => [
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index-mobile.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org/fr/index-mobile.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-wpmedia-123456/fr/index.html_gzip' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/index.html' => null,
+					'vfs://public/wp-content/cache/wp-rocket/example.org-tester-987654/fr/index.html_gzip' => null,
+				],
+			],
+		],
 		'shouldDeleteSortedQueryStringDirWithoutIgnored'   => [
 			'urls'     => [
 				'http://example.org/?utm_source=test&size=xl&color=red',
