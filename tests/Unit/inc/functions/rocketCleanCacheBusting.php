@@ -29,6 +29,7 @@ class Test_RocketCleanCacheBusting extends FilesystemTestCase {
 	 */
 	public function testShouldCleanBustingFiles( $extensions, $expected, $wp_content_dir = null ) {
 		if ( ! empty( $wp_content_dir ) ) {
+			// The inherited rocket_get_constant() stub derives cache paths from this property.
 			$this->wp_content_dir = $wp_content_dir;
 		}
 		$this->dumpResults = isset( $expected['dump_results'] ) ? $expected['dump_results'] : false;

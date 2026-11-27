@@ -102,14 +102,14 @@ return [
 					'vfs://public/releases+ (site):/wp-content/cache/wp-rocket/example.org-tester-987654',
 				],
 			],
-			'shouldEscapeRegexForWindowsCachePath' => [
+			'shouldNormalizeAndEscapeWindowsCachePath' => [
 				'config'   => [
 					'url_host'                 => 'example.org',
-					'cache_path'               => 'vfs://public/C:/releases+ (site):/wp-content/cache/wp-rocket/',
+					'cache_path'               => 'C:/releases+ (site):/wp-content/cache/wp-rocket/',
 					'windows_fs'               => true,
-					'normalized_cache_path'    => 'vfs:\\public\\C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\',
-					'windows_regex_subject'    => 'vfs:\\public\\C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\example.org-tester-987654',
-					'windows_nonmatching_subject' => 'vfs:\\public\\C:\\releasesX (site):\\wp-content\\cache\\wp-rocket\\example.org-tester-987654',
+					'normalized_cache_path'    => 'C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\',
+					'windows_regex_subject'    => 'C:\\releases+ (site):\\wp-content\\cache\\wp-rocket\\example.org-tester-987654',
+					'windows_nonmatching_subject' => 'C:\\releasesX (site):\\wp-content\\cache\\wp-rocket\\example.org-tester-987654',
 				],
 				'expected' => [],
 			],

@@ -11,6 +11,19 @@ $structure['wp-content']['cache']['release+ (site):'] = [
 		],
 	],
 ];
+$structure['C:\\releases+ (site):'] = [
+	'wp-content' => [
+		'cache' => [
+			'wp-rocket' => [
+				'example.org' => [
+					'index.html' => '',
+					'de'         => [ 'index.html' => '' ],
+					'fr'         => [ 'index.html' => '' ],
+				],
+			],
+		],
+	],
+];
 
 return [
 	'structure' => $structure,
@@ -153,6 +166,22 @@ return [
 					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/index.html'      => null,
 					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/index.html' => null,
 					'vfs://public/wp-content/cache/release+ (site):/wp-rocket/example.org/de/'           => null,
+				],
+				'before_rocket_rrmdir' => 2,
+				'after_rocket_rrmdir'  => 2,
+				'dump_results'         => true,
+			],
+		],
+		'windowsStyleCachePath_shouldPreserveFrenchDirectory' => [
+			'to_delete'   => 'vfs://public/C:\\releases+ (site):/wp-content/cache/wp-rocket/example.org',
+			'to_preserve' => [
+				'vfs\\:\\/\\/public\\/C\\:\\\\releases\\+ \\(site\\)\\:\\/wp-content\\/cache\\/wp-rocket\\/example\\.org(.*)\\/fr',
+			],
+			'expected'    => [
+				'removed'              => [
+					'vfs://public/C:\\releases+ (site):/wp-content/cache/wp-rocket/example.org/index.html'      => null,
+					'vfs://public/C:\\releases+ (site):/wp-content/cache/wp-rocket/example.org/de/index.html' => null,
+					'vfs://public/C:\\releases+ (site):/wp-content/cache/wp-rocket/example.org/de/'           => null,
 				],
 				'before_rocket_rrmdir' => 2,
 				'after_rocket_rrmdir'  => 2,
