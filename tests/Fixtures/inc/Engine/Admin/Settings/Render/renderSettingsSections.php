@@ -34,9 +34,7 @@ return [
 				'id'            => 'abc',
 				'url'           => 'https://docs.example.org/help',
 				'rocketcdn_url' => 'https://docs.example.org/rocketcdn',
-				'rocketcdn_id'  => 'rcdn',
 				'other_cdn_url' => 'https://docs.example.org/other-cdn',
-				'other_cdn_id'  => 'ocdn',
 			],
 		],
 		'expected' => [
@@ -46,12 +44,10 @@ return [
 					$cdn_ctx,
 					'class="wpr-infoAction wpr-infoAction--help wpr-icon-help exclude-cdn-help-js"',
 					'data-rocketcdn-url="https://docs.example.org/rocketcdn"',
-					'data-rocketcdn-id="rcdn"',
 					'data-other-cdn-url="https://docs.example.org/other-cdn"',
-					'data-other-cdn-id="ocdn"',
 				]
 			),
-			'not_contains' => [],
+			'not_contains' => [ 'data-rocketcdn-id', 'data-other-cdn-id', 'data-beacon-id' ],
 		],
 	],
 	'purge_cdn_cache_section_keeps_need_help' => [

@@ -42,9 +42,7 @@ $rocket_track_context = [
 				'class'      => $rocket_cdn_help ? 'exclude-cdn-help-js' : '',
 				'attributes' => $rocket_cdn_help ? [
 					'data-rocketcdn-url' => $data['help']['rocketcdn_url'],
-					'data-rocketcdn-id'  => $data['help']['rocketcdn_id'],
 					'data-other-cdn-url' => $data['help']['other_cdn_url'],
-					'data-other-cdn-id'  => $data['help']['other_cdn_id'],
 				] : [],
 			]
 		);
