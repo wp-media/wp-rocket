@@ -52,6 +52,12 @@ class ExecuteTest extends TestCase {
 	 * @dataProvider configTestData
 	 */
 	public function testShouldDoExpected( $config, $expected ): void {
+		Functions\when( 'home_url' )->justReturn( $config['home_url'] ?? 'https://example.com' );
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+		Functions\when( 'set_url_scheme' )->alias( function ( $url, $scheme = null ) {
+			return empty( $scheme ) ? $url : preg_replace( '#^\w+://#', $scheme . '://', $url );
+		} );
+
 		// Stub URL protocol addition.
 		Functions\when( 'rocket_add_url_protocol' )->alias( function ( $url ) {
 			if ( empty( $url ) ) {
@@ -75,10 +81,14 @@ class ExecuteTest extends TestCase {
 		if ( array_key_exists( 'query_rows', $config ) ) {
 			$rows = $this->build_rows( $config['query_rows'] );
 
-			$this->query
+			$get_rows = $this->query
 				->expects( $this->any() )
 				->method( 'get_rows_by_url' )
 				->willReturn( $rows );
+
+			if ( isset( $expected['queried_url'] ) ) {
+				$get_rows->with( $expected['queried_url'] );
+			}
 		}
 
 		$deleted_ids = $expected['deleted_ids'] ?? [];

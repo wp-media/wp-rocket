@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Abilities\NormalizeUrlTrait;
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Jobs\Manager,
 	Context\Context,
@@ -21,6 +22,7 @@ use WP_Rocket\Logger\Logger;
 
 class AddPageInsights implements AbilitiesInterface {
 	use PageHandlerTrait;
+	use NormalizeUrlTrait;
 	use TrackingTrait;
 
 	/**
@@ -275,7 +277,7 @@ On success, tell the user the first score may take a few minutes and offer to tr
 		}
 
 		// Check if URL has protocol, add if needed.
-		$url                      = rocket_add_url_protocol( $url );
+		$url                      = $this->normalize_url_scheme( rocket_add_url_protocol( $url ) );
 		$payload['processed_url'] = $url;
 
 		$response = $this->get_page_content( $url );

@@ -116,4 +116,139 @@ return [
 			],
 		],
 	],
+	'testShouldQueryHttpsWhenSchemeIsHttpOnHttpsHome' => [
+		'config'   => [
+			'home_url'    => 'https://example.com',
+			'input'       => [ 'url' => 'http://example.com/page' ],
+			'rows'        => [ $desktop_row ],
+			'max_urls'    => null,
+			'total_count' => null,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'exists'  => true,
+				'results' => [
+					[
+						'url'         => 'https://example.com/page',
+						'score'       => 85,
+						'status'      => 'completed',
+						'modified'    => $modified_str,
+						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
+						'metric_data' => null,
+						'is_mobile'   => false,
+						'title'       => 'Page Title',
+					],
+				],
+			],
+		],
+	],
+	'testShouldQueryHttpsWhenUrlHasNoSchemeOnHttpsHome' => [
+		'config'   => [
+			'home_url'    => 'https://example.com',
+			'input'       => [ 'url' => 'example.com/page' ],
+			'rows'        => [ $desktop_row ],
+			'max_urls'    => null,
+			'total_count' => null,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'exists'  => true,
+				'results' => [
+					[
+						'url'         => 'https://example.com/page',
+						'score'       => 85,
+						'status'      => 'completed',
+						'modified'    => $modified_str,
+						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
+						'metric_data' => null,
+						'is_mobile'   => false,
+						'title'       => 'Page Title',
+					],
+				],
+			],
+		],
+	],
+	'testShouldKeepHttpsUrlOnHttpsHome' => [
+		'config'   => [
+			'home_url'    => 'https://example.com',
+			'input'       => [ 'url' => 'https://example.com/page' ],
+			'rows'        => [ $desktop_row ],
+			'max_urls'    => null,
+			'total_count' => null,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'exists'  => true,
+				'results' => [
+					[
+						'url'         => 'https://example.com/page',
+						'score'       => 85,
+						'status'      => 'completed',
+						'modified'    => $modified_str,
+						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
+						'metric_data' => null,
+						'is_mobile'   => false,
+						'title'       => 'Page Title',
+					],
+				],
+			],
+		],
+	],
+	'testShouldKeepHttpUrlOnHttpHome' => [
+		'config'   => [
+			'home_url'    => 'http://example.com',
+			'input'       => [ 'url' => 'http://example.com/page' ],
+			'rows'        => [ $desktop_row ],
+			'max_urls'    => null,
+			'total_count' => null,
+		],
+		'expected' => [
+			'queried_url' => 'http://example.com/page',
+			'result'      => [
+				'exists'  => true,
+				'results' => [
+					[
+						'url'         => 'https://example.com/page',
+						'score'       => 85,
+						'status'      => 'completed',
+						'modified'    => $modified_str,
+						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
+						'metric_data' => null,
+						'is_mobile'   => false,
+						'title'       => 'Page Title',
+					],
+				],
+			],
+		],
+	],
+	'testShouldKeepHttpUrlOfOtherHost' => [
+		'config'   => [
+			'home_url'    => 'https://example.com',
+			'input'       => [ 'url' => 'http://other.com/page' ],
+			'rows'        => [ $desktop_row ],
+			'max_urls'    => null,
+			'total_count' => null,
+		],
+		'expected' => [
+			'queried_url' => 'http://other.com/page',
+			'result'      => [
+				'exists'  => true,
+				'results' => [
+					[
+						'url'         => 'https://example.com/page',
+						'score'       => 85,
+						'status'      => 'completed',
+						'modified'    => $modified_str,
+						'report_url'  => 'https://gtmetrix.com/reports/page-desktop',
+						'metric_data' => null,
+						'is_mobile'   => false,
+						'title'       => 'Page Title',
+					],
+				],
+			],
+		],
+	],
 ];

@@ -1,5 +1,17 @@
 <?php
 
+$page_row = static function ( string $url ): array {
+	return [
+		'url'       => $url,
+		'title'     => 'Page',
+		'is_mobile' => false,
+		'job_id'    => 'test_scheme',
+		'status'    => 'completed',
+		'score'     => 85,
+		'data'      => '{"status":"complete","data":{"data":{"performance_score":85}}}',
+	];
+};
+
 return [
 	'testShouldReturnWPErrorWhenNoPermissions' => [
 		'config'   => [
@@ -86,6 +98,71 @@ return [
 			'is_error'      => false,
 			'exists'        => true,
 			'results_count' => 2,
+		],
+	],
+	'testShouldFindHttpsRowWhenUrlHasNoSchemeOnHttpsHome' => [
+		'config'   => [
+			'has_permission' => true,
+			'home'           => 'https://example.org',
+			'input'          => [ 'url' => 'example.org/page' ],
+			'items'          => [ $page_row( 'https://example.org/page' ) ],
+		],
+		'expected' => [
+			'is_error'      => false,
+			'exists'        => true,
+			'results_count' => 1,
+		],
+	],
+	'testShouldFindHttpsRowWhenUrlIsHttpOnHttpsHome' => [
+		'config'   => [
+			'has_permission' => true,
+			'home'           => 'https://example.org',
+			'input'          => [ 'url' => 'http://example.org/page' ],
+			'items'          => [ $page_row( 'https://example.org/page' ) ],
+		],
+		'expected' => [
+			'is_error'      => false,
+			'exists'        => true,
+			'results_count' => 1,
+		],
+	],
+	'testShouldFindHttpsRowWhenUrlIsHttpsOnHttpsHome' => [
+		'config'   => [
+			'has_permission' => true,
+			'home'           => 'https://example.org',
+			'input'          => [ 'url' => 'https://example.org/page' ],
+			'items'          => [ $page_row( 'https://example.org/page' ) ],
+		],
+		'expected' => [
+			'is_error'      => false,
+			'exists'        => true,
+			'results_count' => 1,
+		],
+	],
+	'testShouldFindHttpRowWhenUrlIsHttpOnHttpHome' => [
+		'config'   => [
+			'has_permission' => true,
+			'home'           => 'http://example.org',
+			'input'          => [ 'url' => 'http://example.org/page' ],
+			'items'          => [ $page_row( 'http://example.org/page' ) ],
+		],
+		'expected' => [
+			'is_error'      => false,
+			'exists'        => true,
+			'results_count' => 1,
+		],
+	],
+	'testShouldLeaveOtherHostSchemeUntouchedOnHttpsHome' => [
+		'config'   => [
+			'has_permission' => true,
+			'home'           => 'https://example.org',
+			'input'          => [ 'url' => 'http://other.test/page' ],
+			'items'          => [ $page_row( 'https://other.test/page' ) ],
+		],
+		'expected' => [
+			'is_error'      => false,
+			'exists'        => false,
+			'results_count' => 0,
 		],
 	],
 ];

@@ -374,4 +374,187 @@ return [
 			],
 		],
 	],
+
+	'testShouldStoreHttpsWhenSchemeIsHttpOnHttpsHome' => [
+		'config'   => [
+			'input'                         => [
+				'url' => 'http://example.com/page',
+			],
+			'environment_type'              => 'production',
+			'context_is_allowed'            => true,
+			'admin_url'                     => 'https://example.com/wp-admin/',
+			'home_url'                      => 'https://example.com/',
+			'http_response'                 => [
+				'response'    => [],
+				'is_error'    => false,
+				'status_code' => 200,
+				'body'        => '<html><head><title>Page Title</title></head></html>',
+			],
+			'job_processor_send_api_result' => [
+				'uuid' => 'test-uuid-scheme',
+			],
+			'manager_add_to_queue_result'   => 4,
+			'query_total_count'             => 5,
+			'plan_max_urls'                 => 10,
+			'plan_current_plan'             => 'free',
+		],
+		'expected' => [
+			'job_processor_send_api_called'         => true,
+			'manager_add_to_queue_called'           => true,
+			'manager_make_status_inprogress_called' => true,
+			'queue_schedule_called'                 => true,
+			'plan_get_current_plan_called'          => true,
+			'action_fired'                          => true,
+			'action_url'                            => 'https://example.com/page',
+			'action_plan'                           => 'free',
+			'action_urls_count'                     => 5,
+			'result'                                => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpsUrlOnHttpsHome' => [
+		'config'   => [
+			'input'                         => [
+				'url' => 'https://example.com/page',
+			],
+			'environment_type'              => 'production',
+			'context_is_allowed'            => true,
+			'admin_url'                     => 'https://example.com/wp-admin/',
+			'home_url'                      => 'https://example.com/',
+			'http_response'                 => [
+				'response'    => [],
+				'is_error'    => false,
+				'status_code' => 200,
+				'body'        => '<html><head><title>Page Title</title></head></html>',
+			],
+			'job_processor_send_api_result' => [
+				'uuid' => 'test-uuid-scheme',
+			],
+			'manager_add_to_queue_result'   => 4,
+			'query_total_count'             => 5,
+			'plan_max_urls'                 => 10,
+			'plan_current_plan'             => 'free',
+		],
+		'expected' => [
+			'job_processor_send_api_called'         => true,
+			'manager_add_to_queue_called'           => true,
+			'manager_make_status_inprogress_called' => true,
+			'queue_schedule_called'                 => true,
+			'plan_get_current_plan_called'          => true,
+			'action_fired'                          => true,
+			'action_url'                            => 'https://example.com/page',
+			'action_plan'                           => 'free',
+			'action_urls_count'                     => 5,
+			'result'                                => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOnHttpHome' => [
+		'config'   => [
+			'input'                         => [
+				'url' => 'http://example.com/page',
+			],
+			'environment_type'              => 'production',
+			'context_is_allowed'            => true,
+			'admin_url'                     => 'http://example.com/wp-admin/',
+			'home_url'                      => 'http://example.com/',
+			'http_response'                 => [
+				'response'    => [],
+				'is_error'    => false,
+				'status_code' => 200,
+				'body'        => '<html><head><title>Page Title</title></head></html>',
+			],
+			'job_processor_send_api_result' => [
+				'uuid' => 'test-uuid-scheme',
+			],
+			'manager_add_to_queue_result'   => 4,
+			'query_total_count'             => 5,
+			'plan_max_urls'                 => 10,
+			'plan_current_plan'             => 'free',
+		],
+		'expected' => [
+			'job_processor_send_api_called'         => true,
+			'manager_add_to_queue_called'           => true,
+			'manager_make_status_inprogress_called' => true,
+			'queue_schedule_called'                 => true,
+			'plan_get_current_plan_called'          => true,
+			'action_fired'                          => true,
+			'action_url'                            => 'http://example.com/page',
+			'action_plan'                           => 'free',
+			'action_urls_count'                     => 5,
+			'result'                                => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOfOtherHost' => [
+		'config'   => [
+			'input'                         => [
+				'url' => 'http://other.com/page',
+			],
+			'environment_type'              => 'production',
+			'context_is_allowed'            => true,
+			'admin_url'                     => 'https://example.com/wp-admin/',
+			'home_url'                      => 'https://example.com/',
+			'http_response'                 => [
+				'response'    => [],
+				'is_error'    => false,
+				'status_code' => 200,
+				'body'        => '<html><head><title>Page Title</title></head></html>',
+			],
+			'job_processor_send_api_result' => [
+				'uuid' => 'test-uuid-scheme',
+			],
+			'manager_add_to_queue_result'   => 4,
+			'query_total_count'             => 5,
+			'plan_max_urls'                 => 10,
+			'plan_current_plan'             => 'free',
+		],
+		'expected' => [
+			'job_processor_send_api_called'         => true,
+			'manager_add_to_queue_called'           => true,
+			'manager_make_status_inprogress_called' => true,
+			'queue_schedule_called'                 => true,
+			'plan_get_current_plan_called'          => true,
+			'action_fired'                          => true,
+			'action_url'                            => 'http://other.com/page',
+			'action_plan'                           => 'free',
+			'action_urls_count'                     => 5,
+			'result'                                => [
+				'success' => true,
+				'error'   => '',
+			],
+		],
+	],
+
+	'testShouldReturnErrorWhenHttpAdminUrlOnHttpsHome' => [
+		'config'   => [
+			'input'              => [
+				'url' => 'http://example.com/wp-admin/options.php',
+			],
+			'environment_type'   => 'production',
+			'context_is_allowed' => true,
+			'admin_url'          => 'https://example.com/wp-admin/',
+			'http_response'      => [
+				'response'    => [],
+				'is_error'    => false,
+				'status_code' => 200,
+				'body'        => '<html><head><title>Admin Page</title></head></html>',
+			],
+		],
+		'expected' => [
+			'result' => [
+				'success' => false,
+				'error'   => 'Url is an admin page.',
+			],
+		],
+	],
 ];

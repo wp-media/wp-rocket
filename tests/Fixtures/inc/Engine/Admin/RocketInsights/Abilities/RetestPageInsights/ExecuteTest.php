@@ -188,4 +188,104 @@ return [
 			],
 		],
 	],
+
+	'testShouldLookUpHttpsWhenSchemeIsHttpOnHttpsHome' => [
+		'config'   => [
+			'home_url'               => 'https://example.com',
+			'input'                  => [
+				'url' => 'http://example.com/page',
+			],
+			'environment_type'       => 'production',
+			'context_is_allowed'     => true,
+			'manager_get_single_job' => false,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'success' => false,
+				'status'  => 'not_found',
+				'error'   => 'URL is not tracked by Rocket Insights.',
+			],
+		],
+	],
+
+	'testShouldLookUpHttpsWhenUrlHasNoSchemeOnHttpsHome' => [
+		'config'   => [
+			'home_url'               => 'https://example.com',
+			'input'                  => [
+				'url' => 'example.com/page',
+			],
+			'environment_type'       => 'production',
+			'context_is_allowed'     => true,
+			'manager_get_single_job' => false,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'success' => false,
+				'status'  => 'not_found',
+				'error'   => 'URL is not tracked by Rocket Insights.',
+			],
+		],
+	],
+
+	'testShouldKeepHttpsUrlOnHttpsHome' => [
+		'config'   => [
+			'home_url'               => 'https://example.com',
+			'input'                  => [
+				'url' => 'https://example.com/page',
+			],
+			'environment_type'       => 'production',
+			'context_is_allowed'     => true,
+			'manager_get_single_job' => false,
+		],
+		'expected' => [
+			'queried_url' => 'https://example.com/page',
+			'result'      => [
+				'success' => false,
+				'status'  => 'not_found',
+				'error'   => 'URL is not tracked by Rocket Insights.',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOnHttpHome' => [
+		'config'   => [
+			'home_url'               => 'http://example.com',
+			'input'                  => [
+				'url' => 'http://example.com/page',
+			],
+			'environment_type'       => 'production',
+			'context_is_allowed'     => true,
+			'manager_get_single_job' => false,
+		],
+		'expected' => [
+			'queried_url' => 'http://example.com/page',
+			'result'      => [
+				'success' => false,
+				'status'  => 'not_found',
+				'error'   => 'URL is not tracked by Rocket Insights.',
+			],
+		],
+	],
+
+	'testShouldKeepHttpUrlOfOtherHost' => [
+		'config'   => [
+			'home_url'               => 'https://example.com',
+			'input'                  => [
+				'url' => 'http://other.com/page',
+			],
+			'environment_type'       => 'production',
+			'context_is_allowed'     => true,
+			'manager_get_single_job' => false,
+		],
+		'expected' => [
+			'queried_url' => 'http://other.com/page',
+			'result'      => [
+				'success' => false,
+				'status'  => 'not_found',
+				'error'   => 'URL is not tracked by Rocket Insights.',
+			],
+		],
+	],
 ];

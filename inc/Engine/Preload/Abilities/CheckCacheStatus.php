@@ -5,10 +5,12 @@ namespace WP_Rocket\Engine\Preload\Abilities;
 
 use WP_Rocket\Admin\Options_Data;
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Abilities\NormalizeUrlTrait;
 use WP_Rocket\Engine\Preload\Database\Queries\Cache as CacheQuery;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class CheckCacheStatus implements AbilitiesInterface {
+	use NormalizeUrlTrait;
 	use TrackingTrait;
 
 	/**
@@ -245,48 +247,6 @@ If tracked is false, tell the user the URL is not currently tracked by Preload (
 		}
 
 		return null;
-	}
-
-	/**
-	 * Normalizes the resolved URL's scheme and host against the site's canonical home_url()
-	 * when they refer to the same site, so a scheme (http/https) or www-prefix mismatch does
-	 * not cause a false "not tracked" result.
-	 *
-	 * `Cache::get_rows_by_url()` strips the query string and trailing slash, but does not
-	 * normalize scheme or a `www.` prefix, so this normalization happens before the lookup.
-	 *
-	 * @param string $url Resolved URL to normalize.
-	 *
-	 * @return string
-	 */
-	private function normalize_url_scheme_and_host( string $url ): string {
-		$home_url    = home_url();
-		$home_scheme = (string) wp_parse_url( $home_url, PHP_URL_SCHEME );
-		$home_host   = (string) wp_parse_url( $home_url, PHP_URL_HOST );
-		$url_host    = (string) wp_parse_url( $url, PHP_URL_HOST );
-
-		if ( '' === $url_host || '' === $home_host ) {
-			return $url;
-		}
-
-		$strip_www = static function ( string $host ): string {
-			return preg_replace( '/^www\./i', '', $host ) ?? $host;
-		};
-
-		if ( $strip_www( $url_host ) !== $strip_www( $home_host ) ) {
-			// Not the same site; leave untouched.
-			return $url;
-		}
-
-		if ( '' !== $home_scheme ) {
-			$url = set_url_scheme( $url, $home_scheme );
-		}
-
-		if ( $url_host !== $home_host ) {
-			$url = str_replace( '://' . $url_host, '://' . $home_host, $url );
-		}
-
-		return $url;
 	}
 
 	/**

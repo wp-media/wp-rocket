@@ -101,8 +101,12 @@ class ExecuteTest extends TestCase {
 		// Stub admin_url.
 		Functions\when( 'admin_url' )->justReturn( $config['admin_url'] ?? 'https://example.com/wp-admin/' );
 
-		// Stub home_url for Utils::is_home().
+		// Stub home_url for Utils::is_home() and the scheme normalization.
 		Functions\when( 'home_url' )->justReturn( $config['home_url'] ?? 'https://example.com/' );
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+		Functions\when( 'set_url_scheme' )->alias( function ( $url, $scheme = null ) {
+			return empty( $scheme ) ? $url : preg_replace( '#^\w+://#', $scheme . '://', $url );
+		} );
 
 		// Stub sanitization functions.
 		Functions\when( 'wp_strip_all_tags' )->returnArg();

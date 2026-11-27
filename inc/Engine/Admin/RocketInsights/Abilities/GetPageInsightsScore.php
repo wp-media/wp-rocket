@@ -4,11 +4,13 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Abilities\NormalizeUrlTrait;
 use WP_Rocket\Engine\Admin\RocketInsights\Database\Queries\RocketInsights as Query;
 use WP_Rocket\Engine\Admin\RocketInsights\Managers\Plan;
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class GetPageInsightsScore implements AbilitiesInterface {
+	use NormalizeUrlTrait;
 	use TrackingTrait;
 
 	/**
@@ -153,7 +155,7 @@ Do not open or read GTmetrix report_url links. You may show them as complementar
 				'context' => 'wp_plugin_mcp',
 			]
 		);
-		$url  = rocket_add_url_protocol( $input['url'] );
+		$url  = $this->normalize_url_scheme( rocket_add_url_protocol( $input['url'] ) );
 		$url  = untrailingslashit( $url );
 		$rows = $this->query->get_rows_by_url( $url );
 

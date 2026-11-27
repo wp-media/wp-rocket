@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace WP_Rocket\Engine\Admin\RocketInsights\Abilities;
 
 use WP_Rocket\Engine\Abilities\AbilitiesInterface;
+use WP_Rocket\Engine\Abilities\NormalizeUrlTrait;
 use WP_Rocket\Engine\Admin\RocketInsights\{
 	Context\Context,
 	Database\Queries\RocketInsights as Query
@@ -11,6 +12,7 @@ use WP_Rocket\Engine\Admin\RocketInsights\{
 use WP_Rocket\Engine\Tracking\TrackingTrait;
 
 class RemovePageInsights implements AbilitiesInterface {
+	use NormalizeUrlTrait;
 	use TrackingTrait;
 
 	/**
@@ -130,7 +132,7 @@ This action is destructive and non-idempotent. Before calling, explicitly confir
 			];
 		}
 
-		$url = rocket_add_url_protocol( $input['url'] );
+		$url = $this->normalize_url_scheme( rocket_add_url_protocol( $input['url'] ) );
 
 		$rows = $this->query->get_rows_by_url( $url );
 

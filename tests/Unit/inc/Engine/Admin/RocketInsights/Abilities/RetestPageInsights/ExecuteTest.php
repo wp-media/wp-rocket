@@ -72,6 +72,12 @@ class ExecuteTest extends TestCase {
 		// Stub environment type.
 		Functions\when( 'wp_get_environment_type' )->justReturn( $config['environment_type'] ?? 'production' );
 
+		Functions\when( 'home_url' )->justReturn( $config['home_url'] ?? 'https://example.com' );
+		Functions\when( 'wp_parse_url' )->alias( 'parse_url' );
+		Functions\when( 'set_url_scheme' )->alias( function ( $url, $scheme = null ) {
+			return empty( $scheme ) ? $url : preg_replace( '#^\w+://#', $scheme . '://', $url );
+		} );
+
 		// Stub URL protocol addition.
 		Functions\when( 'rocket_add_url_protocol' )->alias( function ( $url ) {
 			if ( empty( $url ) ) {
@@ -136,24 +142,20 @@ class ExecuteTest extends TestCase {
 	 * @param mixed $row      The row mock object or null.
 	 */
 	private function setupManagerMock( array $config, array $expected, $row ): void {
-		// get_single_job.
+		// get_single_job. An explicit false/empty value means the URL is not tracked.
 		if ( array_key_exists( 'manager_get_single_job', $config ) ) {
-			// Explicit false/empty value — URL not tracked.
-			$this->manager
-				->expects( $this->any() )
-				->method( 'get_single_job' )
-				->willReturn( $config['manager_get_single_job'] );
-		} elseif ( null !== $row ) {
-			// Return the row mock.
-			$this->manager
-				->expects( $this->any() )
-				->method( 'get_single_job' )
-				->willReturn( $row );
+			$job = $config['manager_get_single_job'];
 		} else {
-			$this->manager
-				->expects( $this->any() )
-				->method( 'get_single_job' )
-				->willReturn( false );
+			$job = $row ?? false;
+		}
+
+		$get_single_job = $this->manager
+			->expects( $this->any() )
+			->method( 'get_single_job' )
+			->willReturn( $job );
+
+		if ( isset( $expected['queried_url'] ) ) {
+			$get_single_job->with( $expected['queried_url'], true );
 		}
 
 		// add_to_the_queue — verify $additional_details contains stale-score reset fields when asserted.
